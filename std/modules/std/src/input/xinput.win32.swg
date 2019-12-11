@@ -93,7 +93,8 @@
                 // Button pressed state
                 loop i: 16
                     pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
-
+			
+				// Move
                 using GamePadButton, state.Gamepad
                 movement[cast(u32) LeftStick].x = sThumbLX / 32767.0'f32
                 movement[cast(u32) LeftStick].y = sThumbLY / 32767.0'f32
@@ -102,6 +103,19 @@
                 movement[cast(u32) LeftTrigger].y = bLeftTrigger / 255.0'f32
                 movement[cast(u32) RightTrigger].y = bRightTrigger / 255.0'f32
 
+				// Simulate pressed with move
+				const SmallToler = 0.7'f32
+				const BigToler = 0.9'f32
+				pressed[cast(u32) LeftThumbstickDown] = movement[cast(u32) LeftStick].y < (pressed[cast(u32) LeftThumbstickDown] ? -SmallToler : -BigToler) ? true : false
+				pressed[cast(u32) LeftThumbstickUp] = movement[cast(u32) LeftStick].y > (pressed[cast(u32) LeftThumbstickUp] ? SmallToler : BigToler) ? true : false
+				pressed[cast(u32) LeftThumbstickLeft] = movement[cast(u32) LeftStick].x < (pressed[cast(u32) LeftThumbstickLeft] ? -SmallToler : -BigToler) ? true : false
+				pressed[cast(u32) LeftThumbstickRight] = movement[cast(u32) LeftStick].x > (pressed[cast(u32) LeftThumbstickRight] ? SmallToler : BigToler) ? true : false
+				
+				pressed[cast(u32) RightThumbstickDown] = movement[cast(u32) RightStick].y < (pressed[cast(u32) RightThumbstickDown] ? -SmallToler : -BigToler) ? true : false
+				pressed[cast(u32) RightThumbstickUp] = movement[cast(u32) RightStick].y > (pressed[cast(u32) RightThumbstickUp] ? SmallToler : BigToler) ? true : false
+				pressed[cast(u32) RightThumbstickLeft] = movement[cast(u32) RightStick].x < (pressed[cast(u32) RightThumbstickLeft] ? -SmallToler : -BigToler) ? true : false
+				pressed[cast(u32) RightThumbstickRight] = movement[cast(u32) RightStick].x > (pressed[cast(u32) RightThumbstickRight] ? SmallToler : BigToler) ? true : false
+				
                 return true
             }
         }
