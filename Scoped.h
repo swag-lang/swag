@@ -96,18 +96,18 @@ struct ScopedFlags
     uint64_t   savedFlags;
 };
 
-struct ScopedAttributesFlags
+struct ScopedAccessFlags
 {
-    ScopedAttributesFlags(SyntaxJob* job, uint32_t newFlags)
+    ScopedAccessFlags(SyntaxJob* job, uint32_t newFlags)
     {
-        savedJob                    = job;
-        savedFlags                  = job->currentAttributesFlags;
-        job->currentAttributesFlags = newFlags;
+        savedJob                = job;
+        savedFlags              = job->currentAccessFlags;
+        job->currentAccessFlags = newFlags;
     }
 
-    ~ScopedAttributesFlags()
+    ~ScopedAccessFlags()
     {
-        savedJob->currentAttributesFlags = savedFlags;
+        savedJob->currentAccessFlags = savedFlags;
     }
 
     SyntaxJob* savedJob;

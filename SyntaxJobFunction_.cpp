@@ -447,6 +447,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         // Normal curly statement
         else
         {
+            ScopedAccessFlags scopedAccess(this, 0);
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
             funcNode->content->token = token;
         }

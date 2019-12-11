@@ -112,7 +112,7 @@ struct SyntaxJob : public Job
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDrop(AstNode* parent, AstNode** result = nullptr);
-	
+
     SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
@@ -124,7 +124,7 @@ struct SyntaxJob : public Job
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     AstNode*            currentMainNode        = nullptr;
     uint64_t            currentFlags           = 0;
-    uint32_t            currentAttributesFlags = 0;
+    uint32_t            currentAccessFlags     = 0;
     bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
 };

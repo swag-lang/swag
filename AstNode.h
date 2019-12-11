@@ -223,7 +223,7 @@ struct AstNode
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
 
         flags |= job->currentFlags;
-        attributeFlags |= job->currentAttributesFlags;
+        attributeFlags |= job->currentAccessFlags;
     }
 
     bool isConstantTrue()
