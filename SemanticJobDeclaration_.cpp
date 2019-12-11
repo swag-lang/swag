@@ -56,7 +56,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     node->flags |= AST_NO_BYTECODE;
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
-        SWAG_CHECK(resolveUsingVar(context, idref->resolvedSymbolOverload->node, idref->resolvedSymbolOverload->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
 

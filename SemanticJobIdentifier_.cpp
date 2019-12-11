@@ -273,13 +273,28 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Symbol is linked to a using var : insert the variable name before the symbol
     if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
     {
-        auto idRef  = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
-        auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
-        idNode->inheritTokenLocation(identifier->token);
-        Ast::addChildFront(idRef, idNode);
+        auto idRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+        if (dependentVar->kind == AstNodeKind::IdentifierRef)
+        {
+            for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
+            {
+                auto child  = dependentVar->childs[i];
+                auto idNode = Ast::newIdentifier(sourceFile, child->name, idRef, nullptr);
+                idNode->inheritTokenLocation(child->token);
+                Ast::addChildFront(idRef, idNode);
+                context->job->nodes.push_back(idNode);
+            }
+        }
+        else
+        {
+            auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
+            idNode->inheritTokenLocation(identifier->token);
+            Ast::addChildFront(idRef, idNode);
+            context->job->nodes.push_back(idNode);
+        }
+
         context->node->semanticState = AstNodeResolveState::Enter;
-        context->job->nodes.push_back(idNode);
-        context->result = ContextResult::NewChilds;
+        context->result              = ContextResult::NewChilds;
         return true;
     }
 
@@ -1069,7 +1084,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         else
         {
             scopeHierarchy.insert(startScope);
-            for(auto s: startScope->owner->alternativeScopes)
+            for (auto s : startScope->owner->alternativeScopes)
                 scopeHierarchy.insert(s);
             scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
         }
