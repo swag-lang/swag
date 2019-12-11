@@ -23,14 +23,15 @@ JobResult ModuleBuildJob::execute()
     {
         for (auto dep : module->moduleDependencies)
         {
-            auto it = g_Workspace.mapModulesNames.find(dep.first);
+            shared_lock lk(g_Workspace.mutexModules);
+            auto        it = g_Workspace.mapModulesNames.find(dep.first);
             SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
 
             if (it->second->numErrors)
                 return JobResult::ReleaseJob;
 
             auto        depModule = it->second;
-            shared_lock lk(depModule->mutexDependency);
+            unique_lock lk1(depModule->mutexDependency);
             if (depModule->hasBeenBuilt == ModuleBuildResult::None)
             {
                 depModule->dependentJobs.add(this);
