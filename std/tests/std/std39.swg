@@ -8,8 +8,8 @@ using std.input
     k.clear()
     @assert(!k.isButtonPressed(GamePadButton.X))
     
-    while true
-    //while false
+    //while true
+    while false
     {
         k.update()
         if k.isButtonJustPressed(GamePadButton.RightThumbstickDown)
