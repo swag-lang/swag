@@ -14,28 +14,11 @@ namespace std.input
     {
         public
         {
+			/// Reset state to its default value
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))
                 memory.clear(&position, @sizeof(position))
-            }
-
-            /// Determines whether specified input device buttons are pressed in this GamePadState
-            func isButtonPressed(using self, button: GamePadButton)->bool
-            {
-                return pressed[cast(u32) button]
-            }
-
-            /// Determines whether specified input device buttons are released (not pressed) in this GamePadState
-            func isButtonReleased(using self, button: GamePadButton)->bool
-            {
-                return !pressed[cast(u32) button]
-            }
-
-            /// Get the analog position of the given button
-            func getPosition(using self, button: GamePadButton)->Point
-            {
-                return position[cast(u32) button]
             }
         }
     }

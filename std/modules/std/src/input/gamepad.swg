@@ -5,9 +5,14 @@ namespace std.input
 	/// Represents a gamepad
     public struct GamePad
     {
-        previousState:  GamePadState
-        currentState:   GamePadState
-        padIndex:       u32
+        readonly previousState:  GamePadState
+        readonly currentState:   GamePadState
+		
+		/// The pad index associated with that GamePad instance
+        padIndex: u32
+		
+		/// true if the corresponding padIndex is connected
+		readonly connected: bool
     }
 
     impl GamePad
@@ -17,6 +22,16 @@ namespace std.input
 			/// Update the GamePad current state
             func update(using self)
             {
+				newConnected := std.input.os.isGamePadConnected(padIndex)
+				if !newConnected 
+				{
+					if connected
+						clear(self)
+					connected = false
+					return;
+				}
+				
+				connected = true
                 previousState = currentState
                 currentState.update(padIndex)
             }
@@ -26,7 +41,6 @@ namespace std.input
             {
                 previousState.clear()
                 currentState.clear()
-                padIndex = 0
             }
 
 			/// Determines whether specified input device button is pressed
@@ -56,8 +70,14 @@ namespace std.input
 			/// Get the analog position of the given button
             func getPosition(using self, button: GamePadButton)->Point
             {
-                return currentState.getPosition(button)
+                return currentState.position[cast(u32) button]
             }
+			
+			/// Set the vibration motor speeds
+			func setVibration(using self, left, right: f32)->bool
+			{
+				return std.input.os.setGamePadVibration(padIndex, left, right)
+			}
         }
     }
 }

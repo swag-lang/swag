@@ -68,19 +68,26 @@
 			func XInputGetState(dwUserIndex: DWORD,  pState: *XINPUT_STATE)->DWORD;
             func XInputSetState(dwUserIndex: DWORD,  pVibration: *XINPUT_VIBRATION)->DWORD;
 		}
-    }
-
-    namespace std.input
-	{
-        public func setGamePadVibration(padIndex: u32, left, right: f32)->bool
+		
+		func isGamePadConnected(padIndex: u32)->bool
+		{
+			using std.input.os
+			var state: XINPUT_STATE = ?
+			return XInputGetState(padIndex, &state) != std.os.ERROR_SUCCESS
+		}
+		
+        func setGamePadVibration(padIndex: u32, left, right: f32)->bool
         {
             using std.input.os
             var vibration: XINPUT_VIBRATION = ?
             vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * saturate(left))
             vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * saturate(right))
             return XInputSetState(padIndex, &vibration) == std.os.ERROR_SUCCESS
-        }
+        }		
+    }
 
+    namespace std.input
+	{
         impl GamePadState
         {
             /// Compute the current state of the given pad index
