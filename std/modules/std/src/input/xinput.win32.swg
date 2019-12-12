@@ -104,13 +104,13 @@
                 movement[cast(u32) RightTrigger].y = bRightTrigger / 255.0'f32
 
 				// Simulate pressed with move
-				/*#[swag.inline]
-				func getToler(me: *GamePadState, btn: GamePadButton)->f32
+				#[swag.inline]
+				func getToler(self, btn: GamePadButton)->f32
 				{
 					const SmallToler = 0.7'f32
 					const BigToler = 0.9'f32
-					return me.pressed[cast(u32) btn] ? SmallToler : BigToler
-				}*/
+					return self.pressed[cast(u32) btn] ? SmallToler : BigToler
+				}
 				
 				const SmallToler = 0.7'f32
 				const BigToler = 0.9'f32
