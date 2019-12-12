@@ -6,5 +6,10 @@ func toto(x: s32)
         return x
     }
     
-    s := titi(0)
+    @assert(titi(666) == 666)
+}
+
+#test
+{
+    toto(10)
 }

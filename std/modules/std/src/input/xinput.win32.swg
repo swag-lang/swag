@@ -112,14 +112,14 @@
 					return self.pressed[cast(u32) btn] ? SmallToler : BigToler
 				}
 							
-				pressed[cast(u32) LeftThumbstickDown] = movement[cast(u32) LeftStick].y < getToler(self, LeftThumbstickDown)
+				pressed[cast(u32) LeftThumbstickDown] = movement[cast(u32) LeftStick].y < -getToler(self, LeftThumbstickDown)
 				pressed[cast(u32) LeftThumbstickUp] = movement[cast(u32) LeftStick].y > getToler(self, LeftThumbstickUp)
-				pressed[cast(u32) LeftThumbstickLeft] = movement[cast(u32) LeftStick].x < getToler(self, LeftThumbstickLeft)
+				pressed[cast(u32) LeftThumbstickLeft] = movement[cast(u32) LeftStick].x < -getToler(self, LeftThumbstickLeft)
 				pressed[cast(u32) LeftThumbstickRight] = movement[cast(u32) LeftStick].x > getToler(self, LeftThumbstickRight)
 				
-				pressed[cast(u32) RightThumbstickDown] = movement[cast(u32) RightStick].y < getToler(self, RightThumbstickDown)
+				pressed[cast(u32) RightThumbstickDown] = movement[cast(u32) RightStick].y < -getToler(self, RightThumbstickDown)
 				pressed[cast(u32) RightThumbstickUp] = movement[cast(u32) RightStick].y > getToler(self, RightThumbstickUp)
-				pressed[cast(u32) RightThumbstickLeft] = movement[cast(u32) RightStick].x < getToler(self, RightThumbstickLeft)
+				pressed[cast(u32) RightThumbstickLeft] = movement[cast(u32) RightStick].x < -getToler(self, RightThumbstickLeft)
 				pressed[cast(u32) RightThumbstickRight] = movement[cast(u32) RightStick].x > getToler(self, RightThumbstickRight)
 				
                 return true

@@ -4,7 +4,7 @@
     a := 666
     if a == 666
     {
-        #[swag.macro]
+        #[swag.mixin]
         func toto()
         {
             a = 1
