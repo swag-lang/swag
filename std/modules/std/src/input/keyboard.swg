@@ -1,26 +1,31 @@
 namespace std.input
 {
+    /// Allows getting keystrokes from keyboard
     public struct Keyboard
     {
         internal previousState:  KeyboardState
         internal currentState:   KeyboardState
         internal pressedRepeat:  [@countof(Key)] bool
         internal pressedTime:    [@countof(Key)] u32
-        
+
+        /// Delay, in milliseconds, before a repeated key stroke starts
         pressedRepeatStartTimeMs:   u32 = 400
+        /// Delay, in miliseconds, between two repeated key strokes
         pressedRepeatTimeMs:        u32 = 150
-        canRepeat:                  bool = true        
+        /// Allow key stroke repetition if true
+        canRepeat:                  bool = true
     }
-    
+
     impl Keyboard
     {
-        public 
+        public
         {
+            /// Compute current state of the keyboard (all keys)
             func update(using self)
             {
                 previousState = currentState
                 currentState.update()
-                
+
                 // Repetition
                 now := time.nowMilliseconds()
                 loop i: @countof(Key)
@@ -35,7 +40,7 @@ namespace std.input
                         // First pressed time
                         if !pressedTime[i]
                             pressedTime[i] = now
-                            
+
                         // First repetition
                         if !pressedRepeat[i]
                         {
@@ -53,8 +58,9 @@ namespace std.input
                         }
                     }
                 }
-            } 
+            }
 
+            /// Reset the keyboard state
             func clear(using self)
             {
                 previousState.clear()
@@ -62,26 +68,30 @@ namespace std.input
                 memory.clear(&pressedRepeat, @sizeof(pressedRepeat))
                 memory.clear(&pressedTime, @sizeof(pressedTime))
             }
-            
+
+            /// Determines whether given key is currently being pressed
             func isKeyPressed(using self, key: Key)->bool
             {
-                return currentState.isKeyPressed(key)
+                return currentState.pressed[cast(u32) key]
             }
-            
+
+            /// Determines whether given key has just been pressed
             func isKeyJustPressed(using self, key: Key)->bool
-            {                
-                return currentState.isKeyPressed(key) && !previousState.isKeyPressed(key)
-            }            
-            
+            {
+                return currentState.pressed[cast(u32) key] && !previousState.pressed[cast(u32) key]
+            }
+
+            /// Determines whether given key is currently being released
             func isKeyReleased(using self, key: Key)->bool
             {
-                return currentState.isKeyReleased(key)
-            }            
-            
+                return !currentState.pressed[cast(u32) key]
+            }
+
+            /// Determines whether given key has just been released
             func isKeyJustReleased(using self, key: Key)->bool
             {
-                return currentState.isKeyReleased(key) && !previousState.isKeyReleased(key)
-            }              
-        }        
+                return !currentState.pressed[cast(u32) key] && previousState.pressed[cast(u32) key]
+            }
+        }
     }
 }

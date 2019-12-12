@@ -7,10 +7,12 @@ namespace std.input
         position:   Point
     }
 
+    /// Represents a mouse state with cursor position and button press information
     impl MouseState
     {
         public
         {
+            /// Compute the actual state of the mouse
             func update(using self)
             {
                 pressed[cast(u32) MouseButton.Left] = isMouseButtonPressed(MouseButton.Left)
@@ -21,20 +23,11 @@ namespace std.input
                 position = getMousePos()
             }
 
+            /// Reset the state to its default value
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))
                 position = getMousePos()
-            }
-
-            func isButtonPressed(using self, button: MouseButton)->bool
-            {
-                return pressed[cast(u32) button]
-            }
-
-            func isButtonReleased(using self, button: MouseButton)->bool
-            {
-                return !pressed[cast(u32) button]
             }
         }
     }

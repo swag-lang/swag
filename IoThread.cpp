@@ -135,7 +135,7 @@ void IoThread::save(SavingThreadRequest* request)
 
     if (!file)
     {
-        g_Log.error(format("cannot open file '%s' for writing (error %d)", request->file->fileName.c_str(), errno));
+        g_Log.error(format("cannot open file '%s' for writing (%s)", request->file->fileName.c_str(), OS::getLastErrorAsString().c_str()));
         return;
     }
 
