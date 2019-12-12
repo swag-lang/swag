@@ -211,12 +211,12 @@
 	{        
         public 
         {
-            func KeyToVKey(key: Key)-> VirtualKey
+            func keyToVirtualKey(key: Key)-> VirtualKey
             {
                 return acast g_mapKeyToVKey[cast(u8) key]
             }
             
-            func VKeyToKey(vkey: VirtualKey)-> Key
+            func virtualKeyToKey(vkey: VirtualKey)-> Key
             {
                 if(vkey > 255) return Key.None
                 return cast(Key) g_mapVKeyToKey[cast(u8) vkey]

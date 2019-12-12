@@ -45,7 +45,7 @@ JobResult ModuleOutputJob::execute()
         {
             auto docJob = g_Pool_docModuleJob.alloc();
             docJob->module = module;
-            jobsToAdd.push_back(docJob);
+            g_ThreadMgr.addJob(docJob);
         }
     }
 
