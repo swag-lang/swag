@@ -122,6 +122,8 @@
 				pressed[cast(u32) RightThumbstickLeft] = movement[cast(u32) RightStick].x < -getToler(self, RightThumbstickLeft)
 				pressed[cast(u32) RightThumbstickRight] = movement[cast(u32) RightStick].x > getToler(self, RightThumbstickRight)
 				
+                pressed[cast(u32) LeftTrigger] = movement[cast(u32) LeftTrigger].y > getToler(self, LeftTrigger)
+                pressed[cast(u32) RightTrigger] = movement[cast(u32) RightTrigger].y > getToler(self, RightTrigger)
                 return true
             }
         }
