@@ -17,7 +17,7 @@ using std.input
             //@print("X\n")
         }
         
-        m := k.getMove(GamePadButton.LeftTrigger)
+        m := k.getPosition(GamePadButton.LeftTrigger)
         //@print(cast(f64) m.y)
         //@print("\n")
     }

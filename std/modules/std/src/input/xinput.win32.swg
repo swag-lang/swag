@@ -83,6 +83,7 @@
 
         impl GamePadState
         {
+            /// Compute the current state of the given pad index
             public func update(using self, padIndex: u32)->bool
             {
                 using std.input.os
@@ -96,12 +97,12 @@
 			
 				// Move
                 using GamePadButton, state.Gamepad
-                movement[cast(u32) LeftStick].x = sThumbLX / 32767.0'f32
-                movement[cast(u32) LeftStick].y = sThumbLY / 32767.0'f32
-                movement[cast(u32) RightStick].x = sThumbRX / 32767.0'f32
-                movement[cast(u32) RightStick].y = sThumbRY / 32767.0'f32
-                movement[cast(u32) LeftTrigger].y = bLeftTrigger / 255.0'f32
-                movement[cast(u32) RightTrigger].y = bRightTrigger / 255.0'f32
+                position[cast(u32) LeftStick].x = sThumbLX / 32767.0'f32
+                position[cast(u32) LeftStick].y = sThumbLY / 32767.0'f32
+                position[cast(u32) RightStick].x = sThumbRX / 32767.0'f32
+                position[cast(u32) RightStick].y = sThumbRY / 32767.0'f32
+                position[cast(u32) LeftTrigger].y = bLeftTrigger / 255.0'f32
+                position[cast(u32) RightTrigger].y = bRightTrigger / 255.0'f32
 
 				// Simulate pressed with move
 				#[swag.inline]
@@ -112,18 +113,18 @@
 					return self.pressed[cast(u32) btn] ? SmallToler : BigToler
 				}
 							
-				pressed[cast(u32) LeftThumbstickDown] = movement[cast(u32) LeftStick].y < -getToler(self, LeftThumbstickDown)
-				pressed[cast(u32) LeftThumbstickUp] = movement[cast(u32) LeftStick].y > getToler(self, LeftThumbstickUp)
-				pressed[cast(u32) LeftThumbstickLeft] = movement[cast(u32) LeftStick].x < -getToler(self, LeftThumbstickLeft)
-				pressed[cast(u32) LeftThumbstickRight] = movement[cast(u32) LeftStick].x > getToler(self, LeftThumbstickRight)
+				pressed[cast(u32) LeftThumbstickDown] = position[cast(u32) LeftStick].y < -getToler(self, LeftThumbstickDown)
+				pressed[cast(u32) LeftThumbstickUp] = position[cast(u32) LeftStick].y > getToler(self, LeftThumbstickUp)
+				pressed[cast(u32) LeftThumbstickLeft] = position[cast(u32) LeftStick].x < -getToler(self, LeftThumbstickLeft)
+				pressed[cast(u32) LeftThumbstickRight] = position[cast(u32) LeftStick].x > getToler(self, LeftThumbstickRight)
 				
-				pressed[cast(u32) RightThumbstickDown] = movement[cast(u32) RightStick].y < -getToler(self, RightThumbstickDown)
-				pressed[cast(u32) RightThumbstickUp] = movement[cast(u32) RightStick].y > getToler(self, RightThumbstickUp)
-				pressed[cast(u32) RightThumbstickLeft] = movement[cast(u32) RightStick].x < -getToler(self, RightThumbstickLeft)
-				pressed[cast(u32) RightThumbstickRight] = movement[cast(u32) RightStick].x > getToler(self, RightThumbstickRight)
+				pressed[cast(u32) RightThumbstickDown] = position[cast(u32) RightStick].y < -getToler(self, RightThumbstickDown)
+				pressed[cast(u32) RightThumbstickUp] = position[cast(u32) RightStick].y > getToler(self, RightThumbstickUp)
+				pressed[cast(u32) RightThumbstickLeft] = position[cast(u32) RightStick].x < -getToler(self, RightThumbstickLeft)
+				pressed[cast(u32) RightThumbstickRight] = position[cast(u32) RightStick].x > getToler(self, RightThumbstickRight)
 				
-                pressed[cast(u32) LeftTrigger] = movement[cast(u32) LeftTrigger].y > getToler(self, LeftTrigger)
-                pressed[cast(u32) RightTrigger] = movement[cast(u32) RightTrigger].y > getToler(self, RightTrigger)
+                pressed[cast(u32) LeftTrigger] = position[cast(u32) LeftTrigger].y > getToler(self, LeftTrigger)
+                pressed[cast(u32) RightTrigger] = position[cast(u32) RightTrigger].y > getToler(self, RightTrigger)
                 return true
             }
         }

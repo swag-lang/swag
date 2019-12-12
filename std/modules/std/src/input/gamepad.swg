@@ -46,9 +46,9 @@ namespace std.input
                 return currentState.isButtonReleased(button) && !previousState.isButtonReleased(button)
             }
 
-            func getMove(using self, button: GamePadButton)->Point
+            func getPosition(using self, button: GamePadButton)->Point
             {
-                return currentState.getMove(button)
+                return currentState.getPosition(button)
             }
         }
     }
