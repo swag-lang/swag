@@ -155,8 +155,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
         return context->report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
-	if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-		sourceFile->module->registerForeign(node);
+    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+        sourceFile->module->registerForeign(node);
 
     if (node->flags & AST_SPECIAL_COMPILER_FUNC)
     {
@@ -489,6 +489,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
     auto returnType = funcNode->returnType->typeInfo;
+
+    // Try to return a value, and function can't return a value, we raise a specific error
+    if (returnType->isNative(NativeTypeKind::Void) && !child->typeInfo->isNative(NativeTypeKind::Void))
+        return context->sourceFile->report({child, child->token, "function does not have a return type"});
     SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
