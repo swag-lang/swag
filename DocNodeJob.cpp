@@ -49,6 +49,8 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
         CONCAT_FIXED_STR(concat, "->");
         concat.addString(typeFunc->returnType->getFullName());
     }
+
+    concat.addEol();
 }
 
 void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode)
@@ -73,6 +75,7 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 
 void DocNodeJob::emitFunction(OutputFile& outFile)
 {
+    auto node = nodes.front();
     if (node->ownerScope->kind == ScopeKind::Struct)
         DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));
     else
@@ -83,53 +86,94 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
 
     DocHtmlHelper::sectionTitle1(outFile, "Syntax");
     CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
-    emitFuncSignature(outFile, (TypeInfoFuncAttr*) node->typeInfo, (AstFuncDecl*) node);
+    for (auto one : nodes)
+        emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, (AstFuncDecl*) one);
     CONCAT_FIXED_STR(outFile, "</pre>");
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-    if (typeFunc->parameters.size())
+    bool firstSection;
+
+    // Parameters
+    ///////////////////////////
+    firstSection = true;
+    set<Utf8> doneParams;
+    for (auto one : nodes)
     {
-        DocHtmlHelper::sectionTitle2(outFile, "Parameters");
-        for (auto p : typeFunc->parameters)
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(one->typeInfo, TypeInfoKind::FuncAttr);
+        if (typeFunc->parameters.size())
         {
-            DocHtmlHelper::sectionTitle3(outFile, p->namedParam);
-            auto fullName = referencableType(p->typeInfo);
-            if (!fullName.empty())
+            if (firstSection)
+                DocHtmlHelper::sectionTitle2(outFile, "Parameters");
+            firstSection = false;
+            for (auto p : typeFunc->parameters)
             {
-                auto parentRef = fullName + ".html";
-                outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
-            }
-            else
-            {
-                outFile.addStringFormat("Type: %s<br/>\n", p->typeInfo->name.c_str());
+                auto fullName = referencableType(p->typeInfo);
+                auto ref      = p->namedParam + "#" + fullName;
+                if (doneParams.find(ref) == doneParams.end())
+                {
+                    doneParams.insert(ref);
+                    DocHtmlHelper::sectionTitle3(outFile, p->namedParam);
+                    if (!fullName.empty())
+                    {
+                        auto parentRef = fullName + ".html";
+                        outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
+                    }
+                    else
+                    {
+                        outFile.addStringFormat("Type: %s<br/>\n", p->typeInfo->name.c_str());
+                    }
+                }
             }
         }
     }
 
-    if (!typeFunc->returnType->isNative(NativeTypeKind::Void))
+    // Return type
+    ///////////////////////////
+    firstSection = true;
+    doneParams.clear();
+    for (auto one : nodes)
     {
-        DocHtmlHelper::sectionTitle2(outFile, "Return Value");
-        auto fullName = referencableType(typeFunc->returnType);
-        if (!fullName.empty())
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(one->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeFunc->returnType->isNative(NativeTypeKind::Void))
         {
-            auto parentRef = fullName + ".html";
-            outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
-        }
-        else
-        {
-            outFile.addStringFormat("Type: %s<br/>\n", typeFunc->returnType->name.c_str());
+            auto fullName = referencableType(typeFunc->returnType);
+            if (doneParams.find(fullName) == doneParams.end())
+            {
+                doneParams.insert(fullName);
+                if (firstSection)
+                    DocHtmlHelper::sectionTitle2(outFile, "Return Value");
+                firstSection = false;
+                if (!fullName.empty())
+                {
+                    auto parentRef = fullName + ".html";
+                    outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
+                }
+                else
+                {
+                    outFile.addStringFormat("Type: %s<br/>\n", typeFunc->returnType->name.c_str());
+                }
+            }
         }
     }
 
-    if (!node->docDescription.empty())
+    // Description from the user
+    ///////////////////////////
+    firstSection = true;
+    for (auto one : nodes)
     {
-        DocHtmlHelper::sectionTitle1(outFile, "Description");
-        outFile.addString(node->docDescription);
+        if (!one->docDescription.empty())
+        {
+            if (firstSection)
+                DocHtmlHelper::sectionTitle1(outFile, "Description");
+            firstSection = false;
+            outFile.addString(one->docDescription);
+        }
     }
 }
 
 void DocNodeJob::emitEnum(OutputFile& outFile)
 {
+    auto node = nodes.front();
+
     DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "enumeration"));
 
     DocHtmlHelper::summary(outFile, node->docSummary);
@@ -148,10 +192,11 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 JobResult DocNodeJob::execute()
 {
     OutputFile outFile;
+    auto       node  = nodes.front();
     outFile.fileName = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name + ".html";
     DocHtmlHelper::htmlStart(outFile);
 
-    switch (node->kind)
+    switch (nodes.front()->kind)
     {
     case AstNodeKind::FuncDecl:
         emitFunction(outFile);

@@ -82,65 +82,66 @@ JobResult DocScopeJob::execute()
         }
     }
 
-    set<AstNode*> operators;
+    map<Utf8, DocNodeJob*> nameToJob;
+    set<AstNode*>          functions;
+    set<AstNode*>          operators;
 
     // Functions
     /////////////////////////////////
     if (!scope->publicFunc.empty())
     {
-        set<AstNode*> functions;
         for (auto node : scope->publicFunc)
         {
-            if (node->flags & AST_IS_SPECIAL_FUNC)
-                operators.insert(node);
+            auto it = nameToJob.find(node->fullnameDot);
+            if (it == nameToJob.end())
+            {
+                if (node->flags & AST_IS_SPECIAL_FUNC)
+                    operators.insert(node);
+                else
+                    functions.insert(node);
+                auto nodeJob    = g_Pool_docNodeJob.alloc();
+                nodeJob->module = module;
+                nodeJob->nodes.push_back(node);
+                nameToJob[node->fullnameDot] = nodeJob;
+            }
             else
-                functions.insert(node);
-
-            auto nodeJob    = g_Pool_docNodeJob.alloc();
-            nodeJob->module = module;
-            nodeJob->node   = node;
-            g_ThreadMgr.addJob(nodeJob);
+                it->second->nodes.push_back(node);
         }
 
-        if (!functions.empty())
-        {
-            DocHtmlHelper::sectionTitle1(outFile, "Functions");
-            DocHtmlHelper::table(outFile, scope, functions);
-        }
-    }
-
-    // Generic functions
-    /////////////////////////////////
-    if (!scope->publicGenericFunc.empty())
-    {
-        set<AstNode*> functions;
         for (auto node : scope->publicGenericFunc)
         {
-            if (node->flags & AST_IS_SPECIAL_FUNC)
-                operators.insert(node);
+            auto it = nameToJob.find(node->fullnameDot);
+            if (it == nameToJob.end())
+            {
+                if (node->flags & AST_IS_SPECIAL_FUNC)
+                    operators.insert(node);
+                else
+                    functions.insert(node);
+                auto nodeJob    = g_Pool_docNodeJob.alloc();
+                nodeJob->module = module;
+                nodeJob->nodes.push_back(node);
+                nameToJob[node->fullnameDot] = nodeJob;
+            }
             else
-                functions.insert(node);
-
-            auto nodeJob    = g_Pool_docNodeJob.alloc();
-            nodeJob->module = module;
-            nodeJob->node   = node;
-            g_ThreadMgr.addJob(nodeJob);
-        }
-
-        if (!functions.empty())
-        {
-            DocHtmlHelper::sectionTitle1(outFile, "Generic Functions");
-            DocHtmlHelper::table(outFile, scope, functions);
+                it->second->nodes.push_back(node);
         }
     }
 
-    // Operators
-    /////////////////////////////////
+    if (!functions.empty())
+    {
+        DocHtmlHelper::sectionTitle1(outFile, "Functions");
+        DocHtmlHelper::table(outFile, scope, functions);
+    }
+
     if (!operators.empty())
     {
         DocHtmlHelper::sectionTitle1(outFile, "Special Functions");
         DocHtmlHelper::table(outFile, scope, operators);
     }
+
+    // Run one job per function
+    for (auto it : nameToJob)
+        g_ThreadMgr.addJob(it.second);
 
     // Structs
     /////////////////////////////////
@@ -161,7 +162,7 @@ JobResult DocScopeJob::execute()
         {
             auto nodeJob    = g_Pool_docNodeJob.alloc();
             nodeJob->module = module;
-            nodeJob->node   = child;
+            nodeJob->nodes.push_back(child);
             g_ThreadMgr.addJob(nodeJob);
         }
     }
