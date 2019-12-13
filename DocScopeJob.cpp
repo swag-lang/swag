@@ -147,7 +147,7 @@ JobResult DocScopeJob::execute()
     /////////////////////////////////
     if (!scope->publicStruct.empty())
     {
-        DocHtmlHelper::sectionTitle1(outFile, "Structures");
+        DocHtmlHelper::sectionTitle1(outFile, "Structs");
         DocHtmlHelper::table(outFile, scope, scope->publicStruct);
     }
 

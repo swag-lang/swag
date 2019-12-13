@@ -1,5 +1,6 @@
 namespace std.math
 {
+    /// A simple point with 2 float coordinates X and Y
 	public struct Point
 	{
 		x: f32
@@ -10,6 +11,7 @@ namespace std.math
 	{
 		public
 		{
+            /// Set point to (0, 0)
 			func clear(using self)
 			{
 				x, y = 0
@@ -19,6 +21,8 @@ namespace std.math
 			{
 				#if op == "-"
 					return Point(x - other.x, y - other.y)
+                #elif op == "+"
+					return Point(x + other.x, y + other.y)
 				#else
 					#assert(false, "unsupported operator " ~op)
 			}
