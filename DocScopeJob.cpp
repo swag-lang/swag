@@ -105,7 +105,7 @@ JobResult DocScopeJob::execute()
         if (!functions.empty())
         {
             DocHtmlHelper::sectionTitle1(outFile, "Functions");
-            DocHtmlHelper::table(outFile, scope, scope->publicFunc);
+            DocHtmlHelper::table(outFile, scope, functions);
         }
     }
 
@@ -130,7 +130,7 @@ JobResult DocScopeJob::execute()
         if (!functions.empty())
         {
             DocHtmlHelper::sectionTitle1(outFile, "Generic Functions");
-            DocHtmlHelper::table(outFile, scope, scope->publicGenericFunc);
+            DocHtmlHelper::table(outFile, scope, functions);
         }
     }
 
