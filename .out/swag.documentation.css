@@ -51,7 +51,7 @@ h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, 
 }
 
 h1 {
-    font-size: 28px;
+    font-size: 34px;
     color: #393939;
 }
 
@@ -67,12 +67,12 @@ h3 {
 
 h4 {
     font-size: 16px;
-    margin: 10px 0 5px;
-    font-style: italic;
 }
 
 h5 {
     font-size: 14px;
+    margin: 5px 0 5px;
+    font-style: italic;
 }
 
 h6 {

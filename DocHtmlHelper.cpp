@@ -128,6 +128,13 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</h4>\n");
     }
 
+    void sectionTitle4(Concat& outFile, const Utf8& msg)
+    {
+        CONCAT_FIXED_STR(outFile, "<h5>");
+        outFile.addString(msg);
+        CONCAT_FIXED_STR(outFile, "</h5>\n");
+    }
+
     void startTable(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "<table class=\"members\">\n");

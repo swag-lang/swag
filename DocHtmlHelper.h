@@ -15,6 +15,7 @@ namespace DocHtmlHelper
     void sectionTitle1(Concat& outFile, const Utf8& title);
     void sectionTitle2(Concat& outFile, const Utf8& msg); 
     void sectionTitle3(Concat& outFile, const Utf8& msg);
+    void sectionTitle4(Concat& outFile, const Utf8& msg);
     void startTable(Concat& outFile);
     void endTable(Concat& outFile);
     void startTableRow(Concat& outFile);
