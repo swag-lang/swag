@@ -10,9 +10,8 @@ thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 JobResult DocModuleJob::execute()
 {
     // Document path for the module
-    module->documentPath = g_Workspace.workspacePath;
-    module->documentPath.append("documentation/");
-    module->documentPath.append(module->name);
+    module->documentPath = module->path;
+    module->documentPath.append("doc/");
 
     // Be sure folder exist
     error_code errorCode;
