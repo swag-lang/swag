@@ -1,9 +1,13 @@
 namespace std.input
 {
     using std.math
+
+    /// Represents one mouse state
     public struct MouseState
     {
+        /// Whether each button is pressed or not
         pressed:    [@countof(MouseButton)] bool
+        /// Mouse position, in screen coordinates
         position:   Point
     }
 
@@ -32,6 +36,7 @@ namespace std.input
         }
     }
 
+    /// Determins if one given mouse button is pressed or not
 	public func isMouseButtonPressed(button: MouseButton)->bool
 	{
 		using input, MouseButton

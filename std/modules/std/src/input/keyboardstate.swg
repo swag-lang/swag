@@ -1,7 +1,9 @@
 namespace std.input
 {
+    /// Represents one keyboard state
     public struct KeyboardState
     {
+        /// Whether each key is pressed or not
         pressed: [@countof(Key)] bool
     }
 
@@ -9,6 +11,7 @@ namespace std.input
     {
         public
         {
+            /// Compute current keyboard state
             func update(using self)
             {
                 loop i: @countof(Key)
@@ -17,6 +20,7 @@ namespace std.input
                 }
             }
 
+            /// Reset keyboard state
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))

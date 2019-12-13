@@ -5,12 +5,12 @@ namespace std.input
 	/// Represents a gamepad
     public struct GamePad
     {
-        readonly previousState:  GamePadState
-        readonly currentState:   GamePadState
-		
+        internal previousState:  GamePadState
+        internal currentState:   GamePadState
+
 		/// The pad index associated with that GamePad instance
         padIndex: u32
-		
+
 		/// true if the corresponding padIndex is connected
 		readonly connected: bool
     }
@@ -23,14 +23,14 @@ namespace std.input
             func update(using self)
             {
 				newConnected := std.input.os.isGamePadConnected(padIndex)
-				if !newConnected 
+				if !newConnected
 				{
 					if connected
 						clear(self)
 					connected = false
 					return;
 				}
-				
+
 				connected = true
                 previousState = currentState
                 currentState.update(padIndex)
@@ -72,7 +72,7 @@ namespace std.input
             {
                 return currentState.position[cast(u32) button]
             }
-			
+
 			/// Set the vibration motor speeds
 			func setVibration(using self, left, right: f32)->bool
 			{

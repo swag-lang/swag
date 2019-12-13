@@ -5,8 +5,8 @@ namespace std.input
     /// Allows reading position and button click information from mouse
 	public struct Mouse
 	{
-		previousState:	MouseState
-		currentState:	MouseState
+		internal previousState:	MouseState
+		internal currentState:	MouseState
 	}
 
 	impl Mouse
