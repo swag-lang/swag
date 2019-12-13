@@ -28,6 +28,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     if (name[0] != 'o' || name[1] != 'p' || name[2] < 'A' || name[2] > 'Z')
         return true;
 
+    node->flags |= AST_IS_SPECIAL_FUNC;
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::Impl)
         parent = parent->parent;

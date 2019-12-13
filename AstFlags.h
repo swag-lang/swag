@@ -46,6 +46,7 @@ static const uint64_t AST_IDENTIFIER_BACKTICK        = 0x00000800'00000000;
 static const uint64_t AST_FROM_UFCS                  = 0x00001000'00000000;
 static const uint64_t AST_TO_UFCS                    = 0x00002000'00000000;
 static const uint64_t AST_USED_FOREIGN               = 0x00004000'00000000;
+static const uint64_t AST_IS_SPECIAL_FUNC            = 0x00008000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
