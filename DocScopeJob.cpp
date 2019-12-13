@@ -38,7 +38,7 @@ JobResult DocScopeJob::execute()
     scope->fullname  = scope->parentScope ? Scope::makeFullName(scope->parentScope->fullname, scope->name) : scope->name;
     outFile.fileName = module->documentPath.string() + "/" + scope->fullname + ".html";
     DocHtmlHelper::htmlStart(outFile);
-    DocHtmlHelper::title(outFile, format("%s %s", scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
+    DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
     DocHtmlHelper::summary(outFile, scope->owner->docSummary);
     DocHtmlHelper::origin(outFile, scope->parentScope);
 
