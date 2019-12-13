@@ -1,8 +1,16 @@
-/*
-	MonoGame - Copyright (C) The MonoGame Team
-	This file is subject to the terms and conditions defined in
-	file 'LICENSE.txt', which is part of this source code package.
-*/
+html, body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #393939;
+    background-color: #fff;
+    margin: 0;
+}
+
+.content {
+    margin: 10;
+}
+
 .page-description {
     width: 100%;
     background: #E73C00;
@@ -19,313 +27,6 @@
     margin-bottom: 0.5em;
     line-height: 0.5em;
     color: white;
-}
-
-.sharpdoc {
-    height: 100%;
-    min-height: 100%;
-    padding-left: 20px
-}
-
-.sharpdoc .main_content {
-    position: absolute;
-    height: 100%;
-    left: 330px;
-    right: 0;
-    overflow: hidden;
-    margin-left: 20px;
-}
-
-    .sharpdoc .content {
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-
-.sharpdoc .content .section .members {
-    margin: 0;
-    padding: 0;
-    width: auto;
-}
-
-.sharpdoc .content .section .members table {
-    table-layout: fixed;
-    width: 100%;
-    word-wrap: break-word;
-}
-
-.sharpdoc .content .section .members td {
-    border-color: #bbb;
-    border-style: solid;
-    border-width: 1px;
-    font-size: 1.077em;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 140%;
-    margin: 1px;
-    padding: 4px;
-}
-
-.sharpdoc .content .section .members.insert td {
-    padding: 10px;
-}
-
-.sharpdoc .content .section .members td p {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.sharpdoc .content .section .members td dd {
-    margin-left: 0px;
-}
-
-.sharpdoc .content .section .members th {
-    background-color: #ededed;
-    border-color: #bbb;
-    border-style: solid;
-    border-width: 1px;
-    color: #636363;
-    font-weight: bold;
-    height: 21px;
-    padding: 4px;
-    padding-left: 8px;
-    text-align: left;
-}
-
-    .sharpdoc .content .section .members th.icon-col, td.icon-col {
-        width: 55px;
-    }
-
-    .sharpdoc .content .section .members th.platicon-col, td.platicon-col {
-        width: 80px;
-    }
-
-    .sharpdoc .content .section .members th.name-col {
-        width: 30%;
-    }
-
-    .sharpdoc .content .section .members td.unman-col {
-        width: 15%;
-        font-family: monospace;
-        font-size: 1.0em;
-    }
-
-    .sharpdoc .content .section a.title {
-        float: left;
-        outline: invert none medium;
-        text-decoration: none;
-    }
-
-    .sharpdoc .content .section div.block {
-        clear: both;
-        display: block;
-        padding-left: 15px;
-    }
-
-    .sharpdoc .content .section div.title {
-        margin-bottom: 8px;
-        margin-top: 22px;
-    }
-
-    .sharpdoc .content .section div.toggle_icon {
-        background-repeat: no-repeat;
-        float: left;
-        height: 12px;
-        margin-top: 9px;
-        width: 9px;
-    }
-
-        .sharpdoc .content .section div.toggle_icon.in {
-            background-image: url("../images/slider-in.png");
-        }
-
-        .sharpdoc .content .section div.toggle_icon.out {
-            background-image: url("../images/slider-out.png");
-        }
-
-    .sharpdoc .content .section span.title {
-        color: #393939;
-        font-size: 1.53em;
-        font-weight: bold;
-        padding-left: 6px;
-        padding-top: 15px;
-        word-break: break-all;
-        word-wrap: break-word;
-    }
-
-    .sharpdoc .content .sub_section.title {
-        color: #393939;
-        font-size: 1.05em;
-        font-weight: bold;
-        padding-left: 6px;
-        padding-top: 6px;
-        word-break: break-all;
-        word-wrap: break-word;
-    }
-
-    .sharpdoc .content .code_section.title {
-        color: #393939;
-        font-size: 0.995em;
-        font-weight: bold;
-        padding-left: 6px;
-        word-break: break-all;
-        word-wrap: break-word;
-    }
-
-    .sharpdoc .content .insert_title {
-        color: #707070;
-        font-size: 0.9em;
-        font-weight: bold;
-        padding-left: 6px;
-        word-break: break-all;
-        word-wrap: break-word;
-    }
-
-    .sharpdoc .content .section table.members {
-        border-collapse: collapse;
-        border-color: #bbb;
-        border-style: solid;
-        border-width: 1px;
-        width: 100%;
-    }
-
-        .sharpdoc .content .section table.members.insert {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-    .sharpdoc .pane_content {
-        padding: 0 13px 13px 0;
-        vertical-align: top;
-        width: 100%;
-    }
-
-    .sharpdoc .table_content {
-        border-collapse: collapse;
-        width: 100%;
-        height: 100%;
-    }
-
-    .sharpdoc .toc_content div {
-        padding-top: 1px;
-        white-space: nowrap;
-    }
-
-    .sharpdoc .composed .icon {
-        background-repeat: no-repeat;
-        height: 16px;
-        width: 16px;
-    }
-
-    .sharpdoc .composed.opened .icon {
-        background-image: url("../images/toc-opened.png");
-    }
-
-    .sharpdoc .composed.closed .icon {
-        background-image: url("../images/toc-closed.png");
-    }
-
-    .sharpdoc .hidden {
-        display: none;
-    }
-
-
-    .sharpdoc div.top-title, .sharpdoc div.content-title {
-        float: left;
-        margin-left: 0px;
-    }
-
-    .sharpdoc div.content-title {
-        margin-top: 10px;
-    }
-
-    .sharpdoc div.content-header {
-        float: right;
-        margin-top: 30px;
-    }
-
-    .sharpdoc h1.top-title, .sharpdoc h1.content-title {
-        color: #393939;
-        font-size: 40px;
-        font-weight: bold;
-    }
-
-    .sharpdoc h1.content-title:hover {
-        cursor: pointer;
-    }
-
-    .sharpdoc .highlight {
-        color: #E66A38;
-        font-weight: bold;
-    }
-
-    .sharpdoc div.hr {
-        padding: 0px;
-    }
-
-    .sharpdoc hr {
-        border: none;
-    }
-
-    .sharpdoc .warning.webNotFound .icon {
-        background-repeat: no-repeat;
-        height: 17px;
-        width: 17px;
-        background-image: url("../images/warning.gif");
-    }
-
-.sharpdoc-footer {
-    background-image: url("../images/copyright-bg.png");
-    border-top: 1px solid #C0C0C0;
-    height: 32px;
-}
-
-.sharpdoc-header {
-    border-bottom: 1px solid #E0E0E0;
-    height: 48px;
-    vertical-align: middle;
-}
-
-.sharpdoc-header .cell, .sharpdoc-footer .cell {
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
-a:link {
-    color: #e73c00;
-    text-decoration: none;
-}
-
-h1.content-title:hover {
-    cursor: pointer;
-}
-
-h4.sdoc-subheading {
-    margin-top: 0px;
-    margin-bottom: 7px;
-}
-
-html, body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 0.95em;
-    line-height: 1.6;
-    color: #393939;
-    background-color: #fff;
-    margin: 0;
-}
-
-div.panel.pdl {
-    border: 1px solid #ccc;
-    border-style: dashed;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.panel .panelContent {
-    padding: 0 10px;
-    margin-bottom: 10px;
-    margin-top: 10px;
 }
 
 /* BLOCKS
@@ -356,7 +57,7 @@ h1 {
 
 h2 {
     font-size: 24px;
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #ccc;*/
     color: #393939;
 }
 
@@ -366,6 +67,8 @@ h3 {
 
 h4 {
     font-size: 16px;
+    margin: 10px 0 5px;
+    font-style: italic;
 }
 
 h5 {
@@ -552,13 +255,46 @@ hr {
 /* TABLES
 =============================================================================*/
 
+table {
+    border-collapse: collapse;
+    border-color: #bbb;
+    border-style: solid;
+    border-width: 1px;
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: break-word;
+}
+
 table th {
     font-weight: bold;
+    background-color: #ededed;
+    border-color: #bbb;
+    border-style: solid;
+    border-width: 1px;
+    color: #636363;
+    font-weight: bold;
+    height: 21px;
+    padding: 4px;
+    padding-left: 8px;
+    text-align: left;
+}
+
+th.name-col {
+    width: 30%;
 }
 
 table th, table td {
     border: 1px solid #ccc;
     padding: 6px 13px;
+    border-color: #bbb;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 1.077em;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 140%;
+    margin: 1px;
+    padding: 4px;
 }
 
 table tr {

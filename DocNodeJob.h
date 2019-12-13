@@ -1,11 +1,13 @@
 #pragma once
 #include "Job.h"
+#include "Utf8.h"
 struct AstNode;
 struct Concat;
 struct TypeInfoFuncAttr;
 struct TypeInfoEnum;
 struct AstFuncDecl;
 struct OutputFile;
+struct TypeInfo;
 
 struct DocNodeJob : public Job
 {
@@ -14,6 +16,8 @@ struct DocNodeJob : public Job
     void      emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode);
     void      emitFunction(OutputFile& concat);
     void      emitEnum(OutputFile& concat);
+
+    Utf8 referencableType(TypeInfo* typeInfo);
 
     AstNode* node = nullptr;
 };

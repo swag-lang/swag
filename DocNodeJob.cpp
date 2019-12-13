@@ -59,6 +59,18 @@ void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, A
     concat.addString(typeEnum->rawType->getFullName());
 }
 
+Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
+{
+    Utf8 name;
+
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+        name = ((TypeInfoPointer*) typeInfo)->finalType->fullname;
+    else
+        name = typeInfo->fullname;
+
+    return name;
+}
+
 void DocNodeJob::emitFunction(OutputFile& outFile)
 {
     if (node->ownerScope->kind == ScopeKind::Struct)
@@ -69,17 +81,50 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
     DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
-    DocHtmlHelper::startSection(outFile, "Syntax");
+    DocHtmlHelper::sectionTitle1(outFile, "Syntax");
     CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
     emitFuncSignature(outFile, (TypeInfoFuncAttr*) node->typeInfo, (AstFuncDecl*) node);
     CONCAT_FIXED_STR(outFile, "</pre>");
-    DocHtmlHelper::endSection(outFile);
+
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    if (typeFunc->parameters.size())
+    {
+        DocHtmlHelper::sectionTitle2(outFile, "Parameters");
+        for (auto p : typeFunc->parameters)
+        {
+            DocHtmlHelper::sectionTitle3(outFile, p->namedParam);
+            auto fullName = referencableType(p->typeInfo);
+            if (!fullName.empty())
+            {
+                auto parentRef = fullName + ".html";
+                outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
+            }
+            else
+            {
+                outFile.addStringFormat("Type: %s<br/>\n", p->typeInfo->name.c_str());
+            }
+        }
+    }
+
+    if (!typeFunc->returnType->isNative(NativeTypeKind::Void))
+    {
+        DocHtmlHelper::sectionTitle2(outFile, "Return Value");
+        auto fullName = referencableType(typeFunc->returnType);
+        if (!fullName.empty())
+        {
+            auto parentRef = fullName + ".html";
+            outFile.addStringFormat("Type: <a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
+        }
+        else
+        {
+            outFile.addStringFormat("Type: %s<br/>\n", typeFunc->returnType->name.c_str());
+        }
+    }
 
     if (!node->docDescription.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Description");
+        DocHtmlHelper::sectionTitle1(outFile, "Description");
         outFile.addString(node->docDescription);
-        DocHtmlHelper::endSection(outFile);
     }
 }
 
@@ -90,16 +135,14 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
     DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
-    DocHtmlHelper::startSection(outFile, "Syntax");
+    DocHtmlHelper::sectionTitle1(outFile, "Syntax");
     CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
     emitEnumSignature(outFile, (TypeInfoEnum*) node->typeInfo, (AstNode*) node);
     CONCAT_FIXED_STR(outFile, "</pre>");
-    DocHtmlHelper::endSection(outFile);
 
-    DocHtmlHelper::startSection(outFile, "Members");
+    DocHtmlHelper::sectionTitle1(outFile, "Members");
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values);
-    DocHtmlHelper::endSection(outFile);
 }
 
 JobResult DocNodeJob::execute()

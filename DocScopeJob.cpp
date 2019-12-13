@@ -45,23 +45,32 @@ JobResult DocScopeJob::execute()
     if (scope->kind == ScopeKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
-        DocHtmlHelper::startSection(outFile, "Members");
+        DocHtmlHelper::sectionTitle1(outFile, "Members");
         DocHtmlHelper::table(outFile, scope, typeStruct->childs);
-        DocHtmlHelper::endSection(outFile);
     }
 
     if (!scope->publicNamespace.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Namespaces");
-        DocHtmlHelper::table(outFile, scope, scope->publicNamespace);
-        DocHtmlHelper::endSection(outFile);
+        set<AstNode*> namespaces;
+        for (auto ns : scope->publicNamespace)
+        {
+            auto typeNamespace = CastTypeInfo<TypeInfoNamespace>(ns->typeInfo, TypeInfoKind::Namespace);
+            if (!(typeNamespace->scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+                continue;
+            namespaces.insert(ns);
+        }
+
+        if (!namespaces.empty())
+        {
+            DocHtmlHelper::sectionTitle1(outFile, "Namespaces");
+            DocHtmlHelper::table(outFile, scope, namespaces);
+        }
     }
 
     if (!scope->publicFunc.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Functions");
+        DocHtmlHelper::sectionTitle1(outFile, "Functions");
         DocHtmlHelper::table(outFile, scope, scope->publicFunc);
-        DocHtmlHelper::endSection(outFile);
 
         for (auto child : scope->publicFunc)
         {
@@ -74,9 +83,8 @@ JobResult DocScopeJob::execute()
 
     if (!scope->publicGenericFunc.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Generic Functions");
+        DocHtmlHelper::sectionTitle1(outFile, "Generic Functions");
         DocHtmlHelper::table(outFile, scope, scope->publicGenericFunc);
-        DocHtmlHelper::endSection(outFile);
 
         for (auto child : scope->publicGenericFunc)
         {
@@ -89,16 +97,14 @@ JobResult DocScopeJob::execute()
 
     if (!scope->publicStruct.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Structures");
+        DocHtmlHelper::sectionTitle1(outFile, "Structures");
         DocHtmlHelper::table(outFile, scope, scope->publicStruct);
-        DocHtmlHelper::endSection(outFile);
     }
 
     if (!scope->publicEnum.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Enumerations");
+        DocHtmlHelper::sectionTitle1(outFile, "Enumerations");
         DocHtmlHelper::table(outFile, scope, scope->publicEnum);
-        DocHtmlHelper::endSection(outFile);
 
         for (auto child : scope->publicEnum)
         {
@@ -111,16 +117,14 @@ JobResult DocScopeJob::execute()
 
     if (!scope->publicConst.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Constants");
+        DocHtmlHelper::sectionTitle1(outFile, "Constants");
         DocHtmlHelper::table(outFile, scope, scope->publicConst);
-        DocHtmlHelper::endSection(outFile);
     }
 
     if (!scope->publicTypeAlias.empty())
     {
-        DocHtmlHelper::startSection(outFile, "Types");
+        DocHtmlHelper::sectionTitle1(outFile, "Types");
         DocHtmlHelper::table(outFile, scope, scope->publicTypeAlias);
-        DocHtmlHelper::endSection(outFile);
     }
 
     DocHtmlHelper::htmlEnd(outFile);

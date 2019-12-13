@@ -79,13 +79,11 @@ namespace DocHtmlHelper
 
         CONCAT_FIXED_STR(outFile, "<section class=\"page-description\"><div class=\"container\"><h1>Documentation</h1></div></section>\n");
 
-        CONCAT_FIXED_STR(outFile, "<div class=\"sharpdoc\">\n");
         CONCAT_FIXED_STR(outFile, "<div class=\"content\">\n");
     }
 
     void htmlEnd(Concat& outFile)
     {
-        CONCAT_FIXED_STR(outFile, "</div>\n");
         CONCAT_FIXED_STR(outFile, "</div>\n");
 
         CONCAT_FIXED_STR(outFile, "</body>\n");
@@ -109,20 +107,25 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</div>\n");
     }
 
-    void startSection(Concat& outFile, const Utf8& title)
+    void sectionTitle1(Concat& outFile, const Utf8& title)
     {
-        CONCAT_FIXED_STR(outFile, "<div class=\"section\">\n");
-        CONCAT_FIXED_STR(outFile, "<div class=\"block\">\n");
-        //CONCAT_FIXED_STR(outFile, "<div class=\"title\">\n");
-        outFile.addStringFormat("<h2 class=\"title\">%s</h2>\n", title.c_str());
-        //CONCAT_FIXED_STR(outFile, "</div>\n");
-        //CONCAT_FIXED_STR(outFile, "<div class=\"hr\"><hr/>\n");
+        CONCAT_FIXED_STR(outFile, "<h2>");
+        outFile.addString(title);
+        CONCAT_FIXED_STR(outFile, "</h2>\n");
     }
 
-    void endSection(Concat& outFile)
+    void sectionTitle2(Concat& outFile, const Utf8& msg)
     {
-        CONCAT_FIXED_STR(outFile, "</div>\n");
-        CONCAT_FIXED_STR(outFile, "</div>\n");
+        CONCAT_FIXED_STR(outFile, "<h3>");
+        outFile.addString(msg);
+        CONCAT_FIXED_STR(outFile, "</h3>\n");
+    }
+
+    void sectionTitle3(Concat& outFile, const Utf8& msg)
+    {
+        CONCAT_FIXED_STR(outFile, "<h4>");
+        outFile.addString(msg);
+        CONCAT_FIXED_STR(outFile, "</h4>\n");
     }
 
     void startTable(Concat& outFile)
@@ -175,13 +178,6 @@ namespace DocHtmlHelper
 
         for (auto node : sorted)
         {
-            if (node->kind == AstNodeKind::Namespace)
-            {
-                auto typeNamespace = CastTypeInfo<TypeInfoNamespace>(node->typeInfo, TypeInfoKind::Namespace);
-                if (!(typeNamespace->scope->flags & SCOPE_FLAG_HAS_EXPORTS))
-                    continue;
-            }
-
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + "." + node->name + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
