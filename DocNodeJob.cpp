@@ -53,14 +53,6 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
     concat.addEol();
 }
 
-void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode)
-{
-    CONCAT_FIXED_STR(concat, "enum ");
-    concat.addString(enumNode->name.c_str());
-    CONCAT_FIXED_STR(concat, ": ");
-    concat.addString(typeEnum->rawType->getFullName());
-}
-
 Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 {
     Utf8 name;
@@ -76,11 +68,6 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 void DocNodeJob::emitFunction(OutputFile& outFile)
 {
     auto node = nodes.front();
-    if (node->ownerScope->kind == ScopeKind::Struct)
-        DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));
-    else
-        DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "function"));
-
     DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
@@ -170,11 +157,17 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
     }
 }
 
+void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode)
+{
+    CONCAT_FIXED_STR(concat, "enum ");
+    concat.addString(enumNode->name.c_str());
+    CONCAT_FIXED_STR(concat, ": ");
+    concat.addString(typeEnum->rawType->getFullName());
+}
+
 void DocNodeJob::emitEnum(OutputFile& outFile)
 {
     auto node = nodes.front();
-
-    DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "enumeration"));
 
     DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
@@ -186,7 +179,7 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 
     DocHtmlHelper::sectionTitle1(outFile, "Members");
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-    DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values);
+    DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values, false);
 }
 
 JobResult DocNodeJob::execute()
@@ -194,7 +187,9 @@ JobResult DocNodeJob::execute()
     OutputFile outFile;
     auto       node  = nodes.front();
     outFile.fileName = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name + ".html";
+
     DocHtmlHelper::htmlStart(outFile);
+    DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));
 
     switch (nodes.front()->kind)
     {

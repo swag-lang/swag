@@ -22,7 +22,7 @@ namespace DocHtmlHelper
     void tableNameCell(Concat& outFile, const Utf8& href, const Utf8& msg);
     void tableDescCell(Concat& outFile, const Utf8& msg);
     void table(Concat& outFile, Scope* scope, const set<AstNode*>& nodes);
-    void table(Concat& outFile, Scope* scope, const vector<TypeInfoParam*>& params);
+    void table(Concat& outFile, Scope* scope, const vector<TypeInfoParam*>& params, bool specificRefFile = true);
     void origin(Concat& outFile, Scope* scope);
 
 }; // namespace DocHtmlHelper

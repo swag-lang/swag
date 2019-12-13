@@ -188,7 +188,7 @@ namespace DocHtmlHelper
         DocHtmlHelper::endTable(outFile);
     }
 
-    void table(Concat& outFile, Scope* scope, const vector<TypeInfoParam*>& params)
+    void table(Concat& outFile, Scope* scope, const vector<TypeInfoParam*>& params, bool specificRefFile)
     {
         vector<TypeInfoParam*> sorted(params.begin(), params.end());
         sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
@@ -204,7 +204,7 @@ namespace DocHtmlHelper
         for (auto param : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + "." + param->namedParam + ".html";
+            auto refName = scope->fullname + (specificRefFile ? "." + param->namedParam : "") + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, param->namedParam);
             DocHtmlHelper::tableDescCell(outFile, param->node->docSummary);
             DocHtmlHelper::endTableRow(outFile);
