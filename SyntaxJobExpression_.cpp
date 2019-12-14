@@ -859,8 +859,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
             // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
-            for (auto child : leftNode->childs)
+            while (!leftNode->childs.empty())
             {
+                auto child              = leftNode->childs.front();
                 auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
                 affectNode->semanticFct = SemanticJob::resolveAffect;
                 affectNode->token       = savedtoken;
