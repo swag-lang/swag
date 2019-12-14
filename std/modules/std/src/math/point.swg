@@ -76,7 +76,7 @@ namespace std.math
             }
 
             /// Returns true if this instance is null with an epsilon
-            func isZeroEpsilon(using self, eps: f32 = cast(f32) constF64.Epsilon)->bool
+            func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
             {
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             }
