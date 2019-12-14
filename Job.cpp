@@ -24,8 +24,8 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
-    waitingSymbolSolved = symbol;
     setPending();
+    waitingSymbolSolved = symbol;
     symbol->addDependentJobNoLock(this);
 }
 
@@ -47,6 +47,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
 void Job::setPending()
 {
     SWAG_ASSERT(baseContext);
+    waitingSymbolSolved = nullptr;
     baseContext->result = ContextResult::Pending;
     g_ThreadMgr.addPendingJob(this);
 }
