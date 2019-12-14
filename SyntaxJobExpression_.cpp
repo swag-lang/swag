@@ -774,7 +774,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
     }
 
-    // Labelled statement with identifier:
+    // Labeled statement with identifier:
     else if (token.id == TokenId::SymColon)
     {
         auto labelNode = Ast::newNode(this, &g_Pool_astLabelBreakable, AstNodeKind::LabelBreakable, sourceFile, parent);
@@ -819,8 +819,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             auto savedtoken = token;
             auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
             front->computeName();
-            for (auto child : leftNode->childs)
+            while (!leftNode->childs.empty())
             {
+                auto child              = leftNode->childs.front();
                 auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
                 affectNode->semanticFct = SemanticJob::resolveAffect;
                 affectNode->token       = savedtoken;
