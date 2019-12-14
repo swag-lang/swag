@@ -229,8 +229,7 @@ bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode
 {
     scoped_lock lk(funcNode->mutex);
     funcNode->flags |= AST_FULL_RESOLVE;
-    for (auto job : funcNode->dependentJobs.list)
-        g_ThreadMgr.addJob(job);
+    funcNode->dependentJobs.setRunning();
     return true;
 }
 

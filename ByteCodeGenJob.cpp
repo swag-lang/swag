@@ -379,9 +379,7 @@ JobResult ByteCodeGenJob::execute()
     {
         scoped_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_GENERATED;
-        for (auto job : dependentJobs.list)
-            g_ThreadMgr.addJob(job);
-        dependentJobs.clear();
+        dependentJobs.setRunning();
     }
 
     // Wait for other dependent nodes to be generated

@@ -8,12 +8,8 @@
 void Job::doneJob()
 {
     // Push back dependent jobs
-    {
-        unique_lock lk(executeMutex);
-        for (auto p : dependentJobs.list)
-            g_ThreadMgr.addJob(p);
-        dependentJobs.clear();
-    }
+    unique_lock lk(executeMutex);
+    dependentJobs.setRunning();
 }
 
 void Job::addDependentJob(Job* job)

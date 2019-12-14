@@ -162,9 +162,7 @@ void Module::setHasBeenBuilt(ModuleBuildResult buildResult)
     if (hasBeenBuilt == buildResult)
         return;
     hasBeenBuilt = buildResult;
-    for (auto job : dependentJobs.list)
-        g_ThreadMgr.addJob(job);
-    dependentJobs.clear();
+    dependentJobs.setRunning();
 }
 
 void Module::error(const Utf8& msg)

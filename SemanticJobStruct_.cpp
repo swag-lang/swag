@@ -204,9 +204,7 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
     {
-        for (auto job : typeInfoStruct->scope->dependentJobs.list)
-            g_ThreadMgr.addJob(job);
-        typeInfoStruct->scope->dependentJobs.clear();
+        typeInfoStruct->scope->dependentJobs.setRunning();
     }
 }
 

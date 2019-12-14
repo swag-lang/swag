@@ -144,9 +144,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         // to make a match
         if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
         {
-            for (auto job : symbol->dependentJobs.list)
-                g_ThreadMgr.addJob(job);
-            symbol->dependentJobs.clear();
+            symbol->dependentJobs.setRunning();
         }
 
         return result;
@@ -157,11 +155,7 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 {
     symbol->cptOverloads--;
     if (symbol->cptOverloads == 0)
-    {
-        for (auto job : symbol->dependentJobs.list)
-            g_ThreadMgr.addJob(job);
-        symbol->dependentJobs.clear();
-    }
+        symbol->dependentJobs.setRunning();
 }
 
 bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)

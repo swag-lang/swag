@@ -2,6 +2,7 @@
 #include "DependentJobs.h"
 #include "Job.h"
 #include "Assert.h"
+#include "ThreadManager.h"
 
 void DependentJobs::add(Job* job)
 {
@@ -13,5 +14,12 @@ void DependentJobs::add(Job* job)
 
 void DependentJobs::clear()
 {
+    list.clear();
+}
+
+void DependentJobs::setRunning()
+{
+    for (auto job : list)
+        g_ThreadMgr.addJob(job);
     list.clear();
 }
