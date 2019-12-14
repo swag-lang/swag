@@ -29,6 +29,7 @@ struct SemanticContext : public JobContext
 
 struct OneMatch
 {
+    SymbolName*            symbolName;
     SymbolOverload*        symbolOverload;
     vector<TypeInfoParam*> solvedParameters;
 };
@@ -36,6 +37,7 @@ struct OneMatch
 struct OneGenericMatch
 {
     uint32_t              flags;
+    SymbolName*           symbolName;
     SymbolOverload*       symbolOverload;
     vector<ComputedValue> genericParametersCallValues;
     vector<TypeInfo*>     genericParametersCallTypes;

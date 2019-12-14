@@ -413,13 +413,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
-        // Now we need to be sure that function is complete
+        // Now we need to be sure that the function is now complete
+        // If not, we need to wait for it
         {
             scoped_lock lk(symbol->mutex);
             if (overload->flags & OVERLOAD_INCOMPLETE)
             {
-                symbol->addDependentJobNoLock(context->job);
-                context->job->setPending();
+                context->job->waitForSymbolNoLock(symbol);
                 return true;
             }
         }
@@ -660,6 +660,7 @@ anotherTry:
                 {
                     OneGenericMatch match;
                     match.flags                       = job->symMatch.flags;
+                    match.symbolName                  = symbol;
                     match.symbolOverload              = overload;
                     match.genericParametersCallTypes  = move(job->symMatch.genericParametersCallTypes);
                     match.genericParametersCallValues = move(job->symMatch.genericParametersCallValues);
@@ -669,6 +670,7 @@ anotherTry:
                 else
                 {
                     OneMatch match;
+                    match.symbolName       = symbol;
                     match.symbolOverload   = overload;
                     match.solvedParameters = move(job->symMatch.solvedParameters);
                     matches.emplace_back(match);
@@ -726,6 +728,7 @@ anotherTry:
             else
             {
                 OneMatch oneMatch;
+                oneMatch.symbolName     = firstMatch.symbolName;
                 oneMatch.symbolOverload = firstMatch.symbolOverload;
                 matches.emplace_back(oneMatch);
                 node->flags |= AST_IS_GENERIC;
@@ -1411,7 +1414,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     auto& match    = job->cacheMatches[0];
     node->typeInfo = match.symbolOverload->typeInfo;
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, match.symbolOverload, &match, dependentVar));
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, match.symbolName, match.symbolOverload, &match, dependentVar));
     return true;
 }
 
