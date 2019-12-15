@@ -57,7 +57,7 @@ struct CommandLine
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;
 
-    string exePath;
+    fs::path exePath;
 };
 
 extern CommandLine g_CommandLine;

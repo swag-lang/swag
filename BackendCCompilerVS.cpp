@@ -6,9 +6,9 @@
 #include "BackendCCompilerVS.h"
 #include "Workspace.h"
 
-bool BackendCCompilerVS::getVSTarget(string& vsTarget)
+string BackendCCompilerVS::getVSTarget()
 {
-    vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)";
+    string vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)";
     if (!fs::exists(vsTarget))
     {
         vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)";
@@ -21,7 +21,7 @@ bool BackendCCompilerVS::getVSTarget(string& vsTarget)
                 if (!fs::exists(vsTarget))
                 {
                     backend->module->error("can't find visual studio backend folder");
-                    return false;
+                    return "";
                 }
             }
         }
@@ -30,7 +30,7 @@ bool BackendCCompilerVS::getVSTarget(string& vsTarget)
     for (auto& p : fs::directory_iterator(vsTarget))
         vsTarget = p.path().string();
 
-    return true;
+    return vsTarget;
 }
 
 bool BackendCCompilerVS::getWinSdk(string& winSdk)
@@ -54,16 +54,22 @@ bool BackendCCompilerVS::compile()
 {
     auto module = backend->module;
 
-    string vsTarget;
-    SWAG_CHECK(getVSTarget(vsTarget));
+    string         compilerExe, vsTarget;
+    string         linkArguments;
+    vector<string> libPath;
+
+    compilerExe = "clang-cl.exe";
+    vsTarget    = g_CommandLine.exePath.parent_path().string() + "\\";
+
+    compilerExe = "cl.exe";
+    vsTarget    = getVSTarget();
+    libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
+    vsTarget += R"(\bin\Hostx64\x64\)";
+
     string winSdk;
     SWAG_CHECK(getWinSdk(winSdk));
 
-    string clPath = vsTarget + R"(\bin\Hostx64\x64\)";
-
     // Library paths
-    vector<string> libPath;
-    libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
@@ -99,7 +105,7 @@ bool BackendCCompilerVS::compile()
     case 0:
         break;
     case 1:
-        clArguments += "/01 ";
+        clArguments += "/O1 ";
         break;
     default:
         clArguments += "/O2 ";
@@ -117,10 +123,10 @@ bool BackendCCompilerVS::compile()
     {
     case BackendOutputType::StaticLib:
     {
-        auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
+        auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -132,17 +138,16 @@ bool BackendCCompilerVS::compile()
         if (verbose)
             g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
-        auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
+        auto cmdLineLIB = "\"" + vsTarget + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
     }
     break;
 
     case BackendOutputType::DynamicLib:
     case BackendOutputType::Binary:
     {
-        string linkArguments;
         for (auto fl : buildParameters->foreignLibs)
         {
             linkArguments += fl;
@@ -176,10 +181,10 @@ bool BackendCCompilerVS::compile()
         if (verbose)
             g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
-        auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
+        auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
     }
     break;
     }

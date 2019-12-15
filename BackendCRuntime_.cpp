@@ -96,7 +96,8 @@ extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
 extern void* memcpy(void*,const void*,swag_uint64_t);
 extern void* memset(void*,swag_int32_t,swag_uint64_t);
-extern swag_int32_t memcmp(void*,const void*,swag_uint64_t);
+extern void exit(swag_int32_t);
+extern swag_int32_t memcmp(const void*,const void*,swag_uint64_t);
 #define __malloc	malloc
 #define __realloc	realloc
 #define __free		free

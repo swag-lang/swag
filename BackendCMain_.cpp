@@ -34,7 +34,7 @@ bool BackendC::emitMain()
 
     CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_BINARY\n");
     emitArgcArgv();
-    CONCAT_FIXED_STR(bufferC, "void main(int argc, char *argv[])\n");
+    CONCAT_FIXED_STR(bufferC, "int main(int argc, char *argv[])\n");
     CONCAT_FIXED_STR(bufferC, "{\n");
 
     // Main context
@@ -62,7 +62,7 @@ bool BackendC::emitMain()
         bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
 		if (dep.second.generated)
 		{
-			bufferC.addStringFormat("\textern SWAG_IMPORT %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());
+			bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());
 			bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
 		}
     }
@@ -99,10 +99,11 @@ bool BackendC::emitMain()
             continue;
         auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
-        bufferC.addStringFormat("\textern SWAG_IMPORT %s_globalDrop();\n", nameDown.c_str());
+        bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalDrop();\n", nameDown.c_str());
         bufferC.addStringFormat("\t%s_globalDrop();\n", nameDown.c_str());
     }
 
+    CONCAT_FIXED_STR(bufferC, "return 0;\n");
     CONCAT_FIXED_STR(bufferC, "}\n");
     CONCAT_FIXED_STR(bufferC, "#endif /* SWAG_IS_BINARY */\n");
     bufferC.addEol();
