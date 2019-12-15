@@ -35,21 +35,12 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--config", nullptr, CommandLineType::String, &cmdLine->config);
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64");
 
-    cmdLine->test          = true;
-    cmdLine->cleanTarget   = false;
-    cmdLine->workspacePath = "f:/swag/std";
-    //cmdLine->modulePath    = "tests/std.math";
+    //cmdLine->cleanTarget = false;
+    //cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->fileFilter    = "compiler1412.swg";
     //cmdLine->addRuntimeModule = false;
-    cmdLine->rebuild           = true;
-    cmdLine->backendOutputTest = true;
-    cmdLine->backendOutput     = true;
-    cmdLine->generateDoc       = true;
-    //cmdLine->cleanTarget       = true;
-    //cmdLine->errorSourceOut    = false;
-    //cmdLine->runBackendTests   = false;
-    //cmdLine->verboseBuildPass = false;
-    //cmdLine->verboseUnittestErrors = true;
+    //cmdLine->rebuild     = true;
+    //cmdLine->generateDoc = true;
 }
 
 void CommandLineParser::logArguments()

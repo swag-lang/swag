@@ -97,6 +97,12 @@ void Workspace::addBootstrap()
 void Workspace::setup()
 {
     workspacePath = g_CommandLine.workspacePath;
+    if (workspacePath.empty())
+    {
+        g_Log.error("fatal error: missing workspace folder '--workspace'");
+        exit(-1);
+    }
+
     if (!fs::exists(workspacePath))
     {
         g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));

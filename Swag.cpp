@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
         return -2;
 
     // Log all arguments
-    if (g_CommandLine.help)
+    if (g_CommandLine.help || argc == 1)
     {
         g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
         cmdParser.logArguments();

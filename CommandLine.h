@@ -14,14 +14,14 @@ struct CommandLine
     bool      rebuild   = false;
 
     // Input
-    bool   cleanTarget      = true;
+    bool   cleanTarget  = false;
     bool   addBootstrap = true;
     string workspacePath;
     string fileFilter;
     int    tabSize = 4;
 
     // Test
-    bool test             = false;
+    bool test             = true;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
