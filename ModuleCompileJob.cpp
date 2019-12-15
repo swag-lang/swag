@@ -4,7 +4,6 @@
 #include "BackendC.h"
 #include "Stats.h"
 #include "Workspace.h"
-#include "Os.h"
 #include "ThreadManager.h"
 
 thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
