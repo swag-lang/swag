@@ -36,7 +36,7 @@ struct CommandLine
 
     // Verbose
     bool silent                = false;
-    bool stats                 = true;
+    bool stats                 = false;
     bool verbose               = false;
     bool verboseUnittestErrors = false;
     bool verboseBackendCommand = true;

@@ -25,7 +25,7 @@
         const STD_OUTPUT_HANDLE = cast(DWORD) -11
 
         const ERROR_SUCCESS = 0
-        
+
         const FOREGROUND_BLUE      = 0x0001
         const FOREGROUND_GREEN     = 0x0002
         const FOREGROUND_RED       = 0x0004

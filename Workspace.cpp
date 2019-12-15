@@ -237,12 +237,22 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
+    auto timeBefore = chrono::high_resolution_clock::now();
+
     setup();
 
     g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
     addBootstrap();
     setupTarget();
     SWAG_CHECK(buildTarget());
+
+    auto                     timeAfter = chrono::high_resolution_clock::now();
+    chrono::duration<double> totalTime = timeAfter - timeBefore;
+
+    if (g_Workspace.numErrors)
+        g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
+    else
+        g_Log.messageHeaderCentered("Done", format("%.3fs", totalTime.count()));
 
     return true;
 }
