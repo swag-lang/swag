@@ -43,12 +43,11 @@ JobResult ModuleOutputJob::execute()
         // Generate documentation for module
         if (g_CommandLine.generateDoc && !module->fromTests)
         {
-            auto docJob = g_Pool_docModuleJob.alloc();
+            auto docJob    = g_Pool_docModuleJob.alloc();
             docJob->module = module;
             g_ThreadMgr.addJob(docJob);
-            if(!g_CommandLine.backendOutput)
+            if (!g_CommandLine.backendOutput)
                 return JobResult::ReleaseJob;
-
         }
     }
 
@@ -78,7 +77,8 @@ JobResult ModuleOutputJob::execute()
                 compileJob->buildParameters          = module->buildParameters;
                 compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "/" + module->name;
                 compileJob->buildParameters.type     = BackendOutputType::Binary;
-                compileJob->buildParameters.postFix  = ".test";
+                if (!module->fromTests)
+                    compileJob->buildParameters.postFix = ".test";
                 compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
                 g_ThreadMgr.addJob(compileJob);
             }
