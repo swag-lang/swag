@@ -9,10 +9,7 @@ struct BackendCCompilerVS : public BackendCCompiler
     {
     }
 
-    bool mustCompile() override;
     bool compile() override;
-
-    string getResultFile();
-    bool   getVSTarget(string& vsTarget);
-    bool   getWinSdk(string& winSdk);
+    bool getVSTarget(string& vsTarget);
+    bool getWinSdk(string& winSdk);
 };

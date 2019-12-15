@@ -229,6 +229,7 @@
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="Backend.cpp" />
     <ClCompile Include="BackendC.cpp" />
+    <ClCompile Include="BackendCCompiler.cpp" />
     <ClCompile Include="BackendCCompilerVS.cpp" />
     <ClCompile Include="BackendCData_.cpp" />
     <ClCompile Include="BackendCFunctionBodyJob.cpp" />

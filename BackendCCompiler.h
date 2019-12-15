@@ -1,5 +1,6 @@
 #pragma once
 struct BackendC;
+struct BuildParameters;
 
 struct BackendCCompiler
 {
@@ -9,8 +10,10 @@ struct BackendCCompiler
     {
     }
 
-    virtual bool mustCompile() = 0;
-    virtual bool compile()     = 0;
+    string getResultFile();
+    bool   mustCompile();
+
+    virtual bool compile() = 0;
 
     BackendC*              backend;
     const BuildParameters* buildParameters;
