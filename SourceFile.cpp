@@ -4,6 +4,7 @@
 #include "IoThread.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
+#include "Os.h"
 
 thread_local Pool<SourceFile> g_Pool_sourceFile;
 const auto                    BUF_SIZE = 2048;
@@ -36,12 +37,10 @@ bool SourceFile::open()
     openedOnce = true;
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-    auto err = _wfopen_s(&fileHandle, path.c_str(), L"rbN");
+    fopen_s(&fileHandle, path.string().c_str(), "rbN");
     if (fileHandle == nullptr)
     {
-        char buf[256];
-        strerror_s(buf, err);
-        report({this, format("error opening file '%s': '%s'", path.string().c_str(), buf)});
+        report({this, format("error opening file '%s': '%s'", path.string().c_str(), OS::getLastErrorAsString().c_str())});
         return false;
     }
 
