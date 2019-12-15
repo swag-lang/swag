@@ -94,9 +94,9 @@ static constexpr const char* g_Intrinsics = R"(
 extern void* malloc(swag_uint64_t);
 extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
-extern void* memcpy(void*,void*,swag_uint64_t);
-extern void* memset(void*,swag_uint32_t,swag_uint64_t);
-extern swag_int32_t memcmp(void*,void*,swag_uint64_t);
+extern void* memcpy(void*,const void*,swag_uint64_t);
+extern void* memset(void*,swag_int32_t,swag_uint64_t);
+extern swag_int32_t memcmp(void*,const void*,swag_uint64_t);
 #define __malloc	malloc
 #define __realloc	realloc
 #define __free		free
