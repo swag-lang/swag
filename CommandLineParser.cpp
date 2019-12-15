@@ -5,7 +5,6 @@
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
-    addArg("--help", "-?", CommandLineType::Bool, &cmdLine->help);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);

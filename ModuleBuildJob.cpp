@@ -245,7 +245,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Output)
     {
         pass = ModuleBuildPass::End;
-        if (g_CommandLine.backendOutput)
+        if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
         {
             if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
             {

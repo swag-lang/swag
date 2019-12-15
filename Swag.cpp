@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "ffi.h"
 #include "Stats.h"
-#include "Log.h"
 #include "Workspace.h"
 #include "CommandLineParser.h"
 #include "Version.h"
@@ -30,6 +28,27 @@ void printStats()
     g_Log.setDefaultColor();
 }
 
+void help(CommandLineParser& cmdParser)
+{
+    g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+
+    g_Log.message("usage: swag <command> [arguments]\n");
+
+    g_Log.message("\n");
+    g_Log.message("commands\n");
+    g_Log.message("--------\n");
+    g_Log.message("version      print swag version\n");
+    g_Log.message("build        build the specified workspace\n");
+    g_Log.message("test         build and test the specified workspace\n");
+    g_Log.message("doc          generate documentation for the specified workspace\n");
+
+    g_Log.message("\n");
+    g_Log.message("Arguments\n");
+    g_Log.message("---------\n");
+    cmdParser.logArguments();
+    exit(0);
+}
+
 int main(int argc, const char* argv[])
 {
     auto timeBefore = chrono::high_resolution_clock::now();
@@ -39,18 +58,45 @@ int main(int argc, const char* argv[])
 
     // Arguments
     CommandLineParser cmdParser;
-    g_CommandLine.exePath = fs::absolute(argv[0]).string();
     cmdParser.setup(&g_CommandLine);
-    if (!cmdParser.process(argc - 1, argv + 1))
-        return -2;
 
     // Log all arguments
-    if (g_CommandLine.help || argc == 1)
+    if (argc <= 1)
+    {
+        help(cmdParser);
+    }
+
+    // Command
+    string command = argv[1];
+    if (command == "build")
+    {
+    }
+    else if (command == "version")
     {
         g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-        cmdParser.logArguments();
         exit(0);
     }
+    else if (command == "test")
+    {
+        g_CommandLine.test              = true;
+        g_CommandLine.runByteCodeTests  = true;
+        g_CommandLine.runBackendTests   = true;
+        g_CommandLine.backendOutputTest = true;
+    }
+    else if (command == "doc")
+    {
+        g_CommandLine.backendOutput = false;
+        g_CommandLine.generateDoc   = true;
+    }
+    else
+    {
+        g_Log.error(format("fatal error: invalid swag command '%s'", argv[1]));
+        exit(-1);
+    }
+
+    g_CommandLine.exePath = fs::absolute(argv[0]).string();
+    if (!cmdParser.process(argc - 2, argv + 2))
+        return -2;
 
     // User arguments
     pair<void*, void*> oneArg;

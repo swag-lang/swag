@@ -21,7 +21,7 @@ struct CommandLine
     int    tabSize = 4;
 
     // Test
-    bool test             = true;
+    bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
@@ -35,7 +35,6 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Verbose
-    bool help                  = false;
     bool silent                = false;
     bool stats                 = true;
     bool verbose               = false;

@@ -9,6 +9,8 @@ thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 
 JobResult DocModuleJob::execute()
 {
+    g_Log.messageHeaderCentered("Documenting", module->name.c_str());
+
     // Document path for the module
     module->documentPath = module->path;
     module->documentPath.append("doc/");
