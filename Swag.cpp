@@ -41,7 +41,7 @@ int main(int argc, const char* argv[])
     CommandLineParser cmdParser;
     g_CommandLine.exePath = fs::absolute(argv[0]).string();
     cmdParser.setup(&g_CommandLine);
-    if (!cmdParser.process(argc, argv))
+    if (!cmdParser.process(argc - 1, argv + 1))
         return -2;
 
     // Log all arguments

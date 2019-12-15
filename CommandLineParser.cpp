@@ -12,6 +12,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
 
+    addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath);
+
     addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
     addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit);
     addArg("--output-test", "-ot", CommandLineType::Bool, &cmdLine->backendOutputTest);
@@ -106,7 +108,7 @@ void CommandLineParser::addArg(const char* longName, const char* shortName, Comm
 bool CommandLineParser::process(int argc, const char* argv[])
 {
     bool result = true;
-    for (int i = 1; i < argc; i++)
+    for (int i = 0; i < argc; i++)
     {
         // Split in half, with the ':' delimiter
         string      command;
