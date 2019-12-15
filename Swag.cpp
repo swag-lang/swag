@@ -41,6 +41,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("build        build the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("doc          generate documentation for the specified workspace\n");
+    g_Log.message("new          creates a new workspace\n");
 
     g_Log.message("\n");
     g_Log.message("Arguments\n");
@@ -68,7 +69,7 @@ int main(int argc, const char* argv[])
 
     // Command
     string command = argv[1];
-    if (command == "build")
+    if (command == "build" || command == "new")
     {
     }
     else if (command == "version")
@@ -94,6 +95,13 @@ int main(int argc, const char* argv[])
     g_CommandLine.exePath = fs::absolute(argv[0]).string();
     if (!cmdParser.process(argc - 2, argv + 2))
         return -2;
+
+    // Creates a new workspace, and exit
+    if (command == "new")
+    {
+        g_Workspace.createNew();
+        exit(0);
+    }
 
     // User arguments
     pair<void*, void*> oneArg;

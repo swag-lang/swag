@@ -94,9 +94,67 @@ void Workspace::addBootstrap()
     g_ThreadMgr.addJob(job);
 }
 
-void Workspace::setup()
+void Workspace::setupPaths()
 {
     workspacePath = g_CommandLine.workspacePath;
+    testsPath     = workspacePath;
+    testsPath.append("tests/");
+    modulesPath = workspacePath;
+    modulesPath.append("modules/");
+    dependenciesPath = workspacePath;
+    dependenciesPath.append("dependencies/");
+}
+
+void Workspace::createNew()
+{
+    setupPaths();
+
+    if (workspacePath.empty())
+    {
+        g_Log.error("fatal error: missing workspace folder '--workspace'");
+        exit(-1);
+    }
+
+    if (fs::exists(workspacePath))
+    {
+        g_Log.error(format("fatal error: workspace folder '%s' already exists", workspacePath.string().c_str()));
+        exit(-1);
+    }
+
+    // Create folders
+    error_code errorCode;
+    if (!fs::create_directories(workspacePath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", workspacePath.string().c_str()));
+        exit(-1);
+    }
+
+    if (!fs::create_directories(testsPath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", testsPath.string().c_str()));
+        exit(-1);
+    }
+
+    if (!fs::create_directories(modulesPath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", modulesPath.string().c_str()));
+        exit(-1);
+    }
+
+    if (!fs::create_directories(dependenciesPath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", dependenciesPath.string().c_str()));
+        exit(-1);
+    }
+
+    g_Log.message(format("workspace '%s' has been created", workspacePath.string().c_str()));
+    exit(0);
+}
+
+void Workspace::setup()
+{
+    setupPaths();
+
     if (workspacePath.empty())
     {
         g_Log.error("fatal error: missing workspace folder '--workspace'");
@@ -109,24 +167,18 @@ void Workspace::setup()
         exit(-1);
     }
 
-    testsPath = workspacePath;
-    testsPath.append("tests/");
     if (!fs::exists(testsPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'tests/' does not exist", workspacePath.string().c_str()));
         exit(-1);
     }
 
-    modulesPath = workspacePath;
-    modulesPath.append("modules/");
     if (!fs::exists(modulesPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'modules/' does not exist", workspacePath.string().c_str()));
         exit(-1);
     }
 
-    dependenciesPath = workspacePath;
-    dependenciesPath.append("dependencies/");
     if (!fs::exists(dependenciesPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'dependencies/' does not exist", workspacePath.string().c_str()));

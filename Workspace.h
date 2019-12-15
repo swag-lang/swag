@@ -7,12 +7,15 @@ struct CompilerTarget;
 
 struct Workspace
 {
+    void createNew();
+
     bool    buildTarget();
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
     void    addBootstrap();
     void    publishModule(Module* module);
+    void    setupPaths();
     void    setup();
     Module* getModuleByName(const string& moduleName);
     void    deleteFolderContent(const fs::path& path);
