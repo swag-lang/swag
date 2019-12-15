@@ -33,27 +33,6 @@ bool OutputFile::flush(bool last)
 
         unique_lock lk(mutexNotify);
         condVar.wait(lk);
-
-        /*while (true)
-        {
-            {
-                unique_lock lk(mutexNotify);
-                if (done)
-                    break;
-            }
-
-            auto job = g_ThreadMgr.getJob();
-            if (!job)
-            {
-                unique_lock lk(mutexNotify);
-                if (done)
-                    break;
-                condVar.wait(lk);
-                break;
-            }
-
-            g_ThreadMgr.executeOneJob(job);
-        }*/
     }
 
     lastFlushedBucket = nullptr;

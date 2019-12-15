@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "JobThread.h"
-#include "SourceFile.h"
 #include "ThreadManager.h"
-#include "Global.h"
-#include "Job.h"
-#include "Log.h"
 #include "Context.h"
-#include "Os.h"
 
 JobThread::JobThread()
 {
@@ -25,7 +20,7 @@ void JobThread::notifyJob()
     condVar.notify_all();
 }
 
-void JobThread::waitJob()
+void JobThread::waitForANewJob()
 {
     unique_lock lk(mutexNotify);
     condVar.wait(lk);

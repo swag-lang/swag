@@ -493,7 +493,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->byteCodeJob->sourceFile   = sourceFile;
         node->byteCodeJob->module       = sourceFile->module;
         node->byteCodeJob->dependentJob = context->job->dependentJob;
-        node->byteCodeJob->originalNode = node;
         node->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
         g_ThreadMgr.addJob(node->byteCodeJob);

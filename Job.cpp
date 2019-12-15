@@ -5,13 +5,6 @@
 #include "Diagnostic.h"
 #include "Module.h"
 
-void Job::doneJob()
-{
-    // Push back dependent jobs
-    unique_lock lk(executeMutex);
-    dependentJobs.setRunning();
-}
-
 void Job::addDependentJob(Job* job)
 {
     scoped_lock lk(executeMutex);
@@ -45,7 +38,6 @@ void Job::setPending()
     SWAG_ASSERT(baseContext);
     waitingSymbolSolved = nullptr;
     baseContext->result = ContextResult::Pending;
-    g_ThreadMgr.addPendingJob(this);
 }
 
 bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)

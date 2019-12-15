@@ -2,12 +2,10 @@
 #include "ThreadManager.h"
 #include "IoThread.h"
 #include "JobThread.h"
-#include "Global.h"
-#include "CommandLine.h"
 #include "Stats.h"
 #include "Job.h"
 #include "Context.h"
-#include "Module.h"
+#include "RaceCondition.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -29,86 +27,103 @@ void ThreadManager::init()
         workerThreads.push_back(new JobThread());
 }
 
-void ThreadManager::addJobs(const vector<Job*>& jobs)
-{
-    unique_lock lk(mutexAdd);
-
-    for (auto job : jobs)
-    {
-        SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
-        job->flags &= ~JOB_IS_DEPENDENT;
-
-        // We have a new dependency job
-        if (!(job->flags & JOB_IS_PENDING))
-        {
-            if (job->dependentJob)
-                job->dependentJob->waitOnJobs++;
-        }
-    }
-
-    for (auto job : jobs)
-    {
-        addJobNoLock(job);
-    }
-}
-
 void ThreadManager::addJob(Job* job)
 {
     unique_lock lk(mutexAdd);
-
-    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
-    job->flags &= ~JOB_IS_DEPENDENT;
-
-    // We have a new dependency job
-    if (!(job->flags & JOB_IS_PENDING))
-    {
-        if (job->dependentJob)
-            job->dependentJob->waitOnJobs++;
-    }
-
     addJobNoLock(job);
 }
 
 void ThreadManager::addJobNoLock(Job* job)
 {
-    // Remove from pending list
-    if (job->pendingIndex != -1)
+    if (job->flags & JOB_IS_IN_THREAD)
     {
-        pendingJobs[job->pendingIndex]               = pendingJobs.back();
-        pendingJobs[job->pendingIndex]->pendingIndex = job->pendingIndex;
-        pendingJobs.pop_back();
-        job->pendingIndex = -1;
+        job->flags |= JOB_IS_PENDING_RUN;
+        return;
+    }
+
+    SWAG_ASSERT(!(job->flags & JOB_IS_IN_QUEUE));
+    job->flags |= JOB_IS_IN_QUEUE;
+
+    // We are a new dependency job (child of another job that depends on us)
+    if (job->dependentJob)
+    {
+        if (!(job->flags & JOB_IS_PENDING))
+        {
+            job->flags |= JOB_IS_PENDING;
+            job->dependentJob->waitOnJobs++;
+        }
+    }
+
+    // Remove from waiting list
+    if (job->waitingJobIndex != -1)
+    {
+        waitingJobs[job->waitingJobIndex]                  = waitingJobs.back();
+        waitingJobs[job->waitingJobIndex]->waitingJobIndex = job->waitingJobIndex;
+        waitingJobs.pop_back();
+        job->waitingJobIndex = -1;
     }
 
     queueJobs.push_back(job);
-    if (availableThreads.empty())
-        return;
-    auto thread = availableThreads.back();
-    availableThreads.pop_back();
-    thread->notifyJob();
+
+    // Wakeup one thread
+    if (!availableThreads.empty())
+    {
+        auto thread = availableThreads.back();
+        availableThreads.pop_back();
+        thread->notifyJob();
+    }
 }
 
 void ThreadManager::jobHasEnded(Job* job, JobResult result)
 {
     unique_lock lk(mutexAdd);
 
+    SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
-    job->flags &= ~JOB_IS_PENDING;
+    jobsInThreads--;
 
-    // Wakeup build job for module if necessary
-    if (result == JobResult::KeepJobAlivePending)
-        job->flags |= JOB_IS_PENDING;
-    else
+    // Some jobs have been registered to be pushed
+    for (auto toRun : job->jobsToAdd)
+        addJobNoLock(toRun);
+    job->jobsToAdd.clear();
+
+    // A request has been made to run the job, and the job was not ended
+    // So we rerun it immediately
+    if (job->flags & JOB_IS_PENDING_RUN)
     {
-        processingJobs--;
-        if (job->dependentJob)
-        {
-            job->dependentJob->waitOnJobs--;
-            if (!job->dependentJob->waitOnJobs)
-                g_ThreadMgr.addJobNoLock(job->dependentJob);
-        }
+        SWAG_ASSERT(result != JobResult::ReleaseJob);
+        job->flags &= ~JOB_IS_PENDING_RUN;
+        addJobNoLock(job);
+        return;
     }
 
+    // Some jobs need to be run because this one is finished
+    if (result == JobResult::ReleaseJob)
+    {
+        SWAG_RACE_CONDITION_WRITE(job->dependentJobs.raceCondition);
+        for (auto toRun : job->dependentJobs.list)
+            addJobNoLock(toRun);
+        job->dependentJobs.clear();
+    }
+
+    // Notify my parent job that i'm done
+    if (result != JobResult::KeepJobAlivePending && job->dependentJob)
+    {
+        SWAG_ASSERT(job->dependentJob->waitOnJobs);
+        job->dependentJob->waitOnJobs--;
+        job->flags &= ~JOB_IS_PENDING;
+        if (!job->dependentJob->waitOnJobs)
+            g_ThreadMgr.addJobNoLock(job->dependentJob);
+    }
+
+    // We are not really done. Just keep a trace of us
+    if (result != JobResult::ReleaseJob)
+    {
+        waitingJobs.push_back(job);
+        job->waitingJobIndex = (int) waitingJobs.size() - 1;
+    }
+
+    // Is this the last job ?
     unique_lock lk1(mutexDone);
     if (doneWithJobs())
         condVarDone.notify_all();
@@ -117,22 +132,12 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 void ThreadManager::executeOneJob(Job* job)
 {
     auto result = job->execute();
-    if (result == JobResult::ReleaseJob)
-    {
-        job->doneJob();
-    }
-
     jobHasEnded(job, result);
-    if (result == JobResult::KeepJobAlive || result == JobResult::KeepJobAlivePending)
-    {
-        addJobs(job->jobsToAdd);
-        job->jobsToAdd.clear();
-    }
 }
 
 bool ThreadManager::doneWithJobs()
 {
-    return queueJobs.empty() && processingJobs == 0;
+    return queueJobs.empty() && jobsInThreads == 0;
 }
 
 void ThreadManager::waitEndJobs()
@@ -151,40 +156,29 @@ Job* ThreadManager::getJob()
     unique_lock lk(mutexAdd);
     if (queueJobs.empty())
         return nullptr;
+
     auto job = queueJobs.back();
     queueJobs.pop_back();
 
-	if(!(job->flags & JOB_IS_PENDING))
-		processingJobs++;
+    SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
+    job->flags &= ~JOB_IS_IN_QUEUE;
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
 
+    jobsInThreads++;
     return job;
 }
 
 Job* ThreadManager::getJob(JobThread* thread)
 {
     auto job = getJob();
+    if (job)
+        return job;
 
-    if (job == nullptr)
-    {
-        {
-            unique_lock lk(mutexAdd);
-            availableThreads.push_back(thread);
-        }
+    mutexAdd.lock();
+    availableThreads.push_back(thread);
+    mutexAdd.unlock();
 
-        thread->waitJob();
-        return nullptr;
-    }
-
-    job->thread = thread;
-    return job;
-}
-
-void ThreadManager::addPendingJob(Job* job)
-{
-    unique_lock lk(mutexAdd);
-    pendingJobs.push_back(job);
-    job->pendingIndex = (int) pendingJobs.size() - 1;
-    job->thread       = nullptr;
+    thread->waitForANewJob();
+    return nullptr;
 }

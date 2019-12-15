@@ -171,7 +171,6 @@ struct ByteCodeGenJob : public Job
     ByteCodeGenContext context;
     vector<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;
-    AstNode*           originalNode         = nullptr;
     bool               syncToDependentNodes = false;
 };
 

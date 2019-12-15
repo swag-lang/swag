@@ -6,12 +6,9 @@
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
 #include "Module.h"
-#include "Attribute.h"
-#include "Scope.h"
 #include "Ast.h"
 #include "Stats.h"
 #include "TypeManager.h"
-#include "Workspace.h"
 #include "Context.h"
 
 thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
@@ -225,7 +222,6 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
             node->byteCodeJob->sourceFile   = sourceFile;
             node->byteCodeJob->module       = sourceFile->module;
             node->byteCodeJob->dependentJob = dependentJob;
-            node->byteCodeJob->originalNode = node;
             node->byteCodeJob->nodes.push_back(node);
             if (flags & ASKBC_WAIT_DONE)
             {
@@ -262,6 +258,12 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
 JobResult ByteCodeGenJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
+
+    if (!originalNode)
+    {
+        SWAG_ASSERT(nodes.size() == 1);
+        originalNode = nodes.front();
+    }
 
 #ifdef SWAG_HAS_ASSERT
     g_diagnosticInfos.pass       = "ByteCodeGenJob";
@@ -384,17 +386,18 @@ JobResult ByteCodeGenJob::execute()
 
     // Wait for other dependent nodes to be generated
     syncToDependentNodes = true;
-    for (int i = (int) dependentNodes.size() - 1; i >= 0; i--)
+    while (!dependentNodes.empty())
     {
-        auto        node = dependentNodes[i];
+        auto        node = dependentNodes.back();
         scoped_lock lk(node->mutex);
-        if (node->flags & AST_BYTECODE_RESOLVED)
-            dependentNodes.pop_back();
-        else
+        if (node->flags & AST_BYTECODE_GENERATED)
         {
-            node->byteCodeJob->dependentJobs.add(this);
-            return JobResult::KeepJobAlive;
+            dependentNodes.pop_back();
+            continue;
         }
+
+        node->byteCodeJob->dependentJobs.add(this);
+        return JobResult::KeepJobAlive;
     }
 
     // Inform dependencies that everything is done

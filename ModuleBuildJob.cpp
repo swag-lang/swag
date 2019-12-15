@@ -267,28 +267,37 @@ JobResult ModuleBuildJob::execute()
 void ModuleBuildJob::checkPendingJobs()
 {
     unique_lock lk(g_ThreadMgr.mutexAdd);
-
-    if (g_ThreadMgr.pendingJobs.empty())
+    if (g_ThreadMgr.waitingJobs.empty())
         return;
 
-    for (auto pendingJob : g_ThreadMgr.pendingJobs)
+    for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
         if (pendingJob->dependentJob != this)
             continue;
 
-        auto firstNode = pendingJob->nodes.front();
-        if (!(firstNode->flags & AST_GENERATED))
+        auto firstNode = pendingJob->originalNode;
+        if (firstNode)
         {
-            auto node = pendingJob->nodes.back();
-            if (!pendingJob->sourceFile->numErrors)
+            if (!(firstNode->flags & AST_GENERATED))
             {
-                if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
-                    pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
-                else if (pendingJob->waitingSymbolSolved)
-                    pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
-                else
-                    pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
-                pendingJob->sourceFile->numErrors = 0;
+                AstNode* node = nullptr;
+                if (!pendingJob->nodes.empty())
+                    node = pendingJob->nodes.back();
+                else if (!pendingJob->dependentNodes.empty())
+                    node = pendingJob->dependentNodes.back();
+                if (node)
+                {
+                    if (!pendingJob->sourceFile->numErrors)
+                    {
+                        if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
+                            pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
+                        else if (pendingJob->waitingSymbolSolved)
+                            pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
+                        else
+                            pendingJob->sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
+                        pendingJob->sourceFile->numErrors = 0;
+                    }
+                }
             }
         }
     }

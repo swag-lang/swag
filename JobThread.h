@@ -8,7 +8,7 @@ struct JobThread
 
     void loop();
     void notifyJob();
-    void waitJob();
+    void waitForANewJob();
 
     thread*            thread     = nullptr;
     bool               requestEnd = false;

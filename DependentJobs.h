@@ -1,4 +1,5 @@
 #pragma once
+#include "RaceCondition.h"
 struct Job;
 
 struct DependentJobs
@@ -7,6 +8,6 @@ struct DependentJobs
     void clear();
     void setRunning();
 
-private:
     vector<Job*> list;
+    SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

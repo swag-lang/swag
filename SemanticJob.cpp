@@ -69,6 +69,12 @@ JobResult SemanticJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
 
+    if (!originalNode)
+    {
+        SWAG_ASSERT(nodes.size() == 1);
+        originalNode = nodes.front();
+    }
+
 #ifdef SWAG_HAS_ASSERT
     g_diagnosticInfos.pass       = "SemanticJob";
     g_diagnosticInfos.sourceFile = sourceFile;

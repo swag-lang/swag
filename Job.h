@@ -40,16 +40,16 @@ enum class JobResult
     KeepJobAlivePending,
 };
 
-static const uint32_t JOB_IS_DEPENDENT = 0x00000001;
-static const uint32_t JOB_IS_IN_THREAD = 0x00000002;
-static const uint32_t JOB_IS_PENDING   = 0x00000004;
+static const uint32_t JOB_IS_IN_QUEUE    = 0x00000001;
+static const uint32_t JOB_IS_IN_THREAD   = 0x00000002;
+static const uint32_t JOB_IS_PENDING     = 0x00000004;
+static const uint32_t JOB_IS_PENDING_RUN = 0x00000008;
 
 struct Job
 {
     virtual JobResult execute() = 0;
 
     void addDependentJob(Job* job);
-    void doneJob();
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
@@ -59,13 +59,13 @@ struct Job
     vector<AstNode*> dependentNodes;
     vector<AstNode*> nodes;
     vector<Job*>     jobsToAdd;
-    JobThread*       thread              = nullptr;
+    AstNode*         originalNode        = nullptr;
     SymbolName*      waitingSymbolSolved = nullptr;
     SourceFile*      sourceFile          = nullptr;
     Module*          module              = nullptr;
     Job*             dependentJob        = nullptr;
     JobContext*      baseContext         = nullptr;
     uint32_t         flags               = 0;
-    int32_t          pendingIndex        = -1;
-    atomic<int>      waitOnJobs          = 0;
+    int32_t          waitingJobIndex     = -1;
+    uint32_t         waitOnJobs          = 0;
 };
