@@ -3,7 +3,6 @@
 #include "DocScopeJob.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "CopyFileJob.h"
 #include "Os.h"
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;

@@ -4,11 +4,8 @@
 #include "Stats.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
-#include "ModuleOutputJob.h"
 #include "CopyFileJob.h"
 #include "EnumerateModuleJob.h"
-#include "ByteCode.h"
-#include "ByteCodeModuleManager.h"
 #include "ModuleBuildJob.h"
 #include "Os.h"
 
@@ -69,18 +66,29 @@ void Workspace::addBootstrap()
     if (!g_CommandLine.addBootstrap)
         return;
 
+    // Get bootstrap.swg file
+    void*    ptr;
+    uint32_t size;
+    if (!OS::getEmbeddedTextFile(OS::ResourceFile::SwagBootstrap, &ptr, &size))
+    {
+        g_Log.error("internal fatal error: unable to load internal 'bootstrap.swg' file");
+        exit(-1);
+    }
+
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
     bootstrapModule = g_Pool_module.alloc();
     bootstrapModule->setup("");
     modules.push_back(bootstrapModule);
 
-    auto     file  = g_Pool_sourceFile.alloc();
-    auto     job   = g_Pool_syntaxJob.alloc();
-    fs::path p     = g_CommandLine.exePath;
-    file->path     = p.parent_path().string() + "/swag.bootstrap.swg";
-    file->module   = bootstrapModule;
-    file->swagFile = true;
+    auto     file        = g_Pool_sourceFile.alloc();
+    auto     job         = g_Pool_syntaxJob.alloc();
+    fs::path p           = g_CommandLine.exePath;
+    file->path           = p.parent_path().string() + "/bootstrap.swg";
+    file->module         = bootstrapModule;
+    file->swagFile       = true;
+    file->externalBuffer = (uint8_t*) ptr;
+    file->externalSize   = size;
     bootstrapModule->addFile(file);
     job->sourceFile = file;
     g_ThreadMgr.addJob(job);
