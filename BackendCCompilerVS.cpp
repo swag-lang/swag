@@ -96,7 +96,8 @@ bool BackendCCompilerVS::compile()
     }
 
     clArguments += "/nologo ";
-    clArguments += "/EHsc ";
+    clArguments += "/GS- ";
+    clArguments += "/MD ";
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
@@ -153,9 +154,6 @@ bool BackendCCompilerVS::compile()
             linkArguments += fl;
             linkArguments += ".lib ";
         }
-
-        linkArguments += "ucrt.lib libvcruntime.lib ";
-        linkArguments += "/NODEFAULTLIB:libucrt.lib ";
 
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";
