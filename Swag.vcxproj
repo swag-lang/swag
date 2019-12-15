@@ -189,6 +189,7 @@
     <ClInclude Include="OutputFile.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
@@ -396,8 +397,9 @@ ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.a
     <None Include=".clang-format" />
     <ClCompile Include="CopyFileJob.cpp" />
     <ClInclude Include="CopyFileJob.h" />
-    <None Include="CopyFileJob.cpp" />
-    <None Include="CopyFileJob.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Swag.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -326,7 +326,6 @@
     <ClCompile Include="AstOutput.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="CopyFileJob.cpp" />
     <ClCompile Include="ModuleTestJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -359,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="DocHtmlHelper.cpp">
       <Filter>Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="CopyFileJob.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -561,8 +563,6 @@
     <ClInclude Include="CompilerTarget.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="OsWin32.h" />
-    <ClInclude Include="CopyFileJob.h" />
     <ClInclude Include="ModuleTestJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -595,6 +595,10 @@
     </ClInclude>
     <ClInclude Include="DocNodeJob.h">
       <Filter>Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="OsWin32.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -633,11 +637,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include="CopyFileJob.cpp">
-      <Filter>Main</Filter>
-    </None>
-    <None Include="CopyFileJob.h">
-      <Filter>Main</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Swag.rc" />
   </ItemGroup>
 </Project>
