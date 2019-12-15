@@ -2,6 +2,7 @@
 #ifdef WIN32
 #include "Os.h"
 #include "Global.h"
+#include "resource.h"
 #include "Log.h"
 #include <fcntl.h>
 #include <io.h>
@@ -436,6 +437,35 @@ namespace OS
         setThreadName(threadId, threadName);
     }
 
+    bool getEmbeddedTextFile(ResourceFile resFile, void** ptr, uint32_t* size)
+    {
+        HRSRC hResource = 0;
+
+        switch (resFile)
+        {
+        case ResourceFile::SwagBootstrap:
+            hResource = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_SWAG_BOOTSTRAP), L"TEXTFILE");
+            break;
+        case ResourceFile::DocCss:
+            hResource = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_SWAG_DOCSSS), L"TEXTFILE");
+            break;
+        }
+
+        if (!hResource)
+            return false;
+        HGLOBAL hTemplate = LoadResource(GetModuleHandle(NULL), hResource);
+        if (!hTemplate)
+            return false;
+        LPVOID pLockedResource = LockResource(hTemplate);
+        if (!pLockedResource)
+            return false;
+        DWORD dwResourceSize = SizeofResource(GetModuleHandle(NULL), hResource);
+        if (!dwResourceSize)
+            return false;
+        *ptr  = pLockedResource;
+        *size = dwResourceSize;
+        return true;
+    }
 }; // namespace OS
 
 #endif

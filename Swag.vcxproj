@@ -397,6 +397,8 @@ ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.a
     <None Include=".clang-format" />
     <ClCompile Include="CopyFileJob.cpp" />
     <ClInclude Include="CopyFileJob.h" />
+    <None Include="bootstrap.swg" />
+    <None Include="documentation.css" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Swag.rc" />

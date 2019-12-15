@@ -596,9 +596,11 @@
     <ClInclude Include="DocNodeJob.h">
       <Filter>Doc</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="OsWin32.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -629,6 +631,9 @@
     <Filter Include="Doc">
       <UniqueIdentifier>{e58d8fca-e46c-4b1e-a2da-c17e4da58dea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{db70f2f6-b909-4fab-a3c3-a23454ba5a37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="win64.S">
@@ -637,8 +642,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
+    <None Include="bootstrap.swg">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="documentation.css">
+      <Filter>Resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Swag.rc" />
+    <ResourceCompile Include="Swag.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

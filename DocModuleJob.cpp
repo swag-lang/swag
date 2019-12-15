@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "CopyFileJob.h"
+#include "Os.h"
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 
@@ -28,13 +29,28 @@ JobResult DocModuleJob::execute()
     }
 
     // Copy css to documentation folder
-    fs::path p          = g_CommandLine.exePath;
-    auto     path       = p.parent_path().string() + "/swag.documentation.css";
-    auto     copyJob    = g_Pool_copyFileJob.alloc();
-    copyJob->module     = module;
-    copyJob->sourcePath = path;
-    copyJob->destPath   = module->documentPath.string() + "/swag.documentation.css";
-    g_ThreadMgr.addJob(copyJob);
+    void*    ptr;
+    uint32_t size;
+    if (!OS::getEmbeddedTextFile(OS::ResourceFile::DocCss, &ptr, &size))
+    {
+        module->error("cannot access internal documentation.css file");
+    }
+    else
+    {
+
+        auto  destPath = module->documentPath.string() + "/swag.documentation.css";
+        FILE* f        = nullptr;
+        fopen_s(&f, destPath.c_str(), "wb");
+        if (!f)
+        {
+            module->error(format("cannot write '%s' file to destination folder", destPath.c_str()));
+        }
+        else
+        {
+            fwrite(ptr, size, 1, f);
+            fclose(f);
+        }
+    }
 
     // Scan module root scope
     auto scopeJob    = g_Pool_docScopeJob.alloc();

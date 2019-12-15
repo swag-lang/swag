@@ -42,6 +42,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
     cmdLine->backendOutput     = true;
+    cmdLine->generateDoc       = true;
     //cmdLine->cleanTarget       = true;
     //cmdLine->errorSourceOut    = false;
     //cmdLine->runBackendTests   = false;

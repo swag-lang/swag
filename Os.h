@@ -25,4 +25,12 @@ namespace OS
     extern void          visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     extern void          setThreadName(thread* thread, const char* threadName);
     extern uint64_t      getFileWriteTime(string& fileName);
+
+    enum class ResourceFile
+    {
+        SwagBootstrap,
+        DocCss,
+    };
+
+    extern bool getEmbeddedTextFile(ResourceFile resFile, void** ptr, uint32_t* size);
 } // namespace OS
