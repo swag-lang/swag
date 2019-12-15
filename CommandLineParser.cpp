@@ -21,7 +21,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
 
-    addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
+    addArg("--clean", nullptr, CommandLineType::Bool, &cmdLine->clean);
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
     addArg("--doc", nullptr, CommandLineType::Bool, &cmdLine->generateDoc);
 

@@ -14,7 +14,7 @@ struct CommandLine
     bool      rebuild   = false;
 
     // Input
-    bool   cleanTarget  = false;
+    bool   clean        = false;
     bool   addBootstrap = true;
     string workspacePath;
     string fileFilter;

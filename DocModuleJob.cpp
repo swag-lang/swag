@@ -24,7 +24,7 @@ JobResult DocModuleJob::execute()
     }
 
     // Clear content if rebuild
-    if (g_CommandLine.cleanTarget)
+    if (g_CommandLine.clean)
     {
         g_Workspace.deleteFolderContent(module->documentPath);
     }

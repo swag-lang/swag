@@ -166,7 +166,7 @@ void Workspace::setupTarget()
         g_Log.verbose(format("=> target is '%s'", targetPath.string().c_str()));
 
     // Clean target
-    if (g_CommandLine.cleanTarget)
+    if (g_CommandLine.clean)
     {
         if (fs::exists(targetPath))
             deleteFolderContent(targetPath);
