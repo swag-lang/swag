@@ -67,7 +67,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\.out\</OutDir>
     <IntDir>$(SolutionDir)\.out\$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)_r</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
     <LinkIncremental>false</LinkIncremental>
