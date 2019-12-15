@@ -78,10 +78,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "test")
     {
-        g_CommandLine.test              = true;
-        g_CommandLine.runByteCodeTests  = true;
-        g_CommandLine.runBackendTests   = true;
-        g_CommandLine.backendOutputTest = true;
+        g_CommandLine.test = true;
     }
     else if (command == "doc")
     {

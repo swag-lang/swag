@@ -410,10 +410,11 @@ bool Backend::generateExportFile()
         bufferSwg.fileName = targetPath + "\\" + module->name + ".generated.swg";
 
         // Do we need to generate the file ?
-        bool regen = g_CommandLine.rebuild;
+        bool exists = fs::exists(bufferSwg.fileName);
+        bool regen  = g_CommandLine.rebuild || !exists;
         if (!regen)
         {
-            if (fs::exists(bufferSwg.fileName))
+            if (exists)
             {
                 auto t1 = OS::getFileWriteTime(bufferSwg.fileName);
                 if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)

@@ -134,7 +134,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
-        g_Workspace.publishModule(module);
+        if (g_CommandLine.backendOutput)
+            g_Workspace.publishModule(module);
         pass = ModuleBuildPass::Semantic;
     }
 
