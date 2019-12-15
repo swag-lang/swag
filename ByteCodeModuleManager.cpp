@@ -20,7 +20,7 @@ bool ByteCodeModuleManager::loadModule(const string& name)
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
     if (verbose)
-        g_Log.verbose(format("   request to load module '%s': ", name.c_str()), false);
+        g_Log.verbose(format("   request to load module '%s'\n", name.c_str()), false);
 
     // First try in the target folder (local modules)
     fs::path path = g_Workspace.targetPath;
@@ -37,13 +37,13 @@ bool ByteCodeModuleManager::loadModule(const string& name)
         if (h == NULL)
         {
             if (verbose)
-                g_Log.verbose("FAIL");
+                g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
         }
     }
 
     if (verbose)
-        g_Log.verbose("success");
+        g_Log.verbose(format("   load module '%s': success\n", name.c_str()), false);
     loadedModules[name] = h;
 
     // Should initialize the module the first time

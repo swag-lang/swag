@@ -108,6 +108,10 @@ bool BackendCCompilerVS::compile()
         return false;
     }
 
+    g_Log.verbose(format("VS vsTarget is '%s'\n", vsTarget.c_str()));
+    g_Log.verbose(format("VS winSdk is '%s'\n", winSdk.c_str()));
+    g_Log.verbose(format("VS winSdkVersion is '%s'\n", winSdkVersion.c_str()));
+
     // Library paths
     libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdk.c_str(), winSdkVersion.c_str()));
     libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdk.c_str(), winSdkVersion.c_str()));
@@ -166,7 +170,7 @@ bool BackendCCompilerVS::compile()
         auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -181,7 +185,7 @@ bool BackendCCompilerVS::compile()
         auto cmdLineLIB = "\"" + vsTarget + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
     }
     break;
 
@@ -221,7 +225,7 @@ bool BackendCCompilerVS::compile()
         auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "VS "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
     }
     break;
     }
