@@ -6,48 +6,79 @@
 #include "BackendCCompilerVS.h"
 #include "Workspace.h"
 
-string BackendCCompilerVS::getVSTarget()
+static bool getVSTarget(string& vsTarget)
 {
-    string vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)";
-    if (!fs::exists(vsTarget))
+    vector<string> toTest;
+    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
+    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
+    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
+    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
+    for (auto& one : toTest)
     {
-        vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)";
-        if (!fs::exists(vsTarget))
+        if (fs::exists(one))
         {
-            vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)";
-            if (!fs::exists(vsTarget))
-            {
-                vsTarget = R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)";
-                if (!fs::exists(vsTarget))
-                {
-                    backend->module->error("can't find visual studio backend folder");
-                    return "";
-                }
-            }
+            vsTarget = one;
+            break;
         }
     }
+
+    if (vsTarget.empty())
+        return false;
 
     for (auto& p : fs::directory_iterator(vsTarget))
         vsTarget = p.path().string();
 
-    return vsTarget;
+    return !vsTarget.empty();
 }
 
-bool BackendCCompilerVS::getWinSdk(string& winSdk)
+static string getStringRegKey(HKEY hKey, const string& strValueName)
 {
-    string libPath = R"(C:\Program Files (x86)\Windows Kits\10\Lib)";
-    if (!fs::exists(libPath))
+    string strValue;
+    char   szBuffer[512];
+    DWORD  dwBufferSize = sizeof(szBuffer);
+    ULONG  nError;
+    nError = RegQueryValueExA(hKey, strValueName.c_str(), 0, NULL, (LPBYTE) szBuffer, &dwBufferSize);
+    if (nError == ERROR_SUCCESS)
+        strValue = szBuffer;
+    return strValue;
+}
+
+static bool getWinSdkFolder(string& libPath, string& libVersion)
+{
+    HKEY hKey;
+
+    // Folder, try in register first
+    LONG lRes = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Microsoft SDKs\\Windows\\v10.0\\", 0, KEY_READ, &hKey);
+    if (lRes == ERROR_SUCCESS)
     {
-        backend->module->error("can't find windows sdk folder");
-        return false;
+        libPath    = getStringRegKey(hKey, "InstallationFolder");
+        libVersion = getStringRegKey(hKey, "ProductVersion");
+        if (!libVersion.empty())
+            libVersion += ".0";
+        RegCloseKey(hKey);
     }
 
-    fs::path tmpPath;
-    for (auto& p : fs::directory_iterator(libPath))
-        tmpPath = p.path();
+    // Folder, fallback to direct folder
+    if (libPath.empty())
+    {
+        libPath = R"(C:\Program Files (x86)\Windows Kits\10)";
+        if (!fs::exists(libPath))
+            return false;
+    }
 
-    winSdk = tmpPath.filename().string();
-    return true;
+    // Version, fallback to direct folder
+    if (libVersion.empty())
+    {
+        auto libSub = libPath + "\\" + "lib";
+        if (!fs::exists(libSub))
+            return false;
+        fs::path tmpPath;
+        for (auto& p : fs::directory_iterator(libSub))
+            tmpPath = p.path();
+        libVersion = tmpPath.filename().string();
+    }
+
+    return !libPath.empty() && !libVersion.empty();
 }
 
 bool BackendCCompilerVS::compile()
@@ -58,20 +89,28 @@ bool BackendCCompilerVS::compile()
     string         linkArguments;
     vector<string> libPath;
 
-    compilerExe = "clang-cl.exe";
-    vsTarget    = g_CommandLine.exePath.parent_path().string() + "\\";
-
+    // Get compiler folder
     compilerExe = "cl.exe";
-    vsTarget    = getVSTarget();
+    if (!getVSTarget(vsTarget))
+    {
+        backend->module->error("C compiler backend, cannot locate visual studio folder");
+        return false;
+    }
+
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     vsTarget += R"(\bin\Hostx64\x64\)";
 
-    string winSdk;
-    SWAG_CHECK(getWinSdk(winSdk));
+    // Windows sdk folders and version
+    string winSdk, winSdkVersion;
+    if (!getWinSdkFolder(winSdk, winSdkVersion))
+    {
+        backend->module->error("C compiler backend, cannot locate windows 10 sdk folder");
+        return false;
+    }
 
     // Library paths
-    libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
-    libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdk.c_str(), winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdk.c_str(), winSdkVersion.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
 
     // CL arguments
