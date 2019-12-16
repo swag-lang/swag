@@ -16,6 +16,7 @@ void printStats()
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
     g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));
+    g_Log.messageHeaderDot("open files", format("%d", g_Stats.maxOpenFiles.load()));
     g_Log.messageHeaderDot("lines", format("%d", g_Stats.numLines.load()));
     g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.count())));
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));

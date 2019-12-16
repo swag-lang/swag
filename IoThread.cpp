@@ -6,11 +6,41 @@
 #include "ThreadManager.h"
 #include "Os.h"
 #include "Job.h"
+#include "Stats.h"
 
 IoThread::IoThread()
 {
     thread = new std::thread(&IoThread::loop, this);
     OS::setThreadName(thread, "IOThread");
+}
+
+void IoThread::openFile(FILE** fileHandle, const char* path, const char* mode, bool raiseError)
+{
+    *fileHandle = nullptr;
+    auto err    = fopen_s(fileHandle, path, mode);
+    if (fileHandle == nullptr)
+    {
+        if (raiseError)
+        {
+            char buf[256];
+            strerror_s(buf, err);
+            g_Log.error(format("error opening file '%s': '%s'", path, buf));
+        }
+
+        return;
+    }
+
+    g_Stats.numOpenFiles++;
+    g_Stats.maxOpenFiles = max(g_Stats.maxOpenFiles.load(), g_Stats.numOpenFiles.load());
+}
+
+void IoThread::closeFile(FILE** fileHandle)
+{
+    if (!*fileHandle)
+        return;
+    fclose(*fileHandle);
+    *fileHandle = nullptr;
+    g_Stats.numOpenFiles--;
 }
 
 void IoThread::releaseLoadingRequest(LoadingThreadRequest* request)
@@ -48,9 +78,27 @@ LoadingThreadRequest* IoThread::getLoadingRequest()
     unique_lock lk(mutexAdd);
     if (queueLoadingRequests.empty())
         return nullptr;
-    auto req = queueLoadingRequests.back();
-    queueLoadingRequests.pop_back();
-    return req;
+
+    // Priority to an already open file, in order to reduce number of open files
+    // at the same time
+    LoadingThreadRequest* request = nullptr;
+    for (auto it = queueLoadingRequests.begin(); it != queueLoadingRequests.end(); ++it)
+    {
+        if ((*it)->file->fileHandle)
+        {
+            request = *it;
+            queueLoadingRequests.erase(it);
+            break;
+        }
+    }
+
+    if (request == nullptr)
+    {
+        request = queueLoadingRequests.back();
+        queueLoadingRequests.pop_back();
+    }
+
+    return request;
 }
 
 void IoThread::waitRequest()
@@ -102,14 +150,31 @@ SavingThreadRequest* IoThread::getSavingRequest()
     if (queueSavingRequests.empty())
         return nullptr;
 
-    auto req = queueSavingRequests.front();
-    queueSavingRequests.pop_front();
-    return req;
+    // Priority to an already open file, in order to reduce number of open files
+    // at the same time
+    SavingThreadRequest* request = nullptr;
+    for (auto it = queueSavingRequests.begin(); it != queueSavingRequests.end(); ++it)
+    {
+        if ((*it)->file->fileHandle)
+        {
+            request = *it;
+            queueSavingRequests.erase(it);
+            break;
+        }
+    }
+
+    if (request == nullptr)
+    {
+        request = queueSavingRequests.front();
+        queueSavingRequests.erase(queueSavingRequests.begin());
+    }
+
+    return request;
 }
 
 void IoThread::save(SavingThreadRequest* request)
 {
-    FILE* file = request->file->openFile;
+    FILE* file = request->file->fileHandle;
     if (!file)
     {
         SWAG_ASSERT(!request->file->done);
@@ -118,9 +183,9 @@ void IoThread::save(SavingThreadRequest* request)
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
             // Without that, fopen can fail due to compiling processes
             if (request->firstSave)
-                fopen_s(&file, request->file->fileName.c_str(), "wtN");
+                IoThread::openFile(&file, request->file->fileName.c_str(), "wtN", tryOpen == 9);
             else
-                fopen_s(&file, request->file->fileName.c_str(), "a+tN");
+                IoThread::openFile(&file, request->file->fileName.c_str(), "a+tN", tryOpen == 9);
             if (file)
             {
                 //setvbuf(file, nullptr, _IONBF, 0);
@@ -130,7 +195,7 @@ void IoThread::save(SavingThreadRequest* request)
             Sleep(10);
         }
 
-        request->file->openFile = file;
+        request->file->fileHandle = file;
     }
 
     if (!file)
@@ -143,8 +208,8 @@ void IoThread::save(SavingThreadRequest* request)
 
     if (request->lastOne)
     {
-        fclose(file);
-        request->file->openFile = nullptr;
+        IoThread::closeFile(&file);
+        request->file->fileHandle = nullptr;
         request->file->notifySave(true);
     }
     else if (request->flush)

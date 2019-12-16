@@ -4,6 +4,7 @@
 #include "IoThread.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
+#include "Stats.h"
 #include "Os.h"
 
 thread_local Pool<SourceFile> g_Pool_sourceFile;
@@ -37,24 +38,16 @@ bool SourceFile::open()
     openedOnce = true;
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-    fopen_s(&fileHandle, path.string().c_str(), "rbN");
+    IoThread::openFile(&fileHandle, path.string().c_str(), "rbN");
     if (fileHandle == nullptr)
-    {
-        report({this, format("error opening file '%s': '%s'", path.string().c_str(), OS::getLastErrorAsString().c_str())});
         return false;
-    }
-
     setvbuf(fileHandle, nullptr, _IONBF, 0);
     return true;
 }
 
 void SourceFile::close()
 {
-    if (fileHandle)
-    {
-        fclose(fileHandle);
-        fileHandle = nullptr;
-    }
+    IoThread::closeFile(&fileHandle);
 }
 
 bool SourceFile::checkFormat(int bufferIndex)

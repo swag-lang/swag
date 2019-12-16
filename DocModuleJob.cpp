@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "Os.h"
+#include "IoThread.h"
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 
@@ -41,15 +42,11 @@ JobResult DocModuleJob::execute()
 
         auto  destPath = module->documentPath.string() + "/swag.documentation.css";
         FILE* f        = nullptr;
-        fopen_s(&f, destPath.c_str(), "wb");
-        if (!f)
-        {
-            module->error(format("cannot write '%s' file to destination folder", destPath.c_str()));
-        }
-        else
+        IoThread::openFile(&f, destPath.c_str(), "wbN");
+        if (f)
         {
             fwrite(ptr, size, 1, f);
-            fclose(f);
+            IoThread::closeFile(&f);
         }
     }
 

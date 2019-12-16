@@ -5,6 +5,7 @@
 #include "SourceFile.h"
 #include "semanticJob.h"
 #include "OS.h"
+#include "IoThread.h"
 
 thread_local Pool<CopyFileJob> g_Pool_copyFileJob;
 
@@ -25,9 +26,14 @@ JobResult CopyFileJob::execute()
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    fopen_s(&fsrc, sourcePath.c_str(), "rb");
-    fopen_s(&fdest, destPath.c_str(), "wb");
-    SWAG_ASSERT(fsrc && fdest);
+    IoThread::openFile(&fsrc, sourcePath.c_str(), "rbN");
+    IoThread::openFile(&fdest, destPath.c_str(), "wbN");
+    if (!fsrc || !fdest)
+    {
+        IoThread::closeFile(&fsrc);
+        IoThread::closeFile(&fdest);
+        return JobResult::ReleaseJob;
+    }
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   module '%s', copy file '%s' to '%s'", module->name.c_str(), sourcePath.c_str(), destPath.c_str()));
@@ -42,8 +48,8 @@ JobResult CopyFileJob::execute()
             break;
     }
 
-    fclose(fsrc);
-    fclose(fdest);
+    IoThread::closeFile(&fsrc);
+    IoThread::closeFile(&fdest);
 
     return JobResult::ReleaseJob;
 }

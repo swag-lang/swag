@@ -7,6 +7,8 @@ struct Stats
     atomic<int>              numGenModules   = 0;
     atomic<int>              testFunctions   = 0;
     atomic<int>              numInstructions = 0;
+    atomic<int>              maxOpenFiles    = 0;
+    atomic<int>              numOpenFiles    = 0;
     int                      numWorkers      = 0;
     chrono::duration<double> totalTime;
 };

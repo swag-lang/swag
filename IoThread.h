@@ -25,6 +25,10 @@ struct SavingThreadRequest
 struct IoThread
 {
     IoThread();
+
+    static void openFile(FILE** fileHandle, const char* path, const char* mode, bool raiseError = true);
+    static void closeFile(FILE** fileHandle);
+
     void                  addLoadingRequest(LoadingThreadRequest* request);
     void                  releaseLoadingRequest(LoadingThreadRequest* request);
     LoadingThreadRequest* newLoadingRequest();
@@ -43,8 +47,8 @@ struct IoThread
 
     vector<LoadingThreadRequest*> queueLoadingRequests;
     vector<LoadingThreadRequest*> freeLoadingRequests;
-    deque<SavingThreadRequest*>   queueSavingRequests;
-    deque<SavingThreadRequest*>   freeSavingRequests;
+    vector<SavingThreadRequest*>  queueSavingRequests;
+    vector<SavingThreadRequest*>  freeSavingRequests;
 
     thread*            thread = nullptr;
     mutex              mutexAdd;
