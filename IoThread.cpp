@@ -2,10 +2,7 @@
 #include "IoThread.h"
 #include "SourceFile.h"
 #include "OutputFile.h"
-#include "Assert.h"
-#include "ThreadManager.h"
 #include "Os.h"
-#include "Job.h"
 #include "Stats.h"
 
 IoThread::IoThread()
@@ -174,8 +171,7 @@ SavingThreadRequest* IoThread::getSavingRequest()
 
 void IoThread::save(SavingThreadRequest* request)
 {
-    FILE* file = request->file->fileHandle;
-    if (!file)
+    if (!request->file->fileHandle)
     {
         SWAG_ASSERT(!request->file->done);
         for (int tryOpen = 0; tryOpen < 10; tryOpen++)
@@ -183,10 +179,10 @@ void IoThread::save(SavingThreadRequest* request)
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
             // Without that, fopen can fail due to compiling processes
             if (request->firstSave)
-                IoThread::openFile(&file, request->file->fileName.c_str(), "wtN", tryOpen == 9);
+                IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "wtN", tryOpen == 9);
             else
-                IoThread::openFile(&file, request->file->fileName.c_str(), "a+tN", tryOpen == 9);
-            if (file)
+                IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "a+tN", tryOpen == 9);
+            if (request->file->fileHandle)
             {
                 //setvbuf(file, nullptr, _IONBF, 0);
                 break;
@@ -194,22 +190,17 @@ void IoThread::save(SavingThreadRequest* request)
 
             Sleep(10);
         }
-
-        request->file->fileHandle = file;
     }
 
+    auto file = request->file->fileHandle;
     if (!file)
-    {
-        g_Log.error(format("cannot open file '%s' for writing (%s)", request->file->fileName.c_str(), OS::getLastErrorAsString().c_str()));
         return;
-    }
 
     fwrite(request->buffer, 1, request->bufferSize, file);
 
     if (request->lastOne)
     {
-        IoThread::closeFile(&file);
-        request->file->fileHandle = nullptr;
+        IoThread::closeFile(&request->file->fileHandle);
         request->file->notifySave(true);
     }
     else if (request->flush)
