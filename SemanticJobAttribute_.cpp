@@ -88,6 +88,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_MIXIN;
             else if (child->name == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
+            else if (child->name == "property")
+                flags |= ATTRIBUTE_PROPERTY;
         }
 
         curAttr = curAttr->parentAttributes;

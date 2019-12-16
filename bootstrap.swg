@@ -37,7 +37,8 @@ namespace swag
 	attr flags() -> "enum"
     attr complete() -> "func"
     attr offset(name: string) -> "var"
-
+	attr property() -> "func"
+	
 	// #########################################################
 	// Constants
 	// #########################################################

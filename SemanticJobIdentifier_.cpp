@@ -438,7 +438,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
-                    else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                    else if (oneMatch->solvedParameters.size() && oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nullptr, nodeCall));
 
                     // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
@@ -1197,7 +1197,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 node->doneFlags |= AST_DONE_UFCS;
                 auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
                 if (!node->callParameters)
+                {
+                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
+                    SWAG_VERIFY(symbol->overloads.size() == 1, context->report({node, "missing function call parameters"}));
+                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
                     node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
+                }
+
                 node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
                 fctCallParam->parent      = node->callParameters;
                 fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
@@ -1238,14 +1244,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         else if (symbol->kind == SymbolKind::Variable)
         {
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-            {
                 return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
-            }
-
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-            {
                 return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
-            }
         }
     }
 

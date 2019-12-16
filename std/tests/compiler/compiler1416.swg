@@ -1,3 +1,6 @@
+#module compiler1416
+#unittest error
+
 struct A
 {
     x, w: s64
@@ -5,7 +8,7 @@ struct A
 
 impl A
 {
-    #[swag.property]
+    //#[swag.property]
     func right(using self)->s64
     {
         return x + w

@@ -92,7 +92,15 @@ void SourceFile::loadRequest()
 char SourceFile::getPrivateChar()
 {
     if (externalBuffer)
+    {
+        if (seekExternal >= externalSize)
+        {
+            doneLoading = true;
+            return 0;
+        }
+
         return externalBuffer[seekExternal++];
+    }
 
     if (directMode)
     {
