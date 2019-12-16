@@ -30,9 +30,11 @@ bool OutputFile::flush(bool last)
         }
 
         unique_lock lk(mutexNotify);
-        condVar.wait(lk);
+        if (!done)
+            condVar.wait(lk);
     }
 
+    done              = false;
     lastFlushedBucket = nullptr;
     clear();
     return result;
@@ -41,7 +43,7 @@ bool OutputFile::flush(bool last)
 void OutputFile::notifySave(bool last)
 {
     unique_lock lk(mutexNotify);
-    done    = true;
     lastOne = last;
+    done    = true;
     condVar.notify_one();
 }

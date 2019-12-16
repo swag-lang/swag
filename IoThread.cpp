@@ -11,6 +11,30 @@ IoThread::IoThread()
     OS::setThreadName(thread, "IOThread");
 }
 
+void IoThread::addLoadingRequest(LoadingThreadRequest* request)
+{
+    unique_lock lk(mutexAdd);
+    queueLoadingRequests.push_back(request);
+    condVar.notify_one();
+}
+
+void IoThread::addSavingRequest(SavingThreadRequest* request)
+{
+    unique_lock lk(mutexAdd);
+    queueSavingRequests.push_back(request);
+    condVar.notify_one();
+}
+
+void IoThread::waitRequest()
+{
+    unique_lock lk(mutexAdd);
+    if (queueLoadingRequests.size())
+        return;
+    if (queueSavingRequests.size())
+        return;
+    condVar.wait(lk);
+}
+
 void IoThread::releaseLoadingRequest(LoadingThreadRequest* request)
 {
     unique_lock lk(mutexNew);
@@ -32,13 +56,6 @@ LoadingThreadRequest* IoThread::newLoadingRequest()
 
     auto req = new LoadingThreadRequest;
     return req;
-}
-
-void IoThread::addLoadingRequest(LoadingThreadRequest* request)
-{
-    unique_lock lk(mutexAdd);
-    queueLoadingRequests.push_back(request);
-    condVar.notify_one();
 }
 
 LoadingThreadRequest* IoThread::getLoadingRequest()
@@ -69,16 +86,6 @@ LoadingThreadRequest* IoThread::getLoadingRequest()
     return request;
 }
 
-void IoThread::waitRequest()
-{
-    unique_lock lk(mutexAdd);
-    if (queueLoadingRequests.size())
-        return;
-    if (queueSavingRequests.size())
-        return;
-    condVar.wait(lk);
-}
-
 void IoThread::releaseSavingRequest(SavingThreadRequest* request)
 {
     unique_lock lk(mutexNew);
@@ -103,13 +110,6 @@ SavingThreadRequest* IoThread::newSavingRequest()
 
     auto req = new SavingThreadRequest;
     return req;
-}
-
-void IoThread::addSavingRequest(SavingThreadRequest* request)
-{
-    unique_lock lk(mutexAdd);
-    queueSavingRequests.push_back(request);
-    condVar.notify_one();
 }
 
 SavingThreadRequest* IoThread::getSavingRequest()

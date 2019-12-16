@@ -11,7 +11,7 @@ void File::openFile(FILE** fileHandle, const char* path, const char* mode)
 {
     *fileHandle = nullptr;
     auto err    = fopen_s(fileHandle, path, mode);
-    if (fileHandle == nullptr)
+    if (*fileHandle == nullptr)
     {
         char buf[256];
         strerror_s(buf, err);
@@ -29,6 +29,7 @@ void File::closeFile(FILE** fileHandle)
         return;
     fclose(*fileHandle);
     *fileHandle = nullptr;
+    SWAG_ASSERT(g_Stats.numOpenFiles);
     g_Stats.numOpenFiles--;
 }
 
@@ -43,7 +44,6 @@ bool File::openRead()
         return false;
 
     openedOnce = true;
-    setvbuf(fileHandle, nullptr, _IONBF, 0);
     return true;
 }
 

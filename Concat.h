@@ -37,7 +37,7 @@ struct Concat
     uint8_t*      currentSP   = nullptr;
     ConcatBucket* currentSPB  = nullptr;
     int           currentSPI;
-    int           bucketSize = 32 * 1024;
+    int           bucketSize = 1024;
 
     inline void rewind()
     {

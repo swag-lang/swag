@@ -5,11 +5,6 @@ struct SavingThreadRequest;
 
 struct OutputFile : public Concat, public File
 {
-    OutputFile()
-    {
-        bucketSize = 1024;
-    }
-
     void flushBucket(ConcatBucket* bucket, bool flush, bool last) override;
     bool flush(bool lastOne);
     void notifySave(bool last);
