@@ -1176,77 +1176,75 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     SWAG_CHECK(pickSymbol(context, node, &symbol));
 
     AstNode* ufcsParam = nullptr;
+    bool     canDoUfcs = false;
+    if (symbol->kind == SymbolKind::Function)
+        canDoUfcs = true;
+    if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
+        canDoUfcs = node->callParameters;
 
-    if (node->callParameters)
+    if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
-        bool canDoUfcs = false;
-        if (symbol->kind == SymbolKind::Function)
-            canDoUfcs = true;
-        if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
-            canDoUfcs = true;
-
-        if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
+        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
         {
-            // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+            if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
             {
-                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+                SWAG_ASSERT(identifierRef->previousResolvedNode);
+                ufcsParam = identifierRef->previousResolvedNode;
+            }
+            else
+            {
+                node->doneFlags |= AST_DONE_UFCS;
+                auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+                if (!node->callParameters)
+                    node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
+                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                fctCallParam->parent      = node->callParameters;
+                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+                if (symbol->kind == SymbolKind::Variable)
                 {
-                    SWAG_ASSERT(identifierRef->previousResolvedNode);
-                    ufcsParam = identifierRef->previousResolvedNode;
+                    // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
+                    auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
+                    idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
+
+                    auto prevId    = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
+                    auto prevIdRef = prevId->identifierRef;
+
+                    // Copy all previous references to the one we want to pass as parameter
+                    // X.Y.call(...) => X.Y.call(X.Y, ...)
+                    for (auto child : prevIdRef->childs)
+                    {
+                        auto copyChild = Ast::clone(child, idRef);
+                        if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
+                            SWAG_ASSERT(((AstIdentifier*) copyChild)->identifierRef == idRef);
+                        if (child == identifierRef->previousResolvedNode)
+                        {
+                            copyChild->flags |= AST_TO_UFCS;
+                            break;
+                        }
+                    }
+
+                    identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
                 }
                 else
                 {
-                    node->doneFlags |= AST_DONE_UFCS;
-                    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
-                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                    fctCallParam->parent      = node->callParameters;
-                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                    fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
-                    if (symbol->kind == SymbolKind::Variable)
-                    {
-                        // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
-                        auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
-                        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
-
-                        auto prevId    = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
-                        auto prevIdRef = prevId->identifierRef;
-
-                        // Copy all previous references to the one we want to pass as parameter
-                        // X.Y.call(...) => X.Y.call(X.Y, ...)
-                        for (auto child : prevIdRef->childs)
-                        {
-                            auto copyChild = Ast::clone(child, idRef);
-                            if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
-                                SWAG_ASSERT(((AstIdentifier*) copyChild)->identifierRef == idRef);
-                            if (child == identifierRef->previousResolvedNode)
-                            {
-                                copyChild->flags |= AST_TO_UFCS;
-                                break;
-                            }
-                        }
-
-                        identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
-                    }
-                    else
-                    {
-                        Ast::removeFromParent(identifierRef->previousResolvedNode);
-                        Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
-                    }
+                    Ast::removeFromParent(identifierRef->previousResolvedNode);
+                    Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
                 }
             }
-            else if (symbol->kind == SymbolKind::Variable)
+        }
+        else if (symbol->kind == SymbolKind::Variable)
+        {
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
             {
-                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-                {
-                    return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
-                }
+                return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
+            }
 
-                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-                {
-                    return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
-                }
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+            {
+                return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
             }
         }
     }
@@ -1316,30 +1314,27 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (ufcsParam)
             symMatch.parameters.push_back(ufcsParam);
 
-        if (callParameters)
+        auto childCount = callParameters->childs.size();
+        for (int i = 0; i < childCount; i++)
         {
-            auto childCount = callParameters->childs.size();
-            for (int i = 0; i < childCount; i++)
+            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+            symMatch.parameters.push_back(oneParam);
+
+            // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+            // a function
+            if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
             {
-                auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
-                symMatch.parameters.push_back(oneParam);
+                context->job->waitForAllStructInterfaces(oneParam->typeInfo);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
 
-                // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
-                // a function
-                if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+            // Variadic parameter must be the last one
+            if (i != childCount - 1)
+            {
+                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
                 {
-                    context->job->waitForAllStructInterfaces(oneParam->typeInfo);
-                    if (context->result == ContextResult::Pending)
-                        return true;
-                }
-
-                // Variadic parameter must be the last one
-                if (i != childCount - 1)
-                {
-                    if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                    {
-                        return context->report({oneParam, "variadic argument must be the last one"});
-                    }
+                    return context->report({oneParam, "variadic argument must be the last one"});
                 }
             }
         }
