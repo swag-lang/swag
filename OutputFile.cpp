@@ -11,10 +11,8 @@ void OutputFile::flushBucket(ConcatBucket* bucket, bool flush, bool last)
     req->file         = this;
     req->buffer       = (char*) bucket->datas;
     req->bufferSize   = bucket->count;
-    req->firstSave    = firstSave;
     req->flush        = flush;
     req->lastOne      = flush && last;
-    firstSave         = false;
     g_ThreadMgr.ioThread->addSavingRequest(req);
 }
 

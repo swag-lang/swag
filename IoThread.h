@@ -16,7 +16,6 @@ struct SavingThreadRequest
     OutputFile* file       = nullptr;
     char*       buffer     = nullptr;
     long        bufferSize = 0;
-    bool        firstSave  = false;
     bool        ioError    = false;
     bool        lastOne    = false;
     bool        flush      = false;

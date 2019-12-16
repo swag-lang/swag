@@ -39,7 +39,6 @@ JobResult BackendCFunctionBodyJob::execute()
         req->file       = &backend->bufferC;
         req->buffer     = (char*) firstBucket->datas;
         req->bufferSize = firstBucket->count;
-        req->firstSave  = false;
         req->lastOne    = false;
         g_ThreadMgr.ioThread->addSavingRequest(req);
         firstBucket = firstBucket->nextBucket;

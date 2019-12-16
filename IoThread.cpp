@@ -178,7 +178,7 @@ void IoThread::save(SavingThreadRequest* request)
         {
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
             // Without that, fopen can fail due to compiling processes
-            if (request->firstSave)
+            if (request->file->firstSave)
                 IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "wtN", tryOpen == 9);
             else
                 IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "a+tN", tryOpen == 9);
@@ -196,6 +196,7 @@ void IoThread::save(SavingThreadRequest* request)
     if (!file)
         return;
 
+    request->file->firstSave = false;
     fwrite(request->buffer, 1, request->bufferSize, file);
 
     if (request->lastOne)
