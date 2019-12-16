@@ -407,16 +407,16 @@ bool Backend::generateExportFile()
     {
         pass               = BackendPass::Flush;
         auto targetPath    = g_Workspace.targetPath.string();
-        bufferSwg.fileName = targetPath + "\\" + module->name + ".generated.swg";
+        bufferSwg.path = targetPath + "\\" + module->name + ".generated.swg";
 
         // Do we need to generate the file ?
-        bool exists = fs::exists(bufferSwg.fileName);
+        bool exists = fs::exists(bufferSwg.path);
         bool regen  = g_CommandLine.rebuild || !exists;
         if (!regen)
         {
             if (exists)
             {
-                auto t1 = OS::getFileWriteTime(bufferSwg.fileName);
+                auto t1 = OS::getFileWriteTime(bufferSwg.path);
                 if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
                     regen = true;
             }

@@ -132,8 +132,9 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One unnamed scope per file
-    string scopeName;
-    scopeName             = sourceFile->path.filename().replace_extension("").string();
+    string   scopeName;
+    fs::path path         = sourceFile->path;
+    scopeName             = path.filename().replace_extension("").string();
     sourceFile->scopeRoot = Ast::newScope(nullptr, sourceFile->fromTests ? scopeName : "", ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;
 

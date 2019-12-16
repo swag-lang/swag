@@ -16,17 +16,17 @@ JobResult BackendC::preCompile(Job* ownerJob)
             g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
         auto targetPath  = g_Workspace.targetPath.string();
-        bufferC.fileName = targetPath + "/" + module->name + ".c";
+        bufferC.path = targetPath + "/" + module->name + ".c";
 
         // Do we need to generate the file ?
         bool regen = g_CommandLine.rebuild;
         if (!regen)
         {
-            if (!fs::exists(bufferC.fileName))
+            if (!fs::exists(bufferC.path))
                 regen = true;
             else
             {
-                auto t1 = OS::getFileWriteTime(bufferC.fileName);
+                auto t1 = OS::getFileWriteTime(bufferC.path);
                 if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
                     regen = true;
             }

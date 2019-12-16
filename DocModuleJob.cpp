@@ -42,11 +42,11 @@ JobResult DocModuleJob::execute()
 
         auto  destPath = module->documentPath.string() + "/swag.documentation.css";
         FILE* f        = nullptr;
-        IoThread::openFile(&f, destPath.c_str(), "wbN");
+        File::openFile(&f, destPath.c_str(), "wbN");
         if (f)
         {
             fwrite(ptr, size, 1, f);
-            IoThread::closeFile(&f);
+            File::closeFile(&f);
         }
     }
 

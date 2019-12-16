@@ -17,7 +17,7 @@ void swag_assert(const char* expr, const char* file, int line)
     if (!g_diagnosticInfos.pass.empty())
         g_Log.print(format("pass:        %s\n", g_diagnosticInfos.pass.c_str()));
     if (g_diagnosticInfos.sourceFile)
-        g_Log.print(format("source file: %s\n", g_diagnosticInfos.sourceFile->path.string().c_str()));
+        g_Log.print(format("source file: %s\n", g_diagnosticInfos.sourceFile->path.c_str()));
     if (g_diagnosticInfos.node)
         g_Log.print(format("source line: %d\n", g_diagnosticInfos.node->token.startLocation.line + 1));
     g_Log.setDefaultColor();

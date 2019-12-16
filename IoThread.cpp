@@ -11,35 +11,6 @@ IoThread::IoThread()
     OS::setThreadName(thread, "IOThread");
 }
 
-void IoThread::openFile(FILE** fileHandle, const char* path, const char* mode, bool raiseError)
-{
-    *fileHandle = nullptr;
-    auto err    = fopen_s(fileHandle, path, mode);
-    if (fileHandle == nullptr)
-    {
-        if (raiseError)
-        {
-            char buf[256];
-            strerror_s(buf, err);
-            g_Log.error(format("error opening file '%s': '%s'", path, buf));
-        }
-
-        return;
-    }
-
-    g_Stats.numOpenFiles++;
-    g_Stats.maxOpenFiles = max(g_Stats.maxOpenFiles.load(), g_Stats.numOpenFiles.load());
-}
-
-void IoThread::closeFile(FILE** fileHandle)
-{
-    if (!*fileHandle)
-        return;
-    fclose(*fileHandle);
-    *fileHandle = nullptr;
-    g_Stats.numOpenFiles--;
-}
-
 void IoThread::releaseLoadingRequest(LoadingThreadRequest* request)
 {
     unique_lock lk(mutexNew);
@@ -171,42 +142,18 @@ SavingThreadRequest* IoThread::getSavingRequest()
 
 void IoThread::save(SavingThreadRequest* request)
 {
-    if (!request->file->fileHandle)
+    if (request->file->openWrite())
     {
-        SWAG_ASSERT(!request->file->done);
-        for (int tryOpen = 0; tryOpen < 10; tryOpen++)
+        fwrite(request->buffer, 1, request->bufferSize, request->file->fileHandle);
+        if (request->lastOne)
         {
-            // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-            // Without that, fopen can fail due to compiling processes
-            if (request->file->firstSave)
-                IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "wtN", tryOpen == 9);
-            else
-                IoThread::openFile(&request->file->fileHandle, request->file->fileName.c_str(), "a+tN", tryOpen == 9);
-            if (request->file->fileHandle)
-            {
-                //setvbuf(file, nullptr, _IONBF, 0);
-                break;
-            }
-
-            Sleep(10);
+            request->file->close();
+            request->file->notifySave(true);
         }
-    }
-
-    auto file = request->file->fileHandle;
-    if (!file)
-        return;
-
-    request->file->firstSave = false;
-    fwrite(request->buffer, 1, request->bufferSize, file);
-
-    if (request->lastOne)
-    {
-        IoThread::closeFile(&request->file->fileHandle);
-        request->file->notifySave(true);
-    }
-    else if (request->flush)
-    {
-        request->file->notifySave(request->lastOne);
+        else if (request->flush)
+        {
+            request->file->notifySave(request->lastOne);
+        }
     }
 
     releaseSavingRequest(request);

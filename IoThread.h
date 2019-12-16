@@ -25,9 +25,6 @@ struct IoThread
 {
     IoThread();
 
-    static void openFile(FILE** fileHandle, const char* path, const char* mode, bool raiseError = true);
-    static void closeFile(FILE** fileHandle);
-
     void                  addLoadingRequest(LoadingThreadRequest* request);
     void                  releaseLoadingRequest(LoadingThreadRequest* request);
     LoadingThreadRequest* newLoadingRequest();

@@ -5,22 +5,65 @@
 #include "Diagnostic.h"
 #include "Workspace.h"
 #include "File.h"
+#include "Stats.h"
+
+void File::openFile(FILE** fileHandle, const char* path, const char* mode)
+{
+    *fileHandle = nullptr;
+    auto err    = fopen_s(fileHandle, path, mode);
+    if (fileHandle == nullptr)
+    {
+        char buf[256];
+        strerror_s(buf, err);
+        g_Log.error(format("error opening file '%s': '%s'", path, buf));
+        return;
+    }
+
+    g_Stats.numOpenFiles++;
+    g_Stats.maxOpenFiles = max(g_Stats.maxOpenFiles.load(), g_Stats.numOpenFiles.load());
+}
+
+void File::closeFile(FILE** fileHandle)
+{
+    if (!*fileHandle)
+        return;
+    fclose(*fileHandle);
+    *fileHandle = nullptr;
+    g_Stats.numOpenFiles--;
+}
 
 bool File::openRead()
 {
     if (fileHandle != nullptr)
         return true;
-    openedOnce = true;
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-    IoThread::openFile(&fileHandle, path.string().c_str(), "rbN");
+    File::openFile(&fileHandle, path.c_str(), "rbN");
     if (fileHandle == nullptr)
         return false;
+
+    openedOnce = true;
     setvbuf(fileHandle, nullptr, _IONBF, 0);
+    return true;
+}
+
+bool File::openWrite()
+{
+    if (fileHandle != nullptr)
+        return true;
+
+    if (!openedOnce)
+        File::openFile(&fileHandle, path.c_str(), "wtN");
+    else
+        File::openFile(&fileHandle, path.c_str(), "a+tN");
+    if (fileHandle == nullptr)
+        return false;
+
+    openedOnce = true;
     return true;
 }
 
 void File::close()
 {
-    IoThread::closeFile(&fileHandle);
+    File::closeFile(&fileHandle);
 }

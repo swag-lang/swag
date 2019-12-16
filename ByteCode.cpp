@@ -62,7 +62,7 @@ void ByteCode::print()
     g_Log.lock();
 
     g_Log.setColor(LogColor::Magenta);
-    g_Log.print(sourceFile->path.string());
+    g_Log.print(sourceFile->path);
     g_Log.print(", ");
     if (node)
     {
@@ -285,7 +285,7 @@ void ByteCode::print()
             auto bc = (ByteCode*) ip->b.pointer;
             SWAG_ASSERT(bc);
             g_Log.print("[");
-            g_Log.print(bc->sourceFile->path.string());
+            g_Log.print(bc->sourceFile->path);
             g_Log.print(", ");
             g_Log.print(bc->node->name);
             g_Log.print("]");
@@ -306,7 +306,7 @@ void ByteCode::print()
             auto bc = (ByteCode*) ip->a.pointer;
             SWAG_ASSERT(bc);
             g_Log.print("[");
-            g_Log.print(bc->sourceFile->path.string());
+            g_Log.print(bc->sourceFile->path);
             g_Log.print(", ");
             g_Log.print(bc->node ? bc->node->name : bc->name);
             g_Log.print(format(" (%lX)", (uint64_t) bc));

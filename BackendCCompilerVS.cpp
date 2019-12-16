@@ -141,7 +141,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/nologo ";
     clArguments += "/GS- ";
     clArguments += "/MD ";
-    clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
+    clArguments += "/Tc\"" + backend->bufferC.path + "\" ";
     string nameObj = buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
     switch (buildParameters->target.backendOptimizeLevel)
@@ -180,7 +180,7 @@ bool BackendCCompilerVS::compile()
         libArguments += "\"" + nameObj + "\" ";
 
         if (verbose)
-            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.path.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + vsTarget + "lib.exe\" " + libArguments;
         if (verbose)
@@ -220,7 +220,7 @@ bool BackendCCompilerVS::compile()
         }
 
         if (verbose)
-            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.path.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)

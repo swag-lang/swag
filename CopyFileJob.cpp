@@ -26,12 +26,12 @@ JobResult CopyFileJob::execute()
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    IoThread::openFile(&fsrc, sourcePath.c_str(), "rbN");
-    IoThread::openFile(&fdest, destPath.c_str(), "wbN");
+    File::openFile(&fsrc, sourcePath.c_str(), "rbN");
+    File::openFile(&fdest, destPath.c_str(), "wbN");
     if (!fsrc || !fdest)
     {
-        IoThread::closeFile(&fsrc);
-        IoThread::closeFile(&fdest);
+        File::closeFile(&fsrc);
+        File::closeFile(&fdest);
         return JobResult::ReleaseJob;
     }
 
@@ -48,8 +48,8 @@ JobResult CopyFileJob::execute()
             break;
     }
 
-    IoThread::closeFile(&fsrc);
-    IoThread::closeFile(&fdest);
+    File::closeFile(&fsrc);
+    File::closeFile(&fdest);
 
     return JobResult::ReleaseJob;
 }

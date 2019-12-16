@@ -14,11 +14,9 @@ struct OutputFile : public Concat, public File
     bool flush(bool lastOne);
     void notifySave(bool last);
 
-    string             fileName;
     mutex              mutexNotify;
     condition_variable condVar;
     ConcatBucket*      lastFlushedBucket = nullptr;
-    bool               firstSave         = true;
     bool               done              = false;
     bool               lastOne           = false;
 };

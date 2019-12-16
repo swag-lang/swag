@@ -48,7 +48,7 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
     case TokenId::CompilerFile:
         token.id          = TokenId::LiteralString;
         token.literalType = g_TypeMgr.typeInfoString;
-        token.text        = sourceFile->path.string();
+        token.text        = sourceFile->path;
         return;
     case TokenId::CompilerLine:
         token.id               = TokenId::LiteralNumber;
