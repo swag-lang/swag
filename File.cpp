@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "File.h"
-#include "ThreadManager.h"
-#include "IoThread.h"
 #include "Diagnostic.h"
-#include "Workspace.h"
 #include "File.h"
 #include "Stats.h"
 
@@ -29,7 +26,7 @@ void File::closeFile(FILE** fileHandle)
         return;
     fclose(*fileHandle);
     *fileHandle = nullptr;
-    SWAG_ASSERT(g_Stats.numOpenFiles);
+    SWAG_ASSERT(g_Stats.numOpenFiles.load());
     g_Stats.numOpenFiles--;
 }
 

@@ -9,6 +9,7 @@ IoThread::IoThread()
 {
     thread = new std::thread(&IoThread::loop, this);
     OS::setThreadName(thread, "IOThread");
+    _setmaxstdio(4096);
 }
 
 void IoThread::addLoadingRequest(LoadingThreadRequest* request)
@@ -167,6 +168,9 @@ void IoThread::load(LoadingThreadRequest* request)
         request->file->seekTo(request->seek);
         request->loadedSize = request->file->readTo(request->buffer);
     }
+
+    if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)
+        request->file->close();
 
     request->done = true;
     request->file->notifyLoad();
