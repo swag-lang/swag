@@ -3,7 +3,9 @@ namespace std.math
     /// A simple point with 2 float coordinates X and Y
 	public struct Point
 	{
+        /// X coordinate
 		x: f32
+        /// Y coordinate
         y: f32
 	}
 
@@ -58,10 +60,10 @@ namespace std.math
 
 		public
 		{
-            public
-    		{
-    			const Zero: Point(0, 0)
-            }
+            /// Represents a point with all coordinates to zero
+			const Zero: Point(0, 0)
+            /// Represents a point with all coordinates to one
+            const One: Point(1, 1)
 
             /// Set point to (0, 0)
 			func clear(using self)
@@ -84,8 +86,7 @@ namespace std.math
             /// Offset this point by a given value
             func offset(using self, value: f32)
             {
-                x += value
-                y += value
+                x, y += value
             }
 
             /// Offset this point by a given value
