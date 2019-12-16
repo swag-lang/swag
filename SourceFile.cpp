@@ -66,17 +66,17 @@ void SourceFile::seekTo(long seek)
     fseek(fileHandle, seek, SEEK_SET);
 }
 
-long SourceFile::readTo(char* _buffer)
+long SourceFile::readTo()
 {
-    return (long) fread(_buffer, 1, BUF_SIZE, fileHandle);
+    return (long) fread(buffer, 1, BUF_SIZE, fileHandle);
 }
 
 void SourceFile::loadRequest()
 {
+    buffer[0] = 0;
+
     LoadRequest req;
     req.seek       = fileSeek;
-    req.buffer     = buffer;
-    req.buffer[0]  = 0;
     req.loadedSize = 0;
     load(&req);
 
@@ -117,7 +117,7 @@ char SourceFile::getPrivateChar()
         {
             if (!openRead())
                 return 0;
-            bufferSize = readTo(buffer);
+            bufferSize = readTo();
             if (!checkFormat())
                 return false;
             fileSeek = BUF_SIZE;
@@ -306,7 +306,7 @@ void SourceFile::load(LoadRequest* request)
     if (openRead())
     {
         seekTo(request->seek);
-        request->loadedSize = readTo(request->buffer);
+        request->loadedSize = readTo();
     }
 
     if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)

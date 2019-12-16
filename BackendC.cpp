@@ -79,7 +79,6 @@ bool BackendC::compile(const BuildParameters& buildParameters)
         return true;
     }
 
-	SWAG_ASSERT(bufferC.lastOne);
     const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
     g_Log.messageHeaderCentered(header, module->name.c_str());
 

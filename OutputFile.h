@@ -17,5 +17,4 @@ struct OutputFile : public Concat, public File
     void save(SaveRequest* request);
 
     ConcatBucket* lastFlushedBucket = nullptr;
-    bool          lastOne           = false;
 };

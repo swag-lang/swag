@@ -22,7 +22,6 @@ bool OutputFile::flush(bool last)
         bucket = bucket->nextBucket;
     }
 
-    lastOne           = last;
     lastFlushedBucket = nullptr;
     if (last)
         close();

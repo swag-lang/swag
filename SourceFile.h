@@ -11,9 +11,8 @@ struct Scope;
 
 struct LoadRequest
 {
-    char* buffer     = nullptr;
-    long  seek       = 0;
-    long  loadedSize = 0;
+    long seek       = 0;
+    long loadedSize = 0;
 };
 
 enum class TextFormat
@@ -33,7 +32,7 @@ struct SourceFile : public File
 
     void cleanCache();
     void seekTo(long seek);
-    long readTo(char* buffer);
+    long readTo();
     void loadRequest();
     char getPrivateChar();
     bool checkFormat();
