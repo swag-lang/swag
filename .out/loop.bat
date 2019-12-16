@@ -1,3 +1,3 @@
 :loop
-swag test -w:f:/swag/std --rebuild --stats
+swag test -w:f:/swag/std --clean
 goto loop
