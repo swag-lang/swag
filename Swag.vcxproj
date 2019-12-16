@@ -202,7 +202,6 @@
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobThread.h" />
     <ClInclude Include="LanguageSpec.h" />
-    <ClInclude Include="IoThread.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
@@ -339,7 +338,6 @@
     <ClCompile Include="SyntaxJobVar_.cpp" />
     <ClCompile Include="TokenizerIdentifier_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
-    <ClCompile Include="IoThread.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

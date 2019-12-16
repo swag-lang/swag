@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
-#include "IoThread.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
 #include "Stats.h"
@@ -11,32 +10,26 @@ thread_local Pool<SourceFile> g_Pool_sourceFile;
 const auto                    BUF_SIZE = 2048;
 
 SourceFile::SourceFile()
-    : bufferSize{BUF_SIZE}
 {
-    buffers[0] = new char[bufferSize];
-    buffers[1] = new char[bufferSize];
+    buffer = new char[BUF_SIZE];
     cleanCache();
 }
 
 void SourceFile::cleanCache()
 {
-    requests[0]    = nullptr;
-    requests[1]    = nullptr;
-    buffersSize[0] = 0;
-    buffersSize[1] = 0;
-    bufferCurSeek  = 0;
-    bufferCurIndex = 0;
-    fileSeek       = 0;
-    doneLoading    = false;
+    bufferSize    = 0;
+    bufferCurSeek = 0;
+    fileSeek      = 0;
+    doneLoading   = false;
 }
 
-bool SourceFile::checkFormat(int bufferIndex)
+bool SourceFile::checkFormat()
 {
     // Read header
-    uint8_t c1 = buffers[bufferIndex][0];
-    uint8_t c2 = buffers[bufferIndex][1];
-    uint8_t c3 = buffers[bufferIndex][2];
-    uint8_t c4 = buffers[bufferIndex][3];
+    uint8_t c1 = buffer[0];
+    uint8_t c2 = buffer[1];
+    uint8_t c3 = buffer[2];
+    uint8_t c4 = buffer[3];
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
@@ -73,69 +66,28 @@ void SourceFile::seekTo(long seek)
     fseek(fileHandle, seek, SEEK_SET);
 }
 
-long SourceFile::readTo(char* buffer)
+long SourceFile::readTo(char* _buffer)
 {
-    return (long) fread(buffer, 1, bufferSize, fileHandle);
+    return (long) fread(_buffer, 1, BUF_SIZE, fileHandle);
 }
 
-void SourceFile::waitRequest(int reqNum)
+void SourceFile::buildRequest()
 {
-    while (true)
-    {
-        {
-            unique_lock lk(mutexNotify);
-            if (requests[reqNum]->done)
-                return;
-        }
+    LoadRequest req;
+    req.file       = this;
+    req.seek       = fileSeek;
+    req.buffer     = buffer;
+    req.buffer[0]  = 0;
+    req.loadedSize = 0;
+    File::load(&req);
 
-        auto job = g_ThreadMgr.getJob();
-        if (!job)
-        {
-            unique_lock lk(mutexNotify);
-            if (requests[reqNum]->done)
-                return;
-            condVar.wait(lk);
-            break;
-        }
+    bufferSize  = req.loadedSize;
+    doneLoading = req.loadedSize != BUF_SIZE ? true : false;
+    totalRead += req.loadedSize;
+    fileSeek += bufferSize;
 
-        g_ThreadMgr.executeOneJob(job);
-    }
-}
-
-void SourceFile::notifyLoad()
-{
-    unique_lock lk(mutexNotify);
-    condVar.notify_all();
-}
-
-void SourceFile::validateRequest(int reqNum)
-{
-    auto ioTh = g_ThreadMgr.ioThread;
-    auto req  = requests[reqNum];
-
-    buffersSize[reqNum] = req->loadedSize;
-    doneLoading         = req->loadedSize != bufferSize ? true : false;
-    totalRead += req->loadedSize;
-
-    ioTh->releaseLoadingRequest(req);
-    requests[reqNum] = nullptr;
     if (doneLoading)
         close();
-}
-
-void SourceFile::buildRequest(int reqNum)
-{
-    auto loadingTh = g_ThreadMgr.ioThread;
-    auto req       = loadingTh->newLoadingRequest();
-
-    req->file        = this;
-    req->seek        = fileSeek;
-    req->buffer      = buffers[reqNum];
-    req->buffer[0]   = 0;
-    requests[reqNum] = req;
-
-    loadingTh->addLoadingRequest(req);
-    fileSeek += bufferSize;
 }
 
 char SourceFile::getPrivateChar()
@@ -151,7 +103,7 @@ char SourceFile::getPrivateChar()
         return c == EOF ? 0 : (char) c;
     }
 
-    if (bufferCurSeek >= buffersSize[bufferCurIndex])
+    if (bufferCurSeek >= bufferSize)
     {
         // Done
         if (doneLoading)
@@ -160,43 +112,32 @@ char SourceFile::getPrivateChar()
             return 0;
         }
 
-        auto nextBufIndex = (bufferCurIndex + 1) % 2;
-
         // First time, open and read in sync. This is faster to open files in jobs that letting
         // the loading thread open files one by one
         if (!openedOnce)
         {
             if (!openRead())
                 return 0;
-            buffersSize[nextBufIndex] = readTo(buffers[nextBufIndex]);
-            if (!checkFormat(nextBufIndex))
+            bufferSize = readTo(buffer);
+            if (!checkFormat())
                 return false;
             fileSeek = BUF_SIZE;
         }
         else
         {
-            if (!requests[nextBufIndex])
-                buildRequest(nextBufIndex);
-            waitRequest(nextBufIndex);
-            validateRequest(nextBufIndex);
+            buildRequest();
             bufferCurSeek = 0;
         }
 
-        bufferCurIndex = (bufferCurIndex + 1) % 2;
-
-        // Make an async request to read the next buffer
-        if (!doneLoading)
-        {
-            nextBufIndex = (bufferCurIndex + 1) % 2;
-            buildRequest(nextBufIndex);
-        }
-
         // Be sure there's something in the current buffer
-        if (bufferCurSeek >= buffersSize[bufferCurIndex])
+        if (bufferCurSeek >= bufferSize)
+        {
+            close();
             return 0;
+        }
     }
 
-    char c = buffers[bufferCurIndex][bufferCurSeek++];
+    char c = buffer[bufferCurSeek++];
     return c;
 }
 
@@ -264,19 +205,12 @@ char32_t SourceFile::getChar(unsigned& offset)
     return '?';
 }
 
-void SourceFile::waitEndRequests()
-{
-    while (requests[bufferCurIndex] && !requests[bufferCurIndex]->done) {}
-    while (requests[(bufferCurIndex + 1) % 2] && !requests[(bufferCurIndex + 1) % 2]->done) {}
-}
-
 Utf8 SourceFile::getLine(long seek)
 {
     scoped_lock lk(mutexGetLine);
 
     if (!externalBuffer)
     {
-        waitEndRequests(); // Be sure there's no pending requests
         openRead();
         seekTo(seek + headerSize);
         directMode = true;

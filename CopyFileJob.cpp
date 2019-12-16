@@ -5,7 +5,6 @@
 #include "SourceFile.h"
 #include "semanticJob.h"
 #include "OS.h"
-#include "IoThread.h"
 
 thread_local Pool<CopyFileJob> g_Pool_copyFileJob;
 

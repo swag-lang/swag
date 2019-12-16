@@ -1,49 +1,33 @@
 #include "pch.h"
 #include "OutputFile.h"
 #include "ThreadManager.h"
-#include "IoThread.h"
 #include "Log.h"
 
-void OutputFile::flushBucket(ConcatBucket* bucket, bool flush, bool last)
+void OutputFile::flushBucket(ConcatBucket* bucket)
 {
+    SaveRequest req;
+
     lastFlushedBucket = bucket;
-    auto req          = g_ThreadMgr.ioThread->newSavingRequest();
-    req->file         = this;
-    req->buffer       = (char*) bucket->datas;
-    req->bufferSize   = bucket->count;
-    req->flush        = flush;
-    req->lastOne      = flush && last;
-    g_ThreadMgr.ioThread->addSavingRequest(req);
+    req.file          = this;
+    req.buffer        = (char*) bucket->datas;
+    req.bufferSize    = bucket->count;
+    save(&req);
 }
 
 bool OutputFile::flush(bool last)
 {
     bool result = true;
     auto bucket = lastFlushedBucket ? lastFlushedBucket->nextBucket : firstBucket;
-
-    if (bucket)
+    while (bucket)
     {
-        while (bucket)
-        {
-            flushBucket(bucket, bucket->nextBucket ? false : true, last);
-            bucket = bucket->nextBucket;
-        }
-
-        unique_lock lk(mutexNotify);
-        if (!done)
-            condVar.wait(lk);
+        flushBucket(bucket);
+        bucket = bucket->nextBucket;
     }
 
-    done              = false;
+    if (last)
+        close();
+    lastOne           = last;
     lastFlushedBucket = nullptr;
     clear();
     return result;
-}
-
-void OutputFile::notifySave(bool last)
-{
-    unique_lock lk(mutexNotify);
-    lastOne = last;
-    done    = true;
-    condVar.notify_one();
 }

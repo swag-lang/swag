@@ -26,13 +26,9 @@ struct SourceFile : public File
     void cleanCache();
     void seekTo(long seek);
     long readTo(char* buffer);
-    void notifyLoad();
-    void waitRequest(int reqNum);
-    void validateRequest(int reqNum);
-    void buildRequest(int reqNum);
+    void buildRequest();
     char getPrivateChar();
-    void waitEndRequests();
-    bool checkFormat(int bufferIndex);
+    bool checkFormat();
 
     Module*  module         = nullptr;
     AstNode* astRoot        = nullptr;
@@ -48,26 +44,22 @@ struct SourceFile : public File
     uint32_t  indexInModule = UINT32_MAX;
     BuildPass buildPass     = BuildPass::Full;
 
-    TextFormat                   textFormat = TextFormat::UTF8;
-    int                          bufferSize;
-    int                          headerSize = 0;
-    long                         fileSeek       = 0;
-    long                         bufferCurSeek  = 0;
-    int                          bufferCurIndex = 0;
-    char*                        buffers[2];
-    struct LoadingThreadRequest* requests[2];
-    long                         buffersSize[2];
-    mutex                        mutexNotify;
-    bool                         doneLoading = false;
-    bool                         directMode  = false;
-    bool                         formatDone  = false;
-    bool                         fromTests   = false;
-    bool                         generated   = false;
-    int                          totalRead   = 0;
-    condition_variable           condVar;
-    Scope*                       scopeRoot    = nullptr;
-    Scope*                       scopePrivate = nullptr;
-    shared_mutex                 mutexGetLine;
+    char*  buffer       = nullptr;
+    Scope* scopeRoot    = nullptr;
+    Scope* scopePrivate = nullptr;
+
+    TextFormat   textFormat    = TextFormat::UTF8;
+    int          headerSize    = 0;
+    long         fileSeek      = 0;
+    long         bufferCurSeek = 0;
+    long         bufferSize    = 0;
+    int          totalRead     = 0;
+    bool         doneLoading   = false;
+    bool         directMode    = false;
+    bool         formatDone    = false;
+    bool         fromTests     = false;
+    bool         generated     = false;
+    shared_mutex mutexGetLine;
 };
 
 extern thread_local Pool<SourceFile> g_Pool_sourceFile;

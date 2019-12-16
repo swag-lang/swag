@@ -4,7 +4,6 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "Os.h"
-#include "IoThread.h"
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 

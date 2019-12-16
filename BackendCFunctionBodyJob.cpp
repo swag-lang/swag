@@ -6,7 +6,6 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "ThreadManager.h"
-#include "IoThread.h"
 
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 
@@ -35,12 +34,11 @@ JobResult BackendCFunctionBodyJob::execute()
     auto firstBucket = concat.firstBucket;
     while (firstBucket)
     {
-        auto req        = g_ThreadMgr.ioThread->newSavingRequest();
-        req->file       = &backend->bufferC;
-        req->buffer     = (char*) firstBucket->datas;
-        req->bufferSize = firstBucket->count;
-        req->lastOne    = false;
-        g_ThreadMgr.ioThread->addSavingRequest(req);
+        SaveRequest req;
+        req.file       = &backend->bufferC;
+        req.buffer     = (char*) firstBucket->datas;
+        req.bufferSize = firstBucket->count;
+        File::save(&req);
         firstBucket = firstBucket->nextBucket;
     }
 

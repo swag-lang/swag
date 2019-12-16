@@ -3,6 +3,8 @@
 #include "Diagnostic.h"
 #include "File.h"
 #include "Stats.h"
+#include "SourceFile.h"
+#include "OutputFile.h"
 
 void File::openFile(FILE** fileHandle, const char* path, const char* mode)
 {
@@ -63,4 +65,25 @@ bool File::openWrite()
 void File::close()
 {
     File::closeFile(&fileHandle);
+}
+
+void File::save(SaveRequest* request)
+{
+    if (request->file->openWrite())
+    {
+        fwrite(request->buffer, 1, request->bufferSize, request->file->fileHandle);
+    }
+}
+
+void File::load(LoadRequest* request)
+{
+    request->loadedSize = 0;
+    if (request->file->openRead())
+    {
+        request->file->seekTo(request->seek);
+        request->loadedSize = request->file->readTo(request->buffer);
+    }
+
+    if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)
+        request->file->close();
 }

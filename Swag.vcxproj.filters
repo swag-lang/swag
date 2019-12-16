@@ -338,9 +338,6 @@
     <ClCompile Include="ModuleOutputExportJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="IoThread.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="ModulePrecompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -580,9 +577,6 @@
     </ClInclude>
     <ClInclude Include="ModuleOutputExportJob.h">
       <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="IoThread.h">
-      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="ModulePrecompileJob.h">
       <Filter>Backend</Filter>

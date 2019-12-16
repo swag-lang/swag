@@ -17,7 +17,6 @@ struct ThreadManager
 
     Job* getJob();
 
-    IoThread*          ioThread = nullptr;
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;
     vector<JobThread*> workerThreads;

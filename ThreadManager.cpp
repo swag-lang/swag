@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ThreadManager.h"
-#include "IoThread.h"
 #include "JobThread.h"
 #include "Stats.h"
 #include "Job.h"
@@ -13,11 +12,9 @@ void ThreadManager::init()
 {
     initDefaultContext();
 
-    ioThread = new IoThread();
-
     int numCores = std::thread::hardware_concurrency();
     if (g_CommandLine.numCores == 0)
-        g_CommandLine.numCores = numCores - 1;
+        g_CommandLine.numCores = numCores;
     int numWorkers     = g_CommandLine.numCores;
     numWorkers         = max(1, numWorkers);
     numWorkers         = min(numWorkers, numCores);
