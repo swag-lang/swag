@@ -156,12 +156,12 @@ void Module::addDependency(AstNode* importNode)
     }
 }
 
-void Module::setHasBeenBuilt(ModuleBuildResult buildResult)
+void Module::setHasBeenBuilt(uint32_t buildResult)
 {
     unique_lock lk(mutexDependency);
     if (hasBeenBuilt == buildResult)
         return;
-    hasBeenBuilt = buildResult;
+    hasBeenBuilt |= buildResult;
     dependentJobs.setRunning();
 }
 

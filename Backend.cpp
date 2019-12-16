@@ -438,6 +438,6 @@ bool Backend::generateExportFile()
         SWAG_CHECK(bufferSwg.flush(true));
     }
 
-    module->setHasBeenBuilt(ModuleBuildResult::ExportFile);
+    module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

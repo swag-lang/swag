@@ -27,12 +27,10 @@ struct ModuleDependency
     bool     generated = false;
 };
 
-enum class ModuleBuildResult
-{
-    None,
-    ExportFile,
-    Full,
-};
+static const uint32_t BUILDRES_NONE     = 0x00000000;
+static const uint32_t BUILDRES_EXPORT   = 0x00000001;
+static const uint32_t BUILDRES_COMPILER = 0x00000002;
+static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
@@ -90,11 +88,11 @@ struct Module
     AstNode*             mainIsDefined    = nullptr;
 
     void addDependency(AstNode* importNode);
-    void setHasBeenBuilt(ModuleBuildResult buildResult);
+    void setHasBeenBuilt(uint32_t buildResult);
 
     shared_mutex                  mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
-    ModuleBuildResult             hasBeenBuilt = ModuleBuildResult::None;
+    uint32_t                      hasBeenBuilt = BUILDRES_NONE;
 
     TypeTable typeTable;
 };

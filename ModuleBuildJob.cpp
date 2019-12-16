@@ -32,7 +32,7 @@ JobResult ModuleBuildJob::execute()
 
             auto        depModule = it->second;
             unique_lock lk1(depModule->mutexDependency);
-            if (depModule->hasBeenBuilt == ModuleBuildResult::None)
+            if ((depModule->hasBeenBuilt & BUILDRES_EXPORT) == 0)
             {
                 depModule->dependentJobs.add(this);
                 return JobResult::KeepJobAlive;
@@ -99,7 +99,7 @@ JobResult ModuleBuildJob::execute()
 
             auto        depModule = it->second;
             shared_lock lk(depModule->mutexDependency);
-            if (depModule->hasBeenBuilt != ModuleBuildResult::Full)
+            if (depModule->hasBeenBuilt != BUILDRES_FULL)
             {
                 depModule->dependentJobs.add(this);
                 return JobResult::KeepJobAlive;
@@ -259,7 +259,7 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    module->setHasBeenBuilt(ModuleBuildResult::Full);
+    module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;
 }
