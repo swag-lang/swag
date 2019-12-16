@@ -30,25 +30,6 @@ void SourceFile::cleanCache()
     doneLoading    = false;
 }
 
-bool SourceFile::open()
-{
-    if (fileHandle != nullptr)
-        return true;
-    openedOnce = true;
-
-    // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-    IoThread::openFile(&fileHandle, path.string().c_str(), "rbN");
-    if (fileHandle == nullptr)
-        return false;
-    setvbuf(fileHandle, nullptr, _IONBF, 0);
-    return true;
-}
-
-void SourceFile::close()
-{
-    IoThread::closeFile(&fileHandle);
-}
-
 bool SourceFile::checkFormat(int bufferIndex)
 {
     // Read header
@@ -185,7 +166,7 @@ char SourceFile::getPrivateChar()
         // the loading thread open files one by one
         if (!openedOnce)
         {
-            if (!open())
+            if (!openRead())
                 return 0;
             buffersSize[nextBufIndex] = readTo(buffers[nextBufIndex]);
             if (!checkFormat(nextBufIndex))
@@ -296,7 +277,7 @@ Utf8 SourceFile::getLine(long seek)
     if (!externalBuffer)
     {
         waitEndRequests(); // Be sure there's no pending requests
-        open();
+        openRead();
         seekTo(seek + headerSize);
         directMode = true;
     }

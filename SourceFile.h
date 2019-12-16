@@ -3,6 +3,7 @@
 #include "Utf8.h"
 #include "SourceLocation.h"
 #include "BuildPass.h"
+#include "File.h"
 struct Module;
 struct AstNode;
 struct Diagnostic;
@@ -13,7 +14,7 @@ enum class TextFormat
     UTF8,
 };
 
-struct SourceFile
+struct SourceFile : public File
 {
     SourceFile();
 
@@ -22,12 +23,10 @@ struct SourceFile
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
-    bool open();
     void cleanCache();
     void seekTo(long seek);
     long readTo(char* buffer);
     void notifyLoad();
-    void close();
     void waitRequest(int reqNum);
     void validateRequest(int reqNum);
     void buildRequest(int reqNum);
@@ -35,7 +34,6 @@ struct SourceFile
     void waitEndRequests();
     bool checkFormat(int bufferIndex);
 
-    fs::path path;
     Module*  module         = nullptr;
     AstNode* astRoot        = nullptr;
     uint8_t* externalBuffer = nullptr;
@@ -53,7 +51,6 @@ struct SourceFile
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;
     int                          headerSize = 0;
-    FILE*                        fileHandle;
     long                         fileSeek       = 0;
     long                         bufferCurSeek  = 0;
     int                          bufferCurIndex = 0;
@@ -63,7 +60,6 @@ struct SourceFile
     mutex                        mutexNotify;
     bool                         doneLoading = false;
     bool                         directMode  = false;
-    bool                         openedOnce  = false;
     bool                         formatDone  = false;
     bool                         fromTests   = false;
     bool                         generated   = false;

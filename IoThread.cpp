@@ -215,7 +215,7 @@ void IoThread::save(SavingThreadRequest* request)
 void IoThread::load(LoadingThreadRequest* request)
 {
     request->loadedSize = 0;
-    if (request->file->open())
+    if (request->file->openRead())
     {
         request->file->seekTo(request->seek);
         request->loadedSize = request->file->readTo(request->buffer);

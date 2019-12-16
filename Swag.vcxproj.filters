@@ -365,6 +365,9 @@
     <ClCompile Include="BackendCCompiler.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -604,6 +607,10 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyFileJob.h" />
+    <ClInclude Include="File.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

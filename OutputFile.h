@@ -1,8 +1,9 @@
 #pragma once
 #include "Concat.h"
+#include "File.h"
 struct SavingThreadRequest;
 
-struct OutputFile : public Concat
+struct OutputFile : public Concat, public File
 {
     OutputFile()
     {
@@ -17,7 +18,6 @@ struct OutputFile : public Concat
     mutex              mutexNotify;
     condition_variable condVar;
     ConcatBucket*      lastFlushedBucket = nullptr;
-    FILE*              fileHandle        = nullptr;
     bool               firstSave         = true;
     bool               done              = false;
     bool               lastOne           = false;

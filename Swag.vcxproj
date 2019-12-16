@@ -175,6 +175,7 @@
     <ClInclude Include="fficonfig.h" />
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleBuildJob.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="DocNodeJob.cpp" />
     <ClCompile Include="DocScopeJob.cpp" />
     <ClCompile Include="EnumerateModuleJob.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="DataSegment.cpp" />
