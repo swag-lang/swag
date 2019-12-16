@@ -1,13 +1,8 @@
 #include "pch.h"
-#include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "Scoped.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
-#include "Attribute.h"
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {

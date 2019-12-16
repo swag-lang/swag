@@ -1,11 +1,15 @@
 namespace std.math
 {
-    /// A simple rectangle  with 4 coordinates
+    /// A simple rectangle with 4 coordinates
 	public struct Rect
 	{
+        /// X coordinate
         x:      f32
+        /// Y coordinate
         y:      f32
+        /// Width of the rectangle
         width:  f32
+        /// Height of the rectangle
         height: f32
 	}
 
@@ -27,10 +31,8 @@ namespace std.math
 
 		public
 		{
-            public
-    		{
-    			const Zero: Rect(0, 0, 0, 0)
-            }
+            /// Represents a rectangle with all coordinates to zero
+			const Zero: Rect(0, 0, 0, 0)
 
             /// Set point to (0, 0)
 			func clear(using self)
@@ -48,6 +50,24 @@ namespace std.math
             func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
             {
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+            }
+
+            /// Returns true if this instance has a surface of zero (width and heigth are null)
+            func isEmpty(using self)->bool
+            {
+                return width == 0 && height == 0
+            }
+
+            /// Returns true if this instance has a surface of zero (width and heigth are null)
+            func isEmptyEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
+            {
+                return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+            }
+
+            /// Returns true if this instance has a positive surface (width and heigth greater than zero)
+            func isNormalized(using self)->bool
+            {
+                return width >= 0 && height >= 0
             }
 
             /// Offset this point by a given value

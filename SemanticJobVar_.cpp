@@ -121,9 +121,11 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       module     = sourceFile->module;
 
-    auto ptrDest = segment->addressNoLock(offset);
-    for (auto child : structNode->content->childs)
+    auto ptrDest    = segment->addressNoLock(offset);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
+    for (auto field : typeStruct->childs)
     {
+        auto child   = field->node;
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         if (varDecl->assignment)
         {
@@ -170,8 +172,8 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
         }
         else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->structNode, segment));
+            auto typeSub = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->structNode, segment));
             ptrDest = segment->addressNoLock(offset);
         }
     }
@@ -719,13 +721,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Register symbol with its type
     auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context,
-                                                                  node,
-                                                                  node->typeInfo,
-                                                                  genericType ? SymbolKind::GenericType : SymbolKind::Variable,
-                                                                  isCompilerConstant ? &node->computedValue : nullptr,
-                                                                  symbolFlags,
-                                                                  nullptr,
-                                                                  storageOffset);
+                                                                 node,
+                                                                 node->typeInfo,
+                                                                 genericType ? SymbolKind::GenericType : SymbolKind::Variable,
+                                                                 isCompilerConstant ? &node->computedValue : nullptr,
+                                                                 symbolFlags,
+                                                                 nullptr,
+                                                                 storageOffset);
     SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
