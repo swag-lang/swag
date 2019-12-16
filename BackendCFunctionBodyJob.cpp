@@ -35,10 +35,9 @@ JobResult BackendCFunctionBodyJob::execute()
     while (firstBucket)
     {
         SaveRequest req;
-        req.file       = &backend->bufferC;
         req.buffer     = (char*) firstBucket->datas;
         req.bufferSize = firstBucket->count;
-        File::save(&req);
+        backend->bufferC.save(&req);
         firstBucket = firstBucket->nextBucket;
     }
 

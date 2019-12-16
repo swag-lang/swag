@@ -71,15 +71,14 @@ long SourceFile::readTo(char* _buffer)
     return (long) fread(_buffer, 1, BUF_SIZE, fileHandle);
 }
 
-void SourceFile::buildRequest()
+void SourceFile::loadRequest()
 {
     LoadRequest req;
-    req.file       = this;
     req.seek       = fileSeek;
     req.buffer     = buffer;
     req.buffer[0]  = 0;
     req.loadedSize = 0;
-    File::load(&req);
+    load(&req);
 
     bufferSize  = req.loadedSize;
     doneLoading = req.loadedSize != BUF_SIZE ? true : false;
@@ -125,7 +124,7 @@ char SourceFile::getPrivateChar()
         }
         else
         {
-            buildRequest();
+            loadRequest();
             bufferCurSeek = 0;
         }
 
@@ -299,4 +298,17 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
         notes.push_back(note1);
 
     return report(diag, notes);
+}
+
+void SourceFile::load(LoadRequest* request)
+{
+    request->loadedSize = 0;
+    if (openRead())
+    {
+        seekTo(request->seek);
+        request->loadedSize = readTo(request->buffer);
+    }
+
+    if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)
+        close();
 }

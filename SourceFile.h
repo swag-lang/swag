@@ -9,6 +9,13 @@ struct AstNode;
 struct Diagnostic;
 struct Scope;
 
+struct LoadRequest
+{
+    char* buffer     = nullptr;
+    long  seek       = 0;
+    long  loadedSize = 0;
+};
+
 enum class TextFormat
 {
     UTF8,
@@ -22,11 +29,12 @@ struct SourceFile : public File
     Utf8     getLine(long seek);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
+    void     load(LoadRequest* request);
 
     void cleanCache();
     void seekTo(long seek);
     long readTo(char* buffer);
-    void buildRequest();
+    void loadRequest();
     char getPrivateChar();
     bool checkFormat();
 

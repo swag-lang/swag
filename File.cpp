@@ -66,24 +66,3 @@ void File::close()
 {
     File::closeFile(&fileHandle);
 }
-
-void File::save(SaveRequest* request)
-{
-    if (request->file->openWrite())
-    {
-        fwrite(request->buffer, 1, request->bufferSize, request->file->fileHandle);
-    }
-}
-
-void File::load(LoadRequest* request)
-{
-    request->loadedSize = 0;
-    if (request->file->openRead())
-    {
-        request->file->seekTo(request->seek);
-        request->loadedSize = request->file->readTo(request->buffer);
-    }
-
-    if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)
-        request->file->close();
-}

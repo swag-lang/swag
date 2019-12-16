@@ -6,9 +6,7 @@
 void OutputFile::flushBucket(ConcatBucket* bucket)
 {
     SaveRequest req;
-
     lastFlushedBucket = bucket;
-    req.file          = this;
     req.buffer        = (char*) bucket->datas;
     req.bufferSize    = bucket->count;
     save(&req);
@@ -24,10 +22,18 @@ bool OutputFile::flush(bool last)
         bucket = bucket->nextBucket;
     }
 
-    if (last)
-        close();
     lastOne           = last;
     lastFlushedBucket = nullptr;
+    if (last)
+        close();
     clear();
     return result;
+}
+
+void OutputFile::save(SaveRequest* request)
+{
+    if (openWrite())
+    {
+        fwrite(request->buffer, 1, request->bufferSize, fileHandle);
+    }
 }
