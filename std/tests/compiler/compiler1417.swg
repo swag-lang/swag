@@ -1,4 +1,4 @@
-#module compiler1415
+#module compiler1417
 #unittest error
 
 struct A
@@ -9,7 +9,7 @@ struct A
 impl A
 {
     #[swag.property]
-    func right()
+    func right(s, y, z: s32)
     {
     }
 }
