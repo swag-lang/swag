@@ -1265,7 +1265,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if (!node->callParameters)
             {
                 SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                SWAG_VERIFY(symbol->overloads.size() == 1, context->report({node, "missing function call parameters"}));
+                SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
                 SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
             }
 

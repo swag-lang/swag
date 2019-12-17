@@ -18,6 +18,7 @@ impl A
     var pt: A
     pt.x = 1
     pt.w = 10
-    pt.right = 10
-    @assert(pt.x == 10)
+    pt.right = 100
+    @assert(pt.x == 100)
+    //@assert(pt.right == 100)
 }
