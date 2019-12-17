@@ -1,12 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
 #include "SemanticJob.h"
-#include "Global.h"
-#include "Diagnostic.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
 #include "ByteCodeGenJob.h"
-#include "SymTable.h"
 
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
