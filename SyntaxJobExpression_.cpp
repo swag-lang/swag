@@ -821,10 +821,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             front->computeName();
             while (!leftNode->childs.empty())
             {
-                auto child              = leftNode->childs.front();
-                auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
-                affectNode->semanticFct = SemanticJob::resolveAffect;
-                affectNode->token       = savedtoken;
+                auto child        = leftNode->childs.front();
+                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
+                affectNode->token = savedtoken;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
@@ -861,10 +860,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             int idx = 0;
             while (!leftNode->childs.empty())
             {
-                auto child              = leftNode->childs.front();
-                auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
-                affectNode->semanticFct = SemanticJob::resolveAffect;
-                affectNode->token       = savedtoken;
+                auto child        = leftNode->childs.front();
+                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
+                affectNode->token = savedtoken;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
@@ -875,9 +873,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         // One normal simple affectation
         else
         {
-            auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
-            affectNode->semanticFct = SemanticJob::resolveAffect;
-            affectNode->token       = move(token);
+            auto affectNode   = Ast::newAffectOp(sourceFile, parent);
+            affectNode->token = move(token);
 
             Ast::addChildBack(affectNode, leftNode);
             forceTakeAddress(leftNode);

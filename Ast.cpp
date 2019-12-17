@@ -220,6 +220,14 @@ namespace Ast
         return node;
     }
 
+    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        auto node         = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveAffect;
+        node->flags |= AST_REVERSE_SEMANTIC;
+        return node;
+    }
+
     AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstStruct* node   = Ast::newNode(syntaxJob, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);

@@ -75,6 +75,7 @@ namespace Ast
     extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
 
     extern bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg);
     extern bool output(Concat& concat, AstNode* node, int indent = 0);

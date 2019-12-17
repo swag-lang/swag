@@ -1037,6 +1037,33 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
     return true;
 }
 
+bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol)
+{
+    auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    if (node->callParameters)
+        return true;
+    if (node->identifierRef->parent->kind != AstNodeKind::AffectOp)
+        return true;
+    if (node->identifierRef->parent->token.id != TokenId::SymEqual)
+        return true;
+
+    auto rightAffect = node->identifierRef->parent->childs[1];
+
+    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+    if (!node->callParameters)
+        node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
+    node->callParameters->childs.insert(node->callParameters->childs.end(), fctCallParam);
+    fctCallParam->parent      = node->callParameters;
+    fctCallParam->typeInfo    = rightAffect->typeInfo;
+    fctCallParam->token       = rightAffect->token;
+    fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+    Ast::removeFromParent(rightAffect);
+    Ast::addChildBack(fctCallParam, rightAffect);
+    node->identifierRef->parent->semanticFct = nullptr;
+
+    return true;
+}
+
 bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol)
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -1250,6 +1277,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             else
             {
                 node->doneFlags |= AST_DONE_UFCS;
+                SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
                 SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol));
             }
         }
