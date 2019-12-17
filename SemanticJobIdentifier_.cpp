@@ -1187,6 +1187,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
         if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
         {
+            // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
+            if (!node->callParameters)
+            {
+                SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
+                SWAG_VERIFY(symbol->overloads.size() == 1, context->report({node, "missing function call parameters"}));
+                SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
+            }
+
             if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
@@ -1197,13 +1205,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 node->doneFlags |= AST_DONE_UFCS;
                 auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
                 if (!node->callParameters)
-                {
-                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                    SWAG_VERIFY(symbol->overloads.size() == 1, context->report({node, "missing function call parameters"}));
-                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
                     node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
-                }
-
                 node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
                 fctCallParam->parent      = node->callParameters;
                 fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
@@ -1241,13 +1243,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 }
             }
         }
-        else if (symbol->kind == SymbolKind::Variable)
-        {
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-                return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-                return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
-        }
+    }
+
+    if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
+    {
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
+            return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+            return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
     }
 
     if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))

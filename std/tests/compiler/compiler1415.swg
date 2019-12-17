@@ -17,5 +17,5 @@ impl A
     var pt: A
     pt.x = 1
     pt.w = 10
-    A.right(pt) = 10
+    //A.right(pt) = 10
 }
