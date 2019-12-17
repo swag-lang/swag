@@ -12,11 +12,12 @@ impl A
     }
 }
 
+//#[swag.printbc]
 #test
 {
     var pt: A
     pt.x = 1
     pt.w = 10
     pt.right = 10
-    //@assert(pt.x == 10)
+    @assert(pt.x == 10)
 }

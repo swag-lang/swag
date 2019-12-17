@@ -1053,12 +1053,17 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
     node->callParameters->childs.insert(node->callParameters->childs.end(), fctCallParam);
-    fctCallParam->parent      = node->callParameters;
-    fctCallParam->typeInfo    = rightAffect->typeInfo;
+    fctCallParam->parent   = node->callParameters;
+    fctCallParam->typeInfo = rightAffect->typeInfo;
+    SWAG_ASSERT(fctCallParam->typeInfo);
     fctCallParam->token       = rightAffect->token;
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+    fctCallParam->inheritComputedValue(rightAffect);
     Ast::removeFromParent(rightAffect);
     Ast::addChildBack(fctCallParam, rightAffect);
+
+    node->flags &= ~AST_TAKE_ADDRESS;
+    node->identifierRef->parent->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
     node->identifierRef->parent->semanticFct = nullptr;
 
     return true;
@@ -1240,11 +1245,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    // Fill specified parameters
-    job->symMatch.reset();
-    if (node->flags & AST_TAKE_ADDRESS)
-        job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
-
     // If we have multiple symbols, we need to choose one
     SymbolName* symbol = nullptr;
     SWAG_CHECK(pickSymbol(context, node, &symbol));
@@ -1290,6 +1290,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
             return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
     }
+
+    // Fill specified parameters
+    job->symMatch.reset();
+    if (node->flags & AST_TAKE_ADDRESS)
+        job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
     if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
     {
