@@ -1,17 +1,7 @@
 #include "pch.h"
-#include "Global.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
-#include "ThreadManager.h"
-#include "Diagnostic.h"
 #include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "SymTable.h"
-#include "Scope.h"
-#include "CommandLine.h"
-#include "Module.h"
-#include "Attribute.h"
 
 bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
