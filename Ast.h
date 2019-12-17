@@ -38,7 +38,7 @@ namespace Ast
             if (g_CommandLine.generateDoc)
             {
                 auto childBack = parent->childs.empty() ? nullptr : parent->childs.back();
-                if (childBack && childBack->kind == AstNodeKind::DocComment)
+                if (childBack && (childBack->kind == AstNodeKind::DocComment || childBack->kind == AstNodeKind::AttrUse))
                 {
                     node->docSummary     = move(childBack->docSummary);
                     node->docDescription = move(childBack->docDescription);

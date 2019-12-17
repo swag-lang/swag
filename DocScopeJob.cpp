@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DocScopeJob.h"
 #include "DocNodeJob.h"
-#include "Scope.h"
 #include "ThreadManager.h"
 #include "OutputFile.h"
 #include "Module.h"
@@ -35,8 +34,8 @@ JobResult DocScopeJob::execute()
         return JobResult::ReleaseJob;
 
     OutputFile outFile;
-    scope->fullname  = scope->parentScope ? Scope::makeFullName(scope->parentScope->fullname, scope->name) : scope->name;
-    outFile.path = module->documentPath.string() + "/" + scope->fullname + ".html";
+    scope->fullname = scope->parentScope ? Scope::makeFullName(scope->parentScope->fullname, scope->name) : scope->name;
+    outFile.path    = module->documentPath.string() + "/" + scope->fullname + ".html";
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
     DocHtmlHelper::summary(outFile, scope->owner->docSummary);
@@ -83,6 +82,7 @@ JobResult DocScopeJob::execute()
     }
 
     map<Utf8, DocNodeJob*> nameToJob;
+    set<AstNode*>          properties;
     set<AstNode*>          functions;
     set<AstNode*>          operators;
 
@@ -97,6 +97,8 @@ JobResult DocScopeJob::execute()
             {
                 if (node->flags & AST_IS_SPECIAL_FUNC)
                     operators.insert(node);
+                else if (node->attributeFlags & ATTRIBUTE_PROPERTY)
+                    properties.insert(node);
                 else
                     functions.insert(node);
                 auto nodeJob    = g_Pool_docNodeJob.alloc();
@@ -125,6 +127,12 @@ JobResult DocScopeJob::execute()
             else
                 it->second->nodes.push_back(node);
         }
+    }
+
+    if (!properties.empty())
+    {
+        DocHtmlHelper::sectionTitle1(outFile, "Properties");
+        DocHtmlHelper::table(outFile, scope, properties);
     }
 
     if (!functions.empty())

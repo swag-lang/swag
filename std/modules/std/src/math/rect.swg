@@ -34,6 +34,13 @@ namespace std.math
             /// Represents a rectangle with all coordinates to zero
 			const Zero: Rect(0, 0, 0, 0)
 
+            /// right coordinate (x + width)
+            #[swag.property]
+            func right(using self)->f32
+            {
+                return x + width
+            }
+
             /// Set point to (0, 0)
 			func clear(using self)
 			{
