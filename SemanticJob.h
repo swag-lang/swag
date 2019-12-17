@@ -128,6 +128,7 @@ struct SemanticJob : public Job
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveIdentifier(SemanticContext* context);
+    static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
