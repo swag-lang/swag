@@ -2,21 +2,21 @@ using swag
 
 struct A
 {
-    x: s64
+    x: s64 = 10
 }
 
 impl A
 {
     #[inline]
-    func right(using self)->s64
+    func right(self)->s64
     {
         return self.x + self.x
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var pt: A
-    @assert(pt.right() == 0)
+    @assert(pt.right() == 20)
 }

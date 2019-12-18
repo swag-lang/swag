@@ -234,8 +234,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Reference to an inline parameter : the registers are directly stored in the overload symbol
     if (resolved->flags & OVERLOAD_VAR_INLINE)
     {
-        node->resultRegisterRC = resolved->registers;
-        SWAG_ASSERT(!node->resultRegisterRC.canFree);
+        // We need to copy register, and not use it directly, because the register can be changed by
+        // some code after (like when dereferencing something)
+        reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
+        for (int i = 0; i < node->resultRegisterRC.size(); i++)
+            emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[i], resolved->registers[i]);
 
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
