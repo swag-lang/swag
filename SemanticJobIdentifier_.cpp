@@ -1103,8 +1103,21 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
-        Ast::removeFromParent(identifierRef->previousResolvedNode);
-        Ast::addChildBack(idRef, identifierRef->previousResolvedNode);
+        // Move all previous references to the one we want to pass as parameter
+        // X.Y.call(...) => call(X.Y, ...)
+        while (prevIdRef->childs.size())
+        {
+            auto copyChild = prevIdRef->childs.front();
+            Ast::removeFromParent(copyChild);
+            Ast::addChildBack(idRef, copyChild);
+            if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
+                ((AstIdentifier*) copyChild)->identifierRef = idRef;
+            if (copyChild == identifierRef->previousResolvedNode)
+            {
+                copyChild->flags |= AST_TO_UFCS;
+                break;
+            }
+        }
     }
 
     identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
