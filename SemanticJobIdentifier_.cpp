@@ -1082,12 +1082,11 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->token       = identifierRef->previousResolvedNode->token;
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
 
+    auto prevIdRef = CastAst<AstIdentifierRef>(identifierRef->previousResolvedNode->parent, AstNodeKind::IdentifierRef);
+    auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
     if (symbol->kind == SymbolKind::Variable)
     {
         // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
-        auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
-        auto prevIdRef = CastAst<AstIdentifierRef>(identifierRef->previousResolvedNode->parent, AstNodeKind::IdentifierRef);
-
         // Copy all previous references to the one we want to pass as parameter
         // X.Y.call(...) => X.Y.call(X.Y, ...)
         for (auto child : prevIdRef->childs)
@@ -1101,16 +1100,14 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
                 break;
             }
         }
-
-        identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
     }
     else
     {
-        auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
         Ast::removeFromParent(identifierRef->previousResolvedNode);
         Ast::addChildBack(idRef, identifierRef->previousResolvedNode);
     }
 
+    identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
     return true;
 }
 
