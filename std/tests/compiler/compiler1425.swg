@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    #[swag.inline]
+    #[swag.property, swag.inline]
     func right(using self)->s64 
     {
         return x
@@ -16,5 +16,5 @@ impl A
 #test
 {
     var pt: A
-    @assert(pt.right() == 100)
+    @assert(pt.right == 100)
 }
