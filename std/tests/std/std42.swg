@@ -1,8 +1,12 @@
 #import "std"
 using std.math
 
+//#[swag.printbc]
 #test
 {
     var rect: Rect(0, 0, 10, 10)
     @assert(rect.right == 10)
+    rect.offset(10)
+    @assert(rect.x == 10)
+    @assert(rect.right == 20)
 }

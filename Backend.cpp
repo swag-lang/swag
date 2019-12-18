@@ -36,6 +36,8 @@ bool Backend::emitAttributes(AstNode* node)
         CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
+    if (node->attributeFlags & ATTRIBUTE_PROPERTY)
+        CONCAT_FIXED_STR(bufferSwg, "\t#[property]\n");
     return true;
 }
 
