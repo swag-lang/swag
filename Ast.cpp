@@ -280,11 +280,17 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
-        node->name             = name;
         node->semanticFct      = SemanticJob::resolveIdentifierRef;
+        return node;
+    }
+
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstIdentifierRef* node = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
+        node->name             = name;
         if (syntaxJob)
             node->inheritTokenLocation(syntaxJob->token);
 

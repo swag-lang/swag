@@ -1109,8 +1109,10 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
+        auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
+        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
         Ast::removeFromParent(identifierRef->previousResolvedNode);
-        Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+        Ast::addChildBack(idRef, identifierRef->previousResolvedNode);
     }
 
     return true;
