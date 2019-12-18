@@ -284,6 +284,7 @@ namespace Ast
     {
         AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
         node->semanticFct      = SemanticJob::resolveIdentifierRef;
+        node->byteCodeFct      = ByteCodeGenJob::emitIdentifierRef;
         return node;
     }
 

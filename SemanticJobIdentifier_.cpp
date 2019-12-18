@@ -1085,9 +1085,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     if (symbol->kind == SymbolKind::Variable)
     {
         // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
-        auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
-        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
-
+        auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
         auto prevId    = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
         auto prevIdRef = prevId->identifierRef;
 
@@ -1109,8 +1107,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
-        auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
-        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
+        auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
         Ast::removeFromParent(identifierRef->previousResolvedNode);
         Ast::addChildBack(idRef, identifierRef->previousResolvedNode);
     }
