@@ -31,7 +31,7 @@ namespace std.math
 
         public
 		{
-            #[swag.property]
+            #[swag.property, swag.inline]
             {
                 /// right coordinate (x + width)
                 func right(using self)->f32

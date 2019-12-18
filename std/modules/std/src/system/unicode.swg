@@ -1,5 +1,5 @@
 namespace std.unicode
-{      
+{
     public enum UnicodeCategory : u8
     {
         UppercaseLetter
@@ -30,10 +30,10 @@ namespace std.unicode
         MathSymbol
         CurrencySymbol
         ModifierSymbol
-        OtherSymbol 
+        OtherSymbol
         OtherNotAssigned
     }
-    
+
     #[swag.flags]
     enum SubCateg
     {
@@ -44,9 +44,9 @@ namespace std.unicode
         Symbol
         Separator
     }
-    
+
     var g_subCateg: [@countof(UnicodeCategory)] SubCateg = ?
-    
+
     #init
     {
         using UnicodeCategory
@@ -71,18 +71,18 @@ namespace std.unicode
         g_subCateg[cast(u32) LineSeparator]             = Separator
         g_subCateg[cast(u32) ParagraphSeparator]        = Separator
     }
-    
+
     #[swag.inline, swag.constexpr]
     public
     {
         func isLatin1(c: char)  => c <= 0xFF
         func isAscii(c: char)   => c <= 0x7F
-    } 
-    
+    }
+
     #[swag.constexpr]
     public
     {
-        func isLetter(uc: UnicodeCategory)          => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Letter)        
+        func isLetter(uc: UnicodeCategory)          => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Letter)
         func isLetterOrDigit(uc: UnicodeCategory)   => cast(bool) (g_subCateg[cast(u32) uc] & (SubCateg.Letter | SubCateg.Digit))
         func isPunctuation(uc: UnicodeCategory)     => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Punctuation)
         func isSymbol(uc: UnicodeCategory)          => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Symbol)
@@ -94,28 +94,28 @@ namespace std.unicode
                 return latin1.charCategory[cast(u8) c]
             return UnicodeCategory.OtherNotAssigned // TODO
         }
-        
+
         func isWhiteSpace(c: char)->bool
         {
             if isLatin1(c)
                 return latin1.isWhiteSpace(c)
             return isSeparator(getCategory(c))
         }
-        
+
         func isLetter(c: char)->bool
         {
             if isLatin1(c)
                 return latin1.isLetter(c)
             return isLetter(getCategory(c))
         }
-        
+
         func isLetterOrDigit(c: char)->bool
         {
             if isLatin1(c)
                 return latin1.isLetterOrDigit(c)
             return isLetterOrDigit(getCategory(c))
-        }        
-        
+        }
+
         func isDigit(c: char)->bool
         {
             if isLatin1(c)
