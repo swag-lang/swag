@@ -29,17 +29,40 @@ namespace std.math
             }
         }
 
+        public
+		{
+            #[swag.property]
+            {
+                /// right coordinate (x + width)
+                func right(using self)->f32
+                {
+                    return x + width
+                }
+
+                /// right coordinate (x + width)
+                func right(using self, value: f32)
+                {
+                    width = value - x
+                }
+
+                /// bottom coordinate (y + height)
+                func bottom(using self)->f32
+                {
+                    return y + height
+                }
+
+                /// bottom coordinate (y + height)
+                func bottom(using self, value: f32)
+                {
+                    height = value - y
+                }
+            }
+        }
+
 		public
 		{
             /// Represents a rectangle with all coordinates to zero
 			const Zero: Rect(0, 0, 0, 0)
-
-            /// right coordinate (x + width)
-            #[swag.property]
-            func right(using self)->f32
-            {
-                return x + width
-            }
 
             /// Set point to (0, 0)
 			func clear(using self)

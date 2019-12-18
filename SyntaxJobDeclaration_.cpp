@@ -136,6 +136,20 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     return true;
 }
 
+bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        SWAG_CHECK(doTopLevelInstruction(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    return true;
+}
+
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
@@ -352,7 +366,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doCurlyStatement(parent));
+        SWAG_CHECK(doGlobalCurlyStatement(parent));
         break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));

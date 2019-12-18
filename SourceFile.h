@@ -41,7 +41,7 @@ struct SourceFile : public File
     AstNode* astRoot        = nullptr;
     uint8_t* externalBuffer = nullptr;
     uint32_t externalSize   = 0;
-    int      seekExternal   = 0;
+    uint32_t seekExternal   = 0;
 
     uint64_t  writeTime     = 0;
     int       numErrors     = 0;
