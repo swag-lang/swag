@@ -1086,8 +1086,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     {
         // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
         auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
-        auto prevId    = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
-        auto prevIdRef = prevId->identifierRef;
+        auto prevIdRef = CastAst<AstIdentifierRef>(identifierRef->previousResolvedNode->parent, AstNodeKind::IdentifierRef);
 
         // Copy all previous references to the one we want to pass as parameter
         // X.Y.call(...) => X.Y.call(X.Y, ...)
