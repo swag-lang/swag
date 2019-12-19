@@ -33,14 +33,17 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                 {
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job        = g_Pool_syntaxJob.alloc();
-                        auto file       = g_Pool_sourceFile.alloc();
-                        job->sourceFile = file;
-                        file->fromTests = theModule->fromTests;
-                        file->path      = tmp + "\\" + cFileName;
-                        file->writeTime = writeTime;
-                        theModule->addFile(file);
-                        g_ThreadMgr.addJob(job);
+                        if (!theModule->fromTests || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
+                        {
+                            auto job        = g_Pool_syntaxJob.alloc();
+                            auto file       = g_Pool_sourceFile.alloc();
+                            job->sourceFile = file;
+                            file->fromTests = theModule->fromTests;
+                            file->path      = tmp + "\\" + cFileName;
+                            file->writeTime = writeTime;
+                            theModule->addFile(file);
+                            g_ThreadMgr.addJob(job);
+                        }
                     }
                 }
             }

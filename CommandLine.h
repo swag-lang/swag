@@ -18,6 +18,7 @@ struct CommandLine
     bool   addBootstrap = true;
     string workspacePath;
     string fileFilter;
+    string testFilter;
     int    tabSize = 4;
 
     // Test

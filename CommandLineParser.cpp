@@ -26,6 +26,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--doc", nullptr, CommandLineType::Bool, &cmdLine->generateDoc);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
+    addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
@@ -33,13 +34,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--config", nullptr, CommandLineType::String, &cmdLine->config);
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64");
-
-    //cmdLine->cleanTarget = false;
-    //cmdLine->workspacePath = "f:/swag/std";
-    //cmdLine->fileFilter    = "compiler1412.swg";
-    //cmdLine->addRuntimeModule = false;
-    //cmdLine->rebuild     = true;
-    //cmdLine->generateDoc = true;
 }
 
 void CommandLineParser::logArguments()

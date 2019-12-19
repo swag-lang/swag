@@ -98,13 +98,23 @@ namespace std
 
             func opPostCopy(using self)
             {
-                oldBuffer := buffer
-                if oldBuffer
+                if !buffer
+                    return
+                if length + 1 <= SmallSize
+                    buffer = acast &size
+                else
                 {
+                    oldBuffer := buffer
                     buffer = null
                     reserve(self, length + 1)
                     memory.copy(buffer, oldBuffer, length + 1)
                 }
+            }
+
+            func opDrop(using self)
+            {
+                if buffer && buffer != acast &size
+                    free(self)
             }
         }
     }

@@ -572,6 +572,16 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::U64)
         return true;
 
+    if (fromType->kind == TypeInfoKind::Pointer)
+    {
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+                fromNode->typeInfo = g_TypeMgr.typeInfoU64;
+            return true;
+        }
+    }
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -1886,19 +1896,19 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::Pointer && (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface))
     {
         auto typePtr = static_cast<TypeInfoPointer*>(toType);
-		if (typePtr->ptrCount == 1)
-		{
-			if (typePtr->finalType->isNative(NativeTypeKind::Void) || typePtr->finalType->isSame(fromType, ISSAME_CAST))
-			{
-				if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
-				{
-					fromNode->castedTypeInfo = fromNode->typeInfo;
-					fromNode->typeInfo = toType;
-				}
+        if (typePtr->ptrCount == 1)
+        {
+            if (typePtr->finalType->isNative(NativeTypeKind::Void) || typePtr->finalType->isSame(fromType, ISSAME_CAST))
+            {
+                if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = toType;
+                }
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
     }
 
     // String <=> null
