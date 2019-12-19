@@ -5,9 +5,7 @@
 #include "Ast.h"
 #include "SourceFile.h"
 #include "Module.h"
-#include "SemanticJob.h"
 #include "TypeManager.h"
-#include "ThreadManager.h"
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
@@ -190,9 +188,12 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
-        askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ContextResult::Pending)
-            return true;
+        if (!(typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
     }
 
     if (!needDrop)
@@ -254,23 +255,41 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
     }
 
-    // Then call user drop if defined
-    if (typeInfoStruct->opUserDropFct)
-    {
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeInfoStruct->opUserDropFct->bc);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opUserDropFct->bc;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
-    }
+    // Then call user function if defined
+    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserDropFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
     //opDrop->print();
     return true;
+}
+
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl)
+{
+    if (!funcDecl)
+        return;
+
+    emitInstruction(context, ByteCodeOp::RAFromStackParam64, 0, 24);
+    emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+
+    if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcDecl;
+        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+        funcDecl->flags |= AST_USED_FOREIGN;
+    }
+    else
+    {
+
+        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+        SWAG_ASSERT(funcDecl->bc);
+        inst->a.pointer = (uint8_t*) funcDecl->bc;
+        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+    }
+
+    emitInstruction(context, ByteCodeOp::IncSP, 8);
 }
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -303,9 +322,12 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ContextResult::Pending)
-            return true;
+        if (!(typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
     }
 
     if (!needPostMove)
@@ -367,17 +389,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
     }
 
-    // Then call user postmove if defined
-    if (typeInfoStruct->opUserPostMoveFct)
-    {
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeInfoStruct->opUserPostMoveFct->bc);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opUserPostMoveFct->bc;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
-    }
+    // Then call user function if defined
+    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -414,9 +427,12 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ContextResult::Pending)
-            return true;
+        if (!(typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
     }
 
     if (!needPostCopy)
@@ -478,17 +494,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
     }
 
-    // Then call user postcopy if defined
-    if (typeInfoStruct->opUserPostCopyFct)
-    {
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeInfoStruct->opUserPostCopyFct->bc);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opUserPostCopyFct->bc;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
-    }
+    // Then call user function if defined
+    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);

@@ -90,11 +90,11 @@ namespace std
                     #assert(false, "invalid binary operator '" ~ op ~ "'")
             }
 
-            /*func opPostMove(using self)
+            func opPostMove(using self)
             {
                 buffer = null
                 length = 0
-            }*/
+            }
         }
     }
 
