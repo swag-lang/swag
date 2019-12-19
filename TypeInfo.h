@@ -103,6 +103,7 @@ static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
 static const uint32_t TYPEINFO_IN_CONCRETE_LIST         = 0x00100000;
 static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00200000;
 static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x00400000;
+static const uint32_t TYPEINFO_STRUCT_NO_POST_FROM_MOVE = 0x00800000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -578,6 +579,8 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opPostCopy             = nullptr;
     AstNode*               opUserPostMoveFct      = nullptr;
     ByteCode*              opPostMove             = nullptr;
+    AstNode*               opUserPostFromMoveFct  = nullptr;
+    ByteCode*              opPostFromMove         = nullptr;
     AstNode*               opUserDropFct          = nullptr;
     ByteCode*              opDrop                 = nullptr;
     uint32_t               cptRemainingInterfaces = 0;
@@ -594,7 +597,7 @@ struct TypeInfoAlias : public TypeInfo
     void computeName() override
     {
         rawType->computeName();
-        name = rawType->name;
+        name     = rawType->name;
         fullname = rawType->getFullName();
     }
 

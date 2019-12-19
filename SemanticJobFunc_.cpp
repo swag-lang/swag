@@ -346,6 +346,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
+        else if (funcNode->name == "opPostFromMove")
+        {
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
+            typeStruct->opUserPostFromMoveFct = funcNode;
+        }
         else if (funcNode->name == "opDrop")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);

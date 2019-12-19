@@ -375,6 +375,99 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     return true;
 }
 
+bool ByteCodeGenJob::generateStruct_opPostFromMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_FROM_MOVE)
+        return true;
+    if (typeInfoStruct->opPostFromMove)
+        return true;
+
+    auto sourceFile = context->sourceFile;
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+
+    // Do we need a postmove ?
+    bool needPostFromMove = false;
+
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opPostFromMove");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->addDependentJob(context->job);
+            context->job->setPending();
+            return true;
+        }
+    }
+
+    // Need to wait for function full semantic resolve
+    if (typeInfoStruct->opUserPostFromMoveFct)
+    {
+        needPostFromMove = true;
+        if (!(typeInfoStruct->opUserPostFromMoveFct->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostFromMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
+    }
+
+    if (!needPostFromMove)
+    {
+        for (auto typeParam : typeInfoStruct->childs)
+        {
+            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+            if (typeVar->kind != TypeInfoKind::Struct)
+                continue;
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            waitStructGenerated(context, typeStructVar);
+            if (context->result == ContextResult::Pending)
+                return true;
+            generateStruct_opPostFromMove(context, typeStructVar);
+            if (context->result == ContextResult::Pending)
+                return true;
+            if (typeStructVar->opPostFromMove)
+                needPostFromMove = true;
+        }
+    }
+
+    if (!needPostFromMove)
+    {
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_FROM_MOVE;
+        return true;
+    }
+
+    auto opPostFromMove            = g_Pool_byteCode.alloc();
+    opPostFromMove->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
+    typeInfoStruct->opPostFromMove = opPostFromMove;
+    opPostFromMove->sourceFile     = sourceFile;
+    opPostFromMove->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostFromMoveGenerated";
+    replaceAll(opPostFromMove->name, '.', '_');
+    opPostFromMove->maxReservedRegisterRC = 3;
+    opPostFromMove->compilerGenerated     = true;
+    sourceFile->module->addByteCodeFunc(opPostFromMove);
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opPostFromMove;
+
+    for (auto typeParam : typeInfoStruct->childs)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostFromMoveFct, typeStructVar->opPostFromMove, typeParam->offset);
+    }
+
+    // Then call user function if defined
+    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostFromMoveFct);
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+    return true;
+}
+
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     scoped_lock lk(typeInfoStruct->mutex);
@@ -500,6 +593,9 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
         SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
         if (context->result == ContextResult::Pending)
             return true;
+        SWAG_CHECK(generateStruct_opPostFromMove(context, typeInfoStruct));
+        if (context->result == ContextResult::Pending)
+            return true;
     }
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
@@ -535,6 +631,16 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // A move
     else
     {
+        if (typeInfoStruct->opPostFromMove)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+            SWAG_ASSERT(typeInfoStruct->opPostFromMove);
+            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostFromMove;
+            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+        }
+
         if (typeInfoStruct->opPostMove)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
