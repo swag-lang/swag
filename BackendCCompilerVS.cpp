@@ -119,7 +119,8 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    if (buildParameters->target.backendDebugInformations)
+    bool   debugMode   = buildParameters->target.backendDebugInformations;
+    if (debugMode)
     {
         fs::path pdbPath = buildParameters->destFile + buildParameters->postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
@@ -204,7 +205,7 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (buildParameters->target.backendDebugInformations)
+        if (debugMode)
             linkArguments += "/DEBUG ";
 
         if (buildParameters->type == BackendOutputType::DynamicLib)
