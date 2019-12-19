@@ -95,6 +95,17 @@ namespace std
                 buffer = null
                 length = 0
             }
+
+            func opPostCopy(using self)
+            {
+                oldBuffer := buffer
+                if oldBuffer
+                {
+                    buffer = null
+                    reserve(self, length + 1)
+                    memory.copy(buffer, oldBuffer, length + 1)
+                }
+            }
         }
     }
 
