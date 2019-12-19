@@ -111,11 +111,11 @@ namespace std
                 }
             }
 
-            func opDrop(using self)
+            /*func opDrop(using self)
             {
                 if buffer && buffer != acast &size
-                    free(self)
-            }
+					free(self)
+            }*/
         }
     }
 

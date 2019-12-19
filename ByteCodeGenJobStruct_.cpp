@@ -239,20 +239,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
-
-        // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (typeParam->offset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB)->b.u32 = typeParam->offset;
-
-        // Call drop
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeStructVar->opDrop);
-        inst->a.pointer = (uint8_t*) typeStructVar->opDrop;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+        emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, typeParam->offset);
     }
 
     // Then call user function if defined
@@ -265,12 +252,14 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     return true;
 }
 
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl)
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, uint32_t offset)
 {
     if (!funcDecl)
         return;
 
     emitInstruction(context, ByteCodeOp::RAFromStackParam64, 0, 24);
+    if (offset)
+        emitInstruction(context, ByteCodeOp::IncPointerVB, 0)->b.u32 = offset;
     emitInstruction(context, ByteCodeOp::PushRAParam, 0);
 
     if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
@@ -279,14 +268,15 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         inst->a.pointer = (uint8_t*) funcDecl;
         inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
         funcDecl->flags |= AST_USED_FOREIGN;
+        SWAG_ASSERT(inst->a.pointer);
     }
     else
     {
 
-        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(funcDecl->bc);
-        inst->a.pointer = (uint8_t*) funcDecl->bc;
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        inst->a.pointer = (uint8_t*) (funcDecl ? funcDecl->bc : bc);
         inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+        SWAG_ASSERT(inst->a.pointer);
     }
 
     emitInstruction(context, ByteCodeOp::IncSP, 8);
@@ -373,20 +363,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
-
-        // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (typeParam->offset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = typeParam->offset;
-
-        // Call postmove
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeStructVar->opPostMove);
-        inst->a.pointer = (uint8_t*) typeStructVar->opPostMove;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, typeParam->offset);
     }
 
     // Then call user function if defined
@@ -478,20 +456,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
-
-        // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (typeParam->offset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = typeParam->offset;
-
-        // Call postcopy
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(typeStructVar->opPostCopy);
-        inst->a.pointer = (uint8_t*) typeStructVar->opPostCopy;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, typeParam->offset);
     }
 
     // Then call user function if defined
