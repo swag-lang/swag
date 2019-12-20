@@ -125,12 +125,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
 
         // Default initialization
-        bool done = false;
-
-        // Whatever, generated opInit function, as the user can call it
         if (typeVar->kind == TypeInfoKind::Struct)
         {
-            // Function call if necessary
             auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
             if (typeVarStruct->opInit)
             {
@@ -139,11 +135,13 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 inst->a.pointer = (uint8_t*) typeVarStruct->opInit;
                 inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
                 emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
-                done = true;
+            }
+            else
+            {
+                SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
             }
         }
-
-        if (!done)
+        else
         {
             SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
         }
