@@ -96,7 +96,7 @@ void Workspace::addBootstrap()
 
 void Workspace::setupPaths()
 {
-    workspacePath = g_CommandLine.workspacePath;
+    workspacePath = fs::absolute(g_CommandLine.workspacePath);
     testsPath     = workspacePath;
     testsPath.append("tests/");
     modulesPath = workspacePath;
