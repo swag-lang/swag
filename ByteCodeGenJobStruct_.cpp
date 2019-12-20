@@ -131,10 +131,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             if (typeVarStruct->opInit)
             {
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-                inst->a.pointer = (uint8_t*) typeVarStruct->opInit;
-                inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-                emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+                emitOpCallUser(&cxt, nullptr, typeVarStruct->opInit, false);
             }
             else
             {
@@ -251,7 +248,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset)
 {
-    if (!funcDecl)
+    if (!funcDecl && !bc)
         return;
 
     if (pushParam)
@@ -262,7 +259,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         emitInstruction(context, ByteCodeOp::PushRAParam, 0);
     }
 
-    if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (funcDecl && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
