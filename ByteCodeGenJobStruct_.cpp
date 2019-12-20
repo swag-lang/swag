@@ -617,11 +617,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
         if (typeInfoStruct->opPostCopy)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-            SWAG_ASSERT(typeInfoStruct->opPostCopy);
-            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopy;
-            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitOpCallUser(context, nullptr, typeInfoStruct->opPostCopy, false);
         }
     }
 
@@ -631,21 +627,13 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
         if (typeInfoStruct->opPostFromMove)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-            SWAG_ASSERT(typeInfoStruct->opPostFromMove);
-            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostFromMove;
-            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitOpCallUser(context, nullptr, typeInfoStruct->opPostFromMove, false);
         }
 
         if (typeInfoStruct->opPostMove)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-            SWAG_ASSERT(typeInfoStruct->opPostMove);
-            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostMove;
-            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitOpCallUser(context, nullptr, typeInfoStruct->opPostMove, false);
         }
     }
 
