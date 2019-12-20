@@ -1,4 +1,3 @@
-/*
 using swag
 
 struct A
@@ -10,10 +9,10 @@ var G: s32
 
 impl A
 {
-    func opPostFromMove(using self)
+    func opPostMove(using self)
     {
         G += 1
-        @assert(x == 10)
+        @assert(x == 20)
     }
 }
 
@@ -23,7 +22,8 @@ impl A
     
     var a: A
     var b: A
+	b.x = 20
     a = move b
     @assert(G == 1)
-	@assert(b.x == 0)
-}*/
+	@assert(b.x == 10)
+}
