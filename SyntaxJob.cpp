@@ -151,7 +151,8 @@ JobResult SyntaxJob::execute()
 
     bool result = true;
     bool ok     = tokenizer.getToken(token);
-    while (true)
+    bool skip   = false;
+    while (!skip)
     {
         // Recover from last syntax error
         if (!ok)
@@ -176,6 +177,9 @@ JobResult SyntaxJob::execute()
             continue;
         case TokenId::CompilerModule:
             ok = doCompilerModule();
+            continue;
+        case TokenId::CompilerSkip:
+            skip = true;
             continue;
         }
 

@@ -61,6 +61,7 @@ enum class TokenId
     SymAttrStart,
     SymBackTick,
 
+    CompilerSkip,
     CompilerModule,
     CompilerUnitTest,
     CompilerAssert,
