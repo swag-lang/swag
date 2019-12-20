@@ -429,11 +429,8 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
             SWAG_ASSERT(typeStruct->opInit);
-            inst->a.pointer = (uint8_t*) typeStruct->opInit;
-            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitOpCallUser(context, nullptr, typeStruct->opInit, false);
 
             if (numToInit != 1)
             {

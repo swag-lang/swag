@@ -682,12 +682,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
 
         // Then call
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        inst = emitInstruction(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(typeInfoStruct->opInit);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opInit;
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        emitInstruction(context, ByteCodeOp::IncSP, 8);
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        emitOpCallUser(context, nullptr, typeInfoStruct->opInit, false);
         freeRegisterRC(context, r0);
     }
 
