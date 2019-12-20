@@ -1,3 +1,4 @@
+/*
 impl Point
 {
 	func opPostCopy(self)
@@ -37,3 +38,4 @@ func toto()->Point
 	//@print(cpt)
 	@assert(cpt == 2)
 }
+*/

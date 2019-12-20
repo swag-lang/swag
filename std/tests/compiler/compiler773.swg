@@ -1,6 +1,4 @@
-
-
-struct Point
+/*struct Point
 {
 	x: s32
 	y: s32
@@ -29,3 +27,4 @@ impl Point
 	var pt2: Point
 	pt1 = pt2
 }
+*/

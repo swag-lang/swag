@@ -91,12 +91,6 @@ namespace std
 
             func opPostMove(using self)
             {
-                buffer = null
-                length = 0
-            }
-
-            func opPostFromMove(using self)
-            {
                 if size <= SmallSize
                     buffer = acast &allocator
             }

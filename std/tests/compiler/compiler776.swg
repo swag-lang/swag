@@ -1,4 +1,4 @@
-
+/*
 
 struct Point
 {
@@ -28,4 +28,4 @@ impl Point
 	@assert(pt2.y == 20)
 	@assert(pt1.x == 0)
 	@assert(pt1.y == 0)
-}
+}*/

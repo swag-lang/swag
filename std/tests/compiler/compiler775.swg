@@ -1,5 +1,4 @@
-
-
+/*
 struct Point
 {
 	x: s32
@@ -39,3 +38,4 @@ impl Point
 	pt3 = pt1 + pt2 // move
 	@assert(cpt == 2)
 }
+*/

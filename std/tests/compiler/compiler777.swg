@@ -1,4 +1,4 @@
-
+/*
 
 struct Point
 {
@@ -34,3 +34,5 @@ func toto()->Point
 	toto();
 	@assert(cpt == 1)
 }
+
+*/
