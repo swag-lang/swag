@@ -12,6 +12,7 @@ enum class Intrisic;
 struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
+struct AstFuncDecl;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
@@ -575,13 +576,13 @@ struct TypeInfoStruct : public TypeInfo
     Scope*                 scope                  = nullptr;
     AstNode*               structNode             = nullptr;
     ByteCode*              opInit                 = nullptr;
-    AstNode*               opUserPostCopyFct      = nullptr;
+    AstFuncDecl*           opUserPostCopyFct      = nullptr;
     ByteCode*              opPostCopy             = nullptr;
-    AstNode*               opUserPostMoveFct      = nullptr;
+    AstFuncDecl*           opUserPostMoveFct      = nullptr;
     ByteCode*              opPostMove             = nullptr;
-    AstNode*               opUserPostFromMoveFct  = nullptr;
+    AstFuncDecl*           opUserPostFromMoveFct  = nullptr;
     ByteCode*              opPostFromMove         = nullptr;
-    AstNode*               opUserDropFct          = nullptr;
+    AstFuncDecl*           opUserDropFct          = nullptr;
     ByteCode*              opDrop                 = nullptr;
     uint32_t               cptRemainingInterfaces = 0;
     uint32_t               maxPaddingSize         = 0;

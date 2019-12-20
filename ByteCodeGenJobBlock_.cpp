@@ -543,13 +543,12 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         if (typeInfoStruct->opDrop)
         {
-            auto r0                                                         = reserveRegisterRC(context);
+            auto r0 = reserveRegisterRC(context);
+
             emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.u32 = one->storageOffset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
-            inst->a.pointer = (uint8_t*) typeInfoStruct->opDrop;
-            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
+
             freeRegisterRC(context, r0);
         }
     }

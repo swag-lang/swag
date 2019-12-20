@@ -239,11 +239,11 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
-        emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, typeParam->offset);
+        emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserDropFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -252,15 +252,18 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     return true;
 }
 
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, uint32_t offset)
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset)
 {
     if (!funcDecl)
         return;
 
-    emitInstruction(context, ByteCodeOp::RAFromStackParam64, 0, 24);
-    if (offset)
-        emitInstruction(context, ByteCodeOp::IncPointerVB, 0)->b.u32 = offset;
-    emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+    if (pushParam)
+    {
+        emitInstruction(context, ByteCodeOp::RAFromStackParam64, 0, 24);
+        if (offset)
+            emitInstruction(context, ByteCodeOp::IncPointerVB, 0)->b.u32 = offset;
+        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+    }
 
     if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
@@ -364,11 +367,11 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, typeParam->offset);
+        emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -457,11 +460,11 @@ bool ByteCodeGenJob::generateStruct_opPostFromMove(ByteCodeGenContext* context, 
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostFromMoveFct, typeStructVar->opPostFromMove, typeParam->offset);
+        emitOpCallUser(&cxt, typeStructVar->opUserPostFromMoveFct, typeStructVar->opPostFromMove, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostFromMoveFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostFromMoveFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -550,11 +553,11 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, (AstFuncDecl*) typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, typeParam->offset);
+        emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
