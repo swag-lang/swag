@@ -527,10 +527,10 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     scoped_lock lock(table.mutex);
 
     // Need to wait for the structure to be ok, in order to call the opDrop function
-    auto count = (int) table.allStructs.size() - 1;
+    auto count = (int) table.structVarsToDrop.size() - 1;
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table.allStructs[i];
+        auto one            = table.structVarsToDrop[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         waitStructGenerated(context, typeInfoStruct);
         if (context->result == ContextResult::Pending)
@@ -539,7 +539,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table.allStructs[i];
+        auto one            = table.structVarsToDrop[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         if (typeInfoStruct->opDrop)
         {

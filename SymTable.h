@@ -95,7 +95,7 @@ struct SymTable
     shared_mutex               mutex;
     Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
-    vector<SymbolOverload*>    allStructs;
+    vector<SymbolOverload*>    structVarsToDrop;
 };
 
 extern thread_local Pool<SymbolOverload> g_Pool_symOverload;

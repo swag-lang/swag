@@ -1,15 +1,15 @@
 namespace std
 {
     using swag
-    private const SmallSize = 28'u32
-    private const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
+    private const SmallSize = 24'u32
+    private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
 
     public struct String
     {
         readonly buffer:     *u8
         readonly length:     u32
-        internal size:       u32
+        readonly size:       u32
         internal allocator:  IAllocator
         internal padding:    [SmallSizeInternal] u8
     }
@@ -30,7 +30,6 @@ namespace std
         {
             if allocator == null
                 allocator = @getcontext().allocator
-
             var req: AllocatorRequest
             req.mode = AllocatorMode.Realloc
             req.size = newSize
@@ -96,12 +95,18 @@ namespace std
                 length = 0
             }
 
+            func opPostFromMove(using self)
+            {
+                if size <= SmallSize
+                    buffer = acast &allocator
+            }
+
             func opPostCopy(using self)
             {
                 if !buffer
                     return
-                if length + 1 <= SmallSize
-                    buffer = acast &size
+                if size <= SmallSize
+                    buffer = acast &allocator
                 else
                 {
                     oldBuffer := buffer
@@ -111,11 +116,11 @@ namespace std
                 }
             }
 
-            /*func opDrop(using self)
+            func opDrop(using self)
             {
-                if buffer && buffer != acast &size
-					free(self)
-            }*/
+                if buffer && buffer != acast &allocator
+                    free(self)
+            }
         }
     }
 
@@ -166,11 +171,12 @@ namespace std
                 if newSize <= SmallSize
                 {
                     // Free everything
-                    if !newSize
+                    size = newSize
+                    if !size
                     {
                         if !buffer
                             return
-                        if buffer != acast &size
+                        if buffer != acast &allocator
                             free(self)
                         buffer = null
                         length = 0
@@ -178,7 +184,7 @@ namespace std
                     }
 
                     if !buffer
-                        buffer = acast &size
+                        buffer = acast &allocator
                     return
                 }
 
@@ -187,7 +193,7 @@ namespace std
                     return
 
                 // We were in small size mode, and we are no more
-                if buffer == acast &size
+                if buffer == acast &allocator
                 {
                     buffer = null
                     allocator = null
