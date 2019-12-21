@@ -196,6 +196,15 @@ namespace std
                 realloc(self, newSize)
                 size = newSize
             }
+
+            /*#[swag.macro]
+            func visitBytes(using self, stmt: code)
+            {
+                #macro
+                {
+                    #mixin stmt
+                }
+            }*/
         }
     }
 }

@@ -114,9 +114,16 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto        node          = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
-    auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
-    AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
+    auto node          = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
+    auto nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
+
+    if (!nextStatement)
+    {
+        context->report({node, "attribute belongs to nothing (no valid statement after)"});
+        return false;
+    }
+
+    AstNodeKind kind = nextStatement ? nextStatement->kind : AstNodeKind::Module;
 
     ComputedValue dummy;
     dummy.reg.b = true;
