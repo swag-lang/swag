@@ -197,14 +197,14 @@ namespace std
                 size = newSize
             }
 
-            /*#[swag.macro]
+            #[swag.macro]
             func visitBytes(using self, stmt: code)
             {
                 #macro
                 {
                     #mixin stmt
                 }
-            }*/
+            }
         }
     }
 }

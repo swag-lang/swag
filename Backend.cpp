@@ -32,8 +32,14 @@ bool Backend::emitAttributes(AstNode* node)
 {
     if (node->flags & AST_CONST_EXPR)
         CONCAT_FIXED_STR(bufferSwg, "\t#[constexpr]\n");
-    if (node->attributeFlags & ATTRIBUTE_INLINE)
+
+    if (node->attributeFlags & ATTRIBUTE_MACRO)
+        CONCAT_FIXED_STR(bufferSwg, "\t#[macro]\n");
+    else if (node->attributeFlags & ATTRIBUTE_MIXIN)
+        CONCAT_FIXED_STR(bufferSwg, "\t#[mixin]\n");
+    else if (node->attributeFlags & ATTRIBUTE_INLINE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
+
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
     if (node->attributeFlags & ATTRIBUTE_PROPERTY)
