@@ -27,14 +27,14 @@ JobResult BackendCFunctionBodyJob::execute()
     if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         backend->emitFuncWrapperPublic(concat, module, typeFunc, node, byteCodeFunc);
 
+    auto        firstBucket = concat.firstBucket;
+    SaveRequest req;
+
     // Must save one by one
     static mutex m;
     unique_lock  lk(m);
-
-    auto firstBucket = concat.firstBucket;
     while (firstBucket)
     {
-        SaveRequest req;
         req.buffer     = (char*) firstBucket->datas;
         req.bufferSize = firstBucket->count;
         backend->bufferC.save(&req);
