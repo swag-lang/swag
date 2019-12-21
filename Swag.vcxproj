@@ -148,6 +148,7 @@
     <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />
+    <ClInclude Include="PoolFree.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
     <ClInclude Include="resource.h" />

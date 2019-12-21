@@ -6,7 +6,7 @@
 struct Concat
 {
     Concat();
-	void clear();
+    void clear();
     void checkCount(int offset);
 
     void addU8(uint8_t v);
@@ -35,33 +35,7 @@ struct Concat
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
     uint8_t*      currentSP   = nullptr;
-    ConcatBucket* currentSPB  = nullptr;
-    int           currentSPI;
-    int           bucketSize = 4 * 1024;
-
-    inline void rewind()
-    {
-        currentSPB = firstBucket;
-        currentSP  = currentSPB->datas;
-        currentSPI = 0;
-    }
-
-    inline uint8_t* seek(int offset)
-    {
-        if (currentSPI + offset > currentSPB->count)
-        {
-            currentSPI = currentSPI + offset - currentSPB->count;
-            currentSPB = currentSPB->nextBucket;
-            currentSP  = currentSPB->datas + currentSPI;
-        }
-        else
-        {
-            currentSPI += offset;
-            currentSP += offset;
-        }
-
-        return currentSP;
-    }
+    int           bucketSize  = 4 * 1024;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                    \

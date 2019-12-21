@@ -606,6 +606,9 @@
     <ClInclude Include="File.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="PoolFree.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

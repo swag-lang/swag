@@ -1,5 +1,6 @@
 #pragma once
 #include "Pool.h"
+#include "PoolFree.h"
 #include "DependentJobs.h"
 struct JobThread;
 struct AstNode;
@@ -45,7 +46,7 @@ static const uint32_t JOB_IS_IN_THREAD   = 0x00000002;
 static const uint32_t JOB_IS_PENDING     = 0x00000004;
 static const uint32_t JOB_IS_PENDING_RUN = 0x00000008;
 
-struct Job
+struct Job : public PoolFreeElem
 {
     virtual JobResult execute() = 0;
 
@@ -53,6 +54,10 @@ struct Job
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
+
+    void reset()
+    {
+    }
 
     shared_mutex     executeMutex;
     DependentJobs    dependentJobs;

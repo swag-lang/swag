@@ -5,13 +5,14 @@
 #include "ByteCode.h"
 #include "Ast.h"
 
-thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+thread_local PoolFree<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 
 JobResult BackendCFunctionBodyJob::execute()
 {
+    concat.clear();
+
     TypeInfoFuncAttr* typeFunc = byteCodeFunc->typeInfoFunc;
     AstFuncDecl*      node     = nullptr;
-    Concat            concat;
 
     if (byteCodeFunc->node)
     {
@@ -19,6 +20,7 @@ JobResult BackendCFunctionBodyJob::execute()
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     }
 
+    // Emit the internal function
     backend->emitFunctionBody(concat, module, byteCodeFunc);
 
     // Emit public function wrapper, from real C prototype to swag registers
@@ -39,5 +41,6 @@ JobResult BackendCFunctionBodyJob::execute()
         firstBucket = firstBucket->nextBucket;
     }
 
+    g_Pool_backendCFunctionBodyJob.free(this);
     return JobResult::ReleaseJob;
 }

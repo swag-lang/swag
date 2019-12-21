@@ -10,29 +10,50 @@ Concat::Concat()
 
 void Concat::clear()
 {
-    firstBucket = nullptr;
-    lastBucket  = nullptr;
+    auto bucket = firstBucket;
+    while (bucket)
+    {
+        bucket->count = 0;
+        bucket        = bucket->nextBucket;
+    }
+
+    lastBucket = firstBucket;
+    if (lastBucket)
+        currentSP = lastBucket->datas;
 }
 
 void Concat::checkCount(int offset)
 {
-    if (lastBucket && lastBucket->count + offset < bucketSize)
-    {
-        lastBucket->count += offset;
-        return;
-    }
-
     if (lastBucket)
+    {
+        if (lastBucket->count + offset < bucketSize)
+        {
+            lastBucket->count += offset;
+            return;
+        }
+
         flushBucket(lastBucket);
 
+        // Next already allocated
+        if (lastBucket->nextBucket)
+        {
+            lastBucket        = lastBucket->nextBucket;
+            currentSP         = lastBucket->datas;
+            lastBucket->count = offset;
+            return;
+        }
+    }
+
+    // Need to allocate a new bucket
     auto newBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)
         firstBucket = newBucket;
     if (lastBucket)
         lastBucket->nextBucket = newBucket;
 
-    lastBucket        = newBucket;
-    lastBucket->datas = (uint8_t*) malloc(max(offset, bucketSize));
+    lastBucket = newBucket;
+    SWAG_ASSERT(offset < bucketSize);
+    lastBucket->datas = (uint8_t*) malloc(bucketSize);
     currentSP         = newBucket->datas;
     newBucket->count  = offset;
 }
