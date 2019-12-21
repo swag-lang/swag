@@ -145,7 +145,7 @@ namespace Ast
             shared_lock lk(parentScope->lockChilds);
             for (auto child : parentScope->childScopes)
             {
-                if (child->name == name)
+                if (child->name.compare(name))
                     return child;
             }
         }

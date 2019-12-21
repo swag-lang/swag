@@ -31,6 +31,13 @@ struct Utf8Crc : public Utf8
         crc = from.crc;
     }
 
+    bool compare(const Utf8Crc& from) const
+    {
+        if (crc != from.crc)
+            return false;
+        return *(const Utf8*) this == (const Utf8&) from;
+    }
+
     void operator=(const Utf8Crc& from)
     {
         (Utf8&) * this = from;
