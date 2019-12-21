@@ -4,8 +4,6 @@
 #include "Workspace.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "ThreadManager.h"
 
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 
