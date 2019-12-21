@@ -1697,7 +1697,9 @@ bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob)
 {
     SWAG_ASSERT(moduleToGen);
 
-    bool ok = true;
+    bool                     ok         = true;
+    int                      batchCount = 8;
+    BackendCFunctionBodyJob* job        = nullptr;
     for (auto one : moduleToGen->byteCodeFunc)
     {
         if (one->node)
@@ -1715,13 +1717,24 @@ bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob)
                 continue;
         }
 
-        auto job          = g_Pool_backendCFunctionBodyJob.alloc();
-        job->module       = moduleToGen;
-        job->dependentJob = ownerJob;
-        job->backend      = this;
-        job->byteCodeFunc = one;
-        ownerJob->jobsToAdd.push_back(job);
+        if (!job)
+        {
+            job               = g_Pool_backendCFunctionBodyJob.alloc();
+            job->module       = moduleToGen;
+            job->dependentJob = ownerJob;
+            job->backend      = this;
+        }
+
+        job->byteCodeFunc.push_back(one);
+        if (job->byteCodeFunc.size() == batchCount)
+        {
+            ownerJob->jobsToAdd.push_back(job);
+            job = nullptr;
+        }
     }
+
+    if (job)
+        ownerJob->jobsToAdd.push_back(job);
 
     return ok;
 }

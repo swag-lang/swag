@@ -6,27 +6,25 @@
 void OutputFile::flushBucket(ConcatBucket* bucket)
 {
     SaveRequest req;
-    lastFlushedBucket = bucket;
-    req.buffer        = (char*) bucket->datas;
-    req.bufferSize    = bucket->count;
+    req.buffer     = (char*) bucket->datas;
+    req.bufferSize = bucket->count;
     save(&req);
 }
 
 bool OutputFile::flush(bool last)
 {
     bool result = true;
-    auto bucket = lastFlushedBucket ? lastFlushedBucket->nextBucket : firstBucket;
+    auto bucket = firstBucket;
     while (bucket)
     {
         flushBucket(bucket);
         bucket = bucket->nextBucket;
     }
 
-    lastFlushedBucket = nullptr;
     if (last)
         close();
     clear();
-    return result;
+    return true;
 }
 
 void OutputFile::save(SaveRequest* request)

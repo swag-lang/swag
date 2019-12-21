@@ -32,9 +32,7 @@ void Concat::checkCount(int offset)
             return;
         }
 
-        flushBucket(lastBucket);
-
-        // Next already allocated
+        // Next is already allocated
         if (lastBucket->nextBucket)
         {
             lastBucket        = lastBucket->nextBucket;

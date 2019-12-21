@@ -7,10 +7,16 @@ struct ByteCode;
 
 struct BackendCFunctionBodyJob : public Job
 {
-    JobResult execute() override;
-    BackendC* backend      = nullptr;
-    ByteCode* byteCodeFunc = nullptr;
-    Concat    concat;
+    JobResult         execute() override;
+    BackendC*         backend = nullptr;
+    vector<ByteCode*> byteCodeFunc;
+    Concat            concat;
+
+    void reset()
+    {
+        Job::reset();
+        byteCodeFunc.clear();
+    }
 };
 
 extern thread_local PoolFree<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

@@ -11,21 +11,24 @@ JobResult BackendCFunctionBodyJob::execute()
 {
     concat.clear();
 
-    TypeInfoFuncAttr* typeFunc = byteCodeFunc->typeInfoFunc;
-    AstFuncDecl*      node     = nullptr;
-
-    if (byteCodeFunc->node)
+    for (auto one : byteCodeFunc)
     {
-        node     = CastAst<AstFuncDecl>(byteCodeFunc->node, AstNodeKind::FuncDecl);
-        typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
+        AstFuncDecl*      node     = nullptr;
+
+        if (one->node)
+        {
+            node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        }
+
+        // Emit the internal function
+        backend->emitFunctionBody(concat, module, one);
+
+        // Emit public function wrapper, from real C prototype to swag registers
+        if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
+            backend->emitFuncWrapperPublic(concat, module, typeFunc, node, one);
     }
-
-    // Emit the internal function
-    backend->emitFunctionBody(concat, module, byteCodeFunc);
-
-    // Emit public function wrapper, from real C prototype to swag registers
-    if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
-        backend->emitFuncWrapperPublic(concat, module, typeFunc, node, byteCodeFunc);
 
     auto        firstBucket = concat.firstBucket;
     SaveRequest req;

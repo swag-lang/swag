@@ -30,8 +30,6 @@ struct Concat
     void addEol();
     void addStringFormat(const char* format, ...);
 
-    virtual void flushBucket(ConcatBucket* bucket){};
-
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
     uint8_t*      currentSP   = nullptr;
