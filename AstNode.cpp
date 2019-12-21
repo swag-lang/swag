@@ -4,36 +4,36 @@
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 
-thread_local Pool<AstNode>            g_Pool_astNode;
-thread_local Pool<AstAttrDecl>        g_Pool_astAttrDecl;
-thread_local Pool<AstVarDecl>         g_Pool_astVarDecl;
-thread_local Pool<AstFuncDecl>        g_Pool_astFuncDecl;
-thread_local Pool<AstIdentifier>      g_Pool_astIdentifier;
-thread_local Pool<AstIdentifierRef>   g_Pool_astIdentifierRef;
-thread_local Pool<AstFuncCallParam>   g_Pool_astFuncCallParam;
-thread_local Pool<AstIf>              g_Pool_astIf;
-thread_local Pool<AstWhile>           g_Pool_astWhile;
-thread_local Pool<AstFor>             g_Pool_astFor;
-thread_local Pool<AstLoop>            g_Pool_astLoop;
-thread_local Pool<AstSwitch>          g_Pool_astSwitch;
-thread_local Pool<AstSwitchCase>      g_Pool_astSwitchCase;
-thread_local Pool<AstSwitchCaseBlock> g_Pool_astSwitchCaseBlock;
-thread_local Pool<AstBreakContinue>   g_Pool_astBreakContinue;
-thread_local Pool<AstAttrUse>         g_Pool_astAttrUse;
-thread_local Pool<AstTypeExpression>  g_Pool_astTypeExpression;
-thread_local Pool<AstTypeLambda>      g_Pool_astTypeLambda;
-thread_local Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
-thread_local Pool<AstProperty>        g_Pool_astProperty;
-thread_local Pool<AstExpressionList>  g_Pool_astExpressionList;
-thread_local Pool<AstStruct>          g_Pool_astStruct;
-thread_local Pool<AstImpl>            g_Pool_astImpl;
-thread_local Pool<AstInit>            g_Pool_astInit;
-thread_local Pool<AstDrop>            g_Pool_astDrop;
-thread_local Pool<AstInline>          g_Pool_astInline;
-thread_local Pool<AstReturn>          g_Pool_astReturn;
-thread_local Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
-thread_local Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;
-thread_local Pool<AstCompilerInline>  g_Pool_astCompilerInline;
+thread_local Pool<AstNode, 128>          g_Pool_astNode;
+thread_local Pool<AstAttrDecl>           g_Pool_astAttrDecl;
+thread_local Pool<AstVarDecl>            g_Pool_astVarDecl;
+thread_local Pool<AstFuncDecl>           g_Pool_astFuncDecl;
+thread_local Pool<AstIdentifier, 128>    g_Pool_astIdentifier;
+thread_local Pool<AstIdentifierRef, 128> g_Pool_astIdentifierRef;
+thread_local Pool<AstFuncCallParam>      g_Pool_astFuncCallParam;
+thread_local Pool<AstIf>                 g_Pool_astIf;
+thread_local Pool<AstWhile>              g_Pool_astWhile;
+thread_local Pool<AstFor>                g_Pool_astFor;
+thread_local Pool<AstLoop>               g_Pool_astLoop;
+thread_local Pool<AstSwitch>             g_Pool_astSwitch;
+thread_local Pool<AstSwitchCase>         g_Pool_astSwitchCase;
+thread_local Pool<AstSwitchCaseBlock>    g_Pool_astSwitchCaseBlock;
+thread_local Pool<AstBreakContinue>      g_Pool_astBreakContinue;
+thread_local Pool<AstAttrUse>            g_Pool_astAttrUse;
+thread_local Pool<AstTypeExpression>     g_Pool_astTypeExpression;
+thread_local Pool<AstTypeLambda>         g_Pool_astTypeLambda;
+thread_local Pool<AstPointerDeRef>       g_Pool_astPointerDeref;
+thread_local Pool<AstProperty>           g_Pool_astProperty;
+thread_local Pool<AstExpressionList>     g_Pool_astExpressionList;
+thread_local Pool<AstStruct>             g_Pool_astStruct;
+thread_local Pool<AstImpl>               g_Pool_astImpl;
+thread_local Pool<AstInit>               g_Pool_astInit;
+thread_local Pool<AstDrop>               g_Pool_astDrop;
+thread_local Pool<AstInline>             g_Pool_astInline;
+thread_local Pool<AstReturn>             g_Pool_astReturn;
+thread_local Pool<AstCompilerIfBlock>    g_Pool_astCompilerIfBlock;
+thread_local Pool<AstLabelBreakable>     g_Pool_astLabelBreakable;
+thread_local Pool<AstCompilerInline>     g_Pool_astCompilerInline;
 
 void AstNode::setPassThrough()
 {

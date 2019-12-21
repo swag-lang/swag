@@ -8,8 +8,8 @@ enum class ScopeKind;
 
 namespace Ast
 {
-    template<typename T>
-    T* newNode(SyntaxJob* job, Pool<T>* pool, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
+    template<typename T, int S>
+    T* newNode(SyntaxJob* job, Pool<T, S>* pool, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
     {
         auto node        = pool->alloc();
         node->kind       = kind;
