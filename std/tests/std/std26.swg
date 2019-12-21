@@ -1,7 +1,7 @@
 #import "std"
 
 #[swag.macro]
-func visit(str: string, user: code)
+func Visit(str: string, user: code)
 {
     var c: char
     var ptr: *u8 = @dataof(str)
@@ -23,7 +23,7 @@ func visit(str: string, user: code)
 {
     cpt := 0
 	var str = "あああ"
-    visit(str)
+    Visit(str)
     {
         @assert(value == 12354)
         //@print(cast(s64) value)

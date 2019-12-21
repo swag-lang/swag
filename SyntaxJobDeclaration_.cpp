@@ -285,6 +285,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdLoop:
         SWAG_CHECK(doLoop(parent, result));
         break;
+    case TokenId::KwdVisit:
+        SWAG_CHECK(doVisit(parent, result));
+        break;
     case TokenId::KwdLet:
     case TokenId::KwdVar:
     case TokenId::KwdConst:

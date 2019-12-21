@@ -175,6 +175,21 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(tokenizer.getToken(token));
+    AstNode* expression = nullptr;
+    SWAG_CHECK(doIdentifierRef(parent, &expression));
+    if (result)
+        *result = expression;
+
+    auto identifier            = Ast::newIdentifier(sourceFile, "opVisit", (AstIdentifierRef*) expression, expression);
+    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
+
+    SWAG_CHECK(doEmbeddedStatement(parent));
+    return true;
+}
+
 bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 {
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);

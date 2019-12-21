@@ -61,6 +61,7 @@ enum class AstNodeKind
     While,
     For,
     Loop,
+    Visit,
     Switch,
     SwitchCase,
     Break,

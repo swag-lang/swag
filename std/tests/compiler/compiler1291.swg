@@ -1,5 +1,5 @@
 #[swag.macro]
-func visit(user: code)
+func Visit(user: code)
 {
     var c: char
 	loop 10
@@ -17,7 +17,7 @@ func visit(user: code)
 #test
 {
     cpt := 0
-    visit()
+    Visit()
     {
         @assert(value == 100)
         //@print(cast(s64) value)
