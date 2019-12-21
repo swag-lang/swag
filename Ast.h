@@ -54,7 +54,7 @@ namespace Ast
         return node;
     }
 
-    extern Scope*   newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
+    extern Scope*   newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void     removeFromParent(AstNode* child);
     extern void     addChildBack(AstNode* parent, AstNode* child);
     extern void     addChildFront(AstNode* parent, AstNode* child);

@@ -136,41 +136,35 @@ namespace Ast
         }
     }
 
-    Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName)
+    Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
-        if (parentScope)
-            parentScope->lockChilds.lock();
-
+        // Do not create a scope if a scope with the same name already exists
         if (matchName)
         {
             SWAG_ASSERT(parentScope);
+            shared_lock lk(parentScope->lockChilds);
             for (auto child : parentScope->childScopes)
             {
                 if (child->name == name)
-                {
-                    parentScope->lockChilds.unlock();
                     return child;
-                }
             }
         }
 
         auto newScope = g_Pool_scope.alloc();
 
-        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, (const string&) name) : (const string&) name;
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->owner       = owner;
         newScope->name        = name;
         newScope->fullname    = move(fullname);
 
-        if (parentScope && newScope->indexInParent >= (uint32_t) parentScope->childScopes.size())
+        if (parentScope)
         {
+            unique_lock lk(parentScope->lockChilds);
             newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
         }
-
-        if (parentScope)
-            parentScope->lockChilds.unlock();
 
         return newScope;
     }
