@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "ModuleBuildJob.h"
 #include "Workspace.h"
-#include "SyntaxJob.h"
-#include "AstNode.h"
 #include "ThreadManager.h"
-#include "SourceFile.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "Diagnostic.h"
@@ -12,6 +9,7 @@
 #include "Os.h"
 #include "ByteCode.h"
 #include "Stats.h"
+#include "Allocator.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -70,7 +68,7 @@ JobResult ModuleBuildJob::execute()
 
             // Then do syntax on it
             auto syntaxJob          = g_Pool_syntaxJob.alloc();
-            auto file               = g_Pool_sourceFile.alloc();
+            auto file               = g_Allocator.alloc<SourceFile>();
             syntaxJob->sourceFile   = file;
             syntaxJob->module       = module;
             syntaxJob->dependentJob = this;

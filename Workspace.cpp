@@ -8,6 +8,7 @@
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
 #include "Os.h"
+#include "Allocator.h"
 
 Workspace g_Workspace;
 
@@ -81,7 +82,7 @@ void Workspace::addBootstrap()
     bootstrapModule->setup("");
     modules.push_back(bootstrapModule);
 
-    auto     file        = g_Pool_sourceFile.alloc();
+    auto     file        = g_Allocator.alloc<SourceFile>();
     auto     job         = g_Pool_syntaxJob.alloc();
     fs::path p           = g_CommandLine.exePath;
     file->path           = p.parent_path().string() + "/bootstrap.swg";

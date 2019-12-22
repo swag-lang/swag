@@ -68,5 +68,3 @@ struct SourceFile : public File
     bool         generated     = false;
     shared_mutex mutexGetLine;
 };
-
-extern thread_local Pool<SourceFile> g_Pool_sourceFile;

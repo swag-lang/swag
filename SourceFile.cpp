@@ -6,8 +6,7 @@
 #include "Stats.h"
 #include "Os.h"
 
-thread_local Pool<SourceFile> g_Pool_sourceFile;
-const auto                    BUF_SIZE = 2048;
+const auto BUF_SIZE = 2048;
 
 SourceFile::SourceFile()
 {

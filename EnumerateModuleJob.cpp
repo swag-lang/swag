@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "SyntaxJob.h"
 #include "Stats.h"
+#include "Allocator.h"
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* theModule)
 {
@@ -36,7 +37,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                         if (!theModule->fromTests || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
                         {
                             auto job        = g_Pool_syntaxJob.alloc();
-                            auto file       = g_Pool_sourceFile.alloc();
+                            auto file       = g_Allocator.alloc<SourceFile>();
                             job->sourceFile = file;
                             file->fromTests = theModule->fromTests;
                             file->path      = tmp + "\\" + cFileName;
@@ -72,7 +73,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     if (fs::exists(tmp))
     {
         auto job             = g_Pool_syntaxJob.alloc();
-        auto file            = g_Pool_sourceFile.alloc();
+        auto file            = g_Allocator.alloc<SourceFile>();
         job->sourceFile      = file;
         file->fromTests      = theModule->fromTests;
         file->path           = tmp;
