@@ -11,12 +11,6 @@ struct BackendCFunctionBodyJob : public Job
     BackendC*         backend = nullptr;
     vector<ByteCode*> byteCodeFunc;
     Concat            concat;
-
-    void reset()
-    {
-        Job::reset();
-        byteCodeFunc.clear();
-    }
 };
 
 extern Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

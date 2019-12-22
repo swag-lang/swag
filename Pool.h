@@ -1,9 +1,6 @@
 #pragma once
 struct PoolElem
 {
-    PoolElem*    nextFree  = nullptr;
-    virtual void reset()   = 0;
-    virtual void release() = 0;
 };
 
 template<typename T, int S>
@@ -16,42 +13,19 @@ struct PoolSlot
 template<typename T, int S = 32>
 struct Pool
 {
-    void release(T* elem)
-    {
-        scoped_lock lk(mutexFree);
-        elem->nextFree = firstFree;
-        firstFree      = elem;
-    }
-
     T* alloc()
     {
-        if (mutexFree.try_lock())
+        unique_lock lk(lock);
+        if (!lastBucket || lastBucket->maxUsed == S)
         {
-            if (firstFree)
-            {
-                auto result = firstFree;
-                firstFree   = (T*) firstFree->nextFree;
-                mutexFree.unlock();
-                result->reset();
-                return result;
-            }
-
-            mutexFree.unlock();
+            lastBucket = new PoolSlot<T, S>();
+            return &lastBucket->buffer[0];
         }
 
-        {
-            unique_lock lk(mutexFree);
-            if (!lastBucket || lastBucket->maxUsed == S)
-            {
-                lastBucket = new PoolSlot<T, S>();
-                return &lastBucket->buffer[0];
-            }
-
-            return &lastBucket->buffer[lastBucket->maxUsed++];
-        }
+        return &lastBucket->buffer[lastBucket->maxUsed++];
     }
 
-    mutex           mutexFree;
+    mutex           lock;
     T*              firstFree  = nullptr;
     PoolSlot<T, S>* lastBucket = nullptr;
 };
