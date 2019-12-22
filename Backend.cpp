@@ -411,40 +411,36 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 bool Backend::generateExportFile()
 {
-    if (pass == BackendPass::Init)
+    auto targetPath = g_Workspace.targetPath.string();
+    bufferSwg.path  = targetPath + "\\" + module->name + ".generated.swg";
+
+    // Do we need to generate the file ?
+    bool exists = fs::exists(bufferSwg.path);
+    bool regen  = g_CommandLine.rebuild || !exists;
+    if (!regen)
     {
-        pass               = BackendPass::Flush;
-        auto targetPath    = g_Workspace.targetPath.string();
-        bufferSwg.path = targetPath + "\\" + module->name + ".generated.swg";
-
-        // Do we need to generate the file ?
-        bool exists = fs::exists(bufferSwg.path);
-        bool regen  = g_CommandLine.rebuild || !exists;
-        if (!regen)
+        if (exists)
         {
-            if (exists)
-            {
-                auto t1 = OS::getFileWriteTime(bufferSwg.path);
-                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
-                    regen = true;
-            }
+            auto t1 = OS::getFileWriteTime(bufferSwg.path);
+            if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
+                regen = true;
         }
-
-        if (!regen)
-            return true;
-
-        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-
-        for (const auto& dep : module->moduleDependencies)
-            bufferSwg.addStringFormat("#import \"%s\"\n", dep.first.c_str());
-        CONCAT_FIXED_STR(bufferSwg, "using swag\n");
-
-        // Emit everything that's public
-        if (!emitPublicSwg(module, module->scopeRoot))
-            return true;
-
-        SWAG_CHECK(bufferSwg.flush(true));
     }
+
+    if (!regen)
+        return true;
+
+    bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+
+    for (const auto& dep : module->moduleDependencies)
+        bufferSwg.addStringFormat("#import \"%s\"\n", dep.first.c_str());
+    CONCAT_FIXED_STR(bufferSwg, "using swag\n");
+
+    // Emit everything that's public
+    if (!emitPublicSwg(module, module->scopeRoot))
+        return true;
+
+    SWAG_CHECK(bufferSwg.flush(true));
 
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
