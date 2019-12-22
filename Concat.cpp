@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Concat.h"
-
-thread_local Pool<ConcatBucket> g_Pool_concatBucket;
+#include "Allocator.h"
 
 Concat::Concat()
 {
@@ -43,7 +42,7 @@ void Concat::checkCount(int offset)
     }
 
     // Need to allocate a new bucket
-    auto newBucket = g_Pool_concatBucket.alloc();
+    auto newBucket = g_Allocator.alloc<ConcatBucket>();
     if (!firstBucket)
         firstBucket = newBucket;
     if (lastBucket)
