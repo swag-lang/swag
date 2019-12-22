@@ -88,7 +88,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (name == "opCast")
     {
     }
-    else if (name == "opVisit")
+    else if (name.find("opVisit") == 0)
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->report({returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));

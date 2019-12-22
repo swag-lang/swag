@@ -13,7 +13,6 @@ void OutputFile::flushBucket(ConcatBucket* bucket)
 
 bool OutputFile::flush(bool last)
 {
-    bool result = true;
     auto bucket = firstBucket;
     while (bucket)
     {
