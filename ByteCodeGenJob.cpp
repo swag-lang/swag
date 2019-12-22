@@ -229,7 +229,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
                 node->byteCodeJob->dependentJobs.add(job);
             }
 
-            node->bc             = g_Pool_byteCode.alloc();
+            node->bc             = g_Allocator.alloc<ByteCode>();
             node->bc->node       = node;
             node->bc->sourceFile = node->sourceFile;
             node->bc->name       = node->ownerScope->fullname + "_" + node->name;

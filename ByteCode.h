@@ -23,9 +23,14 @@ struct ByteCodeInstruction
     ByteCodeOp     op;
 };
 
-struct ByteCode : public PoolElem
+struct ByteCode
 {
-    void print();
+    void enterByteCode(ByteCodeRunContext* context);
+    void leaveByteCode();
+
+    void              print();
+    Utf8              callName();
+    TypeInfoFuncAttr* callType();
 
     static const int     ALIGN_RIGHT_OPCODE = 25;
     string               name;
@@ -44,15 +49,4 @@ struct ByteCode : public PoolElem
     vector<uint32_t>  availableRegistersRC2;
     vector<Register*> registersRC;
     int32_t           curRC = -1;
-    void              enterByteCode(ByteCodeRunContext* context);
-    void              leaveByteCode();
-
-    Utf8              callName();
-    TypeInfoFuncAttr* callType();
-
-    void reset()
-    {
-    }
 };
-
-extern thread_local Pool<ByteCode> g_Pool_byteCode;

@@ -54,10 +54,6 @@ struct Job : public PoolElem
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
 
-    void reset()
-    {
-    }
-
     shared_mutex     executeMutex;
     DependentJobs    dependentJobs;
     vector<AstNode*> dependentNodes;
@@ -72,4 +68,12 @@ struct Job : public PoolElem
     uint32_t         flags               = 0;
     int32_t          waitingJobIndex     = -1;
     uint32_t         waitOnJobs          = 0;
+
+    void reset() override
+    {
+    }
+
+    void release() override
+    {
+    }
 };

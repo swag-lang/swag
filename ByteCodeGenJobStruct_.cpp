@@ -30,7 +30,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
-    ByteCode* opInit     = g_Pool_byteCode.alloc();
+    ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
     opInit->typeInfoFunc = g_TypeMgr.typeInfoOpCall;
     opInit->name         = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
@@ -215,7 +215,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         return true;
     }
 
-    auto opDrop            = g_Pool_byteCode.alloc();
+    auto opDrop            = g_Allocator.alloc<ByteCode>();
     opDrop->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opDrop = opDrop;
     opDrop->sourceFile     = sourceFile;
@@ -342,7 +342,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         return true;
     }
 
-    auto opPostMove            = g_Pool_byteCode.alloc();
+    auto opPostMove            = g_Allocator.alloc<ByteCode>();
     opPostMove->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostMove = opPostMove;
     opPostMove->sourceFile     = sourceFile;
@@ -435,7 +435,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         return true;
     }
 
-    auto opPostCopy            = g_Pool_byteCode.alloc();
+    auto opPostCopy            = g_Allocator.alloc<ByteCode>();
     opPostCopy->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;

@@ -17,8 +17,6 @@ int g_ByteCodeOpNamesLen[] = {
 #include "ByteCodeOpList.h"
 };
 
-thread_local Pool<ByteCode> g_Pool_byteCode;
-
 Utf8 ByteCode::callName()
 {
     auto callname = name.empty() ? node->fullnameDot : name;
