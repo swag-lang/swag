@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "ThreadManager.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
 #include "Stats.h"
-#include "Os.h"
 
 const auto BUF_SIZE = 2048;
 
