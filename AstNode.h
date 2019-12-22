@@ -135,7 +135,7 @@ struct CloneContext
     Scope*                    ownerStructScope = nullptr;
     AstNode*                  ownerMainNode    = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
-    map<Utf8Crc, AstNode*>    replaceIdentifiers;
+    map<TokenId, AstNode*>    replaceTokens;
 };
 
 struct AstNode
@@ -611,7 +611,7 @@ struct AstCompilerMacro : public AstNode
 struct AstCompilerMixin : public AstNode
 {
     AstNode*               clone(CloneContext& context) override;
-    map<Utf8Crc, AstNode*> replaceIdentifiers;
+    map<TokenId, AstNode*> replaceTokens;
 };
 
 struct AstInline : public AstNode

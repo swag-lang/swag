@@ -80,24 +80,11 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
         AstNode* stmt;
         while (token.id != TokenId::SymRightParen)
         {
-            switch (token.id)
-            {
-            case TokenId::KwdBreak:
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
-                node->replaceIdentifiers["break"] = stmt;
-                break;
-            case TokenId::KwdContinue:
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
-                node->replaceIdentifiers["continue"] = stmt;
-                break;
-
-            default:
-                return syntaxError(token, format("invalid token '%'", token.text.c_str()));
-            }
+            auto tokenId = token.id;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatToken(TokenId::SymEqual));
+            SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
+            node->replaceTokens[tokenId] = stmt;
 
             if (token.id == TokenId::SymComma)
             {

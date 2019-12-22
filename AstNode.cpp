@@ -348,30 +348,12 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
 {
-    switch (token.id)
+    auto it = context.replaceTokens.find(token.id);
+    if (it != context.replaceTokens.end())
     {
-    case TokenId::KwdBreak:
-    {
-        auto it = context.replaceIdentifiers.find("break");
-        if (it != context.replaceIdentifiers.end())
-        {
-            CloneContext cloneContext = context;
-            cloneContext.replaceIdentifiers.clear();
-            return it->second->clone(cloneContext);
-        }
-        break;
-    }
-    case TokenId::KwdContinue:
-    {
-        auto it = context.replaceIdentifiers.find("continue");
-        if (it != context.replaceIdentifiers.end())
-        {
-            CloneContext cloneContext = context;
-            cloneContext.replaceIdentifiers.clear();
-            return it->second->clone(cloneContext);
-        }
-        break;
-    }
+        CloneContext cloneContext = context;
+        cloneContext.replaceTokens.clear();
+        return it->second->clone(cloneContext);
     }
 
     auto newNode = g_Pool_astBreakContinue.alloc();
@@ -642,7 +624,7 @@ AstNode* AstCompilerMixin::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astCompilerMixin.alloc();
     newNode->copyFrom(context, this);
-    newNode->replaceIdentifiers = replaceIdentifiers;
+    newNode->replaceTokens = replaceTokens;
     return newNode;
 }
 
