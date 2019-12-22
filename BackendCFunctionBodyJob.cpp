@@ -44,6 +44,5 @@ JobResult BackendCFunctionBodyJob::execute()
         firstBucket = firstBucket->nextBucket;
     }
 
-    g_Pool_backendCFunctionBodyJob.free(this);
     return JobResult::ReleaseJob;
 }
