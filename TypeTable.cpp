@@ -2,6 +2,7 @@
 #include "TypeTable.h"
 #include "SemanticJob.h"
 #include "Workspace.h"
+#include "Allocator.h"
 
 TypeTable::TypeTable()
 {
@@ -247,7 +248,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr            = g_Pool_typeInfoPointer.alloc();
+    auto typePtr            = g_Allocator.alloc<TypeInfoPointer>();
     concreteTypes[typeInfo] = {typePtr, storageOffset};
 
     switch (typeInfo->kind)

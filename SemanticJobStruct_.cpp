@@ -80,7 +80,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
-            typeParamItf             = g_Pool_typeInfoParam.alloc();
+            typeParamItf             = g_Allocator.alloc<TypeInfoParam>();
             typeParamItf->namedParam = typeBaseInterface->name;
             typeParamItf->typeInfo   = typeBaseInterface;
             typeParamItf->node       = typeBaseInterface->structNode;
@@ -242,7 +242,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
             symbolFlags |= OVERLOAD_GENERIC;
             for (auto param : node->genericParameters->childs)
             {
-                auto funcParam        = g_Pool_typeInfoParam.alloc();
+                auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
                 funcParam->namedParam = param->name;
                 funcParam->name       = param->typeInfo->name;
                 funcParam->typeInfo   = param->typeInfo;
@@ -312,7 +312,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeParam             = g_Pool_typeInfoParam.alloc();
+            typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->name;
             typeParam->name       = child->typeInfo->name;
             typeParam->typeInfo   = child->typeInfo;
@@ -521,7 +521,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         job->tmpNodes = node->content->childs;
 
     // itable
-    auto typeITable   = g_Pool_typeInfoStruct.alloc();
+    auto typeITable   = g_Allocator.alloc<TypeInfoStruct>();
     typeITable->name  = node->name;
     typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
 
@@ -553,7 +553,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeParam             = g_Pool_typeInfoParam.alloc();
+            typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->name;
             typeParam->name       = child->typeInfo->name;
             typeParam->typeInfo   = child->typeInfo;
@@ -616,7 +616,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // Struct interface, with one pointer for the data, and one pointer per itable
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        auto typeParam      = g_Pool_typeInfoParam.alloc();
+        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
         typeParam->typeInfo = g_TypeMgr.typeInfoPVoid;
         typeParam->name     = typeParam->typeInfo->name;
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
@@ -624,7 +624,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeInterface->childs.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
-        typeParam           = g_Pool_typeInfoParam.alloc();
+        typeParam           = g_Allocator.alloc<TypeInfoParam>();
         typeParam->typeInfo = typeITable;
         typeParam->name     = typeParam->typeInfo->name;
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;

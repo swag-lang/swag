@@ -19,7 +19,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo      = g_Pool_typeInfoList.alloc();
+    auto typeInfo      = g_Allocator.alloc<TypeInfoList>();
     typeInfo->listKind = node->listKind;
     typeInfo->name     = "{";
 
@@ -80,7 +80,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo      = g_Pool_typeInfoList.alloc();
+    auto typeInfo      = g_Allocator.alloc<TypeInfoList>();
     typeInfo->listKind = node->listKind;
     SWAG_ASSERT(node->childs.size());
     typeInfo->name = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());

@@ -41,7 +41,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         scoped_lock lk1(newScope->owner->mutex);
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
-            newScope->owner->typeInfo = g_Pool_typeInfoStruct.alloc();
+            newScope->owner->typeInfo = g_Allocator.alloc<TypeInfoStruct>();
     }
 
     // Count number of interfaces
@@ -118,7 +118,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             TypeInfoStruct* typeInfo = (TypeInfoStruct*) newScope->owner->typeInfo;
             if (!typeInfo)
             {
-                typeInfo                  = g_Pool_typeInfoStruct.alloc();
+                typeInfo                  = g_Allocator.alloc<TypeInfoStruct>();
                 newScope->owner->typeInfo = typeInfo;
             }
 

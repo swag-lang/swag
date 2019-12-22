@@ -3,6 +3,7 @@
 #include "TypeManager.h"
 #include "SymTable.h"
 #include "Scope.h"
+#include "Allocator.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
@@ -172,7 +173,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     SWAG_CHECK(typeEnum->scope->symTable.addSymbolTypeInfo(context, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
 
     // Store each value in the enum type
-    auto typeParam = g_Pool_typeInfoParam.alloc();
+    auto typeParam = g_Allocator.alloc<TypeInfoParam>();
     typeParam->flags |= TYPEINFO_DEFINED_VALUE;
     typeParam->namedParam = valNode->name;
     typeParam->typeInfo   = rawType;

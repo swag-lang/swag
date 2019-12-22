@@ -89,7 +89,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
             auto        symbol = currentScope->symTable.findNoLock(namespaceNode->name);
             if (!symbol)
             {
-                auto typeInfo           = g_Pool_typeInfoNamespace.alloc();
+                auto typeInfo           = g_Allocator.alloc<TypeInfoNamespace>();
                 typeInfo->name          = namespaceNode->name;
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->name, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;

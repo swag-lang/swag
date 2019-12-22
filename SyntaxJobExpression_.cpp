@@ -405,7 +405,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedStatement(boolExpression, &block));
         else
             SWAG_CHECK(doBoolExpression(boolExpression, &block));
-        auto typeCode     = g_Pool_typeInfoCode.alloc();
+        auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
         typeCode->content = boolExpression->childs.front();
         typeCode->content->flags |= AST_NO_SEMANTIC;
         boolExpression->typeInfo = typeCode;

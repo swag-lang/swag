@@ -304,7 +304,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     }
     else
     {
-        auto typeInfo   = g_Pool_typeInfoStruct.alloc();
+        auto typeInfo   = g_Allocator.alloc<TypeInfoStruct>();
         auto newScope   = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->name  = structNode->name;
         typeInfo->scope = newScope;
@@ -569,7 +569,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
             if (typeList->listKind == TypeInfoListKind::Bracket)
             {
-                auto typeArray         = g_Pool_typeInfoArray.alloc();
+                auto typeArray         = g_Allocator.alloc<TypeInfoArray>();
                 typeArray->pointedType = typeList->childs.front();
                 typeArray->finalType   = typeArray->pointedType;
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
@@ -602,14 +602,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_GENERIC;
         if (genericType && node->assignment)
         {
-            auto typeGeneric     = g_Pool_typeInfoGeneric.alloc();
+            auto typeGeneric     = g_Allocator.alloc<TypeInfoGeneric>();
             typeGeneric->name    = node->name;
             typeGeneric->rawType = node->typeInfo;
             node->typeInfo       = typeGeneric;
         }
         else if (!node->typeInfo)
         {
-            node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
+            node->typeInfo       = g_Allocator.alloc<TypeInfoGeneric>();
             node->typeInfo->name = node->name;
         }
     }

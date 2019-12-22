@@ -117,7 +117,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         if (expr->typeInfo->isNative(NativeTypeKind::String))
         {
-            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
             ptrType->ptrCount    = 1;
             ptrType->finalType   = g_TypeMgr.typeInfoU8;
             ptrType->pointedType = g_TypeMgr.typeInfoU8;
@@ -129,7 +129,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {
             auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(expr->typeInfo, TypeInfoKind::Slice);
-            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
             ptrType->ptrCount    = 1;
             ptrType->finalType   = ptrSlice->pointedType;
             ptrType->pointedType = ptrSlice->pointedType;
@@ -141,7 +141,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
         {
             auto ptrArray        = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
-            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
             ptrType->ptrCount    = 1;
             ptrType->finalType   = ptrArray->pointedType;
             ptrType->pointedType = ptrArray->pointedType;
@@ -152,7 +152,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         }
         else if (expr->typeInfo->isNative(NativeTypeKind::Any))
         {
-            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
             ptrType->ptrCount    = 1;
             ptrType->finalType   = g_TypeMgr.typeInfoVoid;
             ptrType->pointedType = g_TypeMgr.typeInfoVoid;

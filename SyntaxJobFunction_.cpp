@@ -249,7 +249,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     funcNode->name = "__lambda" + to_string(id);
 
     scoped_lock lk(currentScope->symTable.mutex);
-    auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+    auto        typeInfo = g_Allocator.alloc<TypeInfoFuncAttr>();
     auto        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
     funcNode->typeInfo   = typeInfo;
     funcNode->scope      = newScope;
@@ -377,7 +377,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+        auto        typeInfo = g_Allocator.alloc<TypeInfoFuncAttr>();
         newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
         funcNode->typeInfo   = typeInfo;
         funcNode->scope      = newScope;

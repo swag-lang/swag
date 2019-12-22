@@ -25,7 +25,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
     auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo  = g_Pool_typeInfoFuncAttr.alloc();
+    auto typeInfo  = g_Allocator.alloc<TypeInfoFuncAttr>();
     typeInfo->kind = TypeInfoKind::Lambda;
 
     if (node->returnType)
@@ -39,7 +39,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     {
         for (auto param : node->parameters->childs)
         {
-            auto typeParam      = g_Pool_typeInfoParam.alloc();
+            auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
             typeParam->typeInfo = param->typeInfo;
             typeParam->node     = param;
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
@@ -94,7 +94,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     {
         node->resolvedSymbolName     = node->identifier->resolvedSymbolName;
         node->resolvedSymbolOverload = node->identifier->resolvedSymbolOverload;
-        node->typeInfo               = g_Pool_typeInfoGeneric.alloc();
+        node->typeInfo               = g_Allocator.alloc<TypeInfoGeneric>();
         node->typeInfo->name         = node->resolvedSymbolName->name;
         node->typeInfo               = node->typeInfo;
     }
@@ -126,7 +126,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is a pointer
     if (node->ptrCount)
     {
-        auto ptrPointer       = g_Pool_typeInfoPointer.alloc();
+        auto ptrPointer       = g_Allocator.alloc<TypeInfoPointer>();
         ptrPointer->ptrCount  = node->ptrCount;
         ptrPointer->finalType = node->typeInfo;
         ptrPointer->sizeOf    = sizeof(void*);
@@ -162,7 +162,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         // Array without a specified size
         if (node->arrayDim == UINT32_MAX)
         {
-            auto ptrArray         = g_Pool_typeInfoArray.alloc();
+            auto ptrArray         = g_Allocator.alloc<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
@@ -186,7 +186,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
 
-                auto ptrArray   = g_Pool_typeInfoArray.alloc();
+                auto ptrArray   = g_Allocator.alloc<TypeInfoArray>();
                 ptrArray->count = child->computedValue.reg.u32;
                 totalCount *= ptrArray->count;
                 ptrArray->totalCount  = totalCount;
@@ -203,7 +203,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
     else if (node->isSlice)
     {
-        auto ptrSlice         = g_Pool_typeInfoSlice.alloc();
+        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = node->typeInfo;
         ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (node->isConst)
@@ -224,7 +224,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;
 
-    auto typeInfo     = g_Pool_typeInfoAlias.alloc();
+    auto typeInfo     = g_Allocator.alloc<TypeInfoAlias>();
     typeInfo->rawType = node->childs.front()->typeInfo;
     typeInfo->name    = node->name;
     typeInfo->sizeOf  = typeInfo->rawType->sizeOf;

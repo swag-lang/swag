@@ -37,7 +37,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     {
         node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
 
-        auto ptrType      = g_Pool_typeInfoPointer.alloc();
+        auto ptrType      = g_Allocator.alloc<TypeInfoPointer>();
         ptrType->ptrCount = 1;
 
         // If this is an array, then this is legit, the pointer will address the first
