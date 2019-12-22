@@ -130,6 +130,8 @@ void ThreadManager::executeOneJob(Job* job)
 {
     auto result = job->execute();
     jobHasEnded(job, result);
+    if (result == JobResult::ReleaseJob)
+        job->release();
 }
 
 bool ThreadManager::doneWithJobs()

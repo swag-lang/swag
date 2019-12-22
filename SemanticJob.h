@@ -201,6 +201,28 @@ struct SemanticJob : public Job
     vector<SymbolOverload*>  cacheBadGenericSignature;
     SymbolMatchContext       symMatch;
     SemanticContext          context;
+
+    void reset() override
+    {
+        Job::reset();
+        tmpNodes.clear();
+        cacheDependentSymbols.clear();
+        cacheScopeHierarchy.clear();
+        cacheScopeHierarchyVars.clear();
+        scopesHere.clear();
+        cacheMatches.clear();
+        cacheGenericMatches.clear();
+        cacheBadSignature.clear();
+        cacheBadGenericSignature.clear();
+        symMatch.reset();
+        context.reset();
+    }
+
+    void release() override
+    {
+        extern thread_local Pool<SemanticJob> g_Pool_semanticJob;
+        g_Pool_semanticJob.release(this);
+    }
 };
 
 extern thread_local Pool<SemanticJob> g_Pool_semanticJob;

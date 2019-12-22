@@ -18,7 +18,7 @@ enum class ContextResult
 
 struct JobContext
 {
-    AstNode*         node;
+    AstNode*         node       = nullptr;
     ContextResult    result     = ContextResult::Done;
     SourceFile*      sourceFile = nullptr;
     vector<AstNode*> expansionNode;
@@ -28,6 +28,9 @@ struct JobContext
 
     void reset()
     {
+        node       = nullptr;
+        result     = ContextResult::Done;
+        sourceFile = nullptr;
         expansionNode.clear();
     }
 };
@@ -68,4 +71,25 @@ struct Job : public PoolElem
     uint32_t         flags               = 0;
     int32_t          waitingJobIndex     = -1;
     uint32_t         waitOnJobs          = 0;
+
+    void reset() override
+    {
+        dependentJobs.clear();
+        dependentNodes.clear();
+        nodes.clear();
+        jobsToAdd.clear();
+        originalNode        = nullptr;
+        waitingSymbolSolved = nullptr;
+        sourceFile          = nullptr;
+        module              = nullptr;
+        dependentJob        = nullptr;
+        baseContext         = nullptr;
+        flags               = 0;
+        waitingJobIndex     = -1;
+        waitOnJobs          = 0;
+    }
+
+    void release() override
+    {
+    }
 };

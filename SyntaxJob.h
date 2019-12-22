@@ -130,6 +130,29 @@ struct SyntaxJob : public Job
     uint32_t            currentAccessFlags     = 0;
     bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
+
+    void reset() override
+    {
+        Job::reset();
+        context.reset();
+        sourceFile             = nullptr;
+        currentScope           = nullptr;
+        currentFct             = nullptr;
+        currentBreakable       = nullptr;
+        currentStructScope     = nullptr;
+        currentCompilerIfBlock = nullptr;
+        currentMainNode        = nullptr;
+        currentFlags           = 0;
+        currentAccessFlags     = 0;
+        canChangeModule        = true;
+        moduleSpecified        = false;
+    }
+
+    void release() override
+    {
+        extern thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
+        g_Pool_syntaxJob.release(this);
+    }
 };
 
 extern thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
