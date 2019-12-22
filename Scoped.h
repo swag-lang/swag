@@ -27,10 +27,9 @@ struct ScopedBreakable
 {
     ScopedBreakable(SyntaxJob* job, AstBreakable* newNode)
     {
-        savedJob                 = job;
-        savedNode                = job->currentBreakable;
-        newNode->parentBreakable = savedNode;
-        job->currentBreakable    = newNode;
+        savedJob              = job;
+        savedNode             = job->currentBreakable;
+        job->currentBreakable = newNode;
     }
 
     ~ScopedBreakable()

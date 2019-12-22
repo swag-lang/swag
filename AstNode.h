@@ -418,7 +418,6 @@ struct AstBreakable : public AstNode
 
     vector<AstBreakContinue*> breakList;
     vector<AstBreakContinue*> continueList;
-    AstNode*                  parentBreakable          = nullptr;
     uint32_t                  breakableFlags           = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
     uint32_t                  registerIndex            = 0;
     int                       seekJumpBeforeContinue   = 0;
