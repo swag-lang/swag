@@ -46,19 +46,24 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerInline(SemanticContext* context)
+bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 {
     auto node             = context->node;
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
     // Be sure #macro is used inside a macro
-    if (node->token.id == TokenId::CompilerMacro)
-    {
-        if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-            return context->report({node, node->token, "'#macro' can only be used inside a 'swag.macro' function"});
-    }
+    if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
+        return context->report({node, node->token, "'#macro' can only be used inside a 'swag.macro' function"});
 
+    return true;
+}
+
+bool SemanticJob::resolveCompilerInline(SemanticContext* context)
+{
+    auto node             = context->node;
+    auto scope            = node->childs.back()->ownerScope;
+    scope->startStackSize = node->ownerScope->startStackSize;
     return true;
 }
 

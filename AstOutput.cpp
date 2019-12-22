@@ -69,11 +69,14 @@ namespace Ast
             SWAG_CHECK(output(concat, node->childs.front(), indent));
             break;
 
+        case AstNodeKind::CompilerMacro:
+            CONCAT_FIXED_STR(concat, "#macro");
+            concat.addEolIndent(indent);
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            break;
+
         case AstNodeKind::CompilerInline:
-            if (node->token.id == TokenId::CompilerMacro)
-                CONCAT_FIXED_STR(concat, "#macro");
-            else
-                CONCAT_FIXED_STR(concat, "#inline");
+            CONCAT_FIXED_STR(concat, "#inline");
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, node->childs.front(), indent));
             break;

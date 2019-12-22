@@ -111,6 +111,7 @@ enum class AstNodeKind
     CompilerIfBlock,
     CompilerAssert,
     CompilerMixin,
+    CompilerMacro,
     CompilerInline,
     CompilerPrint,
     CompilerRun,

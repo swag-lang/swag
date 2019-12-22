@@ -63,6 +63,22 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     return true;
 }
 
+bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astCompilerInline, AstNodeKind::CompilerMacro, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
+
+    auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    Scoped         scoped(this, newScope);
+    ScopedMainNode scopedMainNode(this, node);
+    SWAG_CHECK(doCurlyStatement(node));
+    return true;
+}
+
 bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(this, &g_Pool_astCompilerInline, AstNodeKind::CompilerInline, sourceFile, parent);
@@ -70,7 +86,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
 
-    auto newScope = Ast::newScope(node, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, node->ownerScope);
+    auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
     SWAG_CHECK(tokenizer.getToken(token));
 
     Scoped         scoped(this, newScope);
