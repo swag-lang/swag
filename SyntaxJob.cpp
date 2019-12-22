@@ -3,12 +3,9 @@
 #include "Module.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
-#include "Global.h"
-#include "CommandLine.h"
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
-#include "Scope.h"
 
 Pool<SyntaxJob> g_Pool_syntaxJob;
 
