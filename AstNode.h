@@ -606,6 +606,8 @@ struct AstCompilerInline : public AstNode
 struct AstCompilerMacro : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+    AstNode* breakReplace = nullptr;
+    AstNode* continueReplace = nullptr;
 };
 
 struct AstInline : public AstNode

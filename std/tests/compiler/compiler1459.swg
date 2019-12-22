@@ -12,7 +12,7 @@ impl S
         {
             loop 5
             {
-                #macro //(break = break up)
+                #macro(break = break up)
                 {
                     #mixin `stmt
                 }

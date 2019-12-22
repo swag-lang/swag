@@ -70,9 +70,32 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
 
+    // Replacement parameters
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id == TokenId::SymLeftParen)
     {
+        SWAG_CHECK(eatToken());
+        while (token.id != TokenId::SymRightParen)
+        {
+            switch (token.id)
+            {
+            case TokenId::KwdBreak:
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(doEmbeddedInstruction(nullptr, &node->breakReplace));
+                break;
+            case TokenId::KwdContinue:
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(doEmbeddedInstruction(nullptr, &node->continueReplace));
+                break;
+
+            default:
+                return syntaxError(token, format("invalid token '%'", token.text.c_str()));
+            }
+        }
+
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);

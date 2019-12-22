@@ -608,6 +608,8 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astCompilerMacro.alloc();
     newNode->copyFrom(context, this, false);
+    newNode->breakReplace = breakReplace;
+    newNode->continueReplace = continueReplace;
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
