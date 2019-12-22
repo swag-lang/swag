@@ -10,7 +10,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     while (true)
     {
-        auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
+        auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::Using, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveUsing;
         if (result)
             *result = node;
@@ -65,7 +65,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
     while (true)
     {
-        namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
+        namespaceNode              = Ast::newNode<AstNode>(this,  AstNodeKind::Namespace, sourceFile, parent);
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
 
         switch (token.id)
@@ -138,7 +138,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
 bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
     if (result)
         *result = node;
 
@@ -152,7 +152,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
     if (result)
         *result = node;
 
@@ -244,7 +244,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     bool isGlobal = currentScope->isGlobal();
     if (isGlobal)
     {
-        auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+        auto node = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = node;
         return doTopLevelInstruction(node);

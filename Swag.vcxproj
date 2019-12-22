@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Allocator.h" />
     <ClInclude Include="Assert.h" />
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstFlags.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="OsWin32.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Allocator .cpp" />
     <ClCompile Include="Assert.cpp" />
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="AstNode.cpp" />

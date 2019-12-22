@@ -22,7 +22,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
             return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
     }
 
-    auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, nullptr);
+    auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
     identifier->inheritTokenName(token);
     identifier->semanticFct   = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
@@ -58,7 +58,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
+    auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, parent);
     identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
     if (result)
         *result = identifierRef;

@@ -19,7 +19,7 @@ void Module::setup(const string& moduleName)
     makeUpper(nameUp);
 
     scopeRoot              = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, nullptr);
+    astRoot                = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);
     scopeRoot->owner       = astRoot;
     buildPass              = g_CommandLine.buildPass;
     buildParameters.config = g_CommandLine.config;

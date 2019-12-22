@@ -200,13 +200,13 @@ namespace Ast
 
     AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstNode* node = Ast::newNode(syntaxJob, &g_Pool_astNode, kind, sourceFile, parent);
+        AstNode* node = Ast::newNode<AstNode>(syntaxJob, kind, sourceFile, parent);
         return node;
     }
 
     AstInline* newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstInline* node         = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
+        AstInline* node         = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
         node->semanticBeforeFct = SemanticJob::resolveInlineBefore;
         node->semanticAfterFct  = SemanticJob::resolveInlineAfter;
         node->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
@@ -216,7 +216,7 @@ namespace Ast
 
     AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        auto node         = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
+        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveAffect;
         node->flags |= AST_REVERSE_SEMANTIC;
         return node;
@@ -224,28 +224,28 @@ namespace Ast
 
     AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstStruct* node   = Ast::newNode(syntaxJob, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);
+        AstStruct* node   = Ast::newNode<AstStruct>(syntaxJob, AstNodeKind::StructDecl, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveStruct;
         return node;
     }
 
     AstNode* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstNode* node     = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile, parent);
+        AstNode* node     = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParams;
         return node;
     }
 
     AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstFuncCallParam* node = Ast::newNode(syntaxJob, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile, parent);
+        AstFuncCallParam* node = Ast::newNode<AstFuncCallParam>(syntaxJob, AstNodeKind::FuncCallParam, sourceFile, parent);
         node->semanticFct      = SemanticJob::resolveFuncCallParam;
         return node;
     }
 
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
-        AstVarDecl* node = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
+        AstVarDecl* node = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent);
 
         // We need to evaluate assignment first, then type, in order to be able to generate the type depending on the
         // assignment if necessary
@@ -258,14 +258,14 @@ namespace Ast
 
     AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstTypeExpression* node = Ast::newNode(syntaxJob, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, parent);
+        AstTypeExpression* node = Ast::newNode<AstTypeExpression>(syntaxJob, AstNodeKind::TypeExpression, sourceFile, parent);
         node->semanticFct       = SemanticJob::resolveTypeExpression;
         return node;
     }
 
     AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstIdentifier* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, parent);
+        AstIdentifier* node = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, parent);
         node->name          = name;
         node->identifierRef = identifierRef;
         node->semanticFct   = SemanticJob::resolveIdentifier;
@@ -276,7 +276,7 @@ namespace Ast
 
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
+        AstIdentifierRef* node = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
         node->semanticFct      = SemanticJob::resolveIdentifierRef;
         node->byteCodeFct      = ByteCodeGenJob::emitIdentifierRef;
         return node;
@@ -293,7 +293,7 @@ namespace Ast
         tokenize(name.c_str(), '.', subNames);
         for (int i = 0; i < subNames.size(); i++)
         {
-            auto id         = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, node);
+            auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
             id->name        = move(subNames[i]);
             if (syntaxJob)

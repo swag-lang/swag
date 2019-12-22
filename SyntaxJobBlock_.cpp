@@ -10,7 +10,7 @@
 
 bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile, parent);
+    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIf;
     if (result)
         *result = node;
@@ -31,7 +31,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astWhile, AstNodeKind::While, sourceFile, parent);
+    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveWhile;
     if (result)
         *result = node;
@@ -49,7 +49,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
-    auto switchNode         = Ast::newNode(this, &g_Pool_astSwitch, AstNodeKind::Switch, sourceFile, parent);
+    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent);
     switchNode->semanticFct = SemanticJob::resolveSwitch;
     if (result)
         *result = switchNode;
@@ -70,7 +70,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             hasDefault = true;
 
         // One case
-        auto caseNode         = Ast::newNode(this, &g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
+        auto caseNode         = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
         caseNode->isDefault   = isDefault;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = SemanticJob::resolveCase;
@@ -104,7 +104,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
             Scoped scoped(this, newScope);
 
-            auto statement               = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile, caseNode);
+            auto statement               = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::Statement, sourceFile, caseNode);
             statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
             statement->ownerCase         = caseNode;
             caseNode->block              = statement;
@@ -137,7 +137,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode(this, &g_Pool_astFor, AstNodeKind::For, sourceFile, parent);
+    auto node               = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent);
     node->semanticBeforeFct = SemanticJob::resolveForBefore;
     node->semanticFct       = SemanticJob::resolveFor;
     if (result)
@@ -177,7 +177,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astVisit, AstNodeKind::Visit, sourceFile, parent);
+    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveVisit;
     if (result)
         *result = node;
@@ -210,7 +210,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode(this, &g_Pool_astLoop, AstNodeKind::Loop, sourceFile, parent);
+    auto node               = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent);
     node->semanticBeforeFct = SemanticJob::resolveLoopBefore;
     node->semanticFct       = SemanticJob::resolveLoop;
     if (result)
@@ -246,7 +246,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
             auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
             var->token = tokenName;
 
-            auto identifer         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile, var);
+            auto identifer         = Ast::newNode<AstNode>(this,  AstNodeKind::Index, sourceFile, var);
             identifer->semanticFct = SemanticJob::resolveIndex;
 
             var->assignment = identifer;
@@ -263,7 +263,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIndex;
     if (result)
         *result = node;
@@ -273,7 +273,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile, parent);
+    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveBreak;
     if (result)
         *result = node;
@@ -292,7 +292,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile, parent);
+    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Continue, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveContinue;
     if (result)
         *result = node;

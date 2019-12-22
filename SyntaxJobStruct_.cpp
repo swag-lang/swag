@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
-    auto implNode         = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile, parent);
+    auto implNode         = Ast::newNode<AstImpl>(this, AstNodeKind::Impl, sourceFile, parent);
     implNode->semanticFct = SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
@@ -71,7 +71,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
-    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);
+    auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = SemanticJob::resolveStruct;
     if (result)
         *result = structNode;
@@ -165,7 +165,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         ScopedStruct   scopedStruct(this, newScope);
         ScopedMainNode scopedMainNode(this, structNode);
 
-        auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile, structNode);
+        auto contentNode               = Ast::newNode<AstNode>(this,  AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
@@ -210,7 +210,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
         case TokenId::SymLeftCurly:
         {
-            auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            auto stmt = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doStructContent(stmt));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
@@ -229,7 +229,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
         case TokenId::KwdInternal:
         {
-            auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
+            auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
             attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
             attrBlockNode->attributeFlags |= ATTRIBUTE_INTERNAL;
             SWAG_CHECK(eatToken());
@@ -238,7 +238,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
         case TokenId::KwdReadOnly:
         {
-            auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
+            auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
             attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
             attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
             SWAG_CHECK(eatToken());

@@ -7,7 +7,7 @@
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode         = Ast::newNode(this, &g_Pool_astAttrDecl, AstNodeKind::AttrDecl, sourceFile, parent);
+    auto attrNode         = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
     attrNode->semanticFct = SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
@@ -158,7 +158,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
+    auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
     if (result)
         *result = attrBlockNode;
@@ -184,7 +184,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::DocComment, sourceFile, parent);
+    auto attrBlockNode = Ast::newNode<AstNode>(this,  AstNodeKind::DocComment, sourceFile, parent);
     if (result)
         *result = attrBlockNode;
 

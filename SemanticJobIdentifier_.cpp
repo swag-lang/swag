@@ -1051,7 +1051,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
 
     auto rightAffect = node->identifierRef->parent->childs[1];
 
-    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+    auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
     node->callParameters->childs.insert(node->callParameters->childs.end(), fctCallParam);
@@ -1075,7 +1075,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
-    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+    auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
     node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
@@ -1325,7 +1325,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         if (brother->kind == AstNodeKind::Statement)
                         {
                             auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                            auto codeNode     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                            auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
                             codeNode->flags |= AST_NO_BYTECODE;
                             Ast::removeFromParent(brother);
                             Ast::addChildBack(codeNode, brother);

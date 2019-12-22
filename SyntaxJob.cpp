@@ -145,7 +145,7 @@ JobResult SyntaxJob::execute()
         sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
 
     // Setup root ast for file
-    sourceFile->astRoot             = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
+    sourceFile->astRoot             = Ast::newNode<AstNode>(this,  AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
     sourceFile->scopeRoot->owner    = sourceFile->astRoot;
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
 

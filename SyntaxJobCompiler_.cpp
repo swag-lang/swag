@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+    auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;
@@ -25,7 +25,7 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
-    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerIf, sourceFile, parent);
+    auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
     if (result)
         *result = node;
 
@@ -34,7 +34,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
     {
-        auto block    = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
@@ -45,7 +45,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
     {
-        auto block      = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        auto block      = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->elseBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
@@ -65,7 +65,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
 bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astCompilerMixin, AstNodeKind::CompilerMixin, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerMixin;
@@ -104,7 +104,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astCompilerMacro, AstNodeKind::CompilerMacro, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
@@ -120,7 +120,7 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astCompilerInline, AstNodeKind::CompilerInline, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
@@ -136,7 +136,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerAssert;
@@ -165,7 +165,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerRun(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerRun;
@@ -178,7 +178,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerPrint;
@@ -272,7 +272,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#import can only be declared in the top level scope"}));
 
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
 
     SWAG_CHECK(tokenizer.getToken(token));
     AstNode* identifier;

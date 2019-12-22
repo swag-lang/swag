@@ -12,7 +12,7 @@
 
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TypeAlias, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::TypeAlias, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveTypeAlias;
     if (result)
         *result = node;
@@ -32,7 +32,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile, parent);
+    auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveTypeLambda;
     if (result)
         *result = node;
@@ -40,7 +40,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto params      = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, node);
+        auto params      = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters = params;
         while (true)
         {
@@ -278,7 +278,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::Cast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitCast;
     if (result)
         *result = node;
@@ -294,7 +294,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::Cast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitAutoCast;
     if (result)
         *result = node;

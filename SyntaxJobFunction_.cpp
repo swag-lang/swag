@@ -7,19 +7,19 @@
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile, parent);
+    auto callParams         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncCallParams, sourceFile, parent);
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
     if (token.id != TokenId::SymLeftParen)
     {
-        auto param         = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile, callParams);
+        auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
         param->semanticFct = SemanticJob::resolveFuncCallParam;
         switch (token.id)
         {
         case TokenId::Identifier:
         {
-            auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, param);
+            auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, param);
             identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
             SWAG_CHECK(doIdentifier(identifierRef, false));
             break;
@@ -43,7 +43,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         {
             while (true)
             {
-                auto param         = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile, callParams);
+                auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
                 param->semanticFct = SemanticJob::resolveFuncCallParam;
                 param->token       = token;
                 AstNode* paramExpression;
@@ -181,7 +181,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, parent);
+        auto allParams         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclParams, sourceFile, parent);
         allParams->semanticFct = SemanticJob::resolveFuncDeclParams;
         allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
@@ -204,7 +204,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, parent);
+    auto allParams = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclParams, sourceFile, parent);
     if (result)
         *result = allParams;
 
@@ -241,7 +241,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 {
-    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, parent);
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -265,7 +265,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     funcNode->computeFullName();
 
     // Return type
-    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    auto typeNode         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -288,7 +288,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto returnNode         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, funcNode);
+            auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
@@ -308,7 +308,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
-    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, parent);
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -405,7 +405,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
 
     // Return type
-    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    auto typeNode         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
     if (!funcForCompiler)
@@ -436,8 +436,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto stmt               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, funcNode);
-            auto returnNode         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, stmt);
+            auto stmt               = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, funcNode);
+            auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
@@ -458,7 +458,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, parent);
+    auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveReturn;
     if (result)
         *result = node;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "AstNode.h"
+#include "Allocator.h"
 struct Utf8Crc;
 struct Scope;
 struct Concat;
@@ -8,10 +9,10 @@ enum class ScopeKind;
 
 namespace Ast
 {
-    template<typename T, int S>
-    T* newNode(SyntaxJob* job, Pool<T, S>* pool, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
+    template<typename T>
+    T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
     {
-        auto node        = pool->alloc();
+        auto node        = g_Allocator.alloc<T>();
         node->kind       = kind;
         node->parent     = parent;
         node->ownerScope = nullptr;
