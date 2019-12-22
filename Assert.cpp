@@ -22,6 +22,7 @@ void swag_assert(const char* expr, const char* file, int line)
         g_Log.print(format("source line: %d\n", g_diagnosticInfos.node->token.startLocation.line + 1));
     g_Log.setDefaultColor();
 
+    ::MessageBoxA(NULL, "", "", MB_OK);
     assert(false);
     exit(-1);
 }

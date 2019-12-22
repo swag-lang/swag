@@ -5,6 +5,7 @@
 #include "Register.h"
 #include "RegisterList.h"
 #include "SourceLocation.h"
+#include "RaceCondition.h"
 struct Scope;
 struct SourceFile;
 struct Token;
@@ -79,6 +80,7 @@ struct SymbolName
 
 struct SymTable
 {
+    SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
     SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
@@ -95,4 +97,5 @@ struct SymTable
     Scope*                    scope;
     map<Utf8Crc, SymbolName*> mapNames;
     vector<SymbolOverload*>   structVarsToDrop;
+    SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

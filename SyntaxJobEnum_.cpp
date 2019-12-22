@@ -115,7 +115,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             auto enumValue = Ast::newNode<AstNode>(this,  AstNodeKind::EnumValue, sourceFile, parent);
             enumValue->inheritTokenName(token);
             enumValue->semanticFct = SemanticJob::resolveEnumValue;
-            currentScope->symTable.registerSymbolNameNoLock(&context, enumValue, SymbolKind::EnumValue);
+            currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);
 
             SWAG_CHECK(tokenizer.getToken(token));
             if (token.id == TokenId::SymEqual)

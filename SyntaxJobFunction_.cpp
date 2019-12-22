@@ -7,7 +7,7 @@
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncCallParams, sourceFile, parent);
+    auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
@@ -181,7 +181,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParams         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclParams, sourceFile, parent);
+        auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
         allParams->semanticFct = SemanticJob::resolveFuncDeclParams;
         allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
@@ -204,7 +204,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclParams, sourceFile, parent);
+    auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
     if (result)
         *result = allParams;
 
@@ -248,12 +248,11 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     int id         = g_Global.uniqueID.fetch_add(1);
     funcNode->name = "__lambda" + to_string(id);
 
-    scoped_lock lk(currentScope->symTable.mutex);
-    auto        typeInfo = g_Allocator.alloc<TypeInfoFuncAttr>();
-    auto        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
-    funcNode->typeInfo   = typeInfo;
-    funcNode->scope      = newScope;
-    currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
+    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
+    auto newScope      = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
+    funcNode->typeInfo = typeInfo;
+    funcNode->scope    = newScope;
+    currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
     {
         Scoped    scoped(this, newScope);
@@ -265,7 +264,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     funcNode->computeFullName();
 
     // Return type
-    auto typeNode         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -405,7 +404,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
 
     // Return type
-    auto typeNode         = Ast::newNode<AstNode>(this,  AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
     if (!funcForCompiler)
@@ -436,7 +435,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto stmt               = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, funcNode);
+            auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
             auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;

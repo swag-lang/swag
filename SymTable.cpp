@@ -19,8 +19,16 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
     return result;
 }
 
+SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
+{
+    unique_lock lk(mutex);
+    return registerSymbolNameNoLock(context, node, kind, aliasName);
+}
+
 SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
 {
+    SWAG_RACE_CONDITION_WRITE(raceCondition);
+
     if (!aliasName)
         aliasName = &node->name;
 
@@ -76,6 +84,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                                                   uint32_t       storageOffset,
                                                   Utf8Crc*       aliasName)
 {
+    SWAG_RACE_CONDITION_WRITE(raceCondition);
+
     if (!aliasName)
         aliasName = &node->name;
 

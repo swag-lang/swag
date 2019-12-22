@@ -144,14 +144,13 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     // Dispatch owners
     if (structNode->genericParameters)
     {
-        scoped_lock lock(newScope->symTable.mutex);
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
                 auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                newScope->symTable.registerSymbolNameNoLock(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+                newScope->symTable.registerSymbolName(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
             }
         });
     }
@@ -165,7 +164,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         ScopedStruct   scopedStruct(this, newScope);
         ScopedMainNode scopedMainNode(this, structNode);
 
-        auto contentNode               = Ast::newNode<AstNode>(this,  AstNodeKind::StructContent, sourceFile, structNode);
+        auto contentNode               = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
@@ -210,7 +209,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
         case TokenId::SymLeftCurly:
         {
-            auto stmt = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
+            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doStructContent(stmt));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
