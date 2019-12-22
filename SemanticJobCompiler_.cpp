@@ -69,7 +69,7 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
     if (node->doneFlags & AST_DONE_COMPILER_INSERT)
     {
@@ -94,11 +94,12 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
             CloneContext cloneContext;
-            cloneContext.parent         = node;
-            cloneContext.parentScope    = node->ownerScope;
-            cloneContext.ownerBreakable = node->ownerBreakable;
-            cloneContext.ownerInline    = node->ownerInline;
-            auto cloneContent           = typeCode->content->clone(cloneContext);
+            cloneContext.parent             = node;
+            cloneContext.parentScope        = node->ownerScope;
+            cloneContext.ownerBreakable     = node->ownerBreakable;
+            cloneContext.ownerInline        = node->ownerInline;
+            cloneContext.replaceIdentifiers = node->replaceIdentifiers;
+            auto cloneContent               = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);

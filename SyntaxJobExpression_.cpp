@@ -391,7 +391,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerMixin:
     {
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
+        boolExpression              = Ast::newNode(nullptr, &g_Pool_astCompilerMixin, AstNodeKind::CompilerMixin, sourceFile, parent);
         boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
         SWAG_CHECK(doExpression(boolExpression));
         break;

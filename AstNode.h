@@ -606,8 +606,12 @@ struct AstCompilerInline : public AstNode
 struct AstCompilerMacro : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-    AstNode* breakReplace = nullptr;
-    AstNode* continueReplace = nullptr;
+};
+
+struct AstCompilerMixin : public AstNode
+{
+    AstNode*               clone(CloneContext& context) override;
+    map<Utf8Crc, AstNode*> replaceIdentifiers;
 };
 
 struct AstInline : public AstNode
@@ -666,3 +670,4 @@ extern thread_local Pool<AstCompilerIfBlock>    g_Pool_astCompilerIfBlock;
 extern thread_local Pool<AstLabelBreakable>     g_Pool_astLabelBreakable;
 extern thread_local Pool<AstCompilerInline>     g_Pool_astCompilerInline;
 extern thread_local Pool<AstCompilerMacro>      g_Pool_astCompilerMacro;
+extern thread_local Pool<AstCompilerMixin>      g_Pool_astCompilerMixin;

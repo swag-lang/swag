@@ -12,9 +12,9 @@ impl S
         {
             loop 5
             {
-                #macro(break = break up)
+                #macro
                 {
-                    #mixin `stmt
+                    #mixin(break = break up) `stmt
                 }
             }
         }
@@ -28,9 +28,10 @@ impl S
     cpt := 0
     visit(Bytes) x
     {
+        //@print("AAA\n")
         cpt += 1
         break
     }
     
-    //@assert(cpt == 1)
+    @assert(cpt == 1)
 }

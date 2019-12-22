@@ -36,6 +36,7 @@ thread_local Pool<AstCompilerIfBlock>    g_Pool_astCompilerIfBlock;
 thread_local Pool<AstLabelBreakable>     g_Pool_astLabelBreakable;
 thread_local Pool<AstCompilerInline>     g_Pool_astCompilerInline;
 thread_local Pool<AstCompilerMacro>      g_Pool_astCompilerMacro;
+thread_local Pool<AstCompilerMixin>      g_Pool_astCompilerMixin;
 
 void AstNode::setPassThrough()
 {
@@ -260,12 +261,6 @@ void AstIdentifierRef::computeName()
 
 AstNode* AstIdentifier::clone(CloneContext& context)
 {
-    auto it = context.replaceIdentifiers.find(name);
-    if (it != context.replaceIdentifiers.end())
-    {
-        it = it;
-    }
-
     auto newNode = g_Pool_astIdentifier.alloc();
     newNode->copyFrom(context, this);
 
@@ -353,6 +348,32 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
 {
+    switch (token.id)
+    {
+    case TokenId::KwdBreak:
+    {
+        auto it = context.replaceIdentifiers.find("break");
+        if (it != context.replaceIdentifiers.end())
+        {
+            CloneContext cloneContext = context;
+            cloneContext.replaceIdentifiers.clear();
+            return it->second->clone(cloneContext);
+        }
+        break;
+    }
+    case TokenId::KwdContinue:
+    {
+        auto it = context.replaceIdentifiers.find("continue");
+        if (it != context.replaceIdentifiers.end())
+        {
+            CloneContext cloneContext = context;
+            cloneContext.replaceIdentifiers.clear();
+            return it->second->clone(cloneContext);
+        }
+        break;
+    }
+    }
+
     auto newNode = g_Pool_astBreakContinue.alloc();
     newNode->copyFrom(context, this);
     newNode->label = label;
@@ -598,7 +619,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
     childs.back()->clone(cloneContext);
 
     return newNode;
@@ -608,14 +629,20 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astCompilerMacro.alloc();
     newNode->copyFrom(context, this, false);
-    newNode->breakReplace = breakReplace;
-    newNode->continueReplace = continueReplace;
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
     childs.back()->clone(cloneContext);
 
+    return newNode;
+}
+
+AstNode* AstCompilerMixin::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astCompilerMixin.alloc();
+    newNode->copyFrom(context, this);
+    newNode->replaceIdentifiers = replaceIdentifiers;
     return newNode;
 }
 
