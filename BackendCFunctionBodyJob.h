@@ -19,4 +19,4 @@ struct BackendCFunctionBodyJob : public Job
     }
 };
 
-extern thread_local PoolFree<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

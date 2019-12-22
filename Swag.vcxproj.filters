@@ -609,9 +609,6 @@
     <ClInclude Include="File.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="PoolFree.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="Allocator.h">
       <Filter>Main</Filter>
     </ClInclude>

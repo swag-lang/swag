@@ -3,6 +3,8 @@
 #include "Utf8.h"
 #include "SourceLocation.h"
 #include "Register.h"
+#include "Assert.h"
+
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
 struct SourceFile;
@@ -21,7 +23,7 @@ struct ByteCodeInstruction
     ByteCodeOp     op;
 };
 
-struct ByteCode
+struct ByteCode : public PoolElem
 {
     void print();
 
@@ -47,6 +49,10 @@ struct ByteCode
 
     Utf8              callName();
     TypeInfoFuncAttr* callType();
+
+    void reset()
+    {
+    }
 };
 
 extern thread_local Pool<ByteCode> g_Pool_byteCode;
