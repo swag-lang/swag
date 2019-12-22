@@ -460,6 +460,15 @@ struct AstLoop : public AstBreakable
     AstNode* block      = nullptr;
 };
 
+struct AstVisit : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    Utf8     extraName;
+    AstNode* expression = nullptr;
+    AstNode* block      = nullptr;
+};
+
 struct AstSwitch : public AstBreakable
 {
     AstSwitch()
@@ -628,6 +637,7 @@ extern thread_local Pool<AstIf>                 g_Pool_astIf;
 extern thread_local Pool<AstWhile>              g_Pool_astWhile;
 extern thread_local Pool<AstFor>                g_Pool_astFor;
 extern thread_local Pool<AstLoop>               g_Pool_astLoop;
+extern thread_local Pool<AstVisit>              g_Pool_astVisit;
 extern thread_local Pool<AstSwitch>             g_Pool_astSwitch;
 extern thread_local Pool<AstSwitchCase>         g_Pool_astSwitchCase;
 extern thread_local Pool<AstSwitchCaseBlock>    g_Pool_astSwitchCaseBlock;

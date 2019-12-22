@@ -177,31 +177,26 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 {
+    auto node         = Ast::newNode(this, &g_Pool_astVisit, AstNodeKind::Visit, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveVisit;
+    if (result)
+        *result = node;
+
     // Eat visit keyword
-    auto saveToken = token;
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Ear extra name on the special function
-    Utf8 extraName;
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "opVisit name expected"));
-        extraName = token.text;
+        node->extraName = token.text;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
-    AstNode* expression = nullptr;
-    SWAG_CHECK(doIdentifierRef(parent, &expression));
-    if (result)
-        *result = expression;
-
-    auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", extraName.c_str()), (AstIdentifierRef*) expression, expression);
-    identifier->token          = saveToken;
-    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
-
-    SWAG_CHECK(doEmbeddedStatement(parent));
+    SWAG_CHECK(doIdentifierRef(node, &node->expression));
+    SWAG_CHECK(doEmbeddedStatement(nullptr, &node->block));
     return true;
 }
 

@@ -178,6 +178,29 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveVisit(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
+    SWAG_CHECK(checkIsConcrete(context, node->expression));
+
+    auto identifierRef         = Ast::clone(node->expression, node);
+    auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraName.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
+    identifier->token          = node->token;
+    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, nullptr);
+
+    Ast::addChildBack(node, node->block);
+    node->expression->flags |= AST_NO_BYTECODE;
+
+    auto job = context->job;
+    job->nodes.pop_back();
+    job->nodes.push_back(identifierRef);
+    job->nodes.push_back(node->block);
+    job->nodes.push_back(node);
+
+    return true;
+}
+
 bool SemanticJob::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;
