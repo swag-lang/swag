@@ -10,7 +10,6 @@ struct BackendCFunctionBodyJob : public Job
     JobResult         execute() override;
     BackendC*         backend = nullptr;
     vector<ByteCode*> byteCodeFunc;
-    Concat            concat;
 };
 
 extern Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

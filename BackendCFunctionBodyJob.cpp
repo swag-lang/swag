@@ -6,10 +6,11 @@
 #include "Ast.h"
 
 Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+thread_local Concat           g_Concat;
 
 JobResult BackendCFunctionBodyJob::execute()
 {
-    concat.clear();
+    g_Concat.clear();
 
     for (auto one : byteCodeFunc)
     {
@@ -23,14 +24,14 @@ JobResult BackendCFunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        backend->emitFunctionBody(concat, module, one);
+        backend->emitFunctionBody(g_Concat, module, one);
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
-            backend->emitFuncWrapperPublic(concat, module, typeFunc, node, one);
+            backend->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
     }
 
-    auto        firstBucket = concat.firstBucket;
+    auto        firstBucket = g_Concat.firstBucket;
     SaveRequest req;
 
     // Must save one by one
