@@ -18,14 +18,12 @@ struct Pool
 {
     void release(T* elem)
     {
-        unique_lock lk(lock);
         elem->nextFree = firstFree;
         firstFree      = elem;
     }
 
     T* alloc()
     {
-        unique_lock lk(lock);
         if (firstFree)
         {
             auto result = firstFree;
@@ -43,7 +41,6 @@ struct Pool
         return &lastBucket->buffer[lastBucket->maxUsed++];
     }
 
-    mutex           lock;
     T*              firstFree  = nullptr;
     PoolSlot<T, S>* lastBucket = nullptr;
 };
