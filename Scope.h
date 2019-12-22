@@ -94,5 +94,3 @@ struct Scope
     set<AstNode*> publicTypeAlias;
     set<AstNode*> publicNamespace;
 };
-
-extern thread_local Pool<Scope> g_Pool_scope;

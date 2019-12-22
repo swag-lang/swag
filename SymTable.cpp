@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SymTable.h"
 #include "Diagnostic.h"
-#include "ThreadManager.h"
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"

@@ -1,11 +1,8 @@
 
 #include "pch.h"
 #include "Ast.h"
-#include "Scope.h"
-#include "SourceFile.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
-#include "Utf8Crc.h"
 
 namespace Ast
 {
@@ -150,7 +147,7 @@ namespace Ast
             }
         }
 
-        auto newScope = g_Pool_scope.alloc();
+        auto newScope = g_Allocator.alloc<Scope>();
 
         Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, (const string&) name) : (const string&) name;
         newScope->kind        = kind;

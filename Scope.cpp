@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "Scope.h"
-#include "SymTable.h"
-#include "Diagnostic.h"
-
-thread_local Pool<Scope> g_Pool_scope;
 
 const char* Scope::getNakedKindName(ScopeKind kind)
 {
