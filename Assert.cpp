@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "AstNode.h"
+#include "Os.h"
 
 #ifdef SWAG_HAS_ASSERT
 thread_local DiagnosticInfos g_diagnosticInfos;
@@ -22,8 +23,6 @@ void swag_assert(const char* expr, const char* file, int line)
         g_Log.print(format("source line: %d\n", g_diagnosticInfos.node->token.startLocation.line + 1));
     g_Log.setDefaultColor();
 
-    ::MessageBoxA(NULL, "", "", MB_OK);
-    assert(false);
-    exit(-1);
+    OS::assertBox(expr, file, line);
 }
 #endif

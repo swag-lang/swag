@@ -3,8 +3,6 @@
 #include "Diagnostic.h"
 #include "File.h"
 #include "Stats.h"
-#include "SourceFile.h"
-#include "OutputFile.h"
 
 void File::openFile(FILE** fileHandle, const char* path, const char* mode)
 {

@@ -25,6 +25,7 @@ namespace OS
     extern void          visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     extern void          setThreadName(thread* thread, const char* threadName);
     extern uint64_t      getFileWriteTime(string& fileName);
+    extern void          assertBox(const char* expr, const char* file, int line);
 
     enum class ResourceFile
     {

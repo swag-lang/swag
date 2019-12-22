@@ -466,6 +466,17 @@ namespace OS
         *size = dwResourceSize;
         return true;
     }
+
+    void assertBox(const char* expr, const char* file, int line)
+    {
+        string msg;
+        msg += "Assertion failed\n";
+        msg += format("File: %s\n", file);
+        msg += format("Line: %d\n", line);
+        msg += format("Expression: %s", expr);
+        ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_OK | MB_ICONERROR);
+    }
+
 }; // namespace OS
 
 #endif
