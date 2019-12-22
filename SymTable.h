@@ -96,6 +96,3 @@ struct SymTable
     map<Utf8Crc, SymbolName*> mapNames;
     vector<SymbolOverload*>   structVarsToDrop;
 };
-
-extern thread_local Pool<SymbolOverload> g_Pool_symOverload;
-extern thread_local Pool<SymbolName>     g_Pool_symName;

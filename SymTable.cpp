@@ -4,9 +4,7 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
-
-thread_local Pool<SymbolOverload> g_Pool_symOverload;
-thread_local Pool<SymbolName>     g_Pool_symName;
+#include "Allocator.h"
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
@@ -30,7 +28,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     auto symbol = findNoLock(*aliasName);
     if (!symbol)
     {
-        symbol                       = g_Pool_symName.alloc();
+        symbol                       = g_Allocator.alloc<SymbolName>();
         symbol->name                 = *aliasName;
         symbol->fullName             = Scope::makeFullName(scope->fullname, *aliasName);
         symbol->kind                 = kind;
@@ -225,7 +223,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
 
 SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload      = g_Pool_symOverload.alloc();
+    auto overload      = g_Allocator.alloc<SymbolOverload>();
     overload->typeInfo = typeInfo;
     overload->node     = node;
 
