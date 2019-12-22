@@ -8,4 +8,4 @@ struct ModulePreCompileJob : public Job
     JobResult execute() override;
 };
 
-extern Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
+extern thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;

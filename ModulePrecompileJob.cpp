@@ -3,7 +3,7 @@
 #include "BackendC.h"
 #include "Workspace.h"
 
-Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
+thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
 
 JobResult ModulePreCompileJob::execute()
 {

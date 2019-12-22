@@ -7,4 +7,4 @@ struct DocModuleJob : public Job
     JobResult execute() override;
 };
 
-extern Pool<DocModuleJob> g_Pool_docModuleJob;
+extern thread_local Pool<DocModuleJob> g_Pool_docModuleJob;

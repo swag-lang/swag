@@ -7,7 +7,7 @@
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 
-Pool<SyntaxJob> g_Pool_syntaxJob;
+thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {

@@ -8,4 +8,4 @@ struct ModuleSemanticJob : public Job
     bool      buildFileMode = false;
 };
 
-extern Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
+extern thread_local Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;

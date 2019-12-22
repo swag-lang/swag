@@ -5,8 +5,8 @@
 #include "ByteCode.h"
 #include "Ast.h"
 
-Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
-thread_local Concat           g_Concat;
+thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+thread_local Concat                        g_Concat;
 
 JobResult BackendCFunctionBodyJob::execute()
 {

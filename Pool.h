@@ -15,7 +15,6 @@ struct Pool
 {
     T* alloc()
     {
-        unique_lock lk(lock);
         if (!lastBucket || lastBucket->maxUsed == S)
         {
             lastBucket = new PoolSlot<T, S>();
@@ -25,7 +24,5 @@ struct Pool
         return &lastBucket->buffer[lastBucket->maxUsed++];
     }
 
-    mutex           lock;
-    T*              firstFree  = nullptr;
     PoolSlot<T, S>* lastBucket = nullptr;
 };

@@ -15,4 +15,4 @@ struct ModuleOutputJob : public Job
     ModuleOutputJobPass pass = ModuleOutputJobPass::Init;
 };
 
-extern Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
+extern thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;

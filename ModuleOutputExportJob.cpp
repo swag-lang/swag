@@ -2,7 +2,7 @@
 #include "ModuleOutputExportJob.h"
 #include "BackendC.h"
 
-Pool<ModuleOutputExportJob> g_Pool_moduleOutputExportJob;
+thread_local Pool<ModuleOutputExportJob> g_Pool_moduleOutputExportJob;
 
 JobResult ModuleOutputExportJob::execute()
 {

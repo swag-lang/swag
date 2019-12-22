@@ -5,7 +5,7 @@
 #include "ThreadManager.h"
 #include "Os.h"
 
-Pool<DocModuleJob> g_Pool_docModuleJob;
+thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 
 JobResult DocModuleJob::execute()
 {

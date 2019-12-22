@@ -12,4 +12,4 @@ struct BackendCFunctionBodyJob : public Job
     vector<ByteCode*> byteCodeFunc;
 };
 
-extern Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

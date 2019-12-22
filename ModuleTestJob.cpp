@@ -3,7 +3,7 @@
 #include "Workspace.h"
 #include "Os.h"
 
-Pool<ModuleTestJob> g_Pool_moduleTestJob;
+thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;
 
 JobResult ModuleTestJob::execute()
 {
