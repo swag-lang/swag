@@ -12,6 +12,7 @@ struct Allocator
     template<typename T>
     T* alloc()
     {
+        static_assert(sizeof(T) < ALLOCATOR_BUCKET_SIZE);
         if (!lastBucket || lastBucket->maxUsed + sizeof(T) >= ALLOCATOR_BUCKET_SIZE)
         {
             lastBucket          = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));

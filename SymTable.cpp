@@ -17,11 +17,8 @@ SymbolName* SymTable::find(const Utf8Crc& name)
 
 SymbolName* SymTable::findNoLock(const Utf8Crc& name)
 {
-    int indexInTable = name.crc % HASH_SIZE;
-    if (!mapNames[indexInTable])
-        return nullptr;
-    auto it     = mapNames[indexInTable]->find(name);
-    auto result = it != mapNames[indexInTable]->end() ? it->second : nullptr;
+    auto it     = mapNames.find(name);
+    auto result = it != mapNames.end() ? it->second : nullptr;
     return result;
 }
 
@@ -40,10 +37,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         symbol->kind                 = kind;
         symbol->defaultOverload.node = node;
         symbol->ownerTable           = this;
-        int indexInTable             = aliasName->crc % HASH_SIZE;
-        if (!mapNames[indexInTable])
-            mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
-        (*mapNames[indexInTable])[*aliasName] = symbol;
+        mapNames[*aliasName]         = symbol;
     }
 
     // Error if overload is not possible

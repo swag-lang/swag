@@ -91,11 +91,10 @@ struct SymTable
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
-    static const int           HASH_SIZE = 512;
-    shared_mutex               mutex;
-    Scope*                     scope;
-    map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
-    vector<SymbolOverload*>    structVarsToDrop;
+    shared_mutex              mutex;
+    Scope*                    scope;
+    map<Utf8Crc, SymbolName*> mapNames;
+    vector<SymbolOverload*>   structVarsToDrop;
 };
 
 extern thread_local Pool<SymbolOverload> g_Pool_symOverload;
