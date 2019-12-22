@@ -10,7 +10,7 @@
 #include "SourceFile.h"
 #include "Scope.h"
 
-thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
+Pool<SyntaxJob> g_Pool_syntaxJob;
 
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {

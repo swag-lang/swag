@@ -6,7 +6,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 
-thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
+Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {

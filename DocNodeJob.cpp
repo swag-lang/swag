@@ -9,7 +9,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 
-thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
+Pool<DocNodeJob> g_Pool_docNodeJob;
 
 void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode, bool light)
 {

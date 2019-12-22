@@ -8,4 +8,4 @@ struct DocScopeJob : public Job
     Scope*    scope = nullptr;
 };
 
-extern thread_local Pool<DocScopeJob> g_Pool_docScopeJob;
+extern Pool<DocScopeJob> g_Pool_docScopeJob;

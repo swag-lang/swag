@@ -39,13 +39,16 @@ struct Pool
             mutexFree.unlock();
         }
 
-        if (!lastBucket || lastBucket->maxUsed == S)
         {
-            lastBucket = new PoolSlot<T, S>();
-            return &lastBucket->buffer[0];
-        }
+            unique_lock lk(mutexFree);
+            if (!lastBucket || lastBucket->maxUsed == S)
+            {
+                lastBucket = new PoolSlot<T, S>();
+                return &lastBucket->buffer[0];
+            }
 
-        return &lastBucket->buffer[lastBucket->maxUsed++];
+            return &lastBucket->buffer[lastBucket->maxUsed++];
+        }
     }
 
     mutex           mutexFree;

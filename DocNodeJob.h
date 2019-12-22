@@ -23,4 +23,4 @@ struct DocNodeJob : public Job
     vector<AstNode*> nodes;
 };
 
-extern thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
+extern Pool<DocNodeJob> g_Pool_docNodeJob;

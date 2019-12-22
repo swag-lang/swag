@@ -203,4 +203,4 @@ struct SemanticJob : public Job
     SemanticContext          context;
 };
 
-extern thread_local Pool<SemanticJob> g_Pool_semanticJob;
+extern Pool<SemanticJob> g_Pool_semanticJob;

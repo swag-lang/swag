@@ -8,4 +8,4 @@ struct ModuleOutputExportJob : public Job
     Backend*  backend = nullptr;
 };
 
-extern thread_local Pool<ModuleOutputExportJob> g_Pool_moduleOutputExportJob;
+extern Pool<ModuleOutputExportJob> g_Pool_moduleOutputExportJob;

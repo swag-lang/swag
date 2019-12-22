@@ -12,4 +12,4 @@ struct ModuleCompileJob : public Job
     mutex*              mutexDone = nullptr;
 };
 
-extern thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
+extern Pool<ModuleCompileJob> g_Pool_moduleCompileJob;

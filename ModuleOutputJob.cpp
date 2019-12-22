@@ -8,7 +8,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
-thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
+Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
 JobResult ModuleOutputJob::execute()
 {

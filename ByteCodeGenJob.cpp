@@ -11,7 +11,7 @@
 #include "TypeManager.h"
 #include "Context.h"
 
-thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
+Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
 {

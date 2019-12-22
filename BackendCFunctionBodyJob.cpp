@@ -5,7 +5,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 
-thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 
 JobResult BackendCFunctionBodyJob::execute()
 {

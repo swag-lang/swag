@@ -11,7 +11,7 @@
 #include "Stats.h"
 #include "Allocator.h"
 
-thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
+Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
 JobResult ModuleBuildJob::execute()
 {

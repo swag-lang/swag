@@ -6,7 +6,7 @@
 #include "AstNode.h"
 #include "SourceFile.h"
 
-thread_local Pool<SemanticJob> g_Pool_semanticJob;
+Pool<SemanticJob> g_Pool_semanticJob;
 
 bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNode* node)
 {

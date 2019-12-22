@@ -7,7 +7,7 @@
 #include "AstNode.h"
 #include "DocHtmlHelper.h"
 
-thread_local Pool<DocScopeJob> g_Pool_docScopeJob;
+Pool<DocScopeJob> g_Pool_docScopeJob;
 
 JobResult DocScopeJob::execute()
 {

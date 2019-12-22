@@ -23,4 +23,4 @@ struct ModuleBuildJob : public Job
     ModuleBuildPass pass = ModuleBuildPass::Dependencies;
 };
 
-extern thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
+extern Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
