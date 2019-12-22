@@ -603,6 +603,11 @@ struct AstCompilerInline : public AstNode
     AstNode* clone(CloneContext& context) override;
 };
 
+struct AstCompilerMacro : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+};
+
 struct AstInline : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
@@ -658,3 +663,4 @@ extern thread_local Pool<AstReturn>             g_Pool_astReturn;
 extern thread_local Pool<AstCompilerIfBlock>    g_Pool_astCompilerIfBlock;
 extern thread_local Pool<AstLabelBreakable>     g_Pool_astLabelBreakable;
 extern thread_local Pool<AstCompilerInline>     g_Pool_astCompilerInline;
+extern thread_local Pool<AstCompilerMacro>      g_Pool_astCompilerMacro;

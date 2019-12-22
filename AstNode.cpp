@@ -35,6 +35,7 @@ thread_local Pool<AstReturn>             g_Pool_astReturn;
 thread_local Pool<AstCompilerIfBlock>    g_Pool_astCompilerIfBlock;
 thread_local Pool<AstLabelBreakable>     g_Pool_astLabelBreakable;
 thread_local Pool<AstCompilerInline>     g_Pool_astCompilerInline;
+thread_local Pool<AstCompilerMacro>      g_Pool_astCompilerMacro;
 
 void AstNode::setPassThrough()
 {
@@ -346,8 +347,8 @@ AstNode* AstIf::clone(CloneContext& context)
 void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
 {
     AstNode::copyFrom(context, from, false);
-    breakableFlags  = from->breakableFlags;
-    registerIndex   = from->registerIndex;
+    breakableFlags = from->breakableFlags;
+    registerIndex  = from->registerIndex;
 }
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
@@ -593,6 +594,19 @@ AstNode* AstReturn::clone(CloneContext& context)
 AstNode* AstCompilerInline::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astCompilerInline.alloc();
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext        = context;
+    cloneContext.parent      = newNode;
+    cloneContext.parentScope = Ast::newScope(newNode, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
+    childs.back()->clone(cloneContext);
+
+    return newNode;
+}
+
+AstNode* AstCompilerMacro::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astCompilerMacro.alloc();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext        = context;

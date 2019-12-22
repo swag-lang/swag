@@ -65,13 +65,17 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
 bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astCompilerInline, AstNodeKind::CompilerMacro, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astCompilerMacro, AstNodeKind::CompilerMacro, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
 
-    auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
     SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id == TokenId::SymLeftParen)
+    {
+    }
+
+    auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
 
     Scoped         scoped(this, newScope);
     ScopedMainNode scopedMainNode(this, node);
