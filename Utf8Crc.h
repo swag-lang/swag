@@ -63,3 +63,19 @@ struct Utf8Crc : public Utf8
 
     uint32_t crc = 0;
 };
+
+struct Utf8CrcKeyHash
+{
+    size_t operator()(const Utf8Crc& k) const
+    {
+        return k.crc;
+    }
+};
+
+struct Utf8CrcKeyEqual
+{
+    bool operator()(const Utf8Crc& lhs, const Utf8Crc& rhs) const
+    {
+        return lhs.compare(rhs);
+    }
+};

@@ -93,9 +93,9 @@ struct SymTable
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
-    shared_mutex              mutex;
-    Scope*                    scope;
-    map<Utf8Crc, SymbolName*> mapNames;
-    vector<SymbolOverload*>   structVarsToDrop;
+    shared_mutex                                                         mutex;
+    Scope*                                                               scope;
+    unordered_map<Utf8Crc, SymbolName*, Utf8CrcKeyHash, Utf8CrcKeyEqual> mapNames;
+    vector<SymbolOverload*>                                              structVarsToDrop;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };
