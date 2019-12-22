@@ -197,6 +197,11 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doIdentifierRef(node, &node->expression));
     SWAG_CHECK(doEmbeddedStatement(nullptr, &node->block));
+
+    // We do not want semantic on the block part, as this has to be solved when the block
+    // is inlined
+    node->block->flags |= AST_NO_SEMANTIC;
+
     return true;
 }
 

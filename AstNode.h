@@ -134,6 +134,7 @@ struct CloneContext
     Scope*                    ownerStructScope = nullptr;
     AstNode*                  ownerMainNode    = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
+    map<Utf8Crc, AstNode*>    replaceIdentifiers;
 };
 
 struct AstNode
@@ -253,7 +254,8 @@ struct AstNode
     static Utf8      getNakedKindName(AstNode* node);
     AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
     virtual AstNode* clone(CloneContext& context);
-    void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
+    void             cloneChilds(CloneContext& context, AstNode* from);
+    void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
     void             computeFullName();
 
     AstNodeKind         kind                 = AstNodeKind::Invalid;
@@ -412,7 +414,7 @@ struct AstBreakable : public AstNode
         return breakableFlags & BREAKABLE_NEED_INDEX;
     }
 
-    void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
+    void copyFrom(CloneContext& context, AstBreakable* from);
 
     vector<AstBreakContinue*> breakList;
     vector<AstBreakContinue*> continueList;
