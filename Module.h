@@ -96,5 +96,3 @@ struct Module
 
     TypeTable typeTable;
 };
-
-extern thread_local Pool<Module> g_Pool_module;

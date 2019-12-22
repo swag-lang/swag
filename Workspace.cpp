@@ -32,7 +32,7 @@ Module* Workspace::createOrUseModule(const string& moduleName)
         if (it != mapModulesNames.end())
             return it->second;
 
-        module = g_Pool_module.alloc();
+        module = g_Allocator.alloc<Module>();
         module->setup(moduleName);
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
@@ -78,7 +78,7 @@ void Workspace::addBootstrap()
 
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    bootstrapModule = g_Pool_module.alloc();
+    bootstrapModule = g_Allocator.alloc<Module>();
     bootstrapModule->setup("");
     modules.push_back(bootstrapModule);
 

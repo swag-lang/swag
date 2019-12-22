@@ -8,8 +8,6 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 
-thread_local Pool<Module> g_Pool_module;
-
 void Module::setup(const string& moduleName)
 {
     name   = moduleName;
