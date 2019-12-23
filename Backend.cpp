@@ -411,7 +411,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 bool Backend::generateExportFile()
 {
-    auto targetPath = g_Workspace.targetPath.string();
+    auto targetPath = g_Workspace.cachePath.string();
     bufferSwg.path  = targetPath + "\\" + module->name + ".generated.swg";
 
     // Do we need to generate the file ?

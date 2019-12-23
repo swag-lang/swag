@@ -53,7 +53,7 @@ JobResult ModuleBuildJob::execute()
 
             // Now the .swg export file should be in the cache
             bool generated = true;
-            auto path      = g_Workspace.targetPath.string() + "\\" + node->name + ".generated.swg";
+            auto path      = g_Workspace.cachePath.string() + "\\" + node->name + ".generated.swg";
             if (!fs::exists(path))
             {
                 generated = false;

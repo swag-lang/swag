@@ -12,6 +12,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
 
     addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath);
+    addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath);
 
     addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
     addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit);

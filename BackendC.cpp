@@ -15,7 +15,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-        auto targetPath  = g_Workspace.targetPath.string();
+        auto targetPath  = g_Workspace.cachePath.string();
         bufferC.path = targetPath + "/" + module->name + ".c";
 
         // Do we need to generate the file ?
