@@ -154,16 +154,15 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
         // Pre statement. Do not call doScopedCurlyStatement in order to avoid
         // creating a new scope in the case of for { i:= 0; j := 0 } for example
         if (token.id == TokenId::SymLeftCurly)
-        {
             SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
-        }
         else
-        {
             SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
-        }
 
+        // Boolean expression
         SWAG_CHECK(doExpression(node, &node->boolExpression));
         SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
+
+        // Post expression
         SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
 
         if (hasParen)
