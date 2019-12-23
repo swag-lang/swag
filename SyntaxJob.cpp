@@ -122,9 +122,7 @@ JobResult SyntaxJob::execute()
     baseContext        = &context;
     context.job        = this;
     context.sourceFile = sourceFile;
-
-    if (g_CommandLine.stats)
-        g_Stats.numFiles++;
+    g_Stats.numFiles++;
 
     tokenizer.setFile(sourceFile);
 
@@ -142,7 +140,7 @@ JobResult SyntaxJob::execute()
         sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
 
     // Setup root ast for file
-    sourceFile->astRoot             = Ast::newNode<AstNode>(this,  AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
+    sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
     sourceFile->scopeRoot->owner    = sourceFile->astRoot;
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
 

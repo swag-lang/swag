@@ -218,7 +218,6 @@ void Workspace::setupTarget()
     if (g_CommandLine.verboseBuildPass)
     {
         g_Log.verbose(format("=> target directory is '%s'", targetPath.string().c_str()));
-        g_Log.verbose(format("=> cache directory is '%s'", cachePath.string().c_str()));
     }
 
     // Clean target
@@ -249,6 +248,11 @@ void Workspace::setupTarget()
         }
 
         cachePath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
+    }
+
+    if (g_CommandLine.verboseBuildPass)
+    {
+        g_Log.verbose(format("=> cache directory is '%s'", cachePath.string().c_str()));
     }
 
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
