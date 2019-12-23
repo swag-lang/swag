@@ -209,12 +209,13 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-    AstNode* statement;
     Scoped   scoped(this, newScope);
-    SWAG_CHECK(doEmbeddedInstruction(parent, &statement));
-    statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
         *result = statement;
+    statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    statement->flags |= AST_NEED_SCOPE;
+    SWAG_CHECK(doEmbeddedInstruction(statement));
     return true;
 }
 
