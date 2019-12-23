@@ -163,7 +163,10 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
 
         // Post expression
-        SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
+        if (token.id == TokenId::SymLeftCurly)
+            SWAG_CHECK(doCurlyStatement(node, &node->postExpression));
+        else
+            SWAG_CHECK(doEmbeddedInstruction(node, &node->postExpression));
 
         if (hasParen)
             SWAG_CHECK(eatToken(TokenId::SymRightParen));
