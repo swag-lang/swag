@@ -104,9 +104,20 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
 
 AstNode* AstNode::clone(CloneContext& context)
 {
-    auto result = g_Allocator.alloc<AstNode>();
-    result->copyFrom(context, this);
-    return result;
+    auto newNode = g_Allocator.alloc<AstNode>();
+
+    if (flags & AST_NEED_SCOPE)
+    {
+        auto cloneContext        = context;
+        cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+        newNode->copyFrom(cloneContext, this);
+    }
+    else
+    {
+        newNode->copyFrom(context, this);
+    }
+
+    return newNode;
 }
 
 AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
@@ -394,9 +405,11 @@ AstNode* AstFor::clone(CloneContext& context)
 AstNode* AstLoop::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc<AstLoop>();
-    newNode->AstBreakable::copyFrom(context, this);
 
-    auto cloneContext           = context;
+    auto cloneContext        = context;
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+    newNode->AstBreakable::copyFrom(cloneContext, this);
+
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
 

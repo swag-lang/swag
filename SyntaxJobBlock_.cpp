@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "Global.h"
 #include "SourceFile.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "Scope.h"
 #include "Scoped.h"
 
 bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
