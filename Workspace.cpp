@@ -257,6 +257,13 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
+    // Clean target
+    if (g_CommandLine.clean && g_CommandLine.backendOutput)
+    {
+        if (fs::exists(cachePath))
+            deleteFolderContent(cachePath);
+    }
+
     targetPath += "/";
     cachePath += "/";
 }
