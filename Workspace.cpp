@@ -212,10 +212,6 @@ void Workspace::deleteFolderContent(const fs::path& path)
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
-    cachePath  = g_CommandLine.cachePath;
-    if (cachePath.empty())
-        cachePath = targetPath;
-
     targetPath.append("output/");
     targetPath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
 
@@ -240,18 +236,29 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    if (!fs::exists(cachePath))
+    // Cache directory
+    cachePath = g_CommandLine.cachePath;
+    if (cachePath.empty())
+        cachePath = targetPath;
+    else
     {
-        g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
-        exit(-1);
+        if (!fs::exists(cachePath))
+        {
+            g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
+            exit(-1);
+        }
+
+        cachePath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
     }
 
-    cachePath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
         exit(-1);
     }
+
+    targetPath += "/";
+    cachePath += "/";
 }
 
 bool Workspace::buildTarget()

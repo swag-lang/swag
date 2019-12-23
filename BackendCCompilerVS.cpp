@@ -117,12 +117,14 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdk.c_str(), winSdkVersion.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
 
+    string destFile = g_Workspace.targetPath.string() + buildParameters->destFile;
+
     // CL arguments
     string clArguments = "";
     bool   debugMode   = buildParameters->target.backendDebugInformations;
     if (debugMode)
     {
-        fs::path pdbPath = buildParameters->destFile + buildParameters->postFix + ".pdb";
+        fs::path pdbPath = destFile + buildParameters->postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
     }
@@ -143,7 +145,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/GS- ";
     clArguments += "/MD ";
     clArguments += "/Tc\"" + backend->bufferC.path + "\" ";
-    string nameObj = buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
+    string nameObj = g_Workspace.cachePath.string() + buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
     switch (buildParameters->target.backendOptimizeLevel)
     {

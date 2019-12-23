@@ -75,7 +75,7 @@ JobResult ModuleOutputJob::execute()
                 compileJob->module                   = module;
                 compileJob->dependentJob             = dependentJob;
                 compileJob->buildParameters          = module->buildParameters;
-                compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "/" + module->name;
+                compileJob->buildParameters.destFile = module->name;
                 compileJob->buildParameters.type     = BackendOutputType::Binary;
                 if (!module->fromTests)
                     compileJob->buildParameters.postFix = ".test";
@@ -100,7 +100,7 @@ JobResult ModuleOutputJob::execute()
                 compileJob->buildParameters.type = BackendOutputType::DynamicLib;
             module->buildParameters.type = compileJob->buildParameters.type;
 
-            compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "\\" + module->name;
+            compileJob->buildParameters.destFile = module->name;
             g_ThreadMgr.addJob(compileJob);
         }
     }
