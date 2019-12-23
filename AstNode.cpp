@@ -203,6 +203,12 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 
     newNode->type       = findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);
+
+    // Is there an alias ?
+    auto it = context.replaceNames.find(newNode->name);
+    if (it != context.replaceNames.end())
+        newNode->name = it->second;
+
     return newNode;
 }
 
@@ -237,6 +243,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->identifierRef     = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
     newNode->callParameters    = findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
+    newNode->aliasNames        = aliasNames;
+
     return newNode;
 }
 
@@ -405,6 +413,8 @@ AstNode* AstVisit::clone(CloneContext& context)
     newNode->extraName  = extraName;
     newNode->expression = findChildRef(expression, newNode);
     newNode->block      = findChildRef(block, newNode);
+    newNode->aliasNames = aliasNames;
+
     return newNode;
 }
 

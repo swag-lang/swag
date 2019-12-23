@@ -136,6 +136,7 @@ struct CloneContext
     AstNode*                  ownerMainNode    = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
     map<TokenId, AstNode*>    replaceTokens;
+    map<Utf8Crc, string>      replaceNames;
 };
 
 struct AstNode
@@ -344,6 +345,7 @@ struct AstIdentifier : public AstNode
     AstIdentifierRef* identifierRef     = nullptr;
     AstNode*          genericParameters = nullptr;
     AstNode*          callParameters    = nullptr;
+    vector<Utf8>      aliasNames;
 };
 
 struct AstFuncDecl : public AstNode
@@ -466,9 +468,10 @@ struct AstVisit : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    Utf8     extraName;
-    AstNode* expression = nullptr;
-    AstNode* block      = nullptr;
+    Utf8         extraName;
+    AstNode*     expression = nullptr;
+    AstNode*     block      = nullptr;
+    vector<Utf8> aliasNames;
 };
 
 struct AstSwitch : public AstBreakable

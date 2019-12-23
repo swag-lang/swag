@@ -201,12 +201,24 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->scope = newScope;
     }
 
-    // Clone the context
-    cloneContext.parent           = inlineNode;
-    cloneContext.ownerInline      = inlineNode;
-    cloneContext.ownerFct         = identifier->ownerFct;
-    cloneContext.ownerBreakable   = identifier->ownerBreakable;
-    cloneContext.parentScope      = newScope;
+    // Clone the function body
+    cloneContext.parent         = inlineNode;
+    cloneContext.ownerInline    = inlineNode;
+    cloneContext.ownerFct       = identifier->ownerFct;
+    cloneContext.ownerBreakable = identifier->ownerBreakable;
+    cloneContext.parentScope    = newScope;
+
+    // Register all aliases
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        auto id  = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        int  idx = 0;
+        for (const auto& alias : id->aliasNames)
+        {
+            cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
+        }
+    }
+
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_NO_SEMANTIC;

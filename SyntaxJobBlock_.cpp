@@ -194,7 +194,31 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
-    SWAG_CHECK(doIdentifierRef(node, &node->expression));
+    // Variable to visit
+    SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
+    if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
+    {
+        if (node->expression->childs.size() != 1)
+            return sourceFile->report({node->expression, "invalid visitor name"});
+        node->aliasNames.push_back(node->expression->childs.back()->name);
+        while (token.id != TokenId::SymColon)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+            SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
+            if (node->expression->childs.size() != 1)
+                return sourceFile->report({node->expression, "invalid visitor name"});
+            node->aliasNames.push_back(node->expression->childs.back()->name);
+        }
+
+        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doIdentifierRef(node, &node->expression));
+    }
+    else
+    {
+        Ast::addChildBack(node, node->expression);
+    }
+
+    // Visit statement code block
     SWAG_CHECK(doEmbeddedStatement(nullptr, &node->block));
 
     // We do not want semantic on the block part, as this has to be solved when the block
@@ -245,7 +269,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
             auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
             var->token = tokenName;
 
-            auto identifer         = Ast::newNode<AstNode>(this,  AstNodeKind::Index, sourceFile, var);
+            auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
             identifer->semanticFct = SemanticJob::resolveIndex;
 
             var->assignment = identifer;
@@ -262,7 +286,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this,  AstNodeKind::Index, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIndex;
     if (result)
         *result = node;
