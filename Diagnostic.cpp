@@ -40,7 +40,7 @@ void Diagnostic::report(bool verboseMode) const
     if (hasFile)
     {
         fs::path path = sourceFile->path;
-        g_Log.print(path.filename().string().c_str());
+        g_Log.print(path.string().c_str());
         if (hasLocation)
             g_Log.print(format(":%d:%d: ", startLocation.line + 1, startLocation.column + 1));
         else

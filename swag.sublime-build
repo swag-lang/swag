@@ -1,0 +1,6 @@
+{
+	"cmd": "f:\\swag\\.out\\swag.exe test -w:f:\\swag\\std --rebuild:true -o:true",
+	"file_regex": ".*: (.*):([0-9]*):([0-9]*):(.*)",
+	"working_dir": "f:/swag/.out",
+	"encoding": "UTF-16LE"
+}
