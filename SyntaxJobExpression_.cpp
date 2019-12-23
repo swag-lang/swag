@@ -634,6 +634,34 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     return true;
 }
 
+bool SyntaxJob::isValidVarName(AstNode* node)
+{
+    if (node->name[0] != '@')
+        return true;
+
+    // @alias must be of the form @aliasNUM
+    if (node->name.size() >= 6)
+    {
+        if (node->name == "@alias")
+            return syntaxError(node->token, "@alias variable name must be followed by a number");
+
+        if (node->name.find("@alias") == 0)
+        {
+            const char* pz = node->name.c_str() + 6;
+            while (*pz)
+            {
+                if (!SWAG_IS_DIGIT(*pz))
+                    return syntaxError(node->token, format("invalid @alias variable name '%s', '%s' is not a valid number", node->name.c_str(), node->name.c_str() + 6));
+                pz++;
+            }
+
+            return true;
+        }
+    }
+
+    return syntaxError(node->token, format("invalid variable name '%s', cannot start with '@'", node->name.c_str()));
+}
+
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
 {
     bool acceptDeref = true;
@@ -661,6 +689,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         {
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
+            SWAG_CHECK(isValidVarName(identifier));
             AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
             varNode->kind       = kind;
             varNode->token      = identifier->token;
@@ -724,6 +753,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         {
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
+            SWAG_CHECK(isValidVarName(identifier));
             varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
             varNode->kind  = kind;
             varNode->token = identifier->token;
@@ -740,8 +770,9 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     else
     {
         SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected in variable declaration"));
-
-        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
+        auto identifier = leftNode->childs.back();
+        SWAG_CHECK(isValidVarName(identifier));
+        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parent, this);
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);
 
