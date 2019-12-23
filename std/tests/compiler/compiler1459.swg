@@ -14,7 +14,10 @@ impl S
             {
                 #macro
                 {
-                    #mixin(break = break up) `stmt
+                    #mixin `stmt
+                    {
+                        break = break up
+                    }
                 }
             }
         }

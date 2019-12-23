@@ -73,31 +73,27 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
 
+    // Code identifier
+    SWAG_CHECK(doIdentifierRef(node));
+
     // Replacement parameters
-    if (token.id == TokenId::SymLeftParen)
+    if (token.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(eatToken());
         AstNode* stmt;
-        while (token.id != TokenId::SymRightParen)
+        while (token.id != TokenId::SymRightCurly)
         {
             auto tokenId = token.id;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatToken(TokenId::SymEqual));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
-
-            if (token.id == TokenId::SymComma)
-            {
-                SWAG_CHECK(eatToken());
-                continue;
-            }
+            SWAG_CHECK(eatSemiCol("after '#mixin' replacement statement"));
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     }
 
-    // Code identifier
-    SWAG_CHECK(doIdentifierRef(node));
     SWAG_CHECK(eatSemiCol("after '#mixin' expression"));
     return true;
 }
