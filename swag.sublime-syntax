@@ -43,7 +43,7 @@ contexts:
     - match: '@\w*'
       scope: invalid
 ###################################################### TYPES
-    - match: \b(cast|acast|Self|self|any|void|char|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string)\b
+    - match: \b(code|cast|acast|Self|self|any|void|char|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string)\b
       scope: entity.name.type
     - match: \b(enum|struct|impl|interface|func)\b
       scope: keyword
