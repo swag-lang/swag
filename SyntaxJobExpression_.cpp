@@ -116,7 +116,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
-    case TokenId::KwdIndex:
+    case TokenId::IntrinsicIndex:
         SWAG_CHECK(doIndex(parent, result));
         break;
 

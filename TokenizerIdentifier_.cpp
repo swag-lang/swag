@@ -16,7 +16,10 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
 
     if (token.text[0] == '@')
     {
-        token.id = TokenId::Intrinsic;
+        if (token.text == "@index")
+            token.id = TokenId::IntrinsicIndex;
+        else
+            token.id = TokenId::Intrinsic;
     }
     else
     {

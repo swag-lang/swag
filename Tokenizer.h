@@ -93,6 +93,7 @@ enum class TokenId
     CompilerForeignLib,
 
     Intrinsic,
+    IntrinsicIndex,
     DocComment,
 
     KwdVar,
@@ -126,7 +127,6 @@ enum class TokenId
     KwdContinue,
     KwdLoop,
     KwdVisit,
-    KwdIndex,
     KwdMove,
     KwdSwitch,
     KwdCase,

@@ -12,7 +12,7 @@ func fromName(name: string)->X
     let t = cast(const *TypeInfoEnum) @typeof(TOTO)
     loop t.values
     {
-        param := t.values[index]
+        param := t.values[@index]
         if(param.namedParam == name)
         {
             ptr := cast(*TOTO) param.value

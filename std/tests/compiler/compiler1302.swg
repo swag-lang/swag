@@ -15,7 +15,7 @@ func toto(x: code)
     cpt := 0'u32
     toto()
     {
-        cpt += index
+        cpt += @index
     }
     
     @assert(cpt == 45)

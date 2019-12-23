@@ -8,7 +8,7 @@ func toto(x: f32, y: ...)
 	result := 0
 	loop @countof(y)
 	{
-		p := y[index]
+		p := y[@index]
 		ptr := cast(*s32) @dataof(p)
 		result += ptr[0]
 	}
