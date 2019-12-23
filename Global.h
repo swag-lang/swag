@@ -28,10 +28,11 @@ extern struct Global g_Global;
             return false;  \
     } while (0)
 #define SWAG_VERIFY(__expr, __err) \
+    do                             \
     {                              \
         if (!(__expr))             \
         {                          \
             __err;                 \
             return false;          \
         }                          \
-    }
+    } while (0)

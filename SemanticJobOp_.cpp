@@ -55,6 +55,19 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::Impl)
         parent = parent->parent;
+
+    auto parameters = node->parameters;
+    auto returnType = node->returnType;
+
+    // opVisit can be defined outside an impl block
+    if (name == "opVisit" && !parent)
+    {
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->report({returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
+        SWAG_VERIFY(parameters->childs[1]->typeInfo->isSame(g_TypeMgr.typeInfoCode, 0), context->report({parameters->childs[1], format("invalid parameter '2' for special function '%s' ('code' expected, '%s' provided)", name.c_str(), parameters->childs[1]->typeInfo->name.c_str())}));
+        return true;
+    }
+
     SWAG_VERIFY(parent, context->report({node, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())}));
     auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
 
@@ -83,8 +96,6 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
     }
 
-    auto parameters = node->parameters;
-    auto returnType = node->returnType;
     if (name == "opCast")
     {
     }

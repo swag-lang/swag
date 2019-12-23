@@ -108,7 +108,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER))
-        return context->report({arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+        return context->report({arrayNode->access, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {

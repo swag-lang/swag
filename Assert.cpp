@@ -24,5 +24,6 @@ void swag_assert(const char* expr, const char* file, int line)
     g_Log.setDefaultColor();
 
     OS::assertBox(expr, file, line);
+    assert(false);
 }
 #endif

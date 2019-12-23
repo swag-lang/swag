@@ -194,23 +194,23 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Variable to visit
-    SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
+    SWAG_CHECK(doExpression(nullptr, &node->expression));
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
     {
         if (node->expression->childs.size() != 1)
-            return sourceFile->report({node->expression, "invalid visitor name"});
+            return sourceFile->report({node->expression, "invalid visit alias name"});
         node->aliasNames.push_back(node->expression->childs.back()->name);
         while (token.id != TokenId::SymColon)
         {
             SWAG_CHECK(eatToken(TokenId::SymComma));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             if (node->expression->childs.size() != 1)
-                return sourceFile->report({node->expression, "invalid visitor name"});
+                return sourceFile->report({node->expression, "invalid visit alias name"});
             node->aliasNames.push_back(node->expression->childs.back()->name);
         }
 
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doIdentifierRef(node, &node->expression));
+        SWAG_CHECK(doExpression(node, &node->expression));
     }
     else
     {

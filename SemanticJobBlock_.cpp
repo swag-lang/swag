@@ -184,18 +184,36 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-    auto identifierRef         = Ast::clone(node->expression, node);
-    auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraName.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
-    identifier->aliasNames     = node->aliasNames;
-    identifier->token          = node->token;
-    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, nullptr);
+    auto     typeInfo = node->expression->typeInfo;
+    AstNode* newExpression;
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto identifierRef         = Ast::clone(node->expression, node);
+        auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraName.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
+        identifier->aliasNames     = node->aliasNames;
+        identifier->token          = node->token;
+        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
+        newExpression              = identifierRef;
+    }
+    else
+    {
+        auto identifierRef         = Ast::newIdentifierRef(sourceFile, format("opVisit%s", node->extraName.c_str()), node);
+        auto identifier            = CastAst<AstIdentifier>(identifierRef->childs.back(), AstNodeKind::Identifier);
+        identifier->aliasNames     = node->aliasNames;
+        identifier->token          = node->token;
+        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
+        auto callParam             = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+        Ast::addChildBack(callParam, node->expression);
+        newExpression = identifierRef;
+    }
 
+    // Move block after the block
     Ast::addChildBack(node, node->block);
     node->expression->flags |= AST_NO_BYTECODE;
 
     auto job = context->job;
     job->nodes.pop_back();
-    job->nodes.push_back(identifierRef);
+    job->nodes.push_back(newExpression);
     job->nodes.push_back(node->block);
     job->nodes.push_back(node);
 

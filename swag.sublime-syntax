@@ -31,12 +31,12 @@ contexts:
 ###################################################### COMPILER
     - match: (#)\b(run|test|init|drop|main)
       scope: meta.preprocessor.function
-    - match: (#)\b(skip|module|unitest|assert|print|run|file|line|config|arch|function|callfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)
+    - match: (#)\b(skip|module|unittest|assert|print|run|file|line|config|arch|function|callfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)
       scope: meta.preprocessor
     - match: (#)\w+
       scope: invalid
 ###################################################### INTRINSICS
-    - match: (@)\b(sizeof|typeof|kindof|countof|dataof|print|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|target)\b
+    - match: (@)\b(index|sizeof|typeof|kindof|countof|dataof|print|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|target)\b
       scope: entity.name.intrinsic
     - match: (@)(alias)([0-9]*)
       scope: entity.name.intrinsic
