@@ -76,7 +76,7 @@ contexts:
     - match: '(\d[\d_]*)'
       scope: constant.numeric.integer
 ###################################################### CONTROL
-    - match: \b(if|else|for|is|while|switch|do|defer|loop)\b
+    - match: \b(if|else|for|is|while|switch|do|defer|loop|visit)\b
       scope: keyword.control
     - match: \b(break|return|case|continue|default)\b
       scope: keyword.control
