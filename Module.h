@@ -51,7 +51,6 @@ struct Module
     shared_mutex        mutexFile;
     vector<SourceFile*> files;
     BuildParameters     buildParameters;
-    set<string>         compileVersion;
     AstNode*            astRoot              = nullptr;
     Scope*              scopeRoot            = nullptr;
     SourceFile*         buildFile            = nullptr;

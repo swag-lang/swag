@@ -195,8 +195,7 @@ bool SyntaxJob::doCompilerModule()
     SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
     moduleSpecified = true;
 
-    auto newModule = g_Workspace.createOrUseModule(token.text);
-    newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
+    auto newModule       = g_Workspace.createOrUseModule(token.text);
     newModule->fromTests = sourceFile->module->fromTests;
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);

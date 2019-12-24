@@ -15,7 +15,6 @@ JobResult ModuleOutputJob::execute()
     if (pass == ModuleOutputJobPass::Init)
     {
         pass = ModuleOutputJobPass::PreCompile;
-        SWAG_ASSERT(!module->backend);
 
         // No need to generate something for a module from tests/ folder, if we do not want test backend
         if (module->fromTests && !g_CommandLine.backendOutputTest)
@@ -23,16 +22,6 @@ JobResult ModuleOutputJob::execute()
 
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose("-> backend pass");
-
-        switch (g_CommandLine.backendType)
-        {
-        case BackendType::C:
-            module->backend = new BackendC(module);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
 
         // Generate .swg file with public definitions
         auto exportJob          = g_Pool_moduleOutputExportJob.alloc();

@@ -7,6 +7,7 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
+#include "BackendC.h"
 
 void Module::setup(const string& moduleName)
 {
@@ -23,6 +24,18 @@ void Module::setup(const string& moduleName)
     buildParameters.config = g_CommandLine.config;
     buildParameters.arch   = g_CommandLine.arch;
     buildParameters.target = g_Workspace.target;
+
+    // Allocate backend, even if we do not want to output, because the backend can be used
+    // to know if a build is necessary
+    switch (g_CommandLine.backendType)
+    {
+    case BackendType::C:
+        backend = new BackendC(this);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
 }
 
 void Module::addFile(SourceFile* file)
