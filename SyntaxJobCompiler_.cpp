@@ -215,7 +215,10 @@ bool SyntaxJob::doCompilerUnitTest()
     if (token.text == "error")
     {
         if (g_CommandLine.test)
+        {
             sourceFile->unittestError++;
+            sourceFile->module->hasUnittestError = true;
+        }
     }
 
     // PASS

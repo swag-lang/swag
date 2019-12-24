@@ -53,20 +53,15 @@ JobResult ModuleBuildJob::execute()
 
         for (auto& dep : module->moduleDependencies)
         {
-            auto node = dep.second.node;
+            auto it = g_Workspace.mapModulesNames.find(dep.first);
+            SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+            auto depModule = it->second;
+            auto node      = dep.second.node;
 
             // Now the .swg export file should be in the cache
-            bool generated = true;
-            auto path      = g_Workspace.cachePath.string() + "\\" + node->name + ".generated.swg";
-            if (!fs::exists(path))
+            if (!depModule->backend->timeExportFile)
             {
-                generated = false;
-                path      = g_Workspace.targetPath.string() + "\\" + node->name + ".swg";
-            }
-
-            if (!fs::exists(path))
-            {
-                node->sourceFile->report({node, format("cannot find module export file '%s'", path.c_str())});
+                node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
                 continue;
             }
 
@@ -76,9 +71,9 @@ JobResult ModuleBuildJob::execute()
             syntaxJob->sourceFile   = file;
             syntaxJob->module       = module;
             syntaxJob->dependentJob = this;
-            file->path              = move(path);
+            file->path              = depModule->backend->bufferSwg.path;
             file->generated         = true;
-            dep.second.generated    = generated;
+            dep.second.generated    = depModule->backend->exportFileGenerated;
             module->addFile(file);
             jobsToAdd.push_back(syntaxJob);
         }

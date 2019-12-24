@@ -28,8 +28,10 @@ struct Backend
     virtual JobResult preCompile(Job* ownerJob)                         = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
 
-    bool       mustCompile = true;
-    Module*    module      = nullptr;
+    bool       mustCompile         = true;
+    Module*    module              = nullptr;
+    uint64_t   timeExportFile      = 0;
+    bool       exportFileGenerated = false;
     OutputFile bufferSwg;
 
     bool emitAttributes(AstNode* node);

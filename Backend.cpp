@@ -411,35 +411,50 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 void Backend::setMustCompile()
 {
+    // Default name. Will be changed if generated
     mustCompile = !isUpToDate(module->moreRecentSourceFile);
 }
 
 bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 {
-    if (g_CommandLine.rebuild)
-        return false;
     if (module->numErrors)
         return true;
+    if (module->hasUnittestError)
+        return false;
+    if (module->buildPass < BuildPass::Backend)
+        return false;
 
     // Get export file name
-    auto targetPath = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
-    bool exists     = fs::exists(targetPath);
-    if (!exists)
+    if (bufferSwg.path.empty())
     {
-        targetPath = g_Workspace.cachePath.string() + "\\" + module->name + ".swg";
-        exists     = fs::exists(targetPath);
+        exportFileGenerated = true;
+        auto targetPath     = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
+        bool exists         = fs::exists(targetPath);
+        if (!exists)
+        {
+            exportFileGenerated = false;
+            targetPath          = g_Workspace.cachePath.string() + "\\" + module->name + ".swg";
+            exists              = fs::exists(targetPath);
+        }
+
+        if (!exists)
+            return false;
+
+        bufferSwg.path = targetPath;
+        timeExportFile = OS::getFileWriteTime(targetPath);
+    }
+    else
+    {
+        SWAG_ASSERT(timeExportFile);
     }
 
-    if (!exists)
+    if (g_CommandLine.rebuild)
         return false;
-
-    uint64_t t1 = 0;
-    t1          = OS::getFileWriteTime(targetPath);
-    if (t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
+    if (timeExportFile < g_Workspace.bootstrapModule->moreRecentSourceFile)
         return false;
-    if (!invert && t1 < moreRecentSourceFile)
+    if (!invert && timeExportFile < moreRecentSourceFile)
         return false;
-    if (invert && t1 > moreRecentSourceFile)
+    if (invert && timeExportFile > moreRecentSourceFile)
         return false;
 
     // If one of my dependency is more recent than me, then need to rebuild
@@ -447,9 +462,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     {
         auto it = g_Workspace.mapModulesNames.find(dep.first);
         SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
-
         auto depModule = it->second;
-        if (!depModule->backend->isUpToDate(t1, true))
+        if (!depModule->backend->isUpToDate(timeExportFile, true))
             return false;
     }
 
@@ -458,9 +472,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
 bool Backend::generateExportFile()
 {
-    auto targetPath = g_Workspace.cachePath.string();
-    bufferSwg.path  = targetPath + "\\" + module->name + ".generated.swg";
-
+    exportFileGenerated = true;
+    bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
     if (!mustCompile)
         return true;
 
@@ -476,6 +489,7 @@ bool Backend::generateExportFile()
 
     SWAG_CHECK(bufferSwg.flush(true));
 
+    timeExportFile = OS::getFileWriteTime(bufferSwg.path);
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

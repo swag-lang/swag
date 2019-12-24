@@ -85,6 +85,7 @@ struct Module
     vector<AstFuncDecl*> allForeign;
     ByteCode*            byteCodeMainFunc = nullptr;
     AstNode*             mainIsDefined    = nullptr;
+    bool                 hasUnittestError = false;
 
     void addDependency(AstNode* importNode);
     void setHasBeenBuilt(uint32_t buildResult);
