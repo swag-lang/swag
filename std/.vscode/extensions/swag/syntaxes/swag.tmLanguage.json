@@ -1,0 +1,281 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "swag",
+	"patterns": [
+		{
+			"include": "#one-line-comment"
+		},		
+		{
+			"include": "#multi-line-comment"
+		},		
+		{
+			"include": "#attributes"
+		},			
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#keywords-control"
+		},		
+		{
+			"include": "#keywords-decl"
+		},			
+		{
+			"include": "#intrinsics"
+		},			
+		{
+			"include": "#intrinsics-alias"
+		},			
+		{
+			"include": "#intrinsics-invalid"
+		},				
+		{
+			"include": "#compiler-function"
+		},			
+		{
+			"include": "#compiler"
+		},			
+		{
+			"include": "#compiler-invalid"
+		},			
+		{
+			"include": "#types"
+		},			
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#var-decl"
+		},			
+		{
+			"include": "#storage-modifier"
+		},				
+		{
+			"include": "#op"
+		},		
+		{
+			"include": "#op-invalid"
+		},			
+		{
+			"include": "#constant"
+		},			
+		{
+			"include": "#function-call"
+		},			
+		{
+			"include": "#struct-name"
+		},
+		{
+			"include": "#literal-binary"
+		},		
+		{
+			"include": "#literal-hexa"
+		},				
+		{
+			"include": "#literal-float"
+		},			
+		{
+			"include": "#literal-float2"
+		},			
+		{
+			"include": "#literal-integer"
+		},	
+		{
+			"include": "#characters"
+		},			
+		{
+			"include": "#operator-character"
+		},				
+		{
+			"include": "#code"
+		}				
+	],
+	"repository": {
+		"one-line-comment": {
+			"patterns": [{
+				"name": "comment.line",
+				"match": "///?(.*)"
+			}]
+		},			
+		"attributes": {
+			"patterns": [{
+				"name": "variable.other.member",
+				"match": "(#\\[)(\\w+)(.*)(\\])"
+			}]
+		},			
+		"keywords": {
+			"patterns": [{
+				"name": "keyword",
+				"match": "\\b(if|else|for|is|while|switch|do|defer|loop|visit|break|return|case|continue|default|using|namespace)\\b"
+			}]
+		},
+		"intrinsics": {
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "(@)\\b(index|sizeof|typeof|kindof|countof|dataof|print|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|target)\\b"
+			}]
+		},		
+		"intrinsics-alias": {
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "(@)(alias)([0-9]*)"
+			}]
+		},			
+		"intrinsics-invalid": {
+			"patterns": [{
+				"name": "invalid",
+				"match": "@\\w*"
+			}]
+		},			
+		"compiler-function": {
+			"patterns": [{
+				"name": "meta.preprocessor",
+				"match": "(#)\\b(run|test|init|drop|main)\\b"
+			}]
+		},		
+		"compiler": {
+			"patterns": [{
+				"name": "meta.preprocessor",
+				"match": "(#)\\b(skip|module|unittest|assert|print|run|file|line|config|arch|function|callfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
+			}]
+		},			
+		"compiler-invalid": {
+			"patterns": [{
+				"name": "invalid",
+				"match": "(#)\\w+"
+			}]
+		},			
+		"keywords-control": {
+			"patterns": [{
+				"name": "keyword.control",
+				"match": "\\b(break|case|continue|default|defer|else|for|if|return|switch|while|loop)\\b"
+			}]
+		},		
+		"keywords-decl": {
+			"patterns": [{
+				"name": "keyword.control",
+				"match": "\\b(enum|struct|impl|interface|func)\\b"
+			}]
+		},			
+		"types": {
+			"patterns": [{
+				"name": "entity.name.type",
+				"match": "\\b(code|cast|acast|Self|self|any|void|char|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string)\\b"
+			}]
+		},	
+		"storage-modifier": {
+			"patterns": [{
+				"name": "storage.modifier",
+				"match": "\\b(public|internal|readonly|private)\\b"
+			}]
+		},				
+		"var-decl": {
+			"patterns": [{
+				"name": "keyword.variable",
+				"match": "\\b(var|let|const)\\b"
+			}]
+		},			
+		"op": {
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "\\b(opBinary|opUnary|opAssign|opIndexAssign|opCast|opCount|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
+			}]
+		},			
+		"op-invalid": {
+			"patterns": [{
+				"name": "invalid",
+				"match": "\\b(op\\w+)\\b"
+			}]
+		},			
+		"constant": {
+			"patterns": [{
+				"name": "constant.language",
+				"match": "\\b(true|false|null)\\b"
+			}]
+		},			
+		"function-call": {
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\("
+			}]
+		},		
+		"struct-name": {
+			"patterns": [{
+				"name": "entity.name.class",
+				"match": "(\\b[A-Z]\\w*)"
+			}]
+		},	
+		"literal-binary": {
+			"patterns": [{
+				"name": "constant.numeric.binary",
+				"match": "0b[01][01_]*"
+			}]
+		},	
+		"code": {
+			"patterns": [{
+				"name": "source.code",
+				"match": "\\b\\w+"
+			}]
+		},					
+		"literal-hexa": {
+			"patterns": [{
+				"name": "constant.numeric.hex",
+				"match": "0x([[:xdigit:]][[:xdigit:]_]*)((\\.\\g<1>)?[pP][-+]?\\d[\\d_]*)?"
+			}]
+		},				
+		"literal-float": {
+			"patterns": [{
+				"name": "constant.numeric.float",
+				"match": "(\\d[\\d_]*)(\\.\\g<1>)([eE][-+]?\\g<1>)?"
+			}]
+		},			
+		"literal-float2": {
+			"patterns": [{
+				"name": "constant.numeric.float",
+				"match": "(\\d[\\d_]*)([eE][-+]?\\g<1>)"
+			}]
+		},			
+		"literal-integer": {
+			"patterns": [{
+				"name": "constant.numeric.integer",
+				"match": "(\\d[\\d_]*)"
+			}]
+		},			
+		"strings": {
+			"name": "string.quoted.double",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape",
+					"match": "\\\\."
+				}
+			]
+		},
+		"characters": {
+			"patterns": [{
+				"name": "string.quoted.single",
+				"match": "\\'\\w+\\'"
+			}]
+		},		
+		"multi-line-comment": {
+			"name": "comment.line",
+			"begin": "/\\*",
+			"end": "\\*/",
+			"patterns": [
+				{
+					"name": "comment.line",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},			
+		"operator-character": {
+			"patterns": [{
+				"name": "keyword.operator",
+				"match": "[\\/=\\-+!*%<>&|^~.`'!]"
+			}]
+		}
+	},
+	"scopeName": "source"
+}

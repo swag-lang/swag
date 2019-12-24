@@ -1,0 +1,25 @@
+{
+    "name": "swag",
+    "displayName": "swag",
+    "description": "swag language support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.41.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "swag",
+            "aliases": ["swag", "swag"],
+            "extensions": [".swg"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "swag",
+            "scopeName": "source",
+            "path": "./syntaxes/swag.tmLanguage.json"
+        }]
+    }
+}
