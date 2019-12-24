@@ -23,7 +23,9 @@ void swag_assert(const char* expr, const char* file, int line)
         g_Log.print(format("source line: %d\n", g_diagnosticInfos.node->token.startLocation.line + 1));
     g_Log.setDefaultColor();
 
+#ifndef _DEBUG
     OS::assertBox(expr, file, line);
+#endif
     assert(false);
 }
 #endif

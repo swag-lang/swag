@@ -1202,7 +1202,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 dependentSymbols.insert(symbol);
 
-                // Tentative to have a better error message in the case of local variables pb (a local variable is referencing another one
+                // Tentative to have a better error message in the case of local variables problem (a local variable is referencing another one
                 // defined later).
                 if (!scope->isGlobal() && symbol->kind == SymbolKind::Variable)
                 {

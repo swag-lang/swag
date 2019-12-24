@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "ThreadManager.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
@@ -265,6 +264,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->name.c_str())}));
         funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         funcNode->attributeFlags |= ATTRIBUTE_MACRO;
+    }
+
+    if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
+    {
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.macro' attribute", funcNode->token.text.c_str())}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.mixin' attribute", funcNode->token.text.c_str())}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.inline' attribute", funcNode->token.text.c_str())}));
     }
 
     // Register symbol with its type
