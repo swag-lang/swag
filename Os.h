@@ -26,6 +26,7 @@ namespace OS
     extern void          setThreadName(thread* thread, const char* threadName);
     extern uint64_t      getFileWriteTime(string& fileName);
     extern void          assertBox(const char* expr, const char* file, int line);
+    extern bool          setSwagFolder(const string& folder);
 
     enum class ResourceFile
     {

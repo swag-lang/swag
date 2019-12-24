@@ -43,6 +43,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("doc          generate documentation for the specified workspace\n");
     g_Log.message("new          creates a new workspace\n");
+    g_Log.message("env          register environment variables necessary to reference the compiler\n");
 
     g_Log.message("\n");
     g_Log.message("Arguments\n");
@@ -69,7 +70,8 @@ int main(int argc, const char* argv[])
     }
 
     // Command
-    string command = argv[1];
+    g_CommandLine.exePath = fs::absolute(argv[0]).string();
+    string command        = argv[1];
     if (command == "build" || command == "new")
     {
     }
@@ -77,6 +79,19 @@ int main(int argc, const char* argv[])
     {
         g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
         exit(0);
+    }
+    else if (command == "env")
+    {
+        if (!OS::setSwagFolder(g_CommandLine.exePath.parent_path().string()))
+        {
+            g_Log.error(format("cannot set environment variable 'SWAG_FOLDER' to '%s'\n", g_CommandLine.exePath.parent_path().string().c_str()));
+            exit(-1);
+        }
+        else
+        {
+            g_Log.message(format("environment variable 'SWAG_FOLDER' is now '%s'\n", g_CommandLine.exePath.parent_path().string().c_str()));
+            exit(0);
+        }
     }
     else if (command == "test")
     {
@@ -93,7 +108,6 @@ int main(int argc, const char* argv[])
         exit(-1);
     }
 
-    g_CommandLine.exePath = fs::absolute(argv[0]).string();
     if (!cmdParser.process(argc - 2, argv + 2))
         return -2;
 

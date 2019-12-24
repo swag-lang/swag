@@ -477,6 +477,12 @@ namespace OS
         ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_OK | MB_ICONERROR);
     }
 
+    bool setSwagFolder(const string& folder)
+    {
+        LONG lRes = RegSetKeyValueA(HKEY_CURRENT_USER, "Environment", "SWAG_FOLDER", REG_SZ, folder.c_str(), (DWORD) folder.size() + 1);
+        return lRes == ERROR_SUCCESS;
+    }
+
 }; // namespace OS
 
 #endif

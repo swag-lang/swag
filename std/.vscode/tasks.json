@@ -6,7 +6,7 @@
     {
       "label": "build test [fast]",
       "type": "shell",
-      "command": "f:\\swag\\.out\\swag.exe test -w:f:\\swag\\std --rebuild -o:false",
+      "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild -o:false",
       "problemMatcher": {
         "owner": "swag",
         "fileLocation": [ "absolute" ],
@@ -28,13 +28,13 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared",
-        "clear": true,
+        "clear": true
       }
     },
     {
       "label": "build test [full]",
       "type": "shell",
-      "command": "f:\\swag\\.out\\swag.exe test -w:f:\\swag\\std --rebuild",
+      "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild",
       "problemMatcher": {
         "owner": "swag",
         "fileLocation": [ "absolute" ],
