@@ -36,19 +36,26 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("usage: swag <command> [arguments]\n");
 
     g_Log.message("\n");
-    g_Log.message("commands\n");
-    g_Log.message("--------\n");
+    g_Log.message("command\n");
+    g_Log.message("-------\n");
     g_Log.message("version      print swag version\n");
+    g_Log.message("env          register an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
     g_Log.message("build        build the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("doc          generate documentation for the specified workspace\n");
     g_Log.message("new          creates a new workspace\n");
-    g_Log.message("env          register environment variables necessary to reference the compiler\n");
 
     g_Log.message("\n");
-    g_Log.message("Arguments\n");
-    g_Log.message("---------\n");
     cmdParser.logArguments();
+
+    g_Log.message("\n");
+    g_Log.message("examples\n");
+    g_Log.message("--------\n");
+    g_Log.message("swag build --workspace:c:/myWorkspace --rebuild\n");
+    g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
+    g_Log.message("swag doc -w:c:/myWorkspace --clean\n");
+    g_Log.message("swag new -w:newWorkspace\n");
+
     exit(0);
 }
 
