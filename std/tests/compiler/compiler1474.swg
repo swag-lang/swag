@@ -1,5 +1,5 @@
 #test
-{
+{ 
     cpt := 0
     visit xxx: "toto"
     {

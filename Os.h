@@ -27,6 +27,7 @@ namespace OS
     extern uint64_t      getFileWriteTime(string& fileName);
     extern void          assertBox(const char* expr, const char* file, int line);
     extern bool          setSwagFolder(const string& folder);
+    extern bool          touchFile(const fs::path& path);
 
     enum class ResourceFile
     {

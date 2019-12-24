@@ -483,6 +483,23 @@ namespace OS
         return lRes == ERROR_SUCCESS;
     }
 
+    bool touchFile(const fs::path& path)
+    {
+        HANDLE hFile = CreateFile(path.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (hFile == INVALID_HANDLE_VALUE)
+            return false;
+
+        FILETIME   ft;
+        SYSTEMTIME st;
+
+        GetSystemTime(&st);
+        SystemTimeToFileTime(&st, &ft);
+        BOOL res = SetFileTime(hFile, (LPFILETIME) NULL, (LPFILETIME) NULL, &ft);
+
+        CloseHandle(hFile);
+        return res;
+    }
+
 }; // namespace OS
 
 #endif

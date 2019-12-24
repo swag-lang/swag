@@ -51,36 +51,44 @@ JobResult ModuleBuildJob::execute()
         // Determin now if we need to recompile
         module->backend->setMustCompile();
 
-        for (auto& dep : module->moduleDependencies)
+        // If we do not need to compile, then exit, we're done with that module
+        if (!module->backend->mustCompile && !g_CommandLine.generateDoc)
         {
-            auto it = g_Workspace.mapModulesNames.find(dep.first);
-            SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
-            auto depModule = it->second;
-            auto node      = dep.second.node;
-
-            // Now the .swg export file should be in the cache
-            if (!depModule->backend->timeExportFile)
+            pass = ModuleBuildPass::Run;
+        }
+        else
+        {
+            for (auto& dep : module->moduleDependencies)
             {
-                node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
-                continue;
+                auto it = g_Workspace.mapModulesNames.find(dep.first);
+                SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+                auto depModule = it->second;
+                auto node      = dep.second.node;
+
+                // Now the .swg export file should be in the cache
+                if (!depModule->backend->timeExportFile)
+                {
+                    node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
+                    continue;
+                }
+
+                // Then do syntax on it
+                auto syntaxJob          = g_Pool_syntaxJob.alloc();
+                auto file               = g_Allocator.alloc<SourceFile>();
+                syntaxJob->sourceFile   = file;
+                syntaxJob->module       = module;
+                syntaxJob->dependentJob = this;
+                file->path              = depModule->backend->bufferSwg.path;
+                file->generated         = true;
+                dep.second.generated    = depModule->backend->exportFileGenerated;
+                module->addFile(file);
+                jobsToAdd.push_back(syntaxJob);
             }
 
-            // Then do syntax on it
-            auto syntaxJob          = g_Pool_syntaxJob.alloc();
-            auto file               = g_Allocator.alloc<SourceFile>();
-            syntaxJob->sourceFile   = file;
-            syntaxJob->module       = module;
-            syntaxJob->dependentJob = this;
-            file->path              = depModule->backend->bufferSwg.path;
-            file->generated         = true;
-            dep.second.generated    = depModule->backend->exportFileGenerated;
-            module->addFile(file);
-            jobsToAdd.push_back(syntaxJob);
+            // Sync with all jobs
+            if (!jobsToAdd.empty())
+                return JobResult::KeepJobAlive;
         }
-
-        // Sync with all jobs
-        if (!jobsToAdd.empty())
-            return JobResult::KeepJobAlive;
     }
 
     //////////////////////////////////////////////////
@@ -243,15 +251,19 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Output)
     {
         pass = ModuleBuildPass::End;
-        if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
+        if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
         {
-            if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
+            if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
             {
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();
                 outputJob->module       = module;
                 outputJob->dependentJob = this;
                 jobsToAdd.push_back(outputJob);
                 return JobResult::KeepJobAlive;
+            }
+            else if (module->backend->mustCompile)
+            {
+                OS::touchFile(module->backend->bufferSwg.path);
             }
         }
     }
