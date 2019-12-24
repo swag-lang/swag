@@ -3,6 +3,8 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "SourceFile.h"
+#include "Concat.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -180,12 +182,13 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
 bool SemanticJob::resolveVisit(SemanticContext* context)
 {
+    auto job        = context->job;
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-    auto     typeInfo = node->expression->typeInfo;
-    AstNode* newExpression;
+    auto     typeInfo      = node->expression->typeInfo;
+    AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto identifierRef         = Ast::clone(node->expression, node);
@@ -194,28 +197,75 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         identifier->token          = node->token;
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
         newExpression              = identifierRef;
+
+        SWAG_ASSERT(!node->block->parent);
+        Ast::addChildBack(node, node->block);
+        node->expression->flags |= AST_NO_BYTECODE;
+
+        job->nodes.pop_back();
+        job->nodes.push_back(newExpression);
+        job->nodes.push_back(node->block);
+        job->nodes.push_back(node);
+    }
+    else if (typeInfo->flags & TYPEINFO_INTEGER)
+    {
+        Utf8   content;
+        Utf8   aliasName = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
+        Concat concat;
+        Ast::output(concat, node->expression);
+        concat.addU8(0);
+        content = format("loop %s { ", (const char*) concat.firstBucket->datas, aliasName.c_str());
+        content += format("let %s = @index; ", aliasName.c_str());
+        content += "} ";
+        SyntaxJob syntaxJob;
+        syntaxJob.constructEmbedded(content, node);
+
+        newExpression = node->childs.back();
+        auto loopNode = CastAst<AstLoop>(newExpression, AstNodeKind::Loop);
+        Ast::addChildBack(loopNode->block, node->block);
+        node->block->flags &= ~AST_NO_SEMANTIC;
+
+        // Reroot the parent scope of the user block so that it points to the scope of the loop block
+        node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+
+        job->nodes.pop_back();
+        job->nodes.push_back(newExpression);
+        job->nodes.push_back(node);
+    }
+    else if (typeInfo->isNative(NativeTypeKind::String))
+    {
+        Utf8   content;
+        Utf8   alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
+        Utf8   alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
+        Concat concat;
+        Ast::output(concat, node->expression);
+        concat.addU8(0);
+        content += format("{ let __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
+        content += format("loop %s { ", (const char*) concat.firstBucket->datas);
+        content += format("let %s = __addr[@index]; ", alias0Name.c_str());
+        content += format("let %s = @index; ", alias1Name.c_str());
+        content += "}} ";
+        SyntaxJob syntaxJob;
+        syntaxJob.constructEmbedded(content, node);
+
+        newExpression = node->childs.back();
+
+        // First child is the let in the statement, and first child of this is the loop node
+        auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+        Ast::addChildBack(loopNode->block, node->block);
+        node->block->flags &= ~AST_NO_SEMANTIC;
+
+        // Reroot the parent scope of the user block so that it points to the scope of the loop block
+        node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+
+        job->nodes.pop_back();
+        job->nodes.push_back(newExpression);
+        job->nodes.push_back(node);
     }
     else
     {
-        auto identifierRef         = Ast::newIdentifierRef(sourceFile, format("opVisit%s", node->extraName.c_str()), node);
-        auto identifier            = CastAst<AstIdentifier>(identifierRef->childs.back(), AstNodeKind::Identifier);
-        identifier->aliasNames     = node->aliasNames;
-        identifier->token          = node->token;
-        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
-        auto callParam             = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-        Ast::addChildBack(callParam, node->expression);
-        newExpression = identifierRef;
+        return context->report({node->expression, format("invalid type '%s' for visit", typeInfo->name.c_str())});
     }
-
-    // Move block after the block
-    Ast::addChildBack(node, node->block);
-    node->expression->flags |= AST_NO_BYTECODE;
-
-    auto job = context->job;
-    job->nodes.pop_back();
-    job->nodes.push_back(newExpression);
-    job->nodes.push_back(node->block);
-    job->nodes.push_back(node);
 
     return true;
 }

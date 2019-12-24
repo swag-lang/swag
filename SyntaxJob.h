@@ -24,6 +24,7 @@ struct SyntaxContext : public JobContext
 struct SyntaxJob : public Job
 {
     JobResult execute() override;
+    bool      constructEmbedded(const Utf8& content, AstNode* parent);
 
     bool error(const Token& tk, const Utf8& msg);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);

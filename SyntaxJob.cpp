@@ -6,6 +6,7 @@
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
+#include "Scoped.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -108,6 +109,43 @@ bool SyntaxJob::recoverError()
         if (token.id == TokenId::EndOfFile)
             return false;
     }
+
+    return true;
+}
+
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
+{
+    SourceFile tmpFile;
+    tmpFile.externalBuffer = (uint8_t*) content.c_str();
+    tmpFile.externalSize   = (uint32_t) content.size();
+    tmpFile.module         = parent->sourceFile->module;
+    tmpFile.path           = "generated";
+    sourceFile             = &tmpFile;
+    currentScope           = parent->ownerScope;
+    currentStructScope     = parent->ownerStructScope;
+    currentMainNode        = parent->ownerMainNode;
+    currentFct             = parent->ownerFct;
+
+#ifdef SWAG_HAS_ASSERT
+    auto saveInfo                = g_diagnosticInfos;
+    g_diagnosticInfos.pass       = "SyntaxJob (constructed)";
+    g_diagnosticInfos.sourceFile = &tmpFile;
+#endif
+
+    tokenizer.setFile(sourceFile);
+
+    ScopedFlags scopedFlags(this, AST_GENERATED);
+    SWAG_CHECK(tokenizer.getToken(token));
+    while (true)
+    {
+        if (token.id == TokenId::EndOfFile)
+            break;
+        SWAG_CHECK(doEmbeddedInstruction(parent));
+    }
+
+#ifdef SWAG_HAS_ASSERT
+    g_diagnosticInfos = saveInfo;
+#endif
 
     return true;
 }
