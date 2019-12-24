@@ -39,7 +39,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("command\n");
     g_Log.message("-------\n");
     g_Log.message("version      print swag version\n");
-    g_Log.message("env          register an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
+    g_Log.message("env          creates an environment variable 'SWAG_FOLDER' with the folder location of the compiler\n");
     g_Log.message("build        build the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("doc          generate documentation for the specified workspace\n");
