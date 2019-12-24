@@ -48,6 +48,7 @@ void Workspace::publishModule(Module* module)
 {
     if (module->path.empty())
         return;
+
     // Scan source folder
     string publishPath = module->path + "/publish";
     if (fs::exists(publishPath))

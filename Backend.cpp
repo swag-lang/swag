@@ -433,7 +433,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         if (!exists)
         {
             exportFileGenerated = false;
-            targetPath          = g_Workspace.cachePath.string() + "\\" + module->name + ".swg";
+            targetPath          = g_Workspace.targetPath.string() + "\\" + module->name + ".swg";
             exists              = fs::exists(targetPath);
         }
 
