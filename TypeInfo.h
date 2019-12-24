@@ -402,22 +402,7 @@ struct TypeInfoPointer : public TypeInfo
         kind = TypeInfoKind::Pointer;
     }
 
-    void computeName() override
-    {
-        name.clear();
-        if (flags & TYPEINFO_CONST)
-            name = "const ";
-        for (uint32_t i = 0; i < ptrCount; i++)
-        {
-            name += "*";
-            fullname += "*";
-        }
-
-        finalType->computeName();
-        name += finalType->name;
-        fullname += finalType->getFullName();
-    }
-
+    void      computeName() override;
     TypeInfo* computePointedType();
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
@@ -434,30 +419,12 @@ struct TypeInfoArray : public TypeInfo
         kind = TypeInfoKind::Array;
     }
 
-    void computeName() override
-    {
-        pointedType->computeName();
-        name.clear();
-        fullname.clear();
-        if (flags & TYPEINFO_CONST)
-            name = "const ";
-        if (count == UINT32_MAX)
-        {
-            name += format("[] %s", pointedType->name.c_str());
-            fullname += format("[] %s", pointedType->getFullName());
-        }
-        else
-        {
-            name += format("[%d] %s", count, pointedType->name.c_str());
-            fullname += format("[%d] %s", count, pointedType->getFullName());
-        }
-    }
-
     int numRegisters() override
     {
         return 1;
     }
 
+    void      computeName() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -474,16 +441,7 @@ struct TypeInfoSlice : public TypeInfo
         kind = TypeInfoKind::Slice;
     }
 
-    void computeName() override
-    {
-        pointedType->computeName();
-        name.clear();
-        if (flags & TYPEINFO_CONST)
-            name = "const ";
-        name += format("[..] %s", pointedType->name.c_str());
-        fullname += format("[..] %s", pointedType->getFullName());
-    }
-
+    void      computeName() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -577,8 +535,8 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opInit                 = nullptr;
     AstFuncDecl*           opUserPostCopyFct      = nullptr;
     ByteCode*              opPostCopy             = nullptr;
-    AstFuncDecl*           opUserPostMoveFct  = nullptr;
-    ByteCode*              opPostMove         = nullptr;
+    AstFuncDecl*           opUserPostMoveFct      = nullptr;
+    ByteCode*              opPostMove             = nullptr;
     AstFuncDecl*           opUserDropFct          = nullptr;
     ByteCode*              opDrop                 = nullptr;
     uint32_t               cptRemainingInterfaces = 0;

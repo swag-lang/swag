@@ -468,7 +468,7 @@ struct AstVisit : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    Utf8         extraName;
+    Token        extraName;
     AstNode*     expression = nullptr;
     AstNode*     block      = nullptr;
     vector<Utf8> aliasNames;

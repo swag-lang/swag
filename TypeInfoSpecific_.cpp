@@ -121,6 +121,22 @@ TypeInfo* TypeInfoPointer::computePointedType()
     return result;
 }
 
+void TypeInfoPointer::computeName()
+{
+    name.clear();
+    if (flags & TYPEINFO_CONST)
+        name = "const ";
+    for (uint32_t i = 0; i < ptrCount; i++)
+    {
+        name += "*";
+        fullname += "*";
+    }
+
+    finalType->computeName();
+    name += finalType->name;
+    fullname += finalType->getFullName();
+}
+
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
@@ -181,6 +197,46 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     SWAG_ASSERT(!sizeOf || !other->sizeOf || sizeOf == other->sizeOf);
     return true;
+}
+
+void TypeInfoArray::computeName()
+{
+    pointedType->computeName();
+    name.clear();
+    fullname.clear();
+    if (flags & TYPEINFO_CONST)
+        name = "const ";
+    if (count == UINT32_MAX)
+    {
+        name += format("[] %s", pointedType->name.c_str());
+        fullname += format("[] %s", pointedType->getFullName());
+    }
+    else
+    {
+        name += format("[%d", count);
+        fullname += format("[%d", count);
+        auto pType = pointedType;
+        while (pType->kind == TypeInfoKind::Array)
+        {
+            auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
+            name += format(",%d", subType->count);
+            fullname += format(",%d", subType->count);
+            pType = subType->pointedType;
+        }
+
+        name += format("] %s", pType->name.c_str());
+        fullname += format("] %s", pType->getFullName());
+    }
+}
+
+void TypeInfoSlice::computeName()
+{
+    pointedType->computeName();
+    name.clear();
+    if (flags & TYPEINFO_CONST)
+        name = "const ";
+    name += format("[..] %s", pointedType->name.c_str());
+    fullname += format("[..] %s", pointedType->getFullName());
 }
 
 TypeInfo* TypeInfoSlice::clone()

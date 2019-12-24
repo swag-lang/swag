@@ -188,7 +188,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "opVisit name expected"));
-        node->extraName = token.text;
+        node->extraName = token;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
