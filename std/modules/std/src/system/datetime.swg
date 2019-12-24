@@ -1,5 +1,5 @@
 namespace std.time
-{ 
+{
     /// Represents an instant in time, typically expressed as a date and time of day
 	public struct DateTime
 	{
