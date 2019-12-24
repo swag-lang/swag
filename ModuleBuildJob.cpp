@@ -10,6 +10,7 @@
 #include "ByteCode.h"
 #include "Stats.h"
 #include "Allocator.h"
+#include "Backend.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -46,6 +47,9 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::IncludeSwg)
     {
         pass = ModuleBuildPass::LoadDependencies;
+
+        // Determin now if we need to recompile
+        module->backend->setMustCompile();
 
         for (auto& dep : module->moduleDependencies)
         {

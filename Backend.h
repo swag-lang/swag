@@ -23,10 +23,13 @@ struct Backend
 
     void              emitSeparator(Concat& buffer, const char* title);
     bool              generateExportFile();
+    void              setMustCompile();
+    bool              isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
     virtual JobResult preCompile(Job* ownerJob)                         = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
 
-    Module*    module;
+    bool       mustCompile = true;
+    Module*    module      = nullptr;
     OutputFile bufferSwg;
 
     bool emitAttributes(AstNode* node);

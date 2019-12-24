@@ -6,7 +6,6 @@
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
-#include "ThreadManager.h"
 #include "BackendC.h"
 
 void Module::setup(const string& moduleName)

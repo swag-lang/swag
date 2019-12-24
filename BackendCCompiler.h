@@ -4,17 +4,14 @@ struct BuildParameters;
 
 struct BackendCCompiler
 {
-    BackendCCompiler(BackendC* bk, const BuildParameters* params)
+    BackendCCompiler(BackendC* bk)
         : backend{bk}
-        , buildParameters{params}
     {
     }
 
-    string getResultFile();
-    bool   mustCompile();
-
+    string       getResultFile();
     virtual bool compile() = 0;
 
-    BackendC*              backend;
-    const BuildParameters* buildParameters;
+    BackendC*              backend         = nullptr;
+    const BuildParameters* buildParameters = nullptr;
 };

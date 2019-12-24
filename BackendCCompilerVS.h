@@ -1,11 +1,10 @@
 #pragma once
 #include "BackendCCompiler.h"
-#include "BuildParameters.h"
 
 struct BackendCCompilerVS : public BackendCCompiler
 {
-    BackendCCompilerVS(BackendC* bk, const BuildParameters* params)
-        : BackendCCompiler(bk, params)
+    BackendCCompilerVS(BackendC* bk)
+        : BackendCCompiler{bk}
     {
     }
 

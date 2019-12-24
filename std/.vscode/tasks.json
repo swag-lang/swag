@@ -34,6 +34,34 @@
     {
       "label": "build test [full]",
       "type": "shell",
+      "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder}",
+      "problemMatcher": {
+        "owner": "swag",
+        "fileLocation": [ "absolute" ],
+        "pattern": {
+          "regexp": "(warning|error):\\s(.*):(\\d+):(\\d+):(\\d+):(\\d+):\\s(.*)$",
+          "severity": 1,
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "endLine": 5,
+          "endColumn": 6,
+          "message": 7
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "rebuild all",
+      "type": "shell",
       "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild",
       "problemMatcher": {
         "owner": "swag",
@@ -58,6 +86,6 @@
         "panel": "shared",
         "clear": true
       }
-    }
+    }    
   ]
 }

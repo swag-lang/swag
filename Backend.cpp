@@ -409,25 +409,59 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     return true;
 }
 
+void Backend::setMustCompile()
+{
+    mustCompile = !isUpToDate(module->moreRecentSourceFile);
+}
+
+bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
+{
+    if (g_CommandLine.rebuild)
+        return false;
+    if (module->numErrors)
+        return true;
+
+    // Get export file name
+    auto targetPath = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
+    bool exists     = fs::exists(targetPath);
+    if (!exists)
+    {
+        targetPath = g_Workspace.cachePath.string() + "\\" + module->name + ".swg";
+        exists     = fs::exists(targetPath);
+    }
+
+    if (!exists)
+        return false;
+
+    uint64_t t1 = 0;
+    t1          = OS::getFileWriteTime(targetPath);
+    if (t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
+        return false;
+    if (!invert && t1 < moreRecentSourceFile)
+        return false;
+    if (invert && t1 > moreRecentSourceFile)
+        return false;
+
+    // If one of my dependency is more recent than me, then need to rebuild
+    for (auto dep : module->moduleDependencies)
+    {
+        auto it = g_Workspace.mapModulesNames.find(dep.first);
+        SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+
+        auto depModule = it->second;
+        if (!depModule->backend->isUpToDate(t1, true))
+            return false;
+    }
+
+    return true;
+}
+
 bool Backend::generateExportFile()
 {
     auto targetPath = g_Workspace.cachePath.string();
     bufferSwg.path  = targetPath + "\\" + module->name + ".generated.swg";
 
-    // Do we need to generate the file ?
-    bool exists = fs::exists(bufferSwg.path);
-    bool regen  = g_CommandLine.rebuild || !exists;
-    if (!regen)
-    {
-        if (exists)
-        {
-            auto t1 = OS::getFileWriteTime(bufferSwg.path);
-            if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
-                regen = true;
-        }
-    }
-
-    if (!regen)
+    if (!mustCompile)
         return true;
 
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);

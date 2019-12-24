@@ -15,24 +15,11 @@ JobResult BackendC::preCompile(Job* ownerJob)
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-        auto targetPath  = g_Workspace.cachePath.string();
-        bufferC.path = targetPath + "/" + module->name + ".c";
+        auto targetPath = g_Workspace.cachePath.string();
+        bufferC.path    = targetPath + "/" + module->name + ".c";
 
         // Do we need to generate the file ?
-        bool regen = g_CommandLine.rebuild;
-        if (!regen)
-        {
-            if (!fs::exists(bufferC.path))
-                regen = true;
-            else
-            {
-                auto t1 = OS::getFileWriteTime(bufferC.path);
-                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
-                    regen = true;
-            }
-        }
-
-        if (!regen)
+        if (!mustCompile)
             return JobResult::ReleaseJob;
 
         emitRuntime();
@@ -42,7 +29,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
         emitPublic(g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(module, module->scopeRoot);
         emitSeparator(bufferC, "FUNCTIONS");
-		bufferC.flush(false);
+        bufferC.flush(false);
     }
 
     if (pass == BackendCPreCompilePass::FunctionBodies)
@@ -54,7 +41,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
 
     if (pass == BackendCPreCompilePass::End)
     {
-		emitSeparator(bufferC, "INIT");
+        emitSeparator(bufferC, "INIT");
         emitGlobalInit();
         emitGlobalDrop();
         emitMain();
@@ -66,11 +53,8 @@ JobResult BackendC::preCompile(Job* ownerJob)
 
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
-#ifdef _WIN32
-    BackendCCompilerVS compiler(this, &buildParameters);
-#endif
-
-    if (!compiler.mustCompile())
+    compiler.buildParameters = &buildParameters;
+    if (!mustCompile)
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)
             g_Log.messageHeaderCentered("Skipping build test", module->name.c_str(), LogColor::Gray);

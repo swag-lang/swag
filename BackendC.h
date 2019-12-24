@@ -1,6 +1,9 @@
 #pragma once
 #include "Backend.h"
 #include "OutputFile.h"
+#ifdef _WIN32
+#include "BackendCCompilerVS.h"
+#endif
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
@@ -24,6 +27,7 @@ struct BackendC : public Backend
 {
     BackendC(Module* mdl)
         : Backend{mdl}
+        , compiler{this}
     {
     }
 
@@ -51,4 +55,8 @@ struct BackendC : public Backend
 
     OutputFile             bufferC;
     BackendCPreCompilePass pass = BackendCPreCompilePass::Init;
+
+#ifdef _WIN32
+    BackendCCompilerVS compiler;
+#endif
 };
