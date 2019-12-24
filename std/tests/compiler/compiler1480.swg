@@ -6,10 +6,13 @@
     //@print(cast(s64) @countof(arr))
 
     cpt := 0
-    visit xxx: arr
+    cpt1 := 0'u32
+    visit xxx, yyy: arr
     {
         cpt += cast(s32) xxx
+        cpt1 += yyy
     }
 
     @assert(cpt == 100)
+    @assert(cpt1 == 6)
 }
