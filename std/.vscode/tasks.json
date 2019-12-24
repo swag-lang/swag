@@ -6,7 +6,7 @@
     {
       "label": "build test [fast]",
       "type": "shell",
-      "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild -o:false",
+      "command": "${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} -o:false",
       "problemMatcher": {
         "owner": "swag",
         "fileLocation": [ "absolute" ],

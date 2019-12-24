@@ -232,7 +232,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         job->nodes.push_back(newExpression);
         job->nodes.push_back(node);
     }
-    else if (typeInfo->isNative(NativeTypeKind::String))
+    else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
     {
         Utf8   content;
         Utf8   alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
