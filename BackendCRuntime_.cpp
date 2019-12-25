@@ -186,7 +186,7 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 	if(msg)
 		__print(msg);
 	else	
-		__print(": error: assertion failed in native code\n");
+		__print(": error: native code assertion failed\n");
 	exit(-1);
 }
 

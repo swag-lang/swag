@@ -51,7 +51,7 @@ namespace std
 
             func(T) opCast(using self)->T
             {
-                #if @typeof(T) == @typeof([..] u8)
+                #if @typeof(T) == @typeof(const [..] u8)
                     return [buffer, length]
                 #else
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")

@@ -1,7 +1,7 @@
 #import "std"
 
 #[swag.macro]
-func Visit(str: [..] u8, user: code)
+func Visit(str: const [..] u8, user: code)
 {
     var c: char
     var ptr: const *u8 = @dataof(str)

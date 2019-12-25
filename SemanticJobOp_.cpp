@@ -2,6 +2,7 @@
 #include "TypeManager.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "SourceFile.h"
 
 bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
@@ -205,6 +206,13 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     AstNode* genericParameters = nullptr;
     AstNode  parameters;
     AstNode  literal;
+    parameters.sourceFile = left->sourceFile;
+    parameters.inheritTokenLocation(left->token);
+    parameters.inheritOwners(left);
+    literal.sourceFile = left->sourceFile;
+    literal.inheritTokenLocation(left->token);
+    literal.inheritOwners(left);
+
     if (opConst || opType)
     {
         literal.kind               = AstNodeKind::Literal;

@@ -346,7 +346,7 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
 bool SemanticJob::resolveUserCast(SemanticContext* context)
 {
     auto node = context->node;
-    context->job->resolveUserOp(context, "opCast", nullptr, node->typeInfo, node->parent, nullptr);
+    SWAG_CHECK(context->job->resolveUserOp(context, "opCast", nullptr, node->typeInfo, node->parent, nullptr));
     if (context->result == ContextResult::Pending)
         return true;
 

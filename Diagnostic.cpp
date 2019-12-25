@@ -39,6 +39,7 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location
     if (hasFile)
     {
+        SWAG_ASSERT(sourceFile);
         fs::path path = sourceFile->path;
         g_Log.print(path.string().c_str());
         if (hasRangeLocation)

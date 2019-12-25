@@ -136,8 +136,10 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
-            node->typeInfo       = ptrType;
-            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
+            if (ptrSlice->isConst())
+                ptrType->setConst();
+            node->typeInfo    = ptrType;
+            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -148,8 +150,10 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
-            node->typeInfo       = ptrType;
-            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
+            if (ptrArray->isConst())
+                ptrType->setConst();
+            node->typeInfo    = ptrType;
+            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->isNative(NativeTypeKind::Any))
         {

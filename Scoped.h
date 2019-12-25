@@ -148,3 +148,19 @@ struct ScopedMainNode
     SyntaxJob* savedJob;
     AstNode*   savedMainNode;
 };
+
+struct ScopedNodeExpansion
+{
+    ScopedNodeExpansion(JobContext* context, AstNode* node)
+    {
+        savedContext = context;
+        context->expansionNode.push_back(node);
+    }
+
+    ~ScopedNodeExpansion()
+    {
+        savedContext->expansionNode.pop_back();
+    }
+
+    JobContext* savedContext;
+};

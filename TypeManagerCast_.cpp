@@ -7,7 +7,7 @@
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    // Last change : opCast, with a structure
+    // Last minute change : opCast, with a structure
     if (fromType->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
@@ -1865,14 +1865,17 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Const mismatch
-    if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
+    if (toType->kind != TypeInfoKind::Generic)
     {
-        if (!(castFlags & CASTFLAG_UNCONST))
-            return castError(context, toType, fromType, fromNode, castFlags);
+        if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
+        {
+            if (!(castFlags & CASTFLAG_UNCONST))
+                return castError(context, toType, fromType, fromNode, castFlags);
 
-        // We can affect a const to an unconst if type is by copy, and we are in an affectation
-        if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
-            return castError(context, toType, fromType, fromNode, castFlags);
+            // We can affect a const to an unconst if type is by copy, and we are in an affectation
+            if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
+                return castError(context, toType, fromType, fromNode, castFlags);
+        }
     }
 
     if (fromType->isSame(toType, ISSAME_CAST))

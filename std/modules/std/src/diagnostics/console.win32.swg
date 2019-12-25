@@ -72,7 +72,7 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 		}
 		
-		public func write(message: [..] u8)
+		public func write(message: const [..] u8)
 		{
             if g_silentMode
                 return

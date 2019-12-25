@@ -28,6 +28,8 @@ namespace Ast
         }
         else
         {
+            if (parent)
+                node->inheritTokenLocation(parent->token);
             node->inheritOwners(parent);
         }
 
