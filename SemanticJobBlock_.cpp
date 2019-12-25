@@ -212,15 +212,18 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     SWAG_VERIFY(node->extraName.text.empty(), context->report({node, node->extraName, format("'visit' extra name is only valid for a struct type, and type is '%s'", typeInfo->name.c_str())}));
 
+    Utf8 alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
+    Utf8 alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
+    Utf8 content;
+
+    Concat concat;
+    Ast::output(concat, node->expression);
+    concat.addU8(0);
+
     if (typeInfo->flags & TYPEINFO_INTEGER)
     {
-        Utf8   content;
-        Utf8   aliasName = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
-        Concat concat;
-        Ast::output(concat, node->expression);
-        concat.addU8(0);
-        content = format("loop %s { ", (const char*) concat.firstBucket->datas, aliasName.c_str());
-        content += format("let %s = @index; ", aliasName.c_str());
+        content = format("loop %s { ", (const char*) concat.firstBucket->datas, alias0Name.c_str());
+        content += format("let %s = @index; ", alias0Name.c_str());
         content += "} ";
         SyntaxJob syntaxJob;
         syntaxJob.constructEmbedded(content, node);
@@ -241,13 +244,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Multi dimensional array : special case, as we want to visit everything
     else if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
-        auto   typeArray = (TypeInfoArray*) typeInfo;
-        Utf8   content;
-        Utf8   alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
-        Utf8   alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
-        Concat concat;
-        Ast::output(concat, node->expression);
-        concat.addU8(0);
+        auto typeArray = (TypeInfoArray*) typeInfo;
         content += format("{ let __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count = @sizeof(%s) / %d; ", (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count { ", (const char*) concat.firstBucket->datas);
@@ -275,12 +272,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // One dimensional array
     else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
     {
-        Utf8   content;
-        Utf8   alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
-        Utf8   alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
-        Concat concat;
-        Ast::output(concat, node->expression);
-        concat.addU8(0);
         content += format("{ let __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
         content += format("let %s = __addr[@index]; ", alias0Name.c_str());
