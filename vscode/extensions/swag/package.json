@@ -9,11 +9,15 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:swag"
+  ],
   "contributes": {
     "languages": [
       {
         "id": "swag",
-        "aliases": [ "swag", "swag" ],
+        "aliases": [ "swag" ],
         "extensions": [ ".swg" ],
         "configuration": "./language-configuration.json"
       }
@@ -25,12 +29,25 @@
         "path": "./syntaxes/swag.tmLanguage.json"
       }
     ],
+    "taskDefinitions": [
+      {
+        "type": "swag-build1"
+      }, 
+      {
+        "type": "swag-build2"
+      }, 
+      {
+        "type": "swag-build3"
+      }       
+    ],
     "problemMatchers": [
       {
         "name": "swag",
         "source": "swag",
         "owner": "swag",
-        "fileLocation": [ "absolute" ],
+        "fileLocation": [
+          "absolute"
+        ],
         "pattern": {
           "regexp": "(warning|error):\\s(.*):(\\d+):(\\d+):(\\d+):(\\d+):\\s(.*)$",
           "severity": 1,
