@@ -18,7 +18,7 @@ class SwagTaskProvider
         registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} -o:false",    "build test [fast]");
         registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder}",             "build test [full]");
         registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild",   "rebuild all");
-        registerTask("${env:SWAG_FOLDER}\\swag.exe doc  -w:${workspaceFolder} --clean",      "generate documentation");
+        registerTask("${env:SWAG_FOLDER}\\swag.exe doc  -w:${workspaceFolder} --clean",     "generate documentation");
         return buildTasks;
     }
 
