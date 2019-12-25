@@ -20,6 +20,11 @@
             "language": "swag",
             "scopeName": "source",
             "path": "./syntaxes/swag.tmLanguage.json"
-        }]
+        }],
+        "themes": [{
+            "label": "Swag Theme",
+            "path": "./themes/swag-theme-dark.json",
+            "uiTheme": "swag"
+        }]        
     }
 }

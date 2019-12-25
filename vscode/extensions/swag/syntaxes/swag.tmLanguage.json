@@ -166,7 +166,7 @@
     "compiler-function": {
       "patterns": [
         {
-          "name": "meta.preprocessor",
+          "name": "meta.preprocessor.function",
           "match": "(#)\\b(run|test|init|drop|main)\\b"
         }
       ]
