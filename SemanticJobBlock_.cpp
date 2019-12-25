@@ -216,9 +216,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
     Utf8 content;
 
-    Concat concat;
+    // Get back the expression string
+    auto& concat = context->job->tmpConcat;
+    concat.clear();
     Ast::output(concat, node->expression);
     concat.addU8(0);
+    SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
     if (typeInfo->flags & TYPEINFO_INTEGER)
     {

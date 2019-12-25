@@ -4,6 +4,7 @@
 #include "TypeInfo.h"
 #include "Diagnostic.h"
 #include "Scope.h"
+#include "Concat.h"
 struct AstNode;
 struct Module;
 struct SourceFile;
@@ -201,6 +202,7 @@ struct SemanticJob : public Job
     vector<SymbolOverload*>  cacheBadGenericSignature;
     SymbolMatchContext       symMatch;
     SemanticContext          context;
+    Concat                   tmpConcat;
 
     void reset() override
     {
@@ -216,6 +218,7 @@ struct SemanticJob : public Job
         cacheBadGenericSignature.clear();
         symMatch.reset();
         context.reset();
+        tmpConcat.clear();
     }
 
     void release() override
