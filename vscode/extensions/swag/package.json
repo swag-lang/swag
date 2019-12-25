@@ -1,25 +1,47 @@
 {
-    "name": "swag",
-    "displayName": "swag",
-    "description": "swag language support",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.41.0"
-    },
-    "categories": [
-        "Programming Languages"
+  "name": "swag",
+  "displayName": "swag",
+  "description": "swag language support",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.41.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "swag",
+        "aliases": [ "swag", "swag" ],
+        "extensions": [ ".swg" ],
+        "configuration": "./language-configuration.json"
+      }
     ],
-    "contributes": {
-        "languages": [{
-            "id": "swag",
-            "aliases": ["swag", "swag"],
-            "extensions": [".swg"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "swag",
-            "scopeName": "source",
-            "path": "./syntaxes/swag.tmLanguage.json"
-        }]     
-    }
+    "grammars": [
+      {
+        "language": "swag",
+        "scopeName": "source",
+        "path": "./syntaxes/swag.tmLanguage.json"
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "swag",
+        "source": "swag",
+        "owner": "swag",
+        "fileLocation": [ "absolute" ],
+        "pattern": {
+          "regexp": "(warning|error):\\s(.*):(\\d+):(\\d+):(\\d+):(\\d+):\\s(.*)$",
+          "severity": 1,
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "endLine": 5,
+          "endColumn": 6,
+          "message": 7
+        }
+      }
+    ]
+  }
 }
