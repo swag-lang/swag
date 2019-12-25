@@ -31,14 +31,14 @@
     ],
     "taskDefinitions": [
       {
-        "type": "swag-build1"
-      }, 
-      {
-        "type": "swag-build2"
-      }, 
-      {
-        "type": "swag-build3"
-      }       
+        "type": "swag-build",
+        "properties": {
+          "cmdLine": {
+            "type": "string",
+            "description": "The command line"
+          }
+        }
+      }        
     ],
     "problemMatchers": [
       {
