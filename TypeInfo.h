@@ -151,7 +151,8 @@ struct TypeInfo
     void setConst()
     {
         flags |= TYPEINFO_CONST;
-        name = "const " + name;
+        name     = "const " + name;
+        fullname = "const " + fullname;
     }
 
     virtual int numRegisters()

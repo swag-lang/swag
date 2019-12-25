@@ -1,4 +1,4 @@
-func getChar(buffer: *u8)->(*u8, char)
+func getChar(buffer: const *u8)->(const *u8, char)
 {
 	ptr := buffer
 	c := deref ptr
@@ -69,7 +69,7 @@ func getChar(buffer: *u8)->(*u8, char)
 	const str = "⺁⺆⻇"
 	
 	var c: char
-	var ptr: *u8 = @dataof(str)
+	var ptr: const *u8 = @dataof(str)
 	cpt := 0
 	while true
 	{

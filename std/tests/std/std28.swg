@@ -4,7 +4,7 @@
 func Visit(str: [..] u8, user: code)
 {
     var c: char
-    var ptr: *u8 = @dataof(str)
+    var ptr: const *u8 = @dataof(str)
 	while true
 	{
 		(ptr, c) = std.utf8.getChar(ptr)

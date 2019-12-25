@@ -125,7 +125,11 @@ void TypeInfoPointer::computeName()
 {
     name.clear();
     if (flags & TYPEINFO_CONST)
-        name = "const ";
+    {
+        name     = "const ";
+        fullname = "const ";
+    }
+
     for (uint32_t i = 0; i < ptrCount; i++)
     {
         name += "*";
@@ -205,7 +209,11 @@ void TypeInfoArray::computeName()
     name.clear();
     fullname.clear();
     if (flags & TYPEINFO_CONST)
-        name = "const ";
+    {
+        name     = "const ";
+        fullname = "const ";
+    }
+
     if (count == UINT32_MAX)
     {
         name += format("[] %s", pointedType->name.c_str());
@@ -234,7 +242,11 @@ void TypeInfoSlice::computeName()
     pointedType->computeName();
     name.clear();
     if (flags & TYPEINFO_CONST)
-        name = "const ";
+    {
+        name     = "const ";
+        fullname = "const ";
+    }
+
     name += format("[..] %s", pointedType->name.c_str());
     fullname += format("[..] %s", pointedType->getFullName());
 }

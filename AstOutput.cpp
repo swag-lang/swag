@@ -1,11 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "SourceFile.h"
 #include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
-#include "Utf8Crc.h"
-#include "Concat.h"
 
 namespace Ast
 {

@@ -78,7 +78,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case Property::TypeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-		context->job->waitForAllStructInterfaces(expr->typeInfo);
+        context->job->waitForAllStructInterfaces(expr->typeInfo);
         if (context->result != ContextResult::Done)
             return true;
         expr->flags |= AST_NO_BYTECODE;
@@ -123,8 +123,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = g_TypeMgr.typeInfoU8;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
-            node->typeInfo       = ptrType;
-            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
+            ptrType->setConst();
+            node->typeInfo    = ptrType;
+            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {

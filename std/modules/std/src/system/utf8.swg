@@ -1,7 +1,7 @@
 namespace std.utf8
 {
     /// Returns the number of unicode characters in an utf8 buffer
-    public func getCharCount(buffer: *u8)->u32
+    public func getCharCount(buffer: const *u8)->u32
     {
         ptr := buffer
         cpt := 0'u32
@@ -18,7 +18,7 @@ namespace std.utf8
     }
 
     /// Get the unicode character, and the address of the next utf8 character
-	public func getChar(buffer: *u8)->(*u8, char)
+	public func getChar(buffer: const *u8)->(const *u8, char)
 	{
 		ptr := buffer
 		c := deref ptr

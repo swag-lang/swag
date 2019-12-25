@@ -6,7 +6,7 @@ using std
 	const str = "⺁⺆⻇"
 	
 	var c: char
-	var ptr: *u8 = @dataof(str)
+	var ptr: const *u8 = @dataof(str)
 	cpt := 0
 	while true
 	{

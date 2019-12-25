@@ -92,6 +92,9 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
+    if (node->name == "getCharCount")
+        node = node;
+
     if (node->parameters)
     {
         uint32_t idx = 0;

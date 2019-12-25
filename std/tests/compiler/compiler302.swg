@@ -1,10 +1,8 @@
-;
-
 //#[swag.printbc]
 #test
 {
 	var str = "ABCD";
-	var p: *u8 = @dataof(str);
+	var p: const *u8 = @dataof(str);
 	@assert(p[0] == cast(u8) ('A'));
 	@assert(p[1] == cast(u8) ('B'));
 	@assert(p[2] == cast(u8) ('C'));
