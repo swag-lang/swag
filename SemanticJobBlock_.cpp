@@ -3,8 +3,6 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
-#include "Concat.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -193,7 +191,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto identifierRef         = Ast::clone(node->expression, node);
-        auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraName.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
+        auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
         identifier->aliasNames     = node->aliasNames;
         identifier->token          = node->token;
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
@@ -210,7 +208,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraName.text.empty(), context->report({node, node->extraName, format("'visit' extra name is only valid for a struct type, and type is '%s'", typeInfo->name.c_str())}));
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("'visit' extra name is only valid for a struct type, and type is '%s'", typeInfo->name.c_str())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
@@ -225,6 +223,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     if (typeInfo->flags & TYPEINFO_INTEGER)
     {
+        SWAG_VERIFY(!node->wantPointer, context->report({node, node->wantPointerToken, "cannot visit by pointer for integers"}));
         content = format("loop %s { ", (const char*) concat.firstBucket->datas, alias0Name.c_str());
         content += format("let %s = @index; ", alias0Name.c_str());
         content += "} ";
@@ -251,7 +250,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("{ let __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count = @sizeof(%s) / %d; ", (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count { ", (const char*) concat.firstBucket->datas);
-        content += format("let %s = __addr[@index]; ", alias0Name.c_str());
+        if (node->wantPointer)
+            content += format("let %s = __addr + @index; ", alias0Name.c_str());
+        else
+            content += format("let %s = __addr[@index]; ", alias0Name.c_str());
         content += format("let %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;
@@ -277,7 +279,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         content += format("{ let __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
-        content += format("let %s = __addr[@index]; ", alias0Name.c_str());
+        if (node->wantPointer)
+            content += format("let %s = __addr + @index; ", alias0Name.c_str());
+        else
+            content += format("let %s = __addr[@index]; ", alias0Name.c_str());
         content += format("let %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;

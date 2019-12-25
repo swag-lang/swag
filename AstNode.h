@@ -468,10 +468,12 @@ struct AstVisit : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    Token        extraName;
+    vector<Utf8> aliasNames;
     AstNode*     expression = nullptr;
     AstNode*     block      = nullptr;
-    vector<Utf8> aliasNames;
+    Token        extraNameToken;
+    Token        wantPointerToken;
+    bool         wantPointer = false;
 };
 
 struct AstSwitch : public AstBreakable

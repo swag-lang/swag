@@ -423,10 +423,12 @@ AstNode* AstVisit::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc<AstVisit>();
     newNode->copyFrom(context, this);
 
-    newNode->extraName  = extraName;
-    newNode->expression = findChildRef(expression, newNode);
-    newNode->block      = findChildRef(block, newNode);
-    newNode->aliasNames = aliasNames;
+    newNode->extraNameToken   = extraNameToken;
+    newNode->wantPointerToken = wantPointerToken;
+    newNode->expression       = findChildRef(expression, newNode);
+    newNode->block            = findChildRef(block, newNode);
+    newNode->aliasNames       = aliasNames;
+    newNode->wantPointer      = wantPointer;
 
     return newNode;
 }

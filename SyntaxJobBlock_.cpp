@@ -183,29 +183,34 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     // Eat visit keyword
     SWAG_CHECK(tokenizer.getToken(token));
 
-    // Ear extra name on the special function
+    // Extra name on the special function
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "opVisit name expected"));
-        node->extraName = token;
+        node->extraNameToken = move(token);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    }
+
+    if (token.id == TokenId::SymAsterisk)
+    {
+        node->wantPointerToken = move(token);
+        node->wantPointer      = true;
+        SWAG_CHECK(tokenizer.getToken(token));
     }
 
     // Variable to visit
     SWAG_CHECK(doExpression(nullptr, &node->expression));
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
     {
-        if (node->expression->childs.size() != 1)
-            return sourceFile->report({node->expression, "invalid visit alias name"});
+        SWAG_CHECK(checkIsSingleIdentifier(node->expression));
         node->aliasNames.push_back(node->expression->childs.back()->name);
         while (token.id != TokenId::SymColon)
         {
             SWAG_CHECK(eatToken(TokenId::SymComma));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
-            if (node->expression->childs.size() != 1)
-                return sourceFile->report({node->expression, "invalid visit alias name"});
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression));
             node->aliasNames.push_back(node->expression->childs.back()->name);
         }
 
@@ -251,8 +256,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         Utf8 name;
         if (token.id == TokenId::SymColon)
         {
-            if (node->expression->kind != AstNodeKind::IdentifierRef || node->expression->childs.size() != 1)
-                return sourceFile->report({node->expression, format("invalid named index '%s'", token.text.c_str())});
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression));
             name = node->expression->childs.front()->name;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(node, &node->expression));
