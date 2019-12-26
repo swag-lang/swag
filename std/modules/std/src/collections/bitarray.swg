@@ -1,8 +1,10 @@
 namespace std
 {
     using swag
+    using diagnostics.debug
 
-    /// An array of bits
+    /// Manages a compact array of bit values, which are represented as Booleans, where true indicates that
+    /// the bit is on (1) and false indicates the bit is off (0)
     public struct BitArray
     {
         readonly buffer:        *u8
@@ -67,12 +69,32 @@ namespace std
                 realloc(self, numBytes)
             }
 
-            /// Reserve the given amount of bits
+            /// Reserve the given amount of bits; and set an initial value to all bits
             func reserve(using self, maxBits: u32, initialValue: bool)
             {
                 reserve(self, maxBits)
                 memory.set(buffer, initialValue ? 0xFF : 0x00, numBytes)
-            }            
+            }   
+
+            /// Sets all bits in the BitArray to the specified value
+            func setAll(using self, value: bool)    
+            {
+                memory.set(buffer, value ? 0xFF : 0x00, numBytes)
+            }
+
+            /// Sets the bit at a specific position in the BitArray to the specified value
+            func set(using self, index: u32, value: bool)
+            {
+                if !numBits return
+
+                assert(index < numBits)
+                val := index >> 5
+                bit := index - (val << 5)
+                if value
+                    buffer[val] |= cast(u8) (1 << bit)
+                else
+                    buffer[val] ^= cast(u8) (1 << bit)
+            }
         }
     }
 }
