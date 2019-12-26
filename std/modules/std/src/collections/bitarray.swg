@@ -1,11 +1,17 @@
 namespace std
 {
     using swag
+
+    /// An array of bits
     public struct BitArray
     {
         readonly buffer:        *u8
         internal allocator:     IAllocator
-        readonly maxBits:       u32
+
+        // Maximum number of bits the array can hold
+        readonly numBits:       u32
+        /// The size, in bytes, of the allocated buffer
+        readonly numBytes:      u32
     }
 
     impl BitArray
@@ -14,7 +20,7 @@ namespace std
         {
             func opCount(using self)->u32
             {
-                return maxBits;
+                return numBits
             }
         }
 
@@ -27,6 +33,7 @@ namespace std
             req.address = buffer
             allocator.alloc(req)
             buffer = null
+            numBits, numBytes = 0
         }
 
         func realloc(using self, newSize: u32)
@@ -44,15 +51,16 @@ namespace std
         public
         {
             /// Reserve the given amount of bits
-            func reserve(using self, numBits: u32)
+            func reserve(using self, maxBits: u32)
             {
-                if !numBits
+                if !maxBits
                 {
                     free(self)
                     return
                 }
 
-                numBytes := numBits / 8
+                numBits = maxBits
+                numBytes = maxBits / 8
                 if numBytes * 8 < maxBits
                     numBytes += 1
 
@@ -60,11 +68,11 @@ namespace std
             }
 
             /// Reserve the given amount of bits
-            func reserve(using self, numBits: u32, initialValue: bool)
+            func reserve(using self, maxBits: u32, initialValue: bool)
             {
-                reserve(self, numBits)
-                //memory.set(buffer, initialValue ? 0xFF : 0x00)
-            }
+                reserve(self, maxBits)
+                memory.set(buffer, initialValue ? 0xFF : 0x00, numBytes)
+            }            
         }
     }
 }

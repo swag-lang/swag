@@ -5,6 +5,9 @@
 #include "Job.h"
 #include "Context.h"
 #include "RaceCondition.h"
+#include "SourceFile.h"
+#include "AstNode.h"
+#include "Diagnostic.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -126,12 +129,19 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         condVarDone.notify_all();
 }
 
-void ThreadManager::executeOneJob(Job* job)
+void ThreadManager::executeOneJob(Job* job, int& exceptionCode)
 {
-    auto result = job->execute();
-    jobHasEnded(job, result);
-    if (result == JobResult::ReleaseJob)
-        job->release();
+    __try
+    {
+        auto result = job->execute();
+        jobHasEnded(job, result);
+        if (result == JobResult::ReleaseJob)
+            job->release();
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        exceptionCode = GetExceptionCode();
+    }
 }
 
 bool ThreadManager::doneWithJobs()

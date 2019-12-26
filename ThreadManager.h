@@ -11,7 +11,7 @@ struct ThreadManager
     void addJobNoLock(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
-    void executeOneJob(Job* job);
+    void executeOneJob(Job* job, int& exceptionCode);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
 

@@ -499,6 +499,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
     }
 
+    SWAG_VERIFY(!node->childs.empty(), context->report({node, node->token, format("missing return value of type '%s'", funcNode->returnType->typeInfo->name.c_str())}));
+
     // Check types
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
