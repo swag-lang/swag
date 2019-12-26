@@ -9,6 +9,7 @@
 #include "ModuleBuildJob.h"
 #include "Os.h"
 #include "Allocator.h"
+#include "CommandLineParser.h"
 
 Workspace g_Workspace;
 
@@ -356,9 +357,13 @@ bool Workspace::watch()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> watching workspace '%s'", workspacePath.string().c_str()));
 
-    OS::watch([](const string& moduleName) {
+    CommandLineParser cmdParser;
+    cmdParser.setup(&g_CommandLine);
+    auto cmdLine = cmdParser.buildString();
+
+    OS::watch([&](const string& moduleName) {
         uint32_t errors = 0;
-        OS::doProcess(format("swag.exe test -w:%s -o:false", g_Workspace.workspacePath.string().c_str()), g_Workspace.workspacePath.string(), false, errors);
+        OS::doProcess(format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
     });
 
     return true;

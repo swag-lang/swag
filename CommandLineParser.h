@@ -6,7 +6,6 @@ enum CommandLineType
     Int,
     Enum,
     String,
-    StringList,
 };
 
 struct CommandLineArgument
@@ -29,10 +28,11 @@ struct CommandLineArgument
 
 struct CommandLineParser
 {
-    void setup(CommandLine* cmdLine);
-    bool process(int argc, const char* argv[]);
-    void addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help);
-    void logArguments();
+    void   setup(CommandLine* cmdLine);
+    bool   process(int argc, const char* argv[]);
+    void   addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help);
+    void   logArguments();
+    string buildString();
 
     map<string, CommandLineArgument*> longNameArgs;
     map<string, CommandLineArgument*> shortNameArgs;

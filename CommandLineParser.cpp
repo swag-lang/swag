@@ -110,9 +110,6 @@ void CommandLineParser::logArguments()
                 line0 += " ";
             line0 += *(string*) oneArg->buffer;
             break;
-        case CommandLineType::StringList:
-            line0 += "<string list>";
-            break;
         }
 
         if (oneArg->help)
@@ -213,19 +210,6 @@ bool CommandLineParser::process(int argc, const char* argv[])
             }
             break;
 
-        case CommandLineType::StringList:
-        {
-            if (argument.empty())
-            {
-                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
-            }
-
-            ((set<string>*) arg->buffer)->insert(argument);
-            break;
-        }
-
         case CommandLineType::String:
         {
             if (argument.empty())
@@ -268,6 +252,55 @@ bool CommandLineParser::process(int argc, const char* argv[])
             *(int*) arg->buffer = atoi(argument.c_str());
             break;
         }
+        }
+    }
+
+    return result;
+}
+
+string CommandLineParser::buildString()
+{
+    CommandLine       defaultValues;
+    CommandLineParser defaultParser;
+    defaultParser.setup(&defaultValues);
+
+    string result;
+    for (auto arg : longNameArgs)
+    {
+        auto itDefault  = defaultParser.longNameArgs.find(arg.first);
+        auto defaultArg = itDefault->second;
+        auto oneArg     = arg.second;
+
+        switch (oneArg->type)
+        {
+        case CommandLineType::String:
+        case CommandLineType::Enum:
+            if (*(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                result += *(string*) oneArg->buffer;
+                result += " ";
+            }
+            break;
+        case CommandLineType::Int:
+            if (*(int*) oneArg->buffer != *(int*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                result += to_string(*(int*) oneArg->buffer);
+                result += " ";
+            }
+            break;
+        case CommandLineType::Bool:
+            if (*(bool*) oneArg->buffer != *(bool*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                if (*(bool*) oneArg->buffer == true)
+                    result += "true";
+                else
+                    result += "false";
+                result += " ";
+            }
+            break;
         }
     }
 

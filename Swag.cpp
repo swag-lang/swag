@@ -123,6 +123,13 @@ int main(int argc, const char* argv[])
     if (!cmdParser.process(argc - 2, argv + 2))
         return -2;
 
+    // Output command line
+    if (g_CommandLine.verbose)
+    {
+        auto str = cmdParser.buildString();
+        g_Log.verbose("=> command line is " + str);
+    }
+
     // Creates a new workspace, and exit
     if (command == "new")
     {
