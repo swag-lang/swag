@@ -251,26 +251,29 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
-    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+    if (!(funcNode->flags & AST_FROM_GENERIC))
     {
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.mixin' attributes at the same time", funcNode->name.c_str())}));
-        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
-    }
+        if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+        {
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.mixin' attributes at the same time", funcNode->name.c_str())}));
+            funcNode->attributeFlags |= ATTRIBUTE_INLINE;
+        }
 
-    if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
-    {
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->name.c_str())}));
-        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
-        funcNode->attributeFlags |= ATTRIBUTE_MACRO;
-    }
+        if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+        {
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->name.c_str())}));
+            funcNode->attributeFlags |= ATTRIBUTE_INLINE;
+            funcNode->attributeFlags |= ATTRIBUTE_MACRO;
+        }
 
-    if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
-    {
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.macro' attribute", funcNode->token.text.c_str())}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.mixin' attribute", funcNode->token.text.c_str())}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.inline' attribute", funcNode->token.text.c_str())}));
+        if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
+        {
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.macro' attribute", funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.mixin' attribute", funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' cannot be marked with 'swag.inline' attribute", funcNode->token.text.c_str())}));
+        }
     }
 
     // Register symbol with its type
