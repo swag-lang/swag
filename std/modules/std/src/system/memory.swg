@@ -19,5 +19,11 @@ namespace std.memory
         {
             @memset(dest, 0, size)
         }
+
+        /// Set the content of one block of memory
+        func set(dest: *void, value: u8, size: u32)
+        {
+            @memset(dest, value, size)
+        }        
     }
 }

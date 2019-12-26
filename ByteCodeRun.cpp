@@ -245,7 +245,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::MemSet:
     {
         void*    dst   = registersRC[ip->a.u32].pointer;
-        uint32_t value = registersRC[ip->b.u32].u32;
+        uint32_t value = registersRC[ip->b.u32].u8;
         uint32_t size  = registersRC[ip->c.u32].u32;
 
         if (!dst)
