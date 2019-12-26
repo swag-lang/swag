@@ -3,7 +3,8 @@ const taskProvider = require('./src/taskprovider');
 
 function activate(context) 
 {
-    vscode.tasks.registerTaskProvider("swag-build", new taskProvider.SwagTaskProvider);
+	vscode.tasks.registerTaskProvider("swag-build", new taskProvider.SwagTaskProvider);
+	taskProvider.launchBackgroundTasks();
 }
 
 exports.activate = activate;

@@ -38,17 +38,16 @@
             "description": "The command line"
           }
         }
-      }        
+      }     
     ],
     "problemMatchers": [
       {
         "name": "swag",
         "source": "swag",
         "owner": "swag",
-        "fileLocation": [
-          "absolute"
-        ],
-        "pattern": {
+        "fileLocation": [ "absolute" ],
+        "pattern": 
+        {
           "regexp": "(warning|error):\\s(.*):(\\d+):(\\d+):(\\d+):(\\d+):\\s(.*)$",
           "severity": 1,
           "file": 2,
@@ -57,8 +56,31 @@
           "endLine": 5,
           "endColumn": 6,
           "message": 7
-        }
-      }
+        }        
+      },
+      {
+        "name": "swag-background",
+        "source": "swag",
+        "owner": "swag",
+        "fileLocation": [ "absolute" ],
+        "pattern": 
+        {
+          "regexp": "(warning|error):\\s(.*):(\\d+):(\\d+):(\\d+):(\\d+):\\s(.*)$",
+          "severity": 1,
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "endLine": 5,
+          "endColumn": 6,
+          "message": 7
+        },
+        "background": 
+        {
+          "activeOnStart": true,
+          "beginsPattern": "File change detected",
+          "endsPattern": "Watching for file changes"
+        }        
+      }      
     ]
   }
 }

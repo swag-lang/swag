@@ -15,10 +15,21 @@ class SwagTaskProvider
 {
     provideTasks()
     {
-        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} -o:false",    "build test [fast]");
-        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder}",             "build test [full]");
-        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild",   "rebuild all");
-        registerTask("${env:SWAG_FOLDER}\\swag.exe doc  -w:${workspaceFolder} --clean",     "generate documentation");
+        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} -o:false",    "build fast");
+        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder}",             "build full");
+        registerTask("${env:SWAG_FOLDER}\\swag.exe test -w:${workspaceFolder} --rebuild",   "rebuild");
+        //registerTask("${env:SWAG_FOLDER}\\swag.exe doc  -w:${workspaceFolder} --clean",     "generate documentation");
+
+        /*var cmdLine = "${env:SWAG_FOLDER}\\swag.exe watch -w:${workspaceFolder} -o:false";
+        var execution = new vscode.ShellExecution(cmdLine);
+        let task = new vscode.Task({type: "swag-build", cmdLine: cmdLine}, vscode.TaskScope.Workspace, "background", "swag", execution, '$swag-background');
+        task.runOptions.reevaluateOnRerun = true;
+        //task.runOptions.runOn = "folderOpen";
+        task.group = vscode.TaskGroup.Build;
+        task.presentationOptions.panel = vscode.TaskPanelKind.Dedicated;
+        task.isBackground = true
+        buildTasks.push(task);*/
+
         return buildTasks;
     }
 
@@ -28,6 +39,18 @@ class SwagTaskProvider
     }    
 }
 
+function launchBackgroundTasks()
+{
+	var cmdLine = "${env:SWAG_FOLDER}\\swag.exe watch -w:${workspaceFolder} -o:false";
+	var execution = new vscode.ShellExecution(cmdLine);
+	let task = new vscode.Task({type: "swag-build", cmdLine: cmdLine}, vscode.TaskScope.Workspace, "background", "swag", execution, '$swag-background');
+	task.runOptions.reevaluateOnRerun = true;
+	task.presentationOptions.panel = vscode.TaskPanelKind.Dedicated;
+	task.isBackground = true
+	vscode.tasks.executeTask(task);    
+}
+
 module.exports = {
-	SwagTaskProvider
+    SwagTaskProvider,
+    launchBackgroundTasks
 }

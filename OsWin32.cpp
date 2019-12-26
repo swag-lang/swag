@@ -547,7 +547,7 @@ namespace OS
             auto dwWaitStatus = WaitForMultipleObjects((DWORD) allHandles.size(), &allHandles[0], FALSE, INFINITE);
             int  numModule    = dwWaitStatus - WAIT_OBJECT_0;
 
-            g_Log.message(format("File change detected in '%s'", allModules[numModule].c_str()));
+            g_Log.message("File change detected");
             cb(allModules[numModule]);
 
             if (FindNextChangeNotification(allHandles[numModule]) == FALSE)
