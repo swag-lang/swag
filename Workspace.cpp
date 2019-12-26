@@ -187,9 +187,6 @@ void Workspace::setup()
         exit(-1);
     }
 
-    if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
-
     g_ThreadMgr.init();
 }
 
@@ -333,6 +330,9 @@ bool Workspace::build()
 
     setup();
 
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
+
     g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
     addBootstrap();
     setupTarget();
@@ -345,6 +345,21 @@ bool Workspace::build()
         g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
     else
         g_Log.messageHeaderCentered("Done", format("%.3fs", totalTime.count()));
+
+    return true;
+}
+
+bool Workspace::watch()
+{
+    setup();
+
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose(format("=> watching workspace '%s'", workspacePath.string().c_str()));
+
+    OS::watch([](const string& moduleName) {
+        uint32_t errors = 0;
+        OS::doProcess(format("swag.exe test -w:%s -o:false", g_Workspace.workspacePath.string().c_str()), g_Workspace.workspacePath.string(), false, errors);
+    });
 
     return true;
 }

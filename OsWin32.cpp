@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include "BuildParameters.h"
+#include "Workspace.h"
 
 namespace OS
 {
@@ -28,7 +29,7 @@ namespace OS
     void consoleSetup()
     {
         consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
-        _setmode(_fileno(stdout), _O_U16TEXT);
+        //_setmode(_fileno(stdout), _O_U8TEXT);
 
         CONSOLE_SCREEN_BUFFER_INFO info;
         GetConsoleScreenBufferInfo(consoleHandle, &info);
@@ -179,6 +180,8 @@ namespace OS
                         pz = strstr(oneLine.c_str(), ": fatal error");
                     if (!pz)
                         pz = strstr(oneLine.c_str(), ": warning");
+                    if (!pz)
+                        pz = strstr(oneLine.c_str(), "error:");
 
                     // Error
                     if (pz)
@@ -218,8 +221,8 @@ namespace OS
                     g_Log.lock();
                     g_Log.setColor(LogColor::Red);
                     numErrors++;
-                    wcout << cmdline.c_str();
-                    wcout << ": access violation during process execution\n";
+                    cout << cmdline.c_str();
+                    cout << ": access violation during process execution\n";
                     g_Log.setDefaultColor();
                     g_Log.unlock();
                     ok = false;
@@ -228,8 +231,8 @@ namespace OS
                     g_Log.lock();
                     g_Log.setColor(LogColor::Red);
                     numErrors++;
-                    wcout << cmdline.c_str();
-                    wcout << ": process execution failed\n";
+                    cout << cmdline.c_str();
+                    cout << ": process execution failed\n";
                     g_Log.setDefaultColor();
                     g_Log.unlock();
                     ok = false;
@@ -498,6 +501,63 @@ namespace OS
 
         CloseHandle(hFile);
         return res;
+    }
+
+    bool watch(function<void(const string&)> cb)
+    {
+        vector<HANDLE> allHandles;
+        vector<string> allModules;
+
+        // Tests modules
+        for (auto& p : fs::directory_iterator(g_Workspace.testsPath))
+        {
+            HANDLE dwChangeHandle;
+            dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
+            if (dwChangeHandle == INVALID_HANDLE_VALUE)
+            {
+                g_Log.error("fail to start watcher service !");
+                exit(-1);
+            }
+
+            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            allHandles.push_back(dwChangeHandle);
+            allModules.push_back(p.path().string());
+        }
+
+        // Workspace modules
+        for (auto& p : fs::directory_iterator(g_Workspace.modulesPath))
+        {
+            HANDLE dwChangeHandle;
+            dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
+            if (dwChangeHandle == INVALID_HANDLE_VALUE)
+            {
+                g_Log.error("fail to start watcher service !");
+                exit(-1);
+            }
+
+            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            allHandles.push_back(dwChangeHandle);
+            allModules.push_back(p.path().string());
+        }
+
+        // Start watching
+        while (TRUE)
+        {
+            g_Log.message(format("Watching for file changes"));
+            auto dwWaitStatus = WaitForMultipleObjects((DWORD) allHandles.size(), &allHandles[0], FALSE, INFINITE);
+            int  numModule    = dwWaitStatus - WAIT_OBJECT_0;
+
+            g_Log.message(format("File change detected in '%s'", allModules[numModule].c_str()));
+            cb(allModules[numModule]);
+
+            if (FindNextChangeNotification(allHandles[numModule]) == FALSE)
+            {
+                g_Log.error("fail to update watcher service !");
+                exit(-1);
+            }
+        }
+
+        return true;
     }
 
 }; // namespace OS

@@ -49,22 +49,22 @@ struct Log
 
     void print(const char* message)
     {
-        wcout << message;
+        cout << message;
     }
 
     void print(const wchar_t* message)
     {
-        wcout << message;
+        cout << message;
     }
 
     void print(const Utf8& message)
     {
-        wcout << utf8ToUnicode(message);
+        cout << message;
     }
 
     void eol()
     {
-        wcout << L'\n';
+        cout << '\n';
     }
 
     mutex mutexAccess;

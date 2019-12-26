@@ -21,6 +21,8 @@ struct Workspace
     void    deleteFolderContent(const fs::path& path);
     void    setupTarget();
 
+    bool watch();
+
     CompilerTarget       target;
     fs::path             workspacePath;
     fs::path             targetPath;

@@ -28,6 +28,7 @@ namespace OS
     extern void          assertBox(const char* expr, const char* file, int line);
     extern bool          setSwagFolder(const string& folder);
     extern bool          touchFile(const fs::path& path);
+    extern bool          watch(function<void(const string&)> cb);
 
     enum class ResourceFile
     {

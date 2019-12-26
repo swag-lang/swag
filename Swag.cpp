@@ -44,6 +44,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("doc          generate documentation for the specified workspace\n");
     g_Log.message("new          creates a new workspace\n");
+    g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
 
     g_Log.message("\n");
     cmdParser.logArguments();
@@ -104,6 +105,10 @@ int main(int argc, const char* argv[])
     {
         g_CommandLine.test = true;
     }
+    else if (command == "watch")
+    {
+        g_CommandLine.watch = true;
+    }
     else if (command == "doc")
     {
         g_CommandLine.backendOutput = false;
@@ -146,7 +151,10 @@ int main(int argc, const char* argv[])
     g_Global.setup();
 
     // Let's go...
-    g_Workspace.build();
+    if(g_CommandLine.watch)
+        g_Workspace.watch();
+    else
+        g_Workspace.build();
 
     // Prints stats, then exit
     auto timeAfter    = chrono::high_resolution_clock::now();

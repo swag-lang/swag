@@ -36,7 +36,7 @@ struct CommandLine
     vector<pair<void*, void*>> userArgumentsStr;
     pair<void*, void*>         userArgumentsSlice;
 
-    // Verbose
+    // Display
     bool silent                = false;
     bool stats                 = false;
     bool verbose               = false;
@@ -45,6 +45,9 @@ struct CommandLine
     bool verboseBuildPass      = true;
     bool errorSourceOut        = true;
     bool errorNoteOut          = true;
+
+    // Watch
+    bool watch = false;
 
     // Documentation
     bool generateDoc = false;
