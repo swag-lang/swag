@@ -41,7 +41,7 @@ class SwagTaskProvider
 
 function launchBackgroundTasks()
 {
-	var cmdLine = "${env:SWAG_FOLDER}\\swag.exe watch -w:${workspaceFolder} -o:false";
+	var cmdLine = "${env:SWAG_FOLDER}\\swag.exe watch -w:${workspaceFolder} -ot:false -ro:false -rb:false";
 	var execution = new vscode.ShellExecution(cmdLine);
 	let task = new vscode.Task({type: "swag-build", cmdLine: cmdLine}, vscode.TaskScope.Workspace, "background", "swag", execution, '$swag-background');
 	task.runOptions.reevaluateOnRerun = true;
