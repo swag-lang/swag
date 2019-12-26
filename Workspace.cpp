@@ -4,7 +4,6 @@
 #include "Stats.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
-#include "CopyFileJob.h"
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
 #include "Os.h"
@@ -43,25 +42,6 @@ Module* Workspace::createOrUseModule(const string& moduleName)
         g_Stats.numModules++;
 
     return module;
-}
-
-void Workspace::publishModule(Module* module)
-{
-    if (module->path.empty())
-        return;
-
-    // Scan source folder
-    string publishPath = module->path + "/publish";
-    if (fs::exists(publishPath))
-    {
-        OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-            auto job        = g_Pool_copyFileJob.alloc();
-            job->module     = module;
-            job->sourcePath = publishPath + "/" + cFileName;
-            job->destPath   = targetPath.string() + "/" + cFileName;
-            g_ThreadMgr.addJob(job);
-        });
-    }
 }
 
 void Workspace::addBootstrap()

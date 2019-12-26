@@ -14,7 +14,6 @@ struct Workspace
     Module* createOrUseModule(const string& moduleName);
 
     void    addBootstrap();
-    void    publishModule(Module* module);
     void    setupPaths();
     void    setup();
     Module* getModuleByName(const string& moduleName);

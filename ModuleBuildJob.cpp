@@ -11,6 +11,7 @@
 #include "Stats.h"
 #include "Allocator.h"
 #include "Backend.h"
+#include "CopyFileJob.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -68,8 +69,12 @@ JobResult ModuleBuildJob::execute()
                 // Now the .swg export file should be in the cache
                 if (!depModule->backend->timeExportFile)
                 {
-                    node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
-                    continue;
+                    depModule->backend->setupExportFile();
+                    if (!depModule->backend->timeExportFile)
+                    {
+                        node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
+                        continue;
+                    }
                 }
 
                 // Then do syntax on it
@@ -139,9 +144,25 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
-        if (g_CommandLine.backendOutput)
-            g_Workspace.publishModule(module);
         pass = ModuleBuildPass::Semantic;
+        if (g_CommandLine.backendOutput && !module->path.empty())
+        {
+            string publishPath = module->path + "/publish";
+            if (fs::exists(publishPath))
+            {
+                OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+                    auto job          = g_Pool_copyFileJob.alloc();
+                    job->module       = module;
+                    job->sourcePath   = publishPath + "/" + cFileName;
+                    job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+                    job->dependentJob = this;
+                    jobsToAdd.push_back(job);
+                });
+            }
+
+            if (!jobsToAdd.empty())
+                return JobResult::KeepJobAlive;
+        }
     }
 
     //////////////////////////////////////////////////

@@ -418,16 +418,8 @@ void Backend::setMustCompile()
     mustCompile = !isUpToDate(module->moreRecentSourceFile);
 }
 
-bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
+void Backend::setupExportFile()
 {
-    if (module->numErrors)
-        return true;
-    if (module->hasUnittestError)
-        return false;
-    if (module->buildPass < BuildPass::Backend)
-        return false;
-
-    // Get export file name
     if (bufferSwg.path.empty())
     {
         exportFileGenerated = true;
@@ -440,16 +432,31 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
             exists              = fs::exists(targetPath);
         }
 
-        if (!exists)
-            return false;
-
-        bufferSwg.path = targetPath;
-        timeExportFile = OS::getFileWriteTime(targetPath);
+        if (exists)
+        {
+            bufferSwg.path = targetPath;
+            timeExportFile = OS::getFileWriteTime(targetPath);
+        }
     }
     else
     {
         SWAG_ASSERT(timeExportFile);
     }
+}
+
+bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
+{
+    if (module->numErrors)
+        return true;
+    if (module->hasUnittestError)
+        return false;
+    if (module->buildPass < BuildPass::Backend)
+        return false;
+
+    // Get export file name
+    setupExportFile();
+    if (bufferSwg.path.empty())
+        return false;
 
     if (g_CommandLine.rebuild)
         return false;
