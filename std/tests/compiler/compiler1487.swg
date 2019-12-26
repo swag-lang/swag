@@ -1,14 +1,18 @@
+var G = 0
+
 #[swag.macro]
 func(op: bool) toto()
 {
     #if op
-        @print("true\n")
+        G += 1
     #else
-        @print("false\n")
+        G += 2
 }
 
 #test
 {
+    G = 0
     toto!true()
     toto!false()
+    @assert(G == 3)
 }

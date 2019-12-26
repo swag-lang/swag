@@ -194,6 +194,21 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->alternativeScopes     = funcDecl->alternativeScopes;
     inlineNode->alternativeScopesVars = funcDecl->alternativeScopesVars;
 
+    // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
+    // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
+    // they are other stuff here)
+    if (funcDecl->genericParameters)
+    {
+        Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
+        inlineNode->alternativeScopes.push_back(scope);
+        for (auto child : funcDecl->genericParameters->childs)
+        {
+            auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);
+            symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload->computedValue);
+            symName->cptOverloads = 0; // Simulate a done resolution
+        }
+    }
+
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {

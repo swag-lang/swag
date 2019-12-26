@@ -48,7 +48,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 
     // Need to wait for the struct to be semantic resolved
     symbol->cptOverloads++;
-	symbol->cptOverloadsInit++;
+    symbol->cptOverloadsInit++;
     if (waitSymbol)
         job->waitForSymbolNoLock(symbol);
 
@@ -277,7 +277,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
         doTypeSubstitution(context, cloneContext, &param->typeInfo);
     }
 
-    // Replace generic types and values in the struct generic parameters
+    // Replace generic types and values in the function generic parameters
     updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
 
     end(context, funcNode, true);
