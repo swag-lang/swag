@@ -41,7 +41,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Code is only valid for a macro or mixin
         if (nodeParam->typeInfo->kind == TypeInfoKind::Code)
         {
-            SWAG_VERIFY(funcAttr->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'code' is only valid in a 'swag.macro' or 'swag.inline' function"}));
+            SWAG_VERIFY(funcAttr->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'code' is only valid in a 'swag.macro' or 'swag.mixin' function"}));
         }
 
         // Not everything is possible for types for attributes
