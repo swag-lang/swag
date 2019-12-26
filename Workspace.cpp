@@ -363,7 +363,7 @@ bool Workspace::watch()
 
     OS::watch([&](const string& moduleName) {
         uint32_t errors = 0;
-        OS::doProcess(format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
+        OS::doProcess(format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), g_CommandLine.verbose, errors);
     });
 
     return true;

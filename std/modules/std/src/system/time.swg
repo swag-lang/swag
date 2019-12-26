@@ -1,7 +1,7 @@
 namespace std.time
 {	
 	public
-	{ 		
+	{
 		func nowMilliseconds()->u32
 		{
 			ticks := nowTicks() * 1000
