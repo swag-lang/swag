@@ -1260,6 +1260,26 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     return castError(context, g_TypeMgr.typeInfoF64, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+{
+    // Pick the best order
+    if (castFlags & CASTFLAG_BIJECTIF)
+    {
+        if ((toType->flags & TYPEINFO_UNTYPED_INTEGER) && !(fromType->flags & TYPEINFO_UNTYPED_INTEGER))
+        {
+            swap(toType, fromType);
+            swap(toNode, fromNode);
+        }
+        else if ((toType->flags & TYPEINFO_UNTYPED_FLOAT) && !(fromType->flags & TYPEINFO_UNTYPED_FLOAT))
+        {
+            swap(toType, fromType);
+            swap(toNode, fromNode);
+        }
+    }
+
+    return castToNative(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     switch (toType->nativeType)
@@ -1947,7 +1967,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)
-        return castToNative(context, toType, fromType, fromNode, castFlags);
+        return castToNative(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Cast to array
     if (toType->kind == TypeInfoKind::Array)
