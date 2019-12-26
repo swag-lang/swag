@@ -190,10 +190,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto identifierRef         = Ast::clone(node->expression, node);
-        auto identifier            = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
-        identifier->aliasNames     = node->aliasNames;
-        identifier->token          = node->token;
+        auto identifierRef     = Ast::clone(node->expression, node);
+        auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
+        identifier->aliasNames = node->aliasNames;
+        identifier->token      = node->token;
+
+        // Generic parameters
+        identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);
+        identifier->genericParameters->flags |= AST_NO_BYTECODE;
+        auto child                 = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
+        child->typeInfo            = g_TypeMgr.typeInfoBool;
+        child->computedValue.reg.b = node->wantPointer;
+        child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
+
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
         newExpression              = identifierRef;
 

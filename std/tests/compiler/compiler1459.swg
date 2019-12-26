@@ -5,7 +5,7 @@ struct S
 impl S
 {
     #[swag.macro]
-    func opVisitBytes(using self, stmt: code)
+    func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         up:
         loop 5

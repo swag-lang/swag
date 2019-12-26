@@ -76,12 +76,20 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     SWAG_VERIFY(firstTypePtr->ptrCount == 1, context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
     SWAG_VERIFY(firstTypePtr->finalType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
 
+    bool isOpVisit = name.find("opVisit") == 0;
+
     // Generic operator must have one generic parameter of type string
     if (name == "opBinary" || name == "opUnary" || name == "opAssign" || name == "opIndexAssign")
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString, 0), context->report({firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
+    }
+    else if (isOpVisit)
+    {
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, 0), context->report({firstGen, format("invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
     }
     else if (name == "opCast")
     {
@@ -91,7 +99,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (name == "opCast")
     {
     }
-    else if (name.find("opVisit") == 0)
+    else if (isOpVisit)
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->report({returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));

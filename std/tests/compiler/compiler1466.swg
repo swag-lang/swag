@@ -7,7 +7,7 @@ struct S
 impl S
 {
     #[swag.mixin]
-    func opVisit(using self, stmt: code)
+    func(ptr: bool) opVisit(using self, stmt: code)
     {
         for v := down; v <= up; v += 1
         {

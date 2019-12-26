@@ -835,13 +835,15 @@ anotherTry:
             }
             case MatchResult::NotEnoughGenericParameters:
             {
-                Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                auto       errNode = genericParameters ? genericParameters : node ? node : context->node;
+                Diagnostic diag{errNode, errNode->token, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             case MatchResult::TooManyGenericParameters:
             {
-                Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                auto       errNode = genericParameters ? genericParameters : node ? node : context->node;
+                Diagnostic diag{errNode, errNode->token, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -1340,12 +1342,25 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
-        if (symbol->overloads.size() == 1)
+        if (symbol->overloads.size() > 0)
         {
-            auto overload = symbol->overloads[0];
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+            bool lastIsCode = false;
+            for (auto overload : symbol->overloads)
             {
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+                    lastIsCode = true;
+                else
+                {
+                    lastIsCode = false;
+                    break;
+                }
+            }
+
+            if (lastIsCode)
+            {
+                auto overload = symbol->overloads[0];
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                 if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                 {
                     if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)

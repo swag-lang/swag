@@ -7,7 +7,7 @@ struct S
 impl S
 {
     #[swag.macro]
-    func opVisit(using self, stmt: code)
+    func(ptr: bool) opVisit(using self, stmt: code)
     {
         x := down
         @assert(x == 10)
