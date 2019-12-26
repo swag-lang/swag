@@ -237,7 +237,10 @@ void Workspace::setupTarget()
     // Cache directory
     cachePath = g_CommandLine.cachePath;
     if (cachePath.empty())
+    {
         cachePath = targetPath;
+        cachePath.append("cache");
+    }
     else
     {
         if (!fs::exists(cachePath))
