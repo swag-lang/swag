@@ -82,7 +82,7 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 }
 
 //static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
-//static const uint32_t TYPEINFO_INTERFACE                = 0x00000002;
+static const uint32_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000002;
 static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
 static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
 static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;

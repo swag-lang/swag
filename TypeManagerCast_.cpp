@@ -322,7 +322,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr.typeInfoU8;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
                 if (!fromNode)
                 {
@@ -435,7 +435,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr.typeInfoU16;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
                 if (!fromNode)
                 {
@@ -548,7 +548,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr.typeInfoU32;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
                 if (!fromNode)
                 {
@@ -664,7 +664,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr.typeInfoU64;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
                 return true;
             }

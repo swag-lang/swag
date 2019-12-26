@@ -209,12 +209,26 @@ bool Tokenizer::doBinLiteral(Token& token)
         token.literalType = g_TypeMgr.typeInfoU32;
     else
         token.literalType = g_TypeMgr.typeInfoU64;
+
+    bool hasSuffix = false;
     if (c == '\'')
     {
+        hasSuffix = true;
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F32, error(token, "can't convert a binary literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F64, error(token, "can't convert a binary literal number to 'f64'"));
+    }
+
+    if (!hasSuffix)
+    {
+        if (token.literalType->isNative(NativeTypeKind::U32))
+        {
+            auto newType          = static_cast<TypeInfoNative*>(token.literalType->clone());
+            newType->valueInteger = token.literalValue.u32;
+            newType->flags |= TYPEINFO_UNTYPED_BINHEXA;
+            token.literalType = newType;
+        }
     }
 
     return true;
@@ -280,12 +294,26 @@ bool Tokenizer::doHexLiteral(Token& token)
         token.literalType = g_TypeMgr.typeInfoU32;
     else
         token.literalType = g_TypeMgr.typeInfoU64;
+
+    bool hasSuffix = false;
     if (c == '\'')
     {
+        hasSuffix = true;
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
+    }
+
+    if (!hasSuffix)
+    {
+        if (token.literalType->isNative(NativeTypeKind::U32))
+        {
+            auto newType          = static_cast<TypeInfoNative*>(token.literalType->clone());
+            newType->valueInteger = token.literalValue.u32;
+            newType->flags |= TYPEINFO_UNTYPED_BINHEXA;
+            token.literalType = newType;
+        }
     }
 
     return true;
@@ -480,7 +508,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         SWAG_CHECK(doNumberSuffix(token));
     }
 
-    // A type with flag TYPEINFO_UNTYPED_VALUE has no real type yet, and can be casted automaticly when used
+    // A type with flag TYPEINFO_UNTYPED_INTEGER of FLOAT has no real type yet, and can be casted automaticly when used
     if (!hasSuffix)
     {
         if (token.literalType->nativeType == NativeTypeKind::S32)
