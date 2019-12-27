@@ -145,7 +145,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
     ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
-    ownerFlags       = from->ownerFlags;
 
     // Replace a type by another one during generic instantiation
     if (from->typeInfo && context.replaceTypes.size() > 0)
