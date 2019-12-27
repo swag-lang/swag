@@ -1,7 +1,7 @@
 #pragma once
 #include "Assert.h"
 #include "Stats.h"
-#define ALLOCATOR_BUCKET_SIZE 4 * 1024
+#define ALLOCATOR_BUCKET_SIZE 64 * 1024
 
 struct AllocatorBucket
 {
@@ -18,6 +18,8 @@ struct Allocator
         static_assert(sizeof(T) < ALLOCATOR_BUCKET_SIZE);
         if (!lastBucket || lastBucket->maxUsed + sizeof(T) >= ALLOCATOR_BUCKET_SIZE)
         {
+            if (lastBucket)
+                g_Stats.wastedAllocatorMemory += lastBucket->allocated - lastBucket->maxUsed;
             lastBucket            = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
             lastBucket->maxUsed   = 0;
             lastBucket->allocated = ALLOCATOR_BUCKET_SIZE;
@@ -37,6 +39,8 @@ struct Allocator
     {
         if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
         {
+            if (lastBucket)
+                g_Stats.wastedAllocatorMemory += lastBucket->allocated - lastBucket->maxUsed;
             lastBucket            = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
             lastBucket->maxUsed   = 0;
             lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);

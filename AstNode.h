@@ -261,65 +261,62 @@ struct AstNode
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
     void             computeFullName();
 
-    AstNodeKind         kind                 = AstNodeKind::Invalid;
-    Scope*              ownerScope           = nullptr;
-    AstBreakable*       ownerBreakable       = nullptr;
-    AstInline*          ownerInline          = nullptr;
-    AstFuncDecl*        ownerFct             = nullptr;
-    uint64_t            ownerFlags           = 0;
-    Scope*              ownerStructScope     = nullptr;
-    AstNode*            ownerMainNode        = nullptr;
-    AstCompilerIfBlock* ownerCompilerIfBlock = nullptr;
+    SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 
     vector<Scope*>           alternativeScopes;
     vector<AlternativeScope> alternativeScopesVars;
+    VectorNative<AstNode*>   childs;
+    set<Scope*>              doneLeaveScopeDefer;
+    set<Scope*>              doneLeaveScopeDrop;
 
-    TypeInfo*       typeInfo                     = nullptr;
-    TypeInfo*       castedTypeInfo               = nullptr;
-    SymbolName*     resolvedSymbolName           = nullptr;
-    SymbolOverload* resolvedSymbolOverload       = nullptr;
-    SymbolName*     resolvedUserOpSymbolName     = nullptr;
-    SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
-    ByteCodeGenJob* byteCodeJob                  = nullptr;
-
-    TypeInfo* concreteTypeInfo        = nullptr;
-    uint32_t  concreteTypeInfoStorage = UINT32_MAX;
-
-    AstNode*    parent           = nullptr;
-    uint32_t    childParentIdx   = 0;
-    uint32_t    attributeFlags   = 0;
-    AstAttrUse* parentAttributes = 0;
-    Token       token;
-    Utf8        docSummary;
-    Utf8        docDescription;
-    Utf8        docContent;
-
-    SemanticFct         semanticFct       = nullptr;
-    SemanticFct         semanticBeforeFct = nullptr;
-    SemanticFct         semanticAfterFct  = nullptr;
-    ByteCodeFct         byteCodeFct       = nullptr;
-    ByteCodeNotifyFct   byteCodeBeforeFct = nullptr;
-    ByteCodeNotifyFct   byteCodeAfterFct  = nullptr;
-    AstNodeResolveState semanticState     = AstNodeResolveState::Enter;
-    AstNodeResolveState bytecodeState     = AstNodeResolveState::Enter;
-
-    VectorNative<AstNode*> childs;
-    set<Scope*>            doneLeaveScopeDefer;
-    set<Scope*>            doneLeaveScopeDrop;
-
+    Token         token;
+    Utf8          docSummary;
+    Utf8          docDescription;
+    Utf8          docContent;
+    Utf8Crc       name;
+    Utf8          fullnameDot;
     shared_mutex  mutex;
     ComputedValue computedValue;
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;
-    RegisterList  contiguousRegisterRC;
-    Utf8Crc       name;
-    Utf8          fullnameDot;
-    SourceFile*   sourceFile           = nullptr;
-    ByteCode*     bc                   = nullptr;
-    uint64_t      flags                = 0;
-    uint64_t      doneFlags            = 0;
-    uint32_t      fctCallStorageOffset = 0;
-    SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
+
+    Scope*              ownerScope                   = nullptr;
+    AstBreakable*       ownerBreakable               = nullptr;
+    AstInline*          ownerInline                  = nullptr;
+    AstFuncDecl*        ownerFct                     = nullptr;
+    Scope*              ownerStructScope             = nullptr;
+    AstNode*            ownerMainNode                = nullptr;
+    AstCompilerIfBlock* ownerCompilerIfBlock         = nullptr;
+    TypeInfo*           typeInfo                     = nullptr;
+    TypeInfo*           castedTypeInfo               = nullptr;
+    SymbolName*         resolvedSymbolName           = nullptr;
+    SymbolOverload*     resolvedSymbolOverload       = nullptr;
+    SymbolName*         resolvedUserOpSymbolName     = nullptr;
+    SymbolOverload*     resolvedUserOpSymbolOverload = nullptr;
+    ByteCodeGenJob*     byteCodeJob                  = nullptr;
+    TypeInfo*           concreteTypeInfo             = nullptr;
+    AstNode*            parent                       = nullptr;
+    AstAttrUse*         parentAttributes             = nullptr;
+    SemanticFct         semanticFct                  = nullptr;
+    SemanticFct         semanticBeforeFct            = nullptr;
+    SemanticFct         semanticAfterFct             = nullptr;
+    ByteCodeFct         byteCodeFct                  = nullptr;
+    ByteCodeNotifyFct   byteCodeBeforeFct            = nullptr;
+    ByteCodeNotifyFct   byteCodeAfterFct             = nullptr;
+    SourceFile*         sourceFile                   = nullptr;
+    ByteCode*           bc                           = nullptr;
+
+    uint64_t ownerFlags           = 0;
+    uint64_t flags                = 0;
+    uint64_t doneFlags            = 0;
+    uint32_t fctCallStorageOffset = 0;
+
+    AstNodeKind         kind                    = AstNodeKind::Invalid;
+    uint32_t            concreteTypeInfoStorage = UINT32_MAX;
+    uint32_t            childParentIdx          = 0;
+    uint32_t            attributeFlags          = 0;
+    AstNodeResolveState semanticState           = AstNodeResolveState::Enter;
+    AstNodeResolveState bytecodeState           = AstNodeResolveState::Enter;
 };
 
 struct AstVarDecl : public AstNode
