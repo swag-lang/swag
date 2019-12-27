@@ -105,9 +105,10 @@ struct Diagnostic
     SourceLocation  endLocation;
     Utf8            textMsg;
     DiagnosticLevel errorLevel;
-    bool            hasFile          = false;
-    bool            hasLocation      = false;
-    bool            hasRangeLocation = false;
-    bool            printSource      = false;
-    bool            showRange        = true;
+    bool            hasFile             = false;
+    bool            hasLocation         = false;
+    bool            hasRangeLocation    = false;
+    bool            printSource         = false;
+    bool            showRange           = true;
+    bool            showDiagnosticInfos = false;
 };

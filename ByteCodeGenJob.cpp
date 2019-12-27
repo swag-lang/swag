@@ -266,9 +266,10 @@ JobResult ByteCodeGenJob::execute()
     }
 
 #ifdef SWAG_HAS_ASSERT
-    g_diagnosticInfos.pass       = "ByteCodeGenJob";
-    g_diagnosticInfos.sourceFile = sourceFile;
-    g_diagnosticInfos.node       = originalNode;
+    PushDiagnosticInfos di;
+    g_diagnosticInfos.last().message    = "ByteCodeGenJob";
+    g_diagnosticInfos.last().sourceFile = sourceFile;
+    g_diagnosticInfos.last().node       = originalNode;
 #endif
 
     baseContext        = &context;
@@ -297,7 +298,12 @@ JobResult ByteCodeGenJob::execute()
 
         while (!nodes.empty())
         {
-            auto node      = nodes.back();
+            auto node = nodes.back();
+
+#ifdef SWAG_HAS_ASSERT
+            g_diagnosticInfos.last().node = node;
+#endif
+
             context.node   = node;
             context.result = ContextResult::Done;
 

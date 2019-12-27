@@ -1,24 +1,62 @@
 #pragma once
 struct SourceFile;
 struct AstNode;
+struct Utf8;
 
 #ifdef SWAG_HAS_ASSERT
-struct DiagnosticInfos
+struct DiagnosticInfosStep
 {
-    string      pass;
+    string      message;
     SourceFile* sourceFile = nullptr;
     AstNode*    node       = nullptr;
+};
+
+struct DiagnosticInfos
+{
+    void push()
+    {
+        DiagnosticInfosStep step;
+        steps.push_back(step);
+    }
+
+    void pop()
+    {
+        if (!steps.empty())
+            steps.pop_back();
+    }
+
+    DiagnosticInfosStep& last()
+    {
+        return steps.back();
+    }
 
     void clear()
     {
-        pass.clear();
-        sourceFile = nullptr;
-        node       = nullptr;
+        steps.clear();
     }
+
+    void reportError(const Utf8& msg);
+    void log();
+
+    vector<DiagnosticInfosStep> steps;
 };
 
 extern thread_local DiagnosticInfos g_diagnosticInfos;
-extern void                         swag_assert(const char* expr, const char* file, int line);
+
+struct PushDiagnosticInfos
+{
+    PushDiagnosticInfos()
+    {
+        g_diagnosticInfos.push();
+    }
+
+    ~PushDiagnosticInfos()
+    {
+        g_diagnosticInfos.pop();
+    }
+};
+
+extern void swag_assert(const char* expr, const char* file, int line);
 
 #define SWAG_ASSERT(__expr)                           \
     {                                                 \
@@ -29,5 +67,7 @@ extern void                         swag_assert(const char* expr, const char* fi
     }
 
 #else
-#define SWAG_ASSERT(__expr) {}
+#define SWAG_ASSERT(__expr) \
+    {                       \
+    }
 #endif

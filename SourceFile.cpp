@@ -291,6 +291,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             note->report();
     }
 
+    if (diag.showDiagnosticInfos)
+        g_diagnosticInfos.log();
     return false;
 }
 

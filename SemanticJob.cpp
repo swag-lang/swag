@@ -76,8 +76,9 @@ JobResult SemanticJob::execute()
     }
 
 #ifdef SWAG_HAS_ASSERT
-    g_diagnosticInfos.pass       = "SemanticJob";
-    g_diagnosticInfos.sourceFile = sourceFile;
+    PushDiagnosticInfos di;
+    g_diagnosticInfos.last().message    = "SemanticJob";
+    g_diagnosticInfos.last().sourceFile = sourceFile;
 #endif
 
     auto firstNode     = nodes.front();
@@ -91,7 +92,7 @@ JobResult SemanticJob::execute()
         auto node    = nodes.back();
         context.node = node;
 #ifdef SWAG_HAS_ASSERT
-        g_diagnosticInfos.node = node;
+        g_diagnosticInfos.last().node = node;
 #endif
 
         switch (node->semanticState)

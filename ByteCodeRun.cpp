@@ -1753,8 +1753,11 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         if (context->hasError)
         {
             SWAG_ASSERT(ip->sourceFileIdx < context->sourceFile->module->files.size());
-            auto sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
-            return context->sourceFile->report({sourceFile, ip->startLocation, ip->endLocation, "error during bytecode execution, " + context->errorMsg});
+            auto       sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
+            Diagnostic diag{sourceFile, ip->startLocation, ip->endLocation, "error during bytecode execution, " + context->errorMsg};
+            diag.showDiagnosticInfos = true;
+            context->sourceFile->report(diag);
+            return false;
         }
     }
 
@@ -1786,18 +1789,14 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
     {
         if (exception)
         {
-            auto ip = runContext->ip - 1;
-            runContext->bc->sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)});
+            auto       ip = runContext->ip - 1;
+            Diagnostic diag{runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)};
+            diag.showDiagnosticInfos = true;
+            runContext->bc->sourceFile->report(diag);
         }
 
         return false;
     }
 
     return true;
-}
-
-bool ByteCodeRun::internalError(ByteCodeRunContext* context)
-{
-    context->sourceFile->report({context->node, context->node->token, "internal compiler error during bytecode execution"});
-    return false;
 }

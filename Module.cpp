@@ -90,6 +90,12 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
     auto runContext = &g_Workspace.runContext;
 
+#ifdef SWAG_ASSERT
+    PushDiagnosticInfos di;
+    g_diagnosticInfos.last().sourceFile = sourceFile;
+    g_diagnosticInfos.last().node       = node;
+#endif
+
     // Global setup
     {
         scoped_lock lkRR(mutexRegisterRR);
@@ -97,7 +103,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         node->bc->enterByteCode(runContext);
     }
 
-    if (!g_Run.run(&g_Workspace.runContext))
+    bool result = g_Run.run(&g_Workspace.runContext);
+    node->bc->leaveByteCode();
+    if (!result)
         return false;
 
     if (node->resultRegisterRC.size())

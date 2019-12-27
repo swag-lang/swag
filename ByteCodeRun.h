@@ -6,8 +6,6 @@ struct TypeInfo;
 
 struct ByteCodeRun
 {
-    bool internalError(ByteCodeRunContext* context);
-
     void*     ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     ffi_type* ffiFromTypeInfo(TypeInfo* typeInfo);
     void      ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
@@ -15,7 +13,7 @@ struct ByteCodeRun
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext, bool& exception, int& exceptionCode);
-	bool run(ByteCodeRunContext* runContext);
+    bool run(ByteCodeRunContext* runContext);
 
     vector<ffi_type*>  ffiArgs;
     vector<void*>      ffiArgsValues;

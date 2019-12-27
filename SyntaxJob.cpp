@@ -127,9 +127,9 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
     currentFct             = parent->ownerFct;
 
 #ifdef SWAG_HAS_ASSERT
-    auto saveInfo                = g_diagnosticInfos;
-    g_diagnosticInfos.pass       = "SyntaxJob (constructed)";
-    g_diagnosticInfos.sourceFile = &tmpFile;
+    PushDiagnosticInfos di;
+    g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
+    g_diagnosticInfos.last().sourceFile = &tmpFile;
 #endif
 
     tokenizer.setFile(sourceFile);
@@ -143,18 +143,15 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
         SWAG_CHECK(doEmbeddedInstruction(parent));
     }
 
-#ifdef SWAG_HAS_ASSERT
-    g_diagnosticInfos = saveInfo;
-#endif
-
     return true;
 }
 
 JobResult SyntaxJob::execute()
 {
 #ifdef SWAG_HAS_ASSERT
-    g_diagnosticInfos.pass       = "SyntaxJob";
-    g_diagnosticInfos.sourceFile = sourceFile;
+    PushDiagnosticInfos di;
+    g_diagnosticInfos.last().message    = "SyntaxJob";
+    g_diagnosticInfos.last().sourceFile = sourceFile;
 #endif
 
     baseContext        = &context;

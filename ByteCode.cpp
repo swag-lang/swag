@@ -33,6 +33,13 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
+#ifdef SWAG_ASSERT
+    g_diagnosticInfos.push();
+    g_diagnosticInfos.last().message    = context->bc->name;
+    g_diagnosticInfos.last().sourceFile = context->sourceFile;
+    g_diagnosticInfos.last().node       = context->bc->node;
+#endif
+
     if (curRC == (int) context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse)
     {
         context->hasError = true;
@@ -50,6 +57,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 
 void ByteCode::leaveByteCode()
 {
+#ifdef SWAG_ASSERT
+    g_diagnosticInfos.pop();
+#endif
+
     curRC--;
 }
 
