@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "Workspace.h"
 #include "Stats.h"
+#include "DiagnosticInfos.h"
 
 const auto BUF_SIZE = 2048;
 

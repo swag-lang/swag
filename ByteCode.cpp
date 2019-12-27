@@ -3,6 +3,7 @@
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "SourceFile.h"
+#include "DiagnosticInfos.h"
 #include "ByteCodeRunContext.h"
 
 #undef BYTECODE_OP
@@ -34,10 +35,13 @@ TypeInfoFuncAttr* ByteCode::callType()
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
 #ifdef SWAG_ASSERT
-    g_diagnosticInfos.push();
-    g_diagnosticInfos.last().message    = context->bc->name;
-    g_diagnosticInfos.last().sourceFile = context->sourceFile;
-    g_diagnosticInfos.last().node       = context->bc->node;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.push();
+        g_diagnosticInfos.last().message    = context->bc->name;
+        g_diagnosticInfos.last().sourceFile = context->sourceFile;
+        g_diagnosticInfos.last().node       = context->bc->node;
+    }
 #endif
 
     if (curRC == (int) context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse)
@@ -58,7 +62,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 void ByteCode::leaveByteCode()
 {
 #ifdef SWAG_ASSERT
-    g_diagnosticInfos.pop();
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.pop();
+    }
 #endif
 
     curRC--;

@@ -368,6 +368,9 @@
     <ClCompile Include="Allocator .cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="DiagnosticInfos.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -610,6 +613,9 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Allocator.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagnosticInfos.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

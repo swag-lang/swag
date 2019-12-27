@@ -61,7 +61,7 @@ struct CommandLine
     bool        backendOutput      = true;
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;
-    bool        backendDebug       = false;
+    bool        debug       = false;
 
     fs::path exePath;
 };

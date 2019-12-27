@@ -10,6 +10,7 @@
 #include "Stats.h"
 #include "TypeManager.h"
 #include "Context.h"
+#include "DiagnosticInfos.h"
 
 thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -267,9 +268,12 @@ JobResult ByteCodeGenJob::execute()
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    g_diagnosticInfos.last().message    = "ByteCodeGenJob";
-    g_diagnosticInfos.last().sourceFile = sourceFile;
-    g_diagnosticInfos.last().node       = originalNode;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().message    = "ByteCodeGenJob";
+        g_diagnosticInfos.last().sourceFile = sourceFile;
+        g_diagnosticInfos.last().node       = originalNode;
+    }
 #endif
 
     baseContext        = &context;
@@ -301,7 +305,10 @@ JobResult ByteCodeGenJob::execute()
             auto node = nodes.back();
 
 #ifdef SWAG_HAS_ASSERT
-            g_diagnosticInfos.last().node = node;
+            if (g_CommandLine.debug)
+            {
+                g_diagnosticInfos.last().node = node;
+            }
 #endif
 
             context.node   = node;

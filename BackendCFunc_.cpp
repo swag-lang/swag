@@ -627,7 +627,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         // Print source code
         if (!bc->compilerGenerated)
         {
-            if (moduleToGen->buildParameters.target.backendC.writeSourceCode || g_CommandLine.backendDebug)
+            if (moduleToGen->buildParameters.target.backendC.writeSourceCode || g_CommandLine.debug)
             {
                 if (ip->startLocation.line != lastLine)
                 {
@@ -649,7 +649,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         concat.addStringFormat("lbl%08u:; ", i);
 
         // Write the bytecode instruction name
-        if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.backendDebug)
+        if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.debug)
         {
             CONCAT_FIXED_STR(concat, "/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)

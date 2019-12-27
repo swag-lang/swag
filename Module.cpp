@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
+#include "DiagnosticInfos.h"
 #include "TypeManager.h"
 #include "BackendC.h"
 
@@ -92,8 +93,11 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
 #ifdef SWAG_ASSERT
     PushDiagnosticInfos di;
-    g_diagnosticInfos.last().sourceFile = sourceFile;
-    g_diagnosticInfos.last().node       = node;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().sourceFile = sourceFile;
+        g_diagnosticInfos.last().node       = node;
+    }
 #endif
 
     // Global setup

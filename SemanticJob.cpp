@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "SourceFile.h"
+#include "DiagnosticInfos.h"
 
 thread_local Pool<SemanticJob> g_Pool_semanticJob;
 
@@ -77,8 +78,11 @@ JobResult SemanticJob::execute()
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    g_diagnosticInfos.last().message    = "SemanticJob";
-    g_diagnosticInfos.last().sourceFile = sourceFile;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().message    = "SemanticJob";
+        g_diagnosticInfos.last().sourceFile = sourceFile;
+    }
 #endif
 
     auto firstNode     = nodes.front();
@@ -91,8 +95,12 @@ JobResult SemanticJob::execute()
     {
         auto node    = nodes.back();
         context.node = node;
+
 #ifdef SWAG_HAS_ASSERT
-        g_diagnosticInfos.last().node = node;
+        if (g_CommandLine.debug)
+        {
+            g_diagnosticInfos.last().node = node;
+        }
 #endif
 
         switch (node->semanticState)

@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "AstNode.h"
 #include "Diagnostic.h"
+#include "DiagnosticInfos.h"
 
 JobThread::JobThread()
 {

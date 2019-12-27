@@ -121,7 +121,7 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    bool   debugMode   = buildParameters->target.backendDebugInformations || g_CommandLine.backendDebug;
+    bool   debugMode   = buildParameters->target.backendDebugInformations || g_CommandLine.debug;
     if (debugMode)
     {
         fs::path pdbPath = destFile + buildParameters->postFix + ".pdb";

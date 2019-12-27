@@ -128,6 +128,7 @@
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="DiagnosticInfos.h" />
     <ClInclude Include="DocHtmlHelper.h" />
     <ClInclude Include="DocNodeJob.h" />
     <ClInclude Include="DocScopeJob.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Concat.cpp">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="DiagnosticInfos.cpp" />
     <ClCompile Include="DocHtmlHelper.cpp" />
     <ClCompile Include="DocNodeJob.cpp" />
     <ClCompile Include="DocScopeJob.cpp" />

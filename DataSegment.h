@@ -4,6 +4,7 @@
 #include "BuildParameters.h"
 #include "TypeTable.h"
 #include "RaceCondition.h"
+struct SourceFile;
 
 struct DataSegmentHeader
 {

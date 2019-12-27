@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
+#include "DiagnosticInfos.h"
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
@@ -128,8 +129,11 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
-    g_diagnosticInfos.last().sourceFile = &tmpFile;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
+        g_diagnosticInfos.last().sourceFile = &tmpFile;
+    }
 #endif
 
     tokenizer.setFile(sourceFile);
@@ -150,8 +154,11 @@ JobResult SyntaxJob::execute()
 {
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    g_diagnosticInfos.last().message    = "SyntaxJob";
-    g_diagnosticInfos.last().sourceFile = sourceFile;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().message    = "SyntaxJob";
+        g_diagnosticInfos.last().sourceFile = sourceFile;
+    }
 #endif
 
     baseContext        = &context;
