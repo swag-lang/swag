@@ -218,8 +218,9 @@ void Workspace::setupTarget()
     cachePath = g_CommandLine.cachePath;
     if (cachePath.empty())
     {
-        cachePath = targetPath;
-        cachePath.append("cache");
+        cachePath = OS::getTemporaryFolder();
+        if (cachePath.empty())
+            cachePath = targetPath;
     }
     else
     {
@@ -228,19 +229,25 @@ void Workspace::setupTarget()
             g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
             exit(-1);
         }
+    }
 
-        cachePath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
+    cachePath.append("swag_cache");
+    if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
+        exit(-1);
+    }
+
+    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.config + "-" + g_CommandLine.arch);
+    if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
+        exit(-1);
     }
 
     if (g_CommandLine.verboseBuildPass)
     {
         g_Log.verbose(format("=> cache directory is '%s'", cachePath.string().c_str()));
-    }
-
-    if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
-    {
-        g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
-        exit(-1);
     }
 
     // Clean target

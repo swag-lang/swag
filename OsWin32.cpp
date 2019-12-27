@@ -560,6 +560,14 @@ namespace OS
         return true;
     }
 
+    string getTemporaryFolder()
+    {
+        char buffer[_MAX_PATH];
+        if (GetTempPathA(_MAX_PATH, buffer))
+            return buffer;
+        return "";
+    }
+
 }; // namespace OS
 
 #endif

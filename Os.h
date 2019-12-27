@@ -29,6 +29,7 @@ namespace OS
     extern bool          setSwagFolder(const string& folder);
     extern bool          touchFile(const fs::path& path);
     extern bool          watch(function<void(const string&)> cb);
+    extern string        getTemporaryFolder();
 
     enum class ResourceFile
     {
