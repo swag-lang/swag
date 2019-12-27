@@ -1431,10 +1431,14 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpZero32:
-            concat.addStringFormat("if(!r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
+            CONCAT_STR_INT_STR(concat, "if(!r[", ip->a.u32, "].u32) goto lbl");
+            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addChar(';');
             break;
         case ByteCodeOp::JumpNotZero32:
-            concat.addStringFormat("if(r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
+            CONCAT_STR_INT_STR(concat, "if(r[", ip->a.u32, "].u32) goto lbl");
+            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addChar(';');
             break;
         case ByteCodeOp::Ret:
             CONCAT_FIXED_STR(concat, "return;");
