@@ -1,11 +1,8 @@
 #include "pch.h"
-#include "Global.h"
 #include "AstNode.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
-#include "SymTable.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
 {
@@ -38,24 +35,36 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitUnaryOpTilde, type not native");
+        return internalError(context, "emitUnaryOpInvert, type not native");
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+        emitInstruction(context, ByteCodeOp::InvertS8, r0);
+        return true;
+    case NativeTypeKind::S16:
+        emitInstruction(context, ByteCodeOp::InvertS16, r0);
+        return true;
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::InvertS32, r0);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::InvertS32, r0);
+        emitInstruction(context, ByteCodeOp::InvertS64, r0);
+        return true;
+    case NativeTypeKind::U8:
+        emitInstruction(context, ByteCodeOp::InvertU8, r0);
+        return true;
+    case NativeTypeKind::U16:
+        emitInstruction(context, ByteCodeOp::InvertU16, r0);
         return true;
     case NativeTypeKind::U32:
         emitInstruction(context, ByteCodeOp::InvertU32, r0);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::InvertU32, r0);
+        emitInstruction(context, ByteCodeOp::InvertU64, r0);
         return true;
     default:
-        return internalError(context, "emitUnaryOpTilde, type not supported");
+        return internalError(context, "emitUnaryOpInvert, type not supported");
     }
 }
 

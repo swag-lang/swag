@@ -88,10 +88,11 @@ namespace std
                 assert(index < numBits)
                 val := index >> 3
                 bit := index - (val << 3)
+                let shift: u8 = cast(u8) (1 << bit)
                 if value
-                    buffer[val] |= cast(u8) (1 << bit)
+                    buffer[val] |= shift
                 else
-                    buffer[val] ^= cast(u8) (1 << bit)
+                    buffer[val] ^= shift
             }
 
             /// Gets the value of the bit at a specific position in the BitArray
@@ -100,8 +101,22 @@ namespace std
                 assert(index < numBits)
                 val := index >> 3
                 bit := index - (val << 3)
-                return cast(bool) (buffer[val] & cast(u8) (1 << bit))
-            }            
+                let shift: u8 = cast(u8) (1 << bit)
+                return cast(bool) (buffer[val] & shift)
+            }
+
+            /// Inverts the value of the bit at a specific position in the BitArray
+            func invert(using self, index: u32)
+            {
+                assert(index < numBits)
+                val := index >> 3
+                bit := index - (val << 3)
+                let shift: u8 = cast(u8) (1 << bit)
+                if buffer[val] & shift
+                    buffer[val] &= ~shift
+                else
+                    buffer[val] |= shift
+            }               
         }
     }
 }
