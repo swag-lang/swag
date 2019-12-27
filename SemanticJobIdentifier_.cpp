@@ -1615,27 +1615,17 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
                 {
                     if (child->name.empty() || child == sourceFile->scopePrivate)
                     {
-                        if (scopes.find(child) == scopes.end())
-                        {
-                            scopes.insert(child);
-                            here.push_back(child);
-                        }
+                        scopes.insert(child);
+                        here.push_back(child);
                     }
                 }
             }
             else
             {
-                if (scopes.find(sourceFile->scopePrivate) == scopes.end())
-                {
-                    scopes.insert(sourceFile->scopePrivate);
-                    here.push_back(sourceFile->scopePrivate);
-                }
-
-                if (scopes.find(sourceFile->scopeRoot) == scopes.end())
-                {
-                    scopes.insert(sourceFile->scopeRoot);
-                    here.push_back(sourceFile->scopeRoot);
-                }
+                scopes.insert(sourceFile->scopePrivate);
+                here.push_back(sourceFile->scopePrivate);
+                scopes.insert(sourceFile->scopeRoot);
+                here.push_back(sourceFile->scopeRoot);
             }
         }
     }
