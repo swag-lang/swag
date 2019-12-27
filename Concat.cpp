@@ -177,12 +177,12 @@ void Concat::addEol()
 void Concat::addIndent(int num)
 {
     while (num--)
-        addString("\t");
+        addChar('\t');
 }
 
 void Concat::addEolIndent(int num)
 {
-    addString("\n");
+    addEol();
     addIndent(num);
 }
 
@@ -203,4 +203,25 @@ void Concat::addU32Str(uint32_t value)
         addChar((char) (value + '0'));
     else
         addString(to_string(value));
+}
+
+void Concat::addS32Str8(int value)
+{
+    checkCount(8);
+
+    currentSP += 8;
+    auto pz = currentSP;
+
+    for (int i = 0; i < 8; i++)
+    {
+        pz--;
+        if (!value)
+            *pz = '0';
+        else
+        {
+            auto id = value - (10 * (value / 10));
+            value /= 10;
+            *pz = (char) ('0' + id);
+        }
+    }
 }

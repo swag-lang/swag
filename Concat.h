@@ -30,6 +30,7 @@ struct Concat
     void addEol();
     void addStringFormat(const char* format, ...);
     void addU32Str(uint32_t value);
+    void addS32Str8(int value);
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;

@@ -677,7 +677,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         }
 
         CONCAT_FIXED_STR(concat, "lbl");
-        concat.addStringFormat("%08u", i);
+        concat.addS32Str8(i);
         CONCAT_FIXED_STR(concat, ":; ");
 
         // Write the bytecode instruction name
@@ -1417,27 +1417,27 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::Jump:
             CONCAT_FIXED_STR(concat, "goto lbl");
-            concat.addStringFormat("%08u", ip->a.s32 + i + 1);
+            concat.addS32Str8(ip->a.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpNotTrue:
             CONCAT_STR_INT_STR(concat, "if(!r[", ip->a.u32, "].b) goto lbl");
-            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpTrue:
             CONCAT_STR_INT_STR(concat, "if(r[", ip->a.u32, "].b) goto lbl");
-            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpZero32:
             CONCAT_STR_INT_STR(concat, "if(!r[", ip->a.u32, "].u32) goto lbl");
-            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpNotZero32:
             CONCAT_STR_INT_STR(concat, "if(r[", ip->a.u32, "].u32) goto lbl");
-            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::Ret:
