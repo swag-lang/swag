@@ -1162,28 +1162,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpAndEqS8:
-            concat.addStringFormat("*(swag_int8_t*)(r[%u].pointer) &= r[%u].s8;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpAndEqS16:
-            concat.addStringFormat("*(swag_int16_t*)(r[%u].pointer) &= r[%u].s16;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpAndEqS32:
-            concat.addStringFormat("*(swag_int32_t*)(r[%u].pointer) &= r[%u].s32;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpAndEqS64:
-            concat.addStringFormat("*(swag_int64_t*)(r[%u].pointer) &= r[%u].s64;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpAndEqU8:
-            concat.addStringFormat("*(swag_uint8_t*)(r[%u].pointer) &= r[%u].u8;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpAndEqU16:
-            concat.addStringFormat("*(swag_uint16_t*)(r[%u].pointer) &= r[%u].u16;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpAndEqU32:
-            concat.addStringFormat("*(swag_uint32_t*)(r[%u].pointer) &= r[%u].u32;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpAndEqU64:
-            concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer) &= r[%u].u64;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u64;");
             break;
 
         case ByteCodeOp::AffectOpOrEqS8:
@@ -1597,22 +1597,22 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::CopyRRxRCx:
-            concat.addStringFormat("*rr%u = r[%u];", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "*rr", ip->a.u32, " = r[", ip->b.u32, "];");
             break;
         case ByteCodeOp::CopyRCxRRx:
-            concat.addStringFormat("r[%u] = *rr%u;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
             break;
         case ByteCodeOp::CopyRRxRCxCall:
-            concat.addStringFormat("rt[%u] = r[%u];", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
             break;
         case ByteCodeOp::CopyRCxRRxCall:
-            concat.addStringFormat("r[%u] = rt[%u];", ip->a.u32, ip->b.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
             break;
         case ByteCodeOp::RAFromStackParam64:
-            concat.addStringFormat("r[%u] = *rp%u;", ip->a.u32, ip->c.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
             break;
         case ByteCodeOp::RARefFromStackParam:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32);
+            CONCAT_STR_INT_STR_INT_STR(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
             break;
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:

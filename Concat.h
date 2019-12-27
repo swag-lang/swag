@@ -51,3 +51,12 @@ struct Concat
         __concat.addU32Str(__int);                             \
         CONCAT_FIXED_STR(__concat, __after);                   \
     }
+
+#define CONCAT_STR_INT_STR_INT_STR(__concat, __before, __int1, __middle, __int2, __after) \
+    {                                                                                     \
+        CONCAT_FIXED_STR(__concat, __before);                                             \
+        __concat.addU32Str(__int1);                                                       \
+        CONCAT_FIXED_STR(__concat, __middle);                                             \
+        __concat.addU32Str(__int2);                                                       \
+        CONCAT_FIXED_STR(__concat, __after);                                              \
+    }
