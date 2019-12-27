@@ -1,7 +1,7 @@
 #pragma once
 #include "Assert.h"
 #include "Stats.h"
-#define ALLOCATOR_BUCKET_SIZE 64 * 1024
+#define ALLOCATOR_BUCKET_SIZE 1024 * 1024
 
 struct AllocatorBucket
 {

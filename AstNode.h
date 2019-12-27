@@ -492,7 +492,7 @@ struct AstSwitchCase : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    vector<AstNode*> expressions;
+    VectorNative<AstNode*> expressions;
     AstNode*         block       = nullptr;
     AstSwitch*       ownerSwitch = nullptr;
     bool             isDefault   = false;
@@ -532,7 +532,7 @@ struct AstPointerDeRef : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    vector<AstNode*> structFlatParams;
+    VectorNative<AstNode*> structFlatParams;
     AstNode*         array  = nullptr;
     AstNode*         access = nullptr;
 };

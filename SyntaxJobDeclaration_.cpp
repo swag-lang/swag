@@ -353,7 +353,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
 void SyntaxJob::moveAttributes(AstNode* from, AstNode* to)
 {
-    vector<AstNode*> attrs;
+    VectorNative<AstNode*> attrs;
     for (int i = (int) from->childs.size() - 1; i >= 0; i--)
     {
         if (from->childs[i]->kind != AstNodeKind::AttrUse)

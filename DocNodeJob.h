@@ -20,7 +20,7 @@ struct DocNodeJob : public Job
 
     Utf8 referencableType(TypeInfo* typeInfo);
 
-    vector<AstNode*> nodes;
+    VectorNative<AstNode*> nodes;
 };
 
 extern thread_local Pool<DocNodeJob> g_Pool_docNodeJob;

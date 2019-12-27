@@ -67,6 +67,19 @@ struct VectorNative
         count++;
     }
 
+    void pop_back()
+    {
+        SWAG_ASSERT(count);
+        count--;
+    }
+
+    void set_size_clear(int num)
+    {
+        reserve(num);
+        memset(buffer, 0, num * sizeof(T));
+        count = num;
+    }
+
     T* begin()
     {
         return buffer;

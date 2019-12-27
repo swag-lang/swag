@@ -48,7 +48,7 @@ bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds)
+void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds)
 {
     for (auto child : node->childs)
     {

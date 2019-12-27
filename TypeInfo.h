@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
+#include "Vector.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
@@ -187,8 +188,9 @@ struct TypeInfo
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    Utf8           name;
-    Utf8           fullname;
+    Utf8 name;
+    Utf8 fullname;
+
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
     uint32_t       flags      = 0;
@@ -252,10 +254,12 @@ struct TypeInfoParam : public TypeInfo
     Utf8             namedParam;
     ComputedValue    value;
     SymbolAttributes attributes;
-    TypeInfo*        typeInfo = nullptr;
-    AstNode*         node     = nullptr;
-    int              index    = 0;
-    int              offset   = 0;
+
+    TypeInfo* typeInfo = nullptr;
+    AstNode*  node     = nullptr;
+
+    int index  = 0;
+    int offset = 0;
 };
 
 struct TypeInfoEnum : public TypeInfo
@@ -270,8 +274,9 @@ struct TypeInfoEnum : public TypeInfo
 
     vector<TypeInfoParam*> values;
     SymbolAttributes       attributes;
-    Scope*                 scope   = nullptr;
-    TypeInfo*              rawType = nullptr;
+
+    Scope*    scope   = nullptr;
+    TypeInfo* rawType = nullptr;
 };
 
 enum MatchResult
@@ -327,30 +332,31 @@ struct SymbolMatchContext
         maxGenericParam    = 0;
     }
 
-    int      cptResolved;
-    uint32_t maxGenericParam;
-    bool     hasNamedParameters;
-
-    uint32_t               flags;
-    int                    badSignatureParameterIdx;
-    TypeInfo*              badSignatureRequestedType;
-    TypeInfo*              badSignatureGivenType;
-    MatchResult            result;
-    vector<AstNode*>       genericParameters;
-    vector<AstNode*>       parameters;
-    vector<TypeInfoParam*> solvedParameters;
-    vector<bool>           doneParameters;
-    vector<ComputedValue>  genericParametersCallValues;
-    vector<TypeInfo*>      genericParametersCallTypes;
-    vector<TypeInfo*>      genericParametersGenTypes;
-
     struct MapGenType
     {
         TypeInfo*        toType;
         vector<uint32_t> parameterIndex;
     };
 
+    VectorNative<AstNode*>     genericParameters;
+    VectorNative<AstNode*>     parameters;
+    vector<TypeInfoParam*>     solvedParameters;
+    vector<bool>               doneParameters;
+    vector<ComputedValue>      genericParametersCallValues;
+    vector<TypeInfo*>          genericParametersCallTypes;
+    vector<TypeInfo*>          genericParametersGenTypes;
     map<TypeInfo*, MapGenType> mapGenericTypes;
+    MatchResult                result;
+
+    TypeInfo* badSignatureRequestedType;
+    TypeInfo* badSignatureGivenType;
+
+    uint32_t maxGenericParam;
+    uint32_t flags;
+    int      cptResolved;
+    int      badSignatureParameterIdx;
+
+    bool hasNamedParameters;
 };
 
 static const uint32_t TYPEINFO_ATTRIBUTE_FUNC      = 0x00000001;
@@ -390,10 +396,12 @@ struct TypeInfoFuncAttr : public TypeInfo
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> parameters;
     SymbolAttributes       attributes;
-    TypeInfo*              returnType           = nullptr;
-    int                    firstDefaultValueIdx = -1;
-    int                    stackSize            = 0;
-    uint32_t               attributeFlags       = 0;
+
+    TypeInfo* returnType = nullptr;
+
+    int      firstDefaultValueIdx = -1;
+    int      stackSize            = 0;
+    uint32_t attributeFlags       = 0;
 };
 
 struct TypeInfoPointer : public TypeInfo
@@ -410,7 +418,8 @@ struct TypeInfoPointer : public TypeInfo
 
     TypeInfo* finalType   = nullptr;
     TypeInfo* pointedType = nullptr;
-    uint32_t  ptrCount    = 0;
+
+    uint32_t ptrCount = 0;
 };
 
 struct TypeInfoArray : public TypeInfo
@@ -431,8 +440,9 @@ struct TypeInfoArray : public TypeInfo
 
     TypeInfo* pointedType = nullptr;
     TypeInfo* finalType   = nullptr;
-    uint32_t  count       = 0;
-    uint32_t  totalCount  = 0;
+
+    uint32_t count      = 0;
+    uint32_t totalCount = 0;
 };
 
 struct TypeInfoSlice : public TypeInfo
@@ -474,8 +484,10 @@ struct TypeInfoList : public TypeInfo
 
     vector<TypeInfo*> childs;
     vector<Utf8>      names;
-    Scope*            scope    = nullptr;
-    TypeInfoListKind  listKind = TypeInfoListKind::Bracket;
+
+    Scope* scope = nullptr;
+
+    TypeInfoListKind listKind = TypeInfoListKind::Bracket;
 };
 
 struct TypeInfoVariadic : public TypeInfo
@@ -530,18 +542,20 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfoParam*> interfaces;
     shared_mutex           mutex;
     SymbolAttributes       attributes;
-    TypeInfoStruct*        itable                 = nullptr;
-    Scope*                 scope                  = nullptr;
-    AstNode*               structNode             = nullptr;
-    ByteCode*              opInit                 = nullptr;
-    AstFuncDecl*           opUserPostCopyFct      = nullptr;
-    ByteCode*              opPostCopy             = nullptr;
-    AstFuncDecl*           opUserPostMoveFct      = nullptr;
-    ByteCode*              opPostMove             = nullptr;
-    AstFuncDecl*           opUserDropFct          = nullptr;
-    ByteCode*              opDrop                 = nullptr;
-    uint32_t               cptRemainingInterfaces = 0;
-    uint32_t               maxPaddingSize         = 0;
+
+    TypeInfoStruct* itable            = nullptr;
+    Scope*          scope             = nullptr;
+    AstNode*        structNode        = nullptr;
+    ByteCode*       opInit            = nullptr;
+    AstFuncDecl*    opUserPostCopyFct = nullptr;
+    ByteCode*       opPostCopy        = nullptr;
+    AstFuncDecl*    opUserPostMoveFct = nullptr;
+    ByteCode*       opPostMove        = nullptr;
+    AstFuncDecl*    opUserDropFct     = nullptr;
+    ByteCode*       opDrop            = nullptr;
+
+    uint32_t cptRemainingInterfaces = 0;
+    uint32_t maxPaddingSize         = 0;
 };
 
 struct TypeInfoAlias : public TypeInfo

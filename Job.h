@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "DependentJobs.h"
+#include "Vector.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
@@ -18,11 +19,6 @@ enum class ContextResult
 
 struct JobContext
 {
-    AstNode*         node       = nullptr;
-    ContextResult    result     = ContextResult::Done;
-    SourceFile*      sourceFile = nullptr;
-    vector<AstNode*> expansionNode;
-
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
@@ -33,6 +29,13 @@ struct JobContext
         sourceFile = nullptr;
         expansionNode.clear();
     }
+
+    VectorNative<AstNode*> expansionNode;
+
+    AstNode*    node       = nullptr;
+    SourceFile* sourceFile = nullptr;
+
+    ContextResult result = ContextResult::Done;
 };
 
 enum class JobResult
@@ -57,20 +60,22 @@ struct Job : public PoolElem
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
 
-    shared_mutex     executeMutex;
-    DependentJobs    dependentJobs;
-    vector<AstNode*> dependentNodes;
-    vector<AstNode*> nodes;
-    vector<Job*>     jobsToAdd;
-    AstNode*         originalNode        = nullptr;
-    SymbolName*      waitingSymbolSolved = nullptr;
-    SourceFile*      sourceFile          = nullptr;
-    Module*          module              = nullptr;
-    Job*             dependentJob        = nullptr;
-    JobContext*      baseContext         = nullptr;
-    uint32_t         flags               = 0;
-    int32_t          waitingJobIndex     = -1;
-    uint32_t         waitOnJobs          = 0;
+    shared_mutex           executeMutex;
+    DependentJobs          dependentJobs;
+    VectorNative<AstNode*> dependentNodes;
+    VectorNative<AstNode*> nodes;
+    vector<Job*>           jobsToAdd;
+
+    AstNode*    originalNode        = nullptr;
+    SymbolName* waitingSymbolSolved = nullptr;
+    SourceFile* sourceFile          = nullptr;
+    Module*     module              = nullptr;
+    Job*        dependentJob        = nullptr;
+    JobContext* baseContext         = nullptr;
+
+    uint32_t flags           = 0;
+    int32_t  waitingJobIndex = -1;
+    uint32_t waitOnJobs      = 0;
 
     void reset() override
     {

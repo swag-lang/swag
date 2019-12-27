@@ -151,7 +151,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             while (child->kind == AstNodeKind::ArrayPointerIndex)
             {
                 auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
-                arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayChild->access);
+                arrayNode->structFlatParams.push_front(arrayChild->access);
                 child = arrayChild->array;
             }
         }
@@ -251,12 +251,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             while (child->kind == AstNodeKind::ArrayPointerIndex)
             {
                 auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
-                arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayChild->access);
+                arrayNode->structFlatParams.push_front(arrayChild->access);
                 child = arrayChild->array;
             }
 
             // Self in first position
-            arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayNode->array);
+            arrayNode->structFlatParams.push_front(arrayNode->array);
 
             // Resolve call
             SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams));

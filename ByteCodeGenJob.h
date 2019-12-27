@@ -37,7 +37,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* dependentJob, Job* job, AstNode* node, uint32_t flags);
-    static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
+    static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0);
@@ -170,7 +170,7 @@ struct ByteCodeGenJob : public Job
     static void     truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count);
 
     ByteCodeGenContext context;
-    vector<AstNode*>   collectChilds;
+    VectorNative<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;
     bool               syncToDependentNodes = false;
 };

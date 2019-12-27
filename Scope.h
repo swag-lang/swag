@@ -4,6 +4,7 @@
 #include "RegisterList.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
+#include "Vector.h"
 struct SyntaxJob;
 struct Scope;
 struct SourceFile;
@@ -65,33 +66,34 @@ struct Scope
         return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
-    SymTable         symTable;
-    Utf8Crc          name;
-    Utf8             fullname;
-    vector<Scope*>   childScopes;
-    shared_mutex     lockChilds;
-    vector<AstNode*> deferredNodes;
-    RegisterList     registersToRelease;
-    DependentJobs    dependentJobs;
-    AstNode*         owner          = nullptr;
-    Scope*           parentScope    = nullptr;
-    ScopeKind        kind           = ScopeKind::Invalid;
-    uint32_t         indexInParent  = UINT32_MAX;
-    uint32_t         flags          = 0;
-    uint32_t         startStackSize = 0;
+    SymTable               symTable;
+    Utf8Crc                name;
+    Utf8                   fullname;
+    vector<Scope*>         childScopes;
+    shared_mutex           lockChilds;
+    VectorNative<AstNode*> deferredNodes;
+    RegisterList           registersToRelease;
+    DependentJobs          dependentJobs;
+    mutex                  mutexPublicFunc;
+    mutex                  mutexPublicGenericFunc;
+    mutex                  mutexPublicStruct;
+    mutex                  mutexPublicEnum;
+    mutex                  mutexPublicConst;
+    mutex                  mutexPublicTypeAlias;
+    mutex                  mutexPublicNamespace;
+    set<AstNode*>          publicFunc;
+    set<AstNode*>          publicGenericFunc;
+    set<AstNode*>          publicStruct;
+    set<AstNode*>          publicEnum;
+    set<AstNode*>          publicConst;
+    set<AstNode*>          publicTypeAlias;
+    set<AstNode*>          publicNamespace;
 
-    mutex         mutexPublicFunc;
-    mutex         mutexPublicGenericFunc;
-    mutex         mutexPublicStruct;
-    mutex         mutexPublicEnum;
-    mutex         mutexPublicConst;
-    mutex         mutexPublicTypeAlias;
-    mutex         mutexPublicNamespace;
-    set<AstNode*> publicFunc;
-    set<AstNode*> publicGenericFunc;
-    set<AstNode*> publicStruct;
-    set<AstNode*> publicEnum;
-    set<AstNode*> publicConst;
-    set<AstNode*> publicTypeAlias;
-    set<AstNode*> publicNamespace;
+    AstNode* owner       = nullptr;
+    Scope*   parentScope = nullptr;
+
+    ScopeKind kind           = ScopeKind::Invalid;
+    uint32_t  indexInParent  = UINT32_MAX;
+    uint32_t  flags          = 0;
+    uint32_t  startStackSize = 0;
 };

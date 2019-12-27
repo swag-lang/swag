@@ -174,7 +174,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal)
 {
-    vector<AstNode*> params;
+    VectorNative<AstNode*> params;
     SWAG_ASSERT(left);
     params.push_back(left);
     if (right)
@@ -182,7 +182,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, vector<AstNode*>& params, bool optionnal)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal)
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);

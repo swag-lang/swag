@@ -59,7 +59,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
     // Store stack of instantiation contexts
     auto srcCxt  = context;
     auto destCxt = &newJob->context;
-    destCxt->expansionNode.insert(destCxt->expansionNode.begin(), srcCxt->expansionNode.begin(), srcCxt->expansionNode.end());
+    destCxt->expansionNode.append(srcCxt->expansionNode);
     destCxt->expansionNode.push_back(context->node);
 
     g_ThreadMgr.addJob(newJob);

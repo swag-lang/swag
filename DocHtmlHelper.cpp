@@ -172,7 +172,10 @@ namespace DocHtmlHelper
 
     void table(Concat& outFile, Scope* scope, const set<AstNode*>& nodes)
     {
-        vector<AstNode*> sorted(nodes.begin(), nodes.end());
+        VectorNative<AstNode*> sorted;
+        sorted.reserve((int) nodes.size());
+        for (auto node : nodes)
+            sorted.push_back(node);
         sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
             return p1->name < p2->name;
         });

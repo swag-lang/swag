@@ -71,8 +71,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     uint32_t numFctInterface = (uint32_t) typeInterface->childs.size();
 
     map<TypeInfoParam*, AstNode*> mapItToFunc;
-    vector<AstNode*>              mapItIdxToFunc;
-    mapItIdxToFunc.resize(numFctInterface, nullptr);
+    VectorNative<AstNode*>        mapItIdxToFunc;
+    mapItIdxToFunc.set_size_clear(numFctInterface);
 
     // Register interface in the structure
     TypeInfoParam* typeParamItf = nullptr;
