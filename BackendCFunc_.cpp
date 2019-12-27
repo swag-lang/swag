@@ -842,13 +842,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_INT_STR(concat, "r[", ip->a.u32, "].u64 = 0;");
             break;
         case ByteCodeOp::DecRA:
-            concat.addStringFormat("r[%u].u32--;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "r[", ip->a.u32, "].u32--;");
             break;
         case ByteCodeOp::IncRA:
-            concat.addStringFormat("r[%u].u32++;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "r[", ip->a.u32, "].u32++;");
             break;
         case ByteCodeOp::IncRA64:
-            concat.addStringFormat("r[%u].u64++;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "r[", ip->a.u32, "].u64++;");
             break;
         case ByteCodeOp::IncRAVB:
             concat.addStringFormat("r[%u].u32 += %u;", ip->a.u32, ip->b.u32);
@@ -1440,10 +1440,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
-            concat.addStringFormat("__print_i64(r[%u].s64);", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "__print_i64(r[", ip->a.u32, "].s64);");
             break;
         case ByteCodeOp::IntrinsicPrintF64:
-            concat.addStringFormat("__print_f64(r[%u].f64);", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "__print_f64(r[", ip->a.u32, "].f64);");
             break;
         case ByteCodeOp::IntrinsicPrintString:
             concat.addStringFormat("__print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
