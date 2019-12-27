@@ -196,3 +196,11 @@ void Concat::addStringFormat(const char* format, ...)
     va_end(args);
     addString(buf, len);
 }
+
+void Concat::addU32Str(uint32_t value)
+{
+    if (value < 10)
+        addChar((char) (value + '0'));
+    else
+        addString(to_string(value));
+}

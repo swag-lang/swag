@@ -1,12 +1,9 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "BackendC.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "AstNode.h"
 #include "Context.h"
-#include "CompilerTarget.h"
-#include "Workspace.h"
 
 void BackendC::emitArgcArgv()
 {

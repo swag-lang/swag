@@ -7,6 +7,13 @@
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
 
+#define CONCAT_STR_INT_STR(__concat, __before, __int, __after) \
+    {                                                          \
+        CONCAT_FIXED_STR(__concat, __before);                  \
+        __concat.addU32Str(__int);                             \
+        CONCAT_FIXED_STR(__concat, __after);                   \
+    }
+
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -178,22 +185,22 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Struct)
         {
-            concat.addStringFormat("(void*) r[%u].pointer", index);
+            CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-            concat.addStringFormat("(void*) r[%u].pointer", index);
+            CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
         }
         else if (typeParam->kind == TypeInfoKind::Slice)
         {
-            concat.addStringFormat("(void*) r[%u].pointer", index);
+            CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
             index = pushParams.back();
             pushParams.pop_back();
-            concat.addStringFormat(", r[%u].u32", index);
+            CONCAT_STR_INT_STR(concat, ", r[", index, "].u32");
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            concat.addStringFormat("r[%u]", index);
+            CONCAT_STR_INT_STR(concat, "r[", index, "]");
             switch (typeParam->nativeType)
             {
             case NativeTypeKind::Bool:
@@ -283,7 +290,9 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         {
             if (i)
                 concat.addChar(',');
-            concat.addStringFormat("rr%d", i);
+            concat.addChar('r');
+            concat.addChar('r');
+            concat.addU32Str(i);
         }
         CONCAT_FIXED_STR(concat, ";\n");
     }
@@ -376,16 +385,20 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     }
 
     // Make the call
-    concat.addStringFormat("\t%s", one->callName().c_str());
-    CONCAT_FIXED_STR(concat, "(");
+    concat.addChar('\t');
+    concat.addString(one->callName());
+    concat.addChar('(');
     for (int i = 0; i < n; i++)
     {
         if (i)
             concat.addChar(',');
-        concat.addStringFormat("&rr%d", i);
+        CONCAT_FIXED_STR(concat, "&rr");
+        concat.addU32Str(i);
     }
 
-    CONCAT_FIXED_STR(concat, ");\n");
+    concat.addChar(')');
+    concat.addChar(';');
+    concat.addEol();
 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
@@ -471,10 +484,10 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
         buffer.addString(returnType);
     else
         CONCAT_FIXED_STR(buffer, "void");
-    CONCAT_FIXED_STR(buffer, " ");
+    buffer.addChar(' ');
     auto name = Ast::computeFullNameForeign(node, forExport);
-    buffer.addString(name.c_str());
-    CONCAT_FIXED_STR(buffer, "(");
+    buffer.addString(name);
+    buffer.addChar('(');
 
     bool first = true;
     if (node->parameters)
@@ -488,19 +501,19 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
 
             SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
             buffer.addString(cType);
-            CONCAT_FIXED_STR(buffer, " ");
-            buffer.addString(param->name.c_str());
+            buffer.addChar(' ');
+            buffer.addString(param->name);
 
             if (param->typeInfo->kind == TypeInfoKind::Slice)
             {
                 CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
-                buffer.addString(param->name.c_str());
+                buffer.addString(param->name);
                 CONCAT_FIXED_STR(buffer, "_count");
             }
             else if (param->typeInfo->kind == TypeInfoKind::Interface)
             {
                 CONCAT_FIXED_STR(buffer, ", void* ");
-                buffer.addString(param->name.c_str());
+                buffer.addString(param->name);
                 CONCAT_FIXED_STR(buffer, "_itable");
             }
         }
@@ -525,8 +538,8 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
     auto name     = bc->callName();
 
     CONCAT_FIXED_STR(concat, "void ");
-    concat.addString(name.c_str());
-    CONCAT_FIXED_STR(concat, "(");
+    concat.addString(name);
+    concat.addChar('(');
 
     // Result
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
@@ -1648,7 +1661,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
-                concat.addStringFormat("%s", funcBC->callName().c_str());
+                concat.addString(funcBC->callName());
             }
 
             // Lambda call
@@ -1666,15 +1679,15 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_FIXED_STR(concat, "))");
 
                 // Then the call
-                concat.addStringFormat(" r[%u].pointer)", ip->a.u32);
+                CONCAT_STR_INT_STR(concat, " r[", ip->a.u32, "].pointer)");
             }
 
-            CONCAT_FIXED_STR(concat, "(");
+            concat.addChar('(');
             for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
             {
                 if (j)
                     concat.addChar(',');
-                concat.addStringFormat("&rt[%u]", j);
+                CONCAT_STR_INT_STR(concat, "&rt[", j, "]");
             }
 
             int numCallParams = (int) typeFuncBC->parameters.size();
@@ -1688,7 +1701,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                         concat.addChar(',');
                     auto index = pushRAParams.back();
                     pushRAParams.pop_back();
-                    concat.addStringFormat("&r[%u]", index);
+                    CONCAT_STR_INT_STR(concat, "&r[", index, "]");
                 }
             }
 

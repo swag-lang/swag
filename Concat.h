@@ -29,6 +29,7 @@ struct Concat
     void addChar(char c);
     void addEol();
     void addStringFormat(const char* format, ...);
+    void addU32Str(uint32_t value);
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
