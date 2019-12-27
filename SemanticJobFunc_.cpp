@@ -500,11 +500,18 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     SWAG_VERIFY(!node->childs.empty(), context->report({node, node->token, format("missing return value of type '%s'", funcNode->returnType->typeInfo->name.c_str())}));
+    auto returnType = funcNode->returnType->typeInfo;
 
     // Check types
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
-    auto returnType = funcNode->returnType->typeInfo;
+
+    // Be sure we do not specify a return value, and the function does not have a return type
+    // (better error message than just letting the makeCompatibles do its job)
+    auto concreteType = TypeManager::concreteType(child->typeInfo);
+    if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
+        return context->report({child, format("return value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve

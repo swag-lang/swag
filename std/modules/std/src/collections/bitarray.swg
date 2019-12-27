@@ -85,16 +85,23 @@ namespace std
             /// Sets the bit at a specific position in the BitArray to the specified value
             func set(using self, index: u32, value: bool)
             {
-                if !numBits return
-
                 assert(index < numBits)
-                val := index >> 5
-                bit := index - (val << 5)
+                val := index >> 3
+                bit := index - (val << 3)
                 if value
                     buffer[val] |= cast(u8) (1 << bit)
                 else
                     buffer[val] ^= cast(u8) (1 << bit)
             }
+
+            /// Gets the value of the bit at a specific position in the BitArray
+            func get(using self, index: u32)->bool
+            {
+                assert(index < numBits)
+                val := index >> 3
+                bit := index - (val << 3)
+                return cast(bool) (buffer[val] & cast(u8) (1 << bit))
+            }            
         }
     }
 }
