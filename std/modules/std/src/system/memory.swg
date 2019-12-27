@@ -28,6 +28,18 @@ namespace std.memory
             if size @memset(dest, value, size)
         }  
 
+        /// Free the specified memory block
+        func free(allocator: IAllocator, buffer: *void)
+        {
+            assert(allocator != null)
+            if !buffer
+                return
+            var req: AllocatorRequest
+            req.mode = AllocatorMode.Free
+            req.address = buffer
+            allocator.alloc(req)
+        }
+
         /// Reallocate/allocate a given amount of bytes
         func realloc(allocator: IAllocator, buffer: *void, newSize: u32)->*void
         {

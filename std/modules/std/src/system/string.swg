@@ -18,24 +18,14 @@ namespace std
     {
         func free(using self)
         {
-            if !buffer
-                return
-            var req: AllocatorRequest
-            req.mode = AllocatorMode.Free
-            req.address = buffer
-            allocator.alloc(req)
+            memory.free(allocator, buffer)
         }
 
         func realloc(using self, newSize: u32)
         {
             if allocator == null
                 allocator = @getcontext().allocator
-            var req: AllocatorRequest
-            req.mode = AllocatorMode.Realloc
-            req.size = newSize
-            req.address = buffer
-            allocator.alloc(req)
-            buffer = acast req.address
+            buffer = acast memory.realloc(allocator, buffer, newSize)
         }
     }
 

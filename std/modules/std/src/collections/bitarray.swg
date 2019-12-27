@@ -24,18 +24,16 @@ namespace std
             {
                 return numBits
             }
+
+            func opDrop(using self)
+            {
+                free(self)
+            }            
         }
 
         func free(using self)
         {
-            if !buffer
-                return
-            var req: AllocatorRequest
-            req.mode = AllocatorMode.Free
-            req.address = buffer
-            allocator.alloc(req)
-            buffer = null
-            numBits, numBytes = 0
+            memory.free(allocator, buffer)
         }
 
         func realloc(using self, newSize: u32)
@@ -53,6 +51,8 @@ namespace std
                 if !maxBits
                 {
                     free(self)
+                    buffer = null
+                    numBits, numBytes = 0
                     return
                 }
 
