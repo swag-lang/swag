@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
-    if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+    if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         auto r0       = reserveRegisterRC(context);
@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     inst->c.u32 = sizeof(void*);
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[0]);
 
-    if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+    if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     if (sizeOf > 1)
@@ -155,7 +155,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (typeArray->isNative(NativeTypeKind::String))
     {
-        if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+        if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
@@ -169,7 +169,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoSlice>(typeArray, TypeInfoKind::Slice);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+        if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         // Increment pointer (if increment is not 0)
@@ -218,7 +218,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+        if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
             auto r0                                                     = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count;
@@ -251,7 +251,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
 
-        if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+        if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
@@ -285,7 +285,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto r0 = reserveRegisterRC(context);
 
-        if (context->sourceFile->module->buildParameters.target.debugBoundCheck)
+        if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);

@@ -121,7 +121,9 @@ int main(int argc, const char* argv[])
     }
 
     if (!cmdParser.process(argc - 2, argv + 2))
-        return -2;
+    {
+        exit(-1);
+    }
 
     // Output command line
     if (g_CommandLine.verbose)
@@ -158,7 +160,7 @@ int main(int argc, const char* argv[])
     g_Global.setup();
 
     // Let's go...
-    if(g_CommandLine.watch)
+    if (g_CommandLine.watch)
         g_Workspace.watch();
     else
         g_Workspace.build();

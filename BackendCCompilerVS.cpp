@@ -147,16 +147,20 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.path + "\" ";
     string nameObj = g_Workspace.cachePath.string() + buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    switch (buildParameters->target.backendOptimizeLevel)
+
+    if (!g_CommandLine.debug)
     {
-    case 0:
-        break;
-    case 1:
-        clArguments += "/O1 ";
-        break;
-    default:
-        clArguments += "/O2 ";
-        break;
+        switch (buildParameters->target.backendOptimizeLevel)
+        {
+        case 0:
+            break;
+        case 1:
+            clArguments += "/O1 ";
+            break;
+        default:
+            clArguments += "/O2 ";
+            break;
+        }
     }
 
     if (buildParameters->flags & BUILDPARAM_FOR_TEST)
