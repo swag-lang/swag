@@ -156,8 +156,10 @@ struct Token
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
-    TokenId        id;
-    TypeInfo*      literalType;
+
+    TypeInfo* literalType;
+
+    TokenId id;
 };
 
 struct Tokenizer
