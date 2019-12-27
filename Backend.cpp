@@ -3,7 +3,6 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "TypeManager.h"
 #include "Os.h"
 

@@ -625,27 +625,31 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         // Print source code
-        if (moduleToGen->buildParameters.target.backendC.writeSourceCode && !bc->compilerGenerated)
+        if (!bc->compilerGenerated)
         {
-            if (ip->startLocation.line != lastLine)
+            if (moduleToGen->buildParameters.target.backendC.writeSourceCode || g_CommandLine.backendDebug)
             {
-                if (ip->startLocation.column != ip->endLocation.column)
+                if (ip->startLocation.line != lastLine)
                 {
-                    lastLine = ip->startLocation.line;
-                    auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
-                    s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
-                    if (!s.empty())
-                        s.pop_back();
-                    CONCAT_FIXED_STR(concat, "/* ");
-                    concat.addString(s);
-                    CONCAT_FIXED_STR(concat, " */\n");
+                    if (ip->startLocation.column != ip->endLocation.column)
+                    {
+                        lastLine = ip->startLocation.line;
+                        auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+                        s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
+                        if (!s.empty())
+                            s.pop_back();
+                        CONCAT_FIXED_STR(concat, "/* ");
+                        concat.addString(s);
+                        CONCAT_FIXED_STR(concat, " */\n");
+                    }
                 }
             }
         }
 
         concat.addStringFormat("lbl%08u:; ", i);
 
-        if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction)
+        // Write the bytecode instruction name
+        if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.backendDebug)
         {
             CONCAT_FIXED_STR(concat, "/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)

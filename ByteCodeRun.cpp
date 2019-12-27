@@ -1782,7 +1782,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
     bool exception     = false;
     int  exceptionCode = 0;
-    if (!g_Run.run(&g_Workspace.runContext, exception, exceptionCode))
+    if (!g_Run.run(runContext, exception, exceptionCode))
     {
         if (exception)
         {

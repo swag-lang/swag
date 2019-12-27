@@ -12,7 +12,7 @@ Context              g_defaultContextByteCode;
 swag_context_t       g_defaultContextBackend;
 swag_process_infos_t g_processInfos = {0};
 
-static void defaultAllocator(Register* r)
+static void defaultAllocator(Register* r0, Register* r1)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
     SWAG_ASSERT(context->allocator.itable);
@@ -21,10 +21,18 @@ static void defaultAllocator(Register* r)
     ByteCodeRunContext runContext;
     auto               node = bc->node;
     runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
-    runContext.push(r->pointer);
+
+    // Push AllocatorRequest pointer
+    runContext.push(r1->pointer);
+
+    // Push the 'self' from the interface
+    runContext.push(r0->pointer);
+
+    // Dummy 24 bytes on the stack necessary before a call
     runContext.push(nullptr);
     runContext.push(nullptr);
     runContext.push(nullptr);
+
     runContext.bp = runContext.sp;
     bc->enterByteCode(&runContext);
     g_Run.run(&runContext);
