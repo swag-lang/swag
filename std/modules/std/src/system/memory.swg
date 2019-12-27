@@ -1,5 +1,6 @@
 namespace std.memory
 {
+    using swag, diagnostics.debug
     public
     {
         /// Copy one block of memory to a given address
@@ -25,6 +26,18 @@ namespace std.memory
         func set(dest: *void, value: u8, size: u32)
         {
             if size @memset(dest, value, size)
-        }        
+        }  
+
+        /// Reallocate/allocate a given amount of bytes
+        func realloc(allocator: IAllocator, buffer: *void, newSize: u32)->*void
+        {
+            assert(allocator != null)
+            var req: AllocatorRequest
+            req.mode = AllocatorMode.Realloc
+            req.size = newSize
+            req.address = buffer
+            allocator.alloc(req)
+            return req.address
+        }                       
     }
 }

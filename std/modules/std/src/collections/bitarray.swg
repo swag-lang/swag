@@ -42,12 +42,7 @@ namespace std
         {
             if allocator == null
                 allocator = @getcontext().allocator
-            var req: AllocatorRequest
-            req.mode = AllocatorMode.Realloc
-            req.size = newSize
-            req.address = buffer
-            allocator.alloc(req)
-            buffer = acast req.address
+            buffer = acast memory.realloc(allocator, buffer, newSize)
         }        
 
         public

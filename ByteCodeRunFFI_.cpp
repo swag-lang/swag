@@ -97,6 +97,8 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         return &ffi_type_pointer;
     if (typeInfo->kind == TypeInfoKind::Slice)
         return &ffi_type_pointer;
+    if (typeInfo->kind == TypeInfoKind::Interface)
+        return &ffi_type_pointer;
     if (typeInfo->isNative(NativeTypeKind::String))
         return &ffi_type_pointer;
 
@@ -170,6 +172,15 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
             ffiArgs.push_back(&ffi_type_uint32);
             ffiArgsValues.push_back(&sp->u32);
+            sp++;
+        }
+        else if (typeParam->kind == TypeInfoKind::Interface)
+        {
+            ffiArgsValues.push_back(&sp->pointer);
+            sp++;
+
+            ffiArgs.push_back(&ffi_type_pointer);
+            ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)

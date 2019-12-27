@@ -31,7 +31,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
     {
         cType = "void*";
         return true;
@@ -92,7 +92,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         }
     }
 
-    return moduleToGen->internalError("swagTypeToCType, invalid type");
+    return moduleToGen->internalError(format("swagTypeToCType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
 bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
@@ -310,6 +310,11 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
         }
+        else if (typeParam->kind == TypeInfoKind::Interface)
+        {
+            concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
+            concat.addStringFormat("\trr%d.pointer = %s_itable;\n", idx + 1, param->namedParam.c_str());
+        }
         else if (typeParam->kind == TypeInfoKind::Struct)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
@@ -364,7 +369,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         }
         else
         {
-            return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
+            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid param type '%s'", typeParam->name.c_str()));
         }
 
         idx += typeParam->numRegisters();
@@ -390,6 +395,15 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         {
             CONCAT_FIXED_STR(concat, "\t*((void **) result) = rr0.pointer;\n");
             CONCAT_FIXED_STR(concat, "\t*((void **) result + 1) = rr1.pointer;\n");
+        }
+        else if (returnType->kind == TypeInfoKind::Interface)
+        {
+            CONCAT_FIXED_STR(concat, "\t*((void **) result) = rr0.pointer;\n");
+            CONCAT_FIXED_STR(concat, "\t*((void **) result + 1) = rr1.pointer;\n");
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
+        {
+            CONCAT_FIXED_STR(concat, "\treturn rr0.pointer;\n");
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
@@ -437,7 +451,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         }
         else
         {
-            return moduleToGen->internalError("emitFuncWrapperPublic, invalid return type");
+            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid return type '%s'", returnType->name.c_str()));
         }
     }
 
@@ -482,6 +496,12 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
                 CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
                 buffer.addString(param->name.c_str());
                 CONCAT_FIXED_STR(buffer, "_count");
+            }
+            else if (param->typeInfo->kind == TypeInfoKind::Interface)
+            {
+                CONCAT_FIXED_STR(buffer, ", void* ");
+                buffer.addString(param->name.c_str());
+                CONCAT_FIXED_STR(buffer, "_itable");
             }
         }
     }
