@@ -638,16 +638,20 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
     // Generate one local variable per used register
     if (bc->maxReservedRegisterRC)
-        concat.addStringFormat("swag_register_t r[%u];\n", bc->maxReservedRegisterRC);
+    {
+        CONCAT_STR_INT_STR(concat, "swag_register_t r[", bc->maxReservedRegisterRC, "];\n");
+    }
 
     // For function call results
     if (bc->maxCallResults)
-        concat.addStringFormat("swag_register_t rt[%u];\n", bc->maxCallResults);
+    {
+        CONCAT_STR_INT_STR(concat, "swag_register_t rt[", bc->maxCallResults, "];\n");
+    }
 
     // Local stack
     if (typeFunc->stackSize)
     {
-        concat.addStringFormat("swag_uint8_t stack[%u];\n", typeFunc->stackSize);
+        CONCAT_STR_INT_STR(concat, "swag_uint8_t stack[", typeFunc->stackSize, "];\n");
     }
 
     // Generate bytecode
@@ -686,7 +690,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         {
             CONCAT_FIXED_STR(concat, "/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)
-                CONCAT_FIXED_STR(concat, " ");
+                concat.addChar(' ');
             concat.addString(g_ByteCodeOpNames[(int) ip->op]);
             CONCAT_FIXED_STR(concat, " */ ");
         }
