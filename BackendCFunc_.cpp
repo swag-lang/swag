@@ -756,16 +756,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::Clear8:
-            concat.addStringFormat("*(swag_uint8_t*)r[%u].pointer = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint8_t*)r[", ip->a.u32, "].pointer = 0;");
             break;
         case ByteCodeOp::Clear16:
-            concat.addStringFormat("*(swag_uint16_t*)r[%u].pointer = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint16_t*)r[", ip->a.u32, "].pointer = 0;");
             break;
         case ByteCodeOp::Clear32:
-            concat.addStringFormat("*(swag_uint32_t*)r[%u].pointer = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint32_t*)r[", ip->a.u32, "].pointer = 0;");
             break;
         case ByteCodeOp::Clear64:
-            concat.addStringFormat("*(swag_uint64_t*)r[%u].pointer = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint64_t*)r[", ip->a.u32, "].pointer = 0;");
             break;
         case ByteCodeOp::ClearX:
             concat.addStringFormat("__memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
@@ -775,16 +775,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::ClearRefFromStack8:
-            concat.addStringFormat("*(swag_uint8_t*)(stack + %u) = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint8_t*)(stack + ", ip->a.u32, ") = 0;");
             break;
         case ByteCodeOp::ClearRefFromStack16:
-            concat.addStringFormat("*(swag_uint16_t*)(stack + %u) = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint16_t*)(stack + ", ip->a.u32, ") = 0;");
             break;
         case ByteCodeOp::ClearRefFromStack32:
-            concat.addStringFormat("*(swag_uint32_t*)(stack + %u) = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint32_t*)(stack + ", ip->a.u32, ") = 0;");
             break;
         case ByteCodeOp::ClearRefFromStack64:
-            concat.addStringFormat("*(swag_uint64_t*)(stack + %u) = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "*(swag_uint64_t*)(stack + ", ip->a.u32, ") = 0;");
             break;
         case ByteCodeOp::ClearRefFromStackX:
             concat.addStringFormat("__memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
@@ -839,7 +839,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u]; ", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ClearRA:
-            concat.addStringFormat("r[%u].u64 = 0;", ip->a.u32);
+            CONCAT_STR_INT_STR(concat, "r[", ip->a.u32, "].u64 = 0;");
             break;
         case ByteCodeOp::DecRA:
             concat.addStringFormat("r[%u].u32--;", ip->a.u32);
