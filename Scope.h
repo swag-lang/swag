@@ -32,7 +32,8 @@ struct AlternativeScope
     Scope*   scope;
 };
 
-static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+static const uint32_t SCOPE_FLAG_HAS_EXPORTS      = 0x00000001;
+static const uint32_t SCOPE_FLAG_MODULE_FROM_TEST = 0x00000002;
 
 struct Scope
 {

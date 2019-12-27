@@ -1605,18 +1605,36 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
             }
         }
 
-        // If we are on a module, add all files
+        // If we are on a module, add all files, except if this is a test module, because for
+        // a test module, all file scopes are private
         if (scope->kind == ScopeKind::Module)
         {
-            for (auto child : scope->childScopes)
+            if (!(scope->flags & SCOPE_FLAG_MODULE_FROM_TEST))
             {
-                if (child->name.empty() || child == sourceFile->scopePrivate)
+                for (auto child : scope->childScopes)
                 {
-                    if (scopes.find(child) == scopes.end())
+                    if (child->name.empty() || child == sourceFile->scopePrivate)
                     {
-                        scopes.insert(child);
-                        here.push_back(child);
+                        if (scopes.find(child) == scopes.end())
+                        {
+                            scopes.insert(child);
+                            here.push_back(child);
+                        }
                     }
+                }
+            }
+            else
+            {
+                if (scopes.find(sourceFile->scopePrivate) == scopes.end())
+                {
+                    scopes.insert(sourceFile->scopePrivate);
+                    here.push_back(sourceFile->scopePrivate);
+                }
+
+                if (scopes.find(sourceFile->scopeRoot) == scopes.end())
+                {
+                    scopes.insert(sourceFile->scopeRoot);
+                    here.push_back(sourceFile->scopeRoot);
                 }
             }
         }

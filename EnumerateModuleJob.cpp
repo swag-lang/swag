@@ -7,6 +7,7 @@
 #include "SyntaxJob.h"
 #include "Stats.h"
 #include "Allocator.h"
+#include "Scope.h"
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* theModule)
 {
@@ -66,6 +67,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // Create theModule
     auto theModule       = g_Workspace.createOrUseModule(moduleName);
     theModule->fromTests = parent == "tests";
+    theModule->scopeRoot->flags |= SCOPE_FLAG_MODULE_FROM_TEST;
 
     // Add the build.swg file if it exists
     string tmp;

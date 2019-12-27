@@ -4,10 +4,6 @@
 #include "Stats.h"
 #include "Job.h"
 #include "Context.h"
-#include "RaceCondition.h"
-#include "SourceFile.h"
-#include "AstNode.h"
-#include "Diagnostic.h"
 
 ThreadManager g_ThreadMgr;
 
