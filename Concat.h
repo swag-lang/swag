@@ -43,3 +43,10 @@ struct Concat
         static constexpr int __len = (int) char_traits<char>::length(__str); \
         __concat.addString(__str, __len);                                    \
     } while (false)
+
+#define CONCAT_STR_INT_STR(__concat, __before, __int, __after) \
+    {                                                          \
+        CONCAT_FIXED_STR(__concat, __before);                  \
+        __concat.addU32Str(__int);                             \
+        CONCAT_FIXED_STR(__concat, __after);                   \
+    }

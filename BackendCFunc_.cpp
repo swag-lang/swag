@@ -7,13 +7,6 @@
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
 
-#define CONCAT_STR_INT_STR(__concat, __before, __int, __after) \
-    {                                                          \
-        CONCAT_FIXED_STR(__concat, __before);                  \
-        __concat.addU32Str(__int);                             \
-        CONCAT_FIXED_STR(__concat, __after);                   \
-    }
-
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -496,7 +489,7 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
         for (auto param : node->parameters->childs)
         {
             if (!first)
-                CONCAT_FIXED_STR(buffer, ", ");
+                buffer.addChar(',');
             first = false;
 
             SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
@@ -523,7 +516,7 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
     if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
     {
         if (!first)
-            CONCAT_FIXED_STR(buffer, ", ");
+            buffer.addChar(',');
         buffer.addString(returnType);
         CONCAT_FIXED_STR(buffer, " result");
     }
@@ -683,7 +676,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             }
         }
 
-        concat.addStringFormat("lbl%08u:; ", i);
+        CONCAT_FIXED_STR(concat, "lbl");
+        concat.addStringFormat("%08u", i);
+        CONCAT_FIXED_STR(concat, ":; ");
 
         // Write the bytecode instruction name
         if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.debug)
@@ -1421,13 +1416,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::Jump:
-            concat.addStringFormat("goto lbl%08u;", ip->a.s32 + i + 1);
+            CONCAT_FIXED_STR(concat, "goto lbl");
+            concat.addStringFormat("%08u", ip->a.s32 + i + 1);
+            concat.addChar(';');
             break;
         case ByteCodeOp::JumpNotTrue:
-            concat.addStringFormat("if(!r[%u].b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
+            CONCAT_STR_INT_STR(concat, "if(!r[", ip->a.u32, "].b) goto lbl");
+            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addChar(';');
             break;
         case ByteCodeOp::JumpTrue:
-            concat.addStringFormat("if(r[%u].b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
+            CONCAT_STR_INT_STR(concat, "if(r[", ip->a.u32, "].b) goto lbl");
+            concat.addStringFormat("%08u", ip->b.s32 + i + 1);
+            concat.addChar(';');
             break;
         case ByteCodeOp::JumpZero32:
             concat.addStringFormat("if(!r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
