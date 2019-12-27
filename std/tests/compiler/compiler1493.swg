@@ -1,3 +1,4 @@
+//#[swag.printbc]
 #test
 {
     let a8: u8 = 0

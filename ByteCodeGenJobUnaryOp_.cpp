@@ -13,6 +13,8 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::NegS32, r0);
         return true;
