@@ -1085,7 +1085,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
     auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
-    node->callParameters->childs.insert(node->callParameters->childs.end(), fctCallParam);
+    node->callParameters->childs.push_back(fctCallParam);
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = rightAffect->typeInfo;
     SWAG_ASSERT(fctCallParam->typeInfo);
@@ -1109,7 +1109,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
-    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+    node->callParameters->childs.push_front(fctCallParam);
     fctCallParam->parent      = node->callParameters;
     fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token       = identifierRef->previousResolvedNode->token;

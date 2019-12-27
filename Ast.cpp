@@ -86,7 +86,7 @@ namespace Ast
         {
             if (parent->childs[i] == child)
             {
-                parent->childs.erase(parent->childs.begin() + i);
+                parent->childs.erase(i);
                 child->parent = nullptr;
                 return;
             }
@@ -101,7 +101,7 @@ namespace Ast
         if (parent)
         {
             scoped_lock lk(parent->mutex);
-            parent->childs.insert(parent->childs.begin(), child);
+            parent->childs.push_front(child);
         }
 
         child->parent = parent;

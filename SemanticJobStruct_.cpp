@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
+#include "Vector.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -46,7 +47,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         return context->report(diag, &note);
     }
 
-    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->childs;
 
@@ -96,7 +97,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            job->tmpNodes.append(child->childs);
             continue;
         case AstNodeKind::CompilerIf:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
@@ -280,7 +281,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageIndex  = 0;
     uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
-    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->content->childs;
 
@@ -295,7 +296,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            job->tmpNodes.append(child->childs);
             continue;
         case AstNodeKind::CompilerIf:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
@@ -516,7 +517,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
 
-    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->content->childs;
 
@@ -536,7 +537,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            job->tmpNodes.append(child->childs);
             continue;
         case AstNodeKind::CompilerIf:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);

@@ -11,6 +11,7 @@
 #include "Attribute.h"
 #include "Scope.h"
 #include "RaceCondition.h"
+#include "Vector.h"
 
 struct SemanticContext;
 struct ByteCodeGenContext;
@@ -302,9 +303,9 @@ struct AstNode
     AstNodeResolveState semanticState     = AstNodeResolveState::Enter;
     AstNodeResolveState bytecodeState     = AstNodeResolveState::Enter;
 
-    vector<AstNode*> childs;
-    set<Scope*>      doneLeaveScopeDefer;
-    set<Scope*>      doneLeaveScopeDrop;
+    VectorNative<AstNode*> childs;
+    set<Scope*>            doneLeaveScopeDefer;
+    set<Scope*>            doneLeaveScopeDrop;
 
     shared_mutex  mutex;
     ComputedValue computedValue;

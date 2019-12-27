@@ -1,10 +1,13 @@
 #pragma once
+#include "Assert.h"
+#include "Stats.h"
 #define ALLOCATOR_BUCKET_SIZE 4 * 1024
 
 struct AllocatorBucket
 {
-    uint8_t data[ALLOCATOR_BUCKET_SIZE];
-    int     maxUsed = 0;
+    uint8_t* data      = nullptr;
+    int      maxUsed   = 0;
+    int      allocated = 0;
 };
 
 struct Allocator
@@ -15,9 +18,12 @@ struct Allocator
         static_assert(sizeof(T) < ALLOCATOR_BUCKET_SIZE);
         if (!lastBucket || lastBucket->maxUsed + sizeof(T) >= ALLOCATOR_BUCKET_SIZE)
         {
-            lastBucket          = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
-            lastBucket->maxUsed = 0;
-            currentData         = lastBucket->data;
+            lastBucket            = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
+            lastBucket->maxUsed   = 0;
+            lastBucket->allocated = ALLOCATOR_BUCKET_SIZE;
+            lastBucket->data      = (uint8_t*) malloc(ALLOCATOR_BUCKET_SIZE);
+            currentData           = lastBucket->data;
+            g_Stats.allocatorMemory += lastBucket->allocated;
         }
 
         auto returnData = currentData;
@@ -25,6 +31,24 @@ struct Allocator
         currentData += sizeof(T);
         lastBucket->maxUsed += sizeof(T);
         return (T*) returnData;
+    }
+
+    void* alloc(int size)
+    {
+        if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
+        {
+            lastBucket            = (AllocatorBucket*) malloc(sizeof(AllocatorBucket));
+            lastBucket->maxUsed   = 0;
+            lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);
+            lastBucket->data      = (uint8_t*) malloc(lastBucket->allocated);
+            currentData           = lastBucket->data;
+            g_Stats.allocatorMemory += lastBucket->allocated;
+        }
+
+        auto returnData = currentData;
+        currentData += size;
+        lastBucket->maxUsed += size;
+        return returnData;
     }
 
     AllocatorBucket* lastBucket  = nullptr;

@@ -20,6 +20,7 @@ void printStats()
     g_Log.messageHeaderDot("lines", format("%d", g_Stats.numLines.load()));
     g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.count())));
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
+    g_Log.messageHeaderDot("allocator", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
     if (g_CommandLine.backendOutput)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)

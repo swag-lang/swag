@@ -618,6 +618,9 @@
     <ClInclude Include="DiagnosticInfos.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

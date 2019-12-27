@@ -191,7 +191,7 @@ struct SemanticJob : public Job
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
-    vector<AstNode*>         tmpNodes;
+    VectorNative<AstNode*>   tmpNodes;
     set<SymbolName*>         cacheDependentSymbols;
     set<Scope*>              cacheScopeHierarchy;
     vector<AlternativeScope> cacheScopeHierarchyVars;
