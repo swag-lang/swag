@@ -113,7 +113,7 @@ namespace std
                 bit := index - (val << 3)
                 let shift: u8 = cast(u8) (1 << bit)
                 if buffer[val] & shift
-                    buffer[val] &= ~shift
+                    buffer[val] ^= shift
                 else
                     buffer[val] |= shift
             }               
