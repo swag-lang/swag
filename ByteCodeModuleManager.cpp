@@ -44,6 +44,7 @@ bool ByteCodeModuleManager::loadModule(const string& name)
 
     if (verbose)
         g_Log.verbose(format("   load module '%s': success\n", name.c_str()), false);
+
     loadedModules[name] = h;
 
     // Should initialize the module the first time
@@ -62,22 +63,9 @@ bool ByteCodeModuleManager::loadModule(const string& name)
 
 void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName)
 {
-    // Search in a specific module
-    if (!moduleName.empty())
-    {
-        auto here = loadedModules.find(moduleName);
-        if (here != loadedModules.end())
-            return OS::getProcAddress(here->second, funcName.c_str());
-        return nullptr;
-    }
-
-    // Else search in all loaded modules
-    for (auto it : loadedModules)
-    {
-        auto ptr = OS::getProcAddress(it.second, funcName.c_str());
-        if (ptr)
-            return (void*) ptr;
-    }
-
+    SWAG_ASSERT(!moduleName.empty());
+    auto here = loadedModules.find(moduleName);
+    if (here != loadedModules.end())
+        return OS::getProcAddress(here->second, funcName.c_str());
     return nullptr;
 }
