@@ -70,31 +70,14 @@ void Diagnostic::report(bool verboseMode) const
             lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
         }
 
-        // Compute the minimal number of blanks at the start (to unindent)
-        uint32_t minOffset = UINT32_MAX;
-        for (auto& line : lines)
-        {
-            const char* buf = line.c_str();
-
-            uint32_t offset = 0;
-            while (*buf == ' ')
-            {
-                buf++;
-                offset++;
-            }
-
-            minOffset = min(minOffset, offset);
-        }
-
         // Print all lines
-        //g_Log.eol();
         for (auto& line : lines)
         {
-            const char* pz = line.c_str() + minOffset;
+            const char* pz = line.c_str();
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 g_Log.print("   >  ");
-                Utf8 tmp(line.c_str() + minOffset);
+                Utf8 tmp(line.c_str());
                 g_Log.print(tmp);
                 g_Log.eol();
             }
@@ -102,9 +85,17 @@ void Diagnostic::report(bool verboseMode) const
 
         if (showRange)
         {
-            minOffset -= 6;
-            for (int i = 0; i < startLocation.column - (int) minOffset; i++)
+            for (int i = 0; i < 6; i++)
                 g_Log.print(" ");
+
+            auto backLine = lines.back();
+            for (int i = 0; i < startLocation.column; i++)
+            {
+                if (backLine[i] == '\t')
+                    g_Log.print("\t");
+                else
+                    g_Log.print(" ");
+            }
 
             int range = 1;
             if (!hasRangeLocation)
@@ -112,7 +103,7 @@ void Diagnostic::report(bool verboseMode) const
             else if (endLocation.line == startLocation.line)
                 range = endLocation.column - startLocation.column;
             else
-                range = (int) lines.back().length() - startLocation.column - minOffset;
+                range = (int) lines.back().length() - startLocation.column;
             range = max(1, range);
 
             if (!verboseMode)

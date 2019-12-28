@@ -27,15 +27,8 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     seek += offset;
     location.column++;
 
-    // Align tabulations
-    if (c == '\t')
-    {
-        while (location.column % g_CommandLine.tabSize)
-            location.column++;
-    }
-
     // End of line
-    else if (c == '\n')
+    if (c == '\n')
     {
         if (g_CommandLine.stats)
             g_Stats.numLines++;

@@ -233,21 +233,8 @@ Utf8 SourceFile::getLine(long seek)
         auto     c      = getChar(offset);
         if (!c || c == '\n')
             break;
-        if (c == '\t')
-        {
-            column++;
-            line += " ";
-            while (column % g_CommandLine.tabSize)
-            {
-                column++;
-                line += " ";
-            }
-        }
-        else
-        {
-            line += c;
-            column++;
-        }
+        line += c;
+        column++;
     }
 
     directMode = false;

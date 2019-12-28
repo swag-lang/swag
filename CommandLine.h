@@ -20,7 +20,6 @@ struct CommandLine
     string cachePath;
     string fileFilter;
     string testFilter;
-    int    tabSize = 4;
 
     // Test
     bool test             = false;

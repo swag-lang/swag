@@ -28,7 +28,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
-    addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize, nullptr, "input size (in blanks) of a source file tabulation");
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
