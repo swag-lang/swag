@@ -1,10 +1,6 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVS.h"
-#include "Version.h"
 #include "Workspace.h"
-#include "Os.h"
 #include "Job.h"
 
 JobResult BackendC::preCompile(Job* ownerJob)
