@@ -24,7 +24,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         auto depModule = g_Workspace.getModuleByName(moduleName.text);
         while (depModule && depModule->getHasBeenBuilt() != BUILDRES_FULL)
         {
-            this_thread::sleep_for(chrono::milliseconds(1));
+            Sleep(1);
             if (depModule->numErrors)
                 return nullptr;
         }
