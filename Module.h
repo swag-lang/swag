@@ -94,11 +94,5 @@ struct Module
     map<string, ModuleDependency> moduleDependencies;
     uint32_t                      hasBeenBuilt = BUILDRES_NONE;
 
-    uint32_t getHasBeenBuilt()
-    {
-        shared_lock lk(mutexDependency);
-        return hasBeenBuilt;
-    }
-
     TypeTable typeTable;
 };

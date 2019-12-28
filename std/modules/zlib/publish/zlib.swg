@@ -27,7 +27,7 @@ namespace zlib
     const Z_BEST_COMPRESSION     = 9
     const Z_DEFAULT_COMPRESSION  = -1
 
-    #[swag.foreign("zlib")]
+    #[swag.foreign]
     {
         func compress(dest: *u8, destLen: *u32, source: const *u8, sourceLen: u32)->s32;
         func compress2(dest: *u8, destLen: *u32, source: const *u8, sourceLen: u32, level: s32)->s32;
