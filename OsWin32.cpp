@@ -243,7 +243,7 @@ namespace OS
                 break;
             }
 
-            Sleep(1);
+            Sleep(10);
         }
 
         // Close process and thread handles
