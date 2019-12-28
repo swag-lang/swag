@@ -175,7 +175,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(skip|module|unittest|assert|print|run|file|line|config|arch|function|callfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
+          "match": "(#)\\b(skip|module|unittest|assert|print|run|file|line|config|arch|function|callerfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
         }
       ]
     },

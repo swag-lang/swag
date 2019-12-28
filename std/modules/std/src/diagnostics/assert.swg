@@ -5,7 +5,8 @@ namespace std.diagnostics.debug
 	{
 		#if swag.ASSERT
 		{
-			@assert(expr)
+			if !expr
+				os.assertMessage(file, line)
 		}
 	}
 }

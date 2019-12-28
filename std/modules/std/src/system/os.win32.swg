@@ -6,6 +6,7 @@
     namespace std.os
     {
         typealias HANDLE: 			*void
+		typealias HWND: 			*void
         typealias WORD: 			u16
         typealias DWORD: 			u32
         typealias BOOL: 			s32
@@ -230,6 +231,37 @@
 		const VK_PA1            = 0xFD
 		const VK_OEM_CLEAR      = 0xFE
 
+		const MB_OK               		= 0x00000000
+		const MB_OKCANCEL               = 0x00000001
+		const MB_ABORTRETRYIGNORE       = 0x00000002
+		const MB_YESNOCANCEL            = 0x00000003
+		const MB_YESNO                  = 0x00000004
+		const MB_RETRYCANCEL            = 0x00000005
+		const MB_CANCELTRYCONTINUE      = 0x00000006
+		const MB_ICONHAND				= 0x00000010
+		const MB_ICONQUESTION           = 0x00000020
+		const MB_ICONEXCLAMATION        = 0x00000030
+		const MB_ICONASTERISK           = 0x00000040
+		const MB_USERICON               = 0x00000080
+		const MB_ICONWARNING            = MB_ICONEXCLAMATION
+		const MB_ICONERROR              = MB_ICONHAND
+		const MB_ICONINFORMATION        = MB_ICONASTERISK
+		const MB_ICONSTOP               = MB_ICONHAND
+		const MB_DEFBUTTON1             = 0x00000000
+		const MB_DEFBUTTON2             = 0x00000100
+		const MB_DEFBUTTON3             = 0x00000200
+		const MB_DEFBUTTON4             = 0x00000300
+		const MB_APPLMODAL              = 0x00000000
+		const MB_SYSTEMMODAL            = 0x00001000
+		const MB_TASKMODAL              = 0x00002000
+		const MB_HELP                   = 0x00004000
+		const MB_NOFOCUS                = 0x00008000
+		const MB_SETFOREGROUND          = 0x00010000
+		const MB_DEFAULT_DESKTOP_ONLY   = 0x00020000
+		const MB_TOPMOST                = 0x00040000
+		const MB_RIGHT                  = 0x00080000
+		const MB_RTLREADING             = 0x00100000
+
         struct COORD
         {
             x: WORD
@@ -308,6 +340,7 @@
 			func GetCursorPos(lpPoint: *POINT);
 			func SetCursorPos(x, y: s32);
 			func ShowCursor(show: BOOL);
+			func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
 		}
     }
 }
