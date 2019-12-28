@@ -23,14 +23,12 @@ JobResult ModuleBuildJob::execute()
     {
         for (auto dep : module->moduleDependencies)
         {
-            shared_lock lk(g_Workspace.mutexModules);
-            auto        it = g_Workspace.mapModulesNames.find(dep.first);
-            SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+            auto depModule = g_Workspace.getModuleByName(dep.first);
+            SWAG_ASSERT(depModule);
 
-            if (it->second->numErrors)
+            if (depModule->numErrors)
                 return JobResult::ReleaseJob;
 
-            auto        depModule = it->second;
             unique_lock lk1(depModule->mutexDependency);
             if ((depModule->hasBeenBuilt & BUILDRES_EXPORT) == 0)
             {
@@ -61,10 +59,9 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto& dep : module->moduleDependencies)
             {
-                auto it = g_Workspace.mapModulesNames.find(dep.first);
-                SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
-                auto depModule = it->second;
-                auto node      = dep.second.node;
+                auto depModule = g_Workspace.getModuleByName(dep.first);
+                SWAG_ASSERT(depModule);
+                auto node = dep.second.node;
 
                 // Now the .swg export file should be in the cache
                 if (!depModule->backend->timeExportFile)
@@ -101,13 +98,12 @@ JobResult ModuleBuildJob::execute()
     {
         for (auto dep : module->moduleDependencies)
         {
-            auto it = g_Workspace.mapModulesNames.find(dep.first);
-            SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+            auto depModule = g_Workspace.getModuleByName(dep.first);
+            SWAG_ASSERT(depModule);
 
-            if (it->second->numErrors)
+            if (depModule->numErrors)
                 return JobResult::ReleaseJob;
 
-            auto        depModule = it->second;
             shared_lock lk(depModule->mutexDependency);
             if (depModule->hasBeenBuilt != BUILDRES_FULL)
             {
