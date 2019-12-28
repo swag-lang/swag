@@ -230,6 +230,31 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
+        pass = ModuleBuildPass::LoadDependencies;
+    }
+
+    //////////////////////////////////////////////////
+    // At this stage, and before building backend, we need to be sure that
+    // our dependencies have been build completely
+    if (pass == ModuleBuildPass::LoadDependencies)
+    {
+        pass = ModuleBuildPass::Output;
+
+        for (auto dep : module->moduleDependencies)
+        {
+            auto depModule = g_Workspace.getModuleByName(dep.first);
+            SWAG_ASSERT(depModule);
+
+            if (depModule->numErrors)
+                return JobResult::ReleaseJob;
+
+            if (depModule->getHasBeenBuilt() != BUILDRES_FULL)
+            {
+                depModule->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
         pass = ModuleBuildPass::Output;
     }
 
