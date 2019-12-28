@@ -6,6 +6,7 @@ enum class ModuleOutputJobPass
 {
     Init,
     PreCompile,
+    WaitDependencies,
     Compile,
 };
 
