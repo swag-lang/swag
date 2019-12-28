@@ -3,13 +3,15 @@
 struct SourceFile;
 struct AstNode;
 struct Utf8;
+struct ByteCodeInstruction;
 
 #ifdef SWAG_HAS_ASSERT
 struct DiagnosticInfosStep
 {
-    string      message;
-    SourceFile* sourceFile = nullptr;
-    AstNode*    node       = nullptr;
+    string               message;
+    SourceFile*          sourceFile = nullptr;
+    AstNode*             node       = nullptr;
+    ByteCodeInstruction* ip         = nullptr;
 };
 
 struct DiagnosticInfos

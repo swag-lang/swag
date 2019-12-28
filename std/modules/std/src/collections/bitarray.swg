@@ -28,7 +28,18 @@ namespace std
             func opDrop(using self)
             {
                 free(self)
-            }            
+            }
+
+            /*func opPostCopy(using self)
+            {
+                if(buffer)
+                {
+                    otherBuffer := buffer
+                    buffer = null
+                    reserve(self, numBits)
+                    memory.copy(buffer, otherBuffer, numBytes)
+                }
+            }*/
         }
 
         func free(using self)

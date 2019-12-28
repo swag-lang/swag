@@ -40,6 +40,7 @@ SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
 SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
 SWAG_IMPORT void*				GetStdHandle(swag_uint32_t);
 SWAG_IMPORT swag_int32_t		WriteFile(void*, void*, swag_uint32_t, swag_uint32_t*, swag_uint32_t*);
+SWAG_IMPORT void				RaiseException(swag_uint32_t, swag_uint32_t, swag_uint32_t, void*);
 
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
@@ -178,13 +179,19 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 {
 	if(expr) 
 		return;
+
+	__print("error: "); 
 	__print(file); 
 	__print(":"); 
 	__print_i64(line);
 	if(msg)
 		__print(msg);
 	else	
-		__print(": error: native code assertion failed\n");
+		__print(": native code assertion failed\n");
+
+#ifdef _WIN32
+	RaiseException(0x666, 0, 0, 0);
+#endif
 	exit(-1);
 }
 
@@ -210,7 +217,7 @@ bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
     }
     else
     {
-		CONCAT_FIXED_STR(bufferC, "extern swag_process_infos_t __process_infos;\n");
+        CONCAT_FIXED_STR(bufferC, "extern swag_process_infos_t __process_infos;\n");
     }
 
     return true;

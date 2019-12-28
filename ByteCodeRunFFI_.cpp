@@ -8,6 +8,9 @@
 #include "ModuleCompileJob.h"
 #include "TypeManager.h"
 #include "OS.h"
+#include "Ast.h"
+#include "AstNode.h"
+#include "DiagnosticInfos.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
@@ -274,6 +277,24 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         }
     }
 
+#ifdef SWAG_ASSERT
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.push();
+        AstFuncDecl* funcDecl               = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        g_diagnosticInfos.last().message    = format("ffi call to '%s'", funcDecl->name.c_str());
+        g_diagnosticInfos.last().sourceFile = context->sourceFile;
+        g_diagnosticInfos.last().ip         = ip;
+    }
+#endif
+
     // Make the call
     ffi_call(&cif, FFI_FN(ip->d.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
+
+#ifdef SWAG_ASSERT
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.pop();
+    }
+#endif
 }

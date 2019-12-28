@@ -31,9 +31,9 @@ namespace std.memory
         /// Free the specified memory block
         func free(allocator: IAllocator, buffer: *void)
         {
-            assert(allocator != null)
             if !buffer
                 return
+            assert(allocator != null)
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
             req.address = buffer

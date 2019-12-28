@@ -213,6 +213,9 @@ bool BackendCCompilerVS::compile()
 
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";
+
+        linkArguments += "kernel32.lib user32.lib ";
+
         for (const auto& oneLibPath : libPath)
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 

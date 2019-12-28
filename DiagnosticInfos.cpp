@@ -5,6 +5,7 @@
 #include "AstNode.h"
 #include "Os.h"
 #include "DiagnosticInfos.h"
+#include "ByteCode.h"
 
 #ifdef SWAG_HAS_ASSERT
 thread_local DiagnosticInfos g_diagnosticInfos;
@@ -28,6 +29,8 @@ void DiagnosticInfos::log()
             g_Log.print(format("source file: %s\n", step.sourceFile->path.c_str()));
         if (step.node)
             g_Log.print(format("source line: %d\n", step.node->token.startLocation.line + 1));
+        if (step.ip)
+            g_Log.print(format("source line: %d\n", step.ip->startLocation.line + 1));
     }
 
     g_Log.print("----------------\n");

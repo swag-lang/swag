@@ -2,6 +2,7 @@
 #include "ModuleTestJob.h"
 #include "Workspace.h"
 #include "Os.h"
+#include "DiagnosticInfos.h"
 
 thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;
 
@@ -12,6 +13,14 @@ JobResult ModuleTestJob::execute()
     path += OS::getOutputFileExtension(buildParameters.type);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
+
+#ifdef SWAG_ASSERT
+    PushDiagnosticInfos di;
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.last().message = "ModuleTestJob - " + path.string();
+    }
+#endif
 
     g_Log.messageHeaderCentered("Testing backend", module->name.c_str(), LogColor::DarkMagenta);
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
