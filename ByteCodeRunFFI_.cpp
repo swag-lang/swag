@@ -19,6 +19,16 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign.module", moduleName);
     if (hasModuleName)
     {
+        // We need to be sure that the corresponding module has been built, as we can start a run without
+        // dependencies being built. We are polling, this is not ideal, but a 'run' cannot be paused for now
+        auto depModule = g_Workspace.getModuleByName(moduleName.text);
+        while (depModule && depModule->getHasBeenBuilt() != BUILDRES_FULL)
+        {
+            Sleep(1);
+            if (depModule->numErrors)
+                return nullptr;
+        }
+
         if (!g_ModuleMgr.loadModule(moduleName.text))
         {
             context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
