@@ -7,5 +7,5 @@ thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
 
 JobResult ModulePreCompileJob::execute()
 {
-	return module->backend->preCompile(this);
+	return module->backend->preCompile(this, precompileIndex);
 }

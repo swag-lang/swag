@@ -177,6 +177,8 @@ namespace OS
 
                     auto pz = strstr(oneLine.c_str(), ": error");
                     if (!pz)
+                        pz = strstr(oneLine.c_str(), ": Command line error");
+                    if (!pz)
                         pz = strstr(oneLine.c_str(), ": fatal error");
                     if (!pz)
                         pz = strstr(oneLine.c_str(), ": warning");

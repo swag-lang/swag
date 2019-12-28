@@ -10,7 +10,8 @@ JobResult ModuleTestJob::execute()
     SWAG_ASSERT(module->hasBeenBuilt & BUILDRES_COMPILER);
     fs::path path = g_Workspace.targetPath.string() + buildParameters.destFile + buildParameters.postFix;
     path += OS::getOutputFileExtension(buildParameters.type);
-    SWAG_ASSERT(fs::exists(path));
+    if (!fs::exists(path))
+        return JobResult::ReleaseJob;
 
     g_Log.messageHeaderCentered("Testing backend", module->name.c_str(), LogColor::DarkMagenta);
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)

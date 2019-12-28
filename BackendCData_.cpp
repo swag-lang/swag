@@ -6,7 +6,7 @@
 #include "Context.h"
 #include "AstNode.h"
 
-bool BackendC::emitDataSegment(DataSegment* dataSegment)
+bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex)
 {
     if (dataSegment == &module->mutableSegment)
         emitSeparator(bufferC, "MUTABLE SEGMENT");
@@ -15,34 +15,44 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
 
     if (dataSegment->buckets.size())
     {
-        if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __mutableseg[] = {\n");
-        else
-            CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __constantseg[] = {\n");
-
-        for (int bucket = 0; bucket < dataSegment->buckets.size(); bucket++)
+        if (preCompileIndex != 0)
         {
-            int  count = (int) dataSegment->buckets[bucket].count;
-            auto pz    = dataSegment->buckets[bucket].buffer;
-            int  cpt   = 0;
-            while (count--)
-            {
-                bufferC.addString(to_string(*pz));
-                bufferC.addChar(',');
-                pz++;
-                cpt = (cpt + 1) % 20;
-                if (cpt == 0)
-                    bufferC.addEol();
-            }
+            if (dataSegment == &module->mutableSegment)
+                CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __mutableseg[];\n");
+            else
+                CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __constantseg[];\n");
         }
+        else
+        {
+            if (dataSegment == &module->mutableSegment)
+                CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[] = {\n");
+            else
+                CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[] = {\n");
 
-        CONCAT_FIXED_STR(bufferC, "\n};\n");
+            for (int bucket = 0; bucket < dataSegment->buckets.size(); bucket++)
+            {
+                int  count = (int) dataSegment->buckets[bucket].count;
+                auto pz    = dataSegment->buckets[bucket].buffer;
+                int  cpt   = 0;
+                while (count--)
+                {
+                    bufferC.addString(to_string(*pz));
+                    bufferC.addChar(',');
+                    pz++;
+                    cpt = (cpt + 1) % 20;
+                    if (cpt == 0)
+                        bufferC.addEol();
+                }
+            }
+
+            CONCAT_FIXED_STR(bufferC, "\n};\n");
+        }
     }
 
     return true;
 }
 
-bool BackendC::emitGlobalInit()
+bool BackendC::emitGlobalInit(OutputFile& bufferC)
 {
     // Init of data segment
     CONCAT_FIXED_STR(bufferC, "static void initDataSeg() {\n");
@@ -67,7 +77,7 @@ bool BackendC::emitGlobalInit()
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
-		bufferC.addStringFormat("*(void**) (__constantseg + %d) = %s;\n", k.first, k.second->callName().c_str());
+        bufferC.addStringFormat("*(void**) (__constantseg + %d) = %s;\n", k.first, k.second->callName().c_str());
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -96,7 +106,7 @@ bool BackendC::emitGlobalInit()
     return true;
 }
 
-bool BackendC::emitGlobalDrop()
+bool BackendC::emitGlobalDrop(OutputFile& bufferC)
 {
     // Main init fct
     bufferC.addStringFormat("SWAG_EXPORT void %s_globalDrop()\n", module->nameDown.c_str());

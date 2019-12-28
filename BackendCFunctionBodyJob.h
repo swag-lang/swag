@@ -7,14 +7,13 @@ struct ByteCode;
 
 struct BackendCFunctionBodyJob : public Job
 {
-    JobResult         execute() override;
-    vector<ByteCode*> byteCodeFunc;
-    BackendC*         backend = nullptr;
+    JobResult execute() override;
 
     void reset() override
     {
         Job::reset();
-        backend = nullptr;
+        backend         = nullptr;
+        precompileIndex = 0;
         byteCodeFunc.clear();
     }
 
@@ -23,6 +22,10 @@ struct BackendCFunctionBodyJob : public Job
         extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
         g_Pool_backendCFunctionBodyJob.release(this);
     }
+
+    vector<ByteCode*> byteCodeFunc;
+    BackendC*         backend         = nullptr;
+    int               precompileIndex = 0;
 };
 
 extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

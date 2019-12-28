@@ -144,9 +144,12 @@ bool BackendCCompilerVS::compile()
     clArguments += "/nologo ";
     clArguments += "/GS- ";
     clArguments += "/MD ";
-    clArguments += "/Tc\"" + backend->bufferC.path + "\" ";
-    string nameObj = g_Workspace.cachePath.string() + buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
-    clArguments += "/Fo\"" + nameObj + "\" ";
+
+    //clArguments += "/MP "; // Multithread compile
+
+    for (int i = 0; i < backend->numPreCompileBuffers; i++)
+        clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
+    clArguments += "/Fo\"" + g_Workspace.cachePath.string() + "\" ";
 
     if (!g_CommandLine.debug)
     {
@@ -184,10 +187,13 @@ bool BackendCCompilerVS::compile()
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
         libArguments += "/OUT:\"" + resultFile + "\" ";
-        libArguments += "\"" + nameObj + "\" ";
 
-        if (verbose)
-            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.path.c_str(), resultFile.c_str()));
+        for (int i = 0; i < backend->numPreCompileBuffers; i++)
+        {
+            fs::path nameObj = backend->bufferCFiles[i].path;
+            nameObj.replace_extension(".obj");
+            libArguments += "\"" + nameObj.string() + "\" ";
+        }
 
         auto cmdLineLIB = "\"" + vsTarget + "lib.exe\" " + libArguments;
         if (verbose)
@@ -225,9 +231,6 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_BINARY ";
         }
-
-        if (verbose)
-            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.path.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)

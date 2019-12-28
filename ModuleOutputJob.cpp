@@ -42,11 +42,21 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PreCompile)
     {
-        pass                        = ModuleOutputJobPass::Compile;
-        auto preCompileJob          = g_Pool_modulePreCompileJob.alloc();
-        preCompileJob->module       = module;
-        preCompileJob->dependentJob = this;
-        jobsToAdd.push_back(preCompileJob);
+        // Magic number : max number of functions per file
+        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
+        module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+        module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+
+        pass = ModuleOutputJobPass::Compile;
+        for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
+        {
+            auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
+            preCompileJob->module          = module;
+            preCompileJob->dependentJob    = this;
+            preCompileJob->precompileIndex = i;
+            jobsToAdd.push_back(preCompileJob);
+        }
+
         return JobResult::KeepJobAlivePending;
     }
 

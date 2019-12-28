@@ -14,6 +14,8 @@ struct AstVarDecl;
 struct Job;
 enum class JobResult;
 
+static const int MAX_PRECOMPILE_BUFFERS = 128;
+
 struct Backend
 {
     Backend(Module* mdl)
@@ -26,14 +28,8 @@ struct Backend
     void              setMustCompile();
     void              setupExportFile();
     bool              isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
-    virtual JobResult preCompile(Job* ownerJob)                         = 0;
+    virtual JobResult preCompile(Job* ownerJob, int preCompileIndex)    = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
-
-    bool       mustCompile         = true;
-    Module*    module              = nullptr;
-    uint64_t   timeExportFile      = 0;
-    bool       exportFileGenerated = false;
-    OutputFile bufferSwg;
 
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);
@@ -45,4 +41,13 @@ struct Backend
     bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitPublicSwg(Module* moduleToGen, Scope* scope);
+
+    OutputFile bufferSwg;
+
+    Module*  module               = nullptr;
+    uint64_t timeExportFile       = 0;
+    int      numPreCompileBuffers = 0;
+
+    bool mustCompile         = true;
+    bool exportFileGenerated = false;
 };

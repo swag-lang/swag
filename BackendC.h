@@ -31,30 +31,31 @@ struct BackendC : public Backend
     {
     }
 
-    JobResult preCompile(Job* ownerJob) override;
+    JobResult preCompile(Job* ownerJob, int preCompileIndex) override;
     bool      compile(const BuildParameters& backendParameters) override;
 
-    bool emitRuntime();
-    bool emitDataSegment(DataSegment* dataSegment);
-    void emitArgcArgv();
-    bool emitMain();
-    bool emitAllFunctionBody(Job* ownerJob);
-    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob);
-    bool emitAllFuncSignatureInternalC();
-    bool emitAllFuncSignatureInternalC(Module* moduleToGen);
-    bool emitGlobalInit();
-    bool emitGlobalDrop();
+    bool emitRuntime(OutputFile& bufferC, int preCompileIndex);
+    bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex);
+    void emitArgcArgv(OutputFile& bufferC);
+    bool emitMain(OutputFile& bufferC);
+    bool emitAllFunctionBody(OutputFile& bufferC, Job* ownerJob, int preCompileIndex);
+    bool emitAllFunctionBody(OutputFile& bufferC, Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full);
+    bool emitAllFuncSignatureInternalC(OutputFile& bufferC);
+    bool emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen);
+    bool emitGlobalInit(OutputFile& bufferC);
+    bool emitGlobalDrop(OutputFile& bufferC);
 
-    bool        emitPublic(Module* moduleToGen, Scope* scope);
+    bool        emitPublic(OutputFile& bufferC, Module* moduleToGen, Scope* scope);
     static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
     static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
-    static bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
+    static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
     static void emitFuncSignatureInternalC(Concat& concat, ByteCode* bc);
     static bool emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc);
     static bool emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
-    OutputFile             bufferC;
-    BackendCPreCompilePass pass = BackendCPreCompilePass::Init;
+    OutputFile             bufferCFiles[MAX_PRECOMPILE_BUFFERS];
+    BackendCPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendCPreCompilePass::Init};
+    mutex                  lock;
 
 #ifdef _WIN32
     BackendCCompilerVS compiler;

@@ -86,8 +86,6 @@ typedef struct swag_process_infos_t {
 	swag_tls_id_t		contextTlsId;
 	swag_context_t*		defaultContext;
 } swag_process_infos_t;
-
-swag_process_infos_t __process_infos = {0};
 )";
 
 static constexpr const char* g_Intrinsics = R"(
@@ -199,11 +197,21 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 
 )";
 
-bool BackendC::emitRuntime()
+bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
 {
     emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     emitSeparator(bufferC, "INTRINSICS");
     CONCAT_FIXED_STR(bufferC, g_Intrinsics);
+
+    if (preCompileIndex == 0)
+    {
+        CONCAT_FIXED_STR(bufferC, "swag_process_infos_t __process_infos = {0};\n");
+    }
+    else
+    {
+		CONCAT_FIXED_STR(bufferC, "extern swag_process_infos_t __process_infos;\n");
+    }
+
     return true;
 }

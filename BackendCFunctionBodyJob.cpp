@@ -41,7 +41,7 @@ JobResult BackendCFunctionBodyJob::execute()
     {
         req.buffer     = (char*) firstBucket->datas;
         req.bufferSize = firstBucket->count;
-        backend->bufferC.save(&req);
+        backend->bufferCFiles[precompileIndex].save(&req);
         firstBucket = firstBucket->nextBucket;
     }
 

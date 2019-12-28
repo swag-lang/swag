@@ -2,45 +2,52 @@
 #include "BackendC.h"
 #include "Workspace.h"
 #include "Job.h"
+#include "OutputFile.h"
 
-JobResult BackendC::preCompile(Job* ownerJob)
+JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
 {
-    if (pass == BackendCPreCompilePass::Init)
+    OutputFile& bufferC = bufferCFiles[preCompileIndex];
+
+    if (pass[preCompileIndex] == BackendCPreCompilePass::Init)
     {
-        pass = BackendCPreCompilePass::FunctionBodies;
+        pass[preCompileIndex] = BackendCPreCompilePass::FunctionBodies;
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
         auto targetPath = g_Workspace.cachePath.string();
-        bufferC.path    = targetPath + "/" + module->name + ".c";
+        bufferC.path    = targetPath + "/" + format("%s%d", module->name.c_str(), preCompileIndex) + ".c";
 
         // Do we need to generate the file ?
         if (!mustCompile)
             return JobResult::ReleaseJob;
 
-        emitRuntime();
-        emitDataSegment(&module->mutableSegment);
-        emitDataSegment(&module->constantSegment);
-        emitAllFuncSignatureInternalC();
-        emitPublic(g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
-        emitPublic(module, module->scopeRoot);
+        emitRuntime(bufferC, preCompileIndex);
+        emitDataSegment(bufferC, &module->mutableSegment, preCompileIndex);
+        emitDataSegment(bufferC, &module->constantSegment, preCompileIndex);
+        emitAllFuncSignatureInternalC(bufferC);
+        emitPublic(bufferC, g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
+        emitPublic(bufferC, module, module->scopeRoot);
         emitSeparator(bufferC, "FUNCTIONS");
         bufferC.flush(false);
     }
 
-    if (pass == BackendCPreCompilePass::FunctionBodies)
+    if (pass[preCompileIndex] == BackendCPreCompilePass::FunctionBodies)
     {
-        pass = BackendCPreCompilePass::End;
-        emitAllFunctionBody(ownerJob);
+        pass[preCompileIndex] = BackendCPreCompilePass::End;
+        emitAllFunctionBody(bufferC, ownerJob, preCompileIndex);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (pass == BackendCPreCompilePass::End)
+    if (pass[preCompileIndex] == BackendCPreCompilePass::End)
     {
-        emitSeparator(bufferC, "INIT");
-        emitGlobalInit();
-        emitGlobalDrop();
-        emitMain();
+        if (preCompileIndex == 0)
+        {
+            emitSeparator(bufferC, "INIT");
+            emitGlobalInit(bufferC);
+            emitGlobalDrop(bufferC);
+            emitMain(bufferC);
+        }
+
         bufferC.flush(true);
     }
 

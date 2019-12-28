@@ -264,7 +264,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
 bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
 {
     CONCAT_FIXED_STR(concat, "SWAG_EXPORT ");
-    SWAG_CHECK(emitForeignFuncSignature(moduleToGen, concat, typeFunc, node, true));
+    SWAG_CHECK(emitForeignFuncSignature(concat, moduleToGen, typeFunc, node, true));
     CONCAT_FIXED_STR(concat, " {\n");
 
     // Compute number of registers
@@ -465,7 +465,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     return true;
 }
 
-bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport)
+bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport)
 {
     Utf8 returnType;
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -558,7 +558,7 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
     CONCAT_FIXED_STR(concat, ")");
 }
 
-bool BackendC::emitAllFuncSignatureInternalC(Module* moduleToGen)
+bool BackendC::emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
 
@@ -582,7 +582,6 @@ bool BackendC::emitAllFuncSignatureInternalC(Module* moduleToGen)
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        CONCAT_FIXED_STR(bufferC, "static ");
         emitFuncSignatureInternalC(bufferC, one);
         CONCAT_FIXED_STR(bufferC, ";\n");
     }
@@ -591,12 +590,12 @@ bool BackendC::emitAllFuncSignatureInternalC(Module* moduleToGen)
     return true;
 }
 
-bool BackendC::emitAllFuncSignatureInternalC()
+bool BackendC::emitAllFuncSignatureInternalC(OutputFile& bufferC)
 {
     emitSeparator(bufferC, "PROTOTYPES");
-    if (!emitAllFuncSignatureInternalC(g_Workspace.bootstrapModule))
+    if (!emitAllFuncSignatureInternalC(bufferC, g_Workspace.bootstrapModule))
         return false;
-    if (!emitAllFuncSignatureInternalC(module))
+    if (!emitAllFuncSignatureInternalC(bufferC, module))
         return false;
 
     // Import functions
@@ -606,7 +605,7 @@ bool BackendC::emitAllFuncSignatureInternalC()
         {
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
-            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node, false));
+            SWAG_CHECK(emitForeignFuncSignature(bufferC, module, typeFunc, node, false));
             CONCAT_FIXED_STR(bufferC, ";\n");
         }
     }
@@ -625,7 +624,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         CONCAT_FIXED_STR(concat, "#ifdef SWAG_HAS_TEST\n");
 
     // Signature
-    CONCAT_FIXED_STR(concat, "static ");
     emitFuncSignatureInternalC(concat, bc);
     CONCAT_FIXED_STR(concat, " {\n");
 
@@ -1742,24 +1740,52 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     return ok;
 }
 
-bool BackendC::emitAllFunctionBody(Job* ownerJob)
+bool BackendC::emitAllFunctionBody(OutputFile& bufferC, Job* ownerJob, int preCompileIndex)
 {
-    if (!emitAllFunctionBody(g_Workspace.bootstrapModule, ownerJob))
-        return false;
-    if (!emitAllFunctionBody(module, ownerJob))
+    if (preCompileIndex == 0)
+    {
+        if (!emitAllFunctionBody(bufferC, g_Workspace.bootstrapModule, ownerJob, preCompileIndex, true))
+            return false;
+    }
+
+    if (!emitAllFunctionBody(bufferC, module, ownerJob, preCompileIndex, false))
         return false;
     return true;
 }
 
-bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob)
+bool BackendC::emitAllFunctionBody(OutputFile& bufferC, Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full)
 {
     SWAG_ASSERT(moduleToGen);
 
     bool                     ok         = true;
     int                      batchCount = 8;
     BackendCFunctionBodyJob* job        = nullptr;
-    for (auto one : moduleToGen->byteCodeFunc)
+
+    // Batch functions between files
+    int start = 0;
+    int end   = 0;
+    int size  = (int) moduleToGen->byteCodeFunc.size();
+
+    if (full)
     {
+        end = size;
+    }
+    else if (preCompileIndex == 0)
+    {
+        start = 0;
+        end   = size / numPreCompileBuffers;
+    }
+    else
+    {
+        start = preCompileIndex * (size / numPreCompileBuffers);
+        end   = start + (size / numPreCompileBuffers);
+        if (preCompileIndex == numPreCompileBuffers - 1)
+            end = size;
+    }
+
+    for (int i = start; i < end; i++)
+    {
+        auto one = moduleToGen->byteCodeFunc[i];
         if (one->node)
         {
             auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
@@ -1777,10 +1803,11 @@ bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob)
 
         if (!job)
         {
-            job               = g_Pool_backendCFunctionBodyJob.alloc();
-            job->module       = moduleToGen;
-            job->dependentJob = ownerJob;
-            job->backend      = this;
+            job                  = g_Pool_backendCFunctionBodyJob.alloc();
+            job->module          = moduleToGen;
+            job->dependentJob    = ownerJob;
+            job->precompileIndex = preCompileIndex;
+            job->backend         = this;
         }
 
         job->byteCodeFunc.push_back(one);
@@ -1797,13 +1824,13 @@ bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob)
     return ok;
 }
 
-bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
+bool BackendC::emitPublic(OutputFile& buffeC, Module* moduleToGen, Scope* scope)
 {
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
 
     for (auto child : scope->childScopes)
-        SWAG_CHECK(emitPublic(moduleToGen, child));
+        SWAG_CHECK(emitPublic(buffeC, moduleToGen, child));
 
     return true;
 }

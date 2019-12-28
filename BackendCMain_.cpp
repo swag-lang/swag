@@ -5,7 +5,7 @@
 #include "AstNode.h"
 #include "Context.h"
 
-void BackendC::emitArgcArgv()
+void BackendC::emitArgcArgv(OutputFile& bufferC)
 {
     CONCAT_FIXED_STR(bufferC, "static void convertArgcArgv(int argc, char *argv[])\n");
     CONCAT_FIXED_STR(bufferC, "{\n");
@@ -25,12 +25,12 @@ void BackendC::emitArgcArgv()
     CONCAT_FIXED_STR(bufferC, "}\n\n");
 }
 
-bool BackendC::emitMain()
+bool BackendC::emitMain(OutputFile& bufferC)
 {
     emitSeparator(bufferC, "MAIN");
 
     CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_BINARY\n");
-    emitArgcArgv();
+    emitArgcArgv(bufferC);
     CONCAT_FIXED_STR(bufferC, "int main(int argc, char *argv[])\n");
     CONCAT_FIXED_STR(bufferC, "{\n");
 
