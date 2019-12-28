@@ -92,16 +92,8 @@ int main(int argc, const char* argv[])
     }
     else if (command == "env")
     {
-        if (!OS::setSwagFolder(g_CommandLine.exePath.parent_path().string()))
-        {
-            g_Log.error(format("cannot set environment variable 'SWAG_FOLDER' to '%s'\n", g_CommandLine.exePath.parent_path().string().c_str()));
-            exit(-1);
-        }
-        else
-        {
-            g_Log.message(format("environment variable 'SWAG_FOLDER' is now '%s'\n", g_CommandLine.exePath.parent_path().string().c_str()));
-            exit(0);
-        }
+        OS::setSwagFolder(g_CommandLine.exePath.parent_path().string());
+        exit(0);
     }
     else if (command == "test")
     {

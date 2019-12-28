@@ -482,10 +482,58 @@ namespace OS
         ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_OK | MB_ICONERROR);
     }
 
-    bool setSwagFolder(const string& folder)
+    void setSwagFolder(const string& folder)
     {
+        // SWAG_FOLDER
         LONG lRes = RegSetKeyValueA(HKEY_CURRENT_USER, "Environment", "SWAG_FOLDER", REG_SZ, folder.c_str(), (DWORD) folder.size() + 1);
-        return lRes == ERROR_SUCCESS;
+        if (lRes != ERROR_SUCCESS)
+        {
+            g_Log.error(format("cannot set environment variable 'SWAG_FOLDER' to '%s'\n", folder.c_str()));
+            exit(-1);
+        }
+
+        g_Log.message(format("'SWAG_FOLDER' is '%s'\n", folder.c_str()));
+
+        // PATH
+        HKEY hKey;
+        lRes = RegOpenKeyExA(HKEY_CURRENT_USER, "Environment", 0, KEY_READ | KEY_WRITE, &hKey);
+        if (lRes != ERROR_SUCCESS)
+        {
+            g_Log.error("cannot access environment variable 'PATH'\n");
+            exit(-1);
+        }
+
+        char  szBuffer[512];
+        DWORD dwBufferSize = sizeof(szBuffer);
+        lRes               = RegQueryValueExA(hKey, "Path", 0, NULL, (LPBYTE) szBuffer, &dwBufferSize);
+        if (lRes != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            g_Log.error("cannot access environment variable 'PATH'\n");
+            exit(-1);
+        }
+
+        if (!strstr(szBuffer, folder.c_str()))
+        {
+            strcat_s(szBuffer, ";");
+            strcat_s(szBuffer, folder.c_str());
+            lRes = RegSetValueExA(hKey, "Path", 0, REG_SZ, (const BYTE *) szBuffer, (DWORD) strlen(szBuffer) + 1);
+            if (lRes != ERROR_SUCCESS)
+            {
+                RegCloseKey(hKey);
+                g_Log.error(format("cannot add '%s' to the 'PATH' environment variable\n", folder.c_str()));
+                exit(-1);
+            }
+
+            g_Log.message("'PATH' environment variable has been changed\n\n");
+            g_Log.message(szBuffer);
+        }
+        else
+        {
+            g_Log.message("'PATH' is up to date\n");
+        }
+
+        RegCloseKey(hKey);
     }
 
     bool touchFile(const fs::path& path)
