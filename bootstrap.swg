@@ -31,7 +31,7 @@ namespace swag
     attr macro() -> "func"
     attr mixin() -> "func"
 	attr test() -> "func"
-	attr foreign(module: string = "", function: string = "") -> "func"
+	attr foreign(module: string, function: string = "") -> "func"
 	attr waitsem(ms: s32) -> "func"
 	attr pack() -> "struct"
 	attr flags() -> "enum"

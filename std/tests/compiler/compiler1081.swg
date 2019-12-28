@@ -1,8 +1,11 @@
-typealias HANDLE: *void
-
-#[swag.foreign]
-func GetStdHandle(nStdHandle: u32)->HANDLE;
-#test
+#if swag.WINDOWS
 {
-	GetStdHandle(cast(u32) -10)
+    typealias HANDLE: *void
+
+    #[swag.foreign("kernel32")]
+    func GetStdHandle(nStdHandle: u32)->HANDLE;
+    #test
+    {
+        GetStdHandle(cast(u32) -10)
+    }
 }
