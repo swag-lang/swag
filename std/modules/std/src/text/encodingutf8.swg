@@ -1,11 +1,6 @@
 namespace std.text
 {
-    public struct EncodingUtf8
-    {
-
-    }
-
-    impl EncodingUtf8
+    namespace utf8
     {
         public
         {
