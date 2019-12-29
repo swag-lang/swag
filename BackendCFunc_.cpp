@@ -192,6 +192,13 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
             pushParams.pop_back();
             CONCAT_STR_INT_STR(concat, ", r[", index, "].u32");
         }
+        else if (typeParam->kind == TypeInfoKind::Interface)
+        {
+            CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
+            index = pushParams.back();
+            pushParams.pop_back();
+            CONCAT_STR_INT_STR(concat, ", (void*)r[", index, "].pointer");
+        }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
             CONCAT_STR_INT_STR(concat, "r[", index, "]");
