@@ -1866,25 +1866,25 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
 
     // Everything can be casted to type 'any'
-    if (toType->isNative(NativeTypeKind::Any) && (castFlags & CASTFLAG_BIJECTIF))
-    {
-        if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                toNode->castedTypeInfo = toType;
-                toNode->typeInfo       = fromNode->typeInfo;
-            }
-
-            auto& typeTable = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
-        }
-
-        return true;
-    }
-
     if (toType->isNative(NativeTypeKind::Any))
     {
+        if (castFlags & CASTFLAG_BIJECTIF)
+        {
+            if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                if (!(castFlags & CASTFLAG_EXPLICIT))
+                {
+                    toNode->castedTypeInfo = toType;
+                    toNode->typeInfo       = fromNode->typeInfo;
+                }
+
+                auto& typeTable = context->sourceFile->module->typeTable;
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
+            }
+
+            return true;
+        }
+
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             fromNode->castedTypeInfo = fromNode->typeInfo;
