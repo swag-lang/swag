@@ -4,12 +4,11 @@
     {
     	public func assertMessage(message: string)
 		{
-			var buffer: [1024] u8 = ?
+			var title: [128] u16 = ?
+			count := text.EncodingUni16.fromUtf8(title, "Swag Assertion Failed!")
+			title[count] = 0
 
-			const msg = "toto la fri"
-			memory.copy(buffer, @dataof(msg), @countof(msg) + 1)
-
-			result := MessageBoxA(null, buffer, "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
+			result := MessageBoxW(null, title, title, MB_ICONERROR | MB_CANCELTRYCONTINUE)
 			switch result
 			{
 				case IDCANCEL:
