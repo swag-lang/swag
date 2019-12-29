@@ -1809,8 +1809,9 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
     {
         if (exception)
         {
-            auto       ip = runContext->ip - 1;
-            Diagnostic diag{runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)};
+            auto       ip         = runContext->ip - 1;
+            auto       sourceFile = runContext->bc->sourceFile->module->files[ip->sourceFileIdx];
+            Diagnostic diag{sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)};
             diag.showDiagnosticInfos = true;
             runContext->bc->sourceFile->report(diag);
         }

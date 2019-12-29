@@ -183,6 +183,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         else if (typeParam->isNative(NativeTypeKind::String))
         {
             CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
+            pushParams.pop_back();
         }
         else if (typeParam->kind == TypeInfoKind::Slice)
         {

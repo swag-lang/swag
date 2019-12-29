@@ -1,10 +1,8 @@
 #import "std"
-using std
+using std.diagnostics.debug
 
 //#[swag.printbc]
 #test
 {
-    var arr1: BitArray
-    //var arr2: BitArray
-    //arr1.reserve(128)
+    assert(false)
 }
