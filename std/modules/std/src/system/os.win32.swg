@@ -340,6 +340,7 @@
             func IsDebuggerPresent()->BOOL;
             func DebugBreak();
             func OutputDebugStringA(lpOutputString: LPCSTR);
+			func OutputDebugStringW(lpOutputString: LPCWSTR);
             func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
             func ExitProcess(uExitCode: UINT);
 			func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
