@@ -262,6 +262,19 @@
 		const MB_RIGHT                  = 0x00080000
 		const MB_RTLREADING             = 0x00100000
 
+		const IDOK				= 1
+		const IDCANCEL          = 2
+		const IDABORT           = 3
+		const IDRETRY           = 4
+		const IDIGNORE        	= 5
+		const IDYES           	= 6
+		const IDNO            	= 7
+		const IDCLOSE         	= 8		
+		const IDHELP          	= 9
+		const IDTRYAGAIN      	= 10
+		const IDCONTINUE      	= 11
+		const IDTIMEOUT 		= 32000
+
         struct COORD
         {
             x: WORD

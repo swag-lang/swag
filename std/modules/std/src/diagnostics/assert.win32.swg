@@ -4,8 +4,15 @@
     {
     	public func assertMessage(file: string, line: u32)
 		{
-			MessageBoxA(null, "", "", 0)
-			@assert(false)
+			result := MessageBoxA(null, file, "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
+			switch result
+			{
+				case IDCANCEL:
+					ExitProcess(0xFFFFFFFF)
+				case IDTRYAGAIN:
+					DebugBreak();
+				case IDCONTINUE:
+			}
 		}
 	}
 }
