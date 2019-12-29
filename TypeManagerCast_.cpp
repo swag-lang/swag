@@ -1357,6 +1357,56 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     return true;
 }
 
+bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+
+    // Pointer to pointer
+    if (fromType->kind == TypeInfoKind::Pointer)
+    {
+        if (castFlags & CASTFLAG_EXPLICIT)
+            return true;
+    }
+
+    // Struct to pointer
+    if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface)
+    {
+        if (toTypePointer->ptrCount == 1)
+        {
+            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
+            {
+                if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = toType;
+                }
+
+                return true;
+            }
+        }
+    }
+
+    // => from string to other things
+    if (fromType->isNative(NativeTypeKind::String))
+    {
+        if (toType == g_TypeMgr.typeInfoNull)
+            return true;
+
+        if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toType;
+            }
+
+            return true;
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
@@ -1833,6 +1883,19 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
     }
 
+    if (toType->isNative(NativeTypeKind::Any))
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+            auto& typeTable          = context->sourceFile->module->typeTable;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
+        }
+
+        return true;
+    }
+
     if (fromType->isNative(NativeTypeKind::Any))
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -1850,19 +1913,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
     }
 
-    if (toType->isNative(NativeTypeKind::Any))
-    {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
-            auto& typeTable          = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
-        }
-
-        return true;
-    }
-
+    // Variadic
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
@@ -1908,32 +1959,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::Generic)
         return true;
 
-    // Pointer to pointer
-    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
-    {
-        if (castFlags & CASTFLAG_EXPLICIT)
-            return true;
-    }
-
-    // Struct to pointer
-    if (toType->kind == TypeInfoKind::Pointer && (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface))
-    {
-        auto typePtr = static_cast<TypeInfoPointer*>(toType);
-        if (typePtr->ptrCount == 1)
-        {
-            if (typePtr->finalType->isNative(NativeTypeKind::Void) || typePtr->finalType->isSame(fromType, ISSAME_CAST))
-            {
-                if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
-                }
-
-                return true;
-            }
-        }
-    }
-
     // => to string from other things
     if (toType->isNative(NativeTypeKind::String))
     {
@@ -1965,27 +1990,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    // => from string to other things
-    if (fromType->isNative(NativeTypeKind::String))
-    {
-        if (toType == g_TypeMgr.typeInfoNull)
-            return true;
-
-        if (toType->kind == TypeInfoKind::Pointer)
-        {
-            auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-            if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
-            {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
-                }
-
-                return true;
-            }
-        }
-    }
+    // Cast to pointer
+    if (toType->kind == TypeInfoKind::Pointer)
+        return castToPointer(context, toType, fromType, fromNode, castFlags);
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)
