@@ -85,36 +85,36 @@ bool BackendCCompilerVS::compile()
 {
     auto module = backend->module;
 
-    string         compilerExe, vsTarget;
+    string         compilerExe, compilerPath;
     string         linkArguments;
     vector<string> libPath;
 
     // Get compiler folder
     compilerExe = "cl.exe";
-    if (!getVSTarget(vsTarget))
+    if (!getVSTarget(compilerPath))
     {
         backend->module->error("C compiler backend, cannot locate visual studio folder");
         return false;
     }
 
-    libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
-    vsTarget += R"(\bin\Hostx64\x64\)";
+    libPath.push_back(format(R"(%s\lib\x64)", compilerPath.c_str()));
+    compilerPath += R"(\bin\Hostx64\x64\)";
 
     // Windows sdk folders and version
-    string winSdk, winSdkVersion;
-    if (!getWinSdkFolder(winSdk, winSdkVersion))
+    string winSdkPath, winSdkVersion;
+    if (!getWinSdkFolder(winSdkPath, winSdkVersion))
     {
-        backend->module->error("C compiler backend, cannot locate windows 10 sdk folder");
+        backend->module->error("C compiler backend, cannot locate windows sdk folder");
         return false;
     }
 
-    g_Log.verbose(format("VS vsTarget is '%s'\n", vsTarget.c_str()));
-    g_Log.verbose(format("VS winSdk is '%s'\n", winSdk.c_str()));
+    g_Log.verbose(format("VS compilerPath is '%s'\n", compilerPath.c_str()));
+    g_Log.verbose(format("VS winSdkPath is '%s'\n", winSdkPath.c_str()));
     g_Log.verbose(format("VS winSdkVersion is '%s'\n", winSdkVersion.c_str()));
 
     // Library paths
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdk.c_str(), winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdk.c_str(), winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
 
     string destFile = g_Workspace.targetPath.string() + buildParameters->destFile;
@@ -177,10 +177,10 @@ bool BackendCCompilerVS::compile()
     {
     case BackendOutputType::StaticLib:
     {
-        auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + " /c";
+        auto cmdLineCL = "\"" + compilerPath + compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -195,26 +195,36 @@ bool BackendCCompilerVS::compile()
             libArguments += "\"" + nameObj.string() + "\" ";
         }
 
-        auto cmdLineLIB = "\"" + vsTarget + "lib.exe\" " + libArguments;
+        auto cmdLineLIB = "\"" + compilerPath + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
     }
     break;
 
     case BackendOutputType::DynamicLib:
     case BackendOutputType::Binary:
     {
+        // Registered #foreignlib
         for (auto fl : buildParameters->foreignLibs)
         {
             linkArguments += fl;
             linkArguments += ".lib ";
         }
 
+        // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";
 
-        linkArguments += "kernel32.lib user32.lib ";
+        // This is mandatory under windows
+        linkArguments += "kernel32.lib ";
+        linkArguments += "user32.lib ";
+
+        // Default libraries
+        linkArguments += "/NODEFAULTLIB ";
+        linkArguments += "ucrt.lib ";
+        linkArguments += "vcruntime.lib ";
+        linkArguments += "msvcrt.lib ";
 
         for (const auto& oneLibPath : libPath)
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
@@ -235,10 +245,10 @@ bool BackendCCompilerVS::compile()
             clArguments += "/DSWAG_IS_BINARY ";
         }
 
-        auto cmdLineCL = "\"" + vsTarget + compilerExe + "\" " + clArguments + "/link " + linkArguments;
+        auto cmdLineCL = "\"" + compilerPath + compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, vsTarget, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
     }
     break;
     }
