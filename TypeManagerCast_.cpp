@@ -1374,7 +1374,9 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (toTypePointer->ptrCount == 1)
         {
             auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
+            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
+                toTypePointer->finalType->isSame(fromTypeArray->pointedType, ISSAME_CAST) ||
+                (castFlags & CASTFLAG_EXPLICIT))
             {
                 if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -1393,7 +1395,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (toTypePointer->ptrCount == 1)
         {
             auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
-            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromTypeSlice->pointedType, ISSAME_CAST))
+            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
+                toTypePointer->finalType->isSame(fromTypeSlice->pointedType, ISSAME_CAST))
             {
                 if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -1411,7 +1414,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         if (toTypePointer->ptrCount == 1)
         {
-            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
+            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
+                toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
             {
                 if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
                 {

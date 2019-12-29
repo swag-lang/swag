@@ -4,11 +4,19 @@
     {
     	public func assertMessage(message: string)
 		{
-			var title: [128] u16 = ?
-			count := text.EncodingUni16.fromUtf8(title, "Swag Assertion Failed!")
-			title[count] = 0
+			// User message
+			var messageW: [512] u8 = ?
+			count := text.EncodingUni16.fromUtf8(messageW, message)
+			messageW[count] = 0
+			messageW[count + 1] = 0
 
-			result := MessageBoxW(null, title, title, MB_ICONERROR | MB_CANCELTRYCONTINUE)
+			// Message box title
+			var titleW: [128] u8 = ?
+			count = text.EncodingUni16.fromUtf8(titleW, "Swag Assertion Failed!")
+			titleW[count] = 0
+			titleW[count + 1] = 0
+
+			result := MessageBoxW(null, cast(LPCWSTR) messageW, cast(LPCWSTR) titleW, MB_ICONERROR | MB_CANCELTRYCONTINUE)
 			switch result
 			{
 				case IDCANCEL:

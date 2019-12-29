@@ -9,9 +9,31 @@ namespace std.text
     {
         public
         {
+            /// Returns the number of unicode characters in an utf8 buffer
+            public func getCharCount(buffer: const *u8)->u32
+            {
+                if buffer == null
+                    return 0
+                ptr := buffer
+                cpt := 0'u32
+                var c: char = ?
+                while true
+                {
+                    (ptr, c) = getChar(ptr)
+                    if !c
+                        return cpt
+                    cpt += 1
+                }
+
+                return 0
+            }    
+
             /// Get the unicode character, and the address of the next utf8 character
             public func getChar(buffer: const *u8)->(const *u8, char)
             {
+                if buffer == null
+                    return {null, acast 0}
+
                 ptr := buffer
                 c := deref ptr
                 if c == 0
