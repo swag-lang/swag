@@ -2,93 +2,34 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "swag",
   "patterns": [
-    {
-      "include": "#one-line-comment"
-    },
-    {
-      "include": "#multi-line-comment"
-    },
-    {
-      "include": "#attributes"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#keywords-control"
-    },
-    {
-      "include": "#keywords-decl"
-    },
-    {
-      "include": "#intrinsics"
-    },
-    {
-      "include": "#intrinsics-alias"
-    },
-    {
-      "include": "#intrinsics-invalid"
-    },
-    {
-      "include": "#compiler-function"
-    },
-    {
-      "include": "#compiler"
-    },
-    {
-      "include": "#compiler-invalid"
-    },
-    {
-      "include": "#types"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#var-decl"
-    },
-    {
-      "include": "#storage-modifier"
-    },
-    {
-      "include": "#op"
-    },
-    {
-      "include": "#op-invalid"
-    },
-    {
-      "include": "#constant"
-    },
-    {
-      "include": "#function-call"
-    },
-    {
-      "include": "#struct-name"
-    },
-    {
-      "include": "#literal-binary"
-    },
-    {
-      "include": "#literal-hexa"
-    },
-    {
-      "include": "#literal-float"
-    },
-    {
-      "include": "#literal-float2"
-    },
-    {
-      "include": "#literal-integer"
-    },
-    {
-      "include": "#characters"
-    },
-    {
-      "include": "#operator-character"
-    },
-    {
-      "include": "#code"
-    }
+    { "include": "#one-line-comment" },
+    { "include": "#multi-line-comment" },
+    { "include": "#attributes" },
+    { "include": "#keywords" },
+    { "include": "#keywords-control" },
+    { "include": "#keywords-decl" },
+    { "include": "#intrinsics" },
+    { "include": "#intrinsics-alias" },
+    { "include": "#intrinsics-invalid" },
+    { "include": "#compiler-function" },
+    { "include": "#compiler" },
+    { "include": "#compiler-invalid" },
+    { "include": "#types" },
+    { "include": "#strings" },
+    { "include": "#var-decl" },
+    { "include": "#storage-modifier" },
+    { "include": "#op" },
+    { "include": "#op-invalid" },
+    { "include": "#constant" },
+    { "include": "#function-call"},
+    { "include": "#struct-name" },
+    { "include": "#literal-binary" },
+    { "include": "#literal-hexa" },
+    { "include": "#literal-float" },
+    { "include": "#literal-integer" },
+    { "include": "#characters" },
+    { "include": "#operator-character" },
+    { "include": "#code" }
   ],
   "repository": {
     "one-line-comment": {
@@ -99,10 +40,22 @@
         }
       ]
     },
+    "multi-line-comment": {
+      "name": "comment.line",
+      "begin": "/\\*",
+      "end": "\\*/",
+      "patterns": [
+        {
+          "name": "comment.line",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },    
     "attributes": {
       "patterns": [
         {
-          "name": "meta.tag",
+          "name": "entity.name.tag",
           "match": "(#\\[)(\\w+)(.*)(\\])"
         }
       ]
@@ -142,7 +95,7 @@
     "intrinsics": {
       "patterns": [
         {
-          "name": "entity.name.function",
+          "name": "entity.name.function.intrinsic",
           "match": "(@)\\b(index|sizeof|typeof|kindof|countof|dataof|print|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|target)\\b"
         }
       ]
@@ -150,7 +103,7 @@
     "intrinsics-alias": {
       "patterns": [
         {
-          "name": "entity.name.function",
+          "name": "entity.name.function.intrinsic",
           "match": "(@)(alias)([0-9]*)"
         }
       ]
@@ -166,7 +119,7 @@
     "compiler-function": {
       "patterns": [
         {
-          "name": "meta.preprocessor.function",
+          "name": "entity.name.function.preprocessor",
           "match": "(#)\\b(run|test|init|drop|main)\\b"
         }
       ]
@@ -206,7 +159,7 @@
     "op": {
       "patterns": [
         {
-          "name": "entity.name.function",
+          "name": "entity.name.function.op",
           "match": "\\b(opBinary|opUnary|opAssign|opIndexAssign|opCast|opCount|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
         }
       ]
@@ -247,14 +200,6 @@
         }
       ]
     },
-    "literal-binary": {
-      "patterns": [
-        {
-          "name": "constant.numeric.binary",
-          "match": "0b[01][01_]*"
-        }
-      ]
-    },
     "code": {
       "patterns": [
         {
@@ -263,6 +208,14 @@
         }
       ]
     },
+    "literal-binary": {
+      "patterns": [
+        {
+          "name": "constant.numeric.binary",
+          "match": "0b[01][01_]*"
+        }
+      ]
+    },    
     "literal-hexa": {
       "patterns": [
         {
@@ -276,15 +229,11 @@
         {
           "name": "constant.numeric.float",
           "match": "(\\d[\\d_]*)(\\.\\g<1>)([eE][-+]?\\g<1>)?"
-        }
-      ]
-    },
-    "literal-float2": {
-      "patterns": [
+        },
         {
           "name": "constant.numeric.float",
           "match": "(\\d[\\d_]*)([eE][-+]?\\g<1>)"
-        }
+        }        
       ]
     },
     "literal-integer": {
@@ -311,18 +260,6 @@
         {
           "name": "string.quoted.single",
           "match": "\\'\\w+\\'"
-        }
-      ]
-    },
-    "multi-line-comment": {
-      "name": "comment.line",
-      "begin": "/\\*",
-      "end": "\\*/",
-      "patterns": [
-        {
-          "name": "comment.line",
-          "begin": "/\\*",
-          "end": "\\*/"
         }
       ]
     },

@@ -7,13 +7,21 @@
     "vscode": "^1.41.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Themes"
   ],
   "main": "./extension.js",
   "activationEvents": [
     "onLanguage:swag"
   ],
   "contributes": {
+    "themes": [
+			{
+				"label": "Swag Dark",
+				"uiTheme": "vs-dark",
+				"path": "./themes/swag-dark.json"
+			},
+		],    
     "languages": [
       {
         "id": "swag",

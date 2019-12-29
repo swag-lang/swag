@@ -13,7 +13,7 @@ namespace std
         internal allocator:  IAllocator
         internal padding:    [SmallSizeInternal] u8
     }
-
+    
     impl String
     {
         func free(using self)
