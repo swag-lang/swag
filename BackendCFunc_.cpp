@@ -37,7 +37,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->isNative(NativeTypeKind::String))
     {
         cType = "void*";
         return true;
@@ -83,9 +83,6 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         case NativeTypeKind::Char:
             cType = "swag_char32_t";
             return true;
-        case NativeTypeKind::String:
-            cType = "const char*";
-            return true;
         case NativeTypeKind::Void:
             cType = "void";
             return true;
@@ -103,7 +100,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        if ((returnType->kind == TypeInfoKind::Slice) || (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
             // Return by parameter
         }
@@ -184,12 +183,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         {
             CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
         }
-        else if (typeParam->isNative(NativeTypeKind::String))
-        {
-            CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
-            pushParams.pop_back();
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             CONCAT_STR_INT_STR(concat, "(void*)r[", index, "].pointer");
             index = pushParams.back();
@@ -255,7 +249,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     }
 
     // Return by parameter
-    if (returnType->kind == TypeInfoKind::Slice)
+    if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
     {
         if (numCallParams)
             concat.addChar(',');
@@ -319,7 +313,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
@@ -373,10 +367,6 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             case NativeTypeKind::Char:
                 concat.addStringFormat("\trr%d.ch = %s;\n", idx, param->namedParam.c_str());
                 break;
-            case NativeTypeKind::String:
-                concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str());
-                concat.addStringFormat("rr%d.u32 = %s ? __strlen(%s) : 0;\n", idx + 1, param->namedParam.c_str(), param->namedParam.c_str());
-                break;
             default:
                 return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
             }
@@ -409,7 +399,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
-        if (returnType->kind == TypeInfoKind::Slice)
+        if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
         {
             CONCAT_FIXED_STR(concat, "\t*((void **) result) = rr0.pointer;\n");
             CONCAT_FIXED_STR(concat, "\t*((void **) result + 1) = rr1.pointer;\n");
@@ -509,7 +499,7 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
             buffer.addChar(' ');
             buffer.addString(param->name);
 
-            if (param->typeInfo->kind == TypeInfoKind::Slice)
+            if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
             {
                 CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
                 buffer.addString(param->name);

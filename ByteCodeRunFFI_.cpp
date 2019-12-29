@@ -100,9 +100,9 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         return &ffi_type_pointer;
     if (typeInfo->kind == TypeInfoKind::Slice)
         return &ffi_type_pointer;
-    if (typeInfo->kind == TypeInfoKind::Interface)
-        return &ffi_type_pointer;
     if (typeInfo->isNative(NativeTypeKind::String))
+        return &ffi_type_pointer;
+    if (typeInfo->kind == TypeInfoKind::Interface)
         return &ffi_type_pointer;
 
     if (typeInfo->kind != TypeInfoKind::Native)
@@ -163,12 +163,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             return;
         }
 
-        if (typeParam->isNative(NativeTypeKind::String))
-        {
-            ffiArgsValues.push_back(&sp->pointer);
-            sp += 2;
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             ffiArgsValues.push_back(&sp->pointer);
             sp++;
@@ -225,7 +220,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         // Special return
-        if (returnType->kind == TypeInfoKind::Slice)
+        if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
         {
             numParameters++;
             ffiArgs.push_back(&ffi_type_pointer);

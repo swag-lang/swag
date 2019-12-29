@@ -122,7 +122,7 @@ namespace std
                     buffer[val] ^= shift
                 else
                     buffer[val] |= shift
-            }               
+            }       
         }
     }
 }
