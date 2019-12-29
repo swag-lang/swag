@@ -86,19 +86,24 @@ bool BackendCCompilerVS::compile()
     auto module = backend->module;
 
     string         compilerExe, compilerPath;
-    string         linkArguments;
     vector<string> libPath;
 
-    // Get compiler folder
-    compilerExe = "cl.exe";
-    if (!getVSTarget(compilerPath))
+    // Get visual studio folder
+    string visualStudioPath;
+    if (!getVSTarget(visualStudioPath))
     {
         backend->module->error("C compiler backend, cannot locate visual studio folder");
         return false;
     }
 
-    libPath.push_back(format(R"(%s\lib\x64)", compilerPath.c_str()));
-    compilerPath += R"(\bin\Hostx64\x64\)";
+    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
+    libPath.push_back(format(R"(%s\lib\x64)", visualStudioPath.c_str()));
+
+    // Compiler
+    compilerExe  = "cl.exe";
+    compilerPath = visualStudioPath + R"(\bin\Hostx64\x64\)";
+    //compilerExe = "clang-cl.exe";
+    //compilerPath = "f:/swag/.out/";
 
     // Windows sdk folders and version
     string winSdkPath, winSdkVersion;
@@ -173,6 +178,8 @@ bool BackendCCompilerVS::compile()
 
     uint32_t numErrors  = 0;
     string   resultFile = getResultFile();
+    string   linkArguments;
+
     switch (buildParameters->type)
     {
     case BackendOutputType::StaticLib:
