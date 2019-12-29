@@ -7,9 +7,9 @@
 			var buffer: [1024] u8 = ?
 
 			const msg = "toto la fri"
-			memory.copy(&buffer[0], @dataof(msg), @countof(msg) + 1)
+			memory.copy(buffer, @dataof(msg), @countof(msg) + 1)
 
-			result := MessageBoxA(null, &buffer[0], "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
+			result := MessageBoxA(null, buffer, "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
 			switch result
 			{
 				case IDCANCEL:

@@ -495,7 +495,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
             }
 
-            if (node->type && node->type->typeInfo->kind != TypeInfoKind::Slice)
+            if (node->type &&
+                node->type->typeInfo->kind != TypeInfoKind::Slice &&
+                node->type->typeInfo->kind != TypeInfoKind::Pointer)
             {
                 SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report({node->assignment, "affect not allowed from an array"}));
             }
