@@ -15,6 +15,7 @@
         typealias LPVOID:			*void
         typealias LPCVOID:			const *void
         typealias LPCSTR:			const *u8
+		typealias LPCWSTR:			const *u16
         typealias LPDWORD:			*DWORD
         typealias LPOVERLAPPED:		*DWORD
         typealias DWORD_PTR:		u64
@@ -354,6 +355,7 @@
 			func SetCursorPos(x, y: s32);
 			func ShowCursor(show: BOOL);
 			func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
+			func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
 		}
     }
 }
