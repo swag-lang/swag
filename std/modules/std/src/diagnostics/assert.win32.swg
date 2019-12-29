@@ -5,9 +5,10 @@
     	public func assertMessage(message: string)
 		{
 			// User message
-			var messageW: [512] u16 = ?
+			var messageW: [512] u16
 			count := text.unicode16.fromUtf8(messageW, message)
-			messageW[count] = 0
+			count2 := text.unicode16.fromUtf8([&messageW[count], 512 - count], "toto")
+			messageW[count + count2] = 0
 
 			// Message box title
 			var titleW: [128] u16 = ?
