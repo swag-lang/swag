@@ -2,9 +2,14 @@
 {
     namespace std.os
     {
-    	public func assertMessage(file: string, line: u32)
+    	public func assertMessage(message: string)
 		{
-			result := MessageBoxA(null, file, "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
+			var buffer: [1024] u8 = ?
+
+			const msg = "toto la fri"
+			memory.copy(&buffer[0], @dataof(msg), @countof(msg) + 1)
+
+			result := MessageBoxA(null, &buffer[0], "Swag Assertion Failed!", MB_ICONERROR | MB_CANCELTRYCONTINUE)
 			switch result
 			{
 				case IDCANCEL:

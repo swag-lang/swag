@@ -1,12 +1,12 @@
 namespace std.diagnostics.debug
 {
 	#[swag.inline]
-	public func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
+	public func assert(expr: bool, message: string = null)
 	{
 		#if swag.ASSERT
 		{
 			if !expr
-				os.assertMessage(file, line)
+				os.assertMessage(message)
 		}
 	}
 }

@@ -14,7 +14,7 @@
 		typealias LONG: 			s32
         typealias LPVOID:			*void
         typealias LPCVOID:			const *void
-        typealias LPCSTR:			string
+        typealias LPCSTR:			const *u8
         typealias LPDWORD:			*DWORD
         typealias LPOVERLAPPED:		*DWORD
         typealias DWORD_PTR:		u64

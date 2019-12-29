@@ -237,6 +237,11 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         SWAG_ASSERT(node->resolvedSymbolOverload);
         inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
+    {
+        auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
+        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
+    }
     else
     {
         return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->name.c_str()).c_str());

@@ -1934,34 +1934,56 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    // String <=> null
-    if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
+    // => to string from other things
+    if (toType->isNative(NativeTypeKind::String))
     {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->typeInfo       = toType;
-            fromNode->castedTypeInfo = g_TypeMgr.typeInfoNull;
-        }
-
-        return true;
-    }
-
-    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeTypeKind::String))
-        return true;
-
-    // const [..] u8 to string, this is possible !
-    if (toType->isNative(NativeTypeKind::String) && fromType->kind == TypeInfoKind::Slice)
-    {
-        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-        if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
+        if (fromType == g_TypeMgr.typeInfoNull)
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+                fromNode->typeInfo       = toType;
+                fromNode->castedTypeInfo = g_TypeMgr.typeInfoNull;
             }
 
             return true;
+        }
+
+        // const [..] u8 to string, this is possible !
+        if (fromType->kind == TypeInfoKind::Slice)
+        {
+            auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+            if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
+            {
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+                }
+
+                return true;
+            }
+        }
+    }
+
+    // => from string to other things
+    if (fromType->isNative(NativeTypeKind::String))
+    {
+        if (toType == g_TypeMgr.typeInfoNull)
+            return true;
+
+        if (toType->kind == TypeInfoKind::Pointer)
+        {
+            auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+            if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
+            {
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = toType;
+                }
+
+                return true;
+            }
         }
     }
 

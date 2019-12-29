@@ -2,11 +2,18 @@
 #include "Ast.h"
 #include "SourceFile.h"
 #include "SemanticJob.h"
+#include "TypeManager.h"
 
 namespace Ast
 {
     bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
     {
+        if (typeInfo == g_TypeMgr.typeInfoNull)
+        {
+            CONCAT_FIXED_STR(concat, "null");
+            return true;
+        }
+
         if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_CHECK(Ast::output(concat, node));

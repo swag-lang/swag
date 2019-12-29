@@ -4,13 +4,13 @@ namespace std.memory
     public
     {
         /// Copy one block of memory to a given address
-        func copy(dest, src: *void, size: u32)
+        func copy(dest: *void, src: const *void, size: u32)
         {
             if size @memcpy(dest, src, size)
         }
 
         /// Compare two blocks of memory
-        func compare(dest, src: *void, size: u32)->s32
+        func compare(dest, src: const *void, size: u32)->s32
         {
             if !size return 0
             return @memcmp(dest, src, size)
