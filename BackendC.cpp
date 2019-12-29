@@ -3,6 +3,18 @@
 #include "Workspace.h"
 #include "Job.h"
 #include "OutputFile.h"
+#ifdef _WIN32
+#include "BackendCCompilerVS.h"
+#endif
+
+bool BackendC::check()
+{
+#ifdef _WIN32
+    compiler = new BackendCCompilerVS(this);
+#endif
+
+    return compiler->check();
+}
 
 JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
 {
@@ -56,7 +68,8 @@ JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
 
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
-    compiler.buildParameters = &buildParameters;
+    SWAG_ASSERT(compiler);
+    compiler->buildParameters = &buildParameters;
     if (!mustCompile)
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)
@@ -69,5 +82,5 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
     g_Log.messageHeaderCentered(header, module->name.c_str());
 
-    return compiler.compile();
+    return compiler->compile();
 }

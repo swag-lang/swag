@@ -1,9 +1,6 @@
 #pragma once
 #include "Backend.h"
 #include "OutputFile.h"
-#ifdef _WIN32
-#include "BackendCCompilerVS.h"
-#endif
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
@@ -15,6 +12,7 @@ struct ByteCodeInstruction;
 struct DataSegment;
 struct Utf8;
 struct Job;
+struct BackendCCompiler;
 
 enum class BackendCPreCompilePass
 {
@@ -27,10 +25,10 @@ struct BackendC : public Backend
 {
     BackendC(Module* mdl)
         : Backend{mdl}
-        , compiler{this}
     {
     }
 
+    bool      check() override;
     JobResult preCompile(Job* ownerJob, int preCompileIndex) override;
     bool      compile(const BuildParameters& backendParameters) override;
 
@@ -56,8 +54,5 @@ struct BackendC : public Backend
     OutputFile             bufferCFiles[MAX_PRECOMPILE_BUFFERS];
     BackendCPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendCPreCompilePass::Init};
     mutex                  lock;
-
-#ifdef _WIN32
-    BackendCCompilerVS compiler;
-#endif
+    BackendCCompiler*      compiler = nullptr;
 };

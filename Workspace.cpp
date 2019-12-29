@@ -61,7 +61,8 @@ void Workspace::addBootstrap()
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
     bootstrapModule = g_Allocator.alloc<Module>();
-    bootstrapModule->setup("");
+    if (!bootstrapModule->setup(""))
+        exit(-1);
     modules.push_back(bootstrapModule);
 
     auto     file        = g_Allocator.alloc<SourceFile>();

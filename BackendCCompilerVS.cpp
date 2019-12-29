@@ -6,6 +6,13 @@
 #include "BackendCCompilerVS.h"
 #include "Workspace.h"
 
+mutex  lockCheck;
+string visualStudioPath;
+string winSdkPath;
+string winSdkVersion;
+string compilerExe;
+string compilerPath;
+
 static bool getVSTarget(string& vsTarget)
 {
     vector<string> toTest;
@@ -81,23 +88,31 @@ static bool getWinSdkFolder(string& libPath, string& libVersion)
     return !libPath.empty() && !libVersion.empty();
 }
 
-bool BackendCCompilerVS::compile()
+bool BackendCCompilerVS::check()
 {
-    auto module = backend->module;
+    if (!g_CommandLine.backendOutput)
+        return true;
 
-    string         compilerExe, compilerPath;
-    vector<string> libPath;
+    // Need to be done only once
+    unique_lock lk(lockCheck);
+    if (!visualStudioPath.empty())
+        return true;
 
-    // Get visual studio folder
-    string visualStudioPath;
+    // Visual studio folder
+    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
+    // For clang-cl, it seems that it can find the folder itself
     if (!getVSTarget(visualStudioPath))
     {
-        backend->module->error("C compiler backend, cannot locate visual studio folder");
+        g_Log.error("error: c backend: cannot locate visual studio folder");
         return false;
     }
 
-    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-    libPath.push_back(format(R"(%s\lib\x64)", visualStudioPath.c_str()));
+    // Windows sdk folders and version
+    if (!getWinSdkFolder(winSdkPath, winSdkVersion))
+    {
+        g_Log.error("error: c backend: cannot locate windows sdk folder");
+        return false;
+    }
 
     // Compiler
     compilerExe  = "cl.exe";
@@ -105,21 +120,33 @@ bool BackendCCompilerVS::compile()
     //compilerExe = "clang-cl.exe";
     //compilerPath = "f:/swag/.out/";
 
-    // Windows sdk folders and version
-    string winSdkPath, winSdkVersion;
-    if (!getWinSdkFolder(winSdkPath, winSdkVersion))
+    auto fullPath = compilerPath + compilerExe;
+    if (!fs::exists(fullPath))
     {
-        backend->module->error("C compiler backend, cannot locate windows sdk folder");
+        g_Log.error(format("error: c backend: cannot locate compiler '%s'", fullPath.c_str()));
         return false;
     }
+
+    return true;
+}
+
+bool BackendCCompilerVS::compile()
+{
+    auto           module = backend->module;
+    vector<string> libPath;
 
     g_Log.verbose(format("VS compilerPath is '%s'\n", compilerPath.c_str()));
     g_Log.verbose(format("VS winSdkPath is '%s'\n", winSdkPath.c_str()));
     g_Log.verbose(format("VS winSdkVersion is '%s'\n", winSdkVersion.c_str()));
 
-    // Library paths
+    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
+    libPath.push_back(format(R"(%s\lib\x64)", visualStudioPath.c_str()));
+
+    // Windows sdk library paths
     libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
     libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
+
+    // Modules
     libPath.push_back(g_Workspace.targetPath.string());
 
     string destFile = g_Workspace.targetPath.string() + buildParameters->destFile;

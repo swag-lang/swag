@@ -34,7 +34,7 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    void setup(const string& moduleName);
+    bool setup(const string& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);

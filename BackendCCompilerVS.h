@@ -8,5 +8,6 @@ struct BackendCCompilerVS : public BackendCCompiler
     {
     }
 
+    bool check() override;
     bool compile() override;
 };

@@ -9,7 +9,7 @@
 #include "TypeManager.h"
 #include "BackendC.h"
 
-void Module::setup(const string& moduleName)
+bool Module::setup(const string& moduleName)
 {
     name   = moduleName;
     nameUp = name;
@@ -36,6 +36,8 @@ void Module::setup(const string& moduleName)
         SWAG_ASSERT(false);
         break;
     }
+
+    return backend->check();
 }
 
 void Module::addFile(SourceFile* file)

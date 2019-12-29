@@ -23,13 +23,15 @@ struct Backend
     {
     }
 
-    void              emitSeparator(Concat& buffer, const char* title);
-    bool              generateExportFile();
-    void              setMustCompile();
-    void              setupExportFile();
-    bool              isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
+    virtual bool      check()                                           = 0;
     virtual JobResult preCompile(Job* ownerJob, int preCompileIndex)    = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
+
+    void emitSeparator(Concat& buffer, const char* title);
+    bool generateExportFile();
+    void setMustCompile();
+    void setupExportFile();
+    bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
 
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);
