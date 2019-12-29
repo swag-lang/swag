@@ -194,6 +194,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->alternativeScopes     = funcDecl->alternativeScopes;
     inlineNode->alternativeScopesVars = funcDecl->alternativeScopesVars;
 
+    // We need to add the parent scope of the inlined function (the global one), in order for
+    // the inlined content to be resolved in the same context os the original function
+    auto globalScope = funcDecl->ownerScope;
+    while (!globalScope->isGlobal())
+        globalScope = globalScope->parentScope;
+    inlineNode->alternativeScopes.push_back(globalScope);
+
     // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
     // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
     // they are other stuff here)
@@ -1206,9 +1213,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         else
         {
             scopeHierarchy.insert(startScope);
-            for (auto s : startScope->owner->alternativeScopes)
-                scopeHierarchy.insert(s);
-            scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
+
+            // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+            // relevant and we should not use it
+            if (startScope->kind != ScopeKind::Namespace)
+            {
+                for (auto s : startScope->owner->alternativeScopes)
+                    scopeHierarchy.insert(s);
+                scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
+            }
         }
 
         // Search symbol in all the scopes of the hierarchy

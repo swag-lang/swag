@@ -1,5 +1,6 @@
 namespace std.os
 {
+    using std.diagnostics.debug
     const A = 0
 }
 

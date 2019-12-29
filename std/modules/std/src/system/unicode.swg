@@ -98,28 +98,28 @@ namespace std.unicode
         func isWhiteSpace(c: char)->bool
         {
             if isLatin1(c)
-                return latin1.isWhiteSpace(c)
+                return latin1.isWhiteSpace(cast(u8) c)
             return isSeparator(getCategory(c))
         }
 
         func isLetter(c: char)->bool
         {
             if isLatin1(c)
-                return latin1.isLetter(c)
+                return latin1.isLetter(cast(u8) c)
             return isLetter(getCategory(c))
         }
 
         func isLetterOrDigit(c: char)->bool
         {
             if isLatin1(c)
-                return latin1.isLetterOrDigit(c)
+                return latin1.isLetterOrDigit(cast(u8) c)
             return isLetterOrDigit(getCategory(c))
         }
 
         func isDigit(c: char)->bool
         {
             if isLatin1(c)
-                return latin1.isDigit(c)
+                return latin1.isDigit(cast(u8) c)
             return getCategory(c) == UnicodeCategory.DecimalDigitNumber
         }
     }
