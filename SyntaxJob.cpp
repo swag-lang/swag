@@ -24,9 +24,28 @@ bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
     return false;
 }
 
+bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
+{
+    Utf8 full = "syntax error";
+    if (!msg.empty())
+    {
+        full += ", ";
+        full += msg;
+    }
+
+    error(node, full);
+    return false;
+}
+
 bool SyntaxJob::notSupportedError(const Token& tk)
 {
     error(tk, "not supported (yet) ! (syntax)");
+    return false;
+}
+
+bool SyntaxJob::error(AstNode* node, const Utf8& msg)
+{
+    sourceFile->report({node, msg.c_str()});
     return false;
 }
 

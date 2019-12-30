@@ -687,6 +687,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         bool firstDone = false;
         for (auto child : leftNode->childs)
         {
+            SWAG_CHECK(checkIsSingleIdentifier(child));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
@@ -751,6 +752,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         int idx = 0;
         for (auto child : leftNode->childs)
         {
+            SWAG_CHECK(checkIsSingleIdentifier(child));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
@@ -769,7 +771,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Single declaration/affectation
     else
     {
-        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected in variable declaration"));
+        SWAG_CHECK(checkIsSingleIdentifier(leftNode));
         auto identifier = leftNode->childs.back();
         SWAG_CHECK(isValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parent, this);

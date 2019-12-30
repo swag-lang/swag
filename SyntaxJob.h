@@ -27,8 +27,10 @@ struct SyntaxJob : public Job
     bool      constructEmbedded(const Utf8& content, AstNode* parent);
 
     bool error(const Token& tk, const Utf8& msg);
+    bool error(AstNode* node, const Utf8& msg);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
+    bool syntaxError(AstNode* node, const Utf8& msg);
     bool notSupportedError(const Token& tk);
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);

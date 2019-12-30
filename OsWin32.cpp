@@ -479,7 +479,18 @@ namespace OS
         msg += format("File: %s\n", file);
         msg += format("Line: %d\n", line);
         msg += format("Expression: %s", expr);
-        ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_OK | MB_ICONERROR);
+        auto result = ::MessageBoxA(NULL, msg.c_str(), "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
+        switch (result)
+        {
+        case IDCANCEL:
+            exit(-1);
+            break;
+        case IDTRYAGAIN:
+            DebugBreak();
+            break;
+        case IDCONTINUE:
+            break;
+        }
     }
 
     void setSwagFolder(const string& folder)
@@ -517,7 +528,7 @@ namespace OS
         {
             strcat_s(szBuffer, ";");
             strcat_s(szBuffer, folder.c_str());
-            lRes = RegSetValueExA(hKey, "Path", 0, REG_SZ, (const BYTE *) szBuffer, (DWORD) strlen(szBuffer) + 1);
+            lRes = RegSetValueExA(hKey, "Path", 0, REG_SZ, (const BYTE*) szBuffer, (DWORD) strlen(szBuffer) + 1);
             if (lRes != ERROR_SUCCESS)
             {
                 RegCloseKey(hKey);

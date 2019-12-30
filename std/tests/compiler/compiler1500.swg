@@ -1,3 +1,6 @@
+#module compiler1500
+#unittest error
+
 #test
 {
     var toto[512]: u16

@@ -6,8 +6,10 @@
 
 bool SyntaxJob::checkIsSingleIdentifier(AstNode* node)
 {
-    if (node->kind != AstNodeKind::IdentifierRef || node->childs.size() > 1)
-        return syntaxError(node->token, "expected identifier");
+    if (node->kind != AstNodeKind::IdentifierRef ||
+        node->childs.size() > 1 ||
+        node->childs.back()->kind != AstNodeKind::Identifier)
+        return syntaxError(node, "expected identifier");
     return true;
 }
 
