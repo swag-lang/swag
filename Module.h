@@ -19,6 +19,7 @@ struct Backend;
 struct CompilerTarget;
 struct SourceLocation;
 struct AstFuncDecl;
+struct Token;
 
 struct ModuleDependency
 {
@@ -39,7 +40,7 @@ struct Module
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
     bool internalError(const Utf8& msg);
-    bool internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg);
+    bool internalError(AstNode* node, Token& token, const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
     string              path;

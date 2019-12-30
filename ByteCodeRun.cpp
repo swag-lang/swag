@@ -1818,9 +1818,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
-            SWAG_ASSERT(ip->sourceFileIdx < context->sourceFile->module->files.size());
-            auto       sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
-            Diagnostic diag{sourceFile, ip->startLocation, ip->endLocation, "error during bytecode execution, " + context->errorMsg};
+            Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
             diag.showDiagnosticInfos = true;
             context->sourceFile->report(diag);
             return false;
@@ -1855,9 +1853,8 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
     {
         if (exception)
         {
-            auto       ip         = runContext->ip - 1;
-            auto       sourceFile = runContext->bc->sourceFile->module->files[ip->sourceFileIdx];
-            Diagnostic diag{sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)};
+            auto       ip = runContext->ip - 1;
+            Diagnostic diag{ip->node, ip->node->token, format("exception '%X' during bytecode execution !", exceptionCode)};
             diag.showDiagnosticInfos = true;
             runContext->bc->sourceFile->report(diag);
         }

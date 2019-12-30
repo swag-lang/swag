@@ -220,10 +220,9 @@ bool Module::internalError(const Utf8& msg)
     return false;
 }
 
-bool Module::internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg)
+bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
-    auto sourceFile = files[sourceFileIdx];
-    return sourceFile->report({sourceFile, startLocation, endLocation, msg});
+    return node->sourceFile->report({node, node->token, msg});
 }
 
 void Module::deferReleaseChilds(AstNode* node)

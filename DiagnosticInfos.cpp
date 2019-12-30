@@ -30,7 +30,7 @@ void DiagnosticInfos::log()
         if (step.node)
             g_Log.print(format("source line: %d\n", step.node->token.startLocation.line + 1));
         if (step.ip)
-            g_Log.print(format("source line: %d\n", step.ip->startLocation.line + 1));
+            g_Log.print(format("source line: %d\n", step.ip->node->token.startLocation.line + 1));
     }
 
     g_Log.print("----------------\n");

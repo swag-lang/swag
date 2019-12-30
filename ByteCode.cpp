@@ -100,12 +100,12 @@ void ByteCode::print()
         auto ip = out + i;
 
         // Print source code
-        if (ip->startLocation.line != lastLine)
+        if (ip->node->token.startLocation.line != lastLine)
         {
-            if (ip->startLocation.column != ip->endLocation.column)
+            if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
             {
-                lastLine = ip->startLocation.line;
-                auto s   = sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+                lastLine = ip->node->token.startLocation.line;
+                auto s   = sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
                 s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
                 g_Log.setColor(LogColor::DarkYellow);
                 for (int idx = 0; idx < 9; idx++)
@@ -116,7 +116,7 @@ void ByteCode::print()
         }
 
         // Instruction rank
-        if(ip->flags & INSTRUCTION_NO_BACKEND)
+        if (ip->node->flags & AST_NO_BACKEND)
             g_Log.setColor(LogColor::Gray);
         else
             g_Log.setColor(LogColor::Cyan);

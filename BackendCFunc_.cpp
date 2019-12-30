@@ -148,12 +148,12 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
                 CONCAT_FIXED_STR(concat, "rt[0].f64 = (double) ");
                 break;
             default:
-                return moduleToGen->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
             }
         }
         else
         {
-            return moduleToGen->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
+            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
         }
     }
 
@@ -239,12 +239,12 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
                 CONCAT_FIXED_STR(concat, ".ch");
                 break;
             default:
-                return moduleToGen->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param native type");
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param native type");
             }
         }
         else
         {
-            return moduleToGen->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param type");
+            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param type");
         }
     }
 
@@ -654,7 +654,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     vector<uint32_t> pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
-        if (ip->flags & INSTRUCTION_NO_BACKEND)
+        if (ip->node->flags & AST_NO_BACKEND)
             continue;
 
         // Print source code
@@ -662,12 +662,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         {
             if (moduleToGen->buildParameters.target.backendC.writeSourceCode || g_CommandLine.debug)
             {
-                if (ip->startLocation.line != lastLine)
+                if (ip->node->token.startLocation.line != lastLine)
                 {
-                    if (ip->startLocation.column != ip->endLocation.column)
+                    if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
                     {
-                        lastLine = ip->startLocation.line;
-                        auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+                        lastLine = ip->node->token.startLocation.line;
+                        auto s   = bc->sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
                         s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
                         if (!s.empty())
                             s.pop_back();
@@ -702,10 +702,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BoundCheckString:
-            concat.addStringFormat("__assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+            concat.addStringFormat("__assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
         case ByteCodeOp::BoundCheck:
-            concat.addStringFormat("__assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+            concat.addStringFormat("__assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
         case ByteCodeOp::IncPointerVB:
             concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
@@ -1006,32 +1006,32 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::BinOpDivS32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivS64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].s64 = r[%u].s64 / r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].u64 = r[%u].u64 / r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
@@ -1137,52 +1137,52 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::AffectOpDivEqS8:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_int8_t*)(r[%u].pointer) /= r[%u].s8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_int16_t*)(r[%u].pointer) /= r[%u].s16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_int32_t*)(r[%u].pointer) /= r[%u].s32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_int64_t*)(r[%u].pointer) /= r[%u].s64;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU8:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_uint8_t*)(r[%u].pointer) /= r[%u].u8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU16:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_uint16_t*)(r[%u].pointer) /= r[%u].u16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_uint32_t*)(r[%u].pointer) /= r[%u].u32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer) /= r[%u].u64;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             concat.addStringFormat("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32);
             break;
 
@@ -1481,9 +1481,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::IntrinsicAssert:
             if (ip->c.pointer)
-                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer);
+                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->c.pointer);
             else
-                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
