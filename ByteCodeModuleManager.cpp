@@ -5,13 +5,13 @@
 
 ByteCodeModuleManager g_ModuleMgr;
 
-bool ByteCodeModuleManager::isModuleLoaded(const string& name)
+bool ByteCodeModuleManager::isModuleLoaded(const Utf8& name)
 {
     shared_lock lk(mutex);
     return loadedModules.find(name) != loadedModules.end();
 }
 
-bool ByteCodeModuleManager::loadModule(const string& name)
+bool ByteCodeModuleManager::loadModule(const Utf8& name)
 {
     unique_lock lk(mutex);
 
@@ -25,14 +25,15 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     // First try in the target folder (local modules)
     fs::path path = g_Workspace.targetPath;
     path += "\\";
-    path += name;
+    path += name.c_str();
     path += ".dll";
 
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
         // Try on system folders
-        path = name + ".dll";
+        path = name.c_str();
+        path += ".dll";
         h    = OS::loadLibrary(path.string().c_str());
         if (h == NULL)
         {
@@ -50,8 +51,8 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     // Should initialize the module the first time
     // Note that the allocator function of the default context is not set, so the module
     // will initialize it with its internal function
-    string funcName = format("%s_globalInit", name.c_str());
-    auto   ptr      = OS::getProcAddress(h, funcName.c_str());
+    Utf8 funcName = format("%s_globalInit", name.c_str());
+    auto ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {
         typedef void (*funcCall)(void*);
@@ -61,7 +62,7 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     return true;
 }
 
-void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName)
+void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
     auto here = loadedModules.find(moduleName);

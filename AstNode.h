@@ -132,7 +132,7 @@ struct CloneContext
 {
     map<TypeInfo*, TypeInfo*> replaceTypes;
     map<TokenId, AstNode*>    replaceTokens;
-    map<Utf8Crc, string>      replaceNames;
+    map<Utf8Crc, Utf8>        replaceNames;
 
     AstInline*    ownerInline      = nullptr;
     AstBreakable* ownerBreakable   = nullptr;

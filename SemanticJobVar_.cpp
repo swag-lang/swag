@@ -43,10 +43,14 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        *(const char**) ptrDest                = value->text.c_str();
-        *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-        auto offset                            = module->constantSegment.addStringNoLock(value->text);
-        seg->addInitPtr(storageOffset, offset, SegmentKind::Constant);
+        if (!value->text.empty())
+        {
+            *(const char**) ptrDest                = value->text.c_str();
+            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
+            auto offset                            = module->constantSegment.addStringNoLock(value->text);
+            seg->addInitPtr(storageOffset, offset, SegmentKind::Constant);
+        }
+
         return true;
     }
 

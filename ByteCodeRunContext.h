@@ -31,10 +31,10 @@ struct ByteCodeRunContext
     SourceFile* sourceFile = nullptr;
     AstNode*    node       = nullptr;
     bool        hasError   = false;
-    string      errorMsg;
+    Utf8        errorMsg;
 
     void setup(SourceFile* sf, AstNode* node, uint32_t numRR, uint32_t stackS);
-    void error(const string& msg);
+    void error(const Utf8& msg);
 
     template<typename T>
     inline T pop()

@@ -137,7 +137,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
 {
     SourceFile tmpFile;
     tmpFile.externalBuffer = (uint8_t*) content.c_str();
-    tmpFile.externalSize   = (uint32_t) content.size();
+    tmpFile.externalSize   = (uint32_t) content.length();
     tmpFile.module         = parent->sourceFile->module;
     tmpFile.path           = "generated";
     sourceFile             = &tmpFile;

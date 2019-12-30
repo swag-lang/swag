@@ -23,7 +23,7 @@ struct Concat
     void addPointer(void* v);
     void addString(const char* v, int len);
     void addString(const char* v);
-    void addString(const string& v);
+    void addString(const Utf8& v);
     void addEolIndent(int num);
     void addIndent(int num);
     void addChar(char c);

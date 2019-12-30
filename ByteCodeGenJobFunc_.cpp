@@ -327,7 +327,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto str    = Utf8(node->sourceFile->path);
             auto offset = context->sourceFile->module->constantSegment.addString(str);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.size());
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
             break;
         }
         case TokenId::CompilerCallerFunction:
@@ -336,7 +336,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             const auto& str    = node->ownerFct->fullnameDot;
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.size());
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
             break;
         }
         default:

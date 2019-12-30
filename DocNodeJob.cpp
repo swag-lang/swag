@@ -78,7 +78,7 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 void DocNodeJob::emitFunctions(OutputFile& outFile)
 {
     auto node = nodes.front();
-    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : "");
+    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : Utf8(""));
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     // Overloads
@@ -171,7 +171,7 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 {
     auto node = nodes.front();
 
-    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : "");
+    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : Utf8(""));
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     DocHtmlHelper::sectionTitle1(outFile, "Syntax");
@@ -188,7 +188,7 @@ JobResult DocNodeJob::execute()
 {
     OutputFile outFile;
     auto       node = nodes.front();
-    outFile.path    = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name + ".html";
+    outFile.path    = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name.c_str() + ".html";
 
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));

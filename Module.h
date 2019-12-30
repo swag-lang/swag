@@ -35,7 +35,7 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    bool setup(const string& moduleName);
+    bool setup(const Utf8& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
@@ -44,9 +44,9 @@ struct Module
 
     string              path;
     fs::path            documentPath;
-    string              name;
-    string              nameDown;
-    string              nameUp;
+    Utf8                name;
+    Utf8                nameDown;
+    Utf8                nameUp;
     atomic<int>         numErrors = 0;
     shared_mutex        mutexFile;
     vector<SourceFile*> files;
@@ -91,9 +91,9 @@ struct Module
     void addDependency(AstNode* importNode);
     void setHasBeenBuilt(uint32_t buildResult);
 
-    shared_mutex                  mutexDependency;
-    map<string, ModuleDependency> moduleDependencies;
-    uint32_t                      hasBeenBuilt = BUILDRES_NONE;
+    shared_mutex                mutexDependency;
+    map<Utf8, ModuleDependency> moduleDependencies;
+    uint32_t                    hasBeenBuilt = BUILDRES_NONE;
 
     TypeTable typeTable;
 };

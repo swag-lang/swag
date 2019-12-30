@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "resource.h"
 #include "Log.h"
+#include "Utf8.h"
 #include <fcntl.h>
 #include <io.h>
 #include "BuildParameters.h"
@@ -95,7 +96,7 @@ namespace OS
         ::SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
+    bool doProcess(const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -320,9 +321,9 @@ namespace OS
         return ::GetProcAddress((HMODULE) handle, name);
     }
 
-    uint64_t getFileWriteTime(string& fileName)
+    uint64_t getFileWriteTime(const char* fileName)
     {
-        auto hFile = CreateFileA(fileName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
         if (hFile == INVALID_HANDLE_VALUE)
             return 0;
 

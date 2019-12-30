@@ -198,12 +198,11 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
     int pass = 0;
     while (token.id == TokenId::DocComment)
     {
-        token.text.erase(token.text.find_last_not_of(" \n\r\t") + 1);
         auto trimLeft = token.text;
-        trimLeft.erase(0, token.text.find_first_not_of(" \t"));
+        trimLeft.trim();
 
         // Start of a category with '#' : directly fill the doc content
-        if (trimLeft.size() && trimLeft[0] == '#')
+        if (trimLeft.length() && trimLeft[0] == '#')
             pass = 3;
 
         switch (pass)

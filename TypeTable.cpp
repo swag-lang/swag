@@ -172,7 +172,7 @@ bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice
     auto offset     = module->constantSegment.addStringNoLock(str);
     module->constantSegment.addInitPtr(offsetInBuffer, offset);
     result->buffer = (void*) str.c_str();
-    result->count  = str.size();
+    result->count  = str.length();
     return true;
 }
 

@@ -33,8 +33,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
     opInit->typeInfoFunc = g_TypeMgr.typeInfoOpCall;
-    opInit->name         = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
-    replaceAll(opInit->name, '.', '_');
+    opInit->name         = structNode->ownerScope->fullname + "_" + structNode->name.c_str() + "_opInit";
+    opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opInit);
@@ -88,7 +88,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             {
                 auto offset = sourceFile->module->constantSegment.addString(varDecl->assignment->computedValue.text);
                 emitInstruction(&cxt, ByteCodeOp::RAAddrFromConstantSeg, 1, offset);
-                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.size());
+                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.length());
                 emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);
                 emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 2, 8);
             }
@@ -219,8 +219,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opDrop = opDrop;
     opDrop->sourceFile     = sourceFile;
-    opDrop->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opDropGenerated";
-    replaceAll(opDrop->name, '.', '_');
+    opDrop->name           = structNode->ownerScope->fullname + "_" + structNode->name.c_str() + "_opDropGenerated";
+    opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opDrop);
@@ -346,8 +346,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostMove = opPostMove;
     opPostMove->sourceFile     = sourceFile;
-    opPostMove->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostMoveGenerated";
-    replaceAll(opPostMove->name, '.', '_');
+    opPostMove->name           = structNode->ownerScope->fullname + "_" + structNode->name.c_str() + "_opPostMoveGenerated";
+    opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opPostMove);
@@ -439,8 +439,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;
-    opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostCopyGenerated";
-    replaceAll(opPostCopy->name, '.', '_');
+    opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name.c_str() + "_opPostCopyGenerated";
+    opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opPostCopy);

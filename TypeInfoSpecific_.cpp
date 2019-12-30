@@ -217,7 +217,7 @@ void TypeInfoArray::computeName()
     if (count == UINT32_MAX)
     {
         name += format("[] %s", pointedType->name.c_str());
-        fullname += format("[] %s", pointedType->getFullName());
+        fullname += format("[] %s", pointedType->getFullName().c_str());
     }
     else
     {
@@ -233,7 +233,7 @@ void TypeInfoArray::computeName()
         }
 
         name += format("] %s", pType->name.c_str());
-        fullname += format("] %s", pType->getFullName());
+        fullname += format("] %s", pType->getFullName().c_str());
     }
 }
 
@@ -248,7 +248,7 @@ void TypeInfoSlice::computeName()
     }
 
     name += format("[..] %s", pointedType->name.c_str());
-    fullname += format("[..] %s", pointedType->getFullName());
+    fullname += format("[..] %s", pointedType->getFullName().c_str());
 }
 
 TypeInfo* TypeInfoSlice::clone()

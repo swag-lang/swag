@@ -177,11 +177,11 @@ struct TypeInfo
         sizeOf     = from->sizeOf;
     }
 
-    const char* getFullName()
+    const Utf8& getFullName()
     {
         if (!fullname.empty())
-            return fullname.c_str();
-        return name.c_str();
+            return fullname;
+        return name;
     }
 
     virtual TypeInfo*  clone() = 0;

@@ -166,7 +166,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
-                string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
+                Utf8 attrFullName          = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
                 node->values[attrFullName] = {param->typeInfo, param->computedValue};
             }
         }

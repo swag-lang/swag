@@ -19,32 +19,11 @@ Utf8 format(const char* format, ...)
     va_end(args);
 
     Utf8 vec;
-    vec.resize(len);
+    vec.resize((int) len);
     va_start(args, format);
     vsnprintf(&vec[0], len + 1, format, args);
     va_end(args);
     return move(vec);
-}
-
-void makeUpper(string& str)
-{
-    auto len = str.length();
-    for (int i = 0; i < len; i++)
-    {
-        auto& c = str[i];
-        c       = (char) toupper(c);
-    }
-}
-
-void replaceAll(string& str, char src, char dst)
-{
-    auto len = str.length();
-    for (int i = 0; i < len; i++)
-    {
-        auto& c = str[i];
-        if (c == src)
-            c = dst;
-    }
 }
 
 void tokenize(const char* str, char c, vector<string>& tokens)
@@ -164,17 +143,22 @@ wstring utf8ToUnicode(const string& s)
     return ws;
 }
 
-string toStringF64(double v)
+Utf8 toStringF64(double v)
 {
-    string s = format("%.35lf", v);
-    s.erase(s.find_last_not_of('0') + 1, std::string::npos);
+    Utf8 s = format("%.35lf", v);
+    while (s.buffer[s.count - 1] == '0')
+    {
+        s.buffer[s.count - 1] = 0;
+        s.count--;
+    }
+
     s += "0";
     return s;
 }
 
 void concatForC(Utf8& dst, Utf8& src)
 {
-    dst.reserve(dst.size() + src.size() + 1);
+    dst.reserve(dst.length() + src.length() + 1);
     const char* pz   = src.c_str();
     char        last = 0;
     while (*pz)

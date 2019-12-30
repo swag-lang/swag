@@ -12,7 +12,7 @@
 
 Workspace g_Workspace;
 
-Module* Workspace::getModuleByName(const string& moduleName)
+Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     shared_lock lk(mutexModules);
     auto        it = mapModulesNames.find(moduleName);
@@ -21,7 +21,7 @@ Module* Workspace::getModuleByName(const string& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const string& moduleName)
+Module* Workspace::createOrUseModule(const Utf8& moduleName)
 {
     Module* module;
 

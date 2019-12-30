@@ -640,7 +640,7 @@ bool SyntaxJob::isValidVarName(AstNode* node)
         return true;
 
     // @alias must be of the form @aliasNUM
-    if (node->name.size() >= 6)
+    if (node->name.length() >= 6)
     {
         if (node->name == "@alias")
             return syntaxError(node->token, "@alias variable name must be followed by a number");

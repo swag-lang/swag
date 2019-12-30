@@ -132,8 +132,8 @@ bool BackendCCompilerVS::check()
 
 bool BackendCCompilerVS::compile()
 {
-    auto           module = backend->module;
-    vector<string> libPath;
+    auto         module = backend->module;
+    vector<Utf8> libPath;
 
     g_Log.verbose(format("VS compilerPath is '%s'\n", compilerPath.c_str()));
     g_Log.verbose(format("VS winSdkPath is '%s'\n", winSdkPath.c_str()));
@@ -205,7 +205,7 @@ bool BackendCCompilerVS::compile()
 
     uint32_t numErrors  = 0;
     string   resultFile = getResultFile();
-    string   linkArguments;
+    Utf8     linkArguments;
 
     switch (buildParameters->type)
     {

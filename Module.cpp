@@ -9,13 +9,13 @@
 #include "TypeManager.h"
 #include "BackendC.h"
 
-bool Module::setup(const string& moduleName)
+bool Module::setup(const Utf8& moduleName)
 {
     name   = moduleName;
     nameUp = name;
-    replaceAll(nameUp, '.', '_');
+    nameUp.replaceAll('.', '_');
     nameDown = nameUp;
-    makeUpper(nameUp);
+    nameUp.makeUpper();
 
     scopeRoot              = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     astRoot                = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);

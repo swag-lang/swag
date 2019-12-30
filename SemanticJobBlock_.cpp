@@ -219,8 +219,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("'visit' extra name is only valid for a struct type, and type is '%s'", typeInfo->name.c_str())}));
 
-    Utf8 alias0Name = node->aliasNames.empty() ? "@alias0" : node->aliasNames[0];
-    Utf8 alias1Name = node->aliasNames.size() <= 1 ? "@alias1" : node->aliasNames[1];
+    Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0];
+    Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1];
     Utf8 content;
 
     // Get back the expression string

@@ -31,7 +31,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRR, uint
     errorMsg.clear();
 }
 
-void ByteCodeRunContext::error(const string& msg)
+void ByteCodeRunContext::error(const Utf8& msg)
 {
     hasError = true;
     errorMsg = msg;

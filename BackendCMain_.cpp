@@ -55,7 +55,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
     for (const auto& dep : module->moduleDependencies)
     {
         auto nameDown = dep.first;
-        replaceAll(nameDown, '.', '_');
+        nameDown.replaceAll('.', '_');
         bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
 		if (dep.second.generated)
 		{
@@ -95,7 +95,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
         if (!dep.second.generated)
             continue;
         auto nameDown = dep.first;
-        replaceAll(nameDown, '.', '_');
+        nameDown.replaceAll('.', '_');
         bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalDrop();\n", nameDown.c_str());
         bufferC.addStringFormat("\t%s_globalDrop();\n", nameDown.c_str());
     }

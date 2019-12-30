@@ -14,7 +14,7 @@ namespace DocHtmlHelper
     Utf8 markdown(const Utf8& msg)
     {
         Utf8 result;
-        result.reserve(msg.size() * 2);
+        result.reserve(msg.length() * 2);
 
         bool openEm     = false;
         bool openStrong = false;
@@ -190,9 +190,9 @@ namespace DocHtmlHelper
         for (auto node : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + "." + node->name + ".html";
+            auto refName = scope->fullname + "." + node->name.c_str() + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
-            DocHtmlHelper::tableDescCell(outFile, node->docContent ? node->docContent->docSummary : "");
+            DocHtmlHelper::tableDescCell(outFile, node->docContent ? node->docContent->docSummary : Utf8(""));
             DocHtmlHelper::endTableRow(outFile);
         }
 
@@ -215,9 +215,12 @@ namespace DocHtmlHelper
         for (auto param : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + (specificRefFile ? "." + param->namedParam : "") + ".html";
+            auto refName = scope->fullname;
+            if (specificRefFile)
+                refName += "." + param->namedParam;
+            refName += ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, param->namedParam);
-            DocHtmlHelper::tableDescCell(outFile, param->node->docContent ? param->node->docContent->docSummary : "");
+            DocHtmlHelper::tableDescCell(outFile, param->node->docContent ? param->node->docContent->docSummary : Utf8(""));
             DocHtmlHelper::endTableRow(outFile);
         }
 

@@ -139,7 +139,7 @@ void Concat::addPointer(void* v)
     currentSP += sizeof(void*);
 }
 
-void Concat::addString(const string& v)
+void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
     checkCount(len);

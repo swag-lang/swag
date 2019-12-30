@@ -51,7 +51,7 @@ const char* Scope::getArticleKindName(ScopeKind kind)
     }
 }
 
-string Scope::makeFullName(const string& parentName, const string& name)
+Utf8 Scope::makeFullName(const Utf8& parentName, const Utf8& name)
 {
     return parentName.empty() ? name : parentName + "." + name;
 }

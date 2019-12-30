@@ -39,7 +39,7 @@ JobResult DocScopeJob::execute()
     outFile.path    = module->documentPath.string() + "/" + scope->fullname + ".html";
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
-    DocHtmlHelper::summary(outFile, scope->owner->docContent ? scope->owner->docContent->docSummary : "");
+    DocHtmlHelper::summary(outFile, scope->owner->docContent ? scope->owner->docContent->docSummary : Utf8(""));
     DocHtmlHelper::origin(outFile, scope->parentScope);
 
     // Struct members

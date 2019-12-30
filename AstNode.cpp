@@ -40,7 +40,7 @@ void AstNode::computeFullName()
     if (ownerScope->fullname.empty())
         fullnameDot = name;
     else
-        fullnameDot = ownerScope->fullname + "." + name;
+        fullnameDot = ownerScope->fullname + "." + name.c_str();
 }
 
 Utf8 AstNode::getKindName(AstNode* node)

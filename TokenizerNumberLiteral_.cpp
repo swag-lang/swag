@@ -18,6 +18,8 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
     unsigned offset;
     auto     c = getCharNoSeek(offset);
+    if (!c)
+        return error(tokenSuffix, "missing literal number suffix");
     getIdentifier(tokenSuffix, c, offset);
 
     SWAG_CHECK(tokenSuffix.id == TokenId::NativeType || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));

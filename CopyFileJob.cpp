@@ -13,8 +13,8 @@ JobResult CopyFileJob::execute()
     // Copy only if source is more recent than destination
     if (fs::exists(destPath))
     {
-        auto tsrc  = OS::getFileWriteTime(sourcePath);
-        auto tdest = OS::getFileWriteTime(destPath);
+        auto tsrc  = OS::getFileWriteTime(sourcePath.c_str());
+        auto tdest = OS::getFileWriteTime(destPath.c_str());
         if (tdest > tsrc)
         {
             if (g_CommandLine.verboseBuildPass)

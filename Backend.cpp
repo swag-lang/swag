@@ -422,19 +422,19 @@ void Backend::setupExportFile()
     if (bufferSwg.path.empty())
     {
         exportFileGenerated = true;
-        auto targetPath     = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
-        bool exists         = fs::exists(targetPath);
+        Utf8 targetPath     = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
+        bool exists         = fs::exists(targetPath.c_str());
         if (!exists)
         {
             exportFileGenerated = false;
             targetPath          = g_Workspace.targetPath.string() + "\\" + module->name + ".swg";
-            exists              = fs::exists(targetPath);
+            exists              = fs::exists(targetPath.c_str());
         }
 
         if (exists)
         {
             bufferSwg.path = targetPath;
-            timeExportFile = OS::getFileWriteTime(targetPath);
+            timeExportFile = OS::getFileWriteTime(targetPath.c_str());
         }
     }
     else
@@ -498,7 +498,7 @@ bool Backend::generateExportFile()
 
     SWAG_CHECK(bufferSwg.flush(true));
 
-    timeExportFile = OS::getFileWriteTime(bufferSwg.path);
+    timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

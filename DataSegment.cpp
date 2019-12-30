@@ -75,7 +75,7 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
         auto storageOffset    = reserveNoLock(2 * sizeof(uint64_t));
         auto addr             = addressNoLock(storageOffset);
         ((uint64_t*) addr)[0] = (uint64_t) computedValue.text.c_str();
-        ((uint64_t*) addr)[1] = (uint32_t) computedValue.text.size();
+        ((uint64_t*) addr)[1] = (uint32_t) computedValue.text.length();
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }

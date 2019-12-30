@@ -149,7 +149,7 @@ namespace Ast
 
         auto newScope = g_Allocator.alloc<Scope>();
 
-        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, (const string&) name) : (const string&) name;
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : (const Utf8&) name;
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->owner       = owner;
@@ -292,7 +292,7 @@ namespace Ast
         {
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
-            id->name        = move(subNames[i]);
+            id->name        = subNames[i];
             if (syntaxJob)
                 id->inheritTokenLocation(syntaxJob->token);
             id->identifierRef = node;

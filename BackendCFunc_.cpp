@@ -668,7 +668,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                     {
                         lastLine = ip->node->token.startLocation.line;
                         auto s   = bc->sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
-                        s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
+                        s.trimLeft();
                         if (!s.empty())
                             s.pop_back();
                         CONCAT_FIXED_STR(concat, "/* ");

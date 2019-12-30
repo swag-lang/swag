@@ -31,7 +31,7 @@ struct ByteCode
     TypeInfoFuncAttr* callType();
 
     static const int     ALIGN_RIGHT_OPCODE = 25;
-    string               name;
+    Utf8                 name;
     ByteCodeInstruction* out               = nullptr;
     SourceFile*          sourceFile        = nullptr;
     TypeInfoFuncAttr*    typeInfoFunc      = nullptr;

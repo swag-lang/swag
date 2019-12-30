@@ -740,7 +740,7 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, "expression cannot be evaluated at compile time"}));
     left->computedValue.text  = Ast::literalToString(left->typeInfo, left->computedValue.text, left->computedValue.reg);
     right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue.text, right->computedValue.reg);
-    node->computedValue.text  = left->computedValue.text + right->computedValue.text;
+    node->computedValue.text  = left->computedValue.text + right->computedValue.text.c_str();
     node->typeInfo            = g_TypeMgr.typeInfoString;
     node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
     return true;

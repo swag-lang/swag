@@ -59,7 +59,7 @@ struct Log
 
     void print(const Utf8& message)
     {
-        cout << message;
+        cout << message.c_str();
     }
 
     void eol()

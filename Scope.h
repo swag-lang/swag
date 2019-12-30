@@ -51,7 +51,7 @@ struct Scope
     void               addPublicConst(AstNode* node);
     void               addPublicTypeAlias(AstNode* node);
     void               addPublicNamespace(AstNode* node);
-    static string      makeFullName(const string& parentName, const string& name);
+    static Utf8        makeFullName(const Utf8& parentName, const Utf8& name);
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);

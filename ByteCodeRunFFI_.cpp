@@ -30,12 +30,12 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     }
 
     auto& funcName = nodeFunc->name;
-    auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+    auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
     if (!fn)
     {
         auto it = typeFunc->attributes.values.find("swag.foreign.function");
         if (it != typeFunc->attributes.values.end())
-            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", it->second.second.text);
+            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), it->second.second.text);
     }
 
     if (!fn)
@@ -81,7 +81,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
             return nullptr;
         }
 
-        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
         if (!externalModule)
         {
             context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));

@@ -1,15 +1,17 @@
 #pragma once
 #pragma once
+#include "Utf8.h"
+
 struct ByteCodeRunContext;
 
 struct ByteCodeModuleManager
 {
-    bool  loadModule(const string& name);
-    bool  isModuleLoaded(const string& name);
-    void* getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName);
+    bool  loadModule(const Utf8& name);
+    bool  isModuleLoaded(const Utf8& name);
+    void* getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName);
 
-    shared_mutex       mutex;
-    map<string, void*> loadedModules;
+    shared_mutex     mutex;
+    map<Utf8, void*> loadedModules;
 };
 
 extern ByteCodeModuleManager g_ModuleMgr;

@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             reserveLinearRegisterRC(context, regList, 2);
             auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) node->computedValue.text.size());
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) node->computedValue.text.length());
             return true;
         }
         default:
