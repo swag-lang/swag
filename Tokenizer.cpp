@@ -245,7 +245,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             if (c == '#' && nc == '"')
             {
                 treatChar(nc, offset);
-                token.text = nc;
+                token.text.clear();
                 SWAG_CHECK(doStringLiteral(token, true));
                 return true;
             }

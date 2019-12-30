@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Global.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
@@ -110,6 +109,50 @@ bool Tokenizer::isEscape(char32_t& c, Token& token)
     return false;
 }
 
+// This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark "# will be removed
+// from every other lines.
+// This is necessary to be able to indent a multiline string in the code
+void Tokenizer::postProcessRawString(Utf8& text)
+{
+    // Count the blanks before the end
+    const char* pz    = text.c_str() + text.length() - 1;
+    int         count = 0;
+    while (pz != text.c_str() && SWAG_IS_BLANK(*pz))
+    {
+        count++;
+        pz--;
+    }
+
+    if (count == 0)
+        return;
+
+    // Now remove the same amount of blank at the start of each new line
+    Utf8 copyText;
+    copyText.reserve(text.length());
+    auto endPz = pz;
+
+    pz = text.c_str();
+    while (*pz && pz != endPz)
+    {
+        auto toRemove = count;
+        while (SWAG_IS_BLANK(*pz) && toRemove)
+        {
+            pz++;
+            toRemove++;
+        }
+
+        while (*pz != '\n' && *pz)
+        {
+            copyText += *pz++;
+        }
+
+        if (*pz == '\n')
+            copyText += *pz++;
+    }
+
+    text = copyText;
+}
+
 bool Tokenizer::doStringLiteral(Token& token, bool raw)
 {
     unsigned offset;
@@ -156,15 +199,16 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!raw && c == '"')
                 break;
 
-			if (raw && c == '"')
-			{
-				auto nc = getCharNoSeek(offset);
-				if (nc == '#')
-				{
-					treatChar(nc, offset);
-					break;
-				}
-			}
+            if (raw && c == '"')
+            {
+                auto nc = getCharNoSeek(offset);
+                if (nc == '#')
+                {
+                    treatChar(nc, offset);
+                    postProcessRawString(token.text);
+                    break;
+                }
+            }
 
             token.endLocation = location;
             token.text += c;
@@ -174,7 +218,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         while (SWAG_IS_BLANK(c) || SWAG_IS_EOL(c))
         {
             if (SWAG_IS_EOL(c))
-				forceLastTokenIsEOL = true;
+                forceLastTokenIsEOL = true;
             treatChar(c, offset);
             c = getCharNoSeek(offset);
         }
@@ -238,8 +282,8 @@ bool Tokenizer::doCharLiteral(Token& token)
     }
 
     token.literalValue.ch = c;
-    token.endLocation   = location;
-    c = getCharNoSeek(offset);
+    token.endLocation     = location;
+    c                     = getCharNoSeek(offset);
     if (c != '\'')
     {
         result = false;

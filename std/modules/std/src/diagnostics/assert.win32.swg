@@ -6,14 +6,22 @@
 		{
 			// User message
 			var messageW: [512] u16
-			count := text.unicode16.fromUtf8(messageW, message)
-			count2 := text.unicode16.fromUtf8([&messageW[count], 512 - count], "toto")
-			messageW[count + count2] = 0
+			count1 := text.unicode16.fromUtf8(messageW, message)
+
+			const info = 
+			#"
+			- Press Cancel to exit
+			- Press Retry to debug the application
+			- Press Continue to ignore the assert
+			"#
+
+			count2 := text.unicode16.fromUtf8([&messageW[count1], 512 - count1], info)
+			messageW[count1 + count2] = 0
 
 			// Message box title
 			var titleW: [128] u16 = ?
-			count = text.unicode16.fromUtf8(titleW, "Swag Assertion Failed!")
-			titleW[count] = 0
+			count1 = text.unicode16.fromUtf8(titleW, "Swag Assertion Failed!")
+			titleW[count1] = 0
 
 			result := MessageBoxW(null, messageW, titleW, MB_ICONERROR | MB_CANCELTRYCONTINUE)
 			switch result

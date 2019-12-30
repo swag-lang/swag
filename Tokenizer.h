@@ -183,6 +183,7 @@ struct Tokenizer
     bool     error(Token& token, const Utf8& msg);
     bool     errorNumberSyntax(Token& token, const Utf8& msg);
     bool     doSymbol(char32_t c, Token& token);
+    void     postProcessRawString(Utf8& text);
     bool     doStringLiteral(Token& token, bool raw);
     bool     isEscape(char32_t& c, Token& token);
     bool     getDigitHexa(Token& token, int& result);
