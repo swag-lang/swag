@@ -45,14 +45,14 @@ struct Concat
         __concat.addString(__str, __len);                                    \
     } while (false)
 
-#define CONCAT_STR_INT_STR(__concat, __before, __int, __after) \
+#define CONCAT_STR_1(__concat, __before, __int, __after) \
     {                                                          \
         CONCAT_FIXED_STR(__concat, __before);                  \
         __concat.addU32Str(__int);                             \
         CONCAT_FIXED_STR(__concat, __after);                   \
     }
 
-#define CONCAT_STR_INT_STR_INT_STR(__concat, __before, __int1, __middle, __int2, __after) \
+#define CONCAT_STR_2(__concat, __before, __int1, __middle, __int2, __after) \
     {                                                                                     \
         CONCAT_FIXED_STR(__concat, __before);                                             \
         __concat.addU32Str(__int1);                                                       \
