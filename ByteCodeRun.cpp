@@ -442,6 +442,40 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
         break;
     }
+
+    case ByteCodeOp::RAFromBssSeg8:
+    {
+        auto module = context->sourceFile->module;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
+        break;
+    }
+    case ByteCodeOp::RAFromBssSeg16:
+    {
+        auto module = context->sourceFile->module;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
+        break;
+    }
+    case ByteCodeOp::RAFromBssSeg32:
+    {
+        auto module = context->sourceFile->module;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
+        break;
+    }
+    case ByteCodeOp::RAFromBssSeg64:
+    {
+        auto module = context->sourceFile->module;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+        break;
+    }
+
     case ByteCodeOp::RARefFromDataSeg:
     {
         auto module = context->sourceFile->module;
@@ -450,6 +484,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
+    case ByteCodeOp::RARefFromBssSeg:
+    {
+        auto module = context->sourceFile->module;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].pointer = ip->d.pointer;
+        break;
+    }
+
     case ByteCodeOp::RAAddrFromConstantSeg:
     {
         auto module = context->sourceFile->module;

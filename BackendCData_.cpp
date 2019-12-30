@@ -10,8 +10,10 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
 {
     if (dataSegment == &module->mutableSegment)
         emitSeparator(bufferC, "MUTABLE SEGMENT");
-    else
+    else if (dataSegment == &module->constantSegment)
         emitSeparator(bufferC, "CONSTANT SEGMENT");
+    else
+        emitSeparator(bufferC, "BSS SEGMENT");
 
     if (dataSegment->buckets.size())
     {
@@ -19,33 +21,46 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
         {
             if (dataSegment == &module->mutableSegment)
                 CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __mutableseg[];\n");
+            else if (dataSegment == &module->constantSegment)
+                CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __bssseg[];\n");
             else
                 CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __constantseg[];\n");
         }
         else
         {
-            if (dataSegment == &module->mutableSegment)
-                CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[] = {\n");
-            else
-                CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[] = {\n");
-
-            for (int bucket = 0; bucket < dataSegment->buckets.size(); bucket++)
+            auto segSize = dataSegment->buckets.size();
+            if (dataSegment == &module->bssSegment)
             {
-                int  count = (int) dataSegment->buckets[bucket].count;
-                auto pz    = dataSegment->buckets[bucket].buffer;
-                int  cpt   = 0;
-                while (count--)
-                {
-                    bufferC.addString(to_string(*pz));
-                    bufferC.addChar(',');
-                    pz++;
-                    cpt = (cpt + 1) % 20;
-                    if (cpt == 0)
-                        bufferC.addEol();
-                }
+                int count = 0;
+                for (int bucket = 0; bucket < segSize; bucket++)
+                    count += (int) dataSegment->buckets[bucket].count;
+                CONCAT_STR_1(bufferC, "swag_uint8_t __bssseg[", count, "];\n");
             }
+            else
+            {
+                if (dataSegment == &module->mutableSegment)
+                    CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[] = {\n");
+                else
+                    CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[] = {\n");
 
-            CONCAT_FIXED_STR(bufferC, "\n};\n");
+                for (int bucket = 0; bucket < segSize; bucket++)
+                {
+                    int  count = (int) dataSegment->buckets[bucket].count;
+                    auto pz    = dataSegment->buckets[bucket].buffer;
+                    int  cpt   = 0;
+                    while (count--)
+                    {
+                        bufferC.addString(to_string(*pz));
+                        bufferC.addChar(',');
+                        pz++;
+                        cpt = (cpt + 1) % 20;
+                        if (cpt == 0)
+                            bufferC.addEol();
+                    }
+                }
+
+                CONCAT_FIXED_STR(bufferC, "\n};\n");
+            }
         }
     }
 

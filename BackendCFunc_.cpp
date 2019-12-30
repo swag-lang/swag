@@ -750,6 +750,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::RAFromBssSeg8:
+            concat.addStringFormat("r[%u].u8 = *(swag_uint8_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::RAFromBssSeg16:
+            concat.addStringFormat("r[%u].u16 = *(swag_uint16_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::RAFromBssSeg32:
+            concat.addStringFormat("r[%u].u32 = *(swag_uint32_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::RAFromBssSeg64:
+            concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
+            break;
+
         case ByteCodeOp::Clear8:
             CONCAT_STR_1(concat, "*(swag_uint8_t*)r[", ip->a.u32, "].pointer = 0;");
             break;
@@ -787,6 +800,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::RARefFromDataSeg:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __mutableseg + ", ip->b.u32, ";");
+            break;
+        case ByteCodeOp::RARefFromBssSeg:
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
             break;
         case ByteCodeOp::RAAddrFromConstantSeg:
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);

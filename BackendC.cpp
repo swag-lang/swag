@@ -34,6 +34,7 @@ JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
             return JobResult::ReleaseJob;
 
         emitRuntime(bufferC, preCompileIndex);
+        emitDataSegment(bufferC, &module->bssSegment, preCompileIndex);
         emitDataSegment(bufferC, &module->mutableSegment, preCompileIndex);
         emitDataSegment(bufferC, &module->constantSegment, preCompileIndex);
         emitAllFuncSignatureInternalC(bufferC);

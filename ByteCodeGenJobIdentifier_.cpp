@@ -110,13 +110,24 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->flags & AST_TAKE_ADDRESS)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (resolved->flags & OVERLOAD_VAR_BSS)
+                emitInstruction(context, ByteCodeOp::RARefFromBssSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            else
+                emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (typeInfo->numRegisters() == 2)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
-            emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            if (resolved->flags & OVERLOAD_VAR_BSS)
+            {
+                emitInstruction(context, ByteCodeOp::RAFromBssSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::RAFromBssSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            }
+            else
+            {
+                emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            }
         }
         else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
         {
@@ -132,23 +143,47 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             ByteCodeInstruction* inst;
-            switch (typeInfo->sizeOf)
+            if (resolved->flags & OVERLOAD_VAR_BSS)
             {
-            case 1:
-                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg8, node->resultRegisterRC);
-                break;
-            case 2:
-                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg16, node->resultRegisterRC);
-                break;
-            case 4:
-                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg32, node->resultRegisterRC);
-                break;
-            case 8:
-                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC);
-                break;
-            default:
-                return internalError(context, "emitIdentifier, invalid global variable sizeof");
-                break;
+                switch (typeInfo->sizeOf)
+                {
+                case 1:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromBssSeg8, node->resultRegisterRC);
+                    break;
+                case 2:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromBssSeg16, node->resultRegisterRC);
+                    break;
+                case 4:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromBssSeg32, node->resultRegisterRC);
+                    break;
+                case 8:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromBssSeg64, node->resultRegisterRC);
+                    break;
+                default:
+                    return internalError(context, "emitIdentifier, invalid global variable sizeof");
+                    break;
+                }
+            }
+            else
+            {
+                switch (typeInfo->sizeOf)
+                {
+                case 1:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg8, node->resultRegisterRC);
+                    break;
+                case 2:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg16, node->resultRegisterRC);
+                    break;
+                case 4:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg32, node->resultRegisterRC);
+                    break;
+                case 8:
+                    inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC);
+                    break;
+                default:
+                    return internalError(context, "emitIdentifier, invalid global variable sizeof");
+                    break;
+                }
             }
 
             inst->b.u32 = resolved->storageOffset;

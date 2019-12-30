@@ -66,6 +66,7 @@ struct Module
 
     DataSegment mutableSegment;
     DataSegment constantSegment;
+    DataSegment bssSegment;
 
     void setBuildPass(BuildPass buildP);
 

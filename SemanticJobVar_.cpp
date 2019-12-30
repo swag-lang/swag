@@ -682,7 +682,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
-        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+
+        if (!node->assignment && typeInfo->kind == TypeInfoKind::Native)
+        {
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+        }
+        else
+        {
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
