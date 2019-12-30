@@ -1501,8 +1501,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("__tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicArguments:
-            concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr; ", ip->a.u32);
-            concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count; ", ip->b.u32);
+            concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
+            concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
+            break;
+        case ByteCodeOp::IntrinsicIsByteCode:
+            CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             break;
 
         case ByteCodeOp::NegBool:

@@ -136,6 +136,7 @@ void LanguageSpec::setup()
     intrinsics["@setcontext"] = Intrinsic::IntrinsicSetContext;
     intrinsics["@args"]       = Intrinsic::IntrinsicArguments;
     intrinsics["@target"]     = Intrinsic::IntrinsicTarget;
+    intrinsics["@isbytecode"] = Intrinsic::IntrinsicIsByteCode;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

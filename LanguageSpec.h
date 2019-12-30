@@ -38,6 +38,7 @@ enum class Intrinsic
 	IntrinsicSetContext,
 	IntrinsicArguments,
 	IntrinsicTarget,
+    IntrinsicIsByteCode,
 };
 
 struct LanguageSpec

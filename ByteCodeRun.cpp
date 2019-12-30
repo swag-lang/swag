@@ -724,6 +724,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicTarget:
         registersRC[ip->a.u32].pointer = (uint8_t*) &context->sourceFile->module->buildParameters.target;
         break;
+    case ByteCodeOp::IntrinsicIsByteCode:
+        registersRC[ip->a.u32].b = true;
+        break;
 
     case ByteCodeOp::IntrinsicAssert:
     {
