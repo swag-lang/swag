@@ -1,15 +1,9 @@
 #include "pch.h"
-#include "ThreadManager.h"
 #include "LanguageSpec.h"
-#include "Module.h"
-#include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "Scope.h"
-#include "SymTable.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {
