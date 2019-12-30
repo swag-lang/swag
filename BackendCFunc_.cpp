@@ -1525,28 +1525,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::InvertS8:
-            concat.addStringFormat("r[%u].s8 = ~r[%u].s8;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = ~r[", ip->a.u32, "].s8;");
             break;
         case ByteCodeOp::InvertS16:
-            concat.addStringFormat("r[%u].s16 = ~r[%u].s16;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = ~r[", ip->a.u32, "].s16;");
             break;
         case ByteCodeOp::InvertS32:
-            concat.addStringFormat("r[%u].s32 = ~r[%u].s32;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = ~r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::InvertS64:
-            concat.addStringFormat("r[%u].s64 = ~r[%u].s64;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
             break;
         case ByteCodeOp::InvertU8:
-            concat.addStringFormat("r[%u].u8 = ~r[%u].u8;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u8 = ~r[", ip->a.u32, "].u8;");
             break;
         case ByteCodeOp::InvertU16:
-            concat.addStringFormat("r[%u].u16 = ~r[%u].u16;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u16 = ~r[", ip->a.u32, "].u16;");
             break;
         case ByteCodeOp::InvertU32:
-            concat.addStringFormat("r[%u].u32 = ~r[%u].u32;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 = ~r[", ip->a.u32, "].u32;");
             break;
         case ByteCodeOp::InvertU64:
-            concat.addStringFormat("r[%u].u64 = ~r[%u].u64;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = ~r[", ip->a.u32, "].u64;");
             break;
 
         case ByteCodeOp::ClearMaskU32:
