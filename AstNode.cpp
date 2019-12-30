@@ -50,6 +50,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     {
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
+    case AstNodeKind::ConstDecl:
     case AstNodeKind::FuncDecl:
     case AstNodeKind::Namespace:
     case AstNodeKind::TypeAlias:

@@ -4,6 +4,7 @@
 	{
 		using os
 		
+		#[swag.nobss]
 		var g_colorToWin: [@countof(Color)] u16
 		
 		#[swag.compiler]

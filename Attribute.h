@@ -22,6 +22,7 @@ static const uint32_t ATTRIBUTE_MIXIN         = 0x00010000;
 static const uint32_t ATTRIBUTE_READONLY      = 0x00020000;
 static const uint32_t ATTRIBUTE_INTERNAL      = 0x00040000;
 static const uint32_t ATTRIBUTE_PROPERTY      = 0x00080000;
+static const uint32_t ATTRIBUTE_NOBSS         = 0x00100000;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

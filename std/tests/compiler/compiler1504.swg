@@ -1,8 +1,15 @@
+#[swag.nobss]
 var X: u32
 
+#[swag.compiler]
+func set()
+{
+    X = 6
+}
+
+//#[swag.printbc]
 #test
 {
-    /*#bytecode
-        X = 6   
-    @assert(X == 6)   */ 
+    #run set()
+    @assert(X == 6)
 }

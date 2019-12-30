@@ -3,7 +3,9 @@
 	using swag
 	private
 	{
+        #[nobss]
 		var g_mapKeyToVKey: [256] u8
+        #[nobss]
 		var g_mapVKeyToKey: [256] u8
 
 		#[compiler]

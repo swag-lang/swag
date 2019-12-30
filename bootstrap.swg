@@ -36,8 +36,9 @@ namespace swag
 	attr pack() -> "struct"
 	attr flags() -> "enum"
     attr complete() -> "func"
-    attr offset(name: string) -> "var"
+    attr offset(name: string) -> "structvar"
 	attr property() -> "func"
+	attr nobss() -> "globalvar"
 	
 	// #########################################################
 	// Constants

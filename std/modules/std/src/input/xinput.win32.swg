@@ -43,6 +43,7 @@
             wRightMotorSpeed:   WORD
         }
 
+		#[swag.nobss]
 		private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 
 		#run

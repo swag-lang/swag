@@ -673,6 +673,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
+    // Collect all attributes for the variable
+    SymbolAttributes attributes;
+    if (node->parentAttributes)
+        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::VarDecl, node->attributeFlags));
+
     if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
@@ -683,15 +688,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
 
-        if (!node->assignment && typeInfo->kind == TypeInfoKind::Native)
+        if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
         {
-            symbolFlags |= OVERLOAD_VAR_BSS;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
-        }
-        else if (!node->assignment && typeInfo->kind == TypeInfoKind::Array)
-        {
-            symbolFlags |= OVERLOAD_VAR_BSS;
-            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+            if (node->attributeFlags & ATTRIBUTE_NOBSS)
+                SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+            else
+            {
+                symbolFlags |= OVERLOAD_VAR_BSS;
+                SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+            }
         }
         else
         {

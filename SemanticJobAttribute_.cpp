@@ -29,6 +29,12 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_GLOBALVAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    {
+        if (checkNode->ownerScope->isGlobal())
+            return true;
+    }
+
     Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode).c_str())};
     Diagnostic note1{checkNode, format("this is the %s", AstNode::getNakedKindName(checkNode).c_str()), DiagnosticLevel::Note};
     Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
@@ -90,6 +96,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_COMPLETE;
             else if (child->name == "property")
                 flags |= ATTRIBUTE_PROPERTY;
+            else if (child->name == "nobss")
+                flags |= ATTRIBUTE_NOBSS;
         }
 
         curAttr = curAttr->parentAttributes;

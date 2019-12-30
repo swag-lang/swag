@@ -10,11 +10,12 @@ using std.input
     @assert(!k.isKeyJustReleased(Key.Space))
     
     while false
+    //while true     
     {
         k.update()
         if k.isKeyJustPressed(Key.Space)
         {
-            //@print("pressed\n")
+            @print("pressed\n")
         }
     }
 }

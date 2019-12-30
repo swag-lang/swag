@@ -164,6 +164,9 @@ bool SyntaxJob::doCompilerRun(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
+    node->flags |= AST_NO_BYTECODE;
+
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK);
     node->semanticFct = SemanticJob::resolveCompilerRun;
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#run' expression"));
