@@ -241,6 +241,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
     }
 
+    cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
+    cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
+
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_NO_SEMANTIC;

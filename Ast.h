@@ -35,6 +35,10 @@ namespace Ast
 
         if (parent)
         {
+            // Some flags are inherited from the parent, whatever...
+            node->flags |= parent->flags & AST_NO_BACKEND;
+            node->flags |= parent->flags & AST_RUN_BLOCK;
+
             parent->lock();
 
             // If previous node is a doc comment, then move the text to this node

@@ -714,7 +714,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
             else
             {
-                varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode);
+                varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
                 varNode->assignment->token = savedtoken;
             }
 
@@ -761,7 +761,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->token = identifier->token;
             varNode->flags |= AST_R_VALUE;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
-            identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode);
+            identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             identifier->token                     = savedtoken;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
@@ -869,7 +869,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 }
                 else
                 {
-                    Ast::newIdentifierRef(sourceFile, front->name, affectNode)->token = savedtoken;
+                    Ast::newIdentifierRef(sourceFile, front->name, affectNode, this)->token = savedtoken;
                 }
             }
         }
@@ -899,14 +899,14 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
-                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
+                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this)->token = savedtoken;
             }
         }
 
         // One normal simple affectation
         else
         {
-            auto affectNode   = Ast::newAffectOp(sourceFile, parent);
+            auto affectNode   = Ast::newAffectOp(sourceFile, parent, this);
             affectNode->token = move(token);
 
             Ast::addChildBack(affectNode, leftNode);

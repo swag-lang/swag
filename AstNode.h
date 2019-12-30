@@ -140,6 +140,7 @@ struct CloneContext
     Scope*        parentScope      = nullptr;
     Scope*        ownerStructScope = nullptr;
     AstNode*      ownerMainNode    = nullptr;
+    uint64_t      forceFlags       = 0;
 };
 
 struct AstNode
