@@ -846,7 +846,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64++;");
             break;
         case ByteCodeOp::IncRAVB:
-            concat.addStringFormat("r[%u].u32 += %u;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             break;
 
         case ByteCodeOp::AffectOp8:
@@ -862,10 +862,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOp64Null:
-            concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer + %u) = 0;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
             break;
         case ByteCodeOp::AffectOpPointer:
-            concat.addStringFormat("*(void**)(r[%u].pointer) = r[%u].pointer;", ip->a.u32, ip->b.u32);
+            CONCAT_STR_2(concat, "*(void**)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].pointer;");
             break;
 
         case ByteCodeOp::BinOpPlusS32:
