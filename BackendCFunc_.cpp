@@ -832,10 +832,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             break;
         case ByteCodeOp::CopyRARB:
-            concat.addStringFormat("r[%u] = r[%u]; ", ip->a.u32, ip->b.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "] = r[", ip->b.u32, "];");
             break;
         case ByteCodeOp::CopyRARBAddr:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u]; ", ip->a.u32, ip->b.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &r[", ip->b.u32, "];");
             break;
 
         case ByteCodeOp::ClearRA:
