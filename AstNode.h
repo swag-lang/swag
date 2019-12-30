@@ -37,14 +37,14 @@ typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
 typedef bool (*ByteCodeNotifyFct)(ByteCodeGenContext* context);
 
-enum class AstNodeResolveState
+enum class AstNodeResolveState : uint8_t
 {
     Enter,
     ProcessingChilds,
     PostChilds,
 };
 
-enum class AstNodeKind
+enum class AstNodeKind : uint8_t
 {
     Invalid,
     Module,
@@ -311,14 +311,15 @@ struct AstNode
 
     uint64_t flags = 0;
 
-    uint32_t            doneFlags               = 0;
-    uint32_t            fctCallStorageOffset    = 0;
-    AstNodeKind         kind                    = AstNodeKind::Invalid;
-    uint32_t            concreteTypeInfoStorage = UINT32_MAX;
-    uint32_t            childParentIdx          = 0;
-    uint32_t            attributeFlags          = 0;
-    AstNodeResolveState semanticState           = AstNodeResolveState::Enter;
-    AstNodeResolveState bytecodeState           = AstNodeResolveState::Enter;
+    uint32_t doneFlags               = 0;
+    uint32_t fctCallStorageOffset    = 0;
+    uint32_t concreteTypeInfoStorage = UINT32_MAX;
+    uint32_t childParentIdx          = 0;
+    uint32_t attributeFlags          = 0;
+
+    AstNodeResolveState semanticState = AstNodeResolveState::Enter;
+    AstNodeResolveState bytecodeState = AstNodeResolveState::Enter;
+    AstNodeKind         kind          = AstNodeKind::Invalid;
 };
 
 struct AstVarDecl : public AstNode

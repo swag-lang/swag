@@ -14,7 +14,7 @@ struct AstFuncDecl;
 struct AstStruct;
 struct AstCompilerIfBlock;
 struct SyntaxJob;
-enum class AstNodeKind;
+enum class AstNodeKind : uint8_t;
 
 struct SyntaxContext : public JobContext
 {
