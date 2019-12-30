@@ -106,7 +106,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             typeInfo->kind == TypeInfoKind::TypeList ||
             typeInfo->kind == TypeInfoKind::Struct)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (resolved->flags & OVERLOAD_VAR_BSS)
+                emitInstruction(context, ByteCodeOp::RARefFromBssSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            else
+                emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (node->flags & AST_TAKE_ADDRESS)
         {

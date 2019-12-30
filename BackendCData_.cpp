@@ -34,7 +34,8 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
                 int count = 0;
                 for (int bucket = 0; bucket < segSize; bucket++)
                     count += (int) dataSegment->buckets[bucket].count;
-                CONCAT_STR_1(bufferC, "swag_uint8_t __bssseg[", count, "];\n");
+                if (count)
+                    CONCAT_STR_1(bufferC, "swag_uint8_t __bssseg[", count, "];\n");
             }
             else
             {

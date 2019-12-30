@@ -34,7 +34,7 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.debug)
     {
         g_diagnosticInfos.push();
@@ -61,7 +61,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 
 void ByteCode::leaveByteCode()
 {
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.debug)
     {
         g_diagnosticInfos.pop();

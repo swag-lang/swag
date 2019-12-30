@@ -14,7 +14,7 @@ JobResult ModuleTestJob::execute()
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
 
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
     if (g_CommandLine.debug)
     {

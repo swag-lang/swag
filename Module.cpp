@@ -93,7 +93,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
     auto runContext = &g_Workspace.runContext;
 
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
     if (g_CommandLine.debug)
     {

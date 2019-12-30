@@ -688,6 +688,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             symbolFlags |= OVERLOAD_VAR_BSS;
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
         }
+        else if (!node->assignment && typeInfo->kind == TypeInfoKind::Array)
+        {
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+        }
         else
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));

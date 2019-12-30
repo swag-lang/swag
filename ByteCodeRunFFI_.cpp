@@ -272,7 +272,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         }
     }
 
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.debug)
     {
         g_diagnosticInfos.push();
@@ -286,7 +286,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     // Make the call
     ffi_call(&cif, FFI_FN(ip->d.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
 
-#ifdef SWAG_ASSERT
+#ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.debug)
     {
         g_diagnosticInfos.pop();
