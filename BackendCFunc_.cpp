@@ -1509,19 +1509,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::NegBool:
-            concat.addStringFormat("r[%u].b = !r[%u].b;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = !r[", ip->a.u32, "].b;");
             break;
         case ByteCodeOp::NegF32:
-            concat.addStringFormat("r[%u].f32 = -r[%u].f32;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
             break;
         case ByteCodeOp::NegF64:
-            concat.addStringFormat("r[%u].f64 = -r[%u].f64;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = -r[", ip->a.u32, "].f64;");
             break;
         case ByteCodeOp::NegS32:
-            concat.addStringFormat("r[%u].s32 = -r[%u].s32;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = -r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::NegS64:
-            concat.addStringFormat("r[%u].s64 = -r[%u].s64;", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = -r[", ip->a.u32, "].s64;");
             break;
 
         case ByteCodeOp::InvertS8:
