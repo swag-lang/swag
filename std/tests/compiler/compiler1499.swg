@@ -3,6 +3,7 @@ func set(ptr: [..] u16, val: u16)
     ptr[0] = val
 }
 
+//#[swag.printbc]
 #test
 {
     var buffer: [64] u16
@@ -14,6 +15,6 @@ func set(ptr: [..] u16, val: u16)
     set(a, 666)
     @assert(buffer[0] == 666)
 
-    //set([&buffer[0], 64], 777)
-    //@assert(buffer[0] == 777)
+    set([&buffer[0], 64], 777)
+    @assert(buffer[0] == 777)
 }

@@ -64,7 +64,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     // This is a special expression list which initialize the pointer and the count of a slice
-    if (node->flags & AST_SLICE_INIT_EXPRESSION)
+    if ((node->flags & AST_SLICE_INIT_EXPRESSION) ||
+        (node->parent && node->parent->kind == AstNodeKind::FuncCallParam && (node->parent->flags & AST_SLICE_INIT_EXPRESSION)))
     {
         node->resultRegisterRC = node->childs.front()->resultRegisterRC;
         node->resultRegisterRC += node->childs.back()->resultRegisterRC;
