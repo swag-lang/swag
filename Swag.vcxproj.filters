@@ -621,6 +621,9 @@
     <ClInclude Include="Vector.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="DocContent.h">
+      <Filter>Doc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

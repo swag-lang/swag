@@ -46,11 +46,7 @@ namespace Ast
             {
                 auto childBack = parent->childs.empty() ? nullptr : parent->childs.back();
                 if (childBack && (childBack->kind == AstNodeKind::DocComment || childBack->kind == AstNodeKind::AttrUse))
-                {
-                    node->docSummary     = move(childBack->docSummary);
-                    node->docDescription = move(childBack->docDescription);
-                    node->docContent     = move(childBack->docContent);
-                }
+                    node->docContent = move(childBack->docContent);
             }
 
             node->childParentIdx = (uint32_t) parent->childs.size();

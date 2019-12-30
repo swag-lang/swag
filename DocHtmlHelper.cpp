@@ -4,6 +4,7 @@
 #include "Scope.h"
 #include "AstNode.h"
 #include "TypeInfo.h"
+#include "DocContent.h"
 
 #define isBlank(__c) (__c == ' ' || __c == '\t')
 
@@ -191,7 +192,7 @@ namespace DocHtmlHelper
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + "." + node->name + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
-            DocHtmlHelper::tableDescCell(outFile, node->docSummary);
+            DocHtmlHelper::tableDescCell(outFile, node->docContent ? node->docContent->docSummary : "");
             DocHtmlHelper::endTableRow(outFile);
         }
 
@@ -216,7 +217,7 @@ namespace DocHtmlHelper
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + (specificRefFile ? "." + param->namedParam : "") + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, param->namedParam);
-            DocHtmlHelper::tableDescCell(outFile, param->node->docSummary);
+            DocHtmlHelper::tableDescCell(outFile, param->node->docContent ? param->node->docContent->docSummary : "");
             DocHtmlHelper::endTableRow(outFile);
         }
 

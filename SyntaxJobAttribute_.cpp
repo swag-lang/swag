@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "DocHtmlHelper.h"
+#include "DocContent.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -144,7 +145,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     AstNode* topStmt = nullptr;
 
     {
-        Scoped                scoped(this, newScope);
+        Scoped            scoped(this, newScope);
         ScopedAccessFlags scopedAttributes(this, attr);
         SWAG_CHECK(doTopLevelInstruction(parent, &topStmt));
         if (result)
@@ -189,9 +190,10 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode<AstNode>(this,  AstNodeKind::DocComment, sourceFile, parent);
+    auto attrBlockNode = Ast::newNode<AstNode>(this, AstNodeKind::DocComment, sourceFile, parent);
     if (result)
         *result = attrBlockNode;
+    attrBlockNode->docContent = g_Allocator.alloc<DocContent>();
 
     int pass = 0;
     while (token.id == TokenId::DocComment)
@@ -214,9 +216,9 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
             }
             else
             {
-                if (!attrBlockNode->docSummary.empty())
-                    attrBlockNode->docSummary += " ";
-                attrBlockNode->docSummary += token.text;
+                if (!attrBlockNode->docContent->docSummary.empty())
+                    attrBlockNode->docContent->docSummary += " ";
+                attrBlockNode->docContent->docSummary += token.text;
             }
             break;
 
@@ -231,20 +233,20 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
             if (token.text.empty())
                 pass = 3;
             else
-                attrBlockNode->docDescription += token.text + "\n";
+                attrBlockNode->docContent->docDescription += token.text + "\n";
             break;
 
         // Content
         case 3:
-            attrBlockNode->docContent += token.text + "\n";
+            attrBlockNode->docContent->docContent += token.text + "\n";
             break;
         }
 
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    attrBlockNode->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docSummary);
-    attrBlockNode->docDescription = DocHtmlHelper::markdown(attrBlockNode->docDescription);
-    attrBlockNode->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent);
+    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary);
+    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription);
+    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent);
     return true;
 }

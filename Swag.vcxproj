@@ -129,6 +129,7 @@
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="DiagnosticInfos.h" />
+    <ClInclude Include="DocContent.h" />
     <ClInclude Include="DocHtmlHelper.h" />
     <ClInclude Include="DocNodeJob.h" />
     <ClInclude Include="DocScopeJob.h" />

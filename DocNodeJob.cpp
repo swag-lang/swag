@@ -8,6 +8,7 @@
 #include "OutputFile.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "DocContent.h"
 
 thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 
@@ -77,7 +78,7 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 void DocNodeJob::emitFunctions(OutputFile& outFile)
 {
     auto node = nodes.front();
-    DocHtmlHelper::summary(outFile, node->docSummary);
+    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : "");
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     // Overloads
@@ -151,10 +152,10 @@ void DocNodeJob::emitFunction(OutputFile& outFile, AstNode* node)
 
     // Description from the user
     ///////////////////////////
-    if (!node->docDescription.empty())
+    if (node->docContent && !node->docContent->docDescription.empty())
     {
         DocHtmlHelper::sectionTitle2(outFile, "Description");
-        outFile.addString(node->docDescription);
+        outFile.addString(node->docContent->docDescription);
     }
 }
 
@@ -170,7 +171,7 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 {
     auto node = nodes.front();
 
-    DocHtmlHelper::summary(outFile, node->docSummary);
+    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : "");
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     DocHtmlHelper::sectionTitle1(outFile, "Syntax");
@@ -186,8 +187,8 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 JobResult DocNodeJob::execute()
 {
     OutputFile outFile;
-    auto       node  = nodes.front();
-    outFile.path = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name + ".html";
+    auto       node = nodes.front();
+    outFile.path    = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name + ".html";
 
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));

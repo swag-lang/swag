@@ -13,6 +13,7 @@
 #include "RaceCondition.h"
 #include "Vector.h"
 
+struct DocContent;
 struct AstSwitchCase;
 struct SemanticContext;
 struct ByteCodeGenContext;
@@ -273,9 +274,6 @@ struct AstNode
     set<Scope*>              doneLeaveScopeDrop;
 
     Token         token;
-    Utf8          docSummary;
-    Utf8          docDescription;
-    Utf8          docContent;
     Utf8Crc       name;
     Utf8          fullnameDot;
     shared_mutex  mutex;
@@ -283,6 +281,7 @@ struct AstNode
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;
 
+    DocContent*         docContent                   = nullptr;
     Scope*              ownerScope                   = nullptr;
     AstBreakable*       ownerBreakable               = nullptr;
     AstInline*          ownerInline                  = nullptr;
