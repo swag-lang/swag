@@ -381,7 +381,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
             // And make a reference to that variable
             auto identifierRef = identifier->identifierRef;
-            sourceFile->module->deferReleaseChilds(identifierRef);
+            identifierRef->childs.clear();
             auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifierRef, identifierRef);
             idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
 

@@ -224,14 +224,3 @@ bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
     return node->sourceFile->report({node, node->token, msg});
 }
-
-void Module::deferReleaseChilds(AstNode* node)
-{
-    for (auto child : node->childs)
-    {
-        deferReleaseChilds(child);
-        //child->release();
-    }
-
-    node->childs.clear();
-}
