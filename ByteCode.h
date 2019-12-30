@@ -19,9 +19,9 @@ struct ByteCodeInstruction
     Register       b;
     Register       c;
     Register       d;
-    uint32_t       sourceFileIdx;
     SourceLocation startLocation;
     SourceLocation endLocation;
+    uint32_t       sourceFileIdx;
     ByteCodeOp     op;
     uint16_t       flags;
 };
