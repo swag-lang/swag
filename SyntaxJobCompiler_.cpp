@@ -164,10 +164,8 @@ bool SyntaxJob::doCompilerRunStatement(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
-    node->flags |= AST_NO_BYTECODE;
-
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK);
-    node->semanticFct = SemanticJob::resolveCompilerRun;
+    
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(doEmbeddedInstruction(node));
     SWAG_CHECK(eatSemiCol("after '#run' expression"));
     return true;

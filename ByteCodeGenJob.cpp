@@ -153,6 +153,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.sourceFileIdx        = node->sourceFile->indexInModule;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
+    ins.flags                = 0;
+
+    if (node->flags & AST_NO_BACKEND)
+        ins.flags |= INSTRUCTION_NO_BACKEND;
 
     if (g_CommandLine.stats)
         g_Stats.numInstructions++;

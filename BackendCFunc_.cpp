@@ -654,6 +654,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     vector<uint32_t> pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
+        if (ip->flags & INSTRUCTION_NO_BACKEND)
+            continue;
+
         // Print source code
         if (!bc->compilerGenerated)
         {

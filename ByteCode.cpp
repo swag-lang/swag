@@ -116,7 +116,10 @@ void ByteCode::print()
         }
 
         // Instruction rank
-        g_Log.setColor(LogColor::Cyan);
+        if(ip->flags & INSTRUCTION_NO_BACKEND)
+            g_Log.setColor(LogColor::Gray);
+        else
+            g_Log.setColor(LogColor::Cyan);
         wprintf(bcNum, i);
 
         // Instruction

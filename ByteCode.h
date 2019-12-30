@@ -11,6 +11,8 @@ struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 
+static const uint16_t INSTRUCTION_NO_BACKEND = 0x00000001;
+
 struct ByteCodeInstruction
 {
     Register       a;
@@ -21,6 +23,7 @@ struct ByteCodeInstruction
     SourceLocation startLocation;
     SourceLocation endLocation;
     ByteCodeOp     op;
+    uint16_t       flags;
 };
 
 struct ByteCode
