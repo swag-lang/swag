@@ -1561,16 +1561,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::CastBool8:
-            concat.addStringFormat("r[%u].b = r[%u].u8 ? 1 : 0; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
             break;
         case ByteCodeOp::CastBool16:
-            concat.addStringFormat("r[%u].b = r[%u].u16 ? 1 : 0; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
             break;
         case ByteCodeOp::CastBool32:
-            concat.addStringFormat("r[%u].b = r[%u].u32 ? 1 : 0; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
             break;
         case ByteCodeOp::CastBool64:
-            concat.addStringFormat("r[%u].b = r[%u].u64 ? 1 : 0; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
             break;
         case ByteCodeOp::CastS8S16:
             concat.addStringFormat("r[%u].s16 = (swag_int16_t) r[%u].s8; ", ip->a.u32, ip->a.u32);
