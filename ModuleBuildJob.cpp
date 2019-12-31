@@ -149,7 +149,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Publish)
     {
         pass = ModuleBuildPass::Semantic;
-        if (g_CommandLine.backendOutput && !module->path.empty())
+        if (g_CommandLine.backendOutput && !module->path.empty() && !module->fromTests)
         {
             string publishPath = module->path + "/publish";
             if (fs::exists(publishPath))
