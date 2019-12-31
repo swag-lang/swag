@@ -8,6 +8,7 @@
 #include "DiagnosticInfos.h"
 #include "TypeManager.h"
 #include "BackendC.h"
+#include "ThreadManager.h"
 
 bool Module::setup(const Utf8& moduleName)
 {
@@ -88,9 +89,15 @@ void Module::reserveRegisterRR(uint32_t count)
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
-    static shared_mutex mutexExecuteNode;
-    scoped_lock         lk(mutexExecuteNode);
+    static mutex mutexExecuteNode;
+    g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
+    bool result = executeNodeNoLock(sourceFile, node);
+    mutexExecuteNode.unlock();
+    return result;
+}
 
+bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
+{
     auto runContext = &g_Workspace.runContext;
 
 #ifdef SWAG_HAS_ASSERT

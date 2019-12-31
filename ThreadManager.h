@@ -1,5 +1,6 @@
 #pragma once
-struct Job;
+#include "Job.h"
+
 struct JobThread;
 struct IoThread;
 enum class JobResult;
@@ -14,8 +15,9 @@ struct ThreadManager
     void executeOneJob(Job* job, int& exceptionCode);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
+    void participate(mutex& lock, uint32_t affinity, Module* wantedModule = nullptr, function<void(Job*)> beforeJob = nullptr);
 
-    Job* getJob();
+    Job* getJob(uint32_t affinity = AFFINITY_ALL, Module* wantedModule = nullptr);
 
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;

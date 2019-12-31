@@ -7,6 +7,12 @@ struct ByteCode;
 
 struct BackendCFunctionBodyJob : public Job
 {
+    BackendCFunctionBodyJob()
+    {
+        affinity = AFFINITY_ALL ^ AFFINITY_CFCTBODY;
+        jobKind = JobKind::CFCTBODY;
+    }
+
     JobResult execute() override;
     void      saveBuckets();
 
@@ -16,6 +22,7 @@ struct BackendCFunctionBodyJob : public Job
         backend         = nullptr;
         precompileIndex = 0;
         byteCodeFunc.clear();
+        canSave = true;
     }
 
     void release() override
@@ -25,9 +32,9 @@ struct BackendCFunctionBodyJob : public Job
     }
 
     vector<ByteCode*> byteCodeFunc;
-    static mutex      lockSave;
     BackendC*         backend         = nullptr;
     int               precompileIndex = 0;
+    bool              canSave         = true;
 };
 
 extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

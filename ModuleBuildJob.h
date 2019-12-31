@@ -17,6 +17,11 @@ enum class ModuleBuildPass
 
 struct ModuleBuildJob : public Job
 {
+    ModuleBuildJob()
+    {
+        affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
+    }
+
     JobResult execute() override;
     void      checkPendingJobs();
 

@@ -10,6 +10,16 @@ struct Module;
 struct Diagnostic;
 struct TypeInfo;
 
+enum class JobKind
+{
+    MISC,
+    CFCTBODY,
+};
+
+static const uint32_t AFFINITY_CFCTBODY = 0x00000001;
+static const uint32_t AFFINITY_EXECBC   = 0x00000002;
+static const uint32_t AFFINITY_ALL      = 0xFFFFFFFF;
+
 enum class ContextResult
 {
     Done,
@@ -76,6 +86,8 @@ struct Job : public PoolElem
     uint32_t flags           = 0;
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;
+    uint32_t affinity        = AFFINITY_ALL;
+    JobKind  jobKind         = JobKind::MISC;
 
     void reset() override
     {

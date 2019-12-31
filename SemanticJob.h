@@ -50,6 +50,11 @@ static const uint32_t COLLECT_PASS_INLINE = 0x00000001;
 
 struct SemanticJob : public Job
 {
+    SemanticJob()
+    {
+        affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
+    }
+
     JobResult execute() override;
 
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);

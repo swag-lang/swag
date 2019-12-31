@@ -4,6 +4,7 @@
 #include "Stats.h"
 #include "Job.h"
 #include "Context.h"
+#include "DiagnosticInfos.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -156,13 +157,18 @@ void ThreadManager::waitEndJobs()
     }
 }
 
-Job* ThreadManager::getJob()
+Job* ThreadManager::getJob(uint32_t affinity, Module* wantedModule)
 {
     unique_lock lk(mutexAdd);
     if (queueJobs.empty())
         return nullptr;
 
     auto job = queueJobs.back();
+    if (!(job->affinity & affinity))
+        return nullptr;
+    if (wantedModule && job->module != wantedModule)
+        return nullptr;
+
     queueJobs.pop_back();
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
@@ -176,7 +182,7 @@ Job* ThreadManager::getJob()
 
 Job* ThreadManager::getJob(JobThread* thread)
 {
-    auto job = getJob();
+    auto job = getJob(AFFINITY_ALL);
     if (job)
         return job;
 
@@ -186,4 +192,28 @@ Job* ThreadManager::getJob(JobThread* thread)
 
     thread->waitForANewJob();
     return nullptr;
+}
+
+void ThreadManager::participate(mutex& lock, uint32_t affinity, Module* wantedModule, function<void(Job*)> beforeRun)
+{
+    while (true)
+    {
+        if (lock.try_lock())
+            return;
+
+        auto job = getJob(affinity, wantedModule);
+        if (!job)
+            continue;
+
+        if (beforeRun)
+            beforeRun(job);
+        int exceptionCode = 0;
+        g_ThreadMgr.executeOneJob(job, exceptionCode);
+
+        // Job has raised an exception !
+        if (exceptionCode)
+        {
+            g_diagnosticInfos.reportError(format("exception '%X' during job execution !", exceptionCode));
+        }
+    }
 }

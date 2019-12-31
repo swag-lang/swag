@@ -4,10 +4,10 @@
 #include "Workspace.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "ThreadManager.h"
 
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 thread_local Concat                        g_Concat;
-mutex                                      BackendCFunctionBodyJob::lockSave;
 
 void BackendCFunctionBodyJob::saveBuckets()
 {
@@ -26,8 +26,6 @@ void BackendCFunctionBodyJob::saveBuckets()
 
 JobResult BackendCFunctionBodyJob::execute()
 {
-    g_Concat.clear();
-
     for (auto one : byteCodeFunc)
     {
         TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
@@ -47,9 +45,20 @@ JobResult BackendCFunctionBodyJob::execute()
             backend->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
     }
 
+    if (!canSave)
+        return JobResult::ReleaseJob;
+
     // Must save one by one
-    unique_lock lk(lockSave);
+    static mutex lockSave;
+    g_ThreadMgr.participate(lockSave, AFFINITY_ALL, module, [](Job* job) {
+        if (job->jobKind == JobKind::CFCTBODY)
+        {
+            ((BackendCFunctionBodyJob*) job)->canSave = false;
+        }
+    });
+
     saveBuckets();
+    lockSave.unlock();
 
     return JobResult::ReleaseJob;
 }
