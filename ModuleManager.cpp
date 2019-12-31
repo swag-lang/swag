@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "ByteCodeModuleManager.h"
+#include "ModuleManager.h"
 #include "Workspace.h"
 #include "Context.h"
 
-ByteCodeModuleManager g_ModuleMgr;
+ModuleManager g_ModuleMgr;
 
-bool ByteCodeModuleManager::isModuleLoaded(const Utf8& name)
+bool ModuleManager::isModuleLoaded(const Utf8& name)
 {
     shared_lock lk(mutex);
     return loadedModules.find(name) != loadedModules.end();
 }
 
-bool ByteCodeModuleManager::loadModule(const Utf8& name)
+bool ModuleManager::loadModule(const Utf8& name)
 {
     unique_lock lk(mutex);
 
@@ -62,7 +62,7 @@ bool ByteCodeModuleManager::loadModule(const Utf8& name)
     return true;
 }
 
-void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
+void* ModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
     auto here = loadedModules.find(moduleName);

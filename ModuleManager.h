@@ -4,7 +4,7 @@
 
 struct ByteCodeRunContext;
 
-struct ByteCodeModuleManager
+struct ModuleManager
 {
     bool  loadModule(const Utf8& name);
     bool  isModuleLoaded(const Utf8& name);
@@ -14,4 +14,4 @@ struct ByteCodeModuleManager
     map<Utf8, void*> loadedModules;
 };
 
-extern ByteCodeModuleManager g_ModuleMgr;
+extern ModuleManager g_ModuleMgr;

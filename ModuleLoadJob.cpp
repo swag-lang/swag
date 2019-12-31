@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ModuleLoadJob.h"
-#include "ByteCodeModuleManager.h"
+#include "ModuleManager.h"
 #include "Module.h"
 #include "Os.h"
 

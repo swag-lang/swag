@@ -6,7 +6,7 @@
 #include "ModuleOutputJob.h"
 #include "ModuleLoadJob.h"
 #include "Diagnostic.h"
-#include "ByteCodeModuleManager.h"
+#include "ModuleManager.h"
 #include "Os.h"
 #include "ByteCode.h"
 #include "Backend.h"

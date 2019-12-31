@@ -2,7 +2,7 @@
 #include "ByteCodeRun.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "ByteCodeModuleManager.h"
+#include "ModuleManager.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"

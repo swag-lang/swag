@@ -242,9 +242,6 @@
     <ClCompile Include="BackendCRuntime_.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeModuleManager.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -372,6 +369,9 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="ModuleLoadJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
   </ItemGroup>
@@ -518,9 +518,6 @@
     <ClInclude Include="Attribute.h">
       <Filter>Semantic</Filter>
     </ClInclude>
-    <ClInclude Include="ByteCodeModuleManager.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCompileJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -628,6 +625,9 @@
       <Filter>Doc</Filter>
     </ClInclude>
     <ClInclude Include="ModuleLoadJob.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleManager.h">
       <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
