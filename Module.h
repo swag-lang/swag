@@ -88,8 +88,9 @@ struct Module
     AstNode*             mainIsDefined    = nullptr;
     bool                 hasUnittestError = false;
 
-    void addDependency(AstNode* importNode);
-    void setHasBeenBuilt(uint32_t buildResult);
+    void     addDependency(AstNode* importNode);
+    void     setHasBeenBuilt(uint32_t buildResult);
+    uint32_t getHasBeenBuilt();
 
     shared_mutex                mutexDependency;
     map<Utf8, ModuleDependency> moduleDependencies;

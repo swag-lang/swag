@@ -143,6 +143,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleBuildJob.h" />
     <ClInclude Include="DocModuleJob.h" />
+    <ClInclude Include="ModuleLoadJob.h" />
     <ClInclude Include="ModuleOutputExportJob.h" />
     <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleTestJob.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="ModuleBuildJob.cpp" />
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="DocModuleJob.cpp" />
+    <ClCompile Include="ModuleLoadJob.cpp" />
     <ClCompile Include="ModuleOutputExportJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModulePrecompileJob.cpp" />

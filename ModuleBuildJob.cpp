@@ -4,12 +4,11 @@
 #include "ThreadManager.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
+#include "ModuleLoadJob.h"
 #include "Diagnostic.h"
 #include "ByteCodeModuleManager.h"
 #include "Os.h"
 #include "ByteCode.h"
-#include "Stats.h"
-#include "Allocator.h"
 #include "Backend.h"
 #include "CopyFileJob.h"
 
@@ -85,6 +84,15 @@ JobResult ModuleBuildJob::execute()
                 dep.second.generated    = depModule->backend->exportFileGenerated;
                 module->addFile(file);
                 jobsToAdd.push_back(syntaxJob);
+
+                // If the dependency is completely done, then we can load it during the syntax pass
+                if (depModule->getHasBeenBuilt() == BUILDRES_FULL)
+                {
+                    auto loadJob          = g_Pool_moduleLoadJob.alloc();
+                    loadJob->module       = depModule;
+                    loadJob->dependentJob = this;
+                    jobsToAdd.push_back(loadJob);
+                }
             }
 
             // Sync with all jobs

@@ -371,6 +371,9 @@
     <ClCompile Include="DiagnosticInfos.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleLoadJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -623,6 +626,9 @@
     </ClInclude>
     <ClInclude Include="DocContent.h">
       <Filter>Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoadJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

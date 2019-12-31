@@ -189,6 +189,12 @@ void Module::setHasBeenBuilt(uint32_t buildResult)
     dependentJobs.setRunning();
 }
 
+uint32_t Module::getHasBeenBuilt()
+{
+    shared_lock lk(mutexDependency);
+    return hasBeenBuilt;
+}
+
 void Module::error(const Utf8& msg)
 {
     g_Log.lock();
