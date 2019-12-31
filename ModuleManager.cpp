@@ -34,7 +34,7 @@ bool ModuleManager::loadModule(const Utf8& name)
         // Try on system folders
         path = name.c_str();
         path += ".dll";
-        h    = OS::loadLibrary(path.string().c_str());
+        h = OS::loadLibrary(path.string().c_str());
         if (h == NULL)
         {
             if (verbose)
@@ -64,6 +64,8 @@ bool ModuleManager::loadModule(const Utf8& name)
 
 void* ModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
 {
+    shared_lock lk(mutex);
+
     SWAG_ASSERT(!moduleName.empty());
     auto here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
