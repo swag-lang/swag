@@ -194,7 +194,7 @@ Job* ThreadManager::getJob(JobThread* thread)
     return nullptr;
 }
 
-void ThreadManager::participate(mutex& lock, uint32_t affinity, function<bool(Job*)> canGetJob)
+void ThreadManager::participate(mutex& lock, uint32_t affinity, const function<bool(Job*)>& canGetJob)
 {
     while (true)
     {
@@ -216,7 +216,7 @@ void ThreadManager::participate(mutex& lock, uint32_t affinity, function<bool(Jo
     }
 }
 
-void ThreadManager::participate(function<bool(Job*)> canGetJob)
+void ThreadManager::participate(const function<bool(Job*)>& canGetJob)
 {
     auto job = getJob(AFFINITY_ALL, canGetJob);
     if (!job)

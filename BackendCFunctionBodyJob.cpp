@@ -9,23 +9,6 @@
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 thread_local Concat                        g_Concat;
 
-void BackendCFunctionBodyJob::saveBuckets()
-{
-    auto firstBucket = g_Concat.firstBucket;
-    while (firstBucket)
-    {
-        backend->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
-            if (job->jobKind == JobKind::CFCTBODY)
-                return false;
-            return true;
-        });
-
-        firstBucket = firstBucket->nextBucket;
-    }
-
-    g_Concat.clear();
-}
-
 JobResult BackendCFunctionBodyJob::execute()
 {
     for (auto one : byteCodeFunc)
@@ -50,7 +33,8 @@ JobResult BackendCFunctionBodyJob::execute()
     if (!canSave)
         return JobResult::ReleaseJob;
 
-    // Must save one by one
+    // Must save one by one, so we must get the lock
+    // During that time, we can execute jobs
     static mutex lockSave;
     g_ThreadMgr.participate(lockSave, AFFINITY_ALL, [this](Job* job) {
         if (job->jobKind == JobKind::CFCTBODY)
@@ -64,8 +48,21 @@ JobResult BackendCFunctionBodyJob::execute()
         return true;
     });
 
-    saveBuckets();
+    // Flush all
+    auto firstBucket = g_Concat.firstBucket;
+    while (firstBucket)
+    {
+        backend->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
+            if (job->jobKind == JobKind::CFCTBODY)
+                return false;
+            return true;
+        });
+
+        firstBucket = firstBucket->nextBucket;
+    }
+
     lockSave.unlock();
+    g_Concat.clear();
 
     return JobResult::ReleaseJob;
 }

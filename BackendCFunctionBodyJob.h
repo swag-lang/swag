@@ -14,7 +14,6 @@ struct BackendCFunctionBodyJob : public Job
     }
 
     JobResult execute() override;
-    void      saveBuckets();
 
     void reset() override
     {

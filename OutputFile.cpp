@@ -21,7 +21,7 @@ bool OutputFile::openWrite()
     return true;
 }
 
-bool OutputFile::flush(bool last, function<bool(Job*)> execAsync)
+bool OutputFile::flush(bool last, const function<bool(Job*)>& execAsync)
 {
     auto bucket = firstBucket;
     while (bucket)
@@ -40,7 +40,7 @@ bool OutputFile::flush(bool last, function<bool(Job*)> execAsync)
     return true;
 }
 
-void OutputFile::save(ConcatBucket* bucket, function<bool(Job*)> execAsync)
+void OutputFile::save(ConcatBucket* bucket, const function<bool(Job*)>& execAsync)
 {
     if (!openWrite())
         return;

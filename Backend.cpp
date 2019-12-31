@@ -496,7 +496,13 @@ bool Backend::generateExportFile()
     if (!emitPublicSwg(module, module->scopeRoot))
         return true;
 
-    SWAG_CHECK(bufferSwg.flush(true));
+    // Save the export file
+    auto result = bufferSwg.flush(true, [](Job* job) {
+        return true;
+    });
+
+    if (!result)
+        return false;
 
     timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());
     module->setHasBeenBuilt(BUILDRES_EXPORT);
