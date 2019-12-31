@@ -8,6 +8,7 @@ struct ByteCode;
 struct BackendCFunctionBodyJob : public Job
 {
     JobResult execute() override;
+    void      saveBuckets();
 
     void reset() override
     {
@@ -24,6 +25,7 @@ struct BackendCFunctionBodyJob : public Job
     }
 
     vector<ByteCode*> byteCodeFunc;
+    static mutex      lockSave;
     BackendC*         backend         = nullptr;
     int               precompileIndex = 0;
 };

@@ -7,6 +7,22 @@
 
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 thread_local Concat                        g_Concat;
+mutex                                      BackendCFunctionBodyJob::lockSave;
+
+void BackendCFunctionBodyJob::saveBuckets()
+{
+    auto        firstBucket = g_Concat.firstBucket;
+    SaveRequest req;
+    while (firstBucket)
+    {
+        req.buffer     = (char*) firstBucket->datas;
+        req.bufferSize = firstBucket->count;
+        backend->bufferCFiles[precompileIndex].save(&req);
+        firstBucket = firstBucket->nextBucket;
+    }
+
+    g_Concat.clear();
+}
 
 JobResult BackendCFunctionBodyJob::execute()
 {
@@ -31,19 +47,9 @@ JobResult BackendCFunctionBodyJob::execute()
             backend->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
     }
 
-    auto        firstBucket = g_Concat.firstBucket;
-    SaveRequest req;
-
     // Must save one by one
-    static mutex m;
-    unique_lock  lk(m);
-    while (firstBucket)
-    {
-        req.buffer     = (char*) firstBucket->datas;
-        req.bufferSize = firstBucket->count;
-        backend->bufferCFiles[precompileIndex].save(&req);
-        firstBucket = firstBucket->nextBucket;
-    }
+    unique_lock lk(lockSave);
+    saveBuckets();
 
     return JobResult::ReleaseJob;
 }
