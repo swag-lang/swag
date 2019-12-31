@@ -39,18 +39,21 @@ struct VectorNative
         if (newcapacity <= allocated)
             return;
 
+        auto oldAllocated = allocated;
         allocated *= 2;
-        if (newcapacity > allocated)
-            allocated = newcapacity;
         allocated = max(allocated, 4);
-
-        T* newPtr = (T*) g_Allocator.alloc(allocated * sizeof(T));
+        allocated = max(allocated, newcapacity);
+        T* newPtr = (T*) g_Allocator.alloc(g_Allocator.alignSize(allocated * sizeof(T)));
         SWAG_ASSERT(newPtr);
-
         if (copy)
             memcpy(newPtr, buffer, count * sizeof(T));
-
+        g_Allocator.free(buffer, g_Allocator.alignSize(oldAllocated * sizeof(T)));
         buffer = newPtr;
+    }
+
+    ~VectorNative()
+    {
+        g_Allocator.free(buffer, g_Allocator.alignSize(allocated * sizeof(T)));
     }
 
     void push_back(const T& val)
