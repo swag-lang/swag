@@ -16,7 +16,7 @@ typedef short				swag_int16_t;
 typedef int					swag_int32_t;
 typedef long long			swag_int64_t;
 typedef unsigned char		swag_uint8_t;
-typedef unsigned char		swag_bool_t;
+typedef _Bool				swag_bool_t;
 typedef unsigned short		swag_uint16_t;
 typedef unsigned int		swag_uint32_t;
 typedef unsigned int		swag_char32_t;
