@@ -215,3 +215,19 @@ void ThreadManager::participate(mutex& lock, uint32_t affinity, function<bool(Jo
         }
     }
 }
+
+void ThreadManager::participate(function<bool(Job*)> canGetJob)
+{
+    auto job = getJob(AFFINITY_ALL, canGetJob);
+    if (!job)
+        return;
+
+    int exceptionCode = 0;
+    g_ThreadMgr.executeOneJob(job, exceptionCode);
+
+    // Job has raised an exception !
+    if (exceptionCode)
+    {
+        g_diagnosticInfos.reportError(format("exception '%X' during job execution !", exceptionCode));
+    }
+}

@@ -11,13 +11,15 @@ thread_local Concat                        g_Concat;
 
 void BackendCFunctionBodyJob::saveBuckets()
 {
-    auto        firstBucket = g_Concat.firstBucket;
-    SaveRequest req;
+    auto firstBucket = g_Concat.firstBucket;
     while (firstBucket)
     {
-        req.buffer     = (char*) firstBucket->datas;
-        req.bufferSize = firstBucket->count;
-        backend->bufferCFiles[precompileIndex].save(&req);
+        backend->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
+            if (job->jobKind == JobKind::CFCTBODY)
+                return false;
+            return true;
+        });
+
         firstBucket = firstBucket->nextBucket;
     }
 

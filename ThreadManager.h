@@ -16,6 +16,7 @@ struct ThreadManager
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
     void participate(mutex& lock, uint32_t affinity, function<bool(Job*)> canGetJob = nullptr);
+    void participate(function<bool(Job*)> canGetJob = nullptr);
 
     Job* getJob(uint32_t affinity = AFFINITY_ALL, function<bool(Job*)> canGetJob = nullptr);
 

@@ -1,19 +1,15 @@
 #pragma once
 #include "Concat.h"
 #include "File.h"
-struct SaveRequest;
-
-struct SaveRequest
-{
-    char* buffer     = nullptr;
-    long  bufferSize = 0;
-    bool  ioError    = false;
-};
+struct Job;
 
 struct OutputFile : public Concat, public File
 {
-    void flushBucket(ConcatBucket* bucket);
-    bool flush(bool lastOne);
-    void save(SaveRequest* request);
+    bool flush(bool lastOne, function<bool(Job*)> execAsync = nullptr);
+    void save(ConcatBucket* bucket, function<bool(Job*)> execAsync = nullptr);
     bool openWrite();
+
+    HANDLE               winHandle = INVALID_HANDLE_VALUE;
+    vector<LPOVERLAPPED> overlappeds;
+    int                  seekSave = 0;
 };
