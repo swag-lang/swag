@@ -20,7 +20,7 @@ void ThreadManager::init()
     g_Stats.numWorkers = numWorkers;
 
     for (int i = 0; i < numWorkers; i++)
-        workerThreads.push_back(new JobThread());
+        workerThreads.push_back(new JobThread(i));
 }
 
 void ThreadManager::addJob(Job* job)

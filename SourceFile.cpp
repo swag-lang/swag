@@ -304,6 +304,11 @@ void SourceFile::load(LoadRequest* request)
         request->loadedSize = readTo();
     }
 
-    if (g_Stats.maxOpenFiles > _getmaxstdio() / 2)
+    // Stored in a static to avoid polling the function (there's a potential crt lock there)
+    static int maxStdIo = 0;
+    if (maxStdIo == 0)
+        maxStdIo = _getmaxstdio();
+
+    if (g_Stats.maxOpenFiles > maxStdIo / 2)
         close();
 }

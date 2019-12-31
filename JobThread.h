@@ -3,7 +3,7 @@ struct Job;
 
 struct JobThread
 {
-    JobThread();
+    JobThread(int rank);
     ~JobThread();
 
     void loop();

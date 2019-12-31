@@ -8,10 +8,12 @@
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
 
-JobThread::JobThread()
+JobThread::JobThread(int rank)
 {
     thread = new std::thread(&JobThread::loop, this);
     OS::setThreadName(thread, "JobThread");
+
+    //SetThreadAffinityMask(thread->native_handle(), (uint64_t) 1 << rank);
 }
 
 JobThread::~JobThread()
