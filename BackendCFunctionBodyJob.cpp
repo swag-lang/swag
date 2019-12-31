@@ -50,11 +50,16 @@ JobResult BackendCFunctionBodyJob::execute()
 
     // Must save one by one
     static mutex lockSave;
-    g_ThreadMgr.participate(lockSave, AFFINITY_ALL, module, [](Job* job) {
+    g_ThreadMgr.participate(lockSave, AFFINITY_ALL, [this](Job* job) {
         if (job->jobKind == JobKind::CFCTBODY)
         {
-            ((BackendCFunctionBodyJob*) job)->canSave = false;
+            auto cJob = (BackendCFunctionBodyJob*) job;
+            if (cJob->backend != backend)
+                return false;
+            cJob->canSave = false;
         }
+
+        return true;
     });
 
     saveBuckets();

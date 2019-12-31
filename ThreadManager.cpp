@@ -157,7 +157,7 @@ void ThreadManager::waitEndJobs()
     }
 }
 
-Job* ThreadManager::getJob(uint32_t affinity, Module* wantedModule)
+Job* ThreadManager::getJob(uint32_t affinity, function<bool(Job*)> canGetJob)
 {
     unique_lock lk(mutexAdd);
     if (queueJobs.empty())
@@ -166,7 +166,7 @@ Job* ThreadManager::getJob(uint32_t affinity, Module* wantedModule)
     auto job = queueJobs.back();
     if (!(job->affinity & affinity))
         return nullptr;
-    if (wantedModule && job->module != wantedModule)
+    if (canGetJob && !canGetJob(job))
         return nullptr;
 
     queueJobs.pop_back();
@@ -194,19 +194,17 @@ Job* ThreadManager::getJob(JobThread* thread)
     return nullptr;
 }
 
-void ThreadManager::participate(mutex& lock, uint32_t affinity, Module* wantedModule, function<void(Job*)> beforeRun)
+void ThreadManager::participate(mutex& lock, uint32_t affinity, function<bool(Job*)> canGetJob)
 {
     while (true)
     {
         if (lock.try_lock())
             return;
 
-        auto job = getJob(affinity, wantedModule);
+        auto job = getJob(affinity, canGetJob);
         if (!job)
             continue;
 
-        if (beforeRun)
-            beforeRun(job);
         int exceptionCode = 0;
         g_ThreadMgr.executeOneJob(job, exceptionCode);
 

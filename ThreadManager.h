@@ -15,9 +15,9 @@ struct ThreadManager
     void executeOneJob(Job* job, int& exceptionCode);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
-    void participate(mutex& lock, uint32_t affinity, Module* wantedModule = nullptr, function<void(Job*)> beforeJob = nullptr);
+    void participate(mutex& lock, uint32_t affinity, function<bool(Job*)> canGetJob = nullptr);
 
-    Job* getJob(uint32_t affinity = AFFINITY_ALL, Module* wantedModule = nullptr);
+    Job* getJob(uint32_t affinity = AFFINITY_ALL, function<bool(Job*)> canGetJob = nullptr);
 
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;
