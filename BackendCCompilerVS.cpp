@@ -118,7 +118,7 @@ bool BackendCCompilerVS::check()
     compilerExe  = "cl.exe";
     compilerPath = visualStudioPath + R"(\bin\Hostx64\x64\)";
     //compilerExe = "clang-cl.exe";
-    //compilerPath = "f:/swag/.out/";
+    //compilerPath = "C:/Program Files/LLVM/bin/";
 
     auto fullPath = compilerPath + compilerExe;
     if (!fs::exists(fullPath))
@@ -199,6 +199,7 @@ bool BackendCCompilerVS::compile()
     }
 
     //clArguments += "/O2 ";
+
     if (buildParameters->flags & BUILDPARAM_FOR_TEST)
         clArguments += "/DSWAG_HAS_TEST ";
 

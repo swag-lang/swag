@@ -702,10 +702,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BoundCheckString:
-            concat.addStringFormat("__assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            concat.addStringFormat("__assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
         case ByteCodeOp::BoundCheck:
-            concat.addStringFormat("__assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            concat.addStringFormat("__assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
         case ByteCodeOp::IncPointerVB:
             concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
@@ -966,26 +966,26 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s32 = r[%u].s32 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftLeftS64:
-            concat.addStringFormat("r[%u].s64 = r[%u].s64 << r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].s64 = r[%u].s64 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftLeftU32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftLeftU64:
-            concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::ShiftRightS32:
             concat.addStringFormat("r[%u].s32 = r[%u].s32 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftRightS64:
-            concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftRightU32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftRightU64:
-            concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ShiftRightU64VB:
             concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);

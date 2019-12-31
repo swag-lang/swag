@@ -56,9 +56,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     int  sizeOf = node->typeInfo->sizeOf;
 
     node->array->resultRegisterRC += reserveRegisterRC(context);
-    auto inst   = emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
-    inst->c.u32 = sizeof(void*);
-    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[0]);
+    emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
 
     if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);

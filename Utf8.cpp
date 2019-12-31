@@ -117,6 +117,7 @@ void Utf8::append(const char* txt, int len)
     reserve(count + len + 1);
     memcpy(buffer + count, txt, len + 1);
     count += len;
+    buffer[count] = 0;
 }
 
 void Utf8::append(const char* txt)
