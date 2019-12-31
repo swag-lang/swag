@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Utf8.h"
+#include "Allocator.h"
 
 wstring_convert<codecvt_utf8<int32_t>, int32_t> toUtf8;
 
@@ -8,18 +9,20 @@ void Utf8::reserve(int newSize)
     if (newSize <= allocated)
         return;
 
+    auto lastAllocated = allocated;
     allocated *= 2;
     allocated      = max(allocated, newSize);
-    auto newBuffer = (char*) malloc(allocated);
+    allocated      = g_Allocator.alignSize(allocated);
+    auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
-    free(buffer);
+    g_Allocator.free(buffer, lastAllocated);
     buffer = newBuffer;
 }
 
 Utf8::~Utf8()
 {
-    free(buffer);
+    g_Allocator.free(buffer, allocated);
 }
 
 Utf8::Utf8()
