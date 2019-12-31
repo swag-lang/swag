@@ -286,7 +286,7 @@ namespace Ast
         if (syntaxJob)
             node->inheritTokenLocation(syntaxJob->token);
 
-        vector<string> subNames;
+        vector<Utf8> subNames;
         tokenize(name.c_str(), '.', subNames);
         for (int i = 0; i < subNames.size(); i++)
         {

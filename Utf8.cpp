@@ -74,6 +74,15 @@ Utf8::Utf8(const Utf8& from)
     count = len;
 }
 
+Utf8::Utf8(Utf8&& from)
+{
+    buffer      = from.buffer;
+    count       = from.count;
+    allocated   = from.allocated;
+    from.buffer = nullptr;
+    from.count = from.allocated = 0;
+}
+
 bool Utf8::empty() const
 {
     return count == 0;

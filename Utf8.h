@@ -14,6 +14,7 @@ struct Utf8
     Utf8(const char* from);
     Utf8(const string& from);
     Utf8(const Utf8& from);
+    Utf8(Utf8&& from);
     void        reserve(int newSize);
     bool        empty() const;
     int         length() const;

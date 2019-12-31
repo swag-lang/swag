@@ -143,7 +143,7 @@ int main(int argc, const char* argv[])
     for (auto& arg : g_CommandLine.userArgumentsVec)
     {
         oneArg.first  = (void*) arg.c_str();
-        oneArg.second = (void*) arg.size();
+        oneArg.second = (void*) (size_t) arg.length();
         g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 

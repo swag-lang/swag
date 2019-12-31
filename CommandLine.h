@@ -1,5 +1,6 @@
 #pragma once
 #include "BuildPass.h"
+#include "Utf8.h"
 
 enum class BackendType
 {
@@ -31,7 +32,7 @@ struct CommandLine
 
     // User arguments
     string                     userArguments;
-    vector<string>             userArgumentsVec;
+    vector<Utf8>               userArgumentsVec;
     vector<pair<void*, void*>> userArgumentsStr;
     pair<void*, void*>         userArgumentsSlice;
 
@@ -60,7 +61,7 @@ struct CommandLine
     bool        backendOutput      = true;
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;
-    bool        debug       = false;
+    bool        debug              = false;
 
     fs::path exePath;
 };

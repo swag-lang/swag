@@ -174,7 +174,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
         {
         case CommandLineType::Enum:
         {
-            vector<string> tokens;
+            vector<Utf8> tokens;
             tokenize(arg->param, '|', tokens);
 
             int index = 0;

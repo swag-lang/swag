@@ -167,14 +167,14 @@ namespace OS
 
                 // Process result
                 g_Log.lock();
-                vector<string> lines;
+                vector<Utf8> lines;
                 tokenize(strout.c_str(), '\n', lines);
                 for (auto oneLine : lines)
                 {
                     g_Log.setDefaultColor();
 
                     if (oneLine.back() == '\r')
-                        oneLine.erase(oneLine.end() - 1);
+                        oneLine.pop_back();
 
                     auto pz = strstr(oneLine.c_str(), ": error");
                     if (!pz)
