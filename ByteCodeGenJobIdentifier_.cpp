@@ -131,6 +131,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
                 emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
             }
+
+            transformResultToLinear2(context, node);
         }
         else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
         {
