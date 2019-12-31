@@ -198,6 +198,7 @@ bool BackendCCompilerVS::compile()
         }
     }
 
+    //clArguments += "/O2 ";
     if (buildParameters->flags & BUILDPARAM_FOR_TEST)
         clArguments += "/DSWAG_HAS_TEST ";
 

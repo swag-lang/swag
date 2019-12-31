@@ -328,6 +328,8 @@ void Utf8::replaceAll(char src, char dst)
 
 void Utf8::trimLeft()
 {
+    if (!buffer)
+        return;
     auto pz       = buffer;
     auto newCount = count;
     while (UTF8_IS_BLANK(*pz))
@@ -343,6 +345,8 @@ void Utf8::trimLeft()
 
 void Utf8::trimRight()
 {
+    if (!buffer)
+        return;
     while (count && UTF8_IS_BLANK(buffer[count]))
         count--;
 }

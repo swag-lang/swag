@@ -317,7 +317,12 @@ namespace Ast
 
         SWAG_ASSERT(node->ownerScope);
         if (!node->ownerScope->fullname.empty())
+        {
             concatForC(fullnameForeign, node->ownerScope->fullname);
+            fullnameForeign += "_";
+        }
+
+        concatForC(fullnameForeign, node->name);
         fullnameForeign += format("_%lX", (uint64_t) node);
 
         return fullnameForeign;

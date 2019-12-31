@@ -20,9 +20,13 @@ int g_ByteCodeOpNamesLen[] = {
 
 Utf8 ByteCode::callName()
 {
-    auto callname = name.empty() ? node->fullnameDot : name;
-    callname += format("_%lX", (uint64_t) this);
-    return callname;
+    Utf8 callName;
+    if (name.empty())
+        callName = node->fullnameDot;
+    else
+        callName = name;
+    callName += format("_%lX", (uint64_t) this);
+    return callName;
 }
 
 TypeInfoFuncAttr* ByteCode::callType()
