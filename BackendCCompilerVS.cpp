@@ -177,8 +177,6 @@ bool BackendCCompilerVS::compile()
     clArguments += "/GS- ";
     clArguments += "/MD ";
 
-    //clArguments += "/MP "; // Multithread compile
-
     for (int i = 0; i < backend->numPreCompileBuffers; i++)
         clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
     clArguments += "/Fo\"" + g_Workspace.cachePath.string() + "\" ";

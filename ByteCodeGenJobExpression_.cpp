@@ -59,6 +59,19 @@ void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>
     }
 }
 
+void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNode* node)
+{
+    if (node->resultRegisterRC[1] != node->resultRegisterRC[0] + 1)
+    {
+        RegisterList r0;
+        reserveLinearRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], node->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[1], node->resultRegisterRC[1]);
+        freeRegisterRC(context, node->resultRegisterRC);
+        node->resultRegisterRC = r0;
+    }
+}
+
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
@@ -69,6 +82,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = node->childs.front()->resultRegisterRC;
         node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+        transformResultToLinear2(context, node);
         return true;
     }
 

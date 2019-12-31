@@ -42,6 +42,7 @@ struct ByteCodeGenJob : public Job
 
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
+    static void transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
     static bool emitExpressionList(ByteCodeGenContext* context);
     static bool emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList);
     static bool emitLiteral(ByteCodeGenContext* context);

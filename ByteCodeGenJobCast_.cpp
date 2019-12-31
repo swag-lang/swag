@@ -632,6 +632,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         node->resultRegisterRC += reserveRegisterRC(context);
         auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1]);
         inst->b.u32 = fromTypeArray->count;
+        transformResultToLinear2(context, node);
     }
     else
     {

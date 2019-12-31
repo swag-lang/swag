@@ -1,5 +1,7 @@
+//#[swag.printbc]
 func set(ptr: [..] u16, val: u16)
 {
+    //@print(cast(s64) @countof(ptr))
     ptr[0] = val
 }
 
