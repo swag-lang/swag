@@ -44,22 +44,6 @@ bool File::openRead()
     return true;
 }
 
-bool File::openWrite()
-{
-    if (fileHandle != nullptr)
-        return true;
-
-    if (!openedOnce)
-        File::openFile(&fileHandle, path.c_str(), "wtN");
-    else
-        File::openFile(&fileHandle, path.c_str(), "a+tN");
-    if (fileHandle == nullptr)
-        return false;
-
-    openedOnce = true;
-    return true;
-}
-
 void File::close()
 {
     File::closeFile(&fileHandle);

@@ -15,4 +15,5 @@ struct OutputFile : public Concat, public File
     void flushBucket(ConcatBucket* bucket);
     bool flush(bool lastOne);
     void save(SaveRequest* request);
+    bool openWrite();
 };
