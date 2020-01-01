@@ -40,6 +40,11 @@ namespace std
                     memory.copy(buffer, otherBuffer, numBytes)
                 }
             }
+
+            func opIndex(using self, index: u32)->bool
+            {
+                return get(self, index)
+            }
         }
 
         func free(using self)
