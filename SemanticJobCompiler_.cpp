@@ -130,6 +130,8 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    node->flags |= AST_NO_BYTECODE;
+
     if (!expr->computedValue.reg.b)
     {
         if (node->childs.size() > 1)
