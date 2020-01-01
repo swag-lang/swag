@@ -335,65 +335,77 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST2;
     }
 
-    auto r0 = node->childs[0]->resultRegisterRC;
-    auto r1 = node->childs[1]->resultRegisterRC;
-
-    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+    if (!(node->doneFlags & AST_DONE_EMIT_BINOP))
     {
-        SWAG_CHECK(emitUserOp(context));
+        auto r0 = node->childs[0]->resultRegisterRC;
+        auto r1 = node->childs[1]->resultRegisterRC;
+
+        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        {
+            SWAG_CHECK(emitUserOp(context));
+            if (context->result == ContextResult::Pending)
+                return true;
+            node->doneFlags |= AST_DONE_EMIT_BINOP;
+        }
+        else
+        {
+            auto r2                = reserveRegisterRC(context);
+            node->resultRegisterRC = r2;
+
+            switch (node->token.id)
+            {
+            case TokenId::SymPlus:
+                SWAG_CHECK(emitBinaryOpPlus(context, r0, r1, r2));
+                break;
+            case TokenId::SymMinus:
+                SWAG_CHECK(emitBinaryOpMinus(context, r0, r1, r2));
+                break;
+            case TokenId::SymAsterisk:
+                SWAG_CHECK(emitBinaryOpMul(context, r0, r1, r2));
+                break;
+            case TokenId::SymSlash:
+                SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
+                break;
+            case TokenId::SymPercent:
+                SWAG_CHECK(emitBinaryOpModulo(context, r0, r1, r2));
+                break;
+            case TokenId::SymAmpersandAmpersand:
+                emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
+                break;
+            case TokenId::SymVerticalVertical:
+                emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
+                break;
+            case TokenId::SymVertical:
+                SWAG_CHECK(emitBitmaskOr(context, r0, r1, r2));
+                break;
+            case TokenId::SymAmpersand:
+                SWAG_CHECK(emitBitmaskAnd(context, r0, r1, r2));
+                break;
+            case TokenId::SymLowerLower:
+                SWAG_CHECK(emitShiftLeft(context, r0, r1, r2));
+                break;
+            case TokenId::SymGreaterGreater:
+                SWAG_CHECK(emitShiftRight(context, r0, r1, r2));
+                break;
+            case TokenId::SymCircumflex:
+                SWAG_CHECK(emitXor(context, r0, r1, r2));
+                break;
+            default:
+                return internalError(context, "emitBinaryOp, invalid token op");
+            }
+
+            freeRegisterRC(context, r0);
+            freeRegisterRC(context, r1);
+            node->doneFlags |= AST_DONE_EMIT_BINOP;
+        }
+    }
+
+    if (!(node->doneFlags & AST_DONE_CAST3))
+    {
+        SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
         if (context->result == ContextResult::Pending)
             return true;
-        auto r2 = node->resultRegisterRC;
-    }
-    else
-    {
-        auto r2                = reserveRegisterRC(context);
-        node->resultRegisterRC = r2;
-
-        switch (node->token.id)
-        {
-        case TokenId::SymPlus:
-            SWAG_CHECK(emitBinaryOpPlus(context, r0, r1, r2));
-            break;
-        case TokenId::SymMinus:
-            SWAG_CHECK(emitBinaryOpMinus(context, r0, r1, r2));
-            break;
-        case TokenId::SymAsterisk:
-            SWAG_CHECK(emitBinaryOpMul(context, r0, r1, r2));
-            break;
-        case TokenId::SymSlash:
-            SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
-            break;
-        case TokenId::SymPercent:
-            SWAG_CHECK(emitBinaryOpModulo(context, r0, r1, r2));
-            break;
-        case TokenId::SymAmpersandAmpersand:
-            emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
-            break;
-        case TokenId::SymVerticalVertical:
-            emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
-            break;
-        case TokenId::SymVertical:
-            SWAG_CHECK(emitBitmaskOr(context, r0, r1, r2));
-            break;
-        case TokenId::SymAmpersand:
-            SWAG_CHECK(emitBitmaskAnd(context, r0, r1, r2));
-            break;
-        case TokenId::SymLowerLower:
-            SWAG_CHECK(emitShiftLeft(context, r0, r1, r2));
-            break;
-        case TokenId::SymGreaterGreater:
-            SWAG_CHECK(emitShiftRight(context, r0, r1, r2));
-            break;
-        case TokenId::SymCircumflex:
-            SWAG_CHECK(emitXor(context, r0, r1, r2));
-            break;
-        default:
-            return internalError(context, "emitBinaryOp, invalid token op");
-        }
-
-        freeRegisterRC(context, r0);
-        freeRegisterRC(context, r1);
+        node->doneFlags |= AST_DONE_CAST3;
     }
 
     return true;
