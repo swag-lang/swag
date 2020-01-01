@@ -259,6 +259,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Reference inside a struct
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
+        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
         if (node->resolvedSymbolOverload->storageOffset > 0)

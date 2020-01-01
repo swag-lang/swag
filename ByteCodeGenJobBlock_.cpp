@@ -133,6 +133,9 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     for (auto r : node->returnList)
         context->bc->out[r->seekJump].a.u32 = context->bc->numInstructions - r->seekJump - 1;
 
+    // Release persistent list of registers
+    freeRegisterRC(context, node->scope->registersToRelease);
+
     return true;
 }
 
@@ -594,9 +597,6 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
             return true;
         node->doneLeaveScopeDrop.insert(scope);
     }
-
-    // Release persistent list of registers
-    freeRegisterRC(context, scope->registersToRelease);
 
     return true;
 }
