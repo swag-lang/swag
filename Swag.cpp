@@ -122,7 +122,7 @@ int main(int argc, const char* argv[])
     // Output command line
     if (g_CommandLine.verbose)
     {
-        auto str = cmdParser.buildString();
+        auto str = cmdParser.buildString(true);
         g_Log.verbose("=> command line is " + str);
     }
 

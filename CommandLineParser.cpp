@@ -111,7 +111,7 @@ void CommandLineParser::logArguments()
             line0 += oneArg->param;
             while (line0.length() < COL_DEFAULT)
                 line0 += " ";
-            line0 += to_string(*(int*)oneArg->buffer);
+            line0 += to_string(*(int*) oneArg->buffer);
             break;
         }
 
@@ -261,7 +261,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
     return result;
 }
 
-string CommandLineParser::buildString()
+string CommandLineParser::buildString(bool full)
 {
     CommandLine       defaultValues;
     CommandLineParser defaultParser;
@@ -277,7 +277,7 @@ string CommandLineParser::buildString()
         switch (oneArg->type)
         {
         case CommandLineType::String:
-            if (*(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            if (full || *(string*) oneArg->buffer != *(string*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
                 result += *(string*) oneArg->buffer;
@@ -285,15 +285,19 @@ string CommandLineParser::buildString()
             }
             break;
         case CommandLineType::Enum:
-            if (*(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            if (full || *(int*) oneArg->buffer != *(int*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
-                result += to_string(*(int*) oneArg->buffer);
+
+                vector<Utf8> tokens;
+                tokenize(oneArg->param, '|', tokens);
+                int idx = *(int*) oneArg->buffer;
+                result += tokens[idx];
                 result += " ";
             }
             break;
         case CommandLineType::Int:
-            if (*(int*) oneArg->buffer != *(int*) defaultArg->buffer)
+            if (full || *(int*) oneArg->buffer != *(int*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
                 result += to_string(*(int*) oneArg->buffer);
@@ -301,7 +305,7 @@ string CommandLineParser::buildString()
             }
             break;
         case CommandLineType::Bool:
-            if (*(bool*) oneArg->buffer != *(bool*) defaultArg->buffer)
+            if (full || *(bool*) oneArg->buffer != *(bool*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
                 if (*(bool*) oneArg->buffer == true)

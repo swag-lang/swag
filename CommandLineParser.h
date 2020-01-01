@@ -32,7 +32,7 @@ struct CommandLineParser
     bool   process(int argc, const char* argv[]);
     void   addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help);
     void   logArguments();
-    string buildString();
+    string buildString(bool full);
 
     map<string, CommandLineArgument*> longNameArgs;
     map<string, CommandLineArgument*> shortNameArgs;

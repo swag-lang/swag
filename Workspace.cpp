@@ -361,7 +361,7 @@ bool Workspace::watch()
 
     CommandLineParser cmdParser;
     cmdParser.setup(&g_CommandLine);
-    auto cmdLine = cmdParser.buildString();
+    auto cmdLine = cmdParser.buildString(false);
 
     OS::watch([&](const string& moduleName) {
         uint32_t errors = 0;

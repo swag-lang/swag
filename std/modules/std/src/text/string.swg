@@ -1,8 +1,8 @@
 namespace std
 {
     using swag
-    private const SmallSize = 24'u32
-    private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
+    private const smallSize = 24'u32
+    private const smallSizeInternal = smallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
 
     public struct String
@@ -11,7 +11,7 @@ namespace std
         readonly length:     u32
         readonly size:       u32
         internal allocator:  IAllocator
-        internal padding:    [SmallSizeInternal] u8
+        internal padding:    [smallSizeInternal] u8
     }
     
     impl String
@@ -81,7 +81,7 @@ namespace std
 
             func opPostMove(using self)
             {
-                if size <= SmallSize
+                if size <= smallSize
                     buffer = acast &allocator
             }
 
@@ -89,7 +89,7 @@ namespace std
             {
                 if !buffer
                     return
-                if size <= SmallSize
+                if size <= smallSize
                     buffer = acast &allocator
                 else
                 {
@@ -152,7 +152,7 @@ namespace std
             func reserve(using self, newSize: u32)
             {
                 // Small size, just be sure with have a valid buffer address
-                if newSize <= SmallSize
+                if newSize <= smallSize
                 {
                     // Free everything
                     size = newSize
