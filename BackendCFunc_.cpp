@@ -37,7 +37,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array || typeInfo->isNative(NativeTypeKind::String))
     {
         cType = "void*";
         return true;
@@ -323,7 +323,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.pointer = %s_itable;\n", idx + 1, param->namedParam.c_str());
         }
-        else if (typeParam->kind == TypeInfoKind::Struct)
+        else if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Array)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }

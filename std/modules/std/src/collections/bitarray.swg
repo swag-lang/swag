@@ -53,6 +53,13 @@ namespace std
                 #else
                     #assert(false, "invalid assignment operator '" ~op~ "'")
             }            
+
+            func opAffect(using self, slice: [4] bool)
+            {
+                reserve(self, @countof(slice))
+                visit b, i: slice
+                    set(self, i, b)
+            }
         }
 
         func free(using self)
