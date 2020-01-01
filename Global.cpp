@@ -21,7 +21,7 @@ Utf8 format(const char* format, ...)
     Utf8 vec;
     vec.resize((int) len);
     va_start(args, format);
-    vsnprintf(&vec[0], len + 1, format, args);
+    vsnprintf(vec.buffer, len + 1, format, args);
     va_end(args);
     return move(vec);
 }

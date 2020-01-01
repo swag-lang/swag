@@ -71,13 +71,18 @@ namespace std
             func(ptr: bool) opVisit(using self, stmt: code)
             {
                 if !numBits return
-                #assert ptr == false
-                loop math.max(numBits >> 5, 1)
+                #assert(ptr == false, "pointer visitor not supported for BitArray")
+                loop i: math.max(numBits >> 5, 1)
                 {
-                    #macro
+                    var shift: u32 = 1
+                    loop 32
                     {
-                        #mixin `stmt
-                    }   
+                        #macro
+                        {
+                            let @alias0 = cast(bool) (buffer[i] & shift)
+                            #mixin `stmt
+                        }   
+                    }
                 }
             }
         }

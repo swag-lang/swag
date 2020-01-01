@@ -1,6 +1,3 @@
-#module std56
-#unittest error
-
 #import "std"
 using std
 
@@ -8,8 +5,8 @@ using std
 #test
 {
     var x: BitArray = [true, false, true, false]
-    visit *ptr: x
+    /*visit x
     {
         @print("XX\n")
-    }
+    }*/
 }

@@ -198,13 +198,6 @@ Utf8::operator const char*()
     return buffer;
 }
 
-char& Utf8::operator[](int index)
-{
-    SWAG_ASSERT(index < count);
-    SWAG_ASSERT(buffer);
-    return buffer[index];
-}
-
 char Utf8::operator[](int index) const
 {
     return index < count ? buffer[index] : 0;

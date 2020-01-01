@@ -191,15 +191,49 @@ namespace Ast
                 concat.addString(node->name);
                 concat.addChar(':');
                 SWAG_CHECK(output(concat, varDecl->type));
+                if (varDecl->assignment)
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(output(concat, varDecl->assignment));
+                }
             }
             else
             {
                 concat.addString(node->name);
                 CONCAT_FIXED_STR(concat, " := ");
+                if (varDecl->assignment)
+                    SWAG_CHECK(output(concat, varDecl->assignment));
+            }
+
+            break;
+        }
+
+        case AstNodeKind::LetDecl:
+        case AstNodeKind::ConstDecl:
+        {
+            AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+            switch (node->kind)
+            {
+            case AstNodeKind::LetDecl:
+                CONCAT_FIXED_STR(concat, "let ");
+                break;
+            case AstNodeKind::ConstDecl:
+                CONCAT_FIXED_STR(concat, "const ");
+                break;
+            }
+
+            concat.addString(node->name);
+            if (varDecl->type)
+            {
+                CONCAT_FIXED_STR(concat, ": ");
+                SWAG_CHECK(output(concat, varDecl->type));
             }
 
             if (varDecl->assignment)
+            {
+                CONCAT_FIXED_STR(concat, " = ");
                 SWAG_CHECK(output(concat, varDecl->assignment));
+            }
             break;
         }
 

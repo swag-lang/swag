@@ -185,13 +185,14 @@ namespace Ast
     void normalizeIdentifierName(Utf8& name)
     {
         auto len = name.length();
+        auto pz = name.buffer;
         for (int i = 0; i < len; i++)
         {
-            auto& c = name[i];
-            if (c == '*')
-                c = 'P';
-            else if (c == '.')
-                c = '_';
+            if (*pz == '*')
+                *pz = 'P';
+            else if (*pz == '.')
+                *pz = '_';
+            pz++;
         }
     }
 

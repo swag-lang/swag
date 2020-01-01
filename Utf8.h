@@ -43,7 +43,6 @@ struct Utf8
     void        operator+=(const Utf8& txt);
     void        operator+=(const char* txt);
     void        operator=(const Utf8& other);
-    char&       operator[](int index);
     char        operator[](int index) const;
     friend Utf8 operator+(const Utf8& str1, const char* str2);
     friend Utf8 operator+(const char* str1, const Utf8& str2);
