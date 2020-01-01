@@ -140,6 +140,12 @@ namespace Ast
         {
             auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
             CONCAT_FIXED_STR(concat, "loop ");
+            if (loopNode->specificName)
+            {
+                concat.addString(loopNode->specificName->name);
+                CONCAT_FIXED_STR(concat, ": ");
+            }
+
             SWAG_CHECK(output(concat, loopNode->expression, indent));
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, loopNode->block, indent));
@@ -191,7 +197,7 @@ namespace Ast
             {
                 CONCAT_FIXED_STR(concat, "var ");
                 concat.addString(node->name);
-                concat.addChar(':');
+                CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(output(concat, varDecl->type));
                 if (varDecl->assignment)
                 {

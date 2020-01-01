@@ -469,8 +469,9 @@ struct AstLoop : public AstBreakable
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression = nullptr;
-    AstNode* block      = nullptr;
+    AstNode* specificName = nullptr;
+    AstNode* expression   = nullptr;
+    AstNode* block        = nullptr;
 };
 
 struct AstVisit : public AstNode

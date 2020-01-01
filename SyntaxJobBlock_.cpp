@@ -269,8 +269,9 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         // Creates a variable if we have a named index
         if (!name.empty())
         {
-            auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
-            var->token = tokenName;
+            auto var           = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
+            var->token         = tokenName;
+            node->specificName = var;
 
             auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
             identifer->semanticFct = SemanticJob::resolveIndex;

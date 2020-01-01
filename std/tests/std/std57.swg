@@ -7,6 +7,6 @@ using std
     var x: BitArray = [true, false, true, false]
     visit x
     {
-        @print("XX\n")
+        //@print("XX\n")
     }
 }

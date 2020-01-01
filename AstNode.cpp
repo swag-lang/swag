@@ -414,8 +414,9 @@ AstNode* AstLoop::clone(CloneContext& context)
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
 
-    newNode->expression = findChildRef(expression, newNode);
-    newNode->block      = findChildRef(block, newNode);
+    newNode->specificName = findChildRef(specificName, specificName);
+    newNode->expression   = findChildRef(expression, newNode);
+    newNode->block        = findChildRef(block, newNode);
     return newNode;
 }
 
