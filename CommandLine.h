@@ -2,9 +2,15 @@
 #include "BuildPass.h"
 #include "Utf8.h"
 
+enum class BackendArchi
+{
+    Win64,
+};
+
 enum class BackendType
 {
-    C,
+    C_Vs,
+    C_Clang
 };
 
 struct CommandLine
@@ -53,11 +59,11 @@ struct CommandLine
     bool generateDoc = false;
 
     // Output
-    string config = "debug";
-    string arch   = "win64";
+    string       config = "debug";
+    BackendArchi arch   = BackendArchi::Win64;
 
     // Backend
-    BackendType backendType        = BackendType::C;
+    BackendType backendType        = BackendType::C_Vs;
     bool        backendOutput      = true;
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;

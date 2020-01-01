@@ -189,11 +189,22 @@ void Workspace::deleteFolderContent(const fs::path& path)
     });
 }
 
+Utf8 Workspace::GetArchName()
+{
+    switch (g_CommandLine.arch)
+    {
+    case BackendArchi::Win64:
+        return "win64";
+    default:
+        return "?";
+    }
+}
+
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
     targetPath.append("output/");
-    targetPath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
+    targetPath.append(g_CommandLine.config + "-" + GetArchName().c_str());
 
     if (g_CommandLine.verboseBuildPass)
     {
@@ -239,7 +250,7 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.config + "-" + g_CommandLine.arch);
+    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.config + "-" + g_Workspace.GetArchName().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
@@ -325,7 +336,7 @@ bool Workspace::build()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
 
-    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
+    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_Workspace.GetArchName().c_str()));
     addBootstrap();
     setupTarget();
     SWAG_CHECK(buildTarget());

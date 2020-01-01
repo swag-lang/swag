@@ -16,7 +16,6 @@ struct BuildParameters
     BackendOutputType type = BackendOutputType::Binary;
     set<Utf8>         foreignLibs;
     string            config;
-    string            arch;
     CompilerTarget    target;
     string            postFix;
     string            destFile;

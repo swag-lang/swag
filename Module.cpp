@@ -23,14 +23,14 @@ bool Module::setup(const Utf8& moduleName)
     scopeRoot->owner       = astRoot;
     buildPass              = g_CommandLine.buildPass;
     buildParameters.config = g_CommandLine.config;
-    buildParameters.arch   = g_CommandLine.arch;
     buildParameters.target = g_Workspace.target;
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
     switch (g_CommandLine.backendType)
     {
-    case BackendType::C:
+    case BackendType::C_Vs:
+    case BackendType::C_Clang:
         backend = new BackendC(this);
         break;
     default:

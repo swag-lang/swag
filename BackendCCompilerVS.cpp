@@ -115,10 +115,17 @@ bool BackendCCompilerVS::check()
     }
 
     // Compiler
-    compilerExe  = "cl.exe";
-    compilerPath = visualStudioPath + R"(\bin\Hostx64\x64\)";
-    //compilerExe = "clang-cl.exe";
-    //compilerPath = "C:/Program Files/LLVM/bin/";
+    switch (g_CommandLine.backendType)
+    {
+    case BackendType::C_Vs:
+        compilerExe  = "cl.exe";
+        compilerPath = visualStudioPath + R"(\bin\Hostx64\x64\)";
+        break;
+    case BackendType::C_Clang:
+        compilerExe  = "clang-cl.exe";
+        compilerPath = "C:/Program Files/LLVM/bin/";
+        break;
+    }
 
     auto fullPath = compilerPath + compilerExe;
     if (!fs::exists(fullPath))

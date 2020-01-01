@@ -34,6 +34,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--config", nullptr, CommandLineType::String, &cmdLine->config, nullptr, "set the build config");
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64", "set the build architecture");
 
+    addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "c_vs|c_clang", "the type of backend to use");
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug, nullptr, "force to compile in debug mode");
     addArg("--optim", nullptr, CommandLineType::Int, &cmdLine->optim, nullptr, "force the backend to be optimze");
 }
@@ -110,7 +111,7 @@ void CommandLineParser::logArguments()
             line0 += oneArg->param;
             while (line0.length() < COL_DEFAULT)
                 line0 += " ";
-            line0 += *(string*) oneArg->buffer;
+            line0 += to_string(*(int*)oneArg->buffer);
             break;
         }
 
@@ -276,11 +277,18 @@ string CommandLineParser::buildString()
         switch (oneArg->type)
         {
         case CommandLineType::String:
-        case CommandLineType::Enum:
             if (*(string*) oneArg->buffer != *(string*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
                 result += *(string*) oneArg->buffer;
+                result += " ";
+            }
+            break;
+        case CommandLineType::Enum:
+            if (*(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                result += to_string(*(int*) oneArg->buffer);
                 result += " ";
             }
             break;

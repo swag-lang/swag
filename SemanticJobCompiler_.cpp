@@ -6,6 +6,7 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
+#include "Workspace.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -270,10 +271,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;
     case TokenId::CompilerPlatform:
-        node->computedValue.text = context->sourceFile->module->buildParameters.arch;
+    {
+        node->computedValue.text = g_Workspace.GetArchName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;
+    }
 
     case TokenId::CompilerCallerLine:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerline' can only be set in a function parameter declaration"}));
