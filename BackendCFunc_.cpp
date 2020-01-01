@@ -175,11 +175,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         pushParams.pop_back();
 
         // Access to the content of the register
-        if (typeParam->kind == TypeInfoKind::Struct)
-        {
-            CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-        }
-        else if (typeParam->kind == TypeInfoKind::Pointer)
+        if (typeParam->kind == TypeInfoKind::Struct ||
+            typeParam->kind == TypeInfoKind::Array ||
+            typeParam->kind == TypeInfoKind::Pointer)
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
         }

@@ -122,7 +122,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (context->result == ContextResult::Pending)
                         return true;
                 }
-                else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
+                else if (rightTypeInfo->isInitializerList())
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                 }

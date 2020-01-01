@@ -92,3 +92,10 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
         return false;
     return true;
 }
+
+bool TypeInfo::isInitializerList()
+{
+    if (kind != TypeInfoKind::TypeList)
+        return false;
+    return ((TypeInfoList*) this)->listKind == TypeInfoListKind::Curly;
+}

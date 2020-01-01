@@ -133,6 +133,7 @@ struct TypeInfo
     }
 
     bool isPointerTo(TypeInfoKind pointerKind);
+    bool isInitializerList();
 
     bool isNative(NativeTypeKind native)
     {

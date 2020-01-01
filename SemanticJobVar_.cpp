@@ -540,7 +540,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->type->typeInfo);
 
         // Do not cast for structs, as we can have special assignment with different types
-        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
+        // Except if this is an initializer list {...}
+        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->isInitializerList())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
         }

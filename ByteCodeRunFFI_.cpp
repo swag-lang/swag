@@ -94,15 +94,12 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
 
 ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind == TypeInfoKind::Pointer)
-        return &ffi_type_pointer;
-    if (typeInfo->kind == TypeInfoKind::Struct)
-        return &ffi_type_pointer;
-    if (typeInfo->kind == TypeInfoKind::Slice)
-        return &ffi_type_pointer;
-    if (typeInfo->isNative(NativeTypeKind::String))
-        return &ffi_type_pointer;
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->kind == TypeInfoKind::Pointer ||
+        typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->isNative(NativeTypeKind::String) ||
+        typeInfo->kind == TypeInfoKind::Interface)
         return &ffi_type_pointer;
 
     if (typeInfo->kind != TypeInfoKind::Native)
