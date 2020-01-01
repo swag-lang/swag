@@ -5,8 +5,9 @@ using std
 #test
 {
     var x: BitArray = [true, false, true, false]
-    visit x
+    visit val: x
     {
-        //@print("XX\n")
+        @print(cast(s64) val)
+        @print(" ")
     }
 }
