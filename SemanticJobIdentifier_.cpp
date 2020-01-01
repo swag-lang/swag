@@ -323,6 +323,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 idNode->inheritTokenLocation(child->token);
                 Ast::addChildFront(idRef, idNode);
                 context->job->nodes.push_back(idNode);
+
+                // Determine if the added identifier is out scope, and must be backticked to be retrieved in the
+                // following semantic pass
+                if (idNode->ownerInline &&
+                    (idNode->ownerInline->attributeFlags & ATTRIBUTE_INLINE | ATTRIBUTE_MACRO) &&
+                    !(idNode->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) &&
+                    (idNode->ownerInline != dependentVar->ownerInline))
+                {
+                    idNode->flags |= AST_IDENTIFIER_BACKTICK;
+                }
             }
         }
         else
@@ -331,6 +341,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             idNode->inheritTokenLocation(identifier->token);
             Ast::addChildFront(idRef, idNode);
             context->job->nodes.push_back(idNode);
+
+            // Determine if the added identifier is out scope, and must be backticked to be retrieved in the
+            // following semantic pass
+            if (idNode->ownerInline &&
+                (idNode->ownerInline->attributeFlags & ATTRIBUTE_INLINE | ATTRIBUTE_MACRO) &&
+                !(idNode->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) &&
+                (idNode->ownerInline != dependentVar->ownerInline))
+            {
+                idNode->flags |= AST_IDENTIFIER_BACKTICK;
+            }
         }
 
         context->node->semanticState = AstNodeResolveState::Enter;

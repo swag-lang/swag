@@ -72,14 +72,14 @@ namespace std
             {
                 if !numBits return
                 #assert(ptr == false, "pointer visitor not supported for BitArray")
-                loop i: math.max(numBits >> 5, 1)
+                loop idx: math.max(numBits >> 5, 1)
                 {
                     var shift: u32 = 1
                     loop 32
                     {
                         #macro
                         {
-                            let @alias0 = cast(bool) (buffer[i] & shift)
+                            //let @alias0 = cast(bool) (buffer[`idx] & `shift)
                             #mixin `stmt
                         }   
                     }

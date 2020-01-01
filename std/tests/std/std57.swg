@@ -5,8 +5,8 @@ using std
 #test
 {
     var x: BitArray = [true, false, true, false]
-    /*visit x
+    visit x
     {
         @print("XX\n")
-    }*/
+    }
 }

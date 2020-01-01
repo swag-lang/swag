@@ -141,6 +141,7 @@ namespace Ast
             auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
             CONCAT_FIXED_STR(concat, "loop ");
             SWAG_CHECK(output(concat, loopNode->expression, indent));
+            concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, loopNode->block, indent));
             break;
         }
@@ -150,6 +151,7 @@ namespace Ast
             auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
             CONCAT_FIXED_STR(concat, "while ");
             SWAG_CHECK(output(concat, whileNode->boolExpression, indent));
+            concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, whileNode->block, indent));
             break;
         }
