@@ -181,19 +181,21 @@ bool BackendCCompilerVS::compile()
         clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
     clArguments += "/Fo\"" + g_Workspace.cachePath.string() + "\" ";
 
-    if (!g_CommandLine.debug)
+    int optimLevel = 0;
+    if (g_CommandLine.optim)
+        optimLevel = g_CommandLine.optim;
+    else if (!g_CommandLine.debug)
+        optimLevel = buildParameters->target.backendOptimizeLevel;
+    switch (optimLevel)
     {
-        switch (buildParameters->target.backendOptimizeLevel)
-        {
-        case 0:
-            break;
-        case 1:
-            clArguments += "/O1 ";
-            break;
-        default:
-            clArguments += "/O2 ";
-            break;
-        }
+    case 0:
+        break;
+    case 1:
+        clArguments += "/O1 ";
+        break;
+    default:
+        clArguments += "/O2 ";
+        break;
     }
 
     //clArguments += "/O2 ";

@@ -35,6 +35,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64", "set the build architecture");
 
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug, nullptr, "force to compile in debug mode");
+    addArg("--optim", nullptr, CommandLineType::Int, &cmdLine->optim, nullptr, "force the backend to be optimze");
 }
 
 void CommandLineParser::logArguments()
