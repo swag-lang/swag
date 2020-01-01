@@ -54,11 +54,11 @@ namespace std
                     #assert(false, "invalid assignment operator '" ~op~ "'")
             }            
 
-            func opAffect(using self, slice: [4] bool)
+            func opAffect(using self, slice: [..] bool)
             {
                 reserve(self, @countof(slice))
-                visit b, i: slice
-                    set(self, i, b)
+                visit value, index: slice
+                    set(self, index, value)
             }
         }
 
