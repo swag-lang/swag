@@ -156,6 +156,7 @@ namespace std
             func and(using self, other: Self)
             {
                 diagnostics.debug.assert(numBits == other.numBits)
+                if !numBits return
                 loop math.max(numBits >> 5, 1)
                     buffer[@index] &= other.buffer[@index]
             }
@@ -165,9 +166,28 @@ namespace std
             func or(using self, other: Self)
             {
                 diagnostics.debug.assert(numBits == other.numBits)
+                if !numBits return
                 loop math.max(numBits >> 5, 1)
                     buffer[@index] |= other.buffer[@index]
             }            
+
+            /// Performs the bitwise XOR operation between the elements of the current BitArray and the corresponding elements in the specified array. 
+            /// The current BitArray will be modified to store the result of the bitwise XOR operation.
+            func xor(using self, other: Self)
+            {
+                diagnostics.debug.assert(numBits == other.numBits)
+                if !numBits return
+                loop math.max(numBits >> 5, 1)
+                    buffer[@index] ^= other.buffer[@index]
+            }            
+
+            /// Inverts all the bit values in the current BitArray, so that elements set to true are changed to false, and elements set to false are changed to true.
+            func not(using self)
+            {
+                if !numBits return
+                loop math.max(numBits >> 5, 1)
+                    buffer[@index] = ~buffer[@index]
+            }              
         }
     }
 }
