@@ -275,6 +275,13 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::ClearMaskU32:
+            wprintf(L"RA: %u VB: { 0x%x } ", ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::ClearMaskU64:
+            wprintf(L"RA: %u VB: { 0x%llx } ", ip->a.u32, ip->b.u64);
+            break;
+
         case ByteCodeOp::RAFromStackParam64:
         case ByteCodeOp::MovRASP:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);

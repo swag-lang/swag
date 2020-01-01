@@ -253,7 +253,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
-            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
+            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u64 = 0x00000000'FFFFFFFF;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
@@ -287,7 +287,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
-            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
+            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u64 = 0x00000000'FFFFFFFF;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 

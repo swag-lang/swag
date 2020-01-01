@@ -1553,11 +1553,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ClearMaskU64:
-            concat.addStringFormat("r[%u].u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::ClearMaskU32U64:
-            concat.addStringFormat("r[%u].u32 &= 0x%x; ", ip->a.u32, ip->b.u32);
-            concat.addStringFormat("r[%u].u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
             break;
 
         case ByteCodeOp::CastBool8:

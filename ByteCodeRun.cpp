@@ -1164,15 +1164,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::ClearMaskU64:
     {
-        registersRC[ip->a.u32].u64 &= 0xFFFFFFFF | (((uint64_t) ip->b.u32) << 32);
+        registersRC[ip->a.u32].u64 &= ip->b.u64;
         break;
     }
-    case ByteCodeOp::ClearMaskU32U64:
-    {
-        registersRC[ip->a.u32].u32 &= ip->b.u32;
-        registersRC[ip->a.u32].u64 &= 0xFFFFFFFF | (((uint64_t) ip->c.u32) << 32);
-        break;
-    }
+
     case ByteCodeOp::CastBool8:
     {
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].u8 ? true : false;

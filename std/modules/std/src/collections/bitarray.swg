@@ -45,6 +45,14 @@ namespace std
             {
                 return get(self, index)
             }
+
+            func(op: string) opIndexAssign(using self, value: bool, index: u32)
+            {
+                #if op == "="
+                    set(self, index, value)
+                #else
+                    #assert(false, "invalid assignment operator '" ~op~ "'")
+            }            
         }
 
         func free(using self)
@@ -103,7 +111,7 @@ namespace std
                 if value
                     buffer[val] |= shift
                 else
-                    buffer[val] ^= shift
+                    buffer[val] &= ~shift
             }
 
             /// Gets the value of the bit at a specific position in the BitArray

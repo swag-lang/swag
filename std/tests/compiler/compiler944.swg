@@ -1,5 +1,3 @@
-
-
 //#[swag.printbc]
 func toto(x: f32, y: ...)
 {	
