@@ -66,6 +66,20 @@ namespace std
                 visit value, index: slice
                     set(self, index, value)
             }
+
+            #[swag.macro]
+            func(ptr: bool) opVisit(using self, stmt: code)
+            {
+                if !numBits return
+                //#assert ptr == false
+                loop math.max(numBits >> 5, 1)
+                {
+                    #macro
+                    {
+                        #mixin `stmt
+                    }   
+                }
+            }
         }
 
         func free(using self)

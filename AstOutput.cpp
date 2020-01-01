@@ -33,6 +33,9 @@ namespace Ast
         if (!node)
             return true;
 
+        if (node->flags & AST_IDENTIFIER_BACKTICK)
+            concat.addChar('`');
+
         switch (node->kind)
         {
         case AstNodeKind::ArrayPointerIndex:
@@ -130,6 +133,24 @@ namespace Ast
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
             }
+            break;
+        }
+
+        case AstNodeKind::Loop:
+        {
+            auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
+            CONCAT_FIXED_STR(concat, "loop ");
+            SWAG_CHECK(output(concat, loopNode->expression, indent));
+            SWAG_CHECK(output(concat, loopNode->block, indent));
+            break;
+        }
+
+        case AstNodeKind::While:
+        {
+            auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
+            CONCAT_FIXED_STR(concat, "while ");
+            SWAG_CHECK(output(concat, whileNode->boolExpression, indent));
+            SWAG_CHECK(output(concat, whileNode->block, indent));
             break;
         }
 
