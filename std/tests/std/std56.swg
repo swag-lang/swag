@@ -1,12 +1,12 @@
 #import "std"
 using std
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var x: BitArray = [true, false, true, false]
     visit x
     {
-        //@print("XX\n")
+        @print("XX\n")
     }
 }

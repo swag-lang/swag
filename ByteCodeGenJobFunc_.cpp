@@ -101,7 +101,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
 
     // Leave all scopes
-    Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
+    auto topScope = node->ownerInline ? node->ownerInline->scope : funcNode->scope;
+    Scope::collectScopeFrom(node->ownerScope, topScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope));

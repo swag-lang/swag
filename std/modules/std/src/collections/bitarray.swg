@@ -71,7 +71,7 @@ namespace std
             func(ptr: bool) opVisit(using self, stmt: code)
             {
                 if !numBits return
-                //#assert ptr == false
+                #assert ptr == false
                 loop math.max(numBits >> 5, 1)
                 {
                     #macro
