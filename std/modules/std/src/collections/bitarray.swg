@@ -7,7 +7,7 @@ namespace std
     /// the bit is on (1) and false indicates the bit is off (0)
     public struct BitArray
     {
-        readonly buffer:        *u8
+        readonly buffer:        *u32
         internal allocator:     IAllocator
 
         /// Maximum number of bits the array can hold
@@ -94,10 +94,11 @@ namespace std
                 }
 
                 numBits = maxBits
-                numBytes = maxBits / 8
-                if numBytes * 8 < maxBits
+                numBytes = maxBits >> 5
+                if numBytes << 5 < maxBits
                     numBytes += 1
 
+                numBytes *= 4
                 realloc(self, numBytes)
             }
 
@@ -118,9 +119,9 @@ namespace std
             func set(using self, index: u32, value: bool)
             {
                 assert(index < numBits)
-                val := index >> 3
-                bit := index - (val << 3)
-                let shift: u8 = cast(u8) (1 << bit)
+                val := index >> 5
+                bit := index - (val << 5)
+                let shift = 1 << bit
                 if value
                     buffer[val] |= shift
                 else
@@ -131,9 +132,9 @@ namespace std
             func get(using self, index: u32)->bool
             {
                 assert(index < numBits)
-                val := index >> 3
-                bit := index - (val << 3)
-                let shift: u8 = cast(u8) (1 << bit)
+                val := index >> 5
+                bit := index - (val << 5)
+                let shift = 1 << bit
                 return cast(bool) (buffer[val] & shift)
             }
 
@@ -141,14 +142,21 @@ namespace std
             func invert(using self, index: u32)
             {
                 assert(index < numBits)
-                val := index >> 3
-                bit := index - (val << 3)
-                let shift: u8 = cast(u8) (1 << bit)
+                val := index >> 5
+                bit := index - (val << 5)
+                let shift = 1 << bit
                 if buffer[val] & shift
                     buffer[val] ^= shift
                 else
                     buffer[val] |= shift
-            }       
+            }
+
+            /// Performs the bitwise AND operation between the elements of the current BitArray and the corresponding elements in the specified array. 
+            /// The current BitArray will be modified to store the result of the bitwise AND operation.
+            func and(using self, other: Self)
+            {
+                diagnostics.debug.assert(numBits == other.numBits)
+            }
         }
     }
 }
