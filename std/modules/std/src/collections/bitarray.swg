@@ -3,14 +3,14 @@ namespace std
     using swag
     using diagnostics.debug
 
-    /// Manages a compact array of bit values, which are represented as Booleans, where true indicates that
+    /// Manages a compact array of bit values, which are represented as booleans, where true indicates that
     /// the bit is on (1) and false indicates the bit is off (0)
     public struct BitArray
     {
         readonly buffer:        *u8
         internal allocator:     IAllocator
 
-        // Maximum number of bits the array can hold
+        /// Maximum number of bits the array can hold
         readonly numBits:       u32
         /// The size, in bytes, of the allocated buffer
         readonly numBytes:      u32
@@ -20,16 +20,19 @@ namespace std
     {
         public
         {
+            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return numBits
             }
 
+            #[swag.nodoc]
             func opDrop(using self)
             {
                 free(self)
             }
 
+            #[swag.nodoc]
             func opPostCopy(using self)
             {
                 if(buffer)
@@ -41,11 +44,13 @@ namespace std
                 }
             }
 
+            /// Gets the value of the bit at a specific position in the BitArray
             func opIndex(using self, index: u32)->bool
             {
                 return get(self, index)
             }
 
+            /// Sets the value of the bit at a specific position in the BitArray
             func(op: string) opIndexAssign(using self, value: bool, index: u32)
             {
                 #if op == "="
@@ -54,6 +59,7 @@ namespace std
                     #assert(false, "invalid assignment operator '" ~op~ "'")
             }            
 
+            /// Initializes a BitArray that contains bit values copied from the specified array of booleans.
             func opAffect(using self, slice: [..] bool)
             {
                 reserve(self, @countof(slice))

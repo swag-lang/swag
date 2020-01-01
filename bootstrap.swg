@@ -40,6 +40,7 @@ namespace swag
     attr offset(name: string) -> "structvar"
 	attr property() -> "func"
 	attr nobss() -> "globalvar"
+	attr nodoc() -> "func"
 	
 	// #########################################################
 	// Constants

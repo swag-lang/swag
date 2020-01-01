@@ -189,6 +189,8 @@ namespace DocHtmlHelper
 
         for (auto node : sorted)
         {
+            if (node->attributeFlags & ATTRIBUTE_NODOC)
+                continue;
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + "." + node->name.c_str() + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
