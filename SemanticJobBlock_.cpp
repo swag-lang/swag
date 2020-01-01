@@ -141,7 +141,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
     if (!resolveCountProperty(context, expression, expression->typeInfo))
     {
-        auto typeInfo = expression->typeInfo;
+        auto typeInfo = TypeManager::concreteType(expression->typeInfo);
         SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
         SWAG_VERIFY(typeInfo->sizeOf <= 4, context->report({expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
         if (expression->flags & AST_VALUE_COMPUTED)

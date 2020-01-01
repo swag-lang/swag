@@ -156,7 +156,18 @@ namespace std
             func and(using self, other: Self)
             {
                 diagnostics.debug.assert(numBits == other.numBits)
+                loop math.max(numBits >> 5, 1)
+                    buffer[@index] &= other.buffer[@index]
             }
+
+            /// Performs the bitwise OR operation between the elements of the current BitArray and the corresponding elements in the specified array. 
+            /// The current BitArray will be modified to store the result of the bitwise OR operation.
+            func or(using self, other: Self)
+            {
+                diagnostics.debug.assert(numBits == other.numBits)
+                loop math.max(numBits >> 5, 1)
+                    buffer[@index] |= other.buffer[@index]
+            }            
         }
     }
 }
