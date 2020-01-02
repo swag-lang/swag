@@ -5,4 +5,5 @@ using std.collections
 #test
 {
     var x: Array!s32
+    x.reserve(10)
 }

@@ -1,8 +1,8 @@
 namespace std
 {
     using swag
-    private const smallSize = 24'u32
-    private const smallSizeInternal = smallSize - @sizeof(IAllocator)
+    private const SmallSize = 24'u32
+    private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
 
     public struct String
@@ -11,14 +11,14 @@ namespace std
         readonly length:     u32
         readonly capacity:   u32
         internal allocator:  IAllocator
-        internal padding:    [smallSizeInternal] u8
+        internal padding:    [SmallSizeInternal] u8
     }
     
     impl String
     {
         func free(using self)
         {
-            memory.free(allocator, buffer, capacity)
+            memory.free(allocator, buffer)
         }
 
         func realloc(using self, newCapacity: u32)
@@ -26,6 +26,7 @@ namespace std
             if allocator == null
                 allocator = @getcontext().allocator
             buffer = acast memory.realloc(allocator, buffer, newCapacity)
+            capacity = newCapacity
         }
     }
 
@@ -79,17 +80,19 @@ namespace std
                     #assert(false, "invalid binary operator '" ~ op ~ "'")
             }
 
+            #[swag.nodoc]
             func opPostMove(using self)
             {
-                if capacity <= smallSize
+                if capacity <= SmallSize
                     buffer = acast &allocator
             }
 
+            #[swag.nodoc]
             func opPostCopy(using self)
             {
                 if !buffer
                     return
-                if capacity <= smallSize
+                if capacity <= SmallSize
                     buffer = acast &allocator
                 else
                 {
@@ -100,6 +103,7 @@ namespace std
                 }
             }
 
+            #[swag.nodoc]
             func opDrop(using self)
             {
                 if buffer && buffer != acast &allocator
@@ -112,61 +116,72 @@ namespace std
     {
         public
         {
-            /// Set the length of the string to 0
+            /// Set the length of the [String] to 0
             func clear(using self)
             {
                 length = 0
             }
 
-            /// Returns true if the string has zero length
+            /// Returns true if the [String] has zero length
             func isEmpty(using self)->bool
             {
                 return length == 0
             }
 
-            /// Returns true if the string is null (undefined)
+            /// Returns true if the [String] is null (undefined)
             func isNull(using self)->bool
             {
                 return buffer == null
             }
 
-            /// Returns true if the string is null or empty
+            /// Returns true if the [String] is null or empty
             func isNullOrEmpty(using self)->bool
             {
                 return buffer == null || length == 0
             }
 
-            /// Concat string with a buffer of bytes
+            /// Concat the [String] with a buffer of bytes
             func concat(using self, value: [..] u8)
             {
-                if @countof(value) == 0
+                concatLength := @countof(value)
+                if concatLength == 0
                     return
-                newCapacity := length + @countof(value) + 1
-                reserve(self, newCapacity)
-                memory.copy(buffer + length, @dataof(value), @countof(value))
-                length = newCapacity - 1
+
+                newLength := length + concatLength + 1
+                ensureCapacity(self, newLength)
+                memory.copy(buffer + length, @dataof(value), concatLength)
+                length = newLength - 1
                 buffer[length] = 0
             }
 
-            /// Reserve room for newCapacity byte without changing the string length
+            /// Ensure the [String] is big enough to store a given amount of bytes
+            func ensureCapacity(using self, newLength: u32)
+            {
+                if newLength <= capacity
+                    return
+                newCapacity := math.max(capacity * 2, newLength)
+                reserve(self, newCapacity)
+            }
+
+            /// Reserve room for newCapacity bytes without changing the string length
             func reserve(using self, newCapacity: u32)
             {
                 // Small size, just be sure with have a valid buffer address
-                if newCapacity <= smallSize
+                if newCapacity <= SmallSize
                 {
                     // Free everything
-                    capacity = newCapacity
-                    if !capacity
+                    if !newCapacity
                     {
                         if !buffer
                             return
                         if buffer != acast &allocator
                             free(self)
                         buffer = null
-                        length = 0
+                        length, capacity = 0
                         return
                     }
 
+                    capacity = SmallSize
                     if !buffer
                         buffer = acast &allocator
                     return
@@ -184,7 +199,6 @@ namespace std
                 }
 
                 realloc(self, newCapacity)
-                capacity = newCapacity
             }
         }
     }

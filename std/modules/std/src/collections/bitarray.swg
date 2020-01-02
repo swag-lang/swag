@@ -114,7 +114,7 @@ namespace std.collections
 
         func free(using self)
         {
-            memory.free(allocator, buffer, capacity)
+            memory.free(allocator, buffer)
         }
 
         func realloc(using self, newCapacity: u32)

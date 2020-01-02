@@ -9,7 +9,7 @@ namespace std.collections
 
         /// Number of valid elements in the [Array]
         count:      u32
-        /// Maximim size, in bytes, of the buffer
+        /// Maximim elements the [Array] can store
         capacity:   u32
     }
 
@@ -29,6 +29,16 @@ namespace std.collections
                 
         public
         {
+            /// Ensure the [Array] is big enough to store at least `newCount` elements
+            func ensureCapacity(using self, newCount : u32)
+            {
+                if newCount <= capacity
+                    return
+                newCapacity := math.max(capacity * 2, newCount)
+                reserve(self, newCapacity)
+            }
+
+            /// Reserve room for `newCapacity` elements without changing the [Array] count
             func reserve(using self, newCapacity: u32)
             {
                 if !newCapacity
@@ -38,6 +48,11 @@ namespace std.collections
                     count, capacity = 0
                     return
                 }
+
+                if newCapacity <= capacity
+                    return
+
+                realloc(self, newCapacity)
             }
         }
     }
