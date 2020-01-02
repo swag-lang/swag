@@ -5,9 +5,17 @@ using std
 #test
 {
     var x: BitArray = [true, false, true, false]
-    visit val: x
+    
+    var y: BitArray
+    y.reserve(4, false)
+
+    visit val, idx: x
     {
-        @print(cast(s64) val)
-        @print(" ")
+        y[idx] = val
     }
+
+    @assert(y[0] == true)
+    @assert(y[1] == false)
+    @assert(y[2] == true)
+    @assert(y[3] == false)
 }

@@ -74,6 +74,7 @@ namespace std
                 #assert(ptr == false, "pointer visit not supported for BitArray")
 
                 remainingBits := numBits
+                var countBits : u32 = 0
                 loop idx: math.max(numBits >> 5, 1)
                 {
                     var shift: u32 = 1
@@ -82,9 +83,11 @@ namespace std
                         #macro
                         {
                             let @alias0 = cast(bool) (buffer[`idx] & `shift)
+                            let @alias1 = `countBits
                             #mixin `stmt
                         }   
 
+                        countBits += 1
                         shift <<= 1
                     }
                 }
