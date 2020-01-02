@@ -810,9 +810,9 @@ anotherTry:
     auto symbol = *dependentSymbols.begin();
     if (matches.size() == 0)
     {
-        // If there's a generic between all the overloads, then we need to raise on error
-        // with that symbol only (even if other overload have already been instanciated).
-        // Because in the end, the generic didn't watch
+        // If there's a generic in the overloads list, then we need to raise on error
+        // with that symbol only (even if some other overloads have already been instantiated).
+        // Because in the end, this is the generic that didn't watch
         SymbolOverload* overload = nullptr;
         {
             shared_lock lk(symbol->mutex);
