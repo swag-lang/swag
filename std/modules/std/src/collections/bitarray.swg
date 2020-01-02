@@ -74,7 +74,7 @@ namespace std
                 #assert(ptr == false, "pointer visit not supported for BitArray")
 
                 remainingBits := numBits
-                var countBits: u32 = 0
+                var countBits : u32 = 0
                 loop idx: math.max(numBits >> 5, 1)
                 {
                     var shift: u32 = 1

@@ -810,11 +810,29 @@ anotherTry:
     auto symbol = *dependentSymbols.begin();
     if (matches.size() == 0)
     {
-        if (numOverloads == 1)
+        // If there's a generic between all the overloads, then we need to raise on error
+        // with that symbol only (even if other overload have already been instanciated).
+        // Because in the end, the generic didn't watch
+        SymbolOverload* overload = nullptr;
         {
-            symbol->mutex.lock();
-            auto overload = symbol->overloads[0];
-            symbol->mutex.unlock();
+            shared_lock lk(symbol->mutex);
+            for (auto one : symbol->overloads)
+            {
+                if (one->flags & OVERLOAD_GENERIC)
+                {
+                    overload = one;
+                    break;
+                }
+            }
+        }
+
+        if (numOverloads == 1 || overload)
+        {
+            if (!overload)
+            {
+                shared_lock lk(symbol->mutex);
+                overload = symbol->overloads[0];
+            }
 
             auto& match = job->symMatch;
 
@@ -953,9 +971,9 @@ anotherTry:
             {
                 Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
-                for (auto overload : badSignature)
+                for (auto one : badSignature)
                 {
-                    auto note       = new Diagnostic{overload->node, overload->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }
@@ -966,9 +984,9 @@ anotherTry:
             {
                 Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
-                for (auto overload : badGenericSignature)
+                for (auto one : badGenericSignature)
                 {
-                    auto note       = new Diagnostic{overload->node, overload->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }
