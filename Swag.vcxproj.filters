@@ -682,4 +682,7 @@
       <Filter>Resource</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="swag.natvis" />
+  </ItemGroup>
 </Project>
