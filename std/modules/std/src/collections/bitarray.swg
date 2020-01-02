@@ -62,11 +62,29 @@ namespace std
             /// Initializes a BitArray that contains bit values copied from the specified array of booleans.
             func opAffect(using self, slice: [..] bool)
             {
-                reserve(self, @countof(slice))
+                len := @countof(slice)
+                reserve(self, len)
+                buffer[len >> 5] = 0
                 visit value, index: slice
                     set(self, index, value)
             }
 
+            /// Compares two BitArray
+            func opEquals(using self, other: Self)->bool
+            {
+                if numBits != other.numBits
+                    return false
+
+                loop math.max(numBits >> 5, 1)
+                {
+                    if buffer[@index] != other.buffer[@index]
+                        return false
+                }
+
+                return true
+            }
+
+            /// BitArray visitor
             #[swag.macro]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
