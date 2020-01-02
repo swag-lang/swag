@@ -256,6 +256,7 @@ table {
     table-layout: fixed;
     width: 100%;
     word-wrap: break-word;
+    font-size: 13px;
 }
 
 table th {
@@ -273,7 +274,7 @@ table th {
 }
 
 th.name-col {
-    width: 30%;
+    width: 25%;
 }
 
 table th, table td {

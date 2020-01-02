@@ -60,36 +60,36 @@ namespace std.math
 
 		public
 		{
-            /// Represents a point with all coordinates to zero
+            /// Represents a [Point] with all coordinates to zero
 			const Zero: Point(0, 0)
-            /// Represents a point with all coordinates to one
+            /// Represents a [Point] with all coordinates to one
             const One: Point(1, 1)
 
-            /// Set point to (0, 0)
+            /// Set [Point] to (0, 0)
 			func clear(using self)
 			{
 				x, y = 0
 			}
 
-            /// Returns true if this instance is null
+            /// Returns `true` if the [Point] is `null`
             func isZero(using self)->bool
             {
                 return x == 0 && y == 0
             }
 
-            /// Returns true if this instance is null with an epsilon
+            /// Returns `true` if the [Point] is `null` with an epsilon
             func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
             {
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             }
 
-            /// Offset this point by a given value
+            /// Offset this [Point] by a given value
             func offset(using self, value: f32)
             {
                 x, y += value
             }
 
-            /// Offset this point by a given value
+            /// Offset this [Point] by a given value
             func offset(using self, valueX, valueY: f32)
             {
                 x += valueX
