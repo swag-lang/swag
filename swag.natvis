@@ -5,7 +5,6 @@
       <DisplayString>{{ count={count} }}</DisplayString>
       <Expand>
         <Item Name="[count]">count</Item>
-        <Item Name="[allocated]">allocated</Item>
         <ArrayItems>
           <Size>count</Size>
           <ValuePointer>buffer</ValuePointer>

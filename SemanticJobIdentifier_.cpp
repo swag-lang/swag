@@ -816,23 +816,25 @@ anotherTry:
             auto overload = symbol->overloads[0];
             symbol->mutex.unlock();
 
+            auto& match = job->symMatch;
+
             // Be sure this is not because of an invalid special function signature
             if (overload->node->kind == AstNodeKind::FuncDecl)
                 SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl)));
 
-            switch (job->symMatch.result)
+            switch (match.result)
             {
             case MatchResult::MissingNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
-                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{param, format("parameter '%d' must be named", job->symMatch.badSignatureParameterIdx + 1)};
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[match.badSignatureParameterIdx]);
+                Diagnostic diag{param, format("parameter '%d' must be named", match.badSignatureParameterIdx + 1)};
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
-                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[match.badSignatureParameterIdx]);
                 Diagnostic diag{param->namedParamNode ? param->namedParamNode : param, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
@@ -840,7 +842,7 @@ anotherTry:
             case MatchResult::DuplicatedNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
-                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[match.badSignatureParameterIdx]);
                 Diagnostic diag{param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
                 return context->report(diag);
             }
@@ -859,7 +861,7 @@ anotherTry:
             case MatchResult::TooManyParameters:
             {
                 SWAG_ASSERT(callParameters);
-                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[match.badSignatureParameterIdx]);
                 Diagnostic diag{param, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
@@ -882,7 +884,7 @@ anotherTry:
             {
                 SWAG_ASSERT(callParameters);
                 string parameter;
-                switch (job->symMatch.badSignatureParameterIdx)
+                switch (match.badSignatureParameterIdx)
                 {
                 case 0:
                     parameter = "first parameter";
@@ -894,37 +896,37 @@ anotherTry:
                     parameter = "third parameter";
                     break;
                 default:
-                    parameter = format("parameter '%d'", job->symMatch.badSignatureParameterIdx + 1);
+                    parameter = format("parameter '%d'", match.badSignatureParameterIdx + 1);
                     break;
                 }
-                Diagnostic diag{callParameters->childs[job->symMatch.badSignatureParameterIdx],
+                Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
                                 format("bad type of %s for %s '%s' ('%s' expected, '%s' provided)",
                                        parameter.c_str(),
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
-                                       job->symMatch.badSignatureRequestedType->name.c_str(),
-                                       job->symMatch.badSignatureGivenType->name.c_str())};
+                                       match.badSignatureRequestedType->name.c_str(),
+                                       match.badSignatureGivenType->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             case MatchResult::BadGenericSignature:
             {
                 SWAG_ASSERT(genericParameters);
-                if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
+                if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
                 {
-                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{match.parameters[job->symMatch.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (type expected, value provided)",
-                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
                                            symbol->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
-                else if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
+                else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
                 {
-                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (value expected, type provided)",
-                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
                                            symbol->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
@@ -932,13 +934,13 @@ anotherTry:
                 }
                 else
                 {
-                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
                                     format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
                                            symbol->name.c_str(),
-                                           job->symMatch.badSignatureRequestedType->name.c_str(),
-                                           job->symMatch.badSignatureGivenType->name.c_str())};
+                                           match.badSignatureRequestedType->name.c_str(),
+                                           match.badSignatureGivenType->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }

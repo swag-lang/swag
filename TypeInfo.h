@@ -280,7 +280,7 @@ struct TypeInfoEnum : public TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-enum MatchResult
+enum class MatchResult
 {
     Ok,
     TooManyParameters,

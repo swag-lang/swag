@@ -235,7 +235,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
         if (param->namedParam.empty())
         {
             context.badSignatureParameterIdx = i;
-            context.result                   = MissingNamedParameter;
+            context.result                   = MatchResult::MissingNamedParameter;
             return;
         }
 
@@ -247,7 +247,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
                 if (context.doneParameters[j])
                 {
                     context.badSignatureParameterIdx = i;
-                    context.result                   = DuplicatedNamedParameter;
+                    context.result                   = MatchResult::DuplicatedNamedParameter;
                     return;
                 }
 
@@ -273,7 +273,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
         if (!param->resolvedParameter)
         {
             context.badSignatureParameterIdx = i;
-            context.result                   = InvalidNamedParameter;
+            context.result                   = MatchResult::InvalidNamedParameter;
             return;
         }
     }
