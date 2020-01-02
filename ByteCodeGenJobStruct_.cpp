@@ -537,7 +537,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
         // Reinit source struct
         if (typeInfoStruct->opPostMove || typeInfoStruct->opPostCopy)
         {
-            if (typeInfoStruct->opInit)
+            if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, nullptr, typeInfoStruct->opInit, false);
