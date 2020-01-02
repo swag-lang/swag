@@ -354,6 +354,7 @@ void Utf8::trim()
 void Utf8::resize(int newSize)
 {
     reserve(newSize + 1);
+    buffer[newSize] = 0;
     count = newSize;
 }
 

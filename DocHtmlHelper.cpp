@@ -11,13 +11,14 @@
 namespace DocHtmlHelper
 {
     // https://daringfireball.net/projects/markdown/syntax
-    Utf8 markdown(const Utf8& msg)
+    Utf8 markdown(const Utf8& msg, const Utf8& currentFile)
     {
         Utf8 result;
         result.reserve(msg.length() * 2);
 
         bool openEm     = false;
         bool openStrong = false;
+        bool openCode1  = false;
 
         const char* pz = msg.c_str();
         while (*pz)
@@ -28,6 +29,44 @@ namespace DocHtmlHelper
                 result += *pz++;
                 if (*pz)
                     result += *pz++;
+            }
+
+            // [something]
+            else if (pz[0] == '[' && pz[1] != pz[0])
+            {
+                Utf8 ref;
+                Utf8 refFile = currentFile;
+                pz++;
+                while (*pz && *pz != ']')
+                    ref += *pz++;
+                if (*pz)
+                    pz++;
+                char* pz1 = strstr(refFile.buffer, ref.buffer);
+
+                if (pz1 && pz1 != refFile.buffer)
+                {
+                    pz1 = strstr(pz1, ".");
+                    if (pz1)
+                        refFile.resize((int) (pz1 - refFile.buffer));
+                    refFile += ".html";
+                    result += format("<a href=\"%s\">%s</a>", refFile.c_str(), ref.c_str());
+                }
+                else
+                {
+                    pz1 = ref.buffer + ref.length() - 1;
+                    while (pz1 != ref.buffer && *pz1 != '.')
+                        pz1--;
+                    if (pz1 == ref.buffer)
+                    {
+                        result += ref;
+                        continue;
+                    }
+
+                    refFile = ref;
+                    refFile += ".html";
+                    ref = pz1 + 1;
+                    result += format("<a href=\"%s\">%s</a>", refFile.c_str(), ref.c_str());
+                }
             }
 
             // *something
@@ -62,6 +101,23 @@ namespace DocHtmlHelper
                 result += *pz;
                 result += "</strong>";
                 pz += 3;
+            }
+
+            // `something
+            else if (!openCode1 && pz[0] == '`' && !isBlank(pz[1]) && pz[1] != pz[0])
+            {
+                openCode1 = true;
+                result += "<code>";
+                pz += 1;
+            }
+
+            // something*
+            else if (openCode1 && !isBlank(pz[0]) && pz[0] != '`' && pz[1] == '`' && pz[2] != pz[1])
+            {
+                openCode1 = false;
+                result += *pz;
+                result += "</code>";
+                pz += 2;
             }
             else
                 result += *pz++;

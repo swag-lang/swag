@@ -58,7 +58,7 @@ JobResult DocScopeJob::execute()
         if (!members.empty())
         {
             DocHtmlHelper::sectionTitle1(outFile, "Members");
-            DocHtmlHelper::table(outFile, scope, members);
+            DocHtmlHelper::table(outFile, scope, members, false);
         }
     }
 

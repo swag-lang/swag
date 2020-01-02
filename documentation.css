@@ -1,6 +1,6 @@
 html, body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 0.95em;
+    font-family: Arial,sans-serif;
+    font-size: 14px;
     line-height: 1.6;
     color: #393939;
     background-color: #fff;
@@ -44,10 +44,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
     font-weight: bold;
     -webkit-font-smoothing: antialiased;
-}
-
-h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
-    font-size: inherit;
 }
 
 h1 {
@@ -131,7 +127,6 @@ dl {
 }
 
 dl dt {
-    font-size: 14px;
     font-weight: bold;
     font-style: italic;
     padding: 0;
@@ -167,7 +162,6 @@ dl dd > :last-child {
 =============================================================================*/
 
 pre, code, tt {
-    font-size: 12px;
     font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 
@@ -191,7 +185,6 @@ pre > code {
 pre {
     background-color: #f8f8f8;
     border: 1px solid #ccc;
-    font-size: 13px;
     line-height: 19px;
     overflow: auto;
     padding: 6px 10px;
@@ -216,7 +209,7 @@ kbd {
     border-radius: 2px 2px 2px 2px;
     border-style: solid;
     border-width: 1px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: Arial,sans-serif;
     line-height: 10px;
     padding: 1px 4px;
 }
@@ -289,7 +282,6 @@ table th, table td {
     border-color: #bbb;
     border-style: solid;
     border-width: 1px;
-    font-size: 1.077em;
     font-style: normal;
     font-weight: normal;
     line-height: 140%;

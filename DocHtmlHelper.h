@@ -7,7 +7,7 @@ struct TypeInfoParam;
 
 namespace DocHtmlHelper
 {
-    Utf8 markdown(const Utf8& msg);
+    Utf8 markdown(const Utf8& msg, const Utf8& currentFile);
     void htmlStart(Concat& outFile);
     void htmlEnd(Concat& outFile);
     void title(Concat& outFile, const Utf8& msg);

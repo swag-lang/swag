@@ -244,8 +244,9 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary);
-    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription);
-    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent);
+    attrBlockNode->computeFullName();
+    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->fullnameDot);
+    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->fullnameDot);
+    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->fullnameDot);
     return true;
 }
