@@ -29,13 +29,14 @@ namespace std.memory
         }  
 
         /// Free the specified memory block
-        func free(allocator: IAllocator, buffer: *void)
+        func free(allocator: IAllocator, buffer: *void, allocatedSize: u32)
         {
             if !buffer
                 return
             assert(allocator != null)
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
+            req.size = allocatedSize
             req.address = buffer
             allocator.alloc(req)
         }
@@ -50,6 +51,17 @@ namespace std.memory
             req.address = buffer
             allocator.alloc(req)
             return req.address
-        }                       
+        }
+
+        /// Allocate a given amount of bytes
+        func alloc(allocator: IAllocator, newSize: u32)->*void
+        {
+            assert(allocator != null)
+            var req: AllocatorRequest
+            req.mode = AllocatorMode.Realloc
+            req.size = newSize
+            allocator.alloc(req)
+            return req.address
+        }           
     }
 }

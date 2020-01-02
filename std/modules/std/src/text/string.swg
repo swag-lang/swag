@@ -9,7 +9,7 @@ namespace std
     {
         readonly buffer:     *u8
         readonly length:     u32
-        readonly size:       u32
+        readonly capacity:   u32
         internal allocator:  IAllocator
         internal padding:    [smallSizeInternal] u8
     }
@@ -18,14 +18,14 @@ namespace std
     {
         func free(using self)
         {
-            memory.free(allocator, buffer)
+            memory.free(allocator, buffer, capacity)
         }
 
-        func realloc(using self, newSize: u32)
+        func realloc(using self, newCapacity: u32)
         {
             if allocator == null
                 allocator = @getcontext().allocator
-            buffer = acast memory.realloc(allocator, buffer, newSize)
+            buffer = acast memory.realloc(allocator, buffer, newCapacity)
         }
     }
 
@@ -55,9 +55,9 @@ namespace std
                     return
                 }
 
-                newSize := @countof(value) + 1
-                length = newSize - 1
-                reserve(self, newSize)
+                newCapacity := @countof(value) + 1
+                length = newCapacity - 1
+                reserve(self, newCapacity)
                 memory.copy(buffer, @dataof(value), length)
                 buffer[length] = 0
             }
@@ -81,7 +81,7 @@ namespace std
 
             func opPostMove(using self)
             {
-                if size <= smallSize
+                if capacity <= smallSize
                     buffer = acast &allocator
             }
 
@@ -89,7 +89,7 @@ namespace std
             {
                 if !buffer
                     return
-                if size <= smallSize
+                if capacity <= smallSize
                     buffer = acast &allocator
                 else
                 {
@@ -141,22 +141,22 @@ namespace std
             {
                 if @countof(value) == 0
                     return
-                newSize := length + @countof(value) + 1
-                reserve(self, newSize)
+                newCapacity := length + @countof(value) + 1
+                reserve(self, newCapacity)
                 memory.copy(buffer + length, @dataof(value), @countof(value))
-                length = newSize - 1
+                length = newCapacity - 1
                 buffer[length] = 0
             }
 
-            /// Reserve room for newSize byte without changing the string length
-            func reserve(using self, newSize: u32)
+            /// Reserve room for newCapacity byte without changing the string length
+            func reserve(using self, newCapacity: u32)
             {
                 // Small size, just be sure with have a valid buffer address
-                if newSize <= smallSize
+                if newCapacity <= smallSize
                 {
                     // Free everything
-                    size = newSize
-                    if !size
+                    capacity = newCapacity
+                    if !capacity
                     {
                         if !buffer
                             return
@@ -173,7 +173,7 @@ namespace std
                 }
 
                 // Actual size is fine
-                if newSize <= size
+                if newCapacity <= capacity
                     return
 
                 // We were in small size mode, and we are no more
@@ -183,8 +183,8 @@ namespace std
                     allocator = null
                 }
 
-                realloc(self, newSize)
-                size = newSize
+                realloc(self, newCapacity)
+                capacity = newCapacity
             }
         }
     }
