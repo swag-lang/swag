@@ -1,4 +1,4 @@
-namespace std
+namespace std.collections
 {
     using swag
     using diagnostics.debug
