@@ -20,17 +20,17 @@ namespace Ast
             return true;
         }
 
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         auto str = literalToString(typeInfo, text, reg);
-        if (typeInfo->isNative(NativeTypeKind::String))
+        switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::String:
             concat.addString("\"" + str + "\"");
-        }
-        else if (typeInfo->isNative(NativeTypeKind::Bool))
-        {
+            break;
+        case NativeTypeKind::Bool:
             concat.addString(str);
-        }
-        else
-        {
+            break;
+        default:
             if (!(typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
             {
                 str += '\'';
@@ -38,6 +38,7 @@ namespace Ast
             }
 
             concat.addString(str);
+            break;
         }
 
         return true;
