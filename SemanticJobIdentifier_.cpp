@@ -914,7 +914,7 @@ anotherTry:
                 SWAG_ASSERT(genericParameters);
                 if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
                 {
-                    Diagnostic diag{match.parameters[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{match.genericParameters[job->symMatch.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (type expected, value provided)",
                                            match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
@@ -924,7 +924,7 @@ anotherTry:
                 }
                 else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
                 {
-                    Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
+                    Diagnostic diag{match.genericParameters[match.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (value expected, type provided)",
                                            match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
@@ -934,7 +934,7 @@ anotherTry:
                 }
                 else
                 {
-                    Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
+                    Diagnostic diag{match.genericParameters[match.badSignatureParameterIdx],
                                     format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
                                            match.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
