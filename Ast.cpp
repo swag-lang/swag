@@ -8,42 +8,48 @@ namespace Ast
 {
     Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
+        Utf8 result;
+        result.reserve(text.capacity());
+
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:
-            return format("%u", reg.u8);
+            result = format("%u", reg.u8);
+            break;
         case NativeTypeKind::U16:
-            return format("%u", reg.u16);
+            result = format("%u", reg.u16);
+            break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            return format("%u", reg.u32);
+            result = format("%u", reg.u32);
+            break;
         case NativeTypeKind::U64:
-            return format("%llu", reg.u64);
+            result = format("%llu", reg.u64);
+            break;
         case NativeTypeKind::S8:
-            return format("%d", reg.s8);
+            result = format("%d", reg.s8);
+            break;
         case NativeTypeKind::S16:
-            return format("%d", reg.s16);
+            result = format("%d", reg.s16);
             break;
         case NativeTypeKind::S32:
-            return format("%d", reg.s32);
+            result = format("%d", reg.s32);
             break;
         case NativeTypeKind::S64:
-            return format("%lld", reg.s64);
+            result = format("%lld", reg.s64);
             break;
         case NativeTypeKind::F32:
-            return toStringF64(reg.f32);
+            result = toStringF64(reg.f32);
             break;
         case NativeTypeKind::F64:
-            return toStringF64(reg.f64);
+            result = toStringF64(reg.f64);
             break;
         case NativeTypeKind::Bool:
-            return reg.b ? "true" : "false";
-            break;
+            result = reg.b ? "true" : "false";
+            return result;
         case NativeTypeKind::String:
         {
-            Utf8 result;
-            result.reserve(text.capacity());
             for (auto c : text)
             {
                 switch (c)
@@ -65,6 +71,8 @@ namespace Ast
             SWAG_ASSERT(false);
             return "";
         }
+
+        return result;
     }
 
     int findChildIndex(AstNode* parent, AstNode* child)
@@ -185,7 +193,7 @@ namespace Ast
     void normalizeIdentifierName(Utf8& name)
     {
         auto len = name.length();
-        auto pz = name.buffer;
+        auto pz  = name.buffer;
         for (int i = 0; i < len; i++)
         {
             if (*pz == '*')

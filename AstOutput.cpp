@@ -22,9 +22,24 @@ namespace Ast
 
         auto str = literalToString(typeInfo, text, reg);
         if (typeInfo->isNative(NativeTypeKind::String))
+        {
             concat.addString("\"" + str + "\"");
-        else
+        }
+        else if (typeInfo->isNative(NativeTypeKind::Bool))
+        {
             concat.addString(str);
+        }
+        else
+        {
+            if (!(typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
+            {
+                str += '\'';
+                str += typeInfo->name;
+            }
+
+            concat.addString(str);
+        }
+
         return true;
     }
 
