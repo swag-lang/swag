@@ -262,6 +262,8 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
 
 void SemanticJob::sortParameters(AstNode* allParams)
 {
+    unique_lock lk(allParams->mutex);
+
     if (!allParams || !(allParams->flags & AST_MUST_SORT_CHILDS))
         return;
     if (allParams->childs.size() <= 1)
