@@ -87,18 +87,28 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         paramNode->flags |= AST_DECL_USING;
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     paramNode->inheritTokenName(token);
 
     // 'self'
-    if (paramNode->name == "self")
+    if (token.id == TokenId::KwdConst || paramNode->name == "self")
     {
+        bool isConst = false;
+        if (token.id == TokenId::KwdConst)
+        {
+            isConst = true;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", syntaxError(token, "const here can only be follower by 'self'"));
+        }
+
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, "'self' can only be used in an 'impl' block"));
         auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
         typeNode->ptrCount   = 1;
+        typeNode->isConst    = isConst;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
-        paramNode->type      = typeNode;
+        typeNode->computeFullName();
+        paramNode->type = typeNode;
     }
     else
     {
@@ -337,27 +347,27 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
         case TokenId::CompilerFuncTest:
             funcNode->token.text = "#test";
-            funcNode->name = "test" + to_string(id);
+            funcNode->name       = "test" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
             break;
         case TokenId::CompilerFuncInit:
             funcNode->token.text = "#init";
-            funcNode->name = "init" + to_string(id);
+            funcNode->name       = "init" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
             funcNode->token.text = "#drop";
-            funcNode->name = "drop" + to_string(id);
+            funcNode->name       = "drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
             break;
         case TokenId::CompilerRun:
             funcNode->token.text = "#run";
-            funcNode->name = "run" + to_string(id);
+            funcNode->name       = "run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "#main";
-            funcNode->name = "main" + to_string(id);
+            funcNode->name       = "main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
             break;
         }
@@ -456,7 +466,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content->token = token;
         }
     }
-    
+
     return true;
 }
 
