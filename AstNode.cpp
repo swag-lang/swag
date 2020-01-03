@@ -201,11 +201,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
 void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 {
-    auto cloneContext   = context;
-    cloneContext.parent = this;
-    auto num            = from->childs.size();
+    auto oldParent = context.parent;
+    context.parent = this;
+    auto num       = from->childs.size();
     for (int i = 0; i < num; i++)
-        from->childs[i]->clone(cloneContext);
+        from->childs[i]->clone(context);
+    context.parent = oldParent;
 }
 
 AstNode* AstVarDecl::clone(CloneContext& context)
