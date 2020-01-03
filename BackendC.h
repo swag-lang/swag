@@ -44,6 +44,7 @@ struct BackendC : public Backend
     bool emitGlobalDrop(OutputFile& bufferC);
 
     bool        emitPublic(OutputFile& bufferC, Module* moduleToGen, Scope* scope);
+    static void addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, vector<uint32_t>& pushRAParams);
     static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
     static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);

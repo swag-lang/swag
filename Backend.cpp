@@ -38,6 +38,8 @@ bool Backend::emitAttributes(AstNode* node)
         CONCAT_FIXED_STR(bufferSwg, "\t#[mixin]\n");
     else if (node->attributeFlags & ATTRIBUTE_INLINE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
+    else if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+        CONCAT_FIXED_STR(bufferSwg, "\t#[printbc]\n");
 
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
