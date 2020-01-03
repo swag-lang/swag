@@ -192,10 +192,6 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         {
             ffiArgsValues.push_back(&sp->pointer);
             sp++;
-
-            ffiArgs.push_back(&ffi_type_pointer);
-            ffiArgsValues.push_back(&sp->pointer);
-            sp++;
         }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
         {

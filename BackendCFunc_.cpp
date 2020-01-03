@@ -341,12 +341,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
         }
-        else if (typeParam->kind == TypeInfoKind::Interface)
-        {
-            concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
-            concat.addStringFormat("\trr%d.pointer = %s_itable;\n", idx + 1, param->namedParam.c_str());
-        }
-        else if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Array)
+        else if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Array || typeParam->kind == TypeInfoKind::Interface)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }
@@ -527,12 +522,6 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
                 CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
                 buffer.addString(param->name);
                 CONCAT_FIXED_STR(buffer, "_count");
-            }
-            else if (param->typeInfo->kind == TypeInfoKind::Interface)
-            {
-                CONCAT_FIXED_STR(buffer, ", void* ");
-                buffer.addString(param->name);
-                CONCAT_FIXED_STR(buffer, "_itable");
             }
         }
     }
