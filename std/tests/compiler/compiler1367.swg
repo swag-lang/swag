@@ -2,7 +2,7 @@ interface IIncrementable
 {
 	incr: func(self)
     decr: func(self)
-    done: func(self)->bool
+    done: func(const self)->bool
 }
 
 struct TITI
@@ -22,7 +22,7 @@ impl IIncrementable for TITI
         val -= 1
     }    
     
-    func done(using self)->bool
+    func done(using const self)->bool
     {
         return val == 0
     } 
@@ -31,7 +31,7 @@ impl IIncrementable for TITI
 impl TITI
 {
     //#[swag.printbc]
-    func Loop(x: IIncrementable)
+    func Loop(x: *IIncrementable)
     {
         while !x.done()
             x.decr()

@@ -1501,7 +1501,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
             // a function
-            if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+            if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
                 context->job->waitForAllStructInterfaces(oneParam->typeInfo);
                 if (context->result == ContextResult::Pending)

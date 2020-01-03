@@ -44,12 +44,21 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
         node->parameters = params;
         while (true)
         {
-            if (token.text == "self")
+            if (token.id == TokenId::KwdConst || token.text == "self")
             {
+                bool isConst = false;
+                if (token.id == TokenId::KwdConst)
+                {
+                    isConst = true;
+                    SWAG_CHECK(eatToken());
+                    SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", syntaxError(token, "const before a function parameter name can only be followed by 'self'"));
+                }
+
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "invalid 'self' usage in that context"}));
                 auto typeNode        = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount   = 1;
+                typeNode->isConst    = isConst;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
             }
             else

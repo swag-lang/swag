@@ -29,7 +29,7 @@ namespace std.memory
         }  
 
         /// Free the specified memory block
-        func free(allocator: IAllocator, buffer: *void)
+        func free(allocator: *IAllocator, buffer: *void)
         {
             if !buffer
                 return
@@ -39,7 +39,7 @@ namespace std.memory
         }
 
         /// Reallocate/allocate a given amount of bytes
-        func realloc(allocator: IAllocator, buffer: *void, sizeInBytes: u32)->*void
+        func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
         {
             assert(allocator != null)
             let req: AllocatorRequest(mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer)
@@ -48,7 +48,7 @@ namespace std.memory
         }
 
         /// Allocate a given amount of bytes
-        func alloc(allocator: IAllocator, sizeInBytes: u32)->*void
+        func alloc(allocator: *IAllocator, sizeInBytes: u32)->*void
         {
             assert(allocator != null)
             let req: AllocatorRequest(mode: AllocatorMode.Alloc, size: sizeInBytes)

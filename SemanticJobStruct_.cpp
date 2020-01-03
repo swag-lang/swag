@@ -512,7 +512,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeInterface->structNode = node;
     typeInterface->name       = node->name;
     typeInterface->kind       = TypeInfoKind::Interface;
-    typeInterface->flags &= ~TYPEINFO_RETURN_BY_COPY;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
