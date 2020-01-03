@@ -22,6 +22,9 @@ static void byteCodeRun(void* byteCodePtr, ...)
     vector<Register*> paramRegisters;
     va_list           valist;
 
+    // Todo, unsupported yet
+    SWAG_ASSERT(!typeFunc->numReturnRegisters());
+
     va_start(valist, byteCodePtr);
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
