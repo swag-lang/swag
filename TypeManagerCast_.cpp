@@ -1309,8 +1309,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     case NativeTypeKind::F64:
         return castToNativeF64(context, fromType, fromNode, castFlags);
     case NativeTypeKind::String:
-        if (fromType->nativeType == NativeTypeKind::String)
-            return true;
+        return castToString(context, toType, fromType, fromNode, castFlags);
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
@@ -2068,35 +2067,27 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::Generic)
         return true;
 
-    // => to string from other things
-    if (toType->isNative(NativeTypeKind::String))
-        return castToString(context, toType, fromType, fromNode, castFlags);
-
+    switch (toType->kind)
+    {
     // Cast to pointer
-    if (toType->kind == TypeInfoKind::Pointer)
+    case TypeInfoKind::Pointer:
         return castToPointer(context, toType, fromType, fromNode, castFlags);
 
     // Cast to native type
-    if (toType->kind == TypeInfoKind::Native)
+    case TypeInfoKind::Native:
         return castToNative(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Cast to array
-    if (toType->kind == TypeInfoKind::Array)
+    case TypeInfoKind::Array:
         return castToArray(context, toType, fromType, fromNode, castFlags);
 
     // Cast to slice
-    if (toType->kind == TypeInfoKind::Slice)
+    case TypeInfoKind::Slice:
         return castToSlice(context, toType, fromType, fromNode, castFlags);
 
     // Cast to interface
-    if (toType->kind == TypeInfoKind::Interface)
+    case TypeInfoKind::Interface:
         return castToInterface(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to lambda
-    if (toType->kind == TypeInfoKind::Lambda)
-    {
-        if (toType->isSame(fromType, ISSAME_CAST))
-            return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
