@@ -345,6 +345,14 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     node->resultRegisterRC = reserveRegisterRC(context);
     auto inst              = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer        = (uint8_t*) funcNode->bc;
+    inst->c.pointer        = (uint8_t*) funcNode;
+
+    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        funcNode->flags |= AST_USED_FOREIGN;
+        context->job->module->registerForeign(funcNode);
+    }
+
     return true;
 }
 

@@ -1655,8 +1655,21 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::MakeLambda:
         {
-            auto funcBC = (ByteCode*) ip->b.pointer;
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
+            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->c.pointer, AstNodeKind::FuncDecl);
+            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+            {
+                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                auto              it           = typeFuncNode->attributes.values.find("swag.foreign.function");
+                SWAG_ASSERT(it != typeFuncNode->attributes.values.end());
+                concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, it->second.second.text.c_str());
+            }
+            else
+            {
+                auto funcBC = funcNode->bc;
+                SWAG_ASSERT(funcBC);
+                SWAG_ASSERT((uint8_t*) funcBC == ip->b.pointer);
+                concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
+            }
             break;
         }
 
