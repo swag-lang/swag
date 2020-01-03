@@ -1,7 +1,7 @@
 #import "std"
 using std.collections
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var x: Array!s32
