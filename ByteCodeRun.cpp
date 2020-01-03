@@ -73,17 +73,30 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(context->bc);
         context->push(context->ip);
 
-        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
-        if (!context->bc)
+        auto ptr = registersRC[ip->a.u32].u64;
+
+        // Bytecode lambda if the lowest bit is set to 1
+        if (isByteCodeLambda((void*) ptr))
         {
-            context->error("lambda call, dereferencing a null pointer");
-            break;
+            context->bc = (ByteCode*) undoByteCodeLambda((void*) ptr);
+            if (!context->bc)
+            {
+                context->error("lambda call, dereferencing a null pointer");
+                break;
+            }
+
+            context->ip = context->bc->out;
+            SWAG_ASSERT(context->ip);
+            context->bp = context->sp;
+            context->bc->enterByteCode(context);
         }
 
-        context->ip = context->bc->out;
-        SWAG_ASSERT(context->ip);
-        context->bp = context->sp;
-        context->bc->enterByteCode(context);
+        // Foreign lambda
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+
         break;
     }
     case ByteCodeOp::MakeLambdaForeign:
@@ -95,7 +108,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::MakeLambda:
     {
-        registersRC[ip->a.u32].pointer = ip->b.pointer;
+        // Mark the lambda pointer as being a bytecode one (lowest bit to 1)
+        registersRC[ip->a.u32].u64 = (uint64_t) ip->b.u64 | 1;
         break;
     }
     case ByteCodeOp::ForeignCall:

@@ -13,6 +13,9 @@ extern string normalizePath(const fs::path& path);
 extern void   tokenize(const char* str, char c, vector<Utf8>& tokens);
 extern void   tokenizeBlanks(const char* str, vector<Utf8>& tokens);
 extern void   concatForC(Utf8& dst, Utf8& src);
+extern void*  doByteCodeLambda(void* ptr);
+extern void*  undoByteCodeLambda(void* ptr);
+extern bool   isByteCodeLambda(void* ptr);
 
 extern Utf8 toStringF64(double v);
 

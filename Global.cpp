@@ -132,3 +132,24 @@ void concatForC(Utf8& dst, Utf8& src)
         pz++;
     }
 }
+
+void* doByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    u |= 1;
+    return (void*) u;
+}
+
+void* undoByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    SWAG_ASSERT(u & 1);
+    u ^= 1;
+    return (void*) u;
+}
+
+bool isByteCodeLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    return u & 1;
+}

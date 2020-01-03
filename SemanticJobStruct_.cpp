@@ -183,7 +183,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto     offset       = itableOffset;
     for (uint32_t i = 0; i < numFctInterface; i++)
     {
-        *ptrITable = mapItIdxToFunc[i]->bc;
+        *ptrITable = doByteCodeLambda(mapItIdxToFunc[i]->bc);
         module->constantSegment.addInitPtrFunc(offset, mapItIdxToFunc[i]->bc);
         ptrITable++;
         offset += sizeof(void*);

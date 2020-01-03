@@ -37,7 +37,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
     // Main context
     CONCAT_FIXED_STR(bufferC, "\tstatic swag_context_t mainContext;\n");
     SWAG_ASSERT(g_defaultContextByteCode.allocator.itable);
-    auto bcAlloc = (ByteCode*) ((void**) g_defaultContextByteCode.allocator.itable)[0];
+    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContextByteCode.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     bufferC.addStringFormat("\tstatic swag_allocator_t defaultAllocTable = &%s;\n", bcAlloc->callName().c_str());
     CONCAT_FIXED_STR(bufferC, "\tmainContext.allocator.itable = &defaultAllocTable;\n");
@@ -57,11 +57,11 @@ bool BackendC::emitMain(OutputFile& bufferC)
         auto nameDown = dep.first;
         nameDown.replaceAll('.', '_');
         bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
-		if (dep.second.generated)
-		{
-			bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());
-			bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
-		}
+        if (dep.second.generated)
+        {
+            bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());
+            bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
+        }
     }
 
     bufferC.addEol();

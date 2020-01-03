@@ -5,6 +5,7 @@
 #include "ByteCodeRun.h"
 #include "ByteCode.h"
 #include "AstNode.h"
+#include "Global.h"
 
 swag_tls_id_t        g_tlsContextIdByteCode = 0;
 swag_tls_id_t        g_tlsContextIdBackend  = 0;
@@ -16,7 +17,7 @@ static void defaultAllocator(Register* r0, Register* r1)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
     SWAG_ASSERT(context->allocator.itable);
-    auto bc = (ByteCode*) ((void**) context->allocator.itable)[0];
+    auto bc = (ByteCode*) undoByteCodeLambda(((void**) context->allocator.itable)[0]);
 
     ByteCodeRunContext runContext;
     auto               node = bc->node;
