@@ -97,6 +97,7 @@ enum class AstNodeKind : uint8_t
     SizeOf,
     IntrinsicProp,
     Index,
+    AutoCast,
     Cast,
     TypeList,
     SingleOp,

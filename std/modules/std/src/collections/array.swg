@@ -14,21 +14,24 @@ namespace std.collections
     }
 
     impl Array
-    {
-        func free(using self)
-        {
-            memory.free(allocator, buffer)
-        }
-
-        func realloc(using self, newCapacity: u32)
-        {
-            if allocator == null
-                allocator = @getcontext().allocator
-            buffer = acast memory.realloc(allocator, buffer, newCapacity)
-        }
-                
+    {               
         public
         {
+            #[swag.nodoc]
+            func free(using self)
+            {
+                memory.free(allocator, buffer)
+            }
+
+            #[swag.nodoc]
+            func realloc(using self, newCapacity: u32)
+            {
+                if allocator == null
+                    allocator = @getcontext().allocator
+                buffer = acast memory.realloc(allocator, buffer, newCapacity * @sizeof(T))
+                capacity = newCapacity
+            }
+
             /// Ensure the [Array] is big enough to store at least `newCount` elements
             func ensureCapacity(using self, newCount : u32)
             {

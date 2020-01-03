@@ -294,7 +294,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Cast, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::AutoCast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitAutoCast;
     if (result)
         *result = node;

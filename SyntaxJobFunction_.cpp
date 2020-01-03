@@ -456,7 +456,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content->token = token;
         }
     }
-
+    
     return true;
 }
 

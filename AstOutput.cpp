@@ -408,6 +408,11 @@ namespace Ast
             concat.addChar(')');
             break;
 
+        case AstNodeKind::AutoCast:
+            CONCAT_FIXED_STR(concat, "acast ");
+            SWAG_CHECK(output(concat, node->childs[0]));
+            break;
+
         case AstNodeKind::Cast:
             CONCAT_FIXED_STR(concat, "cast(");
             SWAG_CHECK(output(concat, node->childs[0]));
