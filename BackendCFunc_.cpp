@@ -1697,35 +1697,57 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         }
 
         case ByteCodeOp::LambdaCall:
+        {
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+
+            // Need to output the function prototype too
+            CONCAT_FIXED_STR(concat, "((void(*)(");
+            for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
+            {
+                if (j)
+                    concat.addChar(',');
+                CONCAT_FIXED_STR(concat, "swag_register_t*");
+            }
+
+            CONCAT_FIXED_STR(concat, "))");
+
+            // Then the call
+            CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
+
+            concat.addChar('(');
+            for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+            {
+                if (j)
+                    concat.addChar(',');
+                CONCAT_STR_1(concat, "&rt[", j, "]");
+            }
+
+            int numCallParams = (int) typeFuncBC->parameters.size();
+            for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
+            {
+                auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+                typeParam      = TypeManager::concreteType(typeParam);
+                for (int j = 0; j < typeParam->numRegisters(); j++)
+                {
+                    if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
+                        concat.addChar(',');
+                    auto index = pushRAParams.back();
+                    pushRAParams.pop_back();
+                    CONCAT_STR_1(concat, "&r[", index, "]");
+                }
+            }
+
+            pushRAParams.clear();
+            CONCAT_FIXED_STR(concat, ");");
+        }
+        break;
+
         case ByteCodeOp::LocalCall:
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            // Normal function call
-            if (ip->op == ByteCodeOp::LocalCall)
-            {
-                concat.addString(funcBC->callName());
-            }
-
-            // Lambda call
-            else
-            {
-                // Need to output the function prototype too
-                CONCAT_FIXED_STR(concat, "((void(*)(");
-                for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
-                {
-                    if (j)
-                        concat.addChar(',');
-                    CONCAT_FIXED_STR(concat, "swag_register_t*");
-                }
-
-                CONCAT_FIXED_STR(concat, "))");
-
-                // Then the call
-                CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
-            }
-
+            concat.addString(funcBC->callName());
             concat.addChar('(');
             for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
             {
