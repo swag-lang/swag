@@ -16,7 +16,7 @@ void BackendC::addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, v
         CONCAT_STR_1(concat, "&rt[", j, "]");
     }
 
-    int popRAidx = (int) pushRAParams.size() - 1;
+    int popRAidx      = (int) pushRAParams.size() - 1;
     int numCallParams = (int) typeFuncBC->parameters.size();
     for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
     {
@@ -201,6 +201,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
 
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Struct ||
+            typeParam->kind == TypeInfoKind::Interface ||
             typeParam->kind == TypeInfoKind::Array ||
             typeParam->kind == TypeInfoKind::Pointer)
         {
@@ -212,13 +213,6 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
             index = pushParams.back();
             pushParams.pop_back();
             CONCAT_STR_1(concat, ", r[", index, "].u32");
-        }
-        else if (typeParam->kind == TypeInfoKind::Interface)
-        {
-            CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            index = pushParams.back();
-            pushParams.pop_back();
-            CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
