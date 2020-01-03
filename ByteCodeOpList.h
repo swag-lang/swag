@@ -31,6 +31,7 @@ BYTECODE_OP(MulRAVB)
 BYTECODE_OP(BoundCheck)
 BYTECODE_OP(BoundCheckString)
 BYTECODE_OP(MakeLambda)
+BYTECODE_OP(MakeLambdaForeign)
 
 BYTECODE_OP(MinusToTrue)
 BYTECODE_OP(PlusToTrue)

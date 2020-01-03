@@ -323,6 +323,19 @@ void ByteCode::print()
             wprintf(bcNum, ip->b.s32 + i + 1);
             break;
 
+        case ByteCodeOp::MakeLambdaForeign:
+        {
+            wprintf(L"RA: %u ", ip->a.u32);
+            auto func = (AstFuncDecl*) ip->b.pointer;
+            SWAG_ASSERT(func);
+            g_Log.print("[");
+            g_Log.print(func->sourceFile->path);
+            g_Log.print(", ");
+            g_Log.print(func->name);
+            g_Log.print("]");
+            break;
+        }
+
         case ByteCodeOp::MakeLambda:
         {
             wprintf(L"RA: %u ", ip->a.u32);

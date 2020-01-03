@@ -336,6 +336,20 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     auto front    = node->childs.front();
     auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
+    // Construct a lambda to a foreign function
+    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        freeRegisterRC(context, front);
+        node->resultRegisterRC = reserveRegisterRC(context);
+
+        auto inst       = emitInstruction(context, ByteCodeOp::MakeLambdaForeign, node->resultRegisterRC);
+        inst->b.pointer = (uint8_t*) funcNode;
+
+        funcNode->flags |= AST_USED_FOREIGN;
+        context->job->module->registerForeign(funcNode);
+        return true;
+    }
+
     // Need to generate bytecode, if not already done or running
     askForByteCode(context->job->dependentJob, context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
     if (context->result == ContextResult::Pending)
@@ -345,14 +359,6 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     node->resultRegisterRC = reserveRegisterRC(context);
     auto inst              = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer        = (uint8_t*) funcNode->bc;
-    inst->c.pointer        = (uint8_t*) funcNode;
-
-    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-    {
-        funcNode->flags |= AST_USED_FOREIGN;
-        context->job->module->registerForeign(funcNode);
-    }
-
     return true;
 }
 

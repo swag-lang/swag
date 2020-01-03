@@ -86,6 +86,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->bc->enterByteCode(context);
         break;
     }
+    case ByteCodeOp::MakeLambdaForeign:
+    {
+        //SWAG_ASSERT(false);
+        auto funcNode = (AstFuncDecl*) ip->b.pointer;
+        break;
+    }
     case ByteCodeOp::MakeLambda:
     {
         registersRC[ip->a.u32].pointer = ip->b.pointer;
