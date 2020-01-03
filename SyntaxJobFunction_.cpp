@@ -98,7 +98,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         {
             isConst = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", syntaxError(token, "const here can only be follower by 'self'"));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", syntaxError(token, "const before a function parameter name can only be followed by 'self'"));
         }
 
         SWAG_CHECK(eatToken());
