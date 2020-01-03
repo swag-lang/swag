@@ -36,8 +36,8 @@ bool BackendC::emitMain(OutputFile& bufferC)
 
     // Main context
     CONCAT_FIXED_STR(bufferC, "\tstatic swag_context_t mainContext;\n");
-    SWAG_ASSERT(g_defaultContextByteCode.allocator.itable);
-    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContextByteCode.allocator.itable)[0]);
+    SWAG_ASSERT(g_defaultContext.allocator.itable);
+    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     bufferC.addStringFormat("\tstatic swag_allocator_t defaultAllocTable = &%s;\n", bcAlloc->callName().c_str());
     CONCAT_FIXED_STR(bufferC, "\tmainContext.allocator.itable = &defaultAllocTable;\n");

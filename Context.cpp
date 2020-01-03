@@ -7,8 +7,8 @@
 #include "AstNode.h"
 #include "Global.h"
 
-swag_tls_id_t        g_tlsContextIdByteCode = 0;
-swag_context_t       g_defaultContextByteCode;
+swag_tls_id_t        g_tlsContextId = 0;
+swag_context_t       g_defaultContext;
 swag_process_infos_t g_processInfos = {0};
 
 static void byteCodeRun(void* byteCodePtr, ...)
@@ -61,12 +61,12 @@ static void byteCodeRun(void* byteCodePtr, ...)
 
 void initDefaultContext()
 {
-    g_tlsContextIdByteCode = OS::tlsAlloc();
-    OS::tlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
+    g_tlsContextId = OS::tlsAlloc();
+    OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
 
     g_processInfos.arguments.addr  = g_CommandLine.userArgumentsSlice.first;
     g_processInfos.arguments.count = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-    g_processInfos.contextTlsId    = g_tlsContextIdByteCode;
-    g_processInfos.defaultContext  = &g_defaultContextByteCode;
+    g_processInfos.contextTlsId    = g_tlsContextId;
+    g_processInfos.defaultContext  = &g_defaultContext;
     g_processInfos.byteCodeRun     = byteCodeRun;
 }

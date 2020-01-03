@@ -36,7 +36,7 @@ void JobThread::waitForANewJob()
 void JobThread::loop()
 {
     // TLS context
-    OS::tlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
+    OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
 
     while (!requestEnd)
     {

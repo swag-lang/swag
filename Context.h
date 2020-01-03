@@ -34,8 +34,8 @@ typedef struct swag_process_infos_t
     swag_bytecoderun_t byteCodeRun;
 } swag_process_infos_t;
 
-extern swag_tls_id_t        g_tlsContextIdByteCode;
-extern swag_context_t       g_defaultContextByteCode;
+extern swag_tls_id_t        g_tlsContextId;
+extern swag_context_t       g_defaultContext;
 extern swag_process_infos_t g_processInfos;
 
 extern void initDefaultContext();
