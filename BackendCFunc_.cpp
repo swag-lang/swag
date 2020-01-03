@@ -1574,56 +1574,57 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CastBool64:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
             break;
+
         case ByteCodeOp::CastS8S16:
-            concat.addStringFormat("r[%u].s16 = (swag_int16_t) r[%u].s8; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s8;");
             break;
         case ByteCodeOp::CastS16S32:
-            concat.addStringFormat("r[%u].s32 = (swag_int32_t) r[%u].s16; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s16;");
             break;
         case ByteCodeOp::CastS32S8:
-            concat.addStringFormat("r[%u].s8 = (swag_int8_t) r[%u].s32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = (swag_int8_t) r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::CastS32S16:
-            concat.addStringFormat("r[%u].s16 = (swag_int16_t) r[%u].s32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::CastS32S64:
-            concat.addStringFormat("r[%u].s64 = (swag_int64_t) r[%u].s32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::CastS32F32:
-            concat.addStringFormat("r[%u].f32 = (swag_float32_t) r[%u].s32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s32;");
             break;
         case ByteCodeOp::CastS64S32:
-            concat.addStringFormat("r[%u].s32 = (swag_int32_t) r[%u].s64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s64;");
             break;
         case ByteCodeOp::CastS64F32:
-            concat.addStringFormat("r[%u].f32 = (swag_float32_t) r[%u].s64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s64;");
             break;
         case ByteCodeOp::CastS64F64:
-            concat.addStringFormat("r[%u].f64 = (swag_float64_t) r[%u].s64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].s64;");
             break;
         case ByteCodeOp::CastU32F32:
-            concat.addStringFormat("r[%u].f32 = (swag_float32_t) r[%u].u32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u32;");
             break;
         case ByteCodeOp::CastU64F32:
-            concat.addStringFormat("r[%u].f32 = (swag_float32_t) r[%u].u64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u64;");
             break;
         case ByteCodeOp::CastU64F64:
-            concat.addStringFormat("r[%u].f64 = (swag_float64_t) r[%u].u64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].u64;");
             break;
         case ByteCodeOp::CastF32S32:
-            concat.addStringFormat("r[%u].s32 = (swag_int32_t) r[%u].f32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].f32;");
             break;
         case ByteCodeOp::CastF32S64:
-            concat.addStringFormat("r[%u].s64 = (swag_int64_t) r[%u].f32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].f32;");
             break;
         case ByteCodeOp::CastF32F64:
-            concat.addStringFormat("r[%u].f64 = (swag_float64_t) r[%u].f32; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].f32;");
             break;
         case ByteCodeOp::CastF64S64:
-            concat.addStringFormat("r[%u].s64 = (swag_int64_t) r[%u].f64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].f64;");
             break;
         case ByteCodeOp::CastF64F32:
-            concat.addStringFormat("r[%u].f32 = (swag_float32_t) r[%u].f64; ", ip->a.u32, ip->a.u32);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].f64;");
             break;
 
         case ByteCodeOp::CopyRRxRCx:
