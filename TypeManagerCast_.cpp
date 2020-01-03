@@ -1388,6 +1388,56 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
+{
+    if (toType->isNative(NativeTypeKind::Any))
+    {
+        if (castFlags & CASTFLAG_BIJECTIF)
+        {
+            if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                if (!(castFlags & CASTFLAG_EXPLICIT))
+                {
+                    toNode->castedTypeInfo = toType;
+                    toNode->typeInfo       = fromNode->typeInfo;
+                }
+
+                auto& typeTable = context->sourceFile->module->typeTable;
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
+            }
+
+            return true;
+        }
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+            auto& typeTable          = context->sourceFile->module->typeTable;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
+        }
+
+        return true;
+    }
+
+    if (fromType->isNative(NativeTypeKind::Any))
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            if (!(castFlags & CASTFLAG_EXPLICIT))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toType;
+            }
+
+            auto& typeTable = context->sourceFile->module->typeTable;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
+        }
+
+        return true;
+    }
+}
+
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
@@ -1989,53 +2039,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType == toType)
         return true;
 
-    // Everything can be casted to type 'any'
-    if (toType->isNative(NativeTypeKind::Any))
-    {
-        if (castFlags & CASTFLAG_BIJECTIF)
-        {
-            if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
-            {
-                if (!(castFlags & CASTFLAG_EXPLICIT))
-                {
-                    toNode->castedTypeInfo = toType;
-                    toNode->typeInfo       = fromNode->typeInfo;
-                }
-
-                auto& typeTable = context->sourceFile->module->typeTable;
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
-            }
-
-            return true;
-        }
-
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
-            auto& typeTable          = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
-        }
-
-        return true;
-    }
-
-    if (fromType->isNative(NativeTypeKind::Any))
-    {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = toType;
-            }
-
-            auto& typeTable = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
-        }
-
-        return true;
-    }
+    // Everything can be casted to or from type 'any'
+    if (toType->isNative(NativeTypeKind::Any) || fromType->isNative(NativeTypeKind::Any))
+        return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic
     if (fromType->kind == TypeInfoKind::TypedVariadic)
