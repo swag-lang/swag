@@ -143,8 +143,24 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         ip->d.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
     if (!ip->d.pointer)
         return;
-    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
 
+#ifdef SWAG_HAS_ASSERT
+    if (g_CommandLine.debug)
+    {
+        g_diagnosticInfos.push();
+        AstFuncDecl* funcDecl               = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        g_diagnosticInfos.last().message    = format("ffi call to '%s'", funcDecl->name.c_str());
+        g_diagnosticInfos.last().sourceFile = context->sourceFile;
+        g_diagnosticInfos.last().ip         = ip;
+    }
+#endif
+
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+    ffiCall(context, ip->d.pointer, typeInfoFunc);
+}
+
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc)
+{
     // Function call parameters
     ffi_cif cif;
     int     numParameters = (int) typeInfoFunc->parameters.size();
@@ -272,19 +288,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         }
     }
 
-#ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.debug)
-    {
-        g_diagnosticInfos.push();
-        AstFuncDecl* funcDecl               = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        g_diagnosticInfos.last().message    = format("ffi call to '%s'", funcDecl->name.c_str());
-        g_diagnosticInfos.last().sourceFile = context->sourceFile;
-        g_diagnosticInfos.last().ip         = ip;
-    }
-#endif
-
     // Make the call
-    ffi_call(&cif, FFI_FN(ip->d.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
+    ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
 
 #ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.debug)

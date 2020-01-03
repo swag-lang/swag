@@ -4,6 +4,8 @@ using std.console
 //#[swag.printbc]
 #test
 {
+    silent(true)
+    
     ptr := &write
-    //ptr("toto")
+    ptr("toto")
 }

@@ -69,15 +69,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::LambdaCall:
     {
-        context->push(context->bp);
-        context->push(context->bc);
-        context->push(context->ip);
-
         auto ptr = registersRC[ip->a.u32].u64;
-
-        // Bytecode lambda if the lowest bit is set to 1
         if (isByteCodeLambda((void*) ptr))
         {
+            context->push(context->bp);
+            context->push(context->bc);
+            context->push(context->ip);
+
             context->bc = (ByteCode*) undoByteCodeLambda((void*) ptr);
             if (!context->bc)
             {
@@ -94,7 +92,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         // Foreign lambda
         else
         {
-            SWAG_ASSERT(false);
+            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
+            ffiCall(context, registersRC[ip->a.u32].pointer, typeInfoFunc);
         }
 
         break;
@@ -108,8 +107,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::MakeLambda:
     {
-        // Mark the lambda pointer as being a bytecode one (lowest bit to 1)
-        registersRC[ip->a.u32].u64 = (uint64_t) ip->b.u64 | 1;
+        registersRC[ip->a.u32].u64 = (uint64_t) doByteCodeLambda((void*) ip->b.pointer);
         break;
     }
     case ByteCodeOp::ForeignCall:
