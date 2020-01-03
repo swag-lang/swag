@@ -260,6 +260,22 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     return true;
 }
 
+void SemanticJob::sortParameters(AstNode* allParams)
+{
+    if (!allParams || !(allParams->flags & AST_MUST_SORT_CHILDS))
+        return;
+    if (allParams->childs.size() <= 1)
+        return;
+
+    sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
+        AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+        AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+        return p1->index < p2->index;
+    });
+
+    allParams->flags ^= AST_MUST_SORT_CHILDS;
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     // Direct reference to a constexpr typeinfo
@@ -418,6 +434,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)
         {
+            sortParameters(identifier->callParameters);
             auto maxParams = identifier->callParameters->childs.size();
             for (int i = 0; i < maxParams; i++)
             {
@@ -447,6 +464,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // Need to make all types compatible, in case a cast is necessary
             if (identifier->callParameters && oneMatch)
             {
+                sortParameters(identifier->callParameters);
                 auto maxParams = identifier->callParameters->childs.size();
                 for (int i = 0; i < maxParams; i++)
                 {
@@ -492,6 +510,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (identifier->callParameters && oneMatch)
             {
+                sortParameters(identifier->callParameters);
                 auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
                 auto maxParams    = identifier->callParameters->childs.size();
                 for (int i = 0; i < maxParams; i++)

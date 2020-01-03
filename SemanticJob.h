@@ -73,6 +73,7 @@ struct SemanticJob : public Job
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    static void sortParameters(AstNode* allParams);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);

@@ -3,6 +3,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
+#include "SemanticJob.h"
 #include "Ast.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
@@ -34,14 +35,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         auto numFuncParams = func->parameters->childs.size();
 
         // Sort childs by parameter index
-        if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
-        {
-            sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-                AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-                AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-                return p1->index < p2->index;
-            });
-        }
+        SemanticJob::sortParameters(allParams);
 
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)

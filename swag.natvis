@@ -33,6 +33,7 @@
       <Item Name="[name]">name</Item>
       <Item Name="[childs]">childs</Item>
       <Item Name="[ownerScope]">ownerScope</Item>
+      <Item Name="[typeinfo]">typeInfo</Item>
       <Item Name="[parent]">parent</Item>
     </Expand>
   </Type>
