@@ -7,6 +7,31 @@
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
 
+void BackendC::addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, vector<uint32_t>& pushRAParams)
+{
+    for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+    {
+        if (j)
+            concat.addChar(',');
+        CONCAT_STR_1(concat, "&rt[", j, "]");
+    }
+
+    int popRAidx = (int) pushRAParams.size() - 1;
+    int numCallParams = (int) typeFuncBC->parameters.size();
+    for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteType(typeParam);
+        for (int j = 0; j < typeParam->numRegisters(); j++)
+        {
+            if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
+                concat.addChar(',');
+            auto index = pushRAParams[popRAidx--];
+            CONCAT_STR_1(concat, "&r[", index, "]");
+        }
+    }
+}
+
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -1699,9 +1724,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::LambdaCall:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64 & 1) { ");
+
+            CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
+            if (typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters())
+                concat.addChar(',');
+            addCallParameters(concat, typeFuncBC, pushRAParams);
+            CONCAT_FIXED_STR(concat, ");");
 
             // Need to output the function prototype too
-            CONCAT_FIXED_STR(concat, "((void(*)(");
+            CONCAT_FIXED_STR(concat, "} else { ((void(*)(");
             for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
             {
                 if (j)
@@ -1714,31 +1746,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             // Then the call
             CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
 
+            // Then the parameters
             concat.addChar('(');
-            for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
-            {
-                if (j)
-                    concat.addChar(',');
-                CONCAT_STR_1(concat, "&rt[", j, "]");
-            }
-
-            int numCallParams = (int) typeFuncBC->parameters.size();
-            for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
-            {
-                auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-                typeParam      = TypeManager::concreteType(typeParam);
-                for (int j = 0; j < typeParam->numRegisters(); j++)
-                {
-                    if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
-                        concat.addChar(',');
-                    auto index = pushRAParams.back();
-                    pushRAParams.pop_back();
-                    CONCAT_STR_1(concat, "&r[", index, "]");
-                }
-            }
-
+            addCallParameters(concat, typeFuncBC, pushRAParams);
+            CONCAT_FIXED_STR(concat, "); }");
             pushRAParams.clear();
-            CONCAT_FIXED_STR(concat, ");");
         }
         break;
 
@@ -1746,31 +1758,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
             concat.addString(funcBC->callName());
             concat.addChar('(');
-            for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
-            {
-                if (j)
-                    concat.addChar(',');
-                CONCAT_STR_1(concat, "&rt[", j, "]");
-            }
-
-            int numCallParams = (int) typeFuncBC->parameters.size();
-            for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
-            {
-                auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-                typeParam      = TypeManager::concreteType(typeParam);
-                for (int j = 0; j < typeParam->numRegisters(); j++)
-                {
-                    if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
-                        concat.addChar(',');
-                    auto index = pushRAParams.back();
-                    pushRAParams.pop_back();
-                    CONCAT_STR_1(concat, "&r[", index, "]");
-                }
-            }
-
+            addCallParameters(concat, typeFuncBC, pushRAParams);
             pushRAParams.clear();
             CONCAT_FIXED_STR(concat, ");");
         }

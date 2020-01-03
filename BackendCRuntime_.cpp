@@ -72,6 +72,7 @@ typedef struct swag_interface_t
 } swag_interface_t;
 
 typedef void(*swag_allocator_t)(swag_register_t*,swag_register_t*);
+typedef void(*swag_bytecoderun_t)(void*, ...);
 
 typedef struct swag_context_t {
 	swag_interface_t allocator;
@@ -86,6 +87,7 @@ typedef struct swag_process_infos_t {
 	swag_slice_t		arguments;
 	swag_tls_id_t		contextTlsId;
 	swag_context_t*		defaultContext;
+	swag_bytecoderun_t	byteCodeRun;
 } swag_process_infos_t;
 )";
 

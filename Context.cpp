@@ -13,6 +13,51 @@ Context              g_defaultContextByteCode;
 swag_context_t       g_defaultContextBackend;
 swag_process_infos_t g_processInfos = {0};
 
+static void byteCodeRun(void* byteCodePtr, ...)
+{
+    ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(byteCodePtr);
+    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+
+    vector<Register*> returnRegisters;
+    vector<Register*> paramRegisters;
+    va_list           valist;
+
+    va_start(valist, byteCodePtr);
+    for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
+    {
+        auto r = va_arg(valist, Register*);
+        returnRegisters.push_back(r);
+    }
+
+    ByteCodeRunContext runContext;
+    auto               node = bc->node;
+    runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
+
+    // Parameters
+    for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
+    {
+        auto r = va_arg(valist, Register*);
+        paramRegisters.push_back(r);
+    }
+
+    while (!paramRegisters.empty())
+    {
+        auto r = paramRegisters.back();
+        paramRegisters.pop_back();
+        runContext.push(r->pointer);
+    }
+
+    // Dummy 24 bytes on the stack necessary before a call
+    runContext.push(nullptr);
+    runContext.push(nullptr);
+    runContext.push(nullptr);
+
+    // Run !
+    runContext.bp = runContext.sp;
+    bc->enterByteCode(&runContext);
+    g_Run.run(&runContext);
+}
+
 static void defaultAllocator(Register* r0, Register* r1)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
@@ -34,6 +79,7 @@ static void defaultAllocator(Register* r0, Register* r1)
     runContext.push(nullptr);
     runContext.push(nullptr);
 
+    // Run !
     runContext.bp = runContext.sp;
     bc->enterByteCode(&runContext);
     g_Run.run(&runContext);
@@ -50,6 +96,7 @@ void initDefaultContext()
     g_processInfos.arguments.count           = (uint64_t) g_CommandLine.userArgumentsSlice.second;
     g_processInfos.contextTlsId              = g_tlsContextIdBackend;
     g_processInfos.defaultContext            = &g_defaultContextBackend;
+    g_processInfos.byteCodeRun               = byteCodeRun;
     g_defaultContextBackend.allocator.data   = nullptr;
     static auto itable                       = &defaultAllocator;
     g_defaultContextBackend.allocator.itable = &itable;

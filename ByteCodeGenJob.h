@@ -42,7 +42,6 @@ struct ByteCodeGenJob : public Job
 
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
-    static void transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
     static bool emitExpressionList(ByteCodeGenContext* context);
     static bool emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList);
     static bool emitLiteral(ByteCodeGenContext* context);
@@ -162,6 +161,7 @@ struct ByteCodeGenJob : public Job
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
     static void waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
 
+    static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
@@ -170,10 +170,10 @@ struct ByteCodeGenJob : public Job
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
     static void     truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count);
 
-    ByteCodeGenContext context;
-    VectorNative<AstNode*>   collectChilds;
-    vector<Scope*>     collectScopes;
-    bool               syncToDependentNodes = false;
+    ByteCodeGenContext     context;
+    VectorNative<AstNode*> collectChilds;
+    vector<Scope*>         collectScopes;
+    bool                   syncToDependentNodes = false;
 };
 
 extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
