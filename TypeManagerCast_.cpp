@@ -1357,6 +1357,38 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     return true;
 }
 
+bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    if (fromType == g_TypeMgr.typeInfoNull)
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->typeInfo       = toType;
+            fromNode->castedTypeInfo = g_TypeMgr.typeInfoNull;
+        }
+
+        return true;
+    }
+
+    // const [..] u8 to string, this is possible !
+    if (fromType->kind == TypeInfoKind::Slice)
+    {
+        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+        if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+            }
+
+            return true;
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
@@ -2038,34 +2070,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     // => to string from other things
     if (toType->isNative(NativeTypeKind::String))
-    {
-        if (fromType == g_TypeMgr.typeInfoNull)
-        {
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-            {
-                fromNode->typeInfo       = toType;
-                fromNode->castedTypeInfo = g_TypeMgr.typeInfoNull;
-            }
-
-            return true;
-        }
-
-        // const [..] u8 to string, this is possible !
-        if (fromType->kind == TypeInfoKind::Slice)
-        {
-            auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-            if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
-            {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = g_TypeMgr.typeInfoString;
-                }
-
-                return true;
-            }
-        }
-    }
+        return castToString(context, toType, fromType, fromNode, castFlags);
 
     // Cast to pointer
     if (toType->kind == TypeInfoKind::Pointer)
