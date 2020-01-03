@@ -88,8 +88,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::MakeLambdaForeign:
     {
-        //SWAG_ASSERT(false);
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
+        SWAG_ASSERT(funcNode);
+        registersRC[ip->a.u32].pointer = (uint8_t*) ffiGetFuncAddress(context, funcNode);
         break;
     }
     case ByteCodeOp::MakeLambda:

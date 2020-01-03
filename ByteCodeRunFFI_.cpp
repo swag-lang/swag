@@ -8,13 +8,16 @@
 #include "ModuleCompileJob.h"
 #include "TypeManager.h"
 #include "OS.h"
-#include "Ast.h"
-#include "AstNode.h"
 #include "DiagnosticInfos.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    return ffiGetFuncAddress(context, nodeFunc);
+}
+
+void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* nodeFunc)
+{
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
 
     // Load module if specified

@@ -3,10 +3,12 @@
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;
 struct TypeInfo;
+struct AstFuncDecl;
 
 struct ByteCodeRun
 {
     void*     ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip);
+    void*     ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* nodeFunc);
     ffi_type* ffiFromTypeInfo(TypeInfo* typeInfo);
     void      ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
