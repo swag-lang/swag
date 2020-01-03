@@ -1447,20 +1447,17 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     if (fromType->isPointerTo(TypeInfoKind::Struct) && toType->isPointerTo(TypeInfoKind::Interface))
     {
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (toTypePointer->ptrCount == 1 && fromTypePointer->ptrCount == 1)
+        auto toTypeItf       = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
+        auto fromTypeStruct  = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
+        if (!fromTypeStruct->hasInterface(toTypeItf))
+            return castError(context, toType, fromType, fromNode, castFlags);
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
-            auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-            if (!fromTypeStruct->hasInterface(toTypeItf))
-                return castError(context, toType, fromType, fromNode, castFlags);
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-            {
-                fromNode->castedTypeInfo = fromType;
-                fromNode->typeInfo       = toTypeItf;
-            }
-
-            return true;
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toTypeItf;
         }
+
+        return true;
     }
 
     // String to pointer
