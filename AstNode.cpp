@@ -150,12 +150,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
 
     // Replace a type by another one during generic instantiation
-    typeInfo = from->typeInfo;
-    Generic::doTypeSubstitution(context, &typeInfo);
-    if(typeInfo != from->typeInfo)
+    typeInfo = Generic::doTypeSubstitution(context, from->typeInfo);
+    if (typeInfo != from->typeInfo)
         flags |= AST_FROM_GENERIC;
-
-
 
     castedTypeInfo         = from->castedTypeInfo;
     resolvedSymbolName     = from->resolvedSymbolName;

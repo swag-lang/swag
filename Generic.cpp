@@ -80,20 +80,15 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo)
+TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo)
 {
-    auto oldType = *typeInfo;
+    auto oldType = typeInfo;
     if (!oldType)
-        return;
-
-    TypeInfo* newType = nullptr;
+        return typeInfo;
 
     auto it = cloneContext.replaceTypes.find(oldType->name);
     if (it != cloneContext.replaceTypes.end())
-    {
-        *typeInfo = it->second;
-        return;
-    }
+        return it->second;
 
     // When type is a compound, we do substitution in the raw type
     switch (oldType->kind)
@@ -101,15 +96,14 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
     case TypeInfoKind::Alias:
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(oldType, TypeInfoKind::Alias);
-        newType        = typeAlias->rawType;
-        doTypeSubstitution(cloneContext, &newType);
+        auto newType   = doTypeSubstitution(cloneContext, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
             typeAlias          = static_cast<TypeInfoAlias*>(typeAlias->clone());
             typeAlias->rawType = newType;
             typeAlias->flags &= ~TYPEINFO_GENERIC;
             typeAlias->computeName();
-            *typeInfo = typeAlias;
+            return typeAlias;
         }
 
         break;
@@ -118,8 +112,7 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
-        newType          = typePointer->finalType;
-        doTypeSubstitution(cloneContext, &newType);
+        auto newType     = doTypeSubstitution(cloneContext, typePointer->finalType);
         if (newType != typePointer->finalType)
         {
             typePointer            = static_cast<TypeInfoPointer*>(typePointer->clone());
@@ -127,7 +120,7 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
             typePointer->pointedType = typePointer->computePointedType();
-            *typeInfo                = typePointer;
+            return typePointer;
         }
 
         break;
@@ -136,15 +129,14 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(oldType, TypeInfoKind::Array);
-        newType        = typeArray->pointedType;
-        doTypeSubstitution(cloneContext, &newType);
+        auto newType   = doTypeSubstitution(cloneContext, typeArray->pointedType);
         if (newType != typeArray->pointedType)
         {
             typeArray              = static_cast<TypeInfoArray*>(typeArray->clone());
             typeArray->pointedType = newType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
             typeArray->computeName();
-            *typeInfo = typeArray;
+            return typeArray;
         }
 
         break;
@@ -153,15 +145,14 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
     case TypeInfoKind::Slice:
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(oldType, TypeInfoKind::Slice);
-        newType        = typeSlice->pointedType;
-        doTypeSubstitution(cloneContext, &newType);
+        auto newType   = doTypeSubstitution(cloneContext, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
             typeSlice              = static_cast<TypeInfoSlice*>(typeSlice->clone());
             typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
             typeSlice->computeName();
-            *typeInfo = typeSlice;
+            return typeSlice;
         }
 
         break;
@@ -172,8 +163,7 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
         TypeInfoFuncAttr* newLambda  = nullptr;
         auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(oldType, TypeInfoKind::Lambda);
 
-        newType = typeLambda->returnType;
-        doTypeSubstitution(cloneContext, &newType);
+        auto newType = doTypeSubstitution(cloneContext, typeLambda->returnType);
         if (newType != typeLambda->returnType)
         {
             newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
@@ -184,8 +174,7 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
         for (int idx = 0; idx < typeLambda->parameters.size(); idx++)
         {
             auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
-            newType    = param->typeInfo;
-            doTypeSubstitution(cloneContext, &newType);
+            newType    = doTypeSubstitution(cloneContext, param->typeInfo);
             if (newType != param->typeInfo)
             {
                 if (!newLambda)
@@ -202,12 +191,14 @@ void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo
         if (newLambda)
         {
             newLambda->computeName();
-            *typeInfo = newLambda;
+            return newLambda;
         }
 
         break;
     }
     }
+
+    return typeInfo;
 }
 
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
@@ -231,14 +222,14 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     funcNode->typeInfo = newType;
 
     // Replace return type
-    doTypeSubstitution(cloneContext, &newType->returnType);
+    newType->returnType = doTypeSubstitution(cloneContext, newType->returnType);
 
     // Replace generic types with their real values in the function parameters
     auto numParams = newType->parameters.size();
     for (int i = 0; i < numParams; i++)
     {
-        auto param = newType->parameters[i];
-        doTypeSubstitution(cloneContext, &param->typeInfo);
+        auto param      = newType->parameters[i];
+        param->typeInfo = doTypeSubstitution(cloneContext, param->typeInfo);
     }
 
     // Replace generic types and values in the function generic parameters
