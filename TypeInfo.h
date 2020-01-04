@@ -319,6 +319,7 @@ struct SymbolMatchContext
         parameters.clear();
         doneParameters.clear();
         genericParametersCallTypes.clear();
+        genericParametersGenTypes.clear();
         solvedParameters.clear();
         flags = 0;
         resetTmp();
@@ -335,6 +336,7 @@ struct SymbolMatchContext
     vector<TypeInfoParam*>  solvedParameters;
     vector<bool>            doneParameters;
     vector<TypeInfo*>       genericParametersCallTypes;
+    vector<TypeInfo*>       genericParametersGenTypes;
     map<Utf8Crc, TypeInfo*> genericReplaceTypes;
     map<Utf8Crc, uint32_t>  mapGenericTypesIndex;
     MatchResult             result;

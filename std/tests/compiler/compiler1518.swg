@@ -12,7 +12,7 @@ impl A
     #[swag.macro]
     func(ptr: bool) toto(using self, stmt: code)
     {
-        loop idx: titi(1, 1)
+        loop idx: titi!s32(1, 1)
         {
             var shift: u32 = 0
             #assert ptr == true

@@ -742,11 +742,12 @@ anotherTry:
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
-                    match.flags                       = job->symMatch.flags;
-                    match.symbolName                  = symbol;
-                    match.symbolOverload              = overload;
-                    match.genericParametersCallTypes  = move(job->symMatch.genericParametersCallTypes);
-                    match.genericReplaceTypes         = move(job->symMatch.genericReplaceTypes);
+                    match.flags                      = job->symMatch.flags;
+                    match.symbolName                 = symbol;
+                    match.symbolOverload             = overload;
+                    match.genericParametersCallTypes = move(job->symMatch.genericParametersCallTypes);
+                    match.genericParametersGenTypes  = move(job->symMatch.genericParametersGenTypes);
+                    match.genericReplaceTypes        = move(job->symMatch.genericReplaceTypes);
                     genericMatches.emplace_back(match);
                 }
                 else
@@ -782,11 +783,23 @@ anotherTry:
     // We should not instantiate with unresolved types
     if (genericMatches.size() == 1)
     {
-        for (auto gen : genericMatches[0].genericParametersCallTypes)
+        for (int i = 0; i < genericMatches[0].genericParametersGenTypes.size(); i++)
         {
-            if (gen->flags & TYPEINFO_UNTYPED_INTEGER)
+            auto callGen = genericMatches[0].genericParametersCallTypes[i];
+            auto genGen  = genericMatches[0].genericParametersGenTypes[i];
+            if (genGen->kind == TypeInfoKind::Generic)
             {
-                //return context->report({context->node, "toto\n"});
+                if (callGen->flags & TYPEINFO_UNTYPED_INTEGER)
+                {
+                    auto symbol = *dependentSymbols.begin();
+                    return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped integer, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                }
+
+                if (callGen->flags & TYPEINFO_UNTYPED_FLOAT)
+                {
+                    auto symbol = *dependentSymbols.begin();
+                    return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped float, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                }
             }
         }
     }

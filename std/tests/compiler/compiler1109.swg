@@ -5,5 +5,5 @@ func(T = s32) toto(x: T)
 
 #test
 {
-	toto(1)
+	toto(1's32)
 }

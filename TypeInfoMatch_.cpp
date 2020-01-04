@@ -367,7 +367,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())
             {
-                context.genericParametersCallTypes[i]  = callParameter->typeInfo;
+                context.genericParametersCallTypes[i] = callParameter->typeInfo;
             }
         }
         else
@@ -389,6 +389,7 @@ static void fillUserGenericParams(SymbolMatchContext& context, vector<TypeInfoPa
     int numGenericParams       = (int) context.genericParameters.size();
 
     context.genericParametersCallTypes.resize(wantedNumGenericParams);
+    context.genericParametersGenTypes.resize(wantedNumGenericParams);
 
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams && numGenericParams < wantedNumGenericParams)
@@ -405,13 +406,18 @@ static void fillUserGenericParams(SymbolMatchContext& context, vector<TypeInfoPa
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        context.mapGenericTypesIndex[genericParameters[i]->name] = i;
+        auto genType = genericParameters[i];
+
+        context.mapGenericTypesIndex[genType->name] = i;
+        context.genericParametersGenTypes[i]        = genType->typeInfo;
     }
 
     for (int i = 0; i < numGenericParams; i++)
     {
-        context.genericReplaceTypes[genericParameters[i]->name] = context.genericParameters[i]->typeInfo;
-        context.genericParametersCallTypes[i]                   = context.genericParameters[i]->typeInfo;
+        auto genType = context.genericParameters[i];
+
+        context.genericReplaceTypes[genericParameters[i]->name] = genType->typeInfo;
+        context.genericParametersCallTypes[i]                   = genType->typeInfo;
     }
 }
 

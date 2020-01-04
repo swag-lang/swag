@@ -41,6 +41,7 @@ struct OneGenericMatch
     SymbolName*             symbolName;
     SymbolOverload*         symbolOverload;
     vector<TypeInfo*>       genericParametersCallTypes;
+    vector<TypeInfo*>       genericParametersGenTypes;
     map<Utf8Crc, TypeInfo*> genericReplaceTypes;
 };
 

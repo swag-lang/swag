@@ -1,3 +1,6 @@
+#module compiler1525
+#unittest error
+
 func titi()
 {
 
