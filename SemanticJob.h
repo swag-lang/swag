@@ -200,18 +200,18 @@ struct SemanticJob : public Job
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
-    VectorNative<AstNode*>   tmpNodes;
-    set<SymbolName*>         cacheDependentSymbols;
-    set<Scope*>              cacheScopeHierarchy;
-    vector<AlternativeScope> cacheScopeHierarchyVars;
-    vector<Scope*>           scopesHere;
-    vector<OneMatch>         cacheMatches;
-    vector<OneGenericMatch>  cacheGenericMatches;
-    vector<SymbolOverload*>  cacheBadSignature;
-    vector<SymbolOverload*>  cacheBadGenericSignature;
-    SymbolMatchContext       symMatch;
-    SemanticContext          context;
-    Concat                   tmpConcat;
+    VectorNative<AstNode*>        tmpNodes;
+    set<SymbolName*>              cacheDependentSymbols;
+    set<Scope*>                   cacheScopeHierarchy;
+    vector<AlternativeScope>      cacheScopeHierarchyVars;
+    VectorNative<Scope*>          scopesHere;
+    vector<OneMatch>              cacheMatches;
+    vector<OneGenericMatch>       cacheGenericMatches;
+    VectorNative<SymbolOverload*> cacheBadSignature;
+    VectorNative<SymbolOverload*> cacheBadGenericSignature;
+    SymbolMatchContext            symMatch;
+    SemanticContext               context;
+    Concat                        tmpConcat;
 
     void reset() override
     {

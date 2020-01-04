@@ -380,7 +380,7 @@ namespace Ast
         return result;
     }
 
-    Utf8 computeGenericParametersReplacement(vector<TypeInfoParam*>& params)
+    Utf8 computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params)
     {
         if (params.empty())
             return "";

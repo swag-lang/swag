@@ -4,6 +4,7 @@
 #include "SourceLocation.h"
 #include "Register.h"
 #include "Assert.h"
+#include "Vector.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -32,9 +33,9 @@ struct ByteCode
 
     static const int ALIGN_RIGHT_OPCODE = 25;
 
-    vector<uint32_t>  availableRegistersRC;
-    vector<uint32_t>  availableRegistersRC2;
-    vector<Register*> registersRC;
+    VectorNative<uint32_t>  availableRegistersRC;
+    VectorNative<uint32_t>  availableRegistersRC2;
+    VectorNative<Register*> registersRC;
 
     Utf8 name;
 

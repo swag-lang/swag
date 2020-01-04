@@ -1,6 +1,7 @@
 #pragma once
 #include "Backend.h"
 #include "OutputFile.h"
+#include "Vector.h"
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
@@ -44,9 +45,9 @@ struct BackendC : public Backend
     bool emitGlobalDrop(OutputFile& bufferC);
 
     bool        emitPublic(OutputFile& bufferC, Module* moduleToGen, Scope* scope);
-    static void addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, vector<uint32_t>& pushRAParams);
+    static void addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
     static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
-    static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
+    static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
     static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
     static void emitFuncSignatureInternalC(Concat& concat, ByteCode* bc);
     static bool emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc);

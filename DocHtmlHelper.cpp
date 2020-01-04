@@ -257,9 +257,9 @@ namespace DocHtmlHelper
         DocHtmlHelper::endTable(outFile);
     }
 
-    void table(Concat& outFile, Scope* scope, const vector<TypeInfoParam*>& params, bool specificRefFile)
+    void table(Concat& outFile, Scope* scope, const VectorNative<TypeInfoParam*>& params, bool specificRefFile)
     {
-        vector<TypeInfoParam*> sorted(params.begin(), params.end());
+        VectorNative<TypeInfoParam*> sorted(params);
         sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
             return p1->namedParam < p2->namedParam;
         });

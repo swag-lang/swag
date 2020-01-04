@@ -17,13 +17,13 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     if (forGenerics)
     {
         typeInfo->genericParameters.clear();
-        typeInfo->genericParameters.reserve(parameters->childs.size());
+        typeInfo->genericParameters.reserve((int) parameters->childs.size());
         typeInfo->flags |= TYPEINFO_GENERIC;
     }
     else
     {
         typeInfo->parameters.clear();
-        typeInfo->parameters.reserve(parameters->childs.size());
+        typeInfo->parameters.reserve((int) parameters->childs.size());
     }
 
     auto sourceFile = context->sourceFile;

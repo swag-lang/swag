@@ -412,7 +412,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     caseNode->ownerSwitch->resultRegisterRC = caseNode->ownerSwitch->expression->resultRegisterRC;
 
     // Default case does not have expressions
-    vector<uint32_t> allJumps;
+    VectorNative<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
         RegisterList r0;

@@ -42,21 +42,21 @@ struct Module
     bool internalError(const Utf8& msg);
     bool internalError(AstNode* node, Token& token, const Utf8& msg);
 
-    string              path;
-    fs::path            documentPath;
-    Utf8                name;
-    Utf8                nameDown;
-    Utf8                nameUp;
-    atomic<int>         numErrors = 0;
-    shared_mutex        mutexFile;
-    vector<SourceFile*> files;
-    BuildParameters     buildParameters;
-    AstNode*            astRoot              = nullptr;
-    Scope*              scopeRoot            = nullptr;
-    SourceFile*         buildFile            = nullptr;
-    Backend*            backend              = nullptr;
-    uint64_t            moreRecentSourceFile = 0;
-    bool                fromTests            = false;
+    string                    path;
+    fs::path                  documentPath;
+    Utf8                      name;
+    Utf8                      nameDown;
+    Utf8                      nameUp;
+    atomic<int>               numErrors = 0;
+    shared_mutex              mutexFile;
+    VectorNative<SourceFile*> files;
+    BuildParameters           buildParameters;
+    AstNode*                  astRoot              = nullptr;
+    Scope*                    scopeRoot            = nullptr;
+    SourceFile*               buildFile            = nullptr;
+    Backend*                  backend              = nullptr;
+    uint64_t                  moreRecentSourceFile = 0;
+    bool                      fromTests            = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);
@@ -77,17 +77,18 @@ struct Module
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
 
-    DependentJobs        dependentJobs;
-    shared_mutex         mutexByteCode;
-    vector<ByteCode*>    byteCodeFunc;
-    vector<ByteCode*>    byteCodeTestFunc;
-    vector<ByteCode*>    byteCodeInitFunc;
-    vector<ByteCode*>    byteCodeDropFunc;
-    vector<ByteCode*>    byteCodeRunFunc;
-    vector<AstFuncDecl*> allForeign;
-    ByteCode*            byteCodeMainFunc = nullptr;
-    AstNode*             mainIsDefined    = nullptr;
-    bool                 hasUnittestError = false;
+    DependentJobs              dependentJobs;
+    shared_mutex               mutexByteCode;
+    VectorNative<ByteCode*>    byteCodeFunc;
+    VectorNative<ByteCode*>    byteCodeTestFunc;
+    VectorNative<ByteCode*>    byteCodeInitFunc;
+    VectorNative<ByteCode*>    byteCodeDropFunc;
+    VectorNative<ByteCode*>    byteCodeRunFunc;
+    VectorNative<AstFuncDecl*> allForeign;
+
+    ByteCode* byteCodeMainFunc = nullptr;
+    AstNode*  mainIsDefined    = nullptr;
+    bool      hasUnittestError = false;
 
     void     addDependency(AstNode* importNode);
     void     setHasBeenBuilt(uint32_t buildResult);

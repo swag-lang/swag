@@ -7,7 +7,7 @@
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
 
-void BackendC::addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, vector<uint32_t>& pushRAParams)
+void BackendC::addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
     for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
     {
@@ -117,7 +117,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
     return moduleToGen->internalError(format("swagTypeToCType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
-bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
+bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
@@ -654,10 +654,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     }
 
     // Generate bytecode
-    int              vaargsIdx = 0;
-    auto             ip        = bc->out;
-    int              lastLine  = -1;
-    vector<uint32_t> pushRAParams;
+    int                    vaargsIdx = 0;
+    auto                   ip        = bc->out;
+    int                    lastLine  = -1;
+    VectorNative<uint32_t> pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)

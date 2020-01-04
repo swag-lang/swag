@@ -268,7 +268,7 @@ struct AstNode
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 
-    vector<Scope*>           alternativeScopes;
+    VectorNative<Scope*>     alternativeScopes;
     vector<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>   childs;
     set<Scope*>              doneLeaveScopeDefer;
@@ -427,8 +427,8 @@ struct AstBreakable : public AstNode
 
     void copyFrom(CloneContext& context, AstBreakable* from);
 
-    vector<AstBreakContinue*> breakList;
-    vector<AstBreakContinue*> continueList;
+    VectorNative<AstBreakContinue*> breakList;
+    VectorNative<AstBreakContinue*> continueList;
 
     uint32_t breakableFlags           = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
     uint32_t registerIndex            = 0;
@@ -499,7 +499,7 @@ struct AstSwitch : public AstBreakable
 
     AstNode* clone(CloneContext& context) override;
 
-    vector<AstSwitchCase*> cases;
+    VectorNative<AstSwitchCase*> cases;
 
     AstNode* expression = nullptr;
     AstNode* block      = nullptr;
@@ -648,7 +648,7 @@ struct AstInline : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    vector<AstReturn*> returnList;
+    VectorNative<AstReturn*> returnList;
 
     AstFuncDecl* func  = nullptr;
     Scope*       scope = nullptr;
@@ -664,7 +664,7 @@ struct AstCompilerIfBlock : public AstNode
         symbols.push_back(symbolName);
     }
 
-    vector<AstCompilerIfBlock*> blocks;
-    vector<SymbolName*>         symbols;
-    vector<TypeInfoStruct*>     interfacesCount;
+    VectorNative<AstCompilerIfBlock*> blocks;
+    VectorNative<SymbolName*>         symbols;
+    VectorNative<TypeInfoStruct*>     interfacesCount;
 };

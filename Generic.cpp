@@ -29,7 +29,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
     g_ThreadMgr.addJob(newJob);
 }
 
-void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
+void Generic::updateGenericParameters(VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
     for (int i = 0; i < typeGenericParameters.size(); i++)
     {

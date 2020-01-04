@@ -273,8 +273,8 @@ struct TypeInfoEnum : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    vector<TypeInfoParam*> values;
-    SymbolAttributes       attributes;
+    VectorNative<TypeInfoParam*> values;
+    SymbolAttributes             attributes;
 
     Scope*    scope   = nullptr;
     TypeInfo* rawType = nullptr;
@@ -386,9 +386,9 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
 
-    vector<TypeInfoParam*> genericParameters;
-    vector<TypeInfoParam*> parameters;
-    SymbolAttributes       attributes;
+    VectorNative<TypeInfoParam*> genericParameters;
+    VectorNative<TypeInfoParam*> parameters;
+    SymbolAttributes             attributes;
 
     TypeInfo* returnType = nullptr;
 
@@ -475,8 +475,8 @@ struct TypeInfoList : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    vector<TypeInfo*> childs;
-    vector<Utf8>      names;
+    VectorNative<TypeInfo*> childs;
+    vector<Utf8>            names;
 
     Scope* scope = nullptr;
 
@@ -530,11 +530,11 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
 
-    vector<TypeInfoParam*> genericParameters;
-    vector<TypeInfoParam*> childs;
-    vector<TypeInfoParam*> interfaces;
-    shared_mutex           mutex;
-    SymbolAttributes       attributes;
+    VectorNative<TypeInfoParam*> genericParameters;
+    VectorNative<TypeInfoParam*> childs;
+    VectorNative<TypeInfoParam*> interfaces;
+    shared_mutex                 mutex;
+    SymbolAttributes             attributes;
 
     TypeInfoStruct* itable            = nullptr;
     Scope*          scope             = nullptr;

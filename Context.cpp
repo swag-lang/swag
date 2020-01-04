@@ -16,9 +16,9 @@ static void byteCodeRun(void* byteCodePtr, ...)
     ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(byteCodePtr);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
 
-    vector<Register*> returnRegisters;
-    vector<Register*> paramRegisters;
-    va_list           valist;
+    VectorNative<Register*> returnRegisters;
+    VectorNative<Register*> paramRegisters;
+    va_list                 valist;
 
     // Todo, unsupported yet
     SWAG_ASSERT(!typeFunc->numReturnRegisters());

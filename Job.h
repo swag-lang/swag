@@ -74,7 +74,7 @@ struct Job : public PoolElem
     DependentJobs          dependentJobs;
     VectorNative<AstNode*> dependentNodes;
     VectorNative<AstNode*> nodes;
-    vector<Job*>           jobsToAdd;
+    VectorNative<Job*>     jobsToAdd;
 
     AstNode*    originalNode        = nullptr;
     SymbolName* waitingSymbolSolved = nullptr;

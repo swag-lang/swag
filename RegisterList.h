@@ -1,15 +1,16 @@
 #pragma once
 #include "Global.h"
 #include "Log.h"
+#include "Vector.h"
 
 struct RegisterList
 {
     static const int MAX_STATIC = 2;
 
-    uint32_t         oneResult[MAX_STATIC];
-    vector<uint32_t> registers;
-    int              countResults = 0;
-    bool             canFree      = true;
+    uint32_t               oneResult[MAX_STATIC];
+    VectorNative<uint32_t> registers;
+    int                    countResults = 0;
+    bool                   canFree      = true;
 
     RegisterList()
     {

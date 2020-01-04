@@ -46,8 +46,8 @@ JobResult DocScopeJob::execute()
     /////////////////////////////////
     if (scope->kind == ScopeKind::Struct)
     {
-        auto                   typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
-        vector<TypeInfoParam*> members;
+        auto                         typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
+        VectorNative<TypeInfoParam*> members;
         for (auto param : typeStruct->childs)
         {
             if (param->node->attributeFlags & ATTRIBUTE_INTERNAL)

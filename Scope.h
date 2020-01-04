@@ -54,7 +54,7 @@ struct Scope
     static Utf8        makeFullName(const Utf8& parentName, const Utf8& name);
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
-    static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
+    static void        collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result);
 
     bool isGlobal()
     {
@@ -69,7 +69,7 @@ struct Scope
     SymTable               symTable;
     Utf8Crc                name;
     Utf8                   fullname;
-    vector<Scope*>         childScopes;
+    VectorNative<Scope*>   childScopes;
     VectorNative<AstNode*> deferredNodes;
     set<AstNode*>          publicFunc;
     set<AstNode*>          publicGenericFunc;

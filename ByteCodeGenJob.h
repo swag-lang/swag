@@ -172,7 +172,7 @@ struct ByteCodeGenJob : public Job
 
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;
-    vector<Scope*>         collectScopes;
+    VectorNative<Scope*>   collectScopes;
     bool                   syncToDependentNodes = false;
 };
 

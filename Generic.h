@@ -7,7 +7,7 @@ struct AstVarDecl;
 
 struct Generic
 {
-    static void      updateGenericParameters(vector<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
+    static void      updateGenericParameters(VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
     static void      end(SemanticContext* context, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo);
 

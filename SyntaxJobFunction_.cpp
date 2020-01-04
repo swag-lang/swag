@@ -113,7 +113,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     else
     {
         // Multiple declaration
-        vector<AstVarDecl*> otherVariables;
+        VectorNative<AstVarDecl*> otherVariables;
         SWAG_CHECK(tokenizer.getToken(token));
         while (token.id == TokenId::SymComma)
         {

@@ -22,7 +22,7 @@ struct VectorNative
     VectorNative(const VectorNative& other)
     {
         allocated = 0;
-        buffer = nullptr;
+        buffer    = nullptr;
 
         count = (int) other.size();
         reserve(count, false);
@@ -43,6 +43,11 @@ struct VectorNative
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, other.buffer, count * sizeof(T));
+    }
+
+    const T& operator[](int index) const
+    {
+        return buffer[index];
     }
 
     void operator=(VectorNative&& other)

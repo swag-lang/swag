@@ -62,21 +62,23 @@ enum class SymbolKind
 
 struct SymbolName
 {
-    shared_mutex            mutex;
-    Utf8                    fullName;
-    Utf8Crc                 name;
-    SymbolOverload          defaultOverload;
-    vector<SymbolOverload*> overloads;
-    DependentJobs           dependentJobs;
-    SymbolKind              kind             = SymbolKind::Invalid;
-    uint32_t                cptOverloads     = 0;
-    uint32_t                cptOverloadsInit = 0;
-    SymTable*               ownerTable       = nullptr;
-
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
+
+    shared_mutex                  mutex;
+    VectorNative<SymbolOverload*> overloads;
+    Utf8                          fullName;
+    Utf8Crc                       name;
+    SymbolOverload                defaultOverload;
+    DependentJobs                 dependentJobs;
+
+    SymTable* ownerTable = nullptr;
+
+    SymbolKind kind             = SymbolKind::Invalid;
+    uint32_t   cptOverloads     = 0;
+    uint32_t   cptOverloadsInit = 0;
 };
 
 struct SymTable
@@ -94,9 +96,10 @@ struct SymTable
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
-    shared_mutex                                                         mutex;
-    Scope*                                                               scope;
     unordered_map<Utf8Crc, SymbolName*, Utf8CrcKeyHash, Utf8CrcKeyEqual> mapNames;
-    vector<SymbolOverload*>                                              structVarsToDrop;
+    VectorNative<SymbolOverload*>                                        structVarsToDrop;
+    shared_mutex                                                         mutex;
+
+    Scope* scope;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

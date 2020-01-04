@@ -1,5 +1,6 @@
 #pragma once
 #include "ffi.h"
+#include "Vector.h"
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;
 struct TypeInfo;
@@ -19,10 +20,10 @@ struct ByteCodeRun
     bool run(ByteCodeRunContext* runContext, bool& exception, int& exceptionCode);
     bool run(ByteCodeRunContext* runContext);
 
-    vector<ffi_type*>  ffiArgs;
-    vector<void*>      ffiArgsValues;
-    condition_variable condVar;
-    mutex              mutexDone;
+    VectorNative<ffi_type*> ffiArgs;
+    VectorNative<void*>     ffiArgsValues;
+    condition_variable      condVar;
+    mutex                   mutexDone;
 };
 
 extern ByteCodeRun g_Run;

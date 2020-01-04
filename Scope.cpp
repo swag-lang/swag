@@ -56,7 +56,7 @@ Utf8 Scope::makeFullName(const Utf8& parentName, const Utf8& name)
     return parentName.empty() ? name : parentName + "." + name;
 }
 
-void Scope::collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result)
+void Scope::collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result)
 {
     result.clear();
     while (true)

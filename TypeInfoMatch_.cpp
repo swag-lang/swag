@@ -2,7 +2,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
-static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>& parameters)
+static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters)
 {
     // One boolean per used parameter
     context.doneParameters.set_size_clear((int) parameters.size());
@@ -201,7 +201,7 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
     }
 }
 
-static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoParam*>& parameters)
+static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters)
 {
     if (!context.hasNamedParameters)
         return;
@@ -264,7 +264,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
     }
 }
 
-static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, vector<TypeInfoParam*>& genericParameters)
+static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
 {
     // Solve generic parameters
     int wantedNumGenericParams = (int) genericParameters.size();
@@ -379,7 +379,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     }
 }
 
-static void fillUserGenericParams(SymbolMatchContext& context, vector<TypeInfoParam*>& genericParameters)
+static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
     context.mapGenericTypesIndex.clear();
     context.genericReplaceTypes.clear();

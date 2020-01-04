@@ -20,15 +20,15 @@ struct ThreadManager
 
     Job* getJob(uint32_t affinity = AFFINITY_ALL, function<bool(Job*)> canGetJob = nullptr);
 
-    vector<Job*>       queueJobs;
-    vector<JobThread*> availableThreads;
-    vector<JobThread*> workerThreads;
-    mutex              mutexAdd;
-    condition_variable condVar;
-    mutex              mutexDone;
-    condition_variable condVarDone;
-    vector<Job*>       waitingJobs;
-    atomic<int>        jobsInThreads = 0;
+    VectorNative<Job*>       queueJobs;
+    VectorNative<JobThread*> availableThreads;
+    VectorNative<JobThread*> workerThreads;
+    VectorNative<Job*>       waitingJobs;
+    mutex                    mutexAdd;
+    condition_variable       condVar;
+    mutex                    mutexDone;
+    condition_variable       condVarDone;
+    atomic<int>              jobsInThreads = 0;
 };
 
 extern ThreadManager g_ThreadMgr;
