@@ -132,9 +132,10 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     }
 
     case TypeInfoKind::Lambda:
+    case TypeInfoKind::FuncAttr:
     {
         TypeInfoFuncAttr* newLambda  = nullptr;
-        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
 
         auto newType = doTypeSubstitution(cloneContext, typeLambda->returnType);
         if (newType != typeLambda->returnType)
@@ -218,20 +219,15 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     funcNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, funcNode);
 
-    // Generate and initialize a new type
-    auto newType = static_cast<TypeInfoFuncAttr*>(overload->typeInfo->clone());
-    newType->flags &= ~TYPEINFO_GENERIC;
-    funcNode->typeInfo = newType;
-
-    // Replace return type
-    newType->returnType = doTypeSubstitution(cloneContext, newType->returnType);
-
-    // Replace generic types with their real values in the function parameters
-    auto numParams = newType->parameters.size();
-    for (int i = 0; i < numParams; i++)
+    // Generate and initialize a new type if the type is still generic
+    // The type is still generic if the doTypeSubstitution didn't find any type to change
+    // (for example if we have just generic value)
+    TypeInfoFuncAttr* newType = static_cast<TypeInfoFuncAttr*>(funcNode->typeInfo);
+    if (newType->flags & TYPEINFO_GENERIC)
     {
-        auto param      = newType->parameters[i];
-        param->typeInfo = doTypeSubstitution(cloneContext, param->typeInfo);
+        newType = static_cast<TypeInfoFuncAttr*>(funcNode->typeInfo->clone());
+        newType->flags &= ~TYPEINFO_GENERIC;
+        funcNode->typeInfo = newType;
     }
 
     // Replace generic types and values in the function generic parameters
