@@ -52,34 +52,6 @@ void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParamet
     }
 }
 
-bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
-{
-    CloneContext cloneContext;
-
-    // Types replacements
-    cloneContext.replaceTypes = move(match.genericReplaceTypes);
-
-    // Clone original node
-    auto overload   = match.symbolOverload;
-    auto sourceNode = overload->node;
-    auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
-    structNode->flags |= AST_FROM_GENERIC;
-    structNode->content->flags &= ~AST_NO_SEMANTIC;
-    Ast::addChildBack(sourceNode->parent, structNode);
-
-    // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
-    newType->flags &= ~TYPEINFO_GENERIC;
-    newType->scope       = structNode->scope;
-    structNode->typeInfo = newType;
-
-    // Replace generic types and values in the struct generic parameters
-    updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
-
-    end(context, structNode, waitSymbol);
-    return true;
-}
-
 TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo)
 {
     if (!typeInfo)
@@ -202,6 +174,35 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     return typeInfo;
 }
 
+bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
+{
+    CloneContext cloneContext;
+
+    // Types replacements
+    cloneContext.replaceTypes = move(match.genericReplaceTypes);
+
+    // Clone original node
+    auto overload   = match.symbolOverload;
+    auto sourceNode = overload->node;
+    auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
+    structNode->flags |= AST_FROM_GENERIC;
+    structNode->content->flags &= ~AST_NO_SEMANTIC;
+    Ast::addChildBack(sourceNode->parent, structNode);
+
+    // Make a new type
+    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
+    newType->flags &= ~TYPEINFO_GENERIC;
+    newType->scope       = structNode->scope;
+    structNode->typeInfo = newType;
+
+    // Replace generic types and values in the struct generic parameters
+    updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
+    newType->computeName();
+
+    end(context, structNode, waitSymbol);
+    return true;
+}
+
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     CloneContext cloneContext;
@@ -235,6 +236,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
 
     // Replace generic types and values in the function generic parameters
     updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
+    newType->computeName();
 
     end(context, funcNode, true);
     return true;
