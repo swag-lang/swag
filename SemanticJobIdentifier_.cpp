@@ -922,25 +922,9 @@ anotherTry:
             case MatchResult::BadSignature:
             {
                 SWAG_ASSERT(callParameters);
-                string parameter;
-                switch (match.badSignatureParameterIdx)
-                {
-                case 0:
-                    parameter = "first parameter";
-                    break;
-                case 1:
-                    parameter = "second parameter";
-                    break;
-                case 2:
-                    parameter = "third parameter";
-                    break;
-                default:
-                    parameter = format("parameter '%d'", match.badSignatureParameterIdx + 1);
-                    break;
-                }
                 Diagnostic diag{match.parameters[match.badSignatureParameterIdx],
-                                format("bad type of %s for %s '%s' ('%s' expected, '%s' provided)",
-                                       parameter.c_str(),
+                                format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                       match.badSignatureParameterIdx + 1,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
                                        match.badSignatureRequestedType->name.c_str(),
@@ -994,7 +978,8 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto one : badSignature)
                 {
-                    auto note                   = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(one->node->name, one->typeInfo);
+                    auto note                   = new Diagnostic{one->node, one->node->token, couldBe, DiagnosticLevel::Note};
                     note->showRange             = false;
                     note->showMultipleCodeLines = false;
                     notes.push_back(note);
@@ -1008,7 +993,8 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto one : badGenericSignature)
                 {
-                    auto note                   = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(one->node->name, one->typeInfo);
+                    auto note                   = new Diagnostic{one->node, one->node->token, couldBe, DiagnosticLevel::Note};
                     note->showRange             = false;
                     note->showMultipleCodeLines = false;
                     notes.push_back(note);
@@ -1030,7 +1016,7 @@ anotherTry:
                 Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
                 return context->report(diag);
             }
-        } 
+        }
     }
 
     if (matches.size() > 1)
