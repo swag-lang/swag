@@ -294,6 +294,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->flags |= AST_IS_GENERIC;
         if (funcNode->genericParameters)
             funcNode->flags |= AST_IS_GENERIC;
+        if (funcNode->flags & AST_IS_GENERIC)
+            typeInfo->flags |= TYPEINFO_GENERIC;
 
         // Register parameters
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
