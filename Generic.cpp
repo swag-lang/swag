@@ -4,12 +4,6 @@
 #include "Ast.h"
 #include "ThreadManager.h"
 
-void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatch& match)
-{
-    cloneContext.replaceTypes = move(match.genericReplaceTypes);
-
-}
-
 void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 {
     auto  job              = context->job;
@@ -63,7 +57,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     CloneContext cloneContext;
 
     // Types replacements
-    computeTypeReplacements(cloneContext, match);
+    cloneContext.replaceTypes = move(match.genericReplaceTypes);
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -221,7 +215,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     CloneContext cloneContext;
 
     // Types replacements
-    computeTypeReplacements(cloneContext, match);
+    cloneContext.replaceTypes = move(match.genericReplaceTypes);
 
     // Clone original node
     auto overload   = match.symbolOverload;
