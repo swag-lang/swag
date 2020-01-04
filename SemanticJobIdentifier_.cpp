@@ -746,7 +746,6 @@ anotherTry:
                     match.symbolName                  = symbol;
                     match.symbolOverload              = overload;
                     match.genericParametersCallTypes  = move(job->symMatch.genericParametersCallTypes);
-                    match.genericParametersCallValues = move(job->symMatch.genericParametersCallValues);
                     match.genericReplaceTypes         = move(job->symMatch.genericReplaceTypes);
                     genericMatches.emplace_back(match);
                 }
@@ -1534,7 +1533,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
             symMatch.genericParameters.push_back(oneParam);
-            symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
             symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
         }
     }

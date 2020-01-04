@@ -40,7 +40,6 @@ struct OneGenericMatch
     uint32_t                flags;
     SymbolName*             symbolName;
     SymbolOverload*         symbolOverload;
-    vector<ComputedValue>   genericParametersCallValues;
     vector<TypeInfo*>       genericParametersCallTypes;
     map<Utf8Crc, TypeInfo*> genericReplaceTypes;
 };
