@@ -93,15 +93,16 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
-    if (node->name == "getCharCount")
-        node = node;
-
     if (node->parameters)
     {
         uint32_t idx = 0;
         for (auto p : node->parameters->childs)
         {
+            if (p->name == "self" && p->typeInfo->isConst())
+                bufferSwg.addString("const ");
+
             bufferSwg.addString(p->name);
+
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
@@ -153,7 +154,11 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->flags & AST_DECL_USING)
                 CONCAT_FIXED_STR(bufferSwg, "using ");
 
+            if (p->name == "self" && p->typeInfo->isConst())
+                bufferSwg.addString("const ");
+
             bufferSwg.addString(p->name);
+
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");

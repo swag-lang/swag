@@ -268,6 +268,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         return false;
     }
 
+    //::MessageBoxA(NULL, "", "", 0);
+
     // Raise error
     g_Workspace.numErrors++;
 

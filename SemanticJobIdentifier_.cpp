@@ -994,8 +994,9 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto one : badSignature)
                 {
-                    auto note       = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
-                    note->showRange = false;
+                    auto note                   = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    note->showRange             = false;
+                    note->showMultipleCodeLines = false;
                     notes.push_back(note);
                 }
 
@@ -1007,8 +1008,9 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto one : badGenericSignature)
                 {
-                    auto note       = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
-                    note->showRange = false;
+                    auto note                   = new Diagnostic{one->node, one->node->token, "cast has failed for", DiagnosticLevel::Note};
+                    note->showRange             = false;
+                    note->showMultipleCodeLines = false;
                     notes.push_back(note);
                 }
 
@@ -1028,40 +1030,37 @@ anotherTry:
                 Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
                 return context->report(diag);
             }
-        }
+        } 
     }
 
     if (matches.size() > 1)
     {
-        if (hasGenericErrors)
+        Diagnostic                diag{node, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        vector<const Diagnostic*> notes;
+        for (auto match : matches)
         {
-            Diagnostic                diag{node, node->token, format("ambiguous generic resolution to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-            vector<const Diagnostic*> notes;
-            for (auto match : matches)
+            auto overload = match.symbolOverload;
+            auto couldBe  = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
+            auto note     = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+
+            note->showRange             = false;
+            note->showMultipleCodeLines = false;
+
+            if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
             {
-                auto overload   = match.symbolOverload;
-                auto note       = new Diagnostic{overload->node, overload->node->token, "could be", DiagnosticLevel::Note};
-                note->showRange = false;
-                notes.push_back(note);
+                auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                note->codeComment = Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
+            }
+            else if (overload->typeInfo->kind == TypeInfoKind::Struct)
+            {
+                auto typeStruct   = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+                note->codeComment = Ast::computeGenericParametersReplacement(typeStruct->genericParameters);
             }
 
-            context->report(diag, notes);
-        }
-        else
-        {
-            Diagnostic                diag{node, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-            vector<const Diagnostic*> notes;
-            for (auto match : matches)
-            {
-                auto overload   = match.symbolOverload;
-                auto note       = new Diagnostic{overload->node, overload->node->token, "could be", DiagnosticLevel::Note};
-                note->showRange = false;
-                notes.push_back(note);
-            }
-
-            context->report(diag, notes);
+            notes.push_back(note);
         }
 
+        context->report(diag, notes);
         return false;
     }
 

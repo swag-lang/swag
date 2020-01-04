@@ -53,6 +53,17 @@ void Diagnostic::report(bool verboseMode) const
     // User message
     g_Log.print(textMsg);
     g_Log.eol();
+
+    // Code comment
+    if (!codeComment.empty())
+    {
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("      ");
+        g_Log.print(codeComment);
+        g_Log.eol();
+    }
+
     if (!verboseMode)
         g_Log.setColor(LogColor::Cyan);
 
@@ -65,7 +76,7 @@ void Diagnostic::report(bool verboseMode) const
         {
             if (startLocation.seekStartLine[i] == -1)
                 continue;
-            if (!showRange && i != REPORT_NUM_CODE_LINES - 1)
+            if (!showMultipleCodeLines && i != REPORT_NUM_CODE_LINES - 1)
                 continue;
             lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
         }
@@ -83,6 +94,7 @@ void Diagnostic::report(bool verboseMode) const
             }
         }
 
+        // Show "^^^^^^^"
         if (showRange)
         {
             for (int i = 0; i < 6; i++)

@@ -1416,11 +1416,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             auto& typeTable          = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }
-
-        return true;
     }
-
-    if (fromType->isNative(NativeTypeKind::Any))
+    else if (fromType->isNative(NativeTypeKind::Any))
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
@@ -1433,9 +1430,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             auto& typeTable = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }
-
-        return true;
     }
+
+    return true;
 }
 
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
