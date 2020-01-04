@@ -30,19 +30,22 @@ struct SemanticContext : public JobContext
 
 struct OneMatch
 {
-    SymbolName*            symbolName;
-    SymbolOverload*        symbolOverload;
-    vector<TypeInfoParam*> solvedParameters;
+    VectorNative<TypeInfoParam*> solvedParameters;
+
+    SymbolName*     symbolName;
+    SymbolOverload* symbolOverload;
 };
 
 struct OneGenericMatch
 {
-    uint32_t                flags;
-    SymbolName*             symbolName;
-    SymbolOverload*         symbolOverload;
-    vector<TypeInfo*>       genericParametersCallTypes;
-    vector<TypeInfo*>       genericParametersGenTypes;
+    VectorNative<TypeInfo*> genericParametersCallTypes;
+    VectorNative<TypeInfo*> genericParametersGenTypes;
     map<Utf8Crc, TypeInfo*> genericReplaceTypes;
+
+    SymbolName*     symbolName;
+    SymbolOverload* symbolOverload;
+
+    uint32_t flags;
 };
 
 static const uint32_t COLLECT_ALL         = 0x00000000;

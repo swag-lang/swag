@@ -5,9 +5,8 @@
 static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>& parameters)
 {
     // One boolean per used parameter
-    context.doneParameters.clear();
-    context.doneParameters.resize(parameters.size(), false);
-    context.solvedParameters.resize(parameters.size(), nullptr);
+    context.doneParameters.set_size_clear((int) parameters.size());
+    context.solvedParameters.set_size_clear((int) parameters.size());
     context.resetTmp();
 
     // Solve unnamed parameters
@@ -388,8 +387,8 @@ static void fillUserGenericParams(SymbolMatchContext& context, vector<TypeInfoPa
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
 
-    context.genericParametersCallTypes.resize(wantedNumGenericParams);
-    context.genericParametersGenTypes.resize(wantedNumGenericParams);
+    context.genericParametersCallTypes.set_size_clear(wantedNumGenericParams);
+    context.genericParametersGenTypes.set_size_clear(wantedNumGenericParams);
 
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams && numGenericParams < wantedNumGenericParams)

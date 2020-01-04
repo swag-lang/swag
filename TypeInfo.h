@@ -331,15 +331,15 @@ struct SymbolMatchContext
         hasNamedParameters = false;
     }
 
-    VectorNative<AstNode*>  genericParameters;
-    VectorNative<AstNode*>  parameters;
-    vector<TypeInfoParam*>  solvedParameters;
-    vector<bool>            doneParameters;
-    vector<TypeInfo*>       genericParametersCallTypes;
-    vector<TypeInfo*>       genericParametersGenTypes;
-    map<Utf8Crc, TypeInfo*> genericReplaceTypes;
-    map<Utf8Crc, uint32_t>  mapGenericTypesIndex;
-    MatchResult             result;
+    VectorNative<AstNode*>       genericParameters;
+    VectorNative<AstNode*>       parameters;
+    VectorNative<TypeInfoParam*> solvedParameters;
+    VectorNative<bool>           doneParameters;
+    VectorNative<TypeInfo*>      genericParametersCallTypes;
+    VectorNative<TypeInfo*>      genericParametersGenTypes;
+    map<Utf8Crc, TypeInfo*>      genericReplaceTypes;
+    map<Utf8Crc, uint32_t>       mapGenericTypesIndex;
+    MatchResult                  result;
 
     TypeInfo* badSignatureRequestedType;
     TypeInfo* badSignatureGivenType;

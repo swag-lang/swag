@@ -18,6 +18,17 @@ struct VectorNative
         return count;
     }
 
+    VectorNative() = default;
+    VectorNative(const VectorNative& other)
+    {
+        allocated = 0;
+        buffer = nullptr;
+
+        count = (int) other.size();
+        reserve(count, false);
+        memcpy(buffer, other.buffer, count * sizeof(T));
+    }
+
     void operator=(const vector<T>& other)
     {
         count = (int) other.size();
@@ -32,6 +43,16 @@ struct VectorNative
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, other.buffer, count * sizeof(T));
+    }
+
+    void operator=(VectorNative&& other)
+    {
+        count     = other.count;
+        allocated = other.allocated;
+        buffer    = other.buffer;
+
+        other.count = other.allocated = 0;
+        other.buffer                  = nullptr;
     }
 
     void reserve(int newcapacity, bool copy = true)
@@ -78,8 +99,12 @@ struct VectorNative
 
     void set_size_clear(int num)
     {
-        reserve(num);
-        memset(buffer, 0, num * sizeof(T));
+        if (num)
+        {
+            reserve(num, false);
+            memset(buffer, 0, num * sizeof(T));
+        }
+
         count = num;
     }
 

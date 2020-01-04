@@ -70,17 +70,7 @@ struct Scope
     Utf8Crc                name;
     Utf8                   fullname;
     vector<Scope*>         childScopes;
-    shared_mutex           lockChilds;
     VectorNative<AstNode*> deferredNodes;
-    RegisterList           registersToRelease;
-    DependentJobs          dependentJobs;
-    mutex                  mutexPublicFunc;
-    mutex                  mutexPublicGenericFunc;
-    mutex                  mutexPublicStruct;
-    mutex                  mutexPublicEnum;
-    mutex                  mutexPublicConst;
-    mutex                  mutexPublicTypeAlias;
-    mutex                  mutexPublicNamespace;
     set<AstNode*>          publicFunc;
     set<AstNode*>          publicGenericFunc;
     set<AstNode*>          publicStruct;
@@ -88,6 +78,16 @@ struct Scope
     set<AstNode*>          publicConst;
     set<AstNode*>          publicTypeAlias;
     set<AstNode*>          publicNamespace;
+    RegisterList           registersToRelease;
+    DependentJobs          dependentJobs;
+    shared_mutex           lockChilds;
+    mutex                  mutexPublicFunc;
+    mutex                  mutexPublicGenericFunc;
+    mutex                  mutexPublicStruct;
+    mutex                  mutexPublicEnum;
+    mutex                  mutexPublicConst;
+    mutex                  mutexPublicTypeAlias;
+    mutex                  mutexPublicNamespace;
 
     AstNode* owner       = nullptr;
     Scope*   parentScope = nullptr;
