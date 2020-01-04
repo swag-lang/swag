@@ -82,20 +82,21 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
 TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo)
 {
-    auto oldType = typeInfo;
-    if (!oldType)
+    if (!typeInfo)
+        return nullptr;
+    if (!(typeInfo->flags & TYPEINFO_GENERIC))
         return typeInfo;
 
-    auto it = cloneContext.replaceTypes.find(oldType->name);
+    auto it = cloneContext.replaceTypes.find(typeInfo->name);
     if (it != cloneContext.replaceTypes.end())
         return it->second;
 
     // When type is a compound, we do substitution in the raw type
-    switch (oldType->kind)
+    switch (typeInfo->kind)
     {
     case TypeInfoKind::Alias:
     {
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(oldType, TypeInfoKind::Alias);
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         auto newType   = doTypeSubstitution(cloneContext, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
@@ -111,7 +112,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
 
     case TypeInfoKind::Pointer:
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto newType     = doTypeSubstitution(cloneContext, typePointer->finalType);
         if (newType != typePointer->finalType)
         {
@@ -128,7 +129,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
 
     case TypeInfoKind::Array:
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(oldType, TypeInfoKind::Array);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto newType   = doTypeSubstitution(cloneContext, typeArray->pointedType);
         if (newType != typeArray->pointedType)
         {
@@ -144,7 +145,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
 
     case TypeInfoKind::Slice:
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(oldType, TypeInfoKind::Slice);
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto newType   = doTypeSubstitution(cloneContext, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
@@ -161,7 +162,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::Lambda:
     {
         TypeInfoFuncAttr* newLambda  = nullptr;
-        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(oldType, TypeInfoKind::Lambda);
+        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
 
         auto newType = doTypeSubstitution(cloneContext, typeLambda->returnType);
         if (newType != typeLambda->returnType)
