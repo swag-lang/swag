@@ -37,12 +37,12 @@ struct OneMatch
 
 struct OneGenericMatch
 {
-    uint32_t              flags;
-    SymbolName*           symbolName;
-    SymbolOverload*       symbolOverload;
-    vector<ComputedValue> genericParametersCallValues;
-    vector<TypeInfo*>     genericParametersCallTypes;
-    vector<TypeInfo*>     genericParametersGenTypes;
+    uint32_t                flags;
+    SymbolName*             symbolName;
+    SymbolOverload*         symbolOverload;
+    vector<ComputedValue>   genericParametersCallValues;
+    vector<TypeInfo*>       genericParametersCallTypes;
+    map<Utf8Crc, TypeInfo*> genericReplaceTypes;
 };
 
 static const uint32_t COLLECT_ALL         = 0x00000000;

@@ -747,7 +747,7 @@ anotherTry:
                     match.symbolOverload              = overload;
                     match.genericParametersCallTypes  = move(job->symMatch.genericParametersCallTypes);
                     match.genericParametersCallValues = move(job->symMatch.genericParametersCallValues);
-                    match.genericParametersGenTypes   = move(job->symMatch.genericParametersGenTypes);
+                    match.genericReplaceTypes         = move(job->symMatch.genericReplaceTypes);
                     genericMatches.emplace_back(match);
                 }
                 else

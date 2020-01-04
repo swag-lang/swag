@@ -131,9 +131,9 @@ enum class AstNodeKind : uint8_t
 
 struct CloneContext
 {
-    map<TypeInfo*, TypeInfo*> replaceTypes;
-    map<TokenId, AstNode*>    replaceTokens;
-    map<Utf8Crc, Utf8>        replaceNames;
+    map<Utf8Crc, TypeInfo*> replaceTypes;
+    map<TokenId, AstNode*>  replaceTokens;
+    map<Utf8Crc, Utf8>      replaceNames;
 
     AstInline*    ownerInline      = nullptr;
     AstBreakable* ownerBreakable   = nullptr;

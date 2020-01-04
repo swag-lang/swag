@@ -1,6 +1,6 @@
 #pragma once
 #include "Pool.h"
-#include "Utf8.h"
+#include "Utf8Crc.h"
 #include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
@@ -320,7 +320,6 @@ struct SymbolMatchContext
         doneParameters.clear();
         genericParametersCallValues.clear();
         genericParametersCallTypes.clear();
-        genericParametersGenTypes.clear();
         solvedParameters.clear();
         flags = 0;
         resetTmp();
@@ -330,29 +329,21 @@ struct SymbolMatchContext
     {
         cptResolved        = 0;
         hasNamedParameters = false;
-        maxGenericParam    = 0;
     }
 
-    struct MapGenType
-    {
-        TypeInfo*        toType;
-        vector<uint32_t> parameterIndex;
-    };
-
-    VectorNative<AstNode*>     genericParameters;
-    VectorNative<AstNode*>     parameters;
-    vector<TypeInfoParam*>     solvedParameters;
-    vector<bool>               doneParameters;
-    vector<ComputedValue>      genericParametersCallValues;
-    vector<TypeInfo*>          genericParametersCallTypes;
-    vector<TypeInfo*>          genericParametersGenTypes;
-    map<TypeInfo*, MapGenType> mapGenericTypes;
-    MatchResult                result;
+    VectorNative<AstNode*>  genericParameters;
+    VectorNative<AstNode*>  parameters;
+    vector<TypeInfoParam*>  solvedParameters;
+    vector<bool>            doneParameters;
+    vector<ComputedValue>   genericParametersCallValues;
+    vector<TypeInfo*>       genericParametersCallTypes;
+    map<Utf8Crc, TypeInfo*> genericReplaceTypes;
+    map<Utf8Crc, uint32_t>  mapGenericTypesIndex;
+    MatchResult             result;
 
     TypeInfo* badSignatureRequestedType;
     TypeInfo* badSignatureGivenType;
 
-    uint32_t maxGenericParam;
     uint32_t flags;
     int      cptResolved;
     int      badSignatureParameterIdx;

@@ -12,5 +12,5 @@ func(T) toto(x: T)
 {
     toto(1)
     toto(1'u32)
-    toto(1)
+    //toto(1)
 }

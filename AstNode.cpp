@@ -4,6 +4,7 @@
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 #include "Allocator.h"
+#include "Generic.h"
 
 void AstNode::setPassThrough()
 {
@@ -149,21 +150,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
 
     // Replace a type by another one during generic instantiation
-    if (from->typeInfo && context.replaceTypes.size() > 0)
-    {
-        auto it = context.replaceTypes.find(from->typeInfo);
-        if (it != context.replaceTypes.end())
-        {
-            typeInfo = it->second;
-            flags |= AST_FROM_GENERIC;
-        }
-        else
-            typeInfo = from->typeInfo;
-    }
-    else
-    {
-        typeInfo = from->typeInfo;
-    }
+    typeInfo = from->typeInfo;
+    Generic::doTypeSubstitution(context, &typeInfo);
+    if(typeInfo != from->typeInfo)
+        flags |= AST_FROM_GENERIC;
+
+
 
     castedTypeInfo         = from->castedTypeInfo;
     resolvedSymbolName     = from->resolvedSymbolName;

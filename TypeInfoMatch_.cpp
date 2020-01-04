@@ -6,7 +6,6 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
 {
     // One boolean per used parameter
     context.doneParameters.clear();
-    context.mapGenericTypes.clear();
     context.doneParameters.resize(parameters.size(), false);
     context.solvedParameters.resize(parameters.size(), nullptr);
     context.resetTmp();
@@ -74,130 +73,117 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             // This is a generic type match
             if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
             {
-                // Do we already have mapped the generic parameter to something ?
-                auto it = context.mapGenericTypes.find(symbolTypeInfo);
-                if (it != context.mapGenericTypes.end())
+                // Need to register inside types when the generic type is a compound
+                vector<TypeInfo*> symbolTypeInfos{symbolTypeInfo};
+                vector<TypeInfo*> typeInfos{typeInfo};
+                while (symbolTypeInfos.size())
                 {
-                    // Yes, and the map is not the same, then this is an error
-                    same = TypeManager::makeCompatibles(nullptr, it->second.toType, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
-                    if (!same)
+                    symbolTypeInfo = symbolTypeInfos.back();
+                    typeInfo       = typeInfos.back();
+                    symbolTypeInfos.pop_back();
+                    typeInfos.pop_back();
+
+                    // Do we already have mapped the generic parameter to something ?
+                    auto it = context.genericReplaceTypes.find(symbolTypeInfo->name);
+                    if (it != context.genericReplaceTypes.end())
                     {
-                        context.badSignatureParameterIdx  = i;
-                        context.badSignatureRequestedType = it->second.toType;
-                        context.badSignatureGivenType     = typeInfo;
-                        context.result                    = MatchResult::BadSignature;
+                        // Yes, and the map is not the same, then this is an error
+                        same = TypeManager::makeCompatibles(nullptr, it->second, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                        if (!same)
+                        {
+                            context.badSignatureParameterIdx  = i;
+                            context.badSignatureRequestedType = it->second;
+                            context.badSignatureGivenType     = typeInfo;
+                            context.result                    = MatchResult::BadSignature;
+                        }
                     }
                     else
                     {
-                        context.maxGenericParam = i;
-                        it->second.parameterIndex.push_back(i);
+                        context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
+
+                        // If this is a valid generic argument, register it
+                        auto itIdx = context.mapGenericTypesIndex.find(symbolTypeInfo->name);
+                        if (itIdx != context.mapGenericTypesIndex.end())
+                        {
+                            context.genericParametersCallTypes[itIdx->second] = typeInfo;
+                        }
                     }
-                }
-                else
-                {
-                    context.maxGenericParam = i;
 
-                    // Associate the generic type with the mapped one, and remember the parameter
-                    // index
-                    SymbolMatchContext::MapGenType mapGenType;
-                    mapGenType.toType = typeInfo;
-                    mapGenType.parameterIndex.push_back(i);
-                    context.mapGenericTypes[symbolTypeInfo] = mapGenType;
-
-                    // Need to register inside types when the generic type is a compound
-                    vector<TypeInfo*> symbolTypeInfos{symbolTypeInfo};
-                    vector<TypeInfo*> typeInfos{typeInfo};
-                    while (symbolTypeInfos.size())
+                    switch (symbolTypeInfo->kind)
                     {
-                        symbolTypeInfo = symbolTypeInfos.back();
-                        typeInfo       = typeInfos.back();
-                        symbolTypeInfos.pop_back();
-                        typeInfos.pop_back();
-
-                        it = context.mapGenericTypes.find(symbolTypeInfo);
-                        if (it == context.mapGenericTypes.end())
+                    case TypeInfoKind::Struct:
+                    {
+                        auto symbolStruct = CastTypeInfo<TypeInfoStruct>(symbolTypeInfo, TypeInfoKind::Struct);
+                        auto typeStruct   = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+                        auto num          = symbolStruct->genericParameters.size();
+                        for (int idx = 0; idx < num; idx++)
                         {
-                            mapGenType.toType = typeInfo;
-                            mapGenType.parameterIndex.clear();
-                            context.mapGenericTypes[symbolTypeInfo] = mapGenType;
+                            auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
+                            auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
+                            symbolTypeInfos.push_back(genTypeInfo);
+                            typeInfos.push_back(rawTypeInfo);
+                        }
+                        break;
+                    }
+
+                    case TypeInfoKind::Pointer:
+                    {
+                        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
+                        if (typeInfo->kind == TypeInfoKind::Pointer)
+                        {
+                            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                            symbolTypeInfos.push_back(symbolPtr->pointedType);
+                            typeInfos.push_back(typePtr->pointedType);
+                        }
+                        else if (typeInfo->kind == TypeInfoKind::Struct)
+                        {
+                            symbolTypeInfos.push_back(symbolPtr->pointedType);
+                            typeInfos.push_back(typeInfo);
+                        }
+                        break;
+                    }
+
+                    case TypeInfoKind::Array:
+                    {
+                        auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
+                        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                        symbolTypeInfos.push_back(symbolArray->finalType);
+                        typeInfos.push_back(typeArray->finalType);
+                        break;
+                    }
+
+                    case TypeInfoKind::Slice:
+                    {
+                        auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
+                        auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+                        symbolTypeInfos.push_back(symbolSlice->pointedType);
+                        typeInfos.push_back(typeSlice->pointedType);
+                        break;
+                    }
+
+                    case TypeInfoKind::Lambda:
+                    {
+                        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolTypeInfo, TypeInfoKind::Lambda);
+                        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+                        if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
+                        {
+                            symbolTypeInfos.push_back(symbolLambda->returnType);
+                            typeInfos.push_back(typeLambda->returnType);
                         }
 
-                        switch (symbolTypeInfo->kind)
+                        auto num = symbolLambda->parameters.size();
+                        for (int idx = 0; idx < num; idx++)
                         {
-                        case TypeInfoKind::Struct:
-                        {
-                            auto symbolStruct = CastTypeInfo<TypeInfoStruct>(symbolTypeInfo, TypeInfoKind::Struct);
-                            auto typeStruct   = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-                            auto num          = symbolStruct->genericParameters.size();
-                            for (int idx = 0; idx < num; idx++)
+                            auto symbolParam = CastTypeInfo<TypeInfoParam>(symbolLambda->parameters[idx], TypeInfoKind::Param);
+                            auto typeParam   = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
+                            if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC)
                             {
-                                auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                                auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
-                                symbolTypeInfos.push_back(genTypeInfo);
-                                typeInfos.push_back(rawTypeInfo);
+                                symbolTypeInfos.push_back(symbolParam->typeInfo);
+                                typeInfos.push_back(typeParam->typeInfo);
                             }
-                            break;
                         }
-
-                        case TypeInfoKind::Pointer:
-                        {
-                            auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                            if (typeInfo->kind == TypeInfoKind::Pointer)
-                            {
-                                auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-                                symbolTypeInfos.push_back(symbolPtr->pointedType);
-                                typeInfos.push_back(typePtr->pointedType);
-                            }
-                            else if (typeInfo->kind == TypeInfoKind::Struct)
-                            {
-                                symbolTypeInfos.push_back(symbolPtr->pointedType);
-                                typeInfos.push_back(typeInfo);
-                            }
-                            break;
-                        }
-
-                        case TypeInfoKind::Array:
-                        {
-                            auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
-                            auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-                            symbolTypeInfos.push_back(symbolArray->finalType);
-                            typeInfos.push_back(typeArray->finalType);
-                            break;
-                        }
-
-                        case TypeInfoKind::Slice:
-                        {
-                            auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
-                            auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-                            symbolTypeInfos.push_back(symbolSlice->pointedType);
-                            typeInfos.push_back(typeSlice->pointedType);
-                            break;
-                        }
-
-                        case TypeInfoKind::Lambda:
-                        {
-                            auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolTypeInfo, TypeInfoKind::Lambda);
-                            auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
-                            if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
-                            {
-                                symbolTypeInfos.push_back(symbolLambda->returnType);
-                                typeInfos.push_back(typeLambda->returnType);
-                            }
-
-                            auto num = symbolLambda->parameters.size();
-                            for (int idx = 0; idx < num; idx++)
-                            {
-                                auto symbolParam = CastTypeInfo<TypeInfoParam>(symbolLambda->parameters[idx], TypeInfoKind::Param);
-                                auto typeParam   = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
-                                if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC)
-                                {
-                                    symbolTypeInfos.push_back(symbolParam->typeInfo);
-                                    typeInfos.push_back(typeParam->typeInfo);
-                                }
-                            }
-                            break;
-                        }
-                        }
+                        break;
+                    }
                     }
                 }
             }
@@ -285,23 +271,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
 
-    context.genericParametersCallValues.resize(wantedNumGenericParams);
-    context.genericParametersCallTypes.resize(wantedNumGenericParams);
-    context.genericParametersGenTypes.resize(wantedNumGenericParams);
-
-    // It's valid to not specify generic parameters. They will be deduced
-    if (numGenericParams && numGenericParams < wantedNumGenericParams)
-    {
-        context.result = MatchResult::NotEnoughGenericParameters;
-        return;
-    }
-
-    if (numGenericParams > wantedNumGenericParams)
-    {
-        context.result = MatchResult::TooManyGenericParameters;
-        return;
-    }
-
     // It's valid to not specify generic parameters. They will be deduced
     if (myTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -321,7 +290,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                             auto symbolParameter                  = genericParameters[i];
                             auto genType                          = symbolParameter->typeInfo;
                             context.genericParametersCallTypes[i] = genType ? genType : symbolParameter->typeInfo;
-                            context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
                         }
 
                         context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
@@ -335,47 +303,19 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     }
     else
     {
-        // Deduce type of generic parameters from actual parameters
         if (!numGenericParams && wantedNumGenericParams)
         {
             for (int i = 0; i < wantedNumGenericParams; i++)
             {
                 auto symbolParameter = genericParameters[i];
-                auto it              = context.mapGenericTypes.find(symbolParameter->typeInfo);
-                if (it == context.mapGenericTypes.end())
+                auto it              = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+                if (it == context.genericReplaceTypes.end())
                 {
                     if (myTypeInfo->flags & TYPEINFO_GENERIC)
                     {
                         context.result = MatchResult::NotEnoughGenericParameters;
                         return;
                     }
-
-                    auto typeParam                        = CastTypeInfo<TypeInfoParam>(genericParameters[i], TypeInfoKind::Param);
-                    context.genericParametersCallTypes[i] = typeParam->typeInfo;
-                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
-                }
-                else
-                {
-                    context.genericParametersCallTypes[i] = it->second.toType;
-                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
-                }
-            }
-        }
-        else if (context.mapGenericTypes.size())
-        {
-            if (context.maxGenericParam + 1 > context.genericParametersCallValues.size())
-            {
-                context.genericParametersCallValues.resize(context.maxGenericParam + 1);
-                context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
-                context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
-            }
-
-            for (auto it : context.mapGenericTypes)
-            {
-                for (auto paramIdx : it.second.parameterIndex)
-                {
-                    context.genericParametersCallTypes[paramIdx] = it.second.toType;
-                    context.genericParametersGenTypes[paramIdx]  = it.first;
                 }
             }
         }
@@ -425,29 +365,30 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->value == callParameter->computedValue))
         {
             // We already have a match, and they do not match with that type, error
-            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end())
+            auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+            if (it != context.genericReplaceTypes.end())
             {
-                same = TypeManager::makeCompatibles(nullptr, typeInfo, it->second.toType, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                same = TypeManager::makeCompatibles(nullptr, typeInfo, it->second, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                 if (same)
                 {
                     context.genericParametersCallValues[i] = callParameter->computedValue;
                     context.genericParametersCallTypes[i]  = callParameter->typeInfo;
-                    context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
                 }
                 else
                 {
+                    SWAG_ASSERT(false);
+#if 0
                     context.badSignatureParameterIdx  = it->second.parameterIndex.front();
                     context.badSignatureRequestedType = typeInfo;
                     context.badSignatureGivenType     = it->second.toType;
                     context.result                    = MatchResult::BadSignature;
+#endif
                 }
             }
             else
             {
                 context.genericParametersCallValues[i] = callParameter->computedValue;
                 context.genericParametersCallTypes[i]  = callParameter->typeInfo;
-                context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
             }
         }
         else
@@ -460,6 +401,42 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     }
 }
 
+static void fillUserGenericParams(SymbolMatchContext& context, vector<TypeInfoParam*>& genericParameters)
+{
+    context.mapGenericTypesIndex.clear();
+    context.genericReplaceTypes.clear();
+
+    int wantedNumGenericParams = (int) genericParameters.size();
+    int numGenericParams       = (int) context.genericParameters.size();
+
+    context.genericParametersCallValues.resize(wantedNumGenericParams);
+    context.genericParametersCallTypes.resize(wantedNumGenericParams);
+
+    // It's valid to not specify generic parameters. They will be deduced
+    if (numGenericParams && numGenericParams < wantedNumGenericParams)
+    {
+        context.result = MatchResult::NotEnoughGenericParameters;
+        return;
+    }
+
+    if (numGenericParams > wantedNumGenericParams)
+    {
+        context.result = MatchResult::TooManyGenericParameters;
+        return;
+    }
+
+    for (int i = 0; i < wantedNumGenericParams; i++)
+    {
+        context.mapGenericTypesIndex[genericParameters[i]->name] = i;
+    }
+
+    for (int i = 0; i < numGenericParams; i++)
+    {
+        context.genericReplaceTypes[genericParameters[i]->name] = context.genericParameters[i]->typeInfo;
+        context.genericParametersCallTypes[i]                   = context.genericParameters[i]->typeInfo;
+    }
+}
+
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
@@ -468,9 +445,14 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
         return;
 
+    fillUserGenericParams(context, genericParameters);
+    if (context.result != MatchResult::Ok)
+        return;
+
     matchParameters(context, parameters);
     if (context.result != MatchResult::Ok)
         return;
+
     matchNamedParameters(context, parameters);
     if (context.result != MatchResult::Ok)
         return;
@@ -491,12 +473,19 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 void TypeInfoStruct::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
+
+    fillUserGenericParams(context, genericParameters);
+    if (context.result != MatchResult::Ok)
+        return;
+
     matchParameters(context, childs);
     if (context.result != MatchResult::Ok)
         return;
+
     matchNamedParameters(context, childs);
     if (context.result != MatchResult::Ok)
         return;
+
     matchGenericParameters(context, this, genericParameters);
 }
 
