@@ -364,28 +364,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         }
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->value == callParameter->computedValue))
         {
-            // We already have a match, and they do not match with that type, error
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
-            if (it != context.genericReplaceTypes.end())
-            {
-                same = TypeManager::makeCompatibles(nullptr, typeInfo, it->second, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
-                if (same)
-                {
-                    context.genericParametersCallValues[i] = callParameter->computedValue;
-                    context.genericParametersCallTypes[i]  = callParameter->typeInfo;
-                }
-                else
-                {
-                    SWAG_ASSERT(false);
-#if 0
-                    context.badSignatureParameterIdx  = it->second.parameterIndex.front();
-                    context.badSignatureRequestedType = typeInfo;
-                    context.badSignatureGivenType     = it->second.toType;
-                    context.result                    = MatchResult::BadSignature;
-#endif
-                }
-            }
-            else
+            if (it == context.genericReplaceTypes.end())
             {
                 context.genericParametersCallValues[i] = callParameter->computedValue;
                 context.genericParametersCallTypes[i]  = callParameter->typeInfo;

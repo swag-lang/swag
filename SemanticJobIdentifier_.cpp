@@ -780,6 +780,18 @@ anotherTry:
         }
     }
 
+    // We should not instantiate with unresolved types
+    if (genericMatches.size() == 1)
+    {
+        for (auto gen : genericMatches[0].genericParametersCallTypes)
+        {
+            if (gen->flags & TYPEINFO_UNTYPED_INTEGER)
+            {
+                //return context->report({context->node, "toto\n"});
+            }
+        }
+    }
+
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
