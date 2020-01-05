@@ -238,6 +238,31 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         break;
     }
 
+    // Suffix
+    auto c = getCharNoSeek(offset);
+    if (c == '\'')
+    {
+        treatChar(c, offset);
+        Token tokenSuffix;
+        tokenSuffix.startLocation = location;
+
+        c = getCharNoSeek(offset);
+        if (!c)
+            return error(tokenSuffix, "missing string literal suffix");
+
+        getIdentifier(tokenSuffix, c, offset);
+        SWAG_VERIFY(tokenSuffix.id == TokenId::NativeType, error(tokenSuffix, format("invalid literal string suffix '%s'", tokenSuffix.text.c_str())));
+        SWAG_VERIFY(tokenSuffix.literalType->nativeType == NativeTypeKind::Char, error(tokenSuffix, format("invalid literal string suffix '%s' ('char' expected)", tokenSuffix.text.c_str())));
+
+        VectorNative<char32_t> uni;
+        token.text.toUni32(uni);
+        SWAG_VERIFY(uni.size() == 1, sourceFile->report({ sourceFile, token, format("invalid character literal \"%s\", this is a string, not a character", token.text.c_str()) }));
+
+        token.id              = TokenId::LiteralCharacter;
+        token.literalType     = g_TypeMgr.typeInfoChar;
+        token.literalValue.ch = uni[0];
+    }
+
     return true;
 }
 

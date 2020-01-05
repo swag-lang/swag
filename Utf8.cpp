@@ -2,8 +2,6 @@
 #include "Utf8.h"
 #include "Allocator.h"
 
-wstring_convert<codecvt_utf8<int32_t>, int32_t> toUtf8;
-
 void Utf8::reserve(int newSize)
 {
     if (newSize <= allocated)
@@ -263,38 +261,12 @@ void Utf8::operator=(Utf8&& from)
 void Utf8::operator=(char32_t c)
 {
     clear();
-    if (!(c & 0xFFFFFF80))
-    {
-        append((char) c);
-        return;
-    }
-
-    try
-    {
-        append(toUtf8.to_bytes(c));
-    }
-    catch (...)
-    {
-        append("?");
-    }
+    append(c);
 }
 
 void Utf8::operator+=(char32_t c)
 {
-    if (!(c & 0xFFFFFF80))
-    {
-        append((char) c);
-        return;
-    }
-
-    try
-    {
-        append(toUtf8.to_bytes(c));
-    }
-    catch (...)
-    {
-        append("?");
-    }
+    append(c);
 }
 
 char Utf8::back() const
@@ -355,7 +327,7 @@ void Utf8::resize(int newSize)
 {
     reserve(newSize + 1);
     buffer[newSize] = 0;
-    count = newSize;
+    count           = newSize;
 }
 
 void Utf8::pop_back()
@@ -372,4 +344,106 @@ int Utf8::find(const char* str) const
     if (!pz)
         return -1;
     return (int) (pz - buffer);
+}
+
+void Utf8::toUni32(VectorNative<char32_t>& uni)
+{
+    uni.clear();
+    const char* pz = buffer;
+    while (*pz)
+    {
+        auto c = *pz++;
+
+        if ((c & 0x80) == 0)
+        {
+            uni.push_back(c);
+            continue;
+        }
+
+        char32_t wc;
+        if ((c & 0xE0) == 0xC0)
+        {
+            wc = (c & 0x1F) << 6;
+            wc |= (*pz++ & 0x3F);
+            uni.push_back(wc);
+            continue;
+        }
+
+        if ((c & 0xF0) == 0xE0)
+        {
+            wc = (c & 0xF) << 12;
+            wc |= (*pz++ & 0x3F) << 6;
+            wc |= (*pz++ & 0x3F);
+            uni.push_back(wc);
+            continue;
+        }
+
+        if ((c & 0xF8) == 0xF0)
+        {
+            wc = (c & 0x7) << 18;
+            wc |= (*pz++ & 0x3F) << 12;
+            wc |= (*pz++ & 0x3F) << 6;
+            wc |= (*pz++ & 0x3F);
+            uni.push_back(wc);
+            continue;
+        }
+
+        if ((c & 0xFC) == 0xF8)
+        {
+            wc = (c & 0x3) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            uni.push_back(wc);
+            continue;
+        }
+
+        if ((c & 0xFE) == 0xFC)
+        {
+            wc = (c & 0x1) << 30;
+            wc |= (c & 0x3F) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            uni.push_back(wc);
+            continue;
+        }
+    }
+}
+
+void Utf8::append(char32_t utf)
+{
+    reserve(count + 5);
+    if (utf <= 0x7F)
+    {
+        buffer[count++] = (uint8_t) utf;
+    }
+    else if (utf <= 0x07FF)
+    {
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x1F) | 0xC0);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+    }
+    else if (utf <= 0xFFFF)
+    {
+        buffer[count++] = (uint8_t) (((utf >> 12) & 0x0F) | 0xE0);
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+    }
+    else if (utf <= 0x10FFFF)
+    {
+        buffer[count++] = (uint8_t) (((utf >> 18) & 0x07) | 0xF0);
+        buffer[count++] = (uint8_t) (((utf >> 12) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+    }
+    else
+    {
+        buffer[count++] = (uint8_t) 0xEF;
+        buffer[count++] = (uint8_t) 0xBF;
+        buffer[count++] = (uint8_t) 0xBD;
+    }
+
+    buffer[count] = 0;
 }

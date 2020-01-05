@@ -1,6 +1,6 @@
 #pragma once
 #include "Assert.h"
-extern wstring_convert<codecvt_utf8<int32_t>, int32_t> toUtf8;
+#include "Vector.h"
 #define UTF8_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
 
 struct Utf8
@@ -25,6 +25,7 @@ struct Utf8
     void        append(const char* txt);
     void        append(const Utf8& txt);
     void        append(char c);
+    void        append(char32_t utf);
     const char* begin() const;
     const char* end() const;
     operator const char*();
@@ -53,4 +54,6 @@ struct Utf8
     void        operator=(Utf8&& from);
     void        operator=(char32_t c);
     void        operator+=(char32_t c);
+
+    void toUni32(VectorNative<char32_t>& uni);
 };

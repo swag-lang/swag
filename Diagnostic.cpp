@@ -88,8 +88,7 @@ void Diagnostic::report(bool verboseMode) const
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 g_Log.print("   >  ");
-                Utf8 tmp(line.c_str());
-                g_Log.print(tmp);
+                g_Log.print(line);
                 g_Log.eol();
             }
         }

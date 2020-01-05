@@ -30,7 +30,7 @@ namespace OS
     void consoleSetup()
     {
         consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
-        //_setmode(_fileno(stdout), _O_U8TEXT);
+        SetConsoleOutputCP(65001);
 
         CONSOLE_SCREEN_BUFFER_INFO info;
         GetConsoleScreenBufferInfo(consoleHandle, &info);
