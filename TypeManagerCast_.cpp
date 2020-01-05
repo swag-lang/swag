@@ -52,6 +52,14 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     if (!(castFlags & CASTFLAG_AUTO_BOOL) && !(castFlags & CASTFLAG_EXPLICIT))
         return castError(context, g_TypeMgr.typeInfoBool, fromType, fromNode, castFlags);
 
+    if (castFlags & CASTFLAG_STRICT)
+    {
+        if (fromType->nativeType != NativeTypeKind::Bool)
+        {
+            return castError(context, g_TypeMgr.typeInfoBool, fromType, fromNode, castFlags);
+        }
+    }
+
     if (fromType->kind == TypeInfoKind::Pointer || fromType->kind == TypeInfoKind::Lambda)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -223,6 +231,14 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::Char)
+            {
+                return castError(context, g_TypeMgr.typeInfoChar, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::U32:
@@ -315,6 +331,14 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::U8)
+            {
+                return castError(context, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -428,6 +452,14 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::U16)
+            {
+                return castError(context, g_TypeMgr.typeInfoU16, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -541,6 +573,14 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::U32)
+            {
+                return castError(context, g_TypeMgr.typeInfoU32, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -664,6 +704,14 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::U64)
+            {
+                return castError(context, g_TypeMgr.typeInfoU64, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -763,6 +811,14 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::S8)
+            {
+                return castError(context, g_TypeMgr.typeInfoS8, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S16:
@@ -849,6 +905,14 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::S16)
+            {
+                return castError(context, g_TypeMgr.typeInfoS16, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -931,6 +995,14 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::S32)
+            {
+                return castError(context, g_TypeMgr.typeInfoS32, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -1013,6 +1085,14 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     }
     else
     {
+        if (castFlags & CASTFLAG_STRICT)
+        {
+            if (fromType->nativeType != NativeTypeKind::S64)
+            {
+                return castError(context, g_TypeMgr.typeInfoS64, fromType, fromNode, castFlags);
+            }
+        }
+
         switch (fromType->nativeType)
         {
         case NativeTypeKind::S8:
@@ -1054,6 +1134,14 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 {
     if (fromType->nativeType == NativeTypeKind::F32)
         return true;
+
+    if (castFlags & CASTFLAG_STRICT)
+    {
+        if (fromType->nativeType != NativeTypeKind::F32)
+        {
+            return castError(context, g_TypeMgr.typeInfoF32, fromType, fromNode, castFlags);
+        }
+    }
 
     switch (fromType->nativeType)
     {
@@ -1182,6 +1270,14 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 {
     if (fromType->nativeType == NativeTypeKind::F64)
         return true;
+
+    if (castFlags & CASTFLAG_STRICT)
+    {
+        if (fromType->nativeType != NativeTypeKind::F64)
+        {
+            return castError(context, g_TypeMgr.typeInfoF64, fromType, fromNode, castFlags);
+        }
+    }
 
     switch (fromType->nativeType)
     {

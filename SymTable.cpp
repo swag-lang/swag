@@ -5,6 +5,7 @@
 #include "TypeInfo.h"
 #include "SymTable.h"
 #include "Allocator.h"
+#include "Ast.h"
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
@@ -224,6 +225,8 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+        if (typeInfo->kind == TypeInfoKind::FuncAttr)
+            diagNote.codeComment = Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters);
         context->report(diag, &diagNote);
         return false;
     }

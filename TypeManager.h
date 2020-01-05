@@ -15,6 +15,7 @@ static const uint32_t CASTFLAG_UNCONST       = 0x00000010;
 static const uint32_t CASTFLAG_AUTO_BOOL     = 0x00000020;
 static const uint32_t CASTFLAG_NO_COLLECT    = 0x00000040;
 static const uint32_t CASTFLAG_BIJECTIF      = 0x00000080;
+static const uint32_t CASTFLAG_STRICT        = 0x00000100;
 
 static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM    = 0x00000001;
@@ -48,7 +49,7 @@ struct TypeManager
     static bool castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags);
     static bool castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
-	static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
+    static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 
     static bool convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* fromNode);
