@@ -20,7 +20,7 @@ impl Array
 #test
 {
 	x := 0
-	var arr: Array!s32
+	var arr: Array's32
 	arr.buffer = &x
 	arr.add()
 	@assert(x == 666)

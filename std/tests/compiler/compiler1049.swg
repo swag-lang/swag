@@ -17,7 +17,7 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	ptr := new!Point()
+	ptr := new'Point()
 	@assert(ptr.x == "coucou")
 	@assert(ptr.y == "coucou")
 }

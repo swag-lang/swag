@@ -5,5 +5,5 @@ func(T) toto(x: T)
 
 #test
 {
-	toto!s64(1)
+	toto's64(1)
 }

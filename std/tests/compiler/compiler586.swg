@@ -8,5 +8,5 @@ func(op: string) toto()
 
 #test
 {
-	toto!("op")()
+	toto'("op")()
 }

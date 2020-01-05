@@ -10,8 +10,8 @@ func(T) valueof(x: any)->T
 //#[swag.printbc]
 func toto(xx: string, a: ...)
 {
-	@assert(valueof!string(a[0]) == "toto")
-	@assert(valueof!s32(a[1]) == 10)
+	@assert(valueof'string(a[0]) == "toto")
+	@assert(valueof's32(a[1]) == 10)
 	
 	/*
 	i := 0'u32

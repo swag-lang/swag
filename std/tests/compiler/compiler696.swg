@@ -9,13 +9,13 @@ struct(T) Point
 
 struct(T) Array
 {
-	pt: Point!T
+	pt: Point'T
 }
 
 //#[swag.printbc]
 #test
 {
-	var arr: Array!f32
+	var arr: Array'f32
 	@assert(arr.pt.x == 5.0)
 	@assert(arr.pt.y == 10.0)
 }

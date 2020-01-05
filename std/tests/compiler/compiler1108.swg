@@ -5,5 +5,5 @@ func(T) toto(x: T)
 
 #test
 {
-	toto!f32(1)
+	toto'f32(1)
 }

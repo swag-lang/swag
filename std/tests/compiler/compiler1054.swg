@@ -13,5 +13,5 @@ struct Point
 #test
 {
 	var ptr : *Point
-	delete!(Point)(ptr)
+	delete'(Point)(ptr)
 }

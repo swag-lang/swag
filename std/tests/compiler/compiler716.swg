@@ -22,5 +22,5 @@ func(N: s32) toto()->s32
 //#[swag.printbc]
 #test
 {
-	@assert(toto!4() == 8)
+	@assert(toto'4() == 8)
 }

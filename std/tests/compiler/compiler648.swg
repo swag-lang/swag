@@ -12,6 +12,6 @@ func(T) toto()
 //#unittest error
 #test
 {
-	toto!s32()
+	toto's32()
 	@assert(gx == 100)
 }

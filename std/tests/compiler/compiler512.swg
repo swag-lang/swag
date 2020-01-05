@@ -18,10 +18,10 @@ func toto(xx: string, a: ...)
 			switch cast(char) xx[i]
 			{
 			case "d"'char:
-				@assert(valueof!s32(a[idx]) == 10)
+				@assert(valueof's32(a[idx]) == 10)
 				idx += 1
 			case "s"'char:
-				@assert(valueof!string(a[idx]) == "toto")	
+				@assert(valueof'string(a[idx]) == "toto")	
 				idx += 1				
 			}
 		}

@@ -16,6 +16,6 @@ impl Array
 //#[swag.printbc]
 #test
 {
-	var arr: Array!s32
+	var arr: Array's32
 	arr.add()
 }

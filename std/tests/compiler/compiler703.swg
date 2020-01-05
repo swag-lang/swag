@@ -9,13 +9,13 @@ struct(T) Point
 
 struct(T, V) Array
 {
-	pt1: Point!T
-	pt2: Point!V
+	pt1: Point'T
+	pt2: Point'V
 }
 
 //#[swag.printbc]
 #unittest error
 #test
 {
-	var arr: Array!(s32, bool)
+	var arr: Array'(s32, bool)
 }

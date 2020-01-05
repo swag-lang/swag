@@ -9,7 +9,7 @@ struct(T) Point
 
 #test
 {
-	var pt1: Point!(f32)
-	var pt2: Point!(string)
+	var pt1: Point'(f32)
+	var pt2: Point'(string)
 	pt2.x = "0"
 }

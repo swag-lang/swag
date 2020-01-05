@@ -13,7 +13,7 @@ func(op: bool) toto()
 #test
 {
     G = 0
-    toto!true()
-    toto!false()
+    toto'true()
+    toto'false()
     @assert(G == 3)
 }

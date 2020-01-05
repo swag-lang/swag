@@ -40,7 +40,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     if (acceptParameters)
     {
         // Generic arguments
-        if (token.id == TokenId::SymExclam)
+        if (token.id == TokenId::SymQuote)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters));

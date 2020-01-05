@@ -9,6 +9,6 @@ struct(T) Point
 
 struct(T) Array
 {
-	pt: Point!T
+	pt: Point'T
 }
 

@@ -26,6 +26,6 @@ impl toto
 
 #test
 {
-	var t: toto!bool
+	var t: toto'bool
 	t.toto1(10)
 }

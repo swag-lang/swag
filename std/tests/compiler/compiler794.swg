@@ -25,8 +25,8 @@ func(T) toto()
 #test
 {
 	cpt = 0
-	toto!(Point)()
+	toto'(Point)()
 	@assert(cpt == 1)
-	toto!(s32)()	
+	toto'(s32)()	
 	@assert(cpt == 3)
 }

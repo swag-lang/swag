@@ -18,7 +18,7 @@ impl Point
 //#[swag.printbc]
 #test
 {
-	var pt: Point!s32
+	var pt: Point's32
 	pt.x = 5
 	@assert(pt.toto() == 5)
 }

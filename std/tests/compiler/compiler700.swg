@@ -9,7 +9,7 @@ struct(T) Point
 
 struct Array
 {
-	pt: Point!s32
+	pt: Point's32
 }
 
 //#[swag.printbc]

@@ -18,8 +18,8 @@ impl Point
 //#[swag.printbc]
 #test
 {
-	var pt: Point!s32
+	var pt: Point's32
 	@assert(Point.toto(pt) == 65)
-	var pt1: Point!f32
+	var pt1: Point'f32
 	@assert(Point.toto(pt1) == 65.0)	
 }

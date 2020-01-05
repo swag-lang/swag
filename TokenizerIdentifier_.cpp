@@ -27,15 +27,7 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         if (it != g_LangSpec.keywords.end())
             token.id = it->second;
         else
-        {
             token.id = TokenId::Identifier;
-            c        = getCharNoSeek(offset);
-            if (c == '\'')
-            {
-                treatChar(c, offset);
-                token.text += c;
-            }
-        }
     }
 
     // Special keywords

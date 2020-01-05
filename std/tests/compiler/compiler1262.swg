@@ -9,6 +9,6 @@ func(T) toto()->T
 
 #test
 {
-	@assert(toto!(string)() == "toto")
-	@assert(toto!(s64)() == 666)
+	@assert(toto'(string)() == "toto")
+	@assert(toto'(s64)() == 666)
 }

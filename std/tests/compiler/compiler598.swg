@@ -20,5 +20,5 @@ impl Point
 {
 	var pt: Point
 	//pt = 0
-	Point.toto!("0")(pt);
+	Point.toto'("0")(pt);
 }

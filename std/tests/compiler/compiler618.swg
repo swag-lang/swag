@@ -9,6 +9,6 @@ func(T) Print(x: T)
 
 #test
 {
-	Print!f32(1)
+	Print'f32(1)
 	Print("toto")
 }

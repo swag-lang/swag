@@ -11,6 +11,6 @@ impl Random
 
 #test
 {
-	var rng: Random!bool
+	var rng: Random'bool
 	rng.nextS64()
 }

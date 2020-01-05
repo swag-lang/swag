@@ -15,8 +15,8 @@ func(op: string) toto()
 //#[swag.printbc]
 #test
 {
-	toto!("toto")()
+	toto'("toto")()
 	@assert(c == 1)
-	toto!("toto1")()
+	toto'("toto1")()
 	@assert(c == 2)
 }

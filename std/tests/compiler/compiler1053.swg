@@ -9,5 +9,5 @@ func(T) delete(addr: *T)
 #test
 {
 	x := 666
-	delete!s32(&x)
+	delete's32(&x)
 }

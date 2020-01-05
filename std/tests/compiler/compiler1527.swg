@@ -6,5 +6,5 @@ func(T, V) toto(x: T, y: V)
 
 #test
 {
-    toto!(f32, bool)(1, true)
+    toto'(f32, bool)(1, true)
 }

@@ -15,6 +15,6 @@ func toto(v: Point)
 //#[swag.printbc]
 #test
 {
-	var pt: Point!(s32)
+	var pt: Point'(s32)
 	toto(pt)
 }

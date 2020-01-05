@@ -9,6 +9,6 @@ func(T) toto(x: *T)
 #test
 {
 	cpt := 666
-	toto!s32(&cpt)
+	toto's32(&cpt)
 }
 

@@ -14,5 +14,5 @@ func(T) toto()
 //#[swag.printbc]
 #test
 {
-	toto!(Point)()
+	toto'(Point)()
 }

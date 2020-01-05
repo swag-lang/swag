@@ -10,7 +10,7 @@ struct(T) Point
 //#[swag.printbc]
 #test
 {
-	var pt: Point!(f32)
+	var pt: Point'(f32)
 	pt.x = 10
 	@assert(pt.x == 10.0)
 }

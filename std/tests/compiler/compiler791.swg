@@ -23,8 +23,8 @@ func(T) toto()
 #test
 {
 	cpt = 0
-	toto!s32()
-	toto!f32()
+	toto's32()
+	toto'f32()
 	//toto!Point()
 	@assert(cpt == 3)
 }

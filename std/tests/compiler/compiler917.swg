@@ -9,9 +9,9 @@ func(T) valueof(x: any)->T
 func sum(nums: ...)
 {
 	@assert(@countof(nums) == 3)
-	@assert(valueof!s32(nums[0]) == 10)
-	@assert(valueof!s32(nums[1]) == 20)
-	@assert(valueof!s32(nums[2]) == 30)
+	@assert(valueof's32(nums[0]) == 10)
+	@assert(valueof's32(nums[1]) == 20)
+	@assert(valueof's32(nums[2]) == 30)
 }
 
 //#[swag.printbc]

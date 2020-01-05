@@ -9,5 +9,5 @@ namespace A.B
 #test
 {
 	using A.B
-	var rng: Random!s32
+	var rng: Random's32
 }
