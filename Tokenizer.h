@@ -60,6 +60,7 @@ enum class TokenId
     SymBackSlash,
     SymAttrStart,
     SymBackTick,
+    SymQuote,
 
     CompilerSkip,
     CompilerModule,

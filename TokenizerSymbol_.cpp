@@ -7,6 +7,9 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     token.text = c;
     switch (c)
     {
+    case '\'':
+        token.id = TokenId::SymQuote;
+        return true;
     case '`':
         token.id = TokenId::SymBackTick;
         return true;
