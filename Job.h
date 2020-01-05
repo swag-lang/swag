@@ -1,7 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "DependentJobs.h"
-#include "Vector.h"
+#include "VectorNative.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;

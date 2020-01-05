@@ -8,7 +8,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
-#include "Vector.h"
+#include "VectorNative.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {

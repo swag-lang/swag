@@ -4,7 +4,7 @@
 #include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
-#include "Vector.h"
+#include "VectorNative.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;

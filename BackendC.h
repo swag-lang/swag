@@ -1,7 +1,7 @@
 #pragma once
 #include "Backend.h"
 #include "OutputFile.h"
-#include "Vector.h"
+#include "VectorNative.h"
 struct Module;
 struct AstNode;
 struct AstFuncDecl;

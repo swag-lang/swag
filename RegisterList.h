@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "Log.h"
-#include "Vector.h"
+#include "VectorNative.h"
 
 struct RegisterList
 {

@@ -618,9 +618,6 @@
     <ClInclude Include="DiagnosticInfos.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="DocContent.h">
       <Filter>Doc</Filter>
     </ClInclude>
@@ -629,6 +626,9 @@
     </ClInclude>
     <ClInclude Include="ModuleManager.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorNative.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

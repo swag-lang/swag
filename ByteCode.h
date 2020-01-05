@@ -4,7 +4,7 @@
 #include "SourceLocation.h"
 #include "Register.h"
 #include "Assert.h"
-#include "Vector.h"
+#include "VectorNative.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;

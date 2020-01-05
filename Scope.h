@@ -4,7 +4,7 @@
 #include "RegisterList.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
-#include "Vector.h"
+#include "VectorNative.h"
 struct SyntaxJob;
 struct Scope;
 struct SourceFile;

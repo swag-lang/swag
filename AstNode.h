@@ -11,7 +11,7 @@
 #include "Attribute.h"
 #include "Scope.h"
 #include "RaceCondition.h"
-#include "Vector.h"
+#include "VectorNative.h"
 
 struct DocContent;
 struct AstSwitchCase;

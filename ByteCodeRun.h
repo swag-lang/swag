@@ -1,6 +1,6 @@
 #pragma once
 #include "ffi.h"
-#include "Vector.h"
+#include "VectorNative.h"
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;
 struct TypeInfo;

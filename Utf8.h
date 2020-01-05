@@ -1,6 +1,6 @@
 #pragma once
 #include "Assert.h"
-#include "Vector.h"
+#include "VectorNative.h"
 #define UTF8_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
 
 struct Utf8
