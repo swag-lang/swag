@@ -22,8 +22,10 @@ namespace Ast
             result = format("%u", reg.u16);
             break;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
             result = format("%u", reg.u32);
+            break;
+        case NativeTypeKind::Char:
+            result += reg.ch;
             break;
         case NativeTypeKind::U64:
             result = format("%llu", reg.u64);
