@@ -15,12 +15,12 @@ enum class Intrisic
 
 enum class Property
 {
-	Invalid,
+    Invalid,
     SizeOf,
-	TypeOf,
+    TypeOf,
     CountOf,
     DataOf,
-	KindOf,
+    KindOf,
 };
 
 enum class Intrinsic
@@ -29,15 +29,15 @@ enum class Intrinsic
     IntrinsicAssert,
     IntrinsicProp,
     IntrinsicAlloc,
-	IntrinsicRealloc,
+    IntrinsicRealloc,
     IntrinsicFree,
-	IntrinsicMemCpy,
-	IntrinsicMemSet,
-	IntrinsicMemCmp,
-	IntrinsicGetContext,
-	IntrinsicSetContext,
-	IntrinsicArguments,
-	IntrinsicTarget,
+    IntrinsicMemCpy,
+    IntrinsicMemSet,
+    IntrinsicMemCmp,
+    IntrinsicGetContext,
+    IntrinsicSetContext,
+    IntrinsicArguments,
+    IntrinsicTarget,
     IntrinsicIsByteCode,
 };
 
@@ -46,10 +46,10 @@ struct LanguageSpec
     void   setup();
     string tokenToName(TokenId id);
 
-    map<Utf8, TokenId>         keywords;
-    map<Utf8, TypeInfoNative*> nativeTypes;
-    map<Utf8, Property>        properties;
-    map<Utf8, Intrinsic>       intrinsics;
+    unordered_map<Utf8Crc, TokenId, Utf8CrcKeyHash, Utf8CrcKeyEqual>         keywords;
+    unordered_map<Utf8Crc, TypeInfoNative*, Utf8CrcKeyHash, Utf8CrcKeyEqual> nativeTypes;
+    unordered_map<Utf8Crc, Property, Utf8CrcKeyHash, Utf8CrcKeyEqual>        properties;
+    unordered_map<Utf8Crc, Intrinsic, Utf8CrcKeyHash, Utf8CrcKeyEqual>       intrinsics;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
