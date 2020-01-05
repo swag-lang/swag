@@ -29,7 +29,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
     g_ThreadMgr.addJob(newJob);
 }
 
-void Generic::updateGenericParameters(VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
+bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
     for (int i = 0; i < typeGenericParameters.size(); i++)
     {
@@ -45,11 +45,30 @@ void Generic::updateGenericParameters(VectorNative<TypeInfoParam*>& typeGenericP
             param->typeInfo = match.genericParametersCallTypes[i];
         }
 
+        // We should not instantiate with unresolved types
+        auto genGen  = match.genericParametersGenTypes[i];
+        if (genGen->kind == TypeInfoKind::Generic)
+        {
+            if (param->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+            {
+                auto symbol = match.symbolName;
+                return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped integer, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+            }
+
+            if (param->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+            {
+                auto symbol = match.symbolName;
+                return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped float, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+            }
+        }
+
         auto nodeParam           = nodeGenericParameters[i];
         nodeParam->kind          = AstNodeKind::ConstDecl;
         nodeParam->computedValue = param->value;
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
+
+    return true;
 }
 
 TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo)
@@ -197,7 +216,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters
-    updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
+    SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
     newType->computeName();
 
     end(context, structNode, waitSymbol);
@@ -231,7 +250,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Replace generic types and values in the function generic parameters
-    updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
+    SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match));
     newType->computeName();
 
     end(context, funcNode, true);

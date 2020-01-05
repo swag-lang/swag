@@ -780,30 +780,6 @@ anotherTry:
         }
     }
 
-    // We should not instantiate with unresolved types
-    if (genericMatches.size() == 1)
-    {
-        for (int i = 0; i < genericMatches[0].genericParametersGenTypes.size(); i++)
-        {
-            auto callGen = genericMatches[0].genericParametersCallTypes[i];
-            auto genGen  = genericMatches[0].genericParametersGenTypes[i];
-            if (genGen->kind == TypeInfoKind::Generic)
-            {
-                if (callGen->flags & TYPEINFO_UNTYPED_INTEGER)
-                {
-                    auto symbol = *dependentSymbols.begin();
-                    return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped integer, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
-                }
-
-                if (callGen->flags & TYPEINFO_UNTYPED_FLOAT)
-                {
-                    auto symbol = *dependentSymbols.begin();
-                    return context->report({context->node, format("cannot instantiate generic %s '%s' with an untyped float, you need to specify a type\n", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
-                }
-            }
-        }
-    }
-
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
