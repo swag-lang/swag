@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
@@ -256,7 +256,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 
         VectorNative<char32_t> uni;
         token.text.toUni32(uni);
-        SWAG_VERIFY(uni.size() == 1, sourceFile->report({ sourceFile, token, format("invalid character literal \"%s\", this is a string, not a character", token.text.c_str()) }));
+        SWAG_VERIFY(uni.size() == 1, sourceFile->report({ sourceFile, token, format("ivalid character literal '%s', this is a string, not a character", token.text.c_str()) }));
 
         token.id              = TokenId::LiteralCharacter;
         token.literalType     = g_TypeMgr.typeInfoChar;
