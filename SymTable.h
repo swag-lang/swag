@@ -81,6 +81,32 @@ struct SymbolName
     uint32_t   cptOverloadsInit = 0;
 };
 
+struct SymTableHash
+{
+    static const int          MAX_HASH = 47;
+    VectorNative<SymbolName*> map[MAX_HASH];
+
+    SymbolName* find(const Utf8Crc& str)
+    {
+        int idx = str.crc % MAX_HASH;
+        for (auto one : map[idx])
+        {
+            if (one->name.crc != str.crc)
+                continue;
+            if (!strcmp((const char*) one->name.buffer, (const char*) str.buffer))
+                return one;
+        }
+
+        return nullptr;
+    }
+
+    void add(SymbolName* data)
+    {
+        int idx = data->name.crc % MAX_HASH;
+        map[idx].push_back(data);
+    }
+};
+
 struct SymTable
 {
     SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
@@ -96,9 +122,9 @@ struct SymTable
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
-    unordered_map<Utf8Crc, SymbolName*, Utf8CrcKeyHash, Utf8CrcKeyEqual> mapNames;
-    VectorNative<SymbolOverload*>                                        structVarsToDrop;
-    shared_mutex                                                         mutex;
+    SymTableHash                  mapNames;
+    VectorNative<SymbolOverload*> structVarsToDrop;
+    shared_mutex                  mutex;
 
     Scope* scope;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
