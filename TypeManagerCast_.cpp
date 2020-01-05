@@ -202,6 +202,23 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             return true;
+
+        case NativeTypeKind::String:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                char32_t ch;
+                if (fromNode->computedValue.text.toChar32(ch))
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->computedValue.reg.ch = ch;
+                        fromNode->typeInfo             = g_TypeMgr.typeInfoChar;
+                    }
+
+                    return true;
+                }
+            }
+            break;
         }
     }
     else
@@ -210,6 +227,23 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         {
         case NativeTypeKind::U32:
             return true;
+
+        case NativeTypeKind::String:
+            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            {
+                char32_t ch;
+                if (fromNode->computedValue.text.toChar32(ch))
+                {
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->computedValue.reg.ch = ch;
+                        fromNode->typeInfo             = g_TypeMgr.typeInfoChar;
+                    }
+
+                    return true;
+                }
+            }
+            break;
         }
 
         if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)

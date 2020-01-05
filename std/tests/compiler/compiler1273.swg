@@ -1,4 +1,4 @@
-var g: u8 = cast(u8) 'c'
+var g: u8 = cast(u8) "c"'char
 
 const charCategory: [255] u8 = ?
  

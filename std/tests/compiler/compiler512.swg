@@ -1,6 +1,3 @@
-
-
-
 func(T) valueof(x: any)->T
 {
 	ptr := cast(*T) @dataof(x)
@@ -15,15 +12,15 @@ func toto(xx: string, a: ...)
 	while i < @countof(xx)
 	{
 		c := cast(char) xx[i]
-		if c == '%'
+		if c == "%"'char
 		{
 			i += 1
 			switch cast(char) xx[i]
 			{
-			case 'd':
+			case "d"'char:
 				@assert(valueof!s32(a[idx]) == 10)
 				idx += 1
-			case 's':
+			case "s"'char:
 				@assert(valueof!string(a[idx]) == "toto")	
 				idx += 1				
 			}

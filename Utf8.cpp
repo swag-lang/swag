@@ -346,12 +346,26 @@ int Utf8::find(const char* str) const
     return (int) (pz - buffer);
 }
 
-void Utf8::toUni32(VectorNative<char32_t>& uni)
+bool Utf8::toChar32(char32_t& ch)
+{
+    ch = 0;
+    VectorNative<char32_t> uni;
+    toUni32(uni, 2);
+    if (uni.size() != 1)
+        return false;
+    ch = uni[0];
+    return true;
+}
+
+void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
 {
     uni.clear();
     const char* pz = buffer;
     while (*pz)
     {
+        if (maxChars != -1 && uni.size() >= maxChars)
+            return;
+
         auto c = *pz++;
 
         if ((c & 0x80) == 0)

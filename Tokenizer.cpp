@@ -276,12 +276,6 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             return true;
         }
 
-        if (c == '\'')
-        {
-            SWAG_CHECK(doCharLiteral(token));
-            return true;
-        }
-
         // Symbols
         if (doSymbol(c, token))
         {

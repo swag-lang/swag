@@ -1,14 +1,11 @@
 #module compiler26
 #unittest pass lexer;
 
-'A'
-'0' '\n''\r'
-'\x01'
-'\u1234'
-'\U12345678'
+"A"'char
+"0"'char "\n"'char"\r"'char
+"\x01"'char
+"\u1234"'char
+"\U12345678"'char
 
 #unittest error;
-'\xFFF'
-
-#unittest error;
-'00
+"\xFFF"'char

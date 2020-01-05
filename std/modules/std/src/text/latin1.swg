@@ -40,32 +40,32 @@ namespace std.latin1
 	#[swag.inline, swag.constexpr]        
     public
     {
-        func isDigit(c: u8)         => c >= cast(u8) '0' && c <= cast(u8) '9'
+        func isDigit(c: u8)         => c >= cast(u8) "0"'char && c <= cast(u8) "9"'char
         func isUpper(c: u8)         => charCategory[c] == UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
         
         func isLetter(c: u8)->bool
         {
-            return  (c >= cast(u8) 'a' && c <= cast(u8) 'z') || 
-                    (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
+            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) || 
+                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) || 
                     (c >= 0x80 && unicode.isLetter(charCategory[c]))
         }
         
         func isLetterOrDigit(c: u8)->bool
         {
-            return  (c >= cast(u8) 'a' && c <= cast(u8) 'z') || 
-                    (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
-                    (c >= cast(u8) '0' && c <= cast(u8) '9') || 
+            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) || 
+                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) || 
+                    (c >= cast(u8) "0"'char && c <= cast(u8) "9"'char) || 
                     (c >= 0x80 && unicode.isLetterOrDigit(charCategory[c]))
         }        
         
 		func isWhiteSpace(c: u8)->bool
         {
-            return  c == cast(u8) ' ' || 
-                    (c >= cast(u8) '\x09' && c <= cast(u8) '\x0d') || 
-                    c == cast(u8) '\xa0' || 
-                    c == cast(u8) '\x85'
+            return  c == cast(u8) " "'char || 
+                    (c >= cast(u8) "\x09"'char && c <= cast(u8) "\x0d"'char) || 
+                    c == cast(u8) "\xa0"'char || 
+                    c == cast(u8) "\x85"'char
         }
     }
 }
