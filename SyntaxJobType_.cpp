@@ -156,11 +156,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     auto        rootScope = sourceFile->scopeRoot;
     scoped_lock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->name);
-    if (symbol)
-    {
-        // Must release struct node, it's useless
-    }
-    else
+    if (!symbol)
     {
         auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
