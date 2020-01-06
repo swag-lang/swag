@@ -548,18 +548,31 @@ TypeInfo* TypeInfoStruct::clone()
     newType->itable            = itable;
     newType->maxPaddingSize    = maxPaddingSize;
 
-    for (int i = 0; i < genericParameters.size(); i++)
+    int size = (int) genericParameters.size();
+    newType->genericParameters.reserve(size);
+    for (int i = 0; i < size; i++)
     {
         auto param = static_cast<TypeInfoParam*>(genericParameters[i]);
         param      = static_cast<TypeInfoParam*>(param->clone());
         newType->genericParameters.push_back(param);
     }
 
-    for (int i = 0; i < childs.size(); i++)
+    size = (int) fields.size();
+    newType->fields.reserve(size);
+    for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(childs[i]);
+        auto param = static_cast<TypeInfoParam*>(fields[i]);
         param      = static_cast<TypeInfoParam*>(param->clone());
-        newType->childs.push_back(param);
+        newType->fields.push_back(param);
+    }
+
+    size = (int) methods.size();
+    newType->methods.reserve(size);
+    for (int i = 0; i < size; i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(methods[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
+        newType->methods.push_back(param);
     }
 
     newType->copyFrom(this);
@@ -616,12 +629,12 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         if (scope != other->scope)
             return false;
 
-        int childSize = (int) childs.size();
-        if (childSize != other->childs.size())
+        int childSize = (int) fields.size();
+        if (childSize != other->fields.size())
             return false;
         for (int i = 0; i < childSize; i++)
         {
-            if (!childs[i]->isSame(other->childs[i], isSameFlags))
+            if (!fields[i]->isSame(other->fields[i], isSameFlags))
                 return false;
         }
     }

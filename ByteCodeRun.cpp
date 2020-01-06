@@ -5,6 +5,8 @@
 #include "ByteCodeOp.h"
 #include "Workspace.h"
 #include "Context.h"
+#include "Diagnostic.h"
+#include "DiagnosticInfos.h"
 
 ByteCodeRun g_Run;
 
@@ -1842,37 +1844,31 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     return true;
 }
 
-bool ByteCodeRun::run(ByteCodeRunContext* runContext, bool& exception, int& exceptionCode)
+static int exceptionHandler(ByteCodeRunContext* runContext)
+{
+    auto       ip = runContext->ip - 1;
+    Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
+    diag.showDiagnosticInfos = true;
+    runContext->bc->sourceFile->report(diag);
+
+    if (g_CommandLine.debug)
+    {
+        SWAG_ASSERT(false);
+        return EXCEPTION_CONTINUE_EXECUTION;
+    }
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
+bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
     __try
     {
         if (!g_Run.runLoop(runContext))
             return false;
     }
-    __except (EXCEPTION_EXECUTE_HANDLER)
+    __except (exceptionHandler(runContext))
     {
-        exceptionCode = GetExceptionCode();
-        exception     = true;
-        return false;
-    }
-
-    return true;
-}
-
-bool ByteCodeRun::run(ByteCodeRunContext* runContext)
-{
-    bool exception     = false;
-    int  exceptionCode = 0;
-    if (!g_Run.run(runContext, exception, exceptionCode))
-    {
-        if (exception)
-        {
-            auto       ip = runContext->ip - 1;
-            Diagnostic diag{ip->node, ip->node->token, format("exception '%X' during bytecode execution !", exceptionCode)};
-            diag.showDiagnosticInfos = true;
-            runContext->bc->sourceFile->report(diag);
-        }
-
         return false;
     }
 

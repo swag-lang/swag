@@ -42,6 +42,7 @@ void DiagnosticInfos::reportError(const Utf8& msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print(msg);
+    g_Log.eol();
     log();
     g_Log.setDefaultColor();
     g_Log.unlock();

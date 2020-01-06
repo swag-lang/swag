@@ -126,7 +126,20 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         condVarDone.notify_all();
 }
 
-void ThreadManager::executeOneJob(Job* job, int& exceptionCode)
+static int exceptionHandler()
+{
+    g_diagnosticInfos.reportError("exception during job execution !");
+
+    if (g_CommandLine.debug)
+    {
+        SWAG_ASSERT(false);
+        return EXCEPTION_CONTINUE_EXECUTION;
+    }
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
+void ThreadManager::executeOneJob(Job* job)
 {
     __try
     {
@@ -135,9 +148,8 @@ void ThreadManager::executeOneJob(Job* job, int& exceptionCode)
         if (result == JobResult::ReleaseJob)
             job->release();
     }
-    __except (EXCEPTION_EXECUTE_HANDLER)
+    __except (exceptionHandler())
     {
-        exceptionCode = GetExceptionCode();
     }
 }
 
@@ -204,15 +216,7 @@ void ThreadManager::participate(mutex& lock, uint32_t affinity, const function<b
         auto job = getJob(affinity, canGetJob);
         if (!job)
             continue;
-
-        int exceptionCode = 0;
-        g_ThreadMgr.executeOneJob(job, exceptionCode);
-
-        // Job has raised an exception !
-        if (exceptionCode)
-        {
-            g_diagnosticInfos.reportError(format("exception '%X' during job execution !", exceptionCode));
-        }
+        g_ThreadMgr.executeOneJob(job);
     }
 }
 
@@ -222,12 +226,5 @@ void ThreadManager::participate(const function<bool(Job*)>& canGetJob)
     if (!job)
         return;
 
-    int exceptionCode = 0;
-    g_ThreadMgr.executeOneJob(job, exceptionCode);
-
-    // Job has raised an exception !
-    if (exceptionCode)
-    {
-        g_diagnosticInfos.reportError(format("exception '%X' during job execution !", exceptionCode));
-    }
+    g_ThreadMgr.executeOneJob(job);
 }

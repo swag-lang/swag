@@ -11,6 +11,10 @@ TypeTable::TypeTable()
     concreteList.registerInit();
 }
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match bootstrap.swg
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 struct ConcreteStringSlice
 {
     void*    buffer;
@@ -58,8 +62,9 @@ struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo    base;
     ConcreteStringSlice fields;
-    ConcreteStringSlice attributes;
+    ConcreteStringSlice methods;
     ConcreteStringSlice interfaces;
+    ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoFunc
@@ -322,30 +327,49 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
         SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
 
+        // Fields
         concreteType->fields.buffer = nullptr;
-        concreteType->fields.count  = realType->childs.size();
+        concreteType->fields.count  = realType->fields.size();
         if (concreteType->fields.count)
         {
-            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->childs.size() * sizeof(void*));
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->fields.count * sizeof(void*));
             ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
             concreteType->fields.buffer     = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
-            for (int field = 0; field < concreteType->fields.count; field++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+            for (int idx = 0; idx < concreteType->fields.count; idx++)
+            {
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, realType->fields[idx]));
+            }
         }
 
+        // Methods
+        concreteType->methods.buffer = nullptr;
+        concreteType->methods.count  = realType->methods.size();
+        if (concreteType->methods.count)
+        {
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->methods.count * sizeof(void*));
+            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+            concreteType->methods.buffer    = addrArray;
+            module->constantSegment.addInitPtr(OFFSETOF(concreteType->methods.buffer), storageArray);
+            for (int idx = 0; idx < concreteType->methods.count; idx++)
+            {
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, realType->methods[idx]));
+            }
+        }
+
+        // Interfaces
         concreteType->interfaces.buffer = nullptr;
         concreteType->interfaces.count  = realType->interfaces.size();
         if (concreteType->interfaces.count)
         {
-            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->interfaces.size() * sizeof(void*));
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->interfaces.count * sizeof(void*));
             ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
             concreteType->interfaces.buffer = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->interfaces.buffer), storageArray);
-            for (int field = 0; field < concreteType->interfaces.count; field++)
+            for (int idx = 0; idx < concreteType->interfaces.count; idx++)
             {
-                auto typeItf = realType->interfaces[field];
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, typeItf));
+                auto typeItf = realType->interfaces[idx];
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, typeItf));
             }
         }
 
@@ -423,7 +447,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
     typePtr->ptrCount    = 1;
-    typePtr->finalType   = ((TypeInfoParam*) typeStruct->childs[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
+    typePtr->finalType   = ((TypeInfoParam*) typeStruct->fields[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
     typePtr->pointedType = typePtr->finalType;
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);

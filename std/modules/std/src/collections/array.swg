@@ -14,7 +14,15 @@ namespace std.collections
     }
 
     impl Array
-    {               
+    {    
+        public
+        {
+            func opCount(using self)->u32
+            {
+                return count
+            }
+        }
+
         public
         {
             #[swag.nodoc]

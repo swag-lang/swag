@@ -13,7 +13,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opInit)
         return true;
 
-    for (auto typeParam : typeInfoStruct->childs)
+    for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
@@ -61,7 +61,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
     }
 
-    for (auto param : typeInfoStruct->childs)
+    for (auto param : typeInfoStruct->fields)
     {
         auto varDecl = CastAst<AstVarDecl>(param->node, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(param->typeInfo);
@@ -192,7 +192,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     if (!needDrop)
     {
-        for (auto typeParam : typeInfoStruct->childs)
+        for (auto typeParam : typeInfoStruct->fields)
         {
             auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
@@ -228,7 +228,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
 
-    for (auto typeParam : typeInfoStruct->childs)
+    for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
@@ -319,7 +319,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     if (!needPostMove)
     {
-        for (auto typeParam : typeInfoStruct->childs)
+        for (auto typeParam : typeInfoStruct->fields)
         {
             auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
@@ -355,7 +355,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
 
-    for (auto typeParam : typeInfoStruct->childs)
+    for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
@@ -412,7 +412,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     if (!needPostCopy)
     {
-        for (auto typeParam : typeInfoStruct->childs)
+        for (auto typeParam : typeInfoStruct->fields)
         {
             auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
@@ -448,7 +448,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
 
-    for (auto typeParam : typeInfoStruct->childs)
+    for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)

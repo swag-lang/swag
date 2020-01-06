@@ -461,11 +461,11 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
 
-    matchParameters(context, childs);
+    matchParameters(context, fields);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, childs);
+    matchNamedParameters(context, fields);
     if (context.result != MatchResult::Ok)
         return;
 
@@ -474,7 +474,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
 
 TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 {
-    for (auto child : childs)
+    for (auto child : fields)
     {
         if (child->namedParam == childName)
             return child;

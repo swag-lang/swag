@@ -12,7 +12,7 @@ struct ThreadManager
     void addJobNoLock(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
-    void executeOneJob(Job* job, int& exceptionCode);
+    void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
     void participate(mutex& lock, uint32_t affinity, const function<bool(Job*)>& canGetJob = nullptr);

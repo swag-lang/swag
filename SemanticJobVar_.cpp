@@ -127,7 +127,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
 
     auto ptrDest    = segment->addressNoLock(offset);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
-    for (auto field : typeStruct->childs)
+    for (auto field : typeStruct->fields)
     {
         auto child   = field->node;
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -642,7 +642,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
         }
 
-        if (typeStruct && identifier->callParameters && identifier->callParameters->childs.size() == typeStruct->childs.size())
+        if (typeStruct && identifier->callParameters && identifier->callParameters->childs.size() == typeStruct->fields.size())
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 

@@ -2050,9 +2050,9 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     // For a tuple initialization, every parameters must be covered
     if (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
     {
-        if (countParams != typeStruct->childs.size())
+        if (countParams != typeStruct->fields.size())
         {
-            return context->report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->childs.size(), countParams)});
+            return context->report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->fields.size(), countParams)});
         }
     }
 

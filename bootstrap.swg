@@ -195,8 +195,9 @@ namespace swag
 	{
 		base: 		TypeInfo
 		fields:		const [..] *TypeInfoParam
-		attributes:	const [..] (string, any)
+		methods:	const [..] *TypeInfoParam
         interfaces: const [..] *TypeInfoParam
+		attributes:	const [..] (string, any)
 	}
     
 	struct TypeInfoFunc

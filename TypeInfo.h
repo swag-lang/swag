@@ -531,7 +531,8 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
 
     VectorNative<TypeInfoParam*> genericParameters;
-    VectorNative<TypeInfoParam*> childs;
+    VectorNative<TypeInfoParam*> fields;
+    VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     shared_mutex                 mutex;
     SymbolAttributes             attributes;

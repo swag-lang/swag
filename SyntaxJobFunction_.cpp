@@ -400,6 +400,19 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->ownerCompilerIfBlock->addSymbol(symbolName);
     }
 
+    // Count number of methods to resolve
+    if (currentScope->kind == ScopeKind::Struct)
+    {
+        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
+        auto typeParam        = g_Allocator.alloc<TypeInfoParam>();
+        typeParam->namedParam = funcNode->name;
+        typeParam->typeInfo   = funcNode->typeInfo;
+        if (funcNode->ownerCompilerIfBlock)
+            funcNode->ownerCompilerIfBlock->methodsCount.push_back(typeParam);
+        unique_lock lk(typeStruct->mutex);
+        typeStruct->methods.push_back(typeParam);
+    }
+
     // Dispatch owners
     if (funcNode->genericParameters)
     {

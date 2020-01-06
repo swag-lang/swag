@@ -48,14 +48,7 @@ void JobThread::loop()
             continue;
         }
 
-        int exceptionCode = 0;
-        g_ThreadMgr.executeOneJob(job, exceptionCode);
-
-        // Job has raised an exception !
-        if (exceptionCode)
-        {
-            g_diagnosticInfos.reportError(format("exception '%X' during job execution !", exceptionCode));
-        }
+        g_ThreadMgr.executeOneJob(job);
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();

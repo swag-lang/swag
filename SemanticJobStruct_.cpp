@@ -68,7 +68,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // We need now the pointer to the itable
     auto     typeInterface   = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-    uint32_t numFctInterface = (uint32_t) typeInterface->childs.size();
+    uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
 
     map<TypeInfoParam*, AstNode*> mapItToFunc;
     VectorNative<AstNode*>        mapItIdxToFunc;
@@ -168,7 +168,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     {
         if (mapItIdxToFunc[idx] == nullptr)
         {
-            auto missingNode = typeInterface->childs[idx];
+            auto missingNode = typeInterface->fields[idx];
             notes.push_back(new Diagnostic({missingNode->node, missingNode->node->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
     }
@@ -321,10 +321,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->offset     = storageOffset;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
-            typeInfo->childs.push_back(typeParam);
+            typeInfo->fields.push_back(typeParam);
         }
 
-        typeParam           = typeInfo->childs[storageIndex];
+        typeParam           = typeInfo->fields[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
         typeParam->index    = storageIndex;
@@ -378,7 +378,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         bool          relocated = false;
         if (typeParam && typeParam->attributes.getValue("swag.offset.name", forceOffset))
         {
-            for (auto p : typeInfo->childs)
+            for (auto p : typeInfo->fields)
             {
                 if (p->namedParam == forceOffset.text)
                 {
@@ -562,7 +562,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->node       = child;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
-            typeITable->childs.push_back(typeParam);
+            typeITable->fields.push_back(typeParam);
 
             // Verify signature
             SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
@@ -575,7 +575,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
         }
 
-        typeParam           = typeITable->childs[storageIndex];
+        typeParam           = typeITable->fields[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
         typeParam->index    = storageIndex;
@@ -610,7 +610,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer per itable
@@ -621,7 +621,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->name     = typeParam->typeInfo->name;
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = 0;
-        typeInterface->childs.push_back(typeParam);
+        typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
         typeParam           = g_Allocator.alloc<TypeInfoParam>();
@@ -630,7 +630,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = sizeof(void*);
         typeParam->index    = 1;
-        typeInterface->childs.push_back(typeParam);
+        typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
     }
 
