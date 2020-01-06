@@ -390,6 +390,14 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     typeFunc->attributes             = move(funcNode->collectAttributes);
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
+
+    // Register method
+    if (!(symbolFlags & OVERLOAD_INCOMPLETE) && funcNode->ownerStructScope && !(funcNode->flags & AST_FROM_GENERIC) && (funcNode->ownerScope->kind == ScopeKind::Struct))
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        context->job->decreaseMethodCount(typeStruct);
+    }
+
     return true;
 }
 

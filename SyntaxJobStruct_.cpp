@@ -12,9 +12,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         *result = implNode;
 
     // Identifier
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
-    implNode->flags |= AST_NO_BYTECODE;
+    {
+        ScopedMainNode scopedMainNode(this, implNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
+        implNode->flags |= AST_NO_BYTECODE;
+    }
 
     // impl TITI for TOTO syntax (interface implementation for a given struct)
     bool implInterface    = false;
@@ -33,15 +36,21 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto newScope         = Ast::newScope(implNode, identifierStruct->childs.front()->name, ScopeKind::Struct, currentScope, true);
+    auto& structName      = identifierStruct->childs.front()->name;
+    implNode->name        = structName;
+    auto newScope         = Ast::newScope(implNode, structName, ScopeKind::Struct, currentScope, true);
     implNode->structScope = newScope;
 
-    // Be sure we have associated a struct typeinfo
+    // Be sure we have associated a struct typeinfo (we can parse an impl block before the corresponding struct)
     {
         scoped_lock lk1(newScope->owner->mutex);
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
-            newScope->owner->typeInfo = g_Allocator.alloc<TypeInfoStruct>();
+        {
+            auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
+            typeStruct->scope         = newScope;
+            newScope->owner->typeInfo = typeStruct;
+        }
     }
 
     // Count number of interfaces
@@ -123,6 +132,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             }
 
             structNode->typeInfo           = newScope->owner->typeInfo;
+            typeInfo->structNode           = structNode;
             newScope->owner                = structNode;
             typeInfo->name                 = structNode->name;
             typeInfo->scope                = newScope;

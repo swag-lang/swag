@@ -162,10 +162,11 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     }
     else
     {
-        auto typeInfo   = g_Allocator.alloc<TypeInfoStruct>();
-        auto newScope   = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        typeInfo->name  = structNode->name;
-        typeInfo->scope = newScope;
+        auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+        auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
+        typeInfo->structNode = structNode;
+        typeInfo->name       = structNode->name;
+        typeInfo->scope      = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo   = typeInfo;
         structNode->scope      = newScope;

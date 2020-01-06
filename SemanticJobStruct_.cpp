@@ -209,6 +209,19 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
     }
 }
 
+void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
+{
+    unique_lock lk(typeInfoStruct->mutex);
+    unique_lock lk1(typeInfoStruct->scope->symTable.mutex);
+
+    SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
+    typeInfoStruct->cptRemainingMethods--;
+    if (!typeInfoStruct->cptRemainingMethods)
+    {
+        typeInfoStruct->scope->dependentJobs.setRunning();
+    }
+}
+
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -272,8 +285,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->job;
 
-    typeInfo->structNode = node;
-    typeInfo->name       = format("%s", node->name.c_str());
+    SWAG_ASSERT(typeInfo->structNode);
+    SWAG_ASSERT(typeInfo->structNode == node);
+
     if (node->attributeFlags & ATTRIBUTE_PACK)
         node->packing = 1;
 

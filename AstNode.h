@@ -667,5 +667,5 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<AstCompilerIfBlock*> blocks;
     VectorNative<SymbolName*>         symbols;
     VectorNative<TypeInfoStruct*>     interfacesCount;
-    VectorNative<TypeInfoParam*>      methodsCount;
+    VectorNative<TypeInfoStruct*>     methodsCount;
 };

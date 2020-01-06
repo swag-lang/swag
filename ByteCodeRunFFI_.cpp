@@ -18,7 +18,8 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
 
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* nodeFunc)
 {
-    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload && nodeFunc->resolvedSymbolOverload->typeInfo);
+    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
+    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
 
     // Load module if specified

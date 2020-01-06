@@ -224,8 +224,8 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         decreaseInterfaceCount(typeStruct);
 
     // Decrease methods count to resolve
-    for (auto typeParam : block->methodsCount)
-        typeParam->namedParam.clear();
+    for (auto typeStruct : block->methodsCount)
+        decreaseMethodCount(typeStruct);
 
     // Do the same for all embedded blocks
     for (auto p : block->blocks)

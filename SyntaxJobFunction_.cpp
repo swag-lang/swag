@@ -197,7 +197,6 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         if (result)
             *result = allParams;
 
-        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
         while (token.id != TokenId::SymRightParen)
         {
             SWAG_CHECK(doFuncDeclParameter(allParams));
@@ -408,8 +407,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeParam->namedParam = funcNode->name;
         typeParam->typeInfo   = funcNode->typeInfo;
         if (funcNode->ownerCompilerIfBlock)
-            funcNode->ownerCompilerIfBlock->methodsCount.push_back(typeParam);
+            funcNode->ownerCompilerIfBlock->methodsCount.push_back(typeStruct);
         unique_lock lk(typeStruct->mutex);
+        typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
     }
 
@@ -419,14 +419,16 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Ast::visit(funcNode->genericParameters, [&](AstNode* n) {
             n->ownerFct   = funcNode;
             n->ownerScope = newScope;
+            n->flags |= AST_IN_FCT_PROTOTYPE;
         });
     }
 
     // Parameters
     if (!funcForCompiler)
     {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
+        Scoped      scoped(this, newScope);
+        ScopedFct   scopedFct(this, funcNode);
+        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
@@ -440,8 +442,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymMinusGreat)
         {
             typeNode->flags |= AST_FUNC_RETURN_DEFINED;
-            Scoped    scoped(this, newScope);
-            ScopedFct scopedFct(this, funcNode);
+            Scoped      scoped(this, newScope);
+            ScopedFct   scopedFct(this, funcNode);
+            ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));

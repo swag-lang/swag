@@ -36,6 +36,24 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
     setPending();
 }
 
+void Job::waitForAllStructMethods(TypeInfo* typeInfo)
+{
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+    if (typeInfo->kind != TypeInfoKind::Struct)
+        return;
+
+    auto        typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->cptRemainingMethods == 0)
+        return;
+    SWAG_ASSERT(typeInfoStruct->structNode);
+    SWAG_ASSERT(typeInfoStruct->scope);
+    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
+    typeInfoStruct->scope->dependentJobs.add(this);
+    setPending();
+}
+
 void Job::setPending()
 {
     SWAG_ASSERT(baseContext);

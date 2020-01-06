@@ -46,7 +46,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
         }
 
         // We should not instantiate with unresolved types
-        auto genGen  = match.genericParametersGenTypes[i];
+        auto genGen = match.genericParametersGenTypes[i];
         if (genGen->kind == TypeInfoKind::Generic)
         {
             if (param->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
@@ -213,6 +213,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
+    newType->structNode  = structNode;
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters

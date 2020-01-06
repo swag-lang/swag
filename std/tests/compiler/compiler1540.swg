@@ -27,6 +27,6 @@ impl X
     {
         @assert(i.namedParam == "toto" || i.namedParam == "titi")
         ptrFunc := cast(const *TypeInfoFunc) i.pointedType
-        @assert(ptrFunc.returnType != null)
+        //@assert(ptrFunc.returnType != null)
     }
 }

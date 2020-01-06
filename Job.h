@@ -68,6 +68,7 @@ struct Job : public PoolElem
     void addDependentJob(Job* job);
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
+    void waitForAllStructMethods(TypeInfo* typeInfo);
     void setPending();
 
     shared_mutex           executeMutex;

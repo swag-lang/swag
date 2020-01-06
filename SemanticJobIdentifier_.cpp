@@ -1330,7 +1330,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             else
             {
                 // If a structure is referencing itself, we will match the incomplete symbol for now
-                if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface) && node->ownerMainNode && node->ownerMainNode->name == symbol->name)
+                if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface) &&
+                    node->ownerMainNode &&
+                    node->ownerMainNode->kind != AstNodeKind::Impl &&
+                    node->ownerMainNode->name == symbol->name)
                 {
                     SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));
                     SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
@@ -1338,6 +1341,29 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     node->resolvedSymbolName     = symbol;
                     node->resolvedSymbolOverload = symbol->overloads[0];
                     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                }
+                else if (symbol->kind == SymbolKind::Struct && symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+                {
+                    // A prototype inside an impl block can reference its own incomplete structure
+                    /*if (node->ownerStructScope && node->ownerStructScope->name == symbol->name && node->flags & AST_IN_FCT_PROTOTYPE)
+                    {
+                        g_Log.print("XXXX");
+                        node->resolvedSymbolName     = symbol;
+                        node->resolvedSymbolOverload = symbol->overloads[0];
+                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                    }
+
+                    // The impl identifier can be resolved even if the struct is incomplete
+                    else if (node->ownerMainNode && node->ownerMainNode->name == symbol->name && node->ownerMainNode->kind == AstNodeKind::Impl)
+                    {
+                        node->resolvedSymbolName     = symbol;
+                        node->resolvedSymbolOverload = symbol->overloads[0];
+                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                    }
+                    else*/
+                    {
+                        job->waitForSymbolNoLock(symbol);
+                    }
                 }
                 else
                 {
