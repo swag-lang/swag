@@ -578,7 +578,6 @@ struct AstExpressionList : public AstNode
     TypeInfoListKind listKind;
 
     bool isConst        = false;
-    bool forceConstType = false;
 };
 
 struct AstStruct : public AstNode

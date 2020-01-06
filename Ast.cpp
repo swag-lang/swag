@@ -135,13 +135,8 @@ namespace Ast
 
     void setForceConstType(AstNode* node)
     {
-        if (node)
-        {
-            if (node->kind == AstNodeKind::TypeExpression)
-                ((AstTypeExpression*) node)->forceConstType = true;
-            if (node->kind == AstNodeKind::ExpressionList)
-                ((AstExpressionList*) node)->forceConstType = true;
-        }
+        if (node && node->kind == AstNodeKind::TypeExpression)
+            ((AstTypeExpression*) node)->forceConstType = true;
     }
 
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
