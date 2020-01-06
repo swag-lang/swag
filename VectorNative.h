@@ -166,6 +166,13 @@ struct VectorNative
         count--;
     }
 
+    void erase_unordered(int index)
+    {
+        if (index != count - 1)
+            buffer[index] = buffer[count - 1];
+        count--;
+    }
+
     void append(const VectorNative& other)
     {
         reserve(count + other.count);

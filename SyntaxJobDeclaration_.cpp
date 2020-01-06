@@ -156,7 +156,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    bool isGlobal = currentScope->isGlobal() || (parent && parent->kind == AstNodeKind::Impl);
+    bool isGlobal = currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
