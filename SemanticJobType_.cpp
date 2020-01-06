@@ -145,9 +145,15 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             typeNode->isConst = true;
         if (typeNode->isConst && !typeNode->typeInfo->isConst())
         {
-            auto copyType = typeNode->typeInfo->clone();
-            copyType->setConst();
-            typeNode->typeInfo = copyType;
+            unique_lock lk(typeNode->typeInfo->mutex);
+            if (!typeNode->typeInfo->constCopy)
+            {
+                auto copyType = typeNode->typeInfo->clone();
+                copyType->setConst();
+                typeNode->typeInfo->constCopy = copyType;
+            }
+
+            typeNode->typeInfo = typeNode->typeInfo->constCopy;
         }
     }
 

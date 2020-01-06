@@ -189,8 +189,10 @@ struct TypeInfo
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    Utf8 name;
-    Utf8 fullname;
+    Utf8         name;
+    Utf8         fullname;
+    shared_mutex mutex;
+    TypeInfo*    constCopy = nullptr;
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
@@ -534,7 +536,6 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> fields;
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
-    shared_mutex                 mutex;
     SymbolAttributes             attributes;
 
     TypeInfoStruct* itable            = nullptr;
