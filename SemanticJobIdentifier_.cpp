@@ -1342,29 +1342,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     node->resolvedSymbolOverload = symbol->overloads[0];
                     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
                 }
-                else if (symbol->kind == SymbolKind::Struct && symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
-                {
-                    // A prototype inside an impl block can reference its own incomplete structure
-                    /*if (node->ownerStructScope && node->ownerStructScope->name == symbol->name && node->flags & AST_IN_FCT_PROTOTYPE)
-                    {
-                        g_Log.print("XXXX");
-                        node->resolvedSymbolName     = symbol;
-                        node->resolvedSymbolOverload = symbol->overloads[0];
-                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-                    }
-
-                    // The impl identifier can be resolved even if the struct is incomplete
-                    else if (node->ownerMainNode && node->ownerMainNode->name == symbol->name && node->ownerMainNode->kind == AstNodeKind::Impl)
-                    {
-                        node->resolvedSymbolName     = symbol;
-                        node->resolvedSymbolOverload = symbol->overloads[0];
-                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-                    }
-                    else*/
-                    {
-                        job->waitForSymbolNoLock(symbol);
-                    }
-                }
                 else
                 {
                     job->waitForSymbolNoLock(symbol);

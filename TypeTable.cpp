@@ -256,6 +256,18 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     auto typePtr            = g_Allocator.alloc<TypeInfoPointer>();
     concreteTypes[typeInfo] = {typePtr, storageOffset};
 
+    // Build pointer type to structure
+    typePtr->flags |= TYPEINFO_CONST;
+    typePtr->ptrCount    = 1;
+    typePtr->finalType   = ((TypeInfoParam*) typeStruct->fields[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
+    typePtr->pointedType = typePtr->finalType;
+    typePtr->computeName();
+    typePtr->sizeOf = sizeof(void*);
+
+    // Register type and value
+    *ptrTypeInfo = typePtr;
+    *storage     = storageOffset;
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
@@ -442,22 +454,10 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     }
 
     if (lock)
+    {
         module->constantSegment.mutex.unlock();
-
-    // Build pointer type to structure
-    typePtr->flags |= TYPEINFO_CONST;
-    typePtr->ptrCount    = 1;
-    typePtr->finalType   = ((TypeInfoParam*) typeStruct->fields[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
-    typePtr->pointedType = typePtr->finalType;
-    typePtr->computeName();
-    typePtr->sizeOf = sizeof(void*);
-
-    // Register type and value
-    *ptrTypeInfo = typePtr;
-    *storage     = storageOffset;
-
-    if (lock)
         mutexTypes.unlock();
+    }
 
     return true;
 }
