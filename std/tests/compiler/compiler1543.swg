@@ -21,15 +21,20 @@ struct X
 
 impl X
 {
-    func toto(using const self)
+    func toto(using const self, x: Self)
     {
 
     }
+
+    func toto1(using const self, x: Self)
+    {
+
+    }    
 }
 
 #test
 {
     using swag
     ptr := cast(const *TypeInfoStruct) @typeof(X)
-    @assert(@countof(ptr.methods) == 1)
+    //@assert(@countof(ptr.methods) == 1)
 }

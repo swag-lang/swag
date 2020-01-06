@@ -389,8 +389,8 @@ struct AstFuncCallParam : public AstNode
     AstNode*       namedParamNode    = nullptr;
     TypeInfoParam* resolvedParameter = nullptr;
 
-    int      index = 0;
-    uint32_t mustSortParameters : 1;
+    int  index              = 0;
+    bool mustSortParameters = false;
 };
 
 struct AstIf : public AstNode
@@ -486,7 +486,7 @@ struct AstVisit : public AstNode
     AstNode* expression = nullptr;
     AstNode* block      = nullptr;
 
-    uint32_t wantPointer : 1;
+    bool wantPointer = false;
 };
 
 struct AstSwitch : public AstBreakable
@@ -514,7 +514,7 @@ struct AstSwitchCase : public AstNode
     AstNode*   block       = nullptr;
     AstSwitch* ownerSwitch = nullptr;
 
-    uint32_t isDefault : 1;
+    bool isDefault = false;
 };
 
 struct AstSwitchCaseBlock : public AstNode
@@ -525,7 +525,7 @@ struct AstSwitchCaseBlock : public AstNode
 
     int seekJumpNextCase = 0;
 
-    uint32_t isDefault : 1;
+    bool isDefault = false;
 };
 
 struct AstTypeExpression : public AstNode
@@ -537,10 +537,10 @@ struct AstTypeExpression : public AstNode
     int ptrCount = 0;
     int arrayDim = 0;
 
-    uint32_t isSlice : 1;
-    uint32_t isConst : 1;
-    uint32_t isCode : 1;
-    uint32_t forceConstType : 1;
+    bool isSlice        = false;
+    bool isConst        = false;
+    bool isCode         = false;
+    bool forceConstType = false;
 };
 
 struct AstTypeLambda : public AstNode
