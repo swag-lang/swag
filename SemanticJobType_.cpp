@@ -57,55 +57,55 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
-    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+    if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo)
         return true;
 
     // Code
-    if (node->isCode)
+    if (typeNode->isCode)
     {
-        node->typeInfo = g_TypeMgr.typeInfoCode;
+        typeNode->typeInfo = g_TypeMgr.typeInfoCode;
         return true;
     }
 
-    if (node->identifier)
+    if (typeNode->identifier)
     {
-        node->typeInfo = node->identifier->typeInfo;
-        node->inheritOrFlag(node->identifier, AST_IS_GENERIC);
+        typeNode->typeInfo = typeNode->identifier->typeInfo;
+        typeNode->inheritOrFlag(typeNode->identifier, AST_IS_GENERIC);
     }
     else
     {
-        node->typeInfo = node->token.literalType;
+        typeNode->typeInfo = typeNode->token.literalType;
 
         // Typed variadic ?
-        if (node->typeInfo->kind == TypeInfoKind::Variadic && !node->childs.empty())
+        if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
         {
-            auto typeVariadic     = (TypeInfoVariadic*) node->typeInfo->clone();
+            auto typeVariadic     = (TypeInfoVariadic*) typeNode->typeInfo->clone();
             typeVariadic->kind    = TypeInfoKind::TypedVariadic;
-            typeVariadic->rawType = node->childs.front()->typeInfo;
-            node->typeInfo        = typeVariadic;
+            typeVariadic->rawType = typeNode->childs.front()->typeInfo;
+            typeNode->typeInfo    = typeVariadic;
         }
     }
 
     // This is a generic type, not yet known
-    if (!node->typeInfo && node->identifier && node->identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
     {
-        node->resolvedSymbolName     = node->identifier->resolvedSymbolName;
-        node->resolvedSymbolOverload = node->identifier->resolvedSymbolOverload;
-        node->typeInfo               = g_Allocator.alloc<TypeInfoGeneric>();
-        node->typeInfo->name         = node->resolvedSymbolName->name;
-        node->typeInfo               = node->typeInfo;
+        typeNode->resolvedSymbolName     = typeNode->identifier->resolvedSymbolName;
+        typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
+        typeNode->typeInfo               = g_Allocator.alloc<TypeInfoGeneric>();
+        typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
+        typeNode->typeInfo               = typeNode->typeInfo;
     }
 
     // Otherwise, this is strange, we should have a type
-    SWAG_VERIFY(node->typeInfo, internalError(context, "resolveTypeExpression, null type !"));
+    SWAG_VERIFY(typeNode->typeInfo, internalError(context, "resolveTypeExpression, null type !"));
 
     // If type comes from an identifier, be sure it's a type
-    if (node->identifier)
+    if (typeNode->identifier)
     {
-        auto child = node->childs.back();
+        auto child = typeNode->childs.back();
         if (child->resolvedSymbolName)
         {
             auto symName = child->resolvedSymbolName;
@@ -124,63 +124,58 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
 
     // In fact, this is a pointer
-    if (node->ptrCount)
+    if (typeNode->ptrCount)
     {
         auto ptrPointer       = g_Allocator.alloc<TypeInfoPointer>();
-        ptrPointer->ptrCount  = node->ptrCount;
-        ptrPointer->finalType = node->typeInfo;
+        ptrPointer->ptrCount  = typeNode->ptrCount;
+        ptrPointer->finalType = typeNode->typeInfo;
         ptrPointer->sizeOf    = sizeof(void*);
-        if (node->isConst)
+        if (typeNode->isConst)
             ptrPointer->flags |= TYPEINFO_CONST;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
         ptrPointer->pointedType = ptrPointer->computePointedType();
-        node->typeInfo          = ptrPointer;
+        typeNode->typeInfo      = ptrPointer;
     }
 
-    // Const struct
-    else
+    // A struct function parameter is const
+    else if (typeNode->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        // A struct function parameter is const
-        if (node->forceConstType && (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
-            node->isConst = true;
-
-        if (node->isConst && (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
+        if (typeNode->forceConstType)
+            typeNode->isConst = true;
+        if (typeNode->isConst && !typeNode->typeInfo->isConst())
         {
-            if (!node->typeInfo->isConst())
-            {
-                auto copyType = node->typeInfo->clone();
-                copyType->setConst();
-                node->typeInfo = copyType;
-            }
+            auto copyType = typeNode->typeInfo->clone();
+            copyType->setConst();
+            typeNode->typeInfo = copyType;
         }
     }
 
     // In fact, this is an array
-    if (node->arrayDim)
+    if (typeNode->arrayDim)
     {
         // Array without a specified size
-        if (node->arrayDim == UINT32_MAX)
+        if (typeNode->arrayDim == UINT32_MAX)
         {
             auto ptrArray         = g_Allocator.alloc<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
-            ptrArray->pointedType = node->typeInfo;
-            ptrArray->finalType   = node->typeInfo;
-            if (node->isConst)
+            ptrArray->pointedType = typeNode->typeInfo;
+            ptrArray->finalType   = typeNode->typeInfo;
+            if (typeNode->isConst)
                 ptrArray->flags |= TYPEINFO_CONST;
             ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
             ptrArray->computeName();
-            node->typeInfo = ptrArray;
+            typeNode->typeInfo = ptrArray;
         }
         else
         {
-            auto rawType    = node->typeInfo;
+            auto rawType    = typeNode->typeInfo;
             auto totalCount = 1;
-            for (int i = node->arrayDim - 1; i >= 0; i--)
+            for (int i = typeNode->arrayDim - 1; i >= 0; i--)
             {
-                auto child = node->childs[i];
+                auto child = typeNode->childs[i];
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluted at compile time"}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
@@ -190,32 +185,32 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 ptrArray->count = child->computedValue.reg.u32;
                 totalCount *= ptrArray->count;
                 ptrArray->totalCount  = totalCount;
-                ptrArray->pointedType = node->typeInfo;
+                ptrArray->pointedType = typeNode->typeInfo;
                 ptrArray->finalType   = rawType;
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                if (node->isConst)
+                if (typeNode->isConst)
                     ptrArray->flags |= TYPEINFO_CONST;
                 ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
                 ptrArray->computeName();
-                node->typeInfo = ptrArray;
+                typeNode->typeInfo = ptrArray;
             }
         }
     }
-    else if (node->isSlice)
+    else if (typeNode->isSlice)
     {
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
-        ptrSlice->pointedType = node->typeInfo;
+        ptrSlice->pointedType = typeNode->typeInfo;
         ptrSlice->sizeOf      = 2 * sizeof(void*);
-        if (node->isConst)
+        if (typeNode->isConst)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         ptrSlice->computeName();
-        node->typeInfo = ptrSlice;
+        typeNode->typeInfo = ptrSlice;
     }
 
-    node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
-    if (!(node->flags & AST_HAS_STRUCT_PARAMETERS))
-        node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
+    typeNode->computedValue.reg.pointer = (uint8_t*) typeNode->typeInfo;
+    if (!(typeNode->flags & AST_HAS_STRUCT_PARAMETERS))
+        typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     return true;
 }
