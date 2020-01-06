@@ -26,5 +26,7 @@ impl X
     visit i: ptr.methods
     {
         @assert(i.namedParam == "toto" || i.namedParam == "titi")
+        ptrFunc := cast(const *TypeInfoFunc) i.pointedType
+        @assert(ptrFunc.returnType != null)
     }
 }
