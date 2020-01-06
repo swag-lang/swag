@@ -576,8 +576,6 @@ struct AstExpressionList : public AstNode
     uint32_t         storageOffset        = 0;
     uint32_t         storageOffsetSegment = UINT32_MAX;
     TypeInfoListKind listKind;
-
-    bool isConst        = false;
 };
 
 struct AstStruct : public AstNode

@@ -517,7 +517,6 @@ AstNode* AstExpressionList::clone(CloneContext& context)
     newNode->storageOffset        = storageOffset;
     newNode->storageOffsetSegment = storageOffsetSegment;
     newNode->listKind             = listKind;
-    newNode->isConst              = isConst;
 
     return newNode;
 }
