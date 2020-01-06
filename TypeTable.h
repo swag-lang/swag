@@ -1,7 +1,7 @@
 #pragma once
 #include "TypeList.h"
 struct TypeInfo;
-struct SemanticContext;
+struct JobContext;
 struct AstNode;
 struct ConcreteTypeInfo;
 struct SymbolAttributes;
@@ -10,14 +10,103 @@ struct ConcreteStringSlice;
 struct TypeTable
 {
     TypeTable();
-    bool makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
-    bool makeConcreteAttributes(SemanticContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset);
-    bool makeConcreteString(SemanticContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer);
-    bool makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock = true);
+    bool makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
+    bool makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset);
+    bool makeConcreteString(JobContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer);
+    bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock = true);
 
     TypeList concreteList;
 
-    shared_mutex                                  mutexTypes;
+    shared_mutex                              mutexTypes;
     vector<TypeInfo*>                         allTypes;
     map<TypeInfo*, pair<TypeInfo*, uint32_t>> concreteTypes;
 };
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match bootstrap.swg
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+struct ConcreteStringSlice
+{
+    void*    buffer;
+    uint64_t count;
+};
+
+struct ConcreteTypeInfo
+{
+    ConcreteStringSlice name;
+    TypeInfoKind        kind;
+    uint32_t            sizeOf;
+};
+
+struct ConcreteAny
+{
+    void*             value;
+    ConcreteTypeInfo* type;
+};
+
+struct ConcreteTypeInfoNative
+{
+    ConcreteTypeInfo base;
+    NativeTypeKind   nativeKind;
+};
+
+struct ConcreteTypeInfoPointer
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* finalType;
+    ConcreteTypeInfo* pointedType;
+    uint32_t          ptrCount;
+};
+
+struct ConcreteTypeInfoParam
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice namedParam;
+    ConcreteTypeInfo*   pointedType;
+    void*               value;
+    ConcreteStringSlice attributes;
+    uint32_t            offsetOf;
+};
+
+struct ConcreteTypeInfoStruct
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice fields;
+    ConcreteStringSlice methods;
+    ConcreteStringSlice interfaces;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoFunc
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice parameters;
+    ConcreteTypeInfo*   returnType;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoEnum
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice values;
+    ConcreteTypeInfo*   rawType;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoArray
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo* finalType;
+    uint32_t          count;
+    uint32_t          totalCount;
+};
+
+struct ConcreteTypeInfoSlice
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+};
+
+#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))

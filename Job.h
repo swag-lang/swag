@@ -34,14 +34,16 @@ struct JobContext
 
     void reset()
     {
+        baseJob    = nullptr;
         node       = nullptr;
-        result     = ContextResult::Done;
         sourceFile = nullptr;
+        result     = ContextResult::Done;
         expansionNode.clear();
     }
 
     VectorNative<AstNode*> expansionNode;
 
+    Job*        baseJob    = nullptr;
     AstNode*    node       = nullptr;
     SourceFile* sourceFile = nullptr;
 

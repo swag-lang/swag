@@ -3,7 +3,7 @@
 #include "ModuleSemanticJob.h"
 #include "ThreadManager.h"
 #include "SourceFile.h"
-#include "semanticJob.h"
+#include "SemanticJob.h"
 
 thread_local Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 

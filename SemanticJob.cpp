@@ -87,6 +87,7 @@ JobResult SemanticJob::execute()
 
     auto firstNode     = nodes.front();
     baseContext        = &context;
+    context.baseJob    = this;
     context.job        = this;
     context.sourceFile = sourceFile;
     context.result     = ContextResult::Done;

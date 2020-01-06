@@ -3,6 +3,8 @@
 #include "SemanticJob.h"
 #include "Workspace.h"
 #include "Allocator.h"
+#include "ThreadManager.h"
+#include "TypeTableJob.h"
 
 TypeTable::TypeTable()
 {
@@ -11,96 +13,7 @@ TypeTable::TypeTable()
     concreteList.registerInit();
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match bootstrap.swg
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-struct ConcreteStringSlice
-{
-    void*    buffer;
-    uint64_t count;
-};
-
-struct ConcreteTypeInfo
-{
-    ConcreteStringSlice name;
-    TypeInfoKind        kind;
-    uint32_t            sizeOf;
-};
-
-struct ConcreteAny
-{
-    void*             value;
-    ConcreteTypeInfo* type;
-};
-
-struct ConcreteTypeInfoNative
-{
-    ConcreteTypeInfo base;
-    NativeTypeKind   nativeKind;
-};
-
-struct ConcreteTypeInfoPointer
-{
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* finalType;
-    ConcreteTypeInfo* pointedType;
-    uint32_t          ptrCount;
-};
-
-struct ConcreteTypeInfoParam
-{
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice namedParam;
-    ConcreteTypeInfo*   pointedType;
-    void*               value;
-    ConcreteStringSlice attributes;
-    uint32_t            offsetOf;
-};
-
-struct ConcreteTypeInfoStruct
-{
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice fields;
-    ConcreteStringSlice methods;
-    ConcreteStringSlice interfaces;
-    ConcreteStringSlice attributes;
-};
-
-struct ConcreteTypeInfoFunc
-{
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice parameters;
-    ConcreteTypeInfo*   returnType;
-    ConcreteStringSlice attributes;
-};
-
-struct ConcreteTypeInfoEnum
-{
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice values;
-    ConcreteTypeInfo*   rawType;
-    ConcreteStringSlice attributes;
-};
-
-struct ConcreteTypeInfoArray
-{
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-    ConcreteTypeInfo* finalType;
-    uint32_t          count;
-    uint32_t          totalCount;
-};
-
-struct ConcreteTypeInfoSlice
-{
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-};
-
-#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
-
-bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
 {
     if (!typeInfo)
     {
@@ -121,7 +34,7 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concrete
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
+bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
 {
     if (attributes.values.size() == 0)
         return true;
@@ -163,7 +76,7 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
     return true;
 }
 
-bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
+bool TypeTable::makeConcreteString(JobContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
 {
     if (str.empty())
     {
@@ -181,7 +94,7 @@ bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice
     return true;
 }
 
-bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
     if (typeInfo->kind != TypeInfoKind::Param)
         typeInfo = concreteList.registerType(typeInfo);
@@ -276,6 +189,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         concreteType->nativeKind = typeInfo->nativeType;
         break;
     }
+
     case TypeInfoKind::Pointer:
     {
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
@@ -285,6 +199,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
+
     case TypeInfoKind::Param:
     {
         auto concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
@@ -331,62 +246,22 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
         break;
     }
+
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
-        auto realType     = (TypeInfoStruct*) typeInfo;
-
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
-
-        // Fields
-        concreteType->fields.buffer = nullptr;
-        concreteType->fields.count  = realType->fields.size();
-        if (concreteType->fields.count)
-        {
-            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->fields.count * sizeof(void*));
-            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
-            concreteType->fields.buffer     = addrArray;
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
-            for (int idx = 0; idx < concreteType->fields.count; idx++)
-            {
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, realType->fields[idx]));
-            }
-        }
-
-        // Methods
-        concreteType->methods.buffer = nullptr;
-        concreteType->methods.count  = realType->methods.size();
-        if (concreteType->methods.count)
-        {
-            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->methods.count * sizeof(void*));
-            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
-            concreteType->methods.buffer    = addrArray;
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->methods.buffer), storageArray);
-            for (int idx = 0; idx < concreteType->methods.count; idx++)
-            {
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, realType->methods[idx]));
-            }
-        }
-
-        // Interfaces
-        concreteType->interfaces.buffer = nullptr;
-        concreteType->interfaces.count  = realType->interfaces.size();
-        if (concreteType->interfaces.count)
-        {
-            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) concreteType->interfaces.count * sizeof(void*));
-            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
-            concreteType->interfaces.buffer = addrArray;
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->interfaces.buffer), storageArray);
-            for (int idx = 0; idx < concreteType->interfaces.count; idx++)
-            {
-                auto typeItf = realType->interfaces[idx];
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + idx, typeItf));
-            }
-        }
-
+        auto job                   = g_Pool_typeTableJob.alloc();
+        job->dependentJob          = context->baseJob->dependentJob;
+        job->module                = module;
+        job->typeTable             = this;
+        job->sourceFile            = sourceFile;
+        job->concreteTypeInfoValue = concreteTypeInfoValue;
+        job->typeInfo              = typeInfo;
+        job->storageOffset         = storageOffset;
+        g_ThreadMgr.addJob(job);
         break;
     }
+
     case TypeInfoKind::Lambda:
     case TypeInfoKind::FuncAttr:
     {
@@ -409,6 +284,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
         break;
     }
+
     case TypeInfoKind::Enum:
     {
         auto concreteType = (ConcreteTypeInfoEnum*) concreteTypeInfoValue;

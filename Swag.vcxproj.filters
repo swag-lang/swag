@@ -374,6 +374,9 @@
     <ClCompile Include="ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="TypeTableJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -629,6 +632,9 @@
     </ClInclude>
     <ClInclude Include="VectorNative.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTableJob.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
