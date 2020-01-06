@@ -72,8 +72,19 @@ JobResult TypeTableJob::execute()
     context.baseJob    = this;
     baseContext        = &context;
 
-    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface);
-    computeStruct();
+    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
+    {
+        // Need to wait for all methods to be registered !
+        auto realType = (TypeInfoStruct*) typeInfo;
+        waitForAllStructMethods(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
+        computeStruct();
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 
     return JobResult::ReleaseJob;
 }

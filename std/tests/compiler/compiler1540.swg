@@ -21,12 +21,11 @@ impl X
     using swag
     ptr := cast(const *TypeInfoStruct) @typeof(X)
     @assert(@countof(ptr.methods) == 2)
-    //@print(cast(s64) @countof(ptr.methods))
 
     visit i: ptr.methods
     {
         @assert(i.namedParam == "toto" || i.namedParam == "titi")
         ptrFunc := cast(const *TypeInfoFunc) i.pointedType
-        //@assert(ptrFunc.returnType != null)
+        @assert(ptrFunc.returnType != null)
     }
 }
