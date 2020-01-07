@@ -1182,8 +1182,6 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         for (auto child : prevIdRef->childs)
         {
             auto copyChild = Ast::clone(child, idRef);
-            if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
-                SWAG_ASSERT(((AstIdentifier*) copyChild)->identifierRef == idRef);
             if (child == identifierRef->previousResolvedNode)
             {
                 copyChild->flags |= AST_TO_UFCS;
@@ -1200,14 +1198,17 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
             auto copyChild = prevIdRef->childs.front();
             Ast::removeFromParent(copyChild);
             Ast::addChildBack(idRef, copyChild);
-            if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
-                ((AstIdentifier*) copyChild)->identifierRef = idRef;
             if (copyChild == identifierRef->previousResolvedNode)
             {
                 copyChild->flags |= AST_TO_UFCS;
                 break;
             }
         }
+
+        Ast::visit(idRef, [&](AstNode* n) {
+            if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
+                ((AstIdentifier*) n)->identifierRef = idRef;
+        });
     }
 
     identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
@@ -1377,6 +1378,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         canDoUfcs = true;
     if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
         canDoUfcs = node->callParameters;
+
+    if (node->name == "toto")
+        node = node;
 
     if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
