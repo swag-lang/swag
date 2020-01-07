@@ -50,6 +50,7 @@ static const uint64_t AST_IS_SPECIAL_FUNC            = 0x00008000'00000000;
 static const uint64_t AST_NEED_SCOPE                 = 0x00010000'00000000;
 static const uint64_t AST_RUN_BLOCK                  = 0x00020000'00000000;
 static const uint64_t AST_NO_BACKEND                 = 0x00040000'00000000;
+static const uint64_t AST_FORCE_UFCS                 = 0x00080000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
