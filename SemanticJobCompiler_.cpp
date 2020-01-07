@@ -243,7 +243,10 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->report({node->boolExpression, "expression cannot be evaluated at compile time"}));
+
+    SWAG_CHECK(executeNode(context, node->boolExpression, true));
+    if (context->result == ContextResult::Pending)
+        return true;
 
     node->flags |= AST_COMPILER_IF_DONE;
     node->boolExpression->flags |= AST_NO_BYTECODE;

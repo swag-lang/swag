@@ -4,6 +4,7 @@ namespace std.reflection
 
     public 
     {
+        #[swag.constexpr]
         func getMember(type: const* TypeInfo, name: string)->const* TypeInfoParam
         {
             if type.kind != TypeInfoKind.Struct
@@ -18,6 +19,7 @@ namespace std.reflection
             return null
         }
 
+        #[swag.constexpr]
         func hasMember(type: const* TypeInfo, name: string)->bool
         {
             return getMember(type, name) != null

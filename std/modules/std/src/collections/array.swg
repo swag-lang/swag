@@ -28,6 +28,11 @@ namespace std.collections
             #[swag.nodoc]
             func free(using self)
             {
+                /*#if reflection.hasMember(@typeof(T), "opDrop")
+                {
+
+                }*/
+
                 memory.free(allocator, buffer)
             }
 
