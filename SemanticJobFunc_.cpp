@@ -415,8 +415,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR);
-    node->inheritOrFlag(child, AST_IS_GENERIC);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
