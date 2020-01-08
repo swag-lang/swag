@@ -28,5 +28,5 @@ func toto(v: string)
 	t.buf[3] = acast "4"'char
 	
 	var x = t.toString()
-	toto(x)
+	toto(cast(string) x)
 }

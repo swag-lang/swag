@@ -929,6 +929,8 @@ anotherTry:
                                        symbol->name.c_str(),
                                        match.badSignatureRequestedType->name.c_str(),
                                        match.badSignatureGivenType->name.c_str())};
+                if (TypeManager::makeCompatibles(context, match.badSignatureRequestedType, match.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                    diag.codeComment = format("'cast(%s)' can be used in that context", match.badSignatureRequestedType->name.c_str());
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -964,6 +966,8 @@ anotherTry:
                                            symbol->name.c_str(),
                                            match.badSignatureRequestedType->name.c_str(),
                                            match.badSignatureGivenType->name.c_str())};
+                    if (TypeManager::makeCompatibles(context, match.badSignatureRequestedType, match.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                        diag.codeComment = format("'cast(%s)' can be used in that context", match.badSignatureRequestedType->name.c_str());
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }

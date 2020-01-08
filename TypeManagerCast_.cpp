@@ -1500,35 +1500,38 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         return true;
     }
 
-    // [..] u8 to string, this is possible !
-    if (fromType->kind == TypeInfoKind::Slice)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
-        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-        if (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8)
+        // [..] u8 to string, this is possible !
+        if (fromType->kind == TypeInfoKind::Slice)
         {
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+            if (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8)
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+                /*if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+                }
+                */
+                return true;
             }
-
-            return true;
         }
-    }
 
-    // [] u8 to string, this is possible !
-    if (fromType->kind == TypeInfoKind::Array)
-    {
-        auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if (fromTypeArray->pointedType == g_TypeMgr.typeInfoU8)
+        // [] u8 to string, this is possible !
+        if (fromType->kind == TypeInfoKind::Array)
         {
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+            if (fromTypeArray->pointedType == g_TypeMgr.typeInfoU8)
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
-            }
+             /*   if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+                }*/
 
-            return true;
+                return true;
+            }
         }
     }
 

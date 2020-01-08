@@ -551,6 +551,11 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 {
     auto node = context->node;
 
+    if (fromTypeInfo->isNative(NativeTypeKind::String))
+    {
+        return true;
+    }
+
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
         reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
@@ -572,7 +577,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::CopyRAVB64, r0[1])->b.u32 = typeArray->count;
         freeRegisterRC(context, node);
-        node->resultRegisterRC = r0;
+        exprNode->resultRegisterRC = r0;
         return true;
     }
 

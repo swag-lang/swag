@@ -1,5 +1,3 @@
-
-
 struct titi
 {
 	buf: [4] u8;
@@ -28,5 +26,5 @@ func toto(v: string)
 	t.buf[3] = 0
 	
 	var x = t.toString()
-	toto(x)
+	toto(cast(string) x)
 }
