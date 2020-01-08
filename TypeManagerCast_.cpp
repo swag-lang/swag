@@ -1531,6 +1531,10 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
+    // [pointer, count]
+    if (castSliceFromTypeList(context, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags))
+        return true;
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
@@ -1770,44 +1774,60 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castSliceFromTypeList(SemanticContext* context, TypeInfo* pointedType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    if (fromType->kind != TypeInfoKind::TypeList)
+        return false;
+
+    TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
+
+    // Can only cast array to slice
+    if (fromTypeList->listKind != TypeInfoListKind::Bracket)
+        return false;
+
+    // Special case when typelist is one pointer and one int
+    if (fromTypeList->childs.size() != 2)
+        return false;
+
+    bool forcedInit = true;
+
+    // Must start with a pointer of the same type as the slice
+    auto typeFront = fromTypeList->childs.front();
+    if (typeFront->kind != TypeInfoKind::Pointer)
+        forcedInit = false;
+    else
+    {
+        auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
+        if (!TypeManager::makeCompatibles(context, pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            forcedInit = false;
+    }
+
+    // Must end with an U32, which is the slice count
+    if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+        forcedInit = false;
+    if (forcedInit)
+    {
+        if (fromNode)
+            fromNode->flags |= AST_SLICE_INIT_EXPRESSION;
+        return true;
+    }
+
+    return false;
+}
+
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+
+    // [pointer, count]
+    if (castSliceFromTypeList(context, toTypeSlice->pointedType, fromType, fromNode, castFlags))
+        return true;
+
     if (fromType->kind == TypeInfoKind::TypeList)
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-
-        // Can only cast array to slice
         if (fromTypeList->listKind != TypeInfoListKind::Bracket)
             return castError(context, toType, fromType, fromNode, castFlags);
-
-        // Special case when typelist is one pointer and one int
-        if (fromTypeList->childs.size() == 2)
-        {
-            bool forcedInit = true;
-
-            // Must start with a pointer of the same type as the slice
-            auto typeFront = fromTypeList->childs.front();
-            if (typeFront->kind != TypeInfoKind::Pointer)
-                forcedInit = false;
-            else
-            {
-                auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                    forcedInit = false;
-            }
-
-            // And must and with an U32, which is the slice count
-            if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                forcedInit = false;
-            if (forcedInit)
-            {
-                if (fromNode)
-                    fromNode->flags |= AST_SLICE_INIT_EXPRESSION;
-                return true;
-            }
-        }
-
         SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, fromNode, castFlags));
         return true;
     }
