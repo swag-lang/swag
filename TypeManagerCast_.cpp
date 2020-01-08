@@ -1499,11 +1499,27 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         return true;
     }
 
-    // const [..] u8 to string, this is possible !
+    // [..] u8 to string, this is possible !
     if (fromType->kind == TypeInfoKind::Slice)
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-        if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
+        if (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+            }
+
+            return true;
+        }
+    }
+
+    // [] u8 to string, this is possible !
+    if (fromType->kind == TypeInfoKind::Array)
+    {
+        auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        if (fromTypeArray->pointedType == g_TypeMgr.typeInfoU8)
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {

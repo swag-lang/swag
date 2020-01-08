@@ -1379,9 +1379,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
         canDoUfcs = node->callParameters;
 
-    if (node->name == "toto")
-        node = node;
-
     if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
