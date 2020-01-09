@@ -250,6 +250,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
+    if (funcNode->name == "toto")
+        funcNode = funcNode;
+
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
@@ -394,7 +397,9 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     // Register method
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) && funcNode->ownerStructScope && !(funcNode->flags & AST_FROM_GENERIC) && (funcNode->ownerScope->kind == ScopeKind::Struct))
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        SWAG_ASSERT(funcNode->methodParam);
+        funcNode->methodParam->attributes = typeFunc->attributes;
+        auto typeStruct                   = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
         context->job->decreaseMethodCount(typeStruct);
     }
 

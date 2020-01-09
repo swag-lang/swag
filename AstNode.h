@@ -357,11 +357,12 @@ struct AstFuncDecl : public AstNode
     SymbolAttributes collectAttributes;
     DependentJobs    dependentJobs;
 
-    AstNode* parameters        = nullptr;
-    AstNode* genericParameters = nullptr;
-    AstNode* returnType        = nullptr;
-    AstNode* content           = nullptr;
-    Scope*   scope             = nullptr;
+    AstNode*       parameters        = nullptr;
+    AstNode*       genericParameters = nullptr;
+    AstNode*       returnType        = nullptr;
+    AstNode*       content           = nullptr;
+    Scope*         scope             = nullptr;
+    TypeInfoParam* methodParam       = nullptr;
 
     uint32_t stackSize = 0;
 };
