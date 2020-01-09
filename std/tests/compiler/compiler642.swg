@@ -1,6 +1,3 @@
-
-
-
 struct(T) Point
 {
 	x: T = 65

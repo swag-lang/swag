@@ -23,11 +23,11 @@ namespace std.collections
                 return count
             }
 
-            #[swag.nodoc]
-            func opDrop(using self)
+            //#[swag.nodoc]
+            /*func opDrop(using self)
             {
                 free(self)
-            }            
+            }   */         
         }
 
         public

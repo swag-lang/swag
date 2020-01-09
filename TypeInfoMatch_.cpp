@@ -52,7 +52,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             isAfterVariadic = true;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR;// | CASTFLAG_STRICT;
+        uint32_t castFlags = CASTFLAG_NO_ERROR; // | CASTFLAG_STRICT;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
 
@@ -98,13 +98,20 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     }
                     else
                     {
-                        context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
+                        bool needReg = true;
+                        if (symbolTypeInfo->kind == TypeInfoKind::Pointer && typeInfo->kind == TypeInfoKind::Struct)
+                            needReg = false;
 
-                        // If this is a valid generic argument, register it
-                        auto itIdx = context.mapGenericTypesIndex.find(symbolTypeInfo->name);
-                        if (itIdx != context.mapGenericTypesIndex.end())
+                        if (needReg)
                         {
-                            context.genericParametersCallTypes[itIdx->second] = typeInfo;
+                            context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
+
+                            // If this is a valid generic argument, register it
+                            auto itIdx = context.mapGenericTypesIndex.find(symbolTypeInfo->name);
+                            if (itIdx != context.mapGenericTypesIndex.end())
+                            {
+                                context.genericParametersCallTypes[itIdx->second] = typeInfo;
+                            }
                         }
                     }
 

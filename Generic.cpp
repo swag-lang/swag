@@ -164,7 +164,8 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             newLambda->returnType = newType;
         }
 
-        for (int idx = 0; idx < typeLambda->parameters.size(); idx++)
+        auto numParams = typeLambda->parameters.size();
+        for (int idx = 0; idx < numParams; idx++)
         {
             auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
             newType    = doTypeSubstitution(cloneContext, param->typeInfo);
