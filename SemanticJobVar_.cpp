@@ -312,6 +312,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->structNode = structNode;
         typeInfo->name       = structNode->name;
+        typeInfo->structName = typeInfo->name;
         typeInfo->scope      = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;

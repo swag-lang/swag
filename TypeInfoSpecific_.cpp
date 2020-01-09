@@ -393,9 +393,14 @@ TypeInfo* TypeInfoFuncAttr::clone()
 void TypeInfoFuncAttr::computeName()
 {
     name.clear();
-    if (genericParameters.size())
+    if (genericParameters.size() == 1)
     {
-        name += "!(";
+        name += "'";
+        name += genericParameters[0]->typeInfo ? genericParameters[0]->typeInfo->name : genericParameters[0]->name;
+    }
+    else if (genericParameters.size())
+    {
+        name += "'(";
         for (int i = 0; i < genericParameters.size(); i++)
         {
             if (i)
@@ -547,6 +552,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->attributes        = attributes;
     newType->itable            = itable;
     newType->maxPaddingSize    = maxPaddingSize;
+    newType->structName        = structName;
 
     int size = (int) genericParameters.size();
     newType->genericParameters.reserve(size);
@@ -640,4 +646,26 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     return true;
+}
+
+void TypeInfoStruct::computeName()
+{
+    name = structName;
+    if (genericParameters.size() == 1)
+    {
+        name += "'";
+        name += genericParameters[0]->typeInfo ? genericParameters[0]->typeInfo->name : genericParameters[0]->name;
+    }
+    else if (genericParameters.size() == 1)
+    {
+        name += "'(";
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                name += ", ";
+            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+        }
+
+        name += ")";
+    }
 }

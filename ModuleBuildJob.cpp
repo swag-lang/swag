@@ -323,8 +323,14 @@ void ModuleBuildJob::checkPendingJobs()
                 {
                     if (!pendingJob->sourceFile->numErrors)
                     {
-                        if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
-                            pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
+                        auto name = firstNode->name;
+
+                        Utf8 typeName;
+                        if (firstNode->typeInfo)
+                            typeName = format("(type is %s)", firstNode->typeInfo->name.c_str());
+
+                        if (pendingJob->waitingSymbolSolved && !name.empty())
+                            pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s' %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), name.c_str(), typeName.c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
                         else if (pendingJob->waitingSymbolSolved)
                             pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->fullName.c_str())});
                         else

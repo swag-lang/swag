@@ -135,6 +135,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->structNode           = structNode;
             newScope->owner                = structNode;
             typeInfo->name                 = structNode->name;
+            typeInfo->structName           = typeInfo->name;
             typeInfo->scope                = newScope;
             structNode->scope              = newScope;
             auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;

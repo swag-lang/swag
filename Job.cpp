@@ -82,7 +82,7 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             name = first->token.text;
         if (!name.empty())
         {
-            Diagnostic note{ first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note };
+            Diagnostic note{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
             copyNotes.push_back(&note);
             return sourceFile->report(diag, copyNotes);
         }

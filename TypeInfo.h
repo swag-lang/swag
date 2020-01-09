@@ -527,6 +527,7 @@ struct TypeInfoStruct : public TypeInfo
 
     bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo*      clone() override;
+    void           computeName() override;
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
@@ -537,6 +538,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     SymbolAttributes             attributes;
+    Utf8                         structName;
 
     TypeInfoStruct* itable            = nullptr;
     Scope*          scope             = nullptr;
