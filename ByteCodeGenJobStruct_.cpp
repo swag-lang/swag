@@ -173,7 +173,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending();
+            context->job->setPending(symbol);
             return true;
         }
     }
@@ -300,7 +300,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending();
+            context->job->setPending(symbol);
             return true;
         }
     }
@@ -393,7 +393,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending();
+            context->job->setPending(symbol);
             return true;
         }
     }
@@ -475,7 +475,7 @@ void ByteCodeGenJob::waitStructGenerated(ByteCodeGenContext* context, TypeInfoSt
     if (!(structNode->flags & AST_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(context->job);
-        context->job->setPending();
+        context->job->setPending(structNode->resolvedSymbolName);
     }
 }
 

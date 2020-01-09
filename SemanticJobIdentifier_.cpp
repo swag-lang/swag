@@ -569,7 +569,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (!(funcDecl->flags & AST_FULL_RESOLVE))
                     {
                         funcDecl->dependentJobs.add(context->job);
-                        context->job->setPending();
+                        context->job->setPending(funcDecl->resolvedSymbolName);
                         return true;
                     }
                 }
@@ -1236,6 +1236,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
         return true;
     }
+
+    if (node->name == "Array")
+        node = node;
 
     if (node->name == "Self")
     {

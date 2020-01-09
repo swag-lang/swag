@@ -71,7 +71,7 @@ struct Job : public PoolElem
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void waitForAllStructMethods(TypeInfo* typeInfo);
-    void setPending();
+    void setPending(SymbolName* symbolToWait);
 
     shared_mutex           executeMutex;
     DependentJobs          dependentJobs;

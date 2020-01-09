@@ -416,7 +416,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
-    context->job->setPending();
+    context->job->setPending(nullptr);
     auto inlineNode = identifier->childs.back();
     auto job        = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->job);
@@ -439,7 +439,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
             if (!(funcDecl->flags & AST_FULL_RESOLVE))
             {
                 funcDecl->dependentJobs.add(context->job);
-                context->job->setPending();
+                context->job->setPending(funcDecl->resolvedSymbolName);
                 return true;
             }
         }

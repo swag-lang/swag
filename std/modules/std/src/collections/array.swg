@@ -17,10 +17,17 @@ namespace std.collections
     {    
         public
         {
+            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return count
             }
+
+            #[swag.nodoc]
+            func opDrop(using self)
+            {
+                free(self)
+            }            
         }
 
         public

@@ -193,7 +193,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
             {
                 SWAG_ASSERT(funcDecl);
                 funcDecl->dependentJobs.add(job);
-                job->setPending();
+                job->setPending(funcDecl->resolvedSymbolName);
                 return;
             }
         }
@@ -211,7 +211,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
-            job->setPending();
+            job->setPending(nullptr);
         }
 
         if (!node->byteCodeJob)
@@ -247,7 +247,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
         if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
             node->byteCodeJob->dependentJobs.add(job);
-            job->setPending();
+            job->setPending(nullptr);
             return;
         }
     }

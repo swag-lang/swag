@@ -13,8 +13,7 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
-    setPending();
-    waitingSymbolSolved = symbol;
+    setPending(symbol);
     symbol->addDependentJobNoLock(this);
 }
 
@@ -33,7 +32,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending();
+    setPending(nullptr);
 }
 
 void Job::waitForAllStructMethods(TypeInfo* typeInfo)
@@ -51,13 +50,13 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending();
+    setPending(nullptr);
 }
 
-void Job::setPending()
+void Job::setPending(SymbolName* symbolToWait)
 {
     SWAG_ASSERT(baseContext);
-    waitingSymbolSolved = nullptr;
+    waitingSymbolSolved = symbolToWait;
     baseContext->result = ContextResult::Pending;
 }
 
