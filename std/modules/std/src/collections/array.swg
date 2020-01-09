@@ -28,6 +28,10 @@ namespace std.collections
             #[swag.nodoc]
             func free(using self)
             {
+                if !buffer
+                    return
+
+                // Need to drop every structs
                 #if reflection.hasMember(@typeof(T), "opDrop")
                 {
                     loop count
@@ -42,7 +46,21 @@ namespace std.collections
             {
                 if allocator == null
                     allocator = @getcontext().allocator
-                buffer = acast memory.realloc(allocator, buffer, newCapacity * @sizeof(T))
+
+                newBuffer := acast memory.realloc(allocator, buffer, newCapacity * @sizeof(T))
+
+                // New to call opPostMove on every structs if the buffer has not been reallocated
+                // in place
+                #if reflection.hasMember(@typeof(T), "opPostMove")
+                {
+                    if buffer && newBuffer != buffer
+                    {
+                        loop count
+                            buffer[count].opPostMove()
+                    }
+                }
+
+                buffer = newBuffer
                 capacity = newCapacity
             }
 
