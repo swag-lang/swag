@@ -195,7 +195,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     return typeInfo;
 }
 
-void Generic::instanciateSpecialFunc(SemanticContext* context, CloneContext& cloneContext, TypeInfoStruct* newType, AstFuncDecl** specialFct)
+void Generic::instanciateSpecialFunc(SemanticContext* context, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
     if (!funcNode)
@@ -207,16 +207,16 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, CloneContext& clo
     Ast::addChildBack(funcNode->parent, newFunc);
     *specialFct = newFunc;
 
-    TypeInfoFuncAttr* newType1 = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
-    if (newType1->flags & TYPEINFO_GENERIC)
+    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    if (newTypeFunc->flags & TYPEINFO_GENERIC)
     {
-        newType1 = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
-        newType1->flags &= ~TYPEINFO_GENERIC;
-        newFunc->typeInfo = newType1;
+        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+        newFunc->typeInfo = newTypeFunc;
     }
 
     // Replace generic types and values in the function generic parameters
-    newType1->computeName();
+    newTypeFunc->computeName();
 
     // Run semantic on that struct
     newFunc->resolvedSymbolName->cptOverloads++;
