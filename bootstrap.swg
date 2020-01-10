@@ -1,7 +1,7 @@
 // swag compiler mandatory file
 #assert(#swagversion == 0, "'swag.swg' does not match the compiler version number")
 #assert(#swagrevision == 0, "'swag.swg' does not match the compiler revision number")
-#assert(#swagbuildnum == 3, "'swag.swg' does not match the compiler build number")
+#assert(#swagbuildnum == 4, "'swag.swg' does not match the compiler build number")
 
 func @print(value: s64);
 func @print(value: f64);
