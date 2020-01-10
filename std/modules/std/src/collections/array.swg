@@ -27,7 +27,7 @@ namespace std.collections
             func opDrop(using self)
             {
                 free(self)
-            }  */     
+            }   */
         }
 
         public

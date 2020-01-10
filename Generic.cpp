@@ -235,6 +235,12 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, CloneContext& clo
 
 bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
 {
+    // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
+    // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
+    context->job->waitForAllStructMethods((TypeInfoStruct*) match.symbolOverload->typeInfo);
+    if (context->result != ContextResult::Done)
+        return true;
+
     CloneContext cloneContext;
 
     // Types replacements
