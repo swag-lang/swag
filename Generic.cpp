@@ -195,6 +195,44 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     return typeInfo;
 }
 
+void Generic::instanciateSpecialFunc(SemanticContext* context, CloneContext& cloneContext, TypeInfoStruct* newType, AstFuncDecl** specialFct)
+{
+    auto funcNode = *specialFct;
+    if (!funcNode)
+        return;
+
+    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    newFunc->flags |= AST_FROM_GENERIC;
+    newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    Ast::addChildBack(funcNode->parent, newFunc);
+    *specialFct = newFunc;
+
+    TypeInfoFuncAttr* newType1 = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    if (newType1->flags & TYPEINFO_GENERIC)
+    {
+        newType1 = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newType1->flags &= ~TYPEINFO_GENERIC;
+        newFunc->typeInfo = newType1;
+    }
+
+    // Replace generic types and values in the function generic parameters
+    newType1->computeName();
+
+    // Run semantic on that struct
+    newFunc->resolvedSymbolName->cptOverloads++;
+    newFunc->resolvedSymbolName->cptOverloadsInit++;
+    auto sourceFile = context->sourceFile;
+    auto newJob     = SemanticJob::newJob(context->job->dependentJob, sourceFile, newFunc, false);
+
+    // Store stack of instantiation contexts
+    auto srcCxt  = context;
+    auto destCxt = &newJob->context;
+    destCxt->expansionNode.append(srcCxt->expansionNode);
+    destCxt->expansionNode.push_back(context->node);
+
+    g_ThreadMgr.addJob(newJob);
+}
+
 bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
 {
     CloneContext cloneContext;
@@ -222,6 +260,12 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     newType->computeName();
 
     end(context, structNode, waitSymbol);
+
+    cloneContext.replaceTypes[overload->typeInfo->name] = newType;
+    instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserDropFct);
+    instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserPostCopyFct);
+    instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserPostMoveFct);
+
     return true;
 }
 

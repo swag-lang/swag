@@ -124,7 +124,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
 
-            // Remember all variables of type struct, to drom them when leaving the scope
+            // Remember all variables of type struct, to drop them when leaving the scope
             if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
                 structVarsToDrop.push_back(result);
         }

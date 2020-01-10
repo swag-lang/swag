@@ -7,10 +7,10 @@ struct X
 
 impl X
 {
-    /*func opDrop(using self)
+    func opDrop(using self)
     {
-        @print("opDrop\n")
-    }*/
+        //@print("opDrop\n")
+    }
 }
 
 //#[swag.printbc]

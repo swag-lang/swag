@@ -17,10 +17,10 @@ impl A
 //#[swag.printbc]
 #test
 {
-    {
+    //{
         G = 0
         var x: A's32
         x.opDrop()
         @assert(G == 1)
-    }
+    //}
 }

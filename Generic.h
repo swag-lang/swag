@@ -11,6 +11,7 @@ struct Generic
     static void      end(SemanticContext* context, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo);
 
+    static void instanciateSpecialFunc(SemanticContext* context, CloneContext& cloneContext, TypeInfoStruct* newType, AstFuncDecl** funcNode);
     static bool instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol);
     static bool instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match);
     static bool instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node);
