@@ -268,6 +268,11 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     end(context, structNode, waitSymbol);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
+
+    auto srcStruct                = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
+    cloneContext.ownerStructScope = srcStruct->scope;
+    cloneContext.parentScope      = srcStruct->scope;
+
     instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserDropFct);
     instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserPostCopyFct);
     instanciateSpecialFunc(context, cloneContext, newType, &newType->opUserPostMoveFct);
