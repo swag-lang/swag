@@ -334,8 +334,7 @@ void Utf8::pop_back()
 {
     SWAG_ASSERT(count);
     count--;
-    if (count)
-        buffer[count] = 0;
+    buffer[count] = 0;
 }
 
 int Utf8::find(const char* str) const

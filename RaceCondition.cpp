@@ -9,7 +9,7 @@ RaceCondition::RaceCondition(Instance* instance, bool read)
     myInstance = instance;
 
     auto currentThreadId = this_thread::get_id();
-    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId || myInstance->read == read);
+    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId || (myInstance->read && read));
     myInstance->count++;
     myInstance->lastThreadID = currentThreadId;
     myInstance->defined      = true;

@@ -179,7 +179,8 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
             return;
     }
 
-    scoped_lock lk(node->mutex);
+    unique_lock lk(node->mutex);
+
     if (job)
     {
         // If true, then this is a simple recursive call
@@ -244,7 +245,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
     if (flags & ASKBC_WAIT_RESOLVED)
     {
         SWAG_ASSERT(job);
-        if (!(node->flags & AST_BYTECODE_RESOLVED))
+        if (!(node->flags & AST_BYTECODE_RESOLVED) && node->byteCodeJob)
         {
             node->byteCodeJob->dependentJobs.add(job);
             job->setPending(nullptr);
@@ -389,7 +390,7 @@ JobResult ByteCodeGenJob::execute()
 
     // Inform dependencies that this node has bytecode
     {
-        scoped_lock lk(originalNode->mutex);
+        unique_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_GENERATED;
         dependentJobs.setRunning();
     }
@@ -399,7 +400,7 @@ JobResult ByteCodeGenJob::execute()
     while (!dependentNodes.empty())
     {
         auto        node = dependentNodes.back();
-        scoped_lock lk(node->mutex);
+        unique_lock lk(node->mutex);
         if (node->flags & AST_BYTECODE_GENERATED)
         {
             dependentNodes.pop_back();
@@ -412,9 +413,9 @@ JobResult ByteCodeGenJob::execute()
 
     // Inform dependencies that everything is done
     {
-        scoped_lock lk(originalNode->mutex);
-        originalNode->byteCodeJob = nullptr;
+        unique_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_RESOLVED;
+        originalNode->byteCodeJob = nullptr;
     }
 
     return JobResult::ReleaseJob;

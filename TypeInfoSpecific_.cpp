@@ -123,6 +123,7 @@ TypeInfo* TypeInfoPointer::computePointedType()
 
 void TypeInfoPointer::computeName()
 {
+    unique_lock lk(mutex);
     name.clear();
     if (flags & TYPEINFO_CONST)
     {
@@ -205,6 +206,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoArray::computeName()
 {
+    unique_lock lk(mutex);
     pointedType->computeName();
     name.clear();
     fullname.clear();
@@ -239,6 +241,7 @@ void TypeInfoArray::computeName()
 
 void TypeInfoSlice::computeName()
 {
+    unique_lock lk(mutex);
     pointedType->computeName();
     name.clear();
     if (flags & TYPEINFO_CONST)
@@ -392,6 +395,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
 void TypeInfoFuncAttr::computeName()
 {
+    unique_lock lk(mutex);
     name.clear();
     if (genericParameters.size() == 1)
     {
@@ -650,6 +654,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoStruct::computeName()
 {
+    unique_lock lk(mutex);
     name = structName;
     if (genericParameters.size() == 1)
     {
