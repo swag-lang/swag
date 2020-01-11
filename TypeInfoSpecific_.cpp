@@ -616,9 +616,14 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoStruct*>(to);
+
+    int childCount = (int) fields.size();
+    if (childCount != other->fields.size())
+        return false;
     if (structName != other->structName)
         return false;
 
+    // Compare generic parameters
     auto numGenParams = genericParameters.size();
     if (numGenParams != other->genericParameters.size())
         return false;
@@ -634,17 +639,14 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
     }
 
+    // Compare field by field
     if (!(isSameFlags & ISSAME_CAST))
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
         if (scope != other->scope)
             return false;
-
-        int childSize = (int) fields.size();
-        if (childSize != other->fields.size())
-            return false;
-        for (int i = 0; i < childSize; i++)
+        for (int i = 0; i < childCount; i++)
         {
             if (!fields[i]->isSame(other->fields[i], isSameFlags))
                 return false;
