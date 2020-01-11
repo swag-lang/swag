@@ -616,6 +616,8 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoStruct*>(to);
+    if (structName != other->structName)
+        return false;
 
     auto numGenParams = genericParameters.size();
     if (numGenParams != other->genericParameters.size())

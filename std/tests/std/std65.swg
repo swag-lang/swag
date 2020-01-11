@@ -7,18 +7,24 @@ struct BOUBOU
     value1: s32 = 666
 }
 
+var G = 0
+
 impl BOUBOU
 {
     func opDrop(using self)
     {
-        @print("opDrop65 ")
+        G += 1
     }
 }
 
 //#[swag.printbc]
 #test
 {
-    var arr: Array'BOUBOU
-    var value: BOUBOU
-    arr.addBack(value)
+    G = 0
+    {
+        var arr: Array'BOUBOU
+        var value: BOUBOU
+        arr.addBack(value)
+    }
+    @assert(G == 2)
 }

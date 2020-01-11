@@ -9,6 +9,6 @@ struct BABA
 #test
 {
     var arr: Array'BABA
-    @print(@typeof(arr).name)
+    //@print(@typeof(arr).name)
     @assert(@typeof(arr).name == "Array'BABA")
 }
