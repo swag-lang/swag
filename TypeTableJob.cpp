@@ -74,8 +74,11 @@ JobResult TypeTableJob::execute()
 
     if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
     {
-        // Need to wait for all methods to be registered !
+        // Need to wait for all interfaces & methods to be registered
         auto realType = (TypeInfoStruct*) typeInfo;
+        waitForAllStructInterfaces(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
         waitForAllStructMethods(realType);
         if (baseContext->result == ContextResult::Pending)
             return JobResult::KeepJobAlive;
@@ -86,5 +89,6 @@ JobResult TypeTableJob::execute()
         SWAG_ASSERT(false);
     }
 
+    typeTable->typeTableJobDone();
     return JobResult::ReleaseJob;
 }

@@ -262,7 +262,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* pare
         job->concreteTypeInfoValue = concreteTypeInfoValue;
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
-        g_ThreadMgr.addJob(job);
+        addTypeTableJob(job);
         break;
     }
 
@@ -334,4 +334,30 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* pare
     }
 
     return true;
+}
+
+void TypeTable::typeTableJobDone()
+{
+    unique_lock lk(mutexJobs);
+    SWAG_ASSERT(pendingJobs);
+    pendingJobs--;
+    if (pendingJobs == 0)
+        dependentJobs.setRunning();
+}
+
+void TypeTable::addTypeTableJob(Job* job)
+{
+    unique_lock lk(mutexJobs);
+    pendingJobs++;
+    g_ThreadMgr.addJob(job);
+}
+
+void TypeTable::waitForTypeTableJobs(Job* job)
+{
+    unique_lock lk(mutexJobs);
+    if (pendingJobs)
+    {
+        dependentJobs.add(job);
+        job->setPending(nullptr);
+    }
 }

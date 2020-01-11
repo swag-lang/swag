@@ -1,5 +1,6 @@
 #pragma once
 #include "TypeList.h"
+#include "DependentJobs.h"
 struct TypeInfo;
 struct JobContext;
 struct AstNode;
@@ -17,11 +18,18 @@ struct TypeTable
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue);
 
+    void waitForTypeTableJobs(Job* job);
+    void addTypeTableJob(Job* job);
+    void typeTableJobDone();
+
     TypeList concreteList;
 
     shared_mutex                              mutexTypes;
+    shared_mutex                              mutexJobs;
     vector<TypeInfo*>                         allTypes;
+    DependentJobs                             dependentJobs;
     map<TypeInfo*, pair<TypeInfo*, uint32_t>> concreteTypes;
+    int                                       pendingJobs = 0;
 };
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

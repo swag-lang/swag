@@ -78,14 +78,11 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case Property::TypeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-        context->job->waitForAllStructInterfaces(expr->typeInfo);
-        if (context->result != ContextResult::Done)
-            return true;
-        context->job->waitForAllStructMethods(expr->typeInfo);
-        if (context->result != ContextResult::Done)
-            return true;
         expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
+        typeTable.waitForTypeTableJobs(context->job);
+        if (context->result != ContextResult::Done)
+            return true;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
@@ -95,6 +92,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->report({expr, "expression is not of type 'any'"}));
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
+        typeTable.waitForTypeTableJobs(context->job);
+        if (context->result != ContextResult::Done)
+            return true;
         node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
