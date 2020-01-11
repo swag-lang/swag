@@ -1,5 +1,6 @@
-#import "std"
-using std.collections
+struct(T) Array
+{
+}
 
 struct BOUBOU
 {
@@ -19,6 +20,5 @@ impl BOUBOU
 #test
 {
     var arr: Array'BOUBOU
-    var value: BOUBOU
-    arr.addBack(value)
+    @assert(@typeof(arr).name == "Array'BOUBOU")
 }

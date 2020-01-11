@@ -17,4 +17,5 @@ struct SwagScope
     TypeInfoStruct* regTypeInfoVariadic = nullptr;
     TypeInfoStruct* regTypeInfoArray    = nullptr;
     TypeInfoStruct* regTypeInfoSlice    = nullptr;
+    TypeInfoStruct* regTypeInfoGeneric  = nullptr;
 };

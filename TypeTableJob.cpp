@@ -70,6 +70,7 @@ JobResult TypeTableJob::execute()
     JobContext context;
     context.sourceFile = sourceFile;
     context.baseJob    = this;
+    context.node       = nodes.front();
     baseContext        = &context;
 
     if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)

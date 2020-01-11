@@ -155,6 +155,9 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* pare
     case TypeInfoKind::Slice:
         typeStruct = swagScope.regTypeInfoSlice;
         break;
+    case TypeInfoKind::Generic:
+        typeStruct = swagScope.regTypeInfoGeneric;
+        break;
     default:
         context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
@@ -262,6 +265,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* pare
         job->concreteTypeInfoValue = concreteTypeInfoValue;
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
+        job->nodes.push_back(context->node);
         addTypeTableJob(job);
         break;
     }

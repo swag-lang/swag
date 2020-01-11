@@ -51,11 +51,16 @@ void SwagScope::registerType(TypeInfo* typeInfo)
     else if (typeInfo->name == "TypeInfoArray")
     {
         SWAG_ASSERT(!regTypeInfoArray);
-		regTypeInfoArray = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeInfoArray = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     }
     else if (typeInfo->name == "TypeInfoSlice")
     {
         SWAG_ASSERT(!regTypeInfoSlice);
         regTypeInfoSlice = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    }
+    else if (typeInfo->name == "TypeInfoGeneric")
+    {
+        SWAG_ASSERT(!regTypeInfoGeneric);
+        regTypeInfoGeneric = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     }
 }

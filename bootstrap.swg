@@ -235,6 +235,12 @@ namespace swag
 		base: 			TypeInfo
 		pointedType:	const *TypeInfo
 	}
+
+	struct TypeInfoGeneric
+	{
+		base: 		TypeInfo
+		rawType:	const *TypeInfo
+	}
     
 	// #########################################################
 	// Compiler
