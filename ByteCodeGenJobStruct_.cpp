@@ -545,7 +545,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
         }
 
         // Reinit source struct
-        if (typeInfoStruct->opPostMove || typeInfoStruct->opPostCopy)
+        if (typeInfoStruct->opDrop)
         {
             if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
