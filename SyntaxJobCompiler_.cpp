@@ -187,8 +187,6 @@ bool SyntaxJob::doCompilerRunExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
-
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
     if (result)
         *result = node;

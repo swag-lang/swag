@@ -111,6 +111,11 @@ namespace Ast
             SWAG_CHECK(output(concat, node->childs.front(), indent));
             break;
 
+        case AstNodeKind::CompilerPrint:
+            CONCAT_FIXED_STR(concat, "#print ");
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            break;
+
         case AstNodeKind::CompilerIf:
         {
             auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);

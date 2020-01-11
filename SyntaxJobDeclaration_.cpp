@@ -331,6 +331,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent, result));
         break;
+    case TokenId::CompilerPrint:
+        SWAG_CHECK(doCompilerPrint(parent, result));
+        break;
     case TokenId::CompilerRun:
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doCompilerRunStatement(parent, result));
