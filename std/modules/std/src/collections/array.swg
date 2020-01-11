@@ -42,7 +42,9 @@ namespace std.collections
                 #if reflection.hasMember(@typeof(T), "opDrop")
                 {
                     loop count
+                    {
                         buffer[count].opDrop()
+                    }
                 }
 
                 memory.free(allocator, buffer)
@@ -104,6 +106,14 @@ namespace std.collections
                 buffer[count] = raw T
                 count += 1
             }
+
+            /// Add one element at the end of the [Array]
+            func emplaceBack(using self, value: T)
+            {
+                reserve(self, count + 1)
+                buffer[count] = raw move T
+                count += 1
+            }            
         }
     }
 }

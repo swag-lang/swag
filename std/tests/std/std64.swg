@@ -13,7 +13,7 @@ impl X
     func opDrop(using self)
     {
         G += 1
-        //@print("opDrop")
+        //@print("opDrop64 ")
     }
 }
 

@@ -362,12 +362,9 @@ void ByteCode::print()
         {
             auto bc = (ByteCode*) ip->a.pointer;
             SWAG_ASSERT(bc);
-            g_Log.print("[");
-            g_Log.print(bc->sourceFile->path);
-            g_Log.print(", ");
             g_Log.print(bc->node ? bc->node->name : bc->name);
-            g_Log.print(format(" (%lX)", (uint64_t) bc));
-            g_Log.print("]");
+            if (bc->node && bc->node->typeInfo)
+                g_Log.print(bc->node->typeInfo->name);
             break;
         }
 
