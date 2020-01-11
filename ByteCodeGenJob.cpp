@@ -170,16 +170,27 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
 
     auto sourceFile = node->sourceFile;
 
-    // This is a full function
-    AstFuncDecl* funcDecl = nullptr;
+    unique_lock lk(node->mutex);
+
+    // If this is a foreign function, we do not need bytecode
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            return;
-    }
+        auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            // Need to wait for function full semantic resolve
+            if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
+            {
+                if (!(funcDecl->flags & AST_FULL_RESOLVE))
+                {
+                    funcDecl->dependentJobs.add(job);
+                    job->setPending(funcDecl->resolvedSymbolName);
+                }
+            }
 
-    unique_lock lk(node->mutex);
+            return;
+        }
+    }
 
     if (job)
     {
@@ -192,7 +203,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
         {
             if (!(node->flags & AST_FULL_RESOLVE))
             {
-                SWAG_ASSERT(funcDecl);
+                auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
                 funcDecl->dependentJobs.add(job);
                 job->setPending(funcDecl->resolvedSymbolName);
                 return;
