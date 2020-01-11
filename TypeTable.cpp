@@ -13,7 +13,7 @@ TypeTable::TypeTable()
     concreteList.registerInit();
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo* parentConcrete, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
 {
     if (!typeInfo)
     {
@@ -26,7 +26,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfo(context, typeInfo, &typePtr, &tmpStorageOffset, false));
+    SWAG_CHECK(makeConcreteTypeInfo(context, parentConcrete, typeInfo, &typePtr, &tmpStorageOffset));
     *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
@@ -34,7 +34,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
+bool TypeTable::makeConcreteAttributes(JobContext* context, ConcreteTypeInfo* parentConcrete, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
 {
     if (attributes.values.size() == 0)
         return true;
@@ -68,7 +68,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         else
             ptrAny->value = nullptr;
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffset + sizeof(void*), &ptrAny->type, typeAttribute));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, parentConcrete, nullptr, curOffset + sizeof(void*), &ptrAny->type, typeAttribute));
         curOffset += sizeof(ConcreteAny);
         ptr += sizeof(ConcreteAny);
     }
@@ -94,21 +94,28 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteStringSlice* res
     return true;
 }
 
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    unique_lock lk(mutexTypes);
+    unique_lock lk1(module->constantSegment.mutex);
+    SWAG_CHECK(makeConcreteTypeInfo(context, nullptr, typeInfo, ptrTypeInfo, storage));
+    return true;
+}
+
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* parentConcrete, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
     if (typeInfo->kind != TypeInfoKind::Param)
         typeInfo = concreteList.registerType(typeInfo);
 
     // Already computed
-    if (lock)
-        mutexTypes.lock();
     auto it = concreteTypes.find(typeInfo);
     if (it != concreteTypes.end())
     {
         *ptrTypeInfo = it->second.first;
         *storage     = it->second.second;
-        if (lock)
-            mutexTypes.unlock();
         return true;
     }
 
@@ -153,9 +160,6 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
         return false;
     }
 
-    if (lock)
-        module->constantSegment.mutex.lock();
-
     // Build concrete structure content
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
@@ -195,8 +199,8 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
 
@@ -207,8 +211,8 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
         concreteType->offsetOf = realType->offset;
         SWAG_CHECK(makeConcreteString(context, &concreteType->namedParam, realType->namedParam, OFFSETOF(concreteType->namedParam)));
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+        SWAG_CHECK(makeConcreteAttributes(context, (ConcreteTypeInfo*) concreteType, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
 
         // Value
         if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -268,7 +272,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
         auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
         auto realType     = (TypeInfoFuncAttr*) typeInfo;
 
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+        SWAG_CHECK(makeConcreteAttributes(context, (ConcreteTypeInfo*) concreteType, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
         concreteType->parameters.buffer = nullptr;
         concreteType->parameters.count  = realType->parameters.size();
         if (concreteType->parameters.count)
@@ -278,10 +282,10 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
             concreteType->parameters.buffer = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
             for (int param = 0; param < concreteType->parameters.count; param++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->parameters[param]));
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, addrArray, storageArray, addrArray + param, realType->parameters[param]));
         }
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
         break;
     }
 
@@ -290,7 +294,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
         auto concreteType = (ConcreteTypeInfoEnum*) concreteTypeInfoValue;
         auto realType     = (TypeInfoEnum*) typeInfo;
 
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+        SWAG_CHECK(makeConcreteAttributes(context, (ConcreteTypeInfo*) concreteType, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
         concreteType->values.buffer = nullptr;
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)
@@ -300,12 +304,12 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
             concreteType->values.buffer     = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
             for (int param = 0; param < concreteType->values.count; param++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->values[param]));
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, addrArray, storageArray, addrArray + param, realType->values[param]));
         }
 
         concreteType->rawType = nullptr;
         if (realType->rawType)
-            SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType));
+            SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType));
         break;
     }
 
@@ -315,8 +319,8 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
         auto realType            = (TypeInfoArray*) typeInfo;
         concreteType->count      = realType->count;
         concreteType->totalCount = realType->totalCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
         break;
     }
 
@@ -324,15 +328,9 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
     {
         auto concreteType = (ConcreteTypeInfoSlice*) concreteTypeInfoValue;
         auto realType     = (TypeInfoSlice*) typeInfo;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo*) concreteType, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
-    }
-
-    if (lock)
-    {
-        module->constantSegment.mutex.unlock();
-        mutexTypes.unlock();
     }
 
     return true;

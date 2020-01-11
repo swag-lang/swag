@@ -81,6 +81,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         context->job->waitForAllStructInterfaces(expr->typeInfo);
         if (context->result != ContextResult::Done)
             return true;
+        context->job->waitForAllStructMethods(expr->typeInfo);
+        if (context->result != ContextResult::Done)
+            return true;
         expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;

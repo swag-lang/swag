@@ -14,7 +14,7 @@ bool TypeTableJob::computeStruct()
     unique_lock lk(typeTable->mutexTypes);
     unique_lock lk1(module->constantSegment.mutex);
 
-    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, (ConcreteTypeInfo*) concreteType, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
 
     // Fields
     concreteType->fields.buffer = nullptr;
@@ -27,7 +27,7 @@ bool TypeTableJob::computeStruct()
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
         for (int idx = 0; idx < concreteType->fields.count; idx++)
         {
-            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, addrArray, storageArray, addrArray + idx, realType->fields[idx]));
+            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, (ConcreteTypeInfo*) concreteType, addrArray, storageArray, addrArray + idx, realType->fields[idx]));
         }
     }
 
@@ -42,7 +42,7 @@ bool TypeTableJob::computeStruct()
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->methods.buffer), storageArray);
         for (int idx = 0; idx < concreteType->methods.count; idx++)
         {
-            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, addrArray, storageArray, addrArray + idx, realType->methods[idx]));
+            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, (ConcreteTypeInfo*) concreteType, addrArray, storageArray, addrArray + idx, realType->methods[idx]));
         }
     }
 
@@ -58,7 +58,7 @@ bool TypeTableJob::computeStruct()
         for (int idx = 0; idx < concreteType->interfaces.count; idx++)
         {
             auto typeItf = realType->interfaces[idx];
-            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, addrArray, storageArray, addrArray + idx, typeItf));
+            SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, (ConcreteTypeInfo*) concreteType, addrArray, storageArray, addrArray + idx, typeItf));
         }
     }
 
