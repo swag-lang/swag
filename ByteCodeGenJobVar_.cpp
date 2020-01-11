@@ -30,7 +30,14 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                    emitStructInit(context, typeStruct, UINT32_MAX);
+                {
+                    // No need to initialize the variable if we are doing a struct to struct copy
+                    if (node->assignment && node->assignment->typeInfo == typeStruct)
+                        node->assignment->flags |= AST_FORCE_RAW;
+                    else
+                        emitStructInit(context, typeStruct, UINT32_MAX);
+                }
+
                 emitStructParameters(context, UINT32_MAX);
                 node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
             }
