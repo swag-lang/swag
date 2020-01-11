@@ -54,6 +54,10 @@ namespace Ast
 
         if (node->flags & AST_IDENTIFIER_BACKTICK)
             concat.addChar('`');
+        if (node->flags & AST_FORCE_RAW)
+            concat.addString("raw ");
+        if (node->flags & AST_FORCE_MOVE)
+            concat.addString("move ");
 
         switch (node->kind)
         {

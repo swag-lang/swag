@@ -129,6 +129,7 @@ enum class TokenId
     KwdLoop,
     KwdVisit,
     KwdMove,
+    KwdRaw,
     KwdSwitch,
     KwdCase,
     KwdDefault,

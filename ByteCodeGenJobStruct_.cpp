@@ -510,12 +510,22 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
-    bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
+    // Need to drop first
+    if (typeInfoStruct->opDrop)
+    {
+        bool mustDrop = (from->flags & AST_FORCE_RAW) ? false : true;
+        if (mustDrop)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            emitOpCallUser(context, nullptr, typeInfoStruct->opDrop, false);
+        }
+    }
 
     // Shallow copy
     emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
 
     // A copy
+    bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
     if (mustCopy)
     {
         if (typeInfoStruct->opPostCopy)

@@ -73,6 +73,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                         return true;
                     RegisterList r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                    // Force raw copy (no drop on the left) because it has not been initialized
+                    returnExpression->flags |= AST_FORCE_RAW;
                     SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
                     freeRegisterRC(context, r0);
                 }

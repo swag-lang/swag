@@ -114,6 +114,8 @@ namespace std.collections
 
         func free(using self)
         {
+            if !buffer
+                return            
             memory.free(allocator, buffer)
         }
 

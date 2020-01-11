@@ -9,12 +9,16 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRR, uint
     {
         numRegistersRR = numRR;
         registersRR    = (Register*) realloc(registersRR, numRR * sizeof(Register));
+        if (g_CommandLine.debug)
+            memset(registersRR, 0xFE, numRR * sizeof(Register));
     }
 
     if (stackSize < stackS)
     {
         stackSize = stackS;
         stack     = (uint8_t*) realloc(stack, stackS);
+        if (g_CommandLine.debug)
+            memset(stack, 0xFE, stackS);
     }
 
     bp = stack + stackSize;

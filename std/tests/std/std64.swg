@@ -3,18 +3,29 @@ using std.collections
 
 struct X
 {
+    value: s32 = 666
 }
+
+var G = 0
 
 impl X
 {
     func opDrop(using self)
     {
-        //@print("opDrop\n")
+        G += 1
+        //@print("opDrop")
     }
 }
 
 //#[swag.printbc]
 #test
 {
-    var arr: Array'X
+    {
+        G = 0
+        var arr: Array'X
+        var value: X
+        arr.add(value)
+    }
+
+    @assert(G == 2)
 }

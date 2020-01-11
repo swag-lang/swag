@@ -97,6 +97,25 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doLiteral(parent, result));
         break;
 
+    case TokenId::KwdRaw:
+    {
+        AstNode* id;
+        SWAG_CHECK(tokenizer.getToken(token));
+
+        uint32_t forceMove = 0;
+        if (token.id == TokenId::KwdMove)
+        {
+            SWAG_CHECK(tokenizer.getToken(token));
+            forceMove = AST_FORCE_MOVE;
+        }
+
+        SWAG_CHECK(doIdentifierRef(parent, &id));
+        if (result)
+            *result = id;
+        id->flags |= AST_FORCE_RAW | forceMove;
+    }
+    break;
+
     case TokenId::KwdMove:
     {
         AstNode* id;
