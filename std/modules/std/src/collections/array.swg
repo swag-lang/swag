@@ -97,7 +97,8 @@ namespace std.collections
                 realloc(self, newCapacity)
             }
 
-            func add(using self, value: T)
+            /// Add one element at the end of the [Array]
+            func addBack(using self, value: T)
             {
                 reserve(self, count + 1)
                 buffer[count] = raw T
