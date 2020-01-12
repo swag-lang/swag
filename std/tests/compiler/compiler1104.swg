@@ -9,7 +9,7 @@ impl Mwc
 
 #test
 {
-	@assert(@sizeof(Mwc) == 0)
+	@assert(@sizeof(Mwc) == 1) // Empty struct has size 1
 	@assert(Mwc.mult == 666)
 	
 	var x: Mwc

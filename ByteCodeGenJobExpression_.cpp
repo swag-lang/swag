@@ -170,6 +170,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
+        SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0])->b.u32 = node->computedValue.reg.u32;
         node->parent->resultRegisterRC                                                 = node->resultRegisterRC;
     }
@@ -217,6 +218,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         {
             reserveLinearRegisterRC(context, regList, 2);
             auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
+            SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
             emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) node->computedValue.text.length());
             return true;
@@ -250,11 +252,13 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
         SWAG_ASSERT(node->resolvedSymbolOverload);
+        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {
         auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
+        SWAG_ASSERT(offset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
     }
     else

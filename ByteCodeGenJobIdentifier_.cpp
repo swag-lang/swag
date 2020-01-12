@@ -50,7 +50,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             node->resultRegisterRC         = reserveRegisterRC(context);
             node->parent->resultRegisterRC = node->resultRegisterRC;
             auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
-            inst->b.u32                    = node->resolvedSymbolOverload->storageOffset;
+            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
             return true;
         }
 

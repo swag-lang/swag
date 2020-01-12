@@ -606,6 +606,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
         // We use registers as a storage for the interface, in order to have just one register in the end
         emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+        SWAG_ASSERT(itf->offset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
         emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
 
@@ -623,6 +624,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
         // We use registers as a storage for the interface, in order to have just one register in the end
         emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+        SWAG_ASSERT(itf->offset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
         emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
 

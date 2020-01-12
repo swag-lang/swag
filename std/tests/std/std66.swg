@@ -11,4 +11,7 @@ struct BABA
     var arr: Array'BABA
     //@print(@typeof(arr).name)
     @assert(@typeof(arr).name == "Array'BABA")
+
+    var x: BABA
+    arr.addBack(x)
 }

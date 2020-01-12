@@ -470,6 +470,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         storageIndex++;
     }
 
+    // A struct cannot have a zero size
+    typeInfo->sizeOf = max(typeInfo->sizeOf, 1);
+
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {

@@ -87,6 +87,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             else if (typeVar->isNative(NativeTypeKind::String))
             {
                 auto offset = sourceFile->module->constantSegment.addString(varDecl->assignment->computedValue.text);
+                SWAG_ASSERT(offset != UINT32_MAX);
                 emitInstruction(&cxt, ByteCodeOp::RAAddrFromConstantSeg, 1, offset);
                 emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.length());
                 emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);

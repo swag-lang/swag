@@ -329,6 +329,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             reserveLinearRegisterRC(context, regList, 2);
             auto str    = Utf8(node->sourceFile->path);
             auto offset = context->sourceFile->module->constantSegment.addString(str);
+            SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
             emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
             break;
@@ -338,6 +339,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             reserveLinearRegisterRC(context, regList, 2);
             const auto& str    = node->ownerFct->fullnameDot;
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
+            SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
             emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
             break;
