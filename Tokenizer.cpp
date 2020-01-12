@@ -255,7 +255,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
 
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {
-                sourceFile->report({sourceFile, token, format("invalid compiler command '%s'", token.text.c_str())});
+                sourceFile->report({sourceFile, token, format("unknown compiler instruction '%s'", token.text.c_str())});
                 return false;
             }
 

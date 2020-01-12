@@ -79,7 +79,17 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     }
 
-    auto msg = format("token '%s' ", token.text.c_str());
+    Utf8 msg;
+    switch (token.id)
+    {
+    case TokenId::Identifier:
+        msg = format("identifier '%s' ", token.text.c_str());
+        break;
+    default:
+        msg = format("token '%s' ", token.text.c_str());
+        break;
+    }
+
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
@@ -93,6 +103,21 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     case InvalidTokenError::PrimaryExpression:
         msg += "is invalid as an expression";
+        break;
+    }
+
+    switch (token.id)
+    {
+    case TokenId::Identifier:
+        if (kind == InvalidTokenError::TopLevelInstruction)
+        {
+            Token nextToken;
+            tokenizer.getToken(nextToken);
+            if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
+            {
+                msg += ", do you miss 'var', 'let' or 'const' to declare a global variable ?";
+            }
+        }
         break;
     }
 
