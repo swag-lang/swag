@@ -1524,7 +1524,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
             auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
             if (fromTypeArray->pointedType == g_TypeMgr.typeInfoU8)
             {
-             /*   if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                /*   if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
                     fromNode->castedTypeInfo = fromNode->typeInfo;
                     fromNode->typeInfo       = g_TypeMgr.typeInfoString;
@@ -1600,7 +1600,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
     }
 
-    // Array to pointer
+    // Array to pointer of the same type
     if (fromType->kind == TypeInfoKind::Array)
     {
         if (toTypePointer->ptrCount == 1)
@@ -1621,14 +1621,15 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Slice to pointer
+    // Slice to pointer of the same type
     if (fromType->kind == TypeInfoKind::Slice)
     {
         if (toTypePointer->ptrCount == 1)
         {
             auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
             if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
-                toTypePointer->finalType->isSame(fromTypeSlice->pointedType, ISSAME_CAST))
+                toTypePointer->finalType->isSame(fromTypeSlice->pointedType, ISSAME_CAST) ||
+                (castFlags & CASTFLAG_EXPLICIT))
             {
                 if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -1646,6 +1647,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         if (toTypePointer->ptrCount == 1)
         {
+            // to *void or *structure
             if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
             {
                 if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
@@ -1657,7 +1659,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                 return true;
             }
 
-            // Structure to pointer
+            // to interface pointer
             if (fromType->kind == TypeInfoKind::Struct && toTypePointer->isPointerTo(TypeInfoKind::Interface))
             {
                 auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
@@ -1707,7 +1709,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                     {
                         fromNode->castedTypeInfo = fromNode->typeInfo;
-                        fromNode->typeInfo = toType;
+                        fromNode->typeInfo       = toType;
                     }
 
                     return true;
