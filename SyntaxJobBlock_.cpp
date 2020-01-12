@@ -12,6 +12,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'if' boolean expression before '{'"));
 
     SWAG_CHECK(doExpression(node, &node->boolExpression));
     SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
@@ -36,6 +37,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
     {
         ScopedBreakable scoped(this, node);
+        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'while' boolean expression before '{'"));
         SWAG_CHECK(doExpression(node, &node->boolExpression));
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }
@@ -51,6 +53,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         *result = switchNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(verifyError(switchNode->token, token.id != TokenId::SymLeftCurly, "missing 'switch' expression before '{'"));
     SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
@@ -59,9 +62,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     bool                hasDefault       = false;
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
-        SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, sourceFile->report({sourceFile, token, "'case' or 'default' expression expected"}));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, "'case' or 'default' expected"));
         bool isDefault = token.id == TokenId::KwdDefault;
-        SWAG_VERIFY(!isDefault || !hasDefault, sourceFile->report({sourceFile, token, "'default' expression already defined"}));
+        SWAG_CHECK(verifyError(token, !isDefault || !hasDefault, "'default' already defined"));
         if (isDefault)
             hasDefault = true;
 
@@ -79,6 +82,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         // Case expressions
         if (!isDefault)
         {
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymColon, "missing 'case' expression before ':'"));
+            SWAG_CHECK(verifyError(token, token.id != TokenId::KwdBreak, "missing 'case' expression before 'break'"));
             while (token.id != TokenId::SymColon)
             {
                 AstNode* expression;
@@ -91,9 +96,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         if (isDefault)
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'default' expression"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'default' statement"));
         else
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'case' expression"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'case' statement"));
 
         // Content
         {
@@ -187,7 +192,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "opVisit name expected"));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "opVisit name expected"));
         node->extraNameToken = move(token);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -201,6 +206,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Variable to visit
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'visit' expression before '{'"));
     SWAG_CHECK(doExpression(nullptr, &node->expression));
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
     {
@@ -250,6 +256,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
     {
         ScopedBreakable scopedBreakable(this, node);
+        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'loop' expression before '{'"));
         SWAG_CHECK(doExpression(nullptr, &node->expression));
         Token tokenName = node->expression->token;
 
@@ -309,7 +316,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
         return true;
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "invalid label name, you should add ';' or put a valid label identifier"));
         node->label = move(token.text);
         SWAG_CHECK(eatToken());
     }
@@ -328,7 +335,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
         return true;
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "invalid label name, identifier expected"));
         node->label = move(token.text);
         SWAG_CHECK(eatToken());
     }

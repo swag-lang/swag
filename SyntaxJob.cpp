@@ -11,6 +11,13 @@
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
+bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
+{
+    if (!expr)
+        return syntaxError(tk, msg);
+    return true;
+}
+
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {
     Utf8 full = "syntax error";
@@ -59,8 +66,16 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     switch (token.id)
     {
     case TokenId::KwdElse:
-        if(kind == InvalidTokenError::EmbeddedInstruction)
+        if (kind == InvalidTokenError::EmbeddedInstruction)
             return syntaxError(token, "'else' without a corresponding 'if'");
+        break;
+    case TokenId::CompilerElse:
+        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+            return syntaxError(token, "'#else' without a corresponding '#if'");
+        break;
+    case TokenId::CompilerElseIf:
+        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+            return syntaxError(token, "'#elif' without a corresponding '#if'");
         break;
     }
 

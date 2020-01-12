@@ -40,6 +40,8 @@ struct SyntaxJob : public Job
     bool syntaxError(const Token& tk, const Utf8& msg);
     bool syntaxError(AstNode* node, const Utf8& msg);
     bool invalidTokenError(InvalidTokenError kind);
+    bool verifyError(const Token& tk, bool expr, const Utf8& msg);
+
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);

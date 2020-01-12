@@ -80,6 +80,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
     case TokenId::SymLeftParen:
         SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "expression is empty"));
         SWAG_CHECK(doExpression(parent, result));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
         break;
