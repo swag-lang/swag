@@ -129,7 +129,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams, false));
             else
             {
                 if (rightTypeInfo == leftTypeInfo)
@@ -144,7 +144,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
-                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, left, right));
+                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, left, right, false));
                 }
             }
 
@@ -160,9 +160,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
             break;
         }
 
@@ -193,9 +193,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             else if (tokenId == TokenId::SymTildeEqual)
                 op = "~=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
             break;
         }
 
@@ -217,9 +217,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
             break;
         }
 
@@ -254,9 +254,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", nullptr, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", nullptr, left, right, false));
             break;
         }
 
@@ -277,9 +277,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right, false));
             break;
         }
 

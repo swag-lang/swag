@@ -1,10 +1,12 @@
-//var  X: s32[4]
+#module compiler1569
+#unittest error
 
-func toto()
+struct A
 {
+    x: s32 = 1
 }
 
-//#[swag.printbc]
-/*#test
+func toto(val: A)
 {
-}*/
+    var y: A = move val
+}

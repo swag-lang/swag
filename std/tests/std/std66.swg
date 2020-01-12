@@ -14,4 +14,5 @@ struct BABA
 
     var x: BABA
     arr.addBack(x)
+    @assert(arr.count == 1)
 }

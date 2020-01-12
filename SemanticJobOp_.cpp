@@ -182,6 +182,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
 }
 
+bool SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
+{
+    auto leftType   = TypeManager::concreteType(left->typeInfo);
+    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+    auto symbol     = leftStruct->scope->symTable.find(name);
+    return symbol;
+}
+
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal)
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);

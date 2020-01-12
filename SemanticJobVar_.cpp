@@ -552,7 +552,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
             if (!rightConcreteType->isSame(node->type->typeInfo, 0))
             {
-                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment));
+                if (!hasUserOp(context, "opAffect", node->type))
+                {
+                    Utf8 msg = format("'%s = %s' is impossible because operator 'opAffect' cannot be found in '%s'", node->type->typeInfo->name.c_str(), rightConcreteType->name.c_str(), node->type->typeInfo->name.c_str());
+                    return sourceFile->report({node, msg});
+                }
+
+                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment, false));
                 if (context->result == ContextResult::Pending)
                     return true;
             }
