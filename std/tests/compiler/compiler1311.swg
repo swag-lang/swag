@@ -2,7 +2,8 @@
 #test
 {
     cpt := 0
-    outer: loop x: 10
+    
+    label outer loop x: 10
     {
         cpt += 1   
         loop 10

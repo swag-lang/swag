@@ -72,7 +72,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|for|while|switch|defer|loop|visit|break|return|case|continue|default)\\b"
+          "match": "\\b(if|else|for|while|switch|defer|loop|visit|break|return|case|continue|default|label)\\b"
         }
       ]
     },

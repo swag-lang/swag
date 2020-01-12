@@ -1,7 +1,7 @@
 #[swag.mixin]
 func toto(stmt: code)
 {
-    up:
+    label up
     {
         loop 5
         {

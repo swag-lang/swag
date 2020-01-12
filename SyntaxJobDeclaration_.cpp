@@ -351,10 +351,31 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         moveAttributes(parent, sourceFile->astRoot);
         SWAG_CHECK(doStruct(sourceFile->astRoot, result));
         break;
+    case TokenId::KwdLabel:
+        SWAG_CHECK(doLabel(parent, result));
+        break;
     default:
-        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+        return invalidTokenError();
     }
 
+    return true;
+}
+
+bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
+{
+    auto labelNode = Ast::newNode<AstLabelBreakable>(this, AstNodeKind::LabelBreakable, sourceFile, parent);
+    if (result)
+        *result = labelNode;
+    labelNode->semanticFct = SemanticJob::resolveLabel;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, format("invalid label identifier '%s'", token.text.c_str()));
+    labelNode->inheritTokenName(token);
+    labelNode->inheritTokenLocation(token);
+
+    ScopedBreakable scoped(this, labelNode);
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }
 
@@ -459,8 +480,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerImport(parent));
         break;
     default:
-        syntaxError(token, format("invalid token '%s'", token.text.c_str()));
-        return false;
+        return invalidTokenError();
     }
 
     return true;

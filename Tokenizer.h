@@ -140,6 +140,7 @@ enum class TokenId
     KwdDrop,
     KwdDeRef,
     KwdCode,
+    KwdLabel,
 
     Identifier,
     LiteralNumber,

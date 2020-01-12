@@ -652,7 +652,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 
     default:
-        return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
+        return invalidTokenError();
     }
 
     return true;
@@ -829,25 +829,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(nullptr, &assign));
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
-    }
-
-    // Labeled statement with identifier:
-    else if (token.id == TokenId::SymColon)
-    {
-        auto labelNode = Ast::newNode<AstLabelBreakable>(this, AstNodeKind::LabelBreakable, sourceFile, parent);
-        if (result)
-            *result = labelNode;
-        labelNode->semanticFct = SemanticJob::resolveLabel;
-        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "invalid labelled statement name"));
-        SWAG_VERIFY(leftNode->childs.size() == 1, syntaxError(leftNode->token, "invalid labelled statement name"));
-        auto childBack   = leftNode->childs.back();
-        labelNode->name  = childBack->name;
-        labelNode->token = childBack->token;
-        SWAG_CHECK(tokenizer.getToken(token));
-
-        ScopedBreakable scoped(this, labelNode);
-        SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
-        return true;
     }
 
     // Affect operator

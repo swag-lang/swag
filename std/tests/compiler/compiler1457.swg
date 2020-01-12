@@ -1,7 +1,7 @@
 #test
 {
     cpt := 0
-    up:
+    label up
     {
         loop 5
         {

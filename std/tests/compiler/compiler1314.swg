@@ -18,7 +18,7 @@ impl A
 {
     DROP = 0
     cpt := 0
-    outer:
+    label outer
     {
         var x: A
         defer cpt += 1

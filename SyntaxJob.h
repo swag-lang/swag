@@ -40,7 +40,8 @@ struct SyntaxJob : public Job
     bool checkIsSingleIdentifier(AstNode* node);
     void moveAttributes(AstNode* from, AstNode* to);
 
-    bool doFuncCallParameters(AstNode* parent, AstNode** result);
+    bool doLabel(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result = nullptr);

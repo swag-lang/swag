@@ -31,11 +31,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(&leftNode));
 
-    //@remove
-    if (sourceFile->path.find("1500") != string::npos)
-        leftNode = leftNode;
-
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid token '==', did you mean '=' ?"));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid compare operator '==', do you mean '=' ?"));
     SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, "invalid token"));
 
     AstNode* type = nullptr;
@@ -46,7 +42,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     }
 
     AstNode* assign = nullptr;
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid token '==', did you mean '=' ?"));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid compare operator '==', do you mean '=' ?"));
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken());

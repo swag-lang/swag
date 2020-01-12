@@ -80,6 +80,7 @@ void LanguageSpec::setup()
     keywords["drop"]      = TokenId::KwdDrop;
     keywords["deref"]     = TokenId::KwdDeRef;
     keywords["code"]      = TokenId::KwdCode;
+    keywords["label"]     = TokenId::KwdLabel;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

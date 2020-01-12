@@ -2,7 +2,7 @@
 #test
 {
     cpt := 0
-    outer:
+    label outer
     {
         defer cpt = 1
         loop 10
