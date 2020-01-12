@@ -3,15 +3,27 @@ struct Point
     x: s64 = 1
 }
 
+impl Point
+{
+    func opDrop(using self)
+    {
+
+    }
+}
+
 func toto(val: *Point)
 {
-    var y: Point = val
+    @assert(val.x == 666)
+    var y: Point = move deref val
+    @assert(y.x == 666)
+    @assert(val.x == 1)
 }
 
 #test
 {
     var value: Point
     value.x = 666
+    @assert(value.x == 666)
     toto(value)
-    @print(value.x)
+    @assert(value.x == 1)
 }
