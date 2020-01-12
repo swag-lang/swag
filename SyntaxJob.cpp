@@ -79,7 +79,24 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     }
 
-    return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+    auto msg = format("token '%s' ", token.text.c_str());
+    switch (kind)
+    {
+    case InvalidTokenError::TopLevelInstruction:
+        msg += "is invalid as a top level instruction";
+        break;
+    case InvalidTokenError::EmbeddedInstruction:
+        msg += "is invalid as an embedded instruction";
+        break;
+    case InvalidTokenError::LeftExpression:
+        msg += "is invalid as a left expression";
+        break;
+    case InvalidTokenError::PrimaryExpression:
+        msg += "is invalid as an expression";
+        break;
+    }
+
+    return syntaxError(token, msg);
 }
 
 bool SyntaxJob::error(AstNode* node, const Utf8& msg)

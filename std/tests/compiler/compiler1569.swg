@@ -1,8 +1,12 @@
-//#[swag.printbc]
-#test
+func toto()
 {
-    /*#if
-    {
 
-    }*/
+func titi()
+{
+
 }
+
+//#[swag.printbc]
+/*#test
+{
+}*/

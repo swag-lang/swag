@@ -188,7 +188,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing function parameters before '{'"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->name.c_str())));
     if (token.id != TokenId::SymRightParen)
     {
         auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
