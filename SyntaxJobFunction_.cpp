@@ -448,6 +448,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             ScopedFct   scopedFct(this, funcNode);
             ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing function return type before '{'"));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         }

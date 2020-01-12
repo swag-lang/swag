@@ -1,9 +1,5 @@
-func toto()
+func toto()->
 {
-
-func titi()
-{
-
 }
 
 //#[swag.printbc]

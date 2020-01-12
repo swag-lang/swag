@@ -22,7 +22,7 @@ JobResult ModuleTestJob::execute()
     }
 #endif
 
-    g_Log.messageHeaderCentered("Testing backend", module->name.c_str(), LogColor::DarkMagenta);
+    g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
         g_Log.verbose("   running " + path.string());
 

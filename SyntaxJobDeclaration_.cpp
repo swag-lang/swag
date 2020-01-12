@@ -118,8 +118,8 @@ bool SyntaxJob::doNamespace(AstNode* parent)
         currentScope = newScope;
     }
 
-    currentScope = oldScope;
-    auto curly   = token;
+    currentScope   = oldScope;
+    auto openCurly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Content of namespace is toplevel
@@ -131,8 +131,8 @@ bool SyntaxJob::doNamespace(AstNode* parent)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 
@@ -142,10 +142,13 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
+    auto openCurly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
+
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -156,7 +159,8 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    bool isGlobal = currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct;
+    bool isGlobal  = currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct;
+    auto openCurly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
@@ -171,6 +175,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }

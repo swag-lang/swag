@@ -17,21 +17,22 @@ void Diagnostic::report(bool verboseMode) const
     defaultColor(verboseMode);
 
     // Message level
+    LogColor logColor = LogColor::White;
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
         if (!verboseMode)
-            g_Log.setColor(LogColor::Red);
+            logColor = LogColor::Red;
         g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
         if (!verboseMode)
-            g_Log.setColor(LogColor::Magenta);
+            logColor = LogColor::Magenta;
         g_Log.print("warning: ");
         break;
     case DiagnosticLevel::Note:
         if (!verboseMode)
-            g_Log.setColor(LogColor::White);
+            logColor = LogColor::White;
         g_Log.print("note: ");
         break;
     }
@@ -51,6 +52,8 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // User message
+    if (!verboseMode)
+        g_Log.setColor(logColor);
     g_Log.print(textMsg);
     g_Log.eol();
 
