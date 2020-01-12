@@ -369,7 +369,8 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
     labelNode->semanticFct = SemanticJob::resolveLabel;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, format("invalid label identifier '%s'", token.text.c_str()));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, syntaxError(labelNode->token, "missing label identifier before '{'"));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid label identifier '%s'", token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 
