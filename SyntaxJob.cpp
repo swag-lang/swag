@@ -37,10 +37,26 @@ bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
     return false;
 }
 
-bool SyntaxJob::notSupportedError(const Token& tk)
+bool SyntaxJob::invalidTokenError()
 {
-    error(tk, "not supported (yet) ! (syntax)");
-    return false;
+    if (Ast::lastGeneratedNode)
+    {
+        switch (token.id)
+        {
+        case TokenId::KwdRaw:
+            if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
+                return syntaxError(token, "'raw' instruction must be placed before 'move'");
+            if (Ast::lastGeneratedNode->token.id == TokenId::KwdRaw)
+                return syntaxError(token, "'raw' instruction defined twice");
+            break;
+        case TokenId::KwdMove:
+            if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
+                return syntaxError(token, "'move' instruction defined twice");
+            break;
+        }
+    }
+
+    return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
 }
 
 bool SyntaxJob::error(AstNode* node, const Utf8& msg)
@@ -184,6 +200,7 @@ JobResult SyntaxJob::execute()
     context.job        = this;
     context.sourceFile = sourceFile;
     g_Stats.numFiles++;
+    Ast::lastGeneratedNode = nullptr;
 
     tokenizer.setFile(sourceFile);
 

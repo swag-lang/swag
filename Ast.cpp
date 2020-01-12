@@ -7,6 +7,8 @@
 
 namespace Ast
 {
+    thread_local AstNode* lastGeneratedNode = nullptr;;
+
     Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
         Utf8 result;

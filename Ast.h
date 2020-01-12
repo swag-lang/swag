@@ -9,6 +9,8 @@ enum class ScopeKind;
 
 namespace Ast
 {
+    extern thread_local AstNode* lastGeneratedNode;
+
     template<typename T>
     T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
     {
@@ -54,6 +56,7 @@ namespace Ast
             parent->unlock();
         }
 
+        lastGeneratedNode = node;
         return node;
     }
 
@@ -102,3 +105,4 @@ inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2)
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
     return casted;
 }
+

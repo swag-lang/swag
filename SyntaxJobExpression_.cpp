@@ -135,7 +135,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     default:
-        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+        return invalidTokenError();
     }
 
     return true;
@@ -368,7 +368,6 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
     // raw
     if (token.id == TokenId::KwdRaw)
     {
-        SWAG_CHECK(eatToken());
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile, parent);
         if (result)
             *result = exprNode;
@@ -376,12 +375,12 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
         exprNode->flags |= AST_FORCE_RAW;
         parent = exprNode;
         result = nullptr;
+        SWAG_CHECK(eatToken());
     }
 
     // move
     if (token.id == TokenId::KwdMove)
     {
-        SWAG_CHECK(eatToken());
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile, parent);
         if (result)
             *result = exprNode;
@@ -389,6 +388,7 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
         exprNode->flags |= AST_FORCE_MOVE;
         parent = exprNode;
         result = nullptr;
+        SWAG_CHECK(eatToken());
     }
 
     SWAG_CHECK(doExpression(parent, result));

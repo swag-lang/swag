@@ -1,4 +1,3 @@
-
 using swag
 
 //#[swag.printbc]
