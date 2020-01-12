@@ -1692,23 +1692,26 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         return true;
     }
 
-    // String to pointer
+    // String to const *u8
     if (fromType->isNative(NativeTypeKind::String))
     {
         if (toType == g_TypeMgr.typeInfoNull)
             return true;
 
-        if (toTypePointer->ptrCount == 1)
+        if (castFlags & CASTFLAG_EXPLICIT)
         {
-            if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
+            if (toTypePointer->ptrCount == 1)
             {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
-                }
+                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->castedTypeInfo = fromNode->typeInfo;
+                        fromNode->typeInfo = toType;
+                    }
 
-                return true;
+                    return true;
+                }
             }
         }
     }
