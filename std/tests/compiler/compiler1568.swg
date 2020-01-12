@@ -1,8 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    else
+    if
     {
-        
     }
 }

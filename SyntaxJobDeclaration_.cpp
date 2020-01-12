@@ -355,7 +355,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doLabel(parent, result));
         break;
     default:
-        return invalidTokenError();
+        return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 
     return true;
@@ -481,7 +481,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerImport(parent));
         break;
     default:
-        return invalidTokenError();
+        return invalidTokenError(InvalidTokenError::TopLevelInstruction);
     }
 
     return true;

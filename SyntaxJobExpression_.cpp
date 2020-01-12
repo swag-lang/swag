@@ -135,7 +135,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     default:
-        return invalidTokenError();
+        return invalidTokenError(InvalidTokenError::PrimaryExpression);
     }
 
     return true;
@@ -652,7 +652,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 
     default:
-        return invalidTokenError();
+        return invalidTokenError(InvalidTokenError::LeftExpression);
     }
 
     return true;

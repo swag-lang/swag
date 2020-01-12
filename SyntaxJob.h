@@ -16,6 +16,14 @@ struct AstCompilerIfBlock;
 struct SyntaxJob;
 enum class AstNodeKind : uint8_t;
 
+enum class InvalidTokenError
+{
+    EmbeddedInstruction,
+    TopLevelInstruction,
+    PrimaryExpression,
+    LeftExpression,
+};
+
 struct SyntaxContext : public JobContext
 {
     SyntaxJob* job = nullptr;
@@ -31,7 +39,7 @@ struct SyntaxJob : public Job
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
     bool syntaxError(AstNode* node, const Utf8& msg);
-    bool invalidTokenError();
+    bool invalidTokenError(InvalidTokenError kind);
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);

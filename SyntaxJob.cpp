@@ -37,7 +37,7 @@ bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
     return false;
 }
 
-bool SyntaxJob::invalidTokenError()
+bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
 {
     if (Ast::lastGeneratedNode)
     {
@@ -54,6 +54,14 @@ bool SyntaxJob::invalidTokenError()
                 return syntaxError(token, "'move' instruction defined twice");
             break;
         }
+    }
+
+    switch (token.id)
+    {
+    case TokenId::KwdElse:
+        if(kind == InvalidTokenError::EmbeddedInstruction)
+            return syntaxError(token, "'else' without a corresponding 'if'");
+        break;
     }
 
     return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
