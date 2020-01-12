@@ -1660,22 +1660,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
                     return true;
                 }
-
-                // to interface pointer
-                if (fromType->kind == TypeInfoKind::Struct && toTypePointer->isPointerTo(TypeInfoKind::Interface))
-                {
-                    auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
-                    auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-                    if (!fromTypeStruct->hasInterface(toTypeItf))
-                        return castError(context, toType, fromType, fromNode, castFlags);
-                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                    {
-                        fromNode->castedTypeInfo = fromType;
-                        fromNode->typeInfo       = toTypeItf;
-                    }
-
-                    return true;
-                }
             }
         }
     }
