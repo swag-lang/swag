@@ -1,4 +1,4 @@
-func toto()->
+func toto()
 {
 }
 
