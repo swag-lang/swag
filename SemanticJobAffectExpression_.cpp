@@ -144,6 +144,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
+                    if (!hasUserOp(context, "opAffect", left))
+                    {
+                        Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
+                        return context->report({node, msg});
+                    }
+
                     SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, left, right, false));
                 }
             }

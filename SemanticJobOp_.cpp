@@ -201,7 +201,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto node = context->node;
     auto job  = context->job;
 
-    SWAG_VERIFY(symbol, context->report({left->parent, format("cannot find operator '%s' in '%s'", name, leftStruct->name.c_str())}));
+    SWAG_VERIFY(symbol, context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftStruct->name.c_str())}));
 
     // Need to wait for function resolution
     {
