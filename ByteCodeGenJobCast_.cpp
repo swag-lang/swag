@@ -724,9 +724,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        if (fromTypeInfo->kind == TypeInfoKind::Array || 
+        if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
+            fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->isNative(NativeTypeKind::String))
         {
             node->resultRegisterRC   = exprNode->resultRegisterRC[0];
