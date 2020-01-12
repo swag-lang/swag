@@ -589,7 +589,10 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(doAffectExpression(node, nullptr));
+    if (token.id == TokenId::SymLeftCurly)
+        SWAG_CHECK(doScopedCurlyStatement(node, nullptr));
+    else
+        SWAG_CHECK(doAffectExpression(node, nullptr));
 
     auto expr = node->childs.front();
     node->ownerScope->deferredNodes.push_back(expr);
