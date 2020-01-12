@@ -312,7 +312,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::SymEqual)
     {
-        return syntaxError(token, "invalid token '=', did you mean '==' ?");
+        return syntaxError(token, "invalid affect operator '=', do you mean '==' ?");
     }
 
     if (!isBinary)

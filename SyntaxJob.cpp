@@ -100,7 +100,10 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
     {
         if (!msg)
             msg = "";
-        SWAG_CHECK(syntaxError(token, format("'%s' is expected instead of '%s' %s", g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
+        if (token.id == TokenId::EndOfFile)
+            SWAG_CHECK(syntaxError(token, format("missing '%s' %s", g_LangSpec.tokenToName(id).c_str(), msg)));
+        else
+            SWAG_CHECK(syntaxError(token, format("'%s' is expected instead of '%s' %s", g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
     SWAG_CHECK(tokenizer.getToken(token));

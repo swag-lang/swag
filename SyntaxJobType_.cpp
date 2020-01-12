@@ -136,7 +136,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             name += typeExpression->identifier->childs.back()->name;
         Ast::normalizeIdentifierName(name);
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, syntaxError(token, format("invalid token '%s' in expression list, ',' or ')' are expected here", token.text.c_str())));
         if (token.id == TokenId::SymRightParen)
             break;
         SWAG_CHECK(tokenizer.getToken(token));
