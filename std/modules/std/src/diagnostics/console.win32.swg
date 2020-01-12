@@ -42,7 +42,7 @@
 			g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 		
 			var csbi: CONSOLE_SCREEN_BUFFER_INFO
-			GetConsoleScreenBufferInfo(g_stdOutputHandle, csbi)		
+			GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)		
 			g_stdOutputInitAttr = csbi.wAttributes
 			g_stdOutputCurAttr = g_stdOutputInitAttr
 		}

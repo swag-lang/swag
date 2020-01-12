@@ -132,6 +132,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrPointer->sizeOf    = sizeof(void*);
         if (typeNode->isConst)
             ptrPointer->flags |= TYPEINFO_CONST;
+        if (typeNode->isSelf)
+            ptrPointer->flags |= TYPEINFO_SELF;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
         ptrPointer->pointedType = ptrPointer->computePointedType();

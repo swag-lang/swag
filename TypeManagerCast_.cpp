@@ -1645,34 +1645,37 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Struct/Interface to pointer
     if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface)
     {
-        if (toTypePointer->ptrCount == 1)
+        if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst())
         {
-            // to *void or *structure
-            if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
+            if (toTypePointer->ptrCount == 1)
             {
-                if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                // to *void or *structure
+                if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
+                    if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->castedTypeInfo = fromNode->typeInfo;
+                        fromNode->typeInfo       = toType;
+                    }
+
+                    return true;
                 }
 
-                return true;
-            }
-
-            // to interface pointer
-            if (fromType->kind == TypeInfoKind::Struct && toTypePointer->isPointerTo(TypeInfoKind::Interface))
-            {
-                auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
-                auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-                if (!fromTypeStruct->hasInterface(toTypeItf))
-                    return castError(context, toType, fromType, fromNode, castFlags);
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                // to interface pointer
+                if (fromType->kind == TypeInfoKind::Struct && toTypePointer->isPointerTo(TypeInfoKind::Interface))
                 {
-                    fromNode->castedTypeInfo = fromType;
-                    fromNode->typeInfo       = toTypeItf;
-                }
+                    auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
+                    auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+                    if (!fromTypeStruct->hasInterface(toTypeItf))
+                        return castError(context, toType, fromType, fromNode, castFlags);
+                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->castedTypeInfo = fromType;
+                        fromNode->typeInfo       = toTypeItf;
+                    }
 
-                return true;
+                    return true;
+                }
             }
         }
     }

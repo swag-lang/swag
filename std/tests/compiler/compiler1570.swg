@@ -24,6 +24,6 @@ func toto(val: *Point)
     var value: Point
     value.x = 666
     @assert(value.x == 666)
-    toto(value)
+    toto(&value)
     @assert(value.x == 1)
 }

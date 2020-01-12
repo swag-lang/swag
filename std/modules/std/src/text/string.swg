@@ -18,14 +18,14 @@ namespace std
     {
         func free(using self)
         {
-            memory.free(allocator, buffer)
+            memory.free(&allocator, buffer)
         }
 
         func realloc(using self, newCapacity: u32)
         {
             if allocator == null
                 allocator = @getcontext().allocator
-            buffer = acast memory.realloc(allocator, buffer, newCapacity)
+            buffer = acast memory.realloc(&allocator, buffer, newCapacity)
             capacity = newCapacity
         }
     }

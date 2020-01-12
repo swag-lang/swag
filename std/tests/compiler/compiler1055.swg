@@ -1,5 +1,3 @@
-
-
 struct(T) Array
 {
 	buffer: *T
@@ -24,14 +22,14 @@ impl Array
 		
 		var request: AllocatorRequest
 		request.size = self.size * @sizeof(T)
-		context.allocator.alloc(request)
+		context.allocator.alloc(&request)
 		newBuffer := request.address
 		if self.buffer
 			@memcpy(newBuffer, self.buffer, self.count * @sizeof(T))
 		
 		request.mode = AllocatorMode.Free
 		request.address = self.buffer
-		context.allocator.alloc(request)
+		context.allocator.alloc(&request)
 		
 		self.buffer = acast newBuffer
 	}

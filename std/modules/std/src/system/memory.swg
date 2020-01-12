@@ -34,16 +34,16 @@ namespace std.memory
             if !buffer
                 return
             assert(allocator != null)
-            let req: AllocatorRequest(mode: AllocatorMode.Free, address: buffer)
-            allocator.alloc(req)
+            var req: AllocatorRequest(mode: AllocatorMode.Free, address: buffer)
+            allocator.alloc(&req)
         }
 
         /// Reallocate/allocate a given amount of bytes
         func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
         {
             assert(allocator != null)
-            let req: AllocatorRequest(mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer)
-            allocator.alloc(req)
+            var req: AllocatorRequest(mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer)
+            allocator.alloc(&req)
             return req.address
         }
 
@@ -51,8 +51,8 @@ namespace std.memory
         func alloc(allocator: *IAllocator, sizeInBytes: u32)->*void
         {
             assert(allocator != null)
-            let req: AllocatorRequest(mode: AllocatorMode.Alloc, size: sizeInBytes)
-            allocator.alloc(req)
+            var req: AllocatorRequest(mode: AllocatorMode.Alloc, size: sizeInBytes)
+            allocator.alloc(&req)
             return req.address
         }           
     }

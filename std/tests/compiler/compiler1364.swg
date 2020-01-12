@@ -33,7 +33,7 @@ impl IPrintable for TITI
     var content: CONTENT
     
     var itf0: IPrintable  
-    content.itf = itf0
+    content.itf = &itf0
     itf0 = titi
     
     content.itf.print()

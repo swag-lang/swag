@@ -1237,9 +1237,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
-    if (node->name == "Array")
-        node = node;
-
     if (node->name == "Self")
     {
         SWAG_VERIFY(node->ownerStructScope, context->report({node, node->token, "type 'Self' cannot be used outside an 'impl' block"}));

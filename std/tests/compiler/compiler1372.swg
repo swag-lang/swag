@@ -23,7 +23,7 @@ namespace std
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
             req.address = buffer
-            allocator.alloc(req)
+            allocator.alloc(&req)
         }
 
         func realloc(using self, newSize: u32)
@@ -35,7 +35,7 @@ namespace std
             req.mode = AllocatorMode.Realloc
             req.size = newSize
             req.address = buffer
-            allocator.alloc(req)
+            allocator.alloc(&req)
             buffer = acast req.address
         }
     }

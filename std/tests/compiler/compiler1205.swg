@@ -16,6 +16,6 @@ impl A
 #test
 {
     var pt: A
-    A.toto(pt, 666)
+    A.toto(&pt, 666)
     @assert(pt.x == 666)
 }

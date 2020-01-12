@@ -116,14 +116,14 @@ namespace std.collections
         {
             if !buffer
                 return            
-            memory.free(allocator, buffer)
+            memory.free(&allocator, buffer)
         }
 
         func realloc(using self, newCapacity: u32)
         {
             if allocator == null
                 allocator = @getcontext().allocator
-            buffer = acast memory.realloc(allocator, buffer, newCapacity)
+            buffer = acast memory.realloc(&allocator, buffer, newCapacity)
         }        
 
         public

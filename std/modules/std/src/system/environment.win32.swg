@@ -15,7 +15,7 @@
         
         #init
         {
-            GetSystemInfo(g_sysInfo)
+            GetSystemInfo(&g_sysInfo)
         }
     }
 }

@@ -106,6 +106,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
         typeNode->ptrCount   = 1;
         typeNode->isConst    = isConst;
+        typeNode->isSelf     = true;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
         typeNode->computeFullName();
         paramNode->type = typeNode;

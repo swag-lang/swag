@@ -17,7 +17,7 @@ func toto(using pt: *Point)
 #test
 {
 	var pt: Point
-	toto(pt)
+	toto(&pt)
 	@assert(pt.x == 10)
 	@assert(pt.y == 20)
 }

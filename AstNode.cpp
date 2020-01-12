@@ -477,6 +477,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->isConst        = isConst;
     newNode->isCode         = isCode;
     newNode->forceConstType = forceConstType;
+    newNode->isSelf         = isSelf;
     return newNode;
 }
 

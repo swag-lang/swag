@@ -543,6 +543,7 @@ struct AstTypeExpression : public AstNode
     bool isConst        = false;
     bool isCode         = false;
     bool forceConstType = false;
+    bool isSelf         = false;
 };
 
 struct AstTypeLambda : public AstNode

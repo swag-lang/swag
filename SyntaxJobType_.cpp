@@ -59,6 +59,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
                 auto typeNode        = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount   = 1;
                 typeNode->isConst    = isConst;
+                typeNode->isSelf     = true;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
             }
             else

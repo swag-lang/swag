@@ -47,7 +47,7 @@ namespace std.collections
                     }
                 }
 
-                memory.free(allocator, buffer)
+                memory.free(&allocator, buffer)
             }
 
             #[swag.nodoc]
@@ -56,7 +56,7 @@ namespace std.collections
                 if allocator == null
                     allocator = @getcontext().allocator
 
-                newBuffer := acast memory.realloc(allocator, buffer, newCapacity * @sizeof(T))
+                newBuffer := acast memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
 
                 // New to call opPostMove on every structs if the buffer has not been reallocated
                 // in place

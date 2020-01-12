@@ -57,6 +57,11 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::MakePointer:
+            concat.addChar('&');
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            break;
+
         case AstNodeKind::RawMove:
             if (node->flags & AST_FORCE_RAW)
                 concat.addString("raw ");

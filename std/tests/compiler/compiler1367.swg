@@ -42,6 +42,6 @@ impl TITI
 #test
 {   
     var str: TITI
-    str.Loop()
+    TITI.Loop(&str)
     @assert(str.val == 0)
 }

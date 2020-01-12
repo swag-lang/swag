@@ -34,6 +34,6 @@ func printWhatever(_itf: *IPrintable)
     var titi: TITI
     var itf: IPrintable
     itf = titi
-    printWhatever(itf)
+    printWhatever(&itf)
     @assert(G == 555)
 }

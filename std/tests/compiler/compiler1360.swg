@@ -35,6 +35,6 @@ var itf: IPrintable
     G = 0
     var titi: TITI
     itf = titi
-    printWhatever(itf)
+    printWhatever(&itf)
     @assert(G == 555)
 }
