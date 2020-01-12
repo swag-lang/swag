@@ -1,3 +1,5 @@
+//var  X: s32[4]
+
 func toto()
 {
 }

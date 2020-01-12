@@ -22,8 +22,8 @@ impl A
     
     var a: A
     var b: A
-	b.x = 20
+    b.x = 20
     a = move b
     @assert(G == 1)
-	//@assert(b.x == 10)
+    //@assert(b.x == 10)
 }

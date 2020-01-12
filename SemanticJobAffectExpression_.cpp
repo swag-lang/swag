@@ -11,6 +11,12 @@ bool SemanticJob::resolveRawMove(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, right));
     node->typeInfo    = right->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+
+    if (node->flags & AST_FORCE_MOVE)
+    {
+        SWAG_VERIFY(!node->typeInfo->isConst(), context->report({right, "'move' cannot be applied to a constant expression"}));
+    }
+
     return true;
 }
 
