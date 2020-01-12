@@ -54,13 +54,17 @@ namespace Ast
 
         if (node->flags & AST_IDENTIFIER_BACKTICK)
             concat.addChar('`');
-        if (node->flags & AST_FORCE_RAW)
-            concat.addString("raw ");
-        if (node->flags & AST_FORCE_MOVE)
-            concat.addString("move ");
 
         switch (node->kind)
         {
+        case AstNodeKind::RawMove:
+            if (node->flags & AST_FORCE_RAW)
+                concat.addString("raw ");
+            if (node->flags & AST_FORCE_MOVE)
+                concat.addString("move ");
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            break;
+
         case AstNodeKind::ArrayPointerIndex:
         {
             auto arrayNode = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);

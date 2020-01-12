@@ -97,36 +97,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doLiteral(parent, result));
         break;
 
-    case TokenId::KwdRaw:
-    {
-        AstNode* id;
-        SWAG_CHECK(tokenizer.getToken(token));
-
-        uint32_t forceMove = 0;
-        if (token.id == TokenId::KwdMove)
-        {
-            SWAG_CHECK(tokenizer.getToken(token));
-            forceMove = AST_FORCE_MOVE;
-        }
-
-        SWAG_CHECK(doIdentifierRef(parent, &id));
-        if (result)
-            *result = id;
-        id->flags |= AST_FORCE_RAW | forceMove;
-    }
-    break;
-
-    case TokenId::KwdMove:
-    {
-        AstNode* id;
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doIdentifierRef(parent, &id));
-        if (result)
-            *result = id;
-        id->flags |= AST_FORCE_MOVE;
-    }
-    break;
-
     case TokenId::SymBackTick:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
@@ -197,7 +167,6 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     else if (token.id == TokenId::KwdDeRef)
     {
         SWAG_CHECK(eatToken());
-
         auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
         SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
@@ -210,6 +179,27 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         arrayNode->access    = literal;
         exprNode             = arrayNode;
     }
+
+    // raw
+    else if (token.id == TokenId::KwdRaw)
+    {
+        SWAG_CHECK(eatToken());
+        exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile);
+        exprNode->semanticFct = SemanticJob::resolveRawMove;
+        SWAG_CHECK(doPrimaryExpression(exprNode));
+        exprNode->flags |= AST_FORCE_RAW;
+    }
+
+    // move
+    else if (token.id == TokenId::KwdMove)
+    {
+        SWAG_CHECK(eatToken());
+        exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile);
+        exprNode->semanticFct = SemanticJob::resolveRawMove;
+        SWAG_CHECK(doPrimaryExpression(exprNode));
+        exprNode->flags |= AST_FORCE_MOVE;
+    }
+
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));

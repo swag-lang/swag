@@ -4,6 +4,16 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 
+bool SemanticJob::resolveRawMove(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto right = node->childs[0];
+    SWAG_CHECK(checkIsConcrete(context, right));
+    node->typeInfo    = right->typeInfo;
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    return true;
+}
+
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
     auto node    = context->node;
