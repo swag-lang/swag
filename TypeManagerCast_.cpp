@@ -1610,7 +1610,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                 toTypePointer->finalType->isSame(fromTypeArray->pointedType, ISSAME_CAST) ||
                 (castFlags & CASTFLAG_EXPLICIT))
             {
-                if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
                     fromNode->castedTypeInfo = fromNode->typeInfo;
                     fromNode->typeInfo       = toType;
