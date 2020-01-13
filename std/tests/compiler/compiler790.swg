@@ -16,6 +16,9 @@ enum TOTO : string
 	ptr := cast(const *TypeInfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 	
+    @assert(ptr.values[0].namedParam == "R")
+    @assert(ptr.values[1].namedParam == "G")
+
 	ptr1 := ptr.values[1]
 	@assert(ptr1.namedParam == "G")
 	

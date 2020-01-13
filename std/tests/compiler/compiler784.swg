@@ -19,7 +19,7 @@ struct Point
 	@assert(@countof(ptr.fields) == 3)
 	
 	ptr0 := ptr.fields[0]
-	@assert(ptr0.base.kind == TypeInfoKind.Param)
+	//@assert(ptr0.base.kind == TypeInfoKind.Param)
 	@assert(ptr0.namedParam == "x")
 	@assert(ptr0.pointedType.kind == TypeInfoKind.Native)
 	@assert(ptr0.offset == 0)

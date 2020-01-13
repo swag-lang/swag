@@ -7,10 +7,13 @@ struct AstNode;
 struct ConcreteTypeInfo;
 struct SymbolAttributes;
 struct ConcreteStringSlice;
+struct ConcreteTypeInfoParam;
+struct TypeInfoParam;
 
 struct TypeTable
 {
     TypeTable();
+    bool makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType);
     bool makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
     bool makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset);
     bool makeConcreteString(JobContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer);
@@ -83,12 +86,12 @@ struct ConcreteTypeInfoPointer
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteTypeInfo    base;
     ConcreteStringSlice namedParam;
     ConcreteTypeInfo*   pointedType;
     void*               value;
     ConcreteStringSlice attributes;
     uint32_t            offsetOf;
+    uint32_t            padding;
 };
 
 struct ConcreteTypeInfoStruct
