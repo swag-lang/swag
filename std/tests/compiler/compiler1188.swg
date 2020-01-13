@@ -1,4 +1,5 @@
-attr T()-> "var"
+#[swag.attributeUsage(swag.AttributeUsage.Field)]
+attr T();
 
 struct TOTO
 {

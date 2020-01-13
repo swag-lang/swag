@@ -1,6 +1,7 @@
 using swag
 
-attr Command()-> "func"
+#[attributeUsage(AttributeUsage.Function)]
+attr Command();
 
 struct A
 {

@@ -1,9 +1,9 @@
-
-
 using swag
 
-attr NC1(x: s32) -> "var"
-attr NC2(y: s32) -> "var"
+#[attributeUsage(AttributeUsage.Field)]
+attr NC1(x: s32);
+#[attributeUsage(AttributeUsage.Field)]
+attr NC2(y: s32);
 
 struct Point
 {

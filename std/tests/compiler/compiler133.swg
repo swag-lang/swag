@@ -1,9 +1,12 @@
+using swag
 namespace A
 {
-	attr toto() -> "func"
+    #[attributeUsage(AttributeUsage.Function)]
+	attr toto();
 	namespace B
 	{
-		attr toto1() -> "var"
+        #[attributeUsage(AttributeUsage.GlobalVariable)]
+		attr toto1();
 	}
 }
 

@@ -1,6 +1,23 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "SourceFile.h"
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match bootstrap.swg
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+enum AttributeUsage
+{
+    Enum           = 0x00000001,
+    EnumValue      = 0x00000002,
+    Field          = 0x00000004,
+    GlobalVariable = 0x00000008,
+    Struct         = 0x00000010,
+    Function       = 0x00000020,
+    Attribute      = 0x00000040,
+    All            = 0xFFFFFFFF,
+};
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
@@ -10,26 +27,38 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl))
+    if ((typeInfo->attributeFlags & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
+    {
         return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
-        return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl))
-        return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_INTERFACE) && kind == AstNodeKind::InterfaceDecl)
-        return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl))
-        return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
-        return true;
+    }
 
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCTVAR) && (kind == AstNodeKind::VarDecl))
+    if ((typeInfo->attributeFlags & AttributeUsage::Attribute) && (kind == AstNodeKind::AttrDecl))
+    {
+        return true;
+    }
+
+    if ((typeInfo->attributeFlags & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
+    {
+        return true;
+    }
+
+    if ((typeInfo->attributeFlags & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
+    {
+        return true;
+    }
+
+    if ((typeInfo->attributeFlags & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
+    {
+        return true;
+    }
+
+    if ((typeInfo->attributeFlags & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))
     {
         if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
             return true;
     }
 
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_GLOBALVAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    if ((typeInfo->attributeFlags & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
     {
         if (checkNode->ownerScope->isGlobal())
             return true;
@@ -43,6 +72,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
 {
+    // Predefined attributes
+    if (kind == AstNodeKind::AttrDecl && context->sourceFile->swagFile && forNode->name == "attributeUsage")
+    {
+        auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+        typeAttr->attributeFlags = AttributeUsage::Attribute;
+        return true;
+    }
+
     if (!attrUse)
         return true;
 
@@ -71,7 +108,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             result.attributes.insert(typeInfo);
             result.values.insert(curAttr->values.begin(), curAttr->values.end());
 
-            // Predefined attributes will mark some flags
+            // Attribute on an attribute : usage
+            if (kind == AstNodeKind::AttrDecl)
+            {
+                SWAG_ASSERT(child->name == "attributeUsage");
+                auto it = curAttr->values.find("swag.attributeUsage.usage");
+                SWAG_ASSERT(it != curAttr->values.end());
+                auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+                typeAttr->attributeFlags = it->second.second.reg.u32;
+            }
+
+            // Predefined attributes will mark some flags (to speed up detection)
             if (child->name == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
             else if (child->name == "printbc")
@@ -108,7 +155,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     return true;
 }
 
-bool SemanticJob::resolveAttrDecl(SemanticContext* context)
+bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
 {
     auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -116,6 +163,15 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Attribute));
     if (context->result == ContextResult::Pending)
         return true;
+
+    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, AstNodeKind::AttrDecl, node->attributeFlags));
+    return true;
+}
+
+bool SemanticJob::resolveAttrDecl(SemanticContext* context)
+{
+    auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Attribute));

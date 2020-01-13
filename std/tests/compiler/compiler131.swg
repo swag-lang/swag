@@ -1,8 +1,10 @@
 #module compiler131
-;
+using swag
 
-attr toto() -> "var"
-#unittest error;
+#[attributeUsage(AttributeUsage.Field)]
+attr toto();
+
+#unittest error
 struct TT
 {
 	#[toto, toto]

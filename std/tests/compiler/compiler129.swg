@@ -1,7 +1,10 @@
 #module compiler129
+using swag
 
-attr toto() -> "var"
-attr toto1() -> "func"
+#[attributeUsage(AttributeUsage.Field)]
+attr toto();
+#[attributeUsage(AttributeUsage.Function)]
+attr toto1();
 
 #unittest error;
 #[toto1]

@@ -62,6 +62,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::EnumValue:
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::Impl:
+    case AstNodeKind::AttrDecl:
         return "an " + result;
     }
 
@@ -83,6 +84,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         return "constant";
     case AstNodeKind::FuncDecl:
         return "function";
+    case AstNodeKind::AttrDecl:
+        return "attribute declaration";
     case AstNodeKind::EnumDecl:
         return "enum";
     case AstNodeKind::EnumValue:

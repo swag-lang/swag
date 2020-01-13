@@ -1,6 +1,6 @@
-
-
-attr PR(x: s32) -> "struct"
+using swag
+#[attributeUsage(AttributeUsage.Struct)]
+attr PR(x: s32);
 
 #[PR(666)]
 struct toto

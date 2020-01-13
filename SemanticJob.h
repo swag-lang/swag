@@ -163,6 +163,7 @@ struct SemanticJob : public Job
     static bool registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     static bool resolveFuncCallParams(SemanticContext* context);
     static bool resolveFuncCallParam(SemanticContext* context);
+    static bool preResolveAttrDecl(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
     static bool resolveReturn(SemanticContext* context);

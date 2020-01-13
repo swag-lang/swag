@@ -21,25 +21,69 @@ func @isbytecode()->bool;
 
 namespace swag
 {
+    enum AttributeUsage : u32
+    {
+        Enum            = 0x00000001
+        EnumValue       = 0x00000002
+        Field           = 0x00000004
+        GlobalVariable  = 0x00000008
+        Struct          = 0x00000010
+        Function        = 0x00000020
+        Attribute       = 0x00000040
+        All             = 0xFFFFFFFF
+    }
+
 	// #########################################################
 	// Attributes
 	// #########################################################
 
-	attr constexpr() -> "func"
-	attr printbc() -> "func"
-	attr compiler() -> "func"
-	attr inline() -> "func"
-    attr macro() -> "func"
-    attr mixin() -> "func"
-	attr test() -> "func"
-	attr foreign(module: string, function: string = "") -> "func"
-	attr pack() -> "struct"
-	attr flags() -> "enum"
-    attr complete() -> "func"
-    attr offset(name: string) -> "structvar"
-	attr property() -> "func"
-	attr nobss() -> "globalvar"
-	attr nodoc() -> "func"
+    // Hardcoded usage
+    attr attributeUsage(usage: AttributeUsage);
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr constexpr();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr printbc();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr compiler();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr inline();
+
+    #[attributeUsage(AttributeUsage.Function)]
+    attr macro();
+
+    #[attributeUsage(AttributeUsage.Function)]
+    attr mixin();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr test();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr foreign(module: string, function: string = "");
+
+    #[attributeUsage(AttributeUsage.Struct)]
+	attr pack();
+
+    #[attributeUsage(AttributeUsage.Enum)]
+	attr flags();
+
+    #[attributeUsage(AttributeUsage.Function)]
+    attr complete();
+
+    #[attributeUsage(AttributeUsage.Field)]
+    attr offset(name: string);
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr property();
+
+    #[attributeUsage(AttributeUsage.GlobalVariable)]
+	attr nobss();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr nodoc();
 	
 	// #########################################################
 	// Constants

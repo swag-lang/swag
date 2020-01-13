@@ -1,6 +1,6 @@
 #module compiler130
-
-attr toto() -> "var"
+#[attributeUsage(AttributeUsage.Field)]
+attr toto();
 
 #unittest error;
 #[toto]

@@ -1,7 +1,9 @@
 #module compiler128
 
-attr toto() -> "var"
-attr toto1() -> "func"
+#[swag.attributeUsage(swag.AttributeUsage.GlobalVariable)]
+attr toto();
+#[swag.attributeUsage(swag.AttributeUsage.Function)]
+attr toto1();
 
 #unittest error;
 #[toto]

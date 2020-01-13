@@ -1,8 +1,7 @@
-
-
 using swag
 
-attr NC1() -> "var"
+#[attributeUsage(AttributeUsage.Field)]
+attr NC1();
 
 struct Point
 {

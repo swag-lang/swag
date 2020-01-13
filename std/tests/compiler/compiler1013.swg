@@ -1,7 +1,7 @@
-
 using swag
 
-attr NC1(x: string) -> "enumvalue"
+#[attributeUsage(AttributeUsage.EnumValue)]
+attr NC1(x: string);
 
 enum A
 {

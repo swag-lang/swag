@@ -1,10 +1,14 @@
-attr toto() -> "func"
+using swag
+#[attributeUsage(AttributeUsage.Function)]
+attr toto();
 
 #[toto]
 func main ()
 {
 }
 
-attr toto1() -> "var"
+#[attributeUsage(AttributeUsage.GlobalVariable)]
+attr toto1();
+
 #[toto1]
 var a: bool;

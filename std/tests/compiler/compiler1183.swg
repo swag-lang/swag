@@ -1,4 +1,7 @@
-attr T()-> "structvar"
+using swag
+#[attributeUsage(AttributeUsage.Field)]
+attr T();
+
 struct TOTO
 {
     #[T]

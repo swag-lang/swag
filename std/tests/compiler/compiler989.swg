@@ -1,10 +1,11 @@
-
-
 using swag
 
-attr NC() -> "struct"
-attr NC0() -> "struct"
-attr NC1() -> "var"
+#[attributeUsage(AttributeUsage.Struct)]
+attr NC();
+#[attributeUsage(AttributeUsage.Struct)]
+attr NC0();
+#[attributeUsage(AttributeUsage.Field)]
+attr NC1();
 
 #[NC, NC0]
 struct Point

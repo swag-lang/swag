@@ -1,4 +1,6 @@
-attr NC()->"var"
+using swag
+#[attributeUsage(AttributeUsage.Field)]
+attr NC();
 
 struct Toto
 {

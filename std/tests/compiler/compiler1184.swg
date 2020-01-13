@@ -1,7 +1,8 @@
 #module compiler1184
 #unittest error
 
-attr T()-> "structvar"
+#[swag.attributeUsage(AttributeUsage.Field)]
+attr T();
 
 #[T]
 var A: s32

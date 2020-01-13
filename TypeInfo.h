@@ -353,15 +353,6 @@ struct SymbolMatchContext
     bool hasNamedParameters;
 };
 
-static const uint32_t TYPEINFO_ATTRIBUTE_FUNC      = 0x00000001;
-static const uint32_t TYPEINFO_ATTRIBUTE_VAR       = 0x00000002;
-static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT    = 0x00000004;
-static const uint32_t TYPEINFO_ATTRIBUTE_ENUM      = 0x00000008;
-static const uint32_t TYPEINFO_ATTRIBUTE_ENUMVALUE = 0x00000010;
-static const uint32_t TYPEINFO_ATTRIBUTE_STRUCTVAR = 0x00000020;
-static const uint32_t TYPEINFO_ATTRIBUTE_INTERFACE = 0x00000040;
-static const uint32_t TYPEINFO_ATTRIBUTE_GLOBALVAR = 0x00000080;
-
 struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()

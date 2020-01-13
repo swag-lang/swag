@@ -1,2 +1,5 @@
-attr NC1(x: s32) -> "var"
-attr NC2(x: s32) -> "var"
+using swag
+#[attributeUsage(AttributeUsage.Field)]
+attr NC1(x: s32);
+#[attributeUsage(AttributeUsage.Field)]
+attr NC2(x: s32);

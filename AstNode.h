@@ -372,7 +372,7 @@ struct AstAttrDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* parameters = nullptr;
+    AstNode*         parameters = nullptr;
 };
 
 struct AstAttrUse : public AstNode

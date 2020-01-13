@@ -1,4 +1,4 @@
-#module compiler123
+/*#module compiler123
 #unittest pass syntax;
 
 attr toto() -> "func", "var"
@@ -12,4 +12,4 @@ attr toto() -> "func", "func"
 
 #unittest pass syntax;
 #unittest error;
-attr toto() -> "var", "var"
+attr toto() -> "var", "var"*/

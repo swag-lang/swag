@@ -8,8 +8,9 @@
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode         = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
-    attrNode->semanticFct = SemanticJob::resolveAttrDecl;
+    auto attrNode               = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
+    attrNode->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
+    attrNode->semanticFct       = SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
 
@@ -32,66 +33,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    // Return type
-    SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-    while (true)
-    {
-        if (token.id != TokenId::LiteralString)
-            return error(token, format("string requested instead of '%s'", token.text.c_str()));
-
-        if (token.text == "func")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_FUNC;
-        }
-        else if (token.text == "var")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_VAR;
-        }
-        else if (token.text == "structvar")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCTVAR) == 0, syntaxError(token, "attribute constraint 'structvar' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCTVAR;
-        }
-        else if (token.text == "globalvar")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_GLOBALVAR) == 0, syntaxError(token, "attribute constraint 'globalvar' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_GLOBALVAR;
-        }
-        else if (token.text == "struct" || token.text == "union")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCT;
-        }
-        else if (token.text == "interface")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_INTERFACE) == 0, syntaxError(token, "attribute constraint 'interface' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_INTERFACE;
-        }
-        else if (token.text == "enum")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUM;
-        }
-        else if (token.text == "enumvalue")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute constraint 'enumvalue' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
-        }
-        else
-        {
-            return error(token, format("invalid attribute constraint '%s'", token.text.c_str()));
-        }
-
-        SWAG_CHECK(tokenizer.getToken(token));
-        if (token.id != TokenId::SymComma)
-            break;
-        SWAG_CHECK(eatToken());
-    }
-
     SWAG_CHECK(eatSemiCol("after attribute definition"));
-    SWAG_VERIFY(typeInfo->attributeFlags, syntaxError(token, "missing attribute constraint"));
 
     return true;
 }
