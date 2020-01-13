@@ -1653,7 +1653,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                 if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || 
                     toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
                 {
-                    if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK) && !(toTypePointer->flags & TYPEINFO_SELF))
                     {
                         fromNode->castedTypeInfo = fromNode->typeInfo;
                         fromNode->typeInfo       = toType;

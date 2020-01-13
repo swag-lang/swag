@@ -190,6 +190,24 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode*
     return symbol;
 }
 
+bool SemanticJob::waitUserOp(SemanticContext* context, const char* name, AstNode* left)
+{
+    auto leftType   = TypeManager::concreteType(left->typeInfo);
+    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+    auto symbol     = leftStruct->scope->symTable.find(name);
+    if (!symbol)
+        return true;
+
+    scoped_lock lkn(symbol->mutex);
+    if (symbol->cptOverloads)
+    {
+        context->job->waitForSymbolNoLock(symbol);
+        return true;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal)
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);

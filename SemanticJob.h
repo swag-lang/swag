@@ -137,6 +137,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
     static bool hasUserOp(SemanticContext* context, const char* name, AstNode* left);
+    static bool waitUserOp(SemanticContext* context, const char* name, AstNode* left);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);

@@ -727,6 +727,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
+            fromTypeInfo->kind == TypeInfoKind::Interface ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->isNative(NativeTypeKind::String))
         {

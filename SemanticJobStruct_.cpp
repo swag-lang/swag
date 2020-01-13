@@ -1,24 +1,20 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
-#include "SymTable.h"
 #include "Ast.h"
-#include "Module.h"
 #include "Workspace.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
-#include "VectorNative.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
-    SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, nullptr, node, nullptr, true));
+    SWAG_CHECK(waitUserOp(context, "opPostCopy", node));
     if (context->result == ContextResult::Pending)
         return true;
-    SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, nullptr, node, nullptr, true));
+    SWAG_CHECK(waitUserOp(context, "opPostMove", node));
     if (context->result == ContextResult::Pending)
         return true;
-    SWAG_CHECK(resolveUserOp(context, "opDrop", nullptr, nullptr, node, nullptr, true));
+    SWAG_CHECK(waitUserOp(context, "opDrop", node));
     if (context->result == ContextResult::Pending)
         return true;
     return true;

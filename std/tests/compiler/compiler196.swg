@@ -1,5 +1,3 @@
-;
-;
 using swag;
 
 #[constexpr] 
@@ -14,6 +12,11 @@ using swag;
 	func main_s64 ()->s64 { return -45; }
 	func main_f32 ()->f32 { return 1.5; }
 	func main_f64 ()->f64 { return 1.5; }
+}
+
+#test
+{
+    @assert(cast(u8) (main_s8() ) == 0xD3)
 }
 
 #assert cast(u8) (main_u8() ) == 45;
