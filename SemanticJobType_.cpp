@@ -264,6 +264,13 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
     node->typeInfo = typeNode->typeInfo;
 
+    // Revert the implicit cast informations
+    if (exprNode->castedTypeInfo)
+    {
+        exprNode->typeInfo = exprNode->castedTypeInfo;
+        exprNode->castedTypeInfo = nullptr;
+    }
+
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);

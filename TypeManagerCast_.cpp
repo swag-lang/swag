@@ -1550,13 +1550,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         {
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                if (!(castFlags & CASTFLAG_EXPLICIT))
-                {
-                    toNode->castedTypeInfo = toType;
-                    toNode->typeInfo       = fromNode->typeInfo;
-                }
-
-                auto& typeTable = context->sourceFile->module->typeTable;
+                toNode->castedTypeInfo = toType;
+                toNode->typeInfo       = fromNode->typeInfo;
+                auto& typeTable        = context->sourceFile->module->typeTable;
                 SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
             }
 
@@ -1575,13 +1571,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = toType;
-            }
-
-            auto& typeTable = context->sourceFile->module->typeTable;
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+            auto& typeTable          = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }
     }
@@ -1650,7 +1642,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             if (toTypePointer->ptrCount == 1)
             {
                 // to *void or *structure
-                if (toTypePointer->finalType->isNative(NativeTypeKind::Void) || 
+                if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
                     toTypePointer->finalType->isSame(fromType, ISSAME_CAST))
                 {
                     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK) && !(toTypePointer->flags & TYPEINFO_SELF))
