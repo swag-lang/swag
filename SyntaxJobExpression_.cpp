@@ -53,6 +53,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
     SWAG_CHECK(doTopExpression(node, &node->expression));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
