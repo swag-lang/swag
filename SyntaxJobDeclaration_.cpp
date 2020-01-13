@@ -264,6 +264,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
+    case TokenId::KwdEnum:
+        SWAG_CHECK(doEnum(parent));
+        break;
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doScopedCurlyStatement(parent, result));
         break;
