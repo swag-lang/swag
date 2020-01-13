@@ -265,6 +265,8 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->typeInfo = typeNode->typeInfo;
 
     // Revert the implicit cast informations
+    // Requested type if store in typeInfo of node, and previous type is stored in typeInfo of exprNode
+    // We cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast
     if (exprNode->castedTypeInfo)
     {
         exprNode->typeInfo = exprNode->castedTypeInfo;

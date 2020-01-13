@@ -47,7 +47,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
             SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
         }
 
