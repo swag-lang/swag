@@ -164,18 +164,6 @@ namespace swag
 	// Type reflection
 	// #########################################################
 
-	struct TypeInfoAttributeParameter
-	{
-		name:	string
-		value:	any
-	}
-
-	struct TypeInfoAttribute
-	{
-		name:		string
-		params:		const [..] TypeInfoAttributeParameter
-	}
-
 	enum TypeInfoKind
 	{
 		Invalid
@@ -238,6 +226,18 @@ namespace swag
 		ptrCount:		u32
 	}
 
+	struct TypeInfoAttributeParameter
+	{
+		name:	string
+		value:	any
+	}
+
+	struct TypeInfoAttribute
+	{
+		name:		string
+		params:		const [..] TypeInfoAttributeParameter
+	}
+    
 	struct TypeInfoParam
 	{
 		base: 			TypeInfo
