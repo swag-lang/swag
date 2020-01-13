@@ -372,14 +372,13 @@ struct AstAttrDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode*         parameters = nullptr;
+    AstNode* parameters = nullptr;
 };
 
 struct AstAttrUse : public AstNode
 {
-    AstNode* clone(CloneContext& context) override;
-
-    map<Utf8, pair<TypeInfo*, ComputedValue>> values;
+    AstNode*         clone(CloneContext& context) override;
+    SymbolAttributes attributes;
 };
 
 struct AstFuncCallParam : public AstNode

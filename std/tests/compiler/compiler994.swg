@@ -11,10 +11,11 @@ enum A
 #test
 {
 	ptr := cast(const *TypeInfoEnum) @typeof(A)
-	@assert(@countof(ptr.attributes) == 2)
-	@assert(ptr.attributes[0].item0 == "compiler994.NC1")
-	@assert(ptr.attributes[1].item0 == "compiler994.NC1.x")
-	val := ptr.attributes[1].item1
+	@assert(@countof(ptr.attributes) == 1)
+	@assert(ptr.attributes[0].name == "compiler994.NC1")
+	@assert(ptr.attributes[0].params[0].name  == "x")
+
+	val := ptr.attributes[0].params[0].value
 	@assert(@kindof(val) == @typeof(string))
 	ptrVal := cast(*string) @dataof(val);
 	@assert(ptrVal[0] == "toto")

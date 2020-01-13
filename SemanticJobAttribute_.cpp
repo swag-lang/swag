@@ -9,6 +9,7 @@
 
 enum AttributeUsage
 {
+    // Usage
     Enum           = 0x00000001,
     EnumValue      = 0x00000002,
     Field          = 0x00000004,
@@ -16,7 +17,9 @@ enum AttributeUsage
     Struct         = 0x00000010,
     Function       = 0x00000020,
     Attribute      = 0x00000040,
-    All            = 0xFFFFFFFF,
+    All            = 0x0FFFFFFF,
+    // Flags
+    Multi = 0x80000000,
 };
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
@@ -73,11 +76,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
 {
     // Predefined attributes
-    if (kind == AstNodeKind::AttrDecl && context->sourceFile->swagFile && forNode->name == "attributeUsage")
+    if (kind == AstNodeKind::AttrDecl && context->sourceFile->swagFile)
     {
-        auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-        typeAttr->attributeUsage = AttributeUsage::Attribute;
-        return true;
+        if (forNode->name == "attributeUsage" || forNode->name == "attributeMulti")
+        {
+            auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+            typeAttr->attributeUsage = AttributeUsage::Attribute;
+            return true;
+        }
     }
 
     if (!attrUse)
@@ -98,24 +104,30 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             SWAG_CHECK(checkAttribute(context, child, forNode, kind));
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (result.attributes.find(typeInfo) != result.attributes.end())
+            if (result.isHere.find(typeInfo) != result.isHere.end())
             {
                 Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
-            result.attributes.insert(typeInfo);
-            result.values.insert(curAttr->values.begin(), curAttr->values.end());
+            // Append attributes
+            result.isHere.insert(typeInfo);
 
             // Attribute on an attribute : usage
             if (kind == AstNodeKind::AttrDecl)
             {
-                SWAG_ASSERT(child->name == "attributeUsage");
-                auto it = curAttr->values.find("swag.attributeUsage.usage");
-                SWAG_ASSERT(it != curAttr->values.end());
-                auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-                typeAttr->attributeUsage = it->second.second.reg.u32;
+                if (curAttr->attributes.getValue("swag.attributeUsage", "usage", value))
+                {
+                    auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+                    typeAttr->attributeUsage = value.reg.u32;
+                }
+
+                if (curAttr->attributes.hasAttribute("swag.attributeMulti"))
+                {
+                    auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+                    typeAttr->attributeUsage |= AttributeUsage::Multi;
+                }
             }
 
             // Predefined attributes will mark some flags (to speed up detection)
@@ -148,6 +160,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             else if (child->name == "nodoc")
                 flags |= ATTRIBUTE_NODOC;
         }
+
+        // Merge the result
+        for (auto& oneAttr : curAttr->attributes.attributes)
+            result.attributes.push_back(oneAttr);
 
         curAttr = curAttr->parentAttributes;
     }
@@ -191,9 +207,6 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
 
     AstNodeKind kind = nextStatement ? nextStatement->kind : AstNodeKind::Module;
 
-    ComputedValue dummy;
-    dummy.reg.b = true;
-
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
@@ -214,8 +227,9 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         }
 
         // Register attribute itself
-        dummy.reg.pointer                    = (uint8_t*) node;
-        node->values[resolvedName->fullName] = {resolved->typeInfo, dummy};
+        OneAttribute oneAttribute;
+        oneAttribute.name = resolvedName->fullName;
+        oneAttribute.node = node;
 
         // And all its parameters
         if (identifier->callParameters)
@@ -224,10 +238,16 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
-                Utf8 attrFullName          = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
-                node->values[attrFullName] = {param->typeInfo, param->computedValue};
+
+                AttributeParameter attrParam;
+                attrParam.name     = param->resolvedParameter->namedParam;
+                attrParam.typeInfo = param->resolvedParameter->typeInfo;
+                attrParam.value    = param->computedValue;
+                oneAttribute.parameters.emplace_back(attrParam);
             }
         }
+
+        node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
     if (nextStatement)

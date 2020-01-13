@@ -31,7 +31,7 @@ namespace swag
         Struct          = 0x00000010
         Function        = 0x00000020
         Attribute       = 0x00000040
-        All             = 0xFFFFFFFF
+        All             = 0x0FFFFFFF
     }
 
 	// #########################################################
@@ -40,6 +40,7 @@ namespace swag
 
     // Hardcoded usage
     attr attributeUsage(usage: AttributeUsage);
+    attr attributeMulti();
 
     #[attributeUsage(AttributeUsage.Function)]
 	attr constexpr();
@@ -163,6 +164,18 @@ namespace swag
 	// Type reflection
 	// #########################################################
 
+	struct AttributeParameter
+	{
+		name:	string
+		value:	any
+	}
+
+	struct Attribute
+	{
+		name:		string
+		params:		const [..] AttributeParameter
+	}
+
 	enum TypeInfoKind
 	{
 		Invalid
@@ -231,7 +244,7 @@ namespace swag
 		namedParam:		string
 		pointedType:	const *TypeInfo
 		value:			*void
-		attributes:	    const [..] (name: string, value: any)
+		attributes:	    const [..] Attribute
 		offset:			u32
 	}
 
@@ -241,7 +254,7 @@ namespace swag
 		fields:		const [..] *TypeInfoParam
 		methods:	const [..] *TypeInfoParam
         interfaces: const [..] *TypeInfoParam
-		attributes:	const [..] (name: string, value: any)
+		attributes:	const [..] Attribute
 	}
     
 	struct TypeInfoFunc
@@ -249,7 +262,7 @@ namespace swag
 		base: 			TypeInfo
 		parameters:		const [..] *TypeInfoParam
 		returnType:		const *TypeInfo
-		attributes:	    const [..] (name: string, value: any)
+		attributes:	    const [..] Attribute
 	}
 
 	struct TypeInfoEnum
@@ -257,7 +270,7 @@ namespace swag
 		base: 		TypeInfo
 		values:		const [..] *TypeInfoParam
 		rawType:	const *TypeInfo
-		attributes:	const [..] (name: string, value: any)
+		attributes:	const [..] Attribute
 	}
 
 	struct TypeInfoVariadic

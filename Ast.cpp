@@ -7,7 +7,8 @@
 
 namespace Ast
 {
-    thread_local AstNode* lastGeneratedNode = nullptr;;
+    thread_local AstNode* lastGeneratedNode = nullptr;
+    ;
 
     Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
@@ -315,10 +316,10 @@ namespace Ast
     {
         if (!forExport)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            auto it       = typeFunc->attributes.values.find("swag.foreign.function");
-            if (it != typeFunc->attributes.values.end())
-                return it->second.second.text;
+            auto          typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            ComputedValue value;
+            if (typeFunc->attributes.getValue("swag.foreign", "function", value))
+                return value.text;
             return node->name;
         }
 

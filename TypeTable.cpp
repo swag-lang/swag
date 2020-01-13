@@ -36,41 +36,71 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo* p
 
 bool TypeTable::makeConcreteAttributes(JobContext* context, ConcreteTypeInfo* parentConcrete, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
 {
-    if (attributes.values.size() == 0)
+    if (attributes.empty())
         return true;
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    result->count = (uint32_t) attributes.values.size();
+    result->count = attributes.size();
 
-    uint32_t storageOffset = module->constantSegment.reserveNoLock((uint32_t)(result->count * (sizeof(ConcreteStringSlice) + sizeof(ConcreteAny))));
-    uint8_t* ptr           = module->constantSegment.addressNoLock(storageOffset);
-    result->buffer         = ptr;
-    module->constantSegment.addInitPtr(offset, storageOffset);
+    uint32_t storageOffsetAttributes = module->constantSegment.reserveNoLock((uint32_t) result->count * sizeof(ConcreteAttribute));
+    uint8_t* ptrStorageAttributes    = module->constantSegment.addressNoLock(storageOffsetAttributes);
+    result->buffer                   = ptrStorageAttributes;
+    module->constantSegment.addInitPtr(offset, storageOffsetAttributes);
 
-    uint32_t curOffset = storageOffset;
-    for (auto& one : attributes.values)
+    uint32_t curOffsetAttributes = storageOffsetAttributes;
+    for (auto& one : attributes.attributes)
     {
-        auto ptrString = (ConcreteStringSlice*) ptr;
-        SWAG_CHECK(makeConcreteString(context, ptrString, one.first, curOffset));
-        curOffset += sizeof(ConcreteStringSlice);
-        ptr += sizeof(ConcreteStringSlice);
+        // Name of the attribute
+        auto ptrString = (ConcreteStringSlice*) ptrStorageAttributes;
+        SWAG_CHECK(makeConcreteString(context, ptrString, one.name, curOffsetAttributes));
+        curOffsetAttributes += sizeof(ConcreteStringSlice);
+        ptrStorageAttributes += sizeof(ConcreteStringSlice);
 
-        auto ptrAny        = (ConcreteAny*) ptr;
-        auto typeAttribute = one.second.first;
-        if (typeAttribute->kind == TypeInfoKind::Native)
+        // Slice to all parameters
+        auto ptrParamsAttribute    = (ConcreteStringSlice*) ptrStorageAttributes;
+        ptrParamsAttribute->buffer = nullptr;
+        ptrParamsAttribute->count  = (uint32_t) one.parameters.size();
+
+        // Parameters
+        if (!one.parameters.empty())
         {
-            auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeAttribute, one.second.second);
-            ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
-            module->constantSegment.addInitPtr(curOffset, storageOffsetValue);
-        }
-        else
-            ptrAny->value = nullptr;
+            // Slice for all parameters
+            uint32_t storageOffsetParams = module->constantSegment.reserveNoLock((uint32_t) one.parameters.size() * sizeof(ConcreteAttributeParameter));
+            uint8_t* ptrStorageAllParams = module->constantSegment.addressNoLock(storageOffsetParams);
+            ptrParamsAttribute->buffer   = ptrStorageAllParams;
+            module->constantSegment.addInitPtr(curOffsetAttributes, storageOffsetParams);
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, parentConcrete, nullptr, curOffset + sizeof(void*), &ptrAny->type, typeAttribute));
-        curOffset += sizeof(ConcreteAny);
-        ptr += sizeof(ConcreteAny);
+            uint32_t curOffsetParams = storageOffsetParams;
+            for (auto& oneParam : one.parameters)
+            {
+                // Name of the parameter
+                ptrString = (ConcreteStringSlice*) ptrStorageAllParams;
+                SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.name, curOffsetParams));
+                curOffsetParams += sizeof(ConcreteStringSlice);
+                ptrStorageAllParams += sizeof(ConcreteStringSlice);
+
+                // Value of the parameter
+                auto ptrAny = (ConcreteAny*) ptrStorageAllParams;
+                if (oneParam.typeInfo->kind == TypeInfoKind::Native)
+                {
+                    auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, oneParam.typeInfo, oneParam.value);
+                    ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
+                    module->constantSegment.addInitPtr(curOffsetParams, storageOffsetValue);
+                }
+                else
+                    ptrAny->value = nullptr;
+
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, parentConcrete, nullptr, curOffsetParams + sizeof(void*), &ptrAny->type, oneParam.typeInfo));
+                curOffsetParams += sizeof(ConcreteAny);
+                ptrStorageAllParams += sizeof(ConcreteAny);
+            }
+        }
+
+        // Next attribute (zap slice of all parameters
+        curOffsetAttributes += sizeof(ConcreteStringSlice);
+        ptrStorageAttributes += sizeof(ConcreteStringSlice);
     }
 
     return true;

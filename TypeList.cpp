@@ -16,6 +16,9 @@ void TypeList::registerInit()
     registerType(g_TypeMgr.typeInfoF32);
     registerType(g_TypeMgr.typeInfoF64);
     registerType(g_TypeMgr.typeInfoBool);
+    registerType(g_TypeMgr.typeInfoChar);
+    registerType(g_TypeMgr.typeInfoVoid);
+    registerType(g_TypeMgr.typeInfoAny);
     registerType(g_TypeMgr.typeInfoString);
 }
 
@@ -27,7 +30,11 @@ TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
     SWAG_ASSERT(newTypeInfo->kind != TypeInfoKind::Pointer || ((TypeInfoPointer*) newTypeInfo)->pointedType);
 
     auto& oneList = allTypes[(uint32_t) newTypeInfo->kind];
-    if (newTypeInfo->kind != TypeInfoKind::Enum && newTypeInfo->kind != TypeInfoKind::Struct)
+    if (newTypeInfo->kind != TypeInfoKind::Enum &&
+        newTypeInfo->kind != TypeInfoKind::Struct &&
+        newTypeInfo->kind != TypeInfoKind::Interface &&
+        newTypeInfo->kind != TypeInfoKind::FuncAttr &&
+        newTypeInfo->kind != TypeInfoKind::Lambda)
     {
         for (auto typeInfo : oneList)
         {

@@ -1,11 +1,46 @@
 #include "pch.h"
 #include "Attribute.h"
 
-bool SymbolAttributes::getValue(const Utf8& fullName, ComputedValue& value)
+OneAttribute* SymbolAttributes::getAttribute(const Utf8& fullName)
 {
-    auto it = values.find(fullName);
-    if (it == values.end())
-        return false;
-    value = it->second.second;
-    return true;
+    for (auto& it : attributes)
+    {
+        if (it.name == fullName)
+            return &it;
+    }
+
+    return nullptr;
+}
+
+bool SymbolAttributes::getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value)
+{
+    for (auto& it : attributes)
+    {
+        if (it.name == fullName)
+        {
+            for (auto& param : it.parameters)
+            {
+                if (param.name == parameter)
+                {
+                    value = param.value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    return false;
+}
+
+bool SymbolAttributes::hasAttribute(const Utf8& fullName)
+{
+    for (auto& it : attributes)
+    {
+        if (it.name == fullName)
+            return true;
+    }
+
+    return false;
 }

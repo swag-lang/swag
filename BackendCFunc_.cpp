@@ -182,9 +182,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         }
     }
 
-    auto it = typeFuncBC->attributes.values.find("swag.foreign.function");
-    if (it != typeFuncBC->attributes.values.end())
-        concat.addString(it->second.second.text);
+    ComputedValue foreignValue;
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue))
+        concat.addString(foreignValue.text);
     else
         concat.addString(nodeFunc->name);
     concat.addChar('(');
@@ -1676,9 +1676,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             SWAG_ASSERT(funcNode);
             SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
             TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            auto              it           = typeFuncNode->attributes.values.find("swag.foreign.function");
-            SWAG_ASSERT(it != typeFuncNode->attributes.values.end());
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, it->second.second.text.c_str());
+            ComputedValue foreignValue;
+            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+            SWAG_ASSERT(!foreignValue.text.empty());
+            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
             break;
         }
 

@@ -26,16 +26,44 @@ static const uint32_t ATTRIBUTE_NOBSS         = 0x00100000;
 static const uint32_t ATTRIBUTE_NODOC         = 0x00200000;
 
 struct TypeInfoFuncAttr;
+struct AstNode;
+
+struct AttributeParameter
+{
+    Utf8          name;
+    TypeInfo*     typeInfo;
+    ComputedValue value;
+};
+
+struct OneAttribute
+{
+    Utf8                       name;
+    vector<AttributeParameter> parameters;
+    AstNode*                   node = nullptr;
+};
+
 struct SymbolAttributes
 {
-    set<TypeInfoFuncAttr*>                    attributes;
-    map<Utf8, pair<TypeInfo*, ComputedValue>> values;
+    set<TypeInfoFuncAttr*> isHere;
+    vector<OneAttribute>   attributes;
 
-    bool getValue(const Utf8& fullName, ComputedValue& value);
+    OneAttribute* getAttribute(const Utf8& fullName);
+    bool          getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value);
+    bool          hasAttribute(const Utf8& fullName);
 
     void reset()
     {
+        isHere.clear();
         attributes.clear();
-        values.clear();
+    }
+
+    bool empty() const
+    {
+        return attributes.empty();
+    }
+
+    uint32_t size() const
+    {
+        return (uint32_t) attributes.size();
     }
 };

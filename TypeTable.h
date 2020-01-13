@@ -55,6 +55,18 @@ struct ConcreteAny
     ConcreteTypeInfo* type;
 };
 
+struct ConcreteAttributeParameter
+{
+    ConcreteStringSlice name;
+    ConcreteAny         value;
+};
+
+struct ConcreteAttribute
+{
+    ConcreteStringSlice name;
+    ConcreteStringSlice params;
+};
+
 struct ConcreteTypeInfoNative
 {
     ConcreteTypeInfo base;

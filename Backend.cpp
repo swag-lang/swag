@@ -50,10 +50,9 @@ bool Backend::emitAttributes(AstNode* node)
 
 bool Backend::emitAttributes(TypeInfoParam* param)
 {
-    ComputedValue v;
-    if (param->attributes.getValue("swag.offset.name", v))
-        bufferSwg.addStringFormat("\t\t#[offset(\"%s\")]\n", v.text.c_str());
-
+    ComputedValue value;
+    if (param->attributes.getValue("swag.offset", "name", value))
+        bufferSwg.addStringFormat("\t\t#[offset(\"%s\")]\n", value.text.c_str());
     return true;
 }
 

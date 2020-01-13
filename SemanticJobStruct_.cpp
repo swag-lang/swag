@@ -386,7 +386,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Attribute 'swag.offset' can be used to force the storage offset of the member
         ComputedValue forceOffset;
         bool          relocated = false;
-        if (typeParam && typeParam->attributes.getValue("swag.offset.name", forceOffset))
+        if (typeParam && typeParam->attributes.getValue("swag.offset", "name", forceOffset))
         {
             for (auto p : typeInfo->fields)
             {
@@ -400,12 +400,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!relocated)
             {
-                // The attribute itself stores the corresponding node in its value
-                ComputedValue valueNode;
-                bool          found = typeParam->attributes.getValue("swag.offset", valueNode);
-                SWAG_ASSERT(found);
-                auto attrNode = (AstNode*) valueNode.reg.pointer;
-                return context->report({attrNode, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
+                auto attr = typeParam->attributes.getAttribute("swag.offset");
+                SWAG_ASSERT(attr);
+                return context->report({attr->node, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
             }
         }
 
@@ -601,11 +598,11 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
-        ComputedValue valueNode;
-        if (typeParam->attributes.getValue("swag.offset", valueNode))
+        if (typeParam->attributes.hasAttribute("swag.offset"))
         {
-            auto attrNode = (AstNode*) valueNode.reg.pointer;
-            return context->report({attrNode, "cannot relocate an interface member"});
+            auto attr = typeParam->attributes.getAttribute("swag.offset");
+            SWAG_ASSERT(attr);
+            return context->report({attr->node, "cannot relocate an interface member"});
         }
 
         typeParam->offset                            = storageOffset;

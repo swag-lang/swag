@@ -16,11 +16,18 @@ struct Point
 {
 	t := cast(const *TypeInfoStruct) @typeof(Point)
 	p := cast(const *TypeInfoParam) t.fields[0]
-	@assert(p.attributes[0].item0 == "compiler991.NC1")
-	@assert(p.attributes[1].item0 == "compiler991.NC1.x")
+
+    //@print(cast(s64) @countof(p.attributes))
+
+    @assert(@countof(p.attributes) == 2)
+	@assert(p.attributes[0].name == "compiler991.NC1")
+	@assert(p.attributes[1].name == "compiler991.NC2")
 	
-	ptr := @kindof(p.attributes[1].item1)
+    @assert(@countof(p.attributes[0].params) == 1)
+    @assert(@countof(p.attributes[1].params) == 1)
+
+	ptr := @kindof(p.attributes[1].params[0].value)
 	@assert(ptr.name == "s32")
-	ptr1 := cast(*s32) @dataof(p.attributes[1].item1)
+	ptr1 := cast(*s32) @dataof(p.attributes[1].params[0].value)
 	@assert(ptr1[0] == 666)
 }

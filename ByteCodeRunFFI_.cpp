@@ -24,7 +24,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
     // Load module if specified
     ComputedValue moduleName;
-    bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign.module", moduleName);
+    bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
     if (hasModuleName)
     {
         if (!g_ModuleMgr.loadModule(moduleName.text))
@@ -38,9 +38,9 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
     if (!fn)
     {
-        auto it = typeFunc->attributes.values.find("swag.foreign.function");
-        if (it != typeFunc->attributes.values.end())
-            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), it->second.second.text);
+        ComputedValue foreignValue;
+        if(typeFunc->attributes.getValue("swag.foreign", "function", foreignValue))
+            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), foreignValue.text);
     }
 
     if (!fn)
