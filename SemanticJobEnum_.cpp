@@ -4,6 +4,7 @@
 #include "SymTable.h"
 #include "Scope.h"
 #include "Allocator.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
@@ -35,6 +36,13 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     if (enumNode->parentAttributes)
     {
         SWAG_CHECK(collectAttributes(context, typeInfo->attributes, enumNode->parentAttributes, enumNode, AstNodeKind::EnumDecl, enumNode->attributeFlags));
+    }
+
+    // Hardcoded swag enums
+    if (context->sourceFile->swagFile)
+    {
+        if (enumNode->name == "AttributeUsage")
+            enumNode->attributeFlags |= ATTRIBUTE_FLAGS;
     }
 
     TypeInfo* rawTypeInfo = (enumNode->attributeFlags & ATTRIBUTE_FLAGS) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;

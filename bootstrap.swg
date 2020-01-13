@@ -21,6 +21,7 @@ func @isbytecode()->bool;
 
 namespace swag
 {
+    // #[flags] is forced by the compiler
     enum AttributeUsage : u32
     {
         Enum            = 0x00000001
