@@ -318,7 +318,7 @@ namespace Ast
         {
             auto          typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             ComputedValue value;
-            if (typeFunc->attributes.getValue("swag.foreign", "function", value))
+            if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
                 return value.text;
             return node->name;
         }

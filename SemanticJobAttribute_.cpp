@@ -234,9 +234,11 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         oneAttribute.name = resolvedName->fullName;
         oneAttribute.node = node;
 
-        // And all its parameters
+        // Register all call parameters, and their value
+        uint32_t numParams = 0;
         if (identifier->callParameters)
         {
+            numParams = identifier->callParameters->childs.count;
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
@@ -246,8 +248,23 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
                 attrParam.name     = param->resolvedParameter->namedParam;
                 attrParam.typeInfo = param->resolvedParameter->typeInfo;
                 attrParam.value    = param->computedValue;
-                oneAttribute.parameters.emplace_back(attrParam);
+                oneAttribute.parameters.emplace_back(move(attrParam));
             }
+        }
+
+        // The rest (default parameters)
+        auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
+        for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
+        {
+            auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            SWAG_ASSERT(param->assignment);
+
+            AttributeParameter attrParam;
+            attrParam.name     = param->name;
+            attrParam.typeInfo = param->typeInfo;
+            attrParam.value    = param->assignment->computedValue;
+            oneAttribute.parameters.emplace_back(move(attrParam));
         }
 
         node->attributes.attributes.emplace_back(move(oneAttribute));

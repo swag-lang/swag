@@ -183,7 +183,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     }
 
     ComputedValue foreignValue;
-    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue))
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         concat.addString(foreignValue.text);
     else
         concat.addString(nodeFunc->name);

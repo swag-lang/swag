@@ -39,7 +39,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     if (!fn)
     {
         ComputedValue foreignValue;
-        if(typeFunc->attributes.getValue("swag.foreign", "function", foreignValue))
+        if(typeFunc->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
             fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), foreignValue.text);
     }
 
