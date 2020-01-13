@@ -27,7 +27,7 @@ impl X
 
     visit i: ptr.methods
     {
-        @assert(i.namedParam != "titi")
+        @assert(i.name != "titi")
         ptrFunc := cast(const *TypeInfoFunc) i.pointedType
         @assert(ptrFunc.returnType != null)
     }

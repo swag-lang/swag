@@ -86,7 +86,7 @@ struct ConcreteTypeInfoPointer
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteStringSlice namedParam;
+    ConcreteStringSlice name;
     ConcreteTypeInfo*   pointedType;
     void*               value;
     ConcreteStringSlice attributes;

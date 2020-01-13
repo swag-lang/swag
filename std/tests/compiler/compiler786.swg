@@ -17,7 +17,7 @@ enum TOTO
 	@assert(@countof(ptr.values) == 3)
 	
 	ptr1 := ptr.values[1]
-	@assert(ptr1.namedParam == "G")
+	@assert(ptr1.name == "G")
 	
 	ptrVal := cast(*s32) ptr1.value;
 	@assert(ptrVal[0] == 200)

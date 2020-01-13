@@ -240,7 +240,7 @@ namespace swag
     
 	struct TypeInfoParam
 	{
-		namedParam:		string
+		name:		    string
 		pointedType:	const *TypeInfo
 		value:			*void
 		attributes:	    const [..] TypeInfoAttribute

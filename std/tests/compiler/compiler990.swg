@@ -21,7 +21,7 @@ struct Point
 	loop t.fields
 	{
 		p := cast(const *TypeInfoParam) t.fields[@index]
-		@assert(p.namedParam == (@index == 0 ? "x" : "y"))
+		@assert(p.name == (@index == 0 ? "x" : "y"))
 		@assert(@countof(p.attributes) == 1)
 		@assert(p.attributes[0].item0 == "compiler990.NC1")
 	}

@@ -14,7 +14,7 @@ func toto(x: s32)
 	
 	ptr := cast(const *TypeInfoFunc) t
 	@assert(@countof(ptr.parameters) == 1)
-	@assert(ptr.parameters[0].namedParam == "x")
+	@assert(ptr.parameters[0].name == "x")
 	
 	/*@print(ptr.base.name)
 	@print(" ")

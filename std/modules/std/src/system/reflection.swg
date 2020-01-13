@@ -12,7 +12,7 @@ namespace std.reflection
             typeStruct := cast(const* TypeInfoStruct) type
             visit it: typeStruct.methods
             {
-                if it.namedParam == name
+                if it.name == name
                     return it
             }
 

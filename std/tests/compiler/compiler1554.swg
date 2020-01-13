@@ -23,6 +23,6 @@ impl A
     @assert(@countof(ptr.methods) == 1)
 
     fct := ptr.methods[0]
-    @assert(fct.namedParam == "toto")
+    @assert(fct.name == "toto")
     @assert(@countof(fct.attributes) == 1)
 }
