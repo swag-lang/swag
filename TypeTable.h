@@ -11,10 +11,10 @@ struct ConcreteStringSlice;
 struct TypeTable
 {
     TypeTable();
-    bool makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo* parentConcrete, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
-    bool makeConcreteAttributes(JobContext* context, ConcreteTypeInfo* parentConcrete, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset);
+    bool makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
+    bool makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset);
     bool makeConcreteString(JobContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer);
-    bool makeConcreteTypeInfo(JobContext* context, ConcreteTypeInfo* parentConcrete, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage);
+    bool makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage);
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue);
 
