@@ -164,16 +164,16 @@ namespace swag
 	// Type reflection
 	// #########################################################
 
-	struct AttributeParameter
+	struct TypeInfoAttributeParameter
 	{
 		name:	string
 		value:	any
 	}
 
-	struct Attribute
+	struct TypeInfoAttribute
 	{
 		name:		string
-		params:		const [..] AttributeParameter
+		params:		const [..] TypeInfoAttributeParameter
 	}
 
 	enum TypeInfoKind
@@ -244,7 +244,7 @@ namespace swag
 		namedParam:		string
 		pointedType:	const *TypeInfo
 		value:			*void
-		attributes:	    const [..] Attribute
+		attributes:	    const [..] TypeInfoAttribute
 		offset:			u32
 	}
 
@@ -254,7 +254,7 @@ namespace swag
 		fields:		const [..] *TypeInfoParam
 		methods:	const [..] *TypeInfoParam
         interfaces: const [..] *TypeInfoParam
-		attributes:	const [..] Attribute
+		attributes:	const [..] TypeInfoAttribute
 	}
     
 	struct TypeInfoFunc
@@ -262,7 +262,7 @@ namespace swag
 		base: 			TypeInfo
 		parameters:		const [..] *TypeInfoParam
 		returnType:		const *TypeInfo
-		attributes:	    const [..] Attribute
+		attributes:	    const [..] TypeInfoAttribute
 	}
 
 	struct TypeInfoEnum
@@ -270,7 +270,7 @@ namespace swag
 		base: 		TypeInfo
 		values:		const [..] *TypeInfoParam
 		rawType:	const *TypeInfo
-		attributes:	const [..] Attribute
+		attributes:	const [..] TypeInfoAttribute
 	}
 
 	struct TypeInfoVariadic

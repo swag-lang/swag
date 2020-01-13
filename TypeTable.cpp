@@ -92,6 +92,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, ConcreteTypeInfo* pa
                 else
                     ptrAny->value = nullptr;
 
+                // Type of the value
                 SWAG_CHECK(makeConcreteSubTypeInfo(context, parentConcrete, nullptr, curOffsetParams + sizeof(void*), &ptrAny->type, oneParam.typeInfo));
                 curOffsetParams += sizeof(ConcreteAny);
                 ptrStorageAllParams += sizeof(ConcreteAny);
