@@ -63,28 +63,28 @@ namespace swag
 	attr test();
 
     #[attributeUsage(AttributeUsage.Function)]
+    attr complete();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr property();
+
+    #[attributeUsage(AttributeUsage.Function)]
+	attr nodoc();
+
+    #[attributeUsage(AttributeUsage.Function)]
 	attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
 	attr pack();
 
-    #[attributeUsage(AttributeUsage.Enum)]
-	attr flags();
-
-    #[attributeUsage(AttributeUsage.Function)]
-    attr complete();
-
     #[attributeUsage(AttributeUsage.Field)]
     attr offset(name: string);
 
-    #[attributeUsage(AttributeUsage.Function)]
-	attr property();
+    #[attributeUsage(AttributeUsage.Enum)]
+	attr flags();
 
     #[attributeUsage(AttributeUsage.GlobalVariable)]
 	attr nobss();
-
-    #[attributeUsage(AttributeUsage.Function)]
-	attr nodoc();
 	
 	// #########################################################
 	// Constants
