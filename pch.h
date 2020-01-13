@@ -19,6 +19,7 @@
 #include <functional>
 #include <string>
 #include <shared_mutex>
+#include <unordered_set>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

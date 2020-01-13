@@ -1,0 +1,21 @@
+#module compiler1585
+#unittest error
+
+#test
+{
+    enum Color : string
+    {
+        Red = "red"
+        Green = "green"
+        Blue = "blue"
+    }
+
+    a := Color.Red
+
+    #[swag.complete]
+    switch a
+    {
+        case Color.Red:
+        case Color.Green:
+    }
+}

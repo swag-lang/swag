@@ -114,6 +114,80 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     node->typeInfo                     = node->expression->typeInfo;
     node->byteCodeFct                  = ByteCodeGenJob::emitSwitch;
     node->expression->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
+
+    // Deal with complete
+    SymbolAttributes attributes;
+    SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::Switch, node->attributeFlags));
+
+    auto typeSwitch = TypeManager::concreteType(node->typeInfo);
+
+    // Collect constant expressions, to avoid double definitions
+    set<uint64_t> val64;
+    set<Utf8>     valText;
+    for (auto switchCase : node->cases)
+    {
+        for (auto expr : switchCase->expressions)
+        {
+            if (expr->flags & AST_VALUE_COMPUTED)
+            {
+                if (typeSwitch->isNative(NativeTypeKind::String))
+                {
+                    if (valText.find(expr->computedValue.text) != valText.end())
+                        return context->report({expr, format("switch value '%s' already defined", expr->computedValue.text.c_str())});
+                    valText.insert(expr->computedValue.text);
+                }
+                else
+                {
+                    if (val64.find(expr->computedValue.reg.u64) != val64.end())
+                    {
+                        if (typeSwitch->flags & TYPEINFO_INTEGER)
+                            return context->report({expr, format("switch value '%d' already defined", expr->computedValue.reg.u64)});
+                        return context->report({expr, format("switch value '%f' already defined", expr->computedValue.reg.f64)});
+                    }
+
+                    val64.insert(expr->computedValue.reg.u64);
+                }
+            }
+            else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
+            {
+                return context->report({expr, "expression cannot be evaluated at compile time, and switch is 'swag.complete'"});
+            }
+        }
+    }
+
+    // When a switch is marked as complete, be sure every definitions have been covered
+    if (node->attributeFlags & ATTRIBUTE_COMPLETE)
+    {
+        if (node->typeInfo->kind != TypeInfoKind::Enum)
+        {
+            return context->report({node, format("'swag.complete' attribute on a switch can only be used for an enum type ('%s' provided)", node->typeInfo->name.c_str())});
+        }
+
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+        if (typeSwitch->isNative(NativeTypeKind::String))
+        {
+            if (valText.size() != typeEnum->values.size())
+            {
+                for (auto one : typeEnum->values)
+                {
+                    if (valText.find(one->value.text) == valText.end())
+                        return context->report({node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())});
+                }
+            }
+        }
+        else
+        {
+            if (val64.size() != typeEnum->values.size())
+            {
+                for (auto one : typeEnum->values)
+                {
+                    if (val64.find(one->value.reg.u64) == val64.end())
+                        return context->report({node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())});
+                }
+            }
+        }
+    }
+
     return true;
 }
 

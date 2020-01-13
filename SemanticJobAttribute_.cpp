@@ -10,14 +10,15 @@
 enum AttributeUsage
 {
     // Usage
-    Enum           = 0x00000001,
-    EnumValue      = 0x00000002,
-    Field          = 0x00000004,
-    GlobalVariable = 0x00000008,
-    Struct         = 0x00000010,
-    Function       = 0x00000020,
-    Attribute      = 0x00000040,
-    All            = 0x0FFFFFFF,
+    Enum            = 0x00000001,
+    EnumValue       = 0x00000002,
+    Field           = 0x00000004,
+    GlobalVariable  = 0x00000008,
+    Struct          = 0x00000010,
+    Function        = 0x00000020,
+    Attribute       = 0x00000040,
+    Switch          = 0x00000080,
+    All             = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,
 };
@@ -51,6 +52,11 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
+    {
+        return true;
+    }
+
+    if ((typeInfo->attributeUsage & AttributeUsage::Switch) && (kind == AstNodeKind::Switch))
     {
         return true;
     }
@@ -167,6 +173,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         // Merge the result
         for (auto& oneAttr : curAttr->attributes.attributes)
             result.attributes.push_back(oneAttr);
+
+        // No hierarchy
+        if (kind == AstNodeKind::Switch)
+            break;
 
         curAttr = curAttr->parentAttributes;
     }
