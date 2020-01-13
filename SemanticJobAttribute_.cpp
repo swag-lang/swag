@@ -27,38 +27,38 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if ((typeInfo->attributeFlags & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
     {
         return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::Attribute) && (kind == AstNodeKind::AttrDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::Attribute) && (kind == AstNodeKind::AttrDecl))
     {
         return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
     {
         return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
     {
         return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
+    if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
     {
         return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))
     {
         if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
             return true;
     }
 
-    if ((typeInfo->attributeFlags & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
     {
         if (checkNode->ownerScope->isGlobal())
             return true;
@@ -76,7 +76,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     if (kind == AstNodeKind::AttrDecl && context->sourceFile->swagFile && forNode->name == "attributeUsage")
     {
         auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-        typeAttr->attributeFlags = AttributeUsage::Attribute;
+        typeAttr->attributeUsage = AttributeUsage::Attribute;
         return true;
     }
 
@@ -115,7 +115,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 auto it = curAttr->values.find("swag.attributeUsage.usage");
                 SWAG_ASSERT(it != curAttr->values.end());
                 auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-                typeAttr->attributeFlags = it->second.second.reg.u32;
+                typeAttr->attributeUsage = it->second.second.reg.u32;
             }
 
             // Predefined attributes will mark some flags (to speed up detection)

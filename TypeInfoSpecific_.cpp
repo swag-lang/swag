@@ -375,7 +375,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
     newType->attributes           = attributes;
-    newType->attributeFlags       = attributeFlags;
+    newType->attributeUsage       = attributeUsage;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
