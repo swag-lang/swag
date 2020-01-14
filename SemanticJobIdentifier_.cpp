@@ -280,6 +280,9 @@ void SemanticJob::sortParameters(AstNode* allParams)
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
+    if (identifier->name == "T")
+        identifier = identifier;
+
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
         parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO &&
@@ -301,16 +304,19 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // If this a L or R value
     if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
     {
-        if (parent->previousResolvedNode)
+        if (symbol->kind != SymbolKind::GenericType)
         {
-            if (parent->previousResolvedNode->flags & AST_R_VALUE)
+            if (parent->previousResolvedNode)
             {
-                identifier->flags |= AST_L_VALUE | AST_R_VALUE;
-            }
-            else
-            {
-                identifier->flags |= (parent->previousResolvedNode->flags & AST_L_VALUE);
-                identifier->flags |= (parent->previousResolvedNode->flags & AST_R_VALUE);
+                if (parent->previousResolvedNode->flags & AST_R_VALUE)
+                {
+                    identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+                }
+                else
+                {
+                    identifier->flags |= (parent->previousResolvedNode->flags & AST_L_VALUE);
+                    identifier->flags |= (parent->previousResolvedNode->flags & AST_R_VALUE);
+                }
             }
         }
     }
