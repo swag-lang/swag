@@ -13,6 +13,6 @@ struct BABA
     @assert(@typeof(arr).name == "Array'BABA")
 
     var x: BABA
-    arr.emplaceBack(x)
+    arr.emplaceBack(&x)
     @assert(arr.count == 1)
 }

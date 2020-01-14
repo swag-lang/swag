@@ -103,15 +103,15 @@ namespace std.collections
             func addBack(using self, value: T)
             {
                 reserve(self, count + 1)
-                buffer[count] = nodrop T
+                buffer[count] = nodrop value
                 count += 1
             }
 
             /// Add one element at the end of the [Array]
-            func emplaceBack(using self, value: T)
+            func emplaceBack(using self, value: *T)
             {
                 reserve(self, count + 1)
-                buffer[count] = nodrop move T
+                buffer[count] = nodrop move deref value
                 count += 1
             }            
         }

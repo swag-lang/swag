@@ -549,12 +549,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else
         {
+            auto leftConcreteType  = node->type->typeInfo;
             auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
-            if (!rightConcreteType->isSame(node->type->typeInfo, 0))
+            if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, ISSAME_CAST))
             {
                 if (!hasUserOp(context, "opAffect", node->type))
                 {
-                    Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", node->type->typeInfo->name.c_str(), rightConcreteType->name.c_str(), node->type->typeInfo->name.c_str());
+                    Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftConcreteType->name.c_str(), rightConcreteType->name.c_str(), node->type->typeInfo->name.c_str());
                     return context->report({node, msg});
                 }
 
