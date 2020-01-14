@@ -23,7 +23,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
-		SWAG_VERIFY(!(child->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_INLINE), context->report({ child, "cannot take address of an inline function" }));
+        SWAG_VERIFY(!(child->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_INLINE), context->report({child, "cannot take address of an inline function"}));
 
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;
@@ -259,6 +259,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             arrayNode->structFlatParams.push_front(arrayNode->array);
 
             // Resolve call
+            auto typeInfo = arrayNode->array->typeInfo;
+            if (!hasUserOp(context, "opIndex", arrayNode->array))
+            {
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->name.c_str(), typeInfo->name.c_str());
+                return context->report({ arrayNode->access, msg});
+            }
+
             SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
         }
         break;

@@ -14,4 +14,5 @@ impl B
 #test
 {
     var arr: B's32
+    val := arr[0]
 }
