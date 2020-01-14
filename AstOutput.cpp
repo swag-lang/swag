@@ -63,8 +63,8 @@ namespace Ast
             break;
 
         case AstNodeKind::RawMove:
-            if (node->flags & AST_FORCE_RAW)
-                concat.addString("raw ");
+            if (node->flags & AST_NO_DROP)
+                concat.addString("nodrop ");
             if (node->flags & AST_FORCE_MOVE)
                 concat.addString("move ");
             SWAG_CHECK(output(concat, node->childs.front(), indent));

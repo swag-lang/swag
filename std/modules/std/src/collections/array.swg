@@ -103,7 +103,7 @@ namespace std.collections
             func addBack(using self, value: T)
             {
                 reserve(self, count + 1)
-                buffer[count] = raw T
+                buffer[count] = nodrop T
                 count += 1
             }
 
@@ -111,7 +111,7 @@ namespace std.collections
             func emplaceBack(using self, value: T)
             {
                 reserve(self, count + 1)
-                buffer[count] = raw move T
+                buffer[count] = nodrop move T
                 count += 1
             }            
         }

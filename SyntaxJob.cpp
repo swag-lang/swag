@@ -50,10 +50,10 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
         switch (token.id)
         {
-        case TokenId::KwdRaw:
+        case TokenId::KwdNoDrop:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
                 return syntaxError(token, "'raw' instruction must be placed before 'move'");
-            if (Ast::lastGeneratedNode->token.id == TokenId::KwdRaw)
+            if (Ast::lastGeneratedNode->token.id == TokenId::KwdNoDrop)
                 return syntaxError(token, "'raw' instruction defined twice");
             break;
         case TokenId::KwdMove:

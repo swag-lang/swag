@@ -368,13 +368,13 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
 {
     // raw
-    if (token.id == TokenId::KwdRaw)
+    if (token.id == TokenId::KwdNoDrop)
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile, parent);
         if (result)
             *result = exprNode;
         exprNode->semanticFct = SemanticJob::resolveRawMove;
-        exprNode->flags |= AST_FORCE_RAW;
+        exprNode->flags |= AST_NO_DROP;
         parent = exprNode;
         result = nullptr;
         SWAG_CHECK(eatToken());

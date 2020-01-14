@@ -514,7 +514,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // Need to drop first
     if (typeInfoStruct->opDrop)
     {
-        bool mustDrop = (from->flags & AST_FORCE_RAW) ? false : true;
+        bool mustDrop = (from->flags & AST_NO_DROP) ? false : true;
         if (mustDrop)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
