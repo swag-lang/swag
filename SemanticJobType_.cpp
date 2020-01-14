@@ -55,13 +55,37 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     return true;
 }
 
+static void forceConstType(AstTypeExpression* typeNode)
+{
+    if (typeNode->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        if (typeNode->forceConstType)
+            typeNode->isConst = true;
+        if (typeNode->isConst && !typeNode->typeInfo->isConst())
+        {
+            unique_lock lk(typeNode->typeInfo->mutex);
+            if (!typeNode->typeInfo->constCopy)
+            {
+                auto copyType = typeNode->typeInfo->clone();
+                copyType->setConst();
+                typeNode->typeInfo->constCopy = copyType;
+            }
+
+            typeNode->typeInfo = typeNode->typeInfo->constCopy;
+        }
+    }
+}
+
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
     if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo)
+    {
+        forceConstType(typeNode);
         return true;
+    }
 
     // Code
     if (typeNode->isCode)
@@ -141,22 +165,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
 
     // A struct function parameter is const
-    else if (typeNode->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    else
     {
-        if (typeNode->forceConstType)
-            typeNode->isConst = true;
-        if (typeNode->isConst && !typeNode->typeInfo->isConst())
-        {
-            unique_lock lk(typeNode->typeInfo->mutex);
-            if (!typeNode->typeInfo->constCopy)
-            {
-                auto copyType = typeNode->typeInfo->clone();
-                copyType->setConst();
-                typeNode->typeInfo->constCopy = copyType;
-            }
-
-            typeNode->typeInfo = typeNode->typeInfo->constCopy;
-        }
+        forceConstType(typeNode);
     }
 
     // In fact, this is an array
@@ -269,7 +280,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // We cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast
     if (exprNode->castedTypeInfo)
     {
-        exprNode->typeInfo = exprNode->castedTypeInfo;
+        exprNode->typeInfo       = exprNode->castedTypeInfo;
         exprNode->castedTypeInfo = nullptr;
     }
 

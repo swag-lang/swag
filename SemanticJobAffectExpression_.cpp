@@ -132,7 +132,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams, false));
             else
             {
-                if (rightTypeInfo == leftTypeInfo)
+                if (rightTypeInfo->isSame(leftTypeInfo, 0))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
