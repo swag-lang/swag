@@ -28,6 +28,12 @@ namespace std.collections
             {
                 free(self)
             }
+
+            func opIndex(using self, index: u32)->*T
+            {
+                diagnostic.assert(index < count)
+                return buffer + index
+            }
         }
 
         public

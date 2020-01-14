@@ -280,9 +280,6 @@ void SemanticJob::sortParameters(AstNode* allParams)
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
-    if (identifier->name == "T")
-        identifier = identifier;
-
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
         parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO &&
