@@ -187,8 +187,12 @@ SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, A
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+
+    // In case of a generic instance, symbols are defined in the original generic structure scope, not
+    // in the instance
     if (leftStruct->fromGeneric)
         leftStruct = leftStruct->fromGeneric;
+
     return leftStruct->scope->symTable.find(name);
 }
 
