@@ -183,54 +183,46 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
 }
 
-bool SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
+SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    auto symbol     = leftStruct->scope->symTable.find(name);
-    return symbol;
+    if (leftStruct->fromGeneric)
+        leftStruct = leftStruct->fromGeneric;
+    return leftStruct->scope->symTable.find(name);
 }
 
-bool SemanticJob::waitUserOp(SemanticContext* context, const char* name, AstNode* left)
+SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const char* name, AstNode* left)
 {
-    auto leftType   = TypeManager::concreteType(left->typeInfo);
-    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    auto symbol     = leftStruct->scope->symTable.find(name);
+    auto symbol = hasUserOp(context, name, left);
     if (!symbol)
-        return true;
+        return nullptr;
 
     scoped_lock lkn(symbol->mutex);
     if (symbol->cptOverloads)
-    {
         context->job->waitForSymbolNoLock(symbol);
-        return true;
-    }
 
-    return true;
+    return symbol;
 }
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal)
 {
-    auto leftType   = TypeManager::concreteType(left->typeInfo);
-    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    auto symbol     = leftStruct->scope->symTable.find(name);
-    if (!symbol && optionnal)
+    auto symbol = waitUserOp(context, name, left);
+
+    if (!symbol)
+    {
+        if (optionnal)
+            return true;
+
+        auto leftType = TypeManager::concreteType(left->typeInfo);
+        return context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftType->name.c_str())});
+    }
+
+    if (context->result != ContextResult::Done)
         return true;
 
     auto node = context->node;
     auto job  = context->job;
-
-    SWAG_VERIFY(symbol, context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftStruct->name.c_str())}));
-
-    // Need to wait for function resolution
-    {
-        scoped_lock lkn(symbol->mutex);
-        if (symbol->cptOverloads)
-        {
-            job->waitForSymbolNoLock(symbol);
-            return true;
-        }
-    }
 
     job->symMatch.reset();
     job->symMatch.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const

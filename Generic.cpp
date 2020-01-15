@@ -260,6 +260,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     newType->structNode  = structNode;
+    newType->fromGeneric = oldType;
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters
@@ -270,7 +271,6 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
-    auto srcStruct                = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostMoveFct);
@@ -285,8 +285,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
                 specFunc != oldType->opUserPostCopyFct &&
                 specFunc != oldType->opUserPostMoveFct)
             {
-                //instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
-                //newType->scope->symTable.addSymbolTypeInfo(context, specFunc, specFunc->typeInfo, SymbolKind::Function);
+                instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
             }
         }
     }

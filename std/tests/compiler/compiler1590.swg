@@ -14,6 +14,6 @@ impl B
 #test
 {
     var arr: B's32
-    //val0 := arr.opIndex(0)
+    val0 := arr.opIndex(0)
     //val1 := arr[0]
 }

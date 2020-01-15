@@ -532,6 +532,7 @@ struct TypeInfoStruct : public TypeInfo
     Utf8                         structName;
 
     TypeInfoStruct* itable            = nullptr;
+    TypeInfoStruct* fromGeneric       = nullptr;
     Scope*          scope             = nullptr;
     AstNode*        structNode        = nullptr;
     ByteCode*       opInit            = nullptr;
