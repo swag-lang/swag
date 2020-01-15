@@ -250,9 +250,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
-    if (funcNode->name == "toto")
-        funcNode = funcNode;
-
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));

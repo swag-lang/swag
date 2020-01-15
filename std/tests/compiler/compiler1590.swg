@@ -6,7 +6,7 @@ impl B
 {
     func opIndex(using self, index: u32) -> T
     {
-        var x: B
+        var x: T
         return x
     }
 }
@@ -14,5 +14,6 @@ impl B
 #test
 {
     var arr: B's32
-    val := arr[0]
+    //val0 := arr.opIndex(0)
+    //val1 := arr[0]
 }

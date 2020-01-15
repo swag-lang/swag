@@ -255,7 +255,8 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     Ast::addChildBack(sourceNode->parent, structNode);
 
     // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
+    auto oldType = static_cast<TypeInfoStruct*>(overload->typeInfo);
+    auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     newType->structNode  = structNode;
@@ -270,12 +271,25 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
     auto srcStruct                = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
-    cloneContext.ownerStructScope = srcStruct->scope;
-    cloneContext.parentScope      = srcStruct->scope;
-
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostMoveFct);
+
+    // Force instantiation of all special functions
+    for (auto method : newType->methods)
+    {
+        if (method->node->flags & AST_IS_SPECIAL_FUNC)
+        {
+            auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
+            if (specFunc != oldType->opUserDropFct &&
+                specFunc != oldType->opUserPostCopyFct &&
+                specFunc != oldType->opUserPostMoveFct)
+            {
+                //instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+                //newType->scope->symTable.addSymbolTypeInfo(context, specFunc, specFunc->typeInfo, SymbolKind::Function);
+            }
+        }
+    }
 
     g_ThreadMgr.addJob(structJob);
     return true;
