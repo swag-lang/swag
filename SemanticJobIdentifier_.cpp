@@ -73,6 +73,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     identifierRef->typeInfo             = typeInfo;
     identifierRef->previousResolvedNode = node;
+    identifierRef->startScope           = nullptr;
 
     switch (typeInfo->kind)
     {
@@ -280,6 +281,18 @@ void SemanticJob::sortParameters(AstNode* allParams)
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
+    // Test x.toto with x not a struct (like a native type for example), but toto is known, so 
+    // no error was raised before
+    if (symbol &&
+        symbol->kind == SymbolKind::Variable &&
+        overload->typeInfo->kind != TypeInfoKind::Lambda &&
+        !parent->startScope &&
+        parent->previousResolvedNode &&
+        parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
+    {
+        return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->name.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
+    }
+
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
         parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO &&
