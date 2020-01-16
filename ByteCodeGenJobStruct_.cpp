@@ -134,12 +134,12 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
             auto typeInVar = typeArray->pointedType;
-            if (typeInVar->kind == TypeInfoKind::Struct)
+            if (typeInVar->kind == TypeInfoKind::Struct && (typeInVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 auto typeInVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
 
                 // Need to loop on every element of the array in order to initialize them
-                RegisterList r0                                          = reserveRegisterRC(&cxt);
+                RegisterList r0 = reserveRegisterRC(&cxt);
 
                 emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeArray->totalCount;
                 auto seekJump                                            = cxt.bc->numInstructions;
@@ -158,18 +158,12 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
             }
         }
-        else if (typeVar->kind == TypeInfoKind::Struct)
+        else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-            if (typeVarStruct->opInit)
-            {
-                emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                emitOpCallUser(&cxt, nullptr, typeVarStruct->opInit, false);
-            }
-            else
-            {
-                SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
-            }
+            SWAG_ASSERT(typeVarStruct->opInit);
+            emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+            emitOpCallUser(&cxt, nullptr, typeVarStruct->opInit, false);
         }
         else
         {
