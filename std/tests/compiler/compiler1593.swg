@@ -1,0 +1,26 @@
+struct A
+{
+    front: s32 = 666
+}
+
+struct B
+{
+    buffer: [2] A
+    x: s32 = 555
+}
+
+impl B
+{
+    func opIndex(using self, index: u32)->A
+    {
+        return buffer[index]
+    }
+}
+
+//#[swag.printbc]
+#test
+{
+    var arr: B
+    @assert(arr[0].front == 666)    
+    @assert(arr[1].front == 666)    
+}

@@ -16,12 +16,16 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         waitStructGenerated(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
+        if (typeStructVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            typeInfoStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
         generateStruct_opInit(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
@@ -126,7 +130,35 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
 
         // Default initialization
-        if (typeVar->kind == TypeInfoKind::Struct)
+        if (typeVar->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeInVar = typeArray->pointedType;
+            if (typeInVar->kind == TypeInfoKind::Struct)
+            {
+                auto typeInVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+
+                // Need to loop on every element of the array in order to initialize them
+                RegisterList r0                                          = reserveRegisterRC(&cxt);
+
+                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeArray->totalCount;
+                auto seekJump                                            = cxt.bc->numInstructions;
+
+                emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+                emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
+
+                emitInstruction(&cxt, ByteCodeOp::DecRA, r0);
+                emitInstruction(&cxt, ByteCodeOp::IncRAVB, 0)->b.u32        = typeInVarStruct->sizeOf;
+                emitInstruction(&cxt, ByteCodeOp::JumpNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
+
+                freeRegisterRC(&cxt, r0);
+            }
+            else
+            {
+                SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
+            }
+        }
+        else if (typeVar->kind == TypeInfoKind::Struct)
         {
             auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
             if (typeVarStruct->opInit)
@@ -581,8 +613,6 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     }
     else
     {
-        SWAG_ASSERT(node->ownerFct);
-
         // Push self
         RegisterList r0   = reserveRegisterRC(context);
         auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
