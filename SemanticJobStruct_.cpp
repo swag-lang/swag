@@ -352,6 +352,19 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
 
+        // Var is an array of structs
+        else if (varDecl->typeInfo->kind == TypeInfoKind::Array && !varDecl->assignment)
+        {
+            auto varTypeArray = CastTypeInfo<TypeInfoArray>(varDecl->typeInfo, TypeInfoKind::Array);
+            if (varTypeArray->pointedType->kind == TypeInfoKind::Struct)
+            {
+                if (varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                    structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            }
+        }
+
         // Var has an initialization
         else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {

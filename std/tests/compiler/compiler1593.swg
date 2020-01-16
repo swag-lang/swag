@@ -6,7 +6,6 @@ struct A
 struct B
 {
     buffer: [2] A
-    x: s32 = 555
 }
 
 impl B

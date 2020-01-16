@@ -24,8 +24,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         waitStructGenerated(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
-        if (typeStructVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-            typeInfoStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
         generateStruct_opInit(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
