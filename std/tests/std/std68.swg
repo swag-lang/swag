@@ -18,5 +18,5 @@ struct BABA
 
     arr.emplaceBack(&x)
 
-    //@assert(arr[0].val == 666)
+    @assert(arr[0].val == 666)
 }

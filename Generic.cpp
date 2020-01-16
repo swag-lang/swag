@@ -283,7 +283,8 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             if (specFunc != oldType->opUserDropFct &&
                 specFunc != oldType->opUserPostCopyFct &&
-                specFunc != oldType->opUserPostMoveFct)
+                specFunc != oldType->opUserPostMoveFct && 
+                !specFunc->genericParameters)
             {
                 instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
             }

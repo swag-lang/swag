@@ -29,11 +29,20 @@ namespace std.collections
                 free(self)
             }
 
-            func opIndex(using self, index: u32)->*T
+            #[swag.nodoc]
+            func opIndex(using self, index: u32)->const *T
             {
                 std.diagnostics.debug.assert(index < count)
                 return buffer + index
             }
+
+            /*#[swag.nodoc]
+            func(op: string) opIndexAssign(using self, value: T, index: u32)
+            {
+                std.diagnostics.debug.assert(index < count)
+                #if op == "="
+                    buffer[index] = value
+            }   */         
         }
 
         public
