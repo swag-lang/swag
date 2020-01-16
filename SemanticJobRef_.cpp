@@ -65,7 +65,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (node->flags & AST_TAKE_ADDRESS)
     {
@@ -85,7 +85,31 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     {
         auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
+        {
             node->flags |= AST_TAKE_ADDRESS;
+
+            // In order to resolve what's next, we need to fill the startScope of the identifier ref
+            auto typeReturn = node->array->typeInfo;
+
+            // There's a 'opIndex' function
+            if (node->resolvedUserOpSymbolOverload)
+                typeReturn = TypeManager::concreteType(node->resolvedUserOpSymbolOverload->typeInfo);
+
+            // Get the pointed type if we have a pointer
+            if (typeReturn->kind == TypeInfoKind::Pointer)
+            {
+                auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
+                typeReturn = typePointer->pointedType;
+            }
+
+            // And this is is a struct, we fill the startScope
+            if (typeReturn->kind == TypeInfoKind::Struct)
+            {
+                auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct);
+                parent->startScope = typeStruct->scope;
+            }
+        }
+
         parent->previousResolvedNode = node;
     }
 
@@ -263,7 +287,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (!hasUserOp(context, "opIndex", arrayNode->array))
             {
                 Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->name.c_str(), typeInfo->name.c_str());
-                return context->report({ arrayNode->access, msg});
+                return context->report({arrayNode->access, msg});
             }
 
             SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
