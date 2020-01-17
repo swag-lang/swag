@@ -5,6 +5,6 @@ using std
 {
     var x: String = "coucou\n"
     console.silent(true)
-    console.write(x)
+    console.write(cast(string) x)
     console.silent(false)
 }

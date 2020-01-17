@@ -8,7 +8,7 @@
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : opCast, with a structure
-    if (fromType->kind == TypeInfoKind::Struct)
+    if (fromType->kind == TypeInfoKind::Struct && (castFlags & CASTFLAG_EXPLICIT))
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         auto structNode = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);

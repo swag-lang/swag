@@ -36,13 +36,13 @@ namespace std.collections
                 return buffer + index
             }
 
-            /*#[swag.nodoc]
+            #[swag.nodoc]
             func(op: string) opIndexAssign(using self, value: T, index: u32)
             {
                 std.diagnostics.debug.assert(index < count)
                 #if op == "="
                     buffer[index] = value
-            }   */         
+            }    
         }
 
         public
@@ -73,7 +73,7 @@ namespace std.collections
 
                 newBuffer := acast memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
 
-                // New to call opPostMove on every structs if the buffer has not been reallocated
+                // Need to call opPostMove on every element if the buffer has not been reallocated
                 // in place
                 #if reflection.hasMember(@typeof(T), "opPostMove")
                 {

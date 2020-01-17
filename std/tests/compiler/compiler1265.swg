@@ -18,9 +18,9 @@ impl Toto
 #test
 {
 	var x: Toto
-	var y: s32 = x
+	var y: s32 = cast(s32) x
 	@assert(y == 20)
     
-    var z: string = x
+    var z: string = cast(string) x
     @assert(z == "x + y")
 }
