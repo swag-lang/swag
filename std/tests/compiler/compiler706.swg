@@ -8,7 +8,10 @@ struct Point
 
 impl Point
 {
-	func opCount(self)->u32 { return self.c; }
+	func opCount(self)->u32 
+    { 
+        return self.c
+    }
 }
 
 //#[swag.printbc]

@@ -17,6 +17,12 @@ bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
     auto expr     = node->childs.back();
     auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
+    if (node->resolvedUserOpSymbolName)
+    {
+        SWAG_CHECK(emitUserOp(context));
+        return true;
+    }
+
     if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
