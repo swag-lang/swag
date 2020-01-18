@@ -123,9 +123,23 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
 
     if (node->resultRegisterRC.size())
     {
-        node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->typeInfo = TypeManager::concreteType(node->typeInfo);
+        if (node->typeInfo->isNative(NativeTypeKind::String))
+        {
+            SWAG_ASSERT(node->resultRegisterRC.size() == 2);
+            const char* pz  = (const char*) node->bc->registersRC[0][node->resultRegisterRC[0]].pointer;
+            uint32_t    len = node->bc->registersRC[0][node->resultRegisterRC[1]].u32;
+            node->computedValue.text.reserve(len + 1);
+            node->computedValue.text.count = len;
+            memcpy(node->computedValue.text.buffer, pz, len);
+            node->computedValue.text.buffer[len] = 0;
+        }
+        else
+        {
+            node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
+        }
+
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
     return true;

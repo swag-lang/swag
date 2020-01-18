@@ -52,16 +52,25 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
     auto job        = context->job;
     auto expression = context->node->childs.front();
-    SWAG_VERIFY(expression->typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
-    SWAG_CHECK(executeNode(context, expression, true));
+    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
-    SyntaxJob syntaxJob;
-    context->node->childs.clear();
-    syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token);
+    SWAG_CHECK(executeNode(context, expression, false));
+    if (context->result != ContextResult::Done)
+        return true;
+    
+    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, "expression cannot be evaluated at compile time"}));
 
-    job->nodes.pop_back();
-    job->nodes.append(context->node->childs);
-    job->nodes.push_back(context->node);
+    if (!expression->computedValue.text.empty())
+    {
+        SyntaxJob syntaxJob;
+        context->node->childs.clear();
+        syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token);
+
+        job->nodes.pop_back();
+        job->nodes.append(context->node->childs);
+        job->nodes.push_back(context->node);
+    }
 
     return true;
 }
