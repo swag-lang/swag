@@ -144,15 +144,20 @@ namespace Ast
 
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
+        if (parentScope)
+            parentScope->lockChilds.lock();
+
         // Do not create a scope if a scope with the same name already exists
         if (matchName)
         {
             SWAG_ASSERT(parentScope);
-            shared_lock lk(parentScope->lockChilds);
             for (auto child : parentScope->childScopes)
             {
                 if (child->name.compare(name))
+                {
+                    parentScope->lockChilds.unlock();
                     return child;
+                }
             }
         }
 
@@ -167,9 +172,9 @@ namespace Ast
 
         if (parentScope)
         {
-            unique_lock lk(parentScope->lockChilds);
             newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
+            parentScope->lockChilds.unlock();
         }
 
         return newScope;
