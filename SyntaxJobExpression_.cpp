@@ -405,7 +405,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerRun:
     {
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, parent);
+        boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(doBoolExpression(boolExpression));
         break;
@@ -413,7 +413,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerMixin:
     {
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode<AstCompilerMixin>(nullptr, AstNodeKind::CompilerMixin, sourceFile, parent);
+        boolExpression              = Ast::newNode<AstCompilerMixin>(nullptr, AstNodeKind::CompilerMixin, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
         SWAG_CHECK(doExpression(boolExpression));
         break;
@@ -422,7 +422,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         AstNode* block;
-        boolExpression = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, sourceFile, parent);
+        boolExpression = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, sourceFile, nullptr);
         if (token.id == TokenId::SymLeftCurly)
             SWAG_CHECK(doEmbeddedStatement(boolExpression, &block));
         else

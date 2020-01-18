@@ -139,6 +139,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id == TokenId::SymLeftParen)
     {
@@ -178,7 +179,7 @@ bool SyntaxJob::doCompilerRunStatement(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
-    
+
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(doEmbeddedInstruction(node));
     SWAG_CHECK(eatSemiCol("after '#run' expression"));
@@ -207,6 +208,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#print' expression"));

@@ -1,6 +1,6 @@
 var G: s32
 
-#[swag.compiler]
+#[swag.compiler, swag.constexpr]
 func toto()->string
 {
     return #"G = 666"#

@@ -55,7 +55,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
-    SWAG_CHECK(executeNode(context, expression, false));
+    SWAG_CHECK(executeNode(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
     
