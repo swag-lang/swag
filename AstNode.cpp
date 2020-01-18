@@ -637,3 +637,11 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     return newNode;
 }
+
+AstNode* AstCompilerAst::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc<AstCompilerAst>();
+    newNode->copyFrom(context, this);
+    newNode->embeddedKind = embeddedKind;
+    return newNode;
+}

@@ -201,6 +201,10 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
         switch (token.id)
         {
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::StructVarDecl));
+            break;
+
         case TokenId::SymRightCurly:
             SWAG_CHECK(eatToken());
             return true;

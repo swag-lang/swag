@@ -217,7 +217,7 @@ bool SyntaxJob::recoverError()
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFile* originalFile, Token* originalToken)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFile* originalFile, Token* originalToken, CompilerAstKind kind)
 {
     SourceFile tmpFile;
     tmpFile.externalBuffer = (uint8_t*) content.c_str();
@@ -249,7 +249,21 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFi
     {
         if (token.id == TokenId::EndOfFile)
             break;
-        SWAG_CHECK(doEmbeddedInstruction(parent));
+        switch (kind)
+        {
+        case CompilerAstKind::EmbeddedInstruction:
+            SWAG_CHECK(doEmbeddedInstruction(parent));
+            break;
+        case CompilerAstKind::TopLevelInstruction:
+            SWAG_CHECK(doTopLevelInstruction(parent));
+            break;
+        case CompilerAstKind::StructVarDecl:
+            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
     }
 
     return true;

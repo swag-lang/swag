@@ -50,6 +50,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
+    auto node       = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
     auto job        = context->job;
     auto expression = context->node->childs.front();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
@@ -58,14 +59,14 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_CHECK(executeNode(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
-    
+
     SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, "expression cannot be evaluated at compile time"}));
 
     if (!expression->computedValue.text.empty())
     {
         SyntaxJob syntaxJob;
         context->node->childs.clear();
-        syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token);
+        syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token, node->embeddedKind);
 
         job->nodes.pop_back();
         job->nodes.append(context->node->childs);

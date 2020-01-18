@@ -669,3 +669,16 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<TypeInfoStruct*>            interfacesCount;
     VectorNative<pair<TypeInfoStruct*, int>> methodsCount;
 };
+
+enum class CompilerAstKind
+{
+    EmbeddedInstruction,
+    TopLevelInstruction,
+    StructVarDecl,
+};
+
+struct AstCompilerAst : public AstNode
+{
+    AstNode*        clone(CloneContext& context) override;
+    CompilerAstKind embeddedKind = CompilerAstKind::EmbeddedInstruction;
+};
