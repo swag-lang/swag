@@ -68,6 +68,7 @@ enum class TokenId
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
+    CompilerAst,
     CompilerFile,
     CompilerLine,
     CompilerConfiguration,

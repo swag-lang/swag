@@ -8,6 +8,7 @@ struct Module;
 struct AstNode;
 struct Diagnostic;
 struct Scope;
+struct Token;
 
 struct LoadRequest
 {
@@ -51,9 +52,11 @@ struct SourceFile : public File
     uint32_t  indexInModule = UINT32_MAX;
     BuildPass buildPass     = BuildPass::Full;
 
-    char*  buffer       = nullptr;
-    Scope* scopeRoot    = nullptr;
-    Scope* scopePrivate = nullptr;
+    char*       buffer        = nullptr;
+    Scope*      scopeRoot     = nullptr;
+    Scope*      scopePrivate  = nullptr;
+    SourceFile* originalFile  = nullptr;
+    Token*      originalToken = nullptr;
 
     TextFormat   textFormat    = TextFormat::UTF8;
     int          headerSize    = 0;

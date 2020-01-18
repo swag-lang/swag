@@ -217,13 +217,15 @@ bool SyntaxJob::recoverError()
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFile* originalFile, Token* originalToken)
 {
     SourceFile tmpFile;
     tmpFile.externalBuffer = (uint8_t*) content.c_str();
     tmpFile.externalSize   = (uint32_t) content.length();
     tmpFile.module         = parent->sourceFile->module;
     tmpFile.path           = "generated";
+    tmpFile.originalFile   = originalFile;
+    tmpFile.originalToken  = originalToken;
     sourceFile             = &tmpFile;
     currentScope           = parent->ownerScope;
     currentStructScope     = parent->ownerStructScope;

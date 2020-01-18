@@ -7,6 +7,7 @@
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
+#include "SyntaxJob.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -44,6 +45,24 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     SWAG_CHECK(executeNode(context, expression, false));
     context->node->inheritComputedValue(expression);
     context->node->typeInfo = expression->typeInfo;
+    return true;
+}
+
+bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
+{
+    auto job        = context->job;
+    auto expression = context->node->childs.front();
+    SWAG_VERIFY(expression->typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
+    SWAG_CHECK(executeNode(context, expression, true));
+
+    SyntaxJob syntaxJob;
+    context->node->childs.clear();
+    syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token);
+
+    job->nodes.pop_back();
+    job->nodes.append(context->node->childs);
+    job->nodes.push_back(context->node);
+
     return true;
 }
 

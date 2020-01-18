@@ -160,6 +160,19 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerAstExpression(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAst, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerAstExpression;
+
+    ScopedFlags scopedFlags(this, AST_NO_BACKEND);
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatSemiCol("after '#ast' expression"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerRunStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);

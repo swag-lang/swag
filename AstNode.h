@@ -120,6 +120,7 @@ enum class AstNodeKind : uint8_t
     CompilerInline,
     CompilerPrint,
     CompilerRun,
+    CompilerAst,
     CompilerCode,
     CompilerImport,
     CompilerSpecialFunction,

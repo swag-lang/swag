@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "AstNode.h"
 #include "Allocator.h"
+#include "SourceFile.h"
 struct Utf8Crc;
 struct Scope;
 struct Concat;
@@ -57,6 +58,16 @@ namespace Ast
         }
 
         lastGeneratedNode = node;
+
+        // This will be defined when generating code from #ast
+        if (sourceFile)
+        {
+            if (sourceFile->originalFile)
+                node->sourceFile = sourceFile->originalFile;
+            if (sourceFile->originalToken)
+                node->token = *sourceFile->originalToken;
+        }
+
         return node;
     }
 
@@ -105,4 +116,3 @@ inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2)
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
     return casted;
 }
-

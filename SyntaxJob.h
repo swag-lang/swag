@@ -32,7 +32,7 @@ struct SyntaxContext : public JobContext
 struct SyntaxJob : public Job
 {
     JobResult execute() override;
-    bool      constructEmbedded(const Utf8& content, AstNode* parent);
+    bool      constructEmbedded(const Utf8& content, AstNode* parent, SourceFile* originalFile, Token* originalToken);
 
     bool error(const Token& tk, const Utf8& msg);
     bool error(AstNode* node, const Utf8& msg);
@@ -60,6 +60,7 @@ struct SyntaxJob : public Job
     bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerAstExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();

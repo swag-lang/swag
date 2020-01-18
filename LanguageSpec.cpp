@@ -12,6 +12,7 @@ void LanguageSpec::setup()
     keywords["#assert"]         = TokenId::CompilerAssert;
     keywords["#print"]          = TokenId::CompilerPrint;
     keywords["#run"]            = TokenId::CompilerRun;
+    keywords["#ast"]            = TokenId::CompilerAst;
     keywords["#file"]           = TokenId::CompilerFile;
     keywords["#line"]           = TokenId::CompilerLine;
     keywords["#config"]         = TokenId::CompilerConfiguration;
