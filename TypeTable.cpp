@@ -399,6 +399,7 @@ void TypeTable::addTypeTableJob(Job* job)
 
 void TypeTable::waitForTypeTableJobs(Job* job)
 {
+    unique_lock lk1(mutexTypes);
     unique_lock lk(mutexJobs);
     if (pendingJobs)
     {
