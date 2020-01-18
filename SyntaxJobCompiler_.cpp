@@ -161,16 +161,29 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerAstExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerAstExpression;
+    SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
-    SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatSemiCol("after '#ast' expression"));
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(sourceFile->astRoot, &funcNode, TokenId::CompilerAst));
+        auto idRef      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        auto identifier = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatSemiCol("after '#ast' expression"));
+    }
+
     return true;
 }
 

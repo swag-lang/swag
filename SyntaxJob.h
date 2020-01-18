@@ -60,7 +60,7 @@ struct SyntaxJob : public Job
     bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerAstExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerAst(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();

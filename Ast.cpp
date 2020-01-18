@@ -303,6 +303,7 @@ namespace Ast
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
             id->name        = subNames[i];
+            id->token.id    = TokenId::Identifier;
             if (syntaxJob)
                 id->inheritTokenLocation(syntaxJob->token);
             id->identifierRef = node;

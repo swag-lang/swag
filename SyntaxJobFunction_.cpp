@@ -336,6 +336,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeFuncId == TokenId::CompilerFuncInit ||
         typeFuncId == TokenId::CompilerFuncDrop ||
         typeFuncId == TokenId::CompilerFuncMain ||
+        typeFuncId == TokenId::CompilerAst ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
 
@@ -370,6 +371,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "#main";
             funcNode->name       = "main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
+            break;
+        case TokenId::CompilerAst:
+            funcNode->token.text = "#ast";
+            funcNode->name       = "ast" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER;
             break;
         }
     }
@@ -454,6 +460,15 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         }
+    }
+    else if (typeFuncId == TokenId::CompilerAst)
+    {
+        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        Scoped      scoped(this, newScope);
+        ScopedFct   scopedFct(this, funcNode);
+        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
+        auto        typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
+        typeExpression->token.literalType = g_TypeMgr.typeInfoString;
     }
 
     // Content of function
