@@ -6,13 +6,15 @@ var G = 0
 
 impl B
 {
+    func opIndexAffect(using self, value: T, index: u32)
+    {
+        G = 1
+    }
+
     func(op: string) opIndexAssign(using self, value: T, index: u32)
     {
-        #if op == "="
-            G = 1
-        #else
-            G = 2
-    }
+        G = 2
+    }    
 }
 
 #test

@@ -51,12 +51,9 @@ namespace std.collections
             }
 
             /// Sets the value of the bit at a specific position in the [BitArray]
-            func(op: string) opIndexAssign(using self, value: bool, index: u32)
+            func opIndexAffect(using self, value: bool, index: u32)
             {
-                #if op == "="
-                    set(self, index, value)
-                #else
-                    #assert(false, "invalid assignment operator '" ~op~ "'")
+                set(self, index, value)
             }            
 
             /// Initializes a [BitArray] that contains bit values copied from the specified array of booleans.

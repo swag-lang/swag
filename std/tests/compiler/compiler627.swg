@@ -1,6 +1,3 @@
-
-
-
 struct Point
 {
 	x: s32
@@ -9,16 +6,12 @@ struct Point
 
 impl Point
 {
-	func(op: string) opIndexAssign(self, v: s32, i: u32)
+	func opIndexAffect(self, v: s32, i: u32)
 	{
-		#if op == "="
-		{
-			if(i == 0)
-				self.x = v;
-			else
-				self.y = v;
-		}
-
+        if(i == 0)
+            self.x = v;
+        else
+            self.y = v;
 	}
 }
 

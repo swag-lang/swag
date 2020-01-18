@@ -37,11 +37,10 @@ namespace std.collections
             }
 
             #[swag.nodoc]
-            func(op: string) opIndexAssign(using self, value: T, index: u32)
+            func opIndexAffect(using self, value: T, index: u32)
             {
                 std.diagnostics.debug.assert(index < count)
-                #if op == "="
-                    buffer[index] = value
+                buffer[index] = value
             }    
         }
 

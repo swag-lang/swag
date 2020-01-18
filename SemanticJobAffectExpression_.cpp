@@ -129,7 +129,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams, false));
+            {
+                if (!hasUserOp(context, "opIndexAffect", left))
+                {
+                    Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
+                    return context->report({node, msg});
+                }
+
+                SWAG_CHECK(resolveUserOp(context, "opIndexAffect", nullptr, nullptr, left, arrayNode->structFlatParams, false));
+            }
             else
             {
                 if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST))

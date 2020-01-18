@@ -27,8 +27,8 @@ impl Point
 #test
 {
 	var pt: Point
-	pt[0] = 5
-	pt[1] = 10
+	pt[0] += 5
+	pt[1] += 10
 	//@assert(pt.x == 5)
 	//@assert(pt.y == 10)
 }
