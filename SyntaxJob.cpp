@@ -260,6 +260,9 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFi
         case CompilerAstKind::StructVarDecl:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
             break;
+        case CompilerAstKind::EnumValue:
+            SWAG_CHECK(doEnumValue(parent));
+            break;
         default:
             SWAG_ASSERT(false);
             break;

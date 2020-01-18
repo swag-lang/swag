@@ -675,6 +675,7 @@ enum class CompilerAstKind
     EmbeddedInstruction,
     TopLevelInstruction,
     StructVarDecl,
+    EnumValue,
 };
 
 struct AstCompilerAst : public AstNode

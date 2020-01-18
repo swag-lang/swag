@@ -90,6 +90,10 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
 
         switch (token.id)
         {
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::EnumValue));
+            break;
+
         case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
             break;
@@ -110,28 +114,32 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             break;
 
         default:
-        {
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
-            auto enumValue = Ast::newNode<AstNode>(this,  AstNodeKind::EnumValue, sourceFile, parent);
-            enumValue->inheritTokenName(token);
-            enumValue->semanticFct = SemanticJob::resolveEnumValue;
-            currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);
-
-            SWAG_CHECK(tokenizer.getToken(token));
-            if (token.id == TokenId::SymEqual)
-            {
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_CHECK(doExpression(enumValue));
-            }
-
-            SWAG_CHECK(eatSemiCol("after enum value"));
+            SWAG_CHECK(doEnumValue(parent));
             break;
-        }
         }
 
         if (!waitCurly)
             break;
     }
 
+    return true;
+}
+
+bool SyntaxJob::doEnumValue(AstNode* parent)
+{
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
+    auto enumValue = Ast::newNode<AstNode>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    enumValue->inheritTokenName(token);
+    enumValue->semanticFct = SemanticJob::resolveEnumValue;
+    currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id == TokenId::SymEqual)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymEqual));
+        SWAG_CHECK(doExpression(enumValue));
+    }
+
+    SWAG_CHECK(eatSemiCol("after enum value"));
     return true;
 }
