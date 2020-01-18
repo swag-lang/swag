@@ -456,6 +456,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::DocComment:
         SWAG_CHECK(doDocComment(parent));
         break;
+    case TokenId::CompilerAst:
+        SWAG_CHECK(doCompilerAst(parent, result));
+        break;
     case TokenId::KwdFunc:
     case TokenId::CompilerFuncTest:
     case TokenId::CompilerFuncInit:
