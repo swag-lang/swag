@@ -167,7 +167,7 @@ bool SyntaxJob::doCompilerAstExpression(AstNode* parent, AstNode** result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerAstExpression;
 
-    ScopedFlags scopedFlags(this, AST_NO_BACKEND);
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#ast' expression"));
     return true;
