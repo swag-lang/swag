@@ -309,6 +309,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             job->tmpNodes.append(child->childs);
             continue;
         case AstNodeKind::CompilerAst:
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             job->tmpNodes.append(child->childs);
             continue;
         case AstNodeKind::CompilerIf:

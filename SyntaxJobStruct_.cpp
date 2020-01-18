@@ -203,6 +203,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         {
         case TokenId::CompilerAst:
             SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::StructVarDecl));
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
 
         case TokenId::SymRightCurly:
