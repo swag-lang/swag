@@ -375,7 +375,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
             funcNode->name       = "ast" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER;
+            funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER;
             break;
         }
     }

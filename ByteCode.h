@@ -36,6 +36,7 @@ struct ByteCode
     VectorNative<uint32_t>  availableRegistersRC;
     VectorNative<uint32_t>  availableRegistersRC2;
     VectorNative<Register*> registersRC;
+    VectorNative<void*>     autoFree;
 
     Utf8 name;
 

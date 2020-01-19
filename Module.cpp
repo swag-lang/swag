@@ -143,6 +143,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
+    // Free auto allocated memory
+    for (auto ptr : node->bc->autoFree)
+        free(ptr);
+
     return true;
 }
 

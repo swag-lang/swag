@@ -89,6 +89,17 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
                     freeRegisterRC(context, r0);
                 }
+                else if (returnType->isNative(NativeTypeKind::String))
+                {
+                    auto child = node->childs.front();
+                    if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
+                    {
+                        emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                    }
+
+                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC[0]);
+                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, 1, child->resultRegisterRC[1]);
+                }
                 else
                 {
                     for (auto child : node->childs)

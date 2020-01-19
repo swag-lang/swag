@@ -919,6 +919,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->b.u32].b = registersRC[ip->a.u32].pointer == nullptr;
         break;
     }
+    case ByteCodeOp::CloneString:
+    {
+        char*    ptr                   = (char*) registersRC[ip->a.u32].pointer;
+        uint32_t count                 = registersRC[ip->b.u32].u32;
+        registersRC[ip->a.u32].pointer = (uint8_t*) malloc(count + 1);
+        context->bc->autoFree.push_back(registersRC[ip->a.u32].pointer);
+        memcpy(registersRC[ip->a.u32].pointer, ptr, count + 1);
+        break;
+    }
 
     case ByteCodeOp::CompareOpLowerS32:
     {

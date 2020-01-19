@@ -13,8 +13,8 @@ using std.text
         str += "x += 1\n"
         str += "loop 10\n"
         str += "x += 1\n"        
-        return ""//cast(string) str
+        return cast(string) str
     }
 
-    //@assert(x == 20)
+    @assert(x == 20)
 }
