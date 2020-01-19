@@ -586,7 +586,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
         SWAG_ASSERT(typeList->childs.size() == 2);
-        SWAG_ASSERT(typeList->childs[0]->kind == TypeInfoKind::Pointer);
+        SWAG_ASSERT(typeList->childs[0]->kind == TypeInfoKind::Pointer || typeList->childs[0]->kind == TypeInfoKind::Array);
         SWAG_ASSERT(typeList->childs[1]->kind == TypeInfoKind::Native);
 
         RegisterList r0;

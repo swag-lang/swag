@@ -1779,23 +1779,35 @@ bool TypeManager::castSliceFromTypeList(SemanticContext* context, TypeInfo* poin
     if (fromTypeList->childs.size() != 2)
         return false;
 
-    bool forcedInit = true;
+    bool castCanBeDone = true;
 
     // Must start with a pointer of the same type as the slice
-    auto typeFront = fromTypeList->childs.front();
-    if (typeFront->kind != TypeInfoKind::Pointer)
-        forcedInit = false;
+    auto childFront = fromTypeList->childs.front();
+    if (childFront->kind == TypeInfoKind::Pointer)
+    {
+        auto typePointer = static_cast<TypeInfoPointer*>(childFront);
+        if (!TypeManager::makeCompatibles(context, pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            castCanBeDone = false;
+    }
+    else if (childFront->kind == TypeInfoKind::Array)
+    {
+        auto typeArray = static_cast<TypeInfoArray*>(childFront);
+        if (!TypeManager::makeCompatibles(context, pointedType, typeArray->pointedType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            castCanBeDone = false;
+    }
     else
     {
-        auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-        if (!TypeManager::makeCompatibles(context, pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            forcedInit = false;
+        castCanBeDone = false;
     }
 
     // Must end with an U32, which is the slice count
-    if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-        forcedInit = false;
-    if (forcedInit)
+    if (castCanBeDone)
+    {
+        if (!TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            castCanBeDone = false;
+    }
+
+    if (castCanBeDone)
     {
         if (fromNode)
             fromNode->flags |= AST_SLICE_INIT_EXPRESSION;
