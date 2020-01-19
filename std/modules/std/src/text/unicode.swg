@@ -1,4 +1,4 @@
-namespace std.unicode
+namespace std.text.unicode
 {
     public enum UnicodeCategory : u8
     {

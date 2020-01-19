@@ -1,4 +1,4 @@
-namespace std
+namespace std.text
 {
     using swag
     private const SmallSize = 24'u32
@@ -205,6 +205,25 @@ namespace std
                 }
                 
                 capacity = newCapacity
+            }
+
+            /// Remove whitespaces at the start of the [String]
+            func trimLeft(using self)
+            {
+                if !length
+                    return                
+
+                ptr := cast(const *u8) buffer
+                while true
+                {
+                    var (nextPtr, c) = utf8.getChar(ptr)
+                    if !unicode.isWhiteSpace(c)
+                        break
+                    ptr = nextPtr
+                    length -= 1
+                }
+
+                memory.copy(buffer, ptr, length)
             }
         }
     }

@@ -1,5 +1,5 @@
 #import "std"
-using std
+using std.text
 
 //#[swag.printbc]
 func XX(v: String)->[..]u8 => {v.buffer, v.length}

@@ -1,6 +1,6 @@
-namespace std.latin1
+namespace std.text.latin1
 {
-	using std.unicode
+	using std.text.unicode
     public const charCategory: [] UnicodeCategory = 
     [
         UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control, UnicodeCategory.Control,    // 0000 - 0007
