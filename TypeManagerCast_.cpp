@@ -2215,7 +2215,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic)
+    if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
         if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
         {

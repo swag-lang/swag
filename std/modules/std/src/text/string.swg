@@ -64,7 +64,7 @@ namespace std
 
             func opEquals(using self, other: string)->bool
             {
-                if cast(const *u8) buffer == @dataof(other)
+                if buffer == @dataof(other)
                     return true
                 if length != @countof(other)
                     return false
