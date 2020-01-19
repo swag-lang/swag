@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     RegisterList r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
                     // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                    returnExpression->flags |= AST_NO_DROP;
+                    returnExpression->flags |= AST_NO_LEFT_DROP;
                     SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
                     freeRegisterRC(context, r0);
                 }
@@ -111,7 +111,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     Scope::collectScopeFrom(node->ownerScope, topScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope));
+        SWAG_CHECK(emitLeaveScope(context, scope, node->forceNoDrop));
         if (context->result != ContextResult::Done)
             return true;
     }

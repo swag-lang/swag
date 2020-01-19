@@ -509,7 +509,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope)
+bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop)
 {
     if (!scope)
         return true;
@@ -531,6 +531,8 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     for (int i = count; i >= 0; i--)
     {
         auto one            = table.structVarsToDrop[i];
+        if (one == forceNoDrop)
+            continue;
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         if (typeInfoStruct->opDrop)
         {
@@ -569,7 +571,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop)
 {
     auto node = context->node;
 
@@ -586,7 +588,7 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     // Emit all drops
     if (node->doneLeaveScopeDrop.find(scope) == node->doneLeaveScopeDrop.end())
     {
-        SWAG_CHECK(emitLeaveScopeDrop(context, scope));
+        SWAG_CHECK(emitLeaveScopeDrop(context, scope, forceNoDrop));
         if (context->result == ContextResult::Pending)
             return true;
         node->doneLeaveScopeDrop.insert(scope);

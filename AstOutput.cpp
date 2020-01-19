@@ -63,7 +63,7 @@ namespace Ast
             break;
 
         case AstNodeKind::RawMove:
-            if (node->flags & AST_NO_DROP)
+            if (node->flags & AST_NO_LEFT_DROP)
                 concat.addString("nodrop ");
             if (node->flags & AST_FORCE_MOVE)
                 concat.addString("move ");

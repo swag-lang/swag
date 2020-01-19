@@ -624,7 +624,8 @@ struct AstReturn : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    int seekJump = 0;
+    SymbolOverload* forceNoDrop = nullptr;
+    int             seekJump    = 0;
 };
 
 struct AstCompilerInline : public AstNode

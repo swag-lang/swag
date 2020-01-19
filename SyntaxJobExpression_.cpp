@@ -374,7 +374,7 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = exprNode;
         exprNode->semanticFct = SemanticJob::resolveRawMove;
-        exprNode->flags |= AST_NO_DROP;
+        exprNode->flags |= AST_NO_LEFT_DROP;
         parent = exprNode;
         result = nullptr;
         SWAG_CHECK(eatToken());

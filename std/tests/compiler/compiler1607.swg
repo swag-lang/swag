@@ -6,15 +6,15 @@ impl A
 {
     func opDrop(using self)
     {
-        @print("opDrop\n")
+        @assert(false)
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->A
 {
-    var x: A
-    return x
+    var x: A // Should not call opDrop, because we have a move optim
+    return x 
 }
 
 //#[swag.printbc]

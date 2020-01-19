@@ -458,7 +458,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 {
     SWAG_CHECK(checkUnreachableCode(context));
 
-    auto node     = context->node;
+    auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = node->ownerFct;
 
     node->byteCodeFct = ByteCodeGenJob::emitReturn;
@@ -530,10 +530,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // If we are returning a local variable, we can do a move
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
-        child->flags |= AST_FORCE_MOVE;
+    {
+        child->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
+        node->forceNoDrop = child->resolvedSymbolOverload;
+    }
 
     // Propagate return
-    auto scanNode = node;
+    AstNode* scanNode = node;
     while (scanNode && scanNode != node->ownerFct->parent)
     {
         scanNode->flags |= AST_SCOPE_HAS_RETURN;

@@ -538,7 +538,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // Need to drop first
     if (typeInfoStruct->opDrop)
     {
-        bool mustDrop = (from->flags & AST_NO_DROP) ? false : true;
+        bool mustDrop = (from->flags & AST_NO_LEFT_DROP) ? false : true;
         if (mustDrop)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
@@ -569,8 +569,9 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             emitOpCallUser(context, nullptr, typeInfoStruct->opPostMove, false);
         }
 
-        // Reinit source struct
-        if (typeInfoStruct->opDrop)
+        // Reinit source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
+        // right expression, then this is not necessary to reinitialize it
+        if (typeInfoStruct->opDrop && !(from->flags & AST_NO_RIGHT_DROP))
         {
             if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {

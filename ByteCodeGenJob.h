@@ -16,6 +16,7 @@ struct AstVarDecl;
 struct TypeInfoStruct;
 struct Scope;
 struct SymbolName;
+struct SymbolOverload;
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
@@ -143,9 +144,9 @@ struct ByteCodeGenJob : public Job
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitLeaveScope(ByteCodeGenContext* context);
-    static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope);
+    static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
-    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
+    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
     static bool emitTrinaryOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitIs(ByteCodeGenContext* context);
