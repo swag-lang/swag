@@ -26,8 +26,7 @@ namespace std
             if allocator == null
                 allocator = @getcontext().allocator
             buffer = acast memory.realloc(&allocator, buffer, newCapacity)
-            capacity = newCapacity
-        }
+        }      
     }
 
     impl String
@@ -61,7 +60,6 @@ namespace std
                 reserve(self, newCapacity)
                 memory.copy(buffer, @dataof(value), length)
                 buffer[length] = 0
-                //@print({buffer, length})
             }
 
             func opEquals(using self, other: [..] u8)->bool
@@ -153,7 +151,6 @@ namespace std
                 memory.copy(buffer + length, @dataof(value), concatLength)
                 length = newLength - 1
                 buffer[length] = 0
-                //@print(cast(string) [buffer, length])
             }
 
             /// Ensure the [String] is big enough to store a given amount of bytes
@@ -196,11 +193,18 @@ namespace std
                 // We were in small size mode, and we are no more
                 if buffer == acast &allocator
                 {
-                    buffer = null
-                    allocator = null
+                    oldBuffer := buffer
+                    newAllocator := @getcontext().allocator
+                    buffer = acast memory.alloc(&newAllocator, newCapacity)
+                    memory.copy(buffer, oldBuffer, length + 1)
+                    allocator = newAllocator
                 }
-
-                realloc(self, newCapacity)
+                else
+                {                    
+                    realloc(self, newCapacity)
+                }
+                
+                capacity = newCapacity
             }
         }
     }
