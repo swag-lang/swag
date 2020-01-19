@@ -42,7 +42,7 @@ namespace std
             func(T) opCast(using self)->T
             {
                 #if @typeof(T) == @typeof(string)
-                    return {buffer, length}
+                    return cast(string) {buffer, length}
                 #else
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }

@@ -1533,11 +1533,11 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
                 return true;
             }
         }
-    }
 
-    // [pointer, count]
-    if (castSliceFromTypeList(context, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags))
-        return true;
+        // [pointer, count]
+        if (castSliceFromTypeList(context, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags))
+            return true;
+    }
 
     return castError(context, toType, fromType, fromNode, castFlags);
 }
