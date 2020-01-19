@@ -582,6 +582,22 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
+    if (fromTypeInfo->kind == TypeInfoKind::TypeList)
+    {
+        auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
+        SWAG_ASSERT(typeList->childs.size() == 2);
+        SWAG_ASSERT(typeList->childs[0]->kind == TypeInfoKind::Pointer);
+        SWAG_ASSERT(typeList->childs[1]->kind == TypeInfoKind::Native);
+
+        RegisterList r0;
+        reserveLinearRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[1], exprNode->resultRegisterRC[1]);
+        freeRegisterRC(context, node);
+        exprNode->resultRegisterRC = r0;
+        return true;
+    }
+
     internalError(context, "emitCastToNativeString, invalid type");
     return false;
 }

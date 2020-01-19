@@ -72,7 +72,7 @@ namespace std
                 return memory.compare(buffer, @dataof(other), length) == 0
             }
 
-            func(op: string) opAssign(using self, value: [..] u8)
+            func(op: string) opAssign(using self, value: string)
             {
                 #if op == "+="
                     concat(self, value)
@@ -141,7 +141,7 @@ namespace std
             }
 
             /// Concat the [String] with a buffer of bytes
-            func concat(using self, value: [..] u8)
+            func concat(using self, value: string)
             {
                 concatLength := @countof(value)
                 if concatLength == 0
@@ -152,6 +152,7 @@ namespace std
                 memory.copy(buffer + length, @dataof(value), concatLength)
                 length = newLength - 1
                 buffer[length] = 0
+                //@print(cast(string) [buffer, length])
             }
 
             /// Ensure the [String] is big enough to store a given amount of bytes
