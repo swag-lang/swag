@@ -42,6 +42,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     AstReturn* node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto       funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
+    auto returnType = funcNode->returnType->typeInfo;
 
     // Copy result to RR0... registers
     if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
@@ -51,9 +52,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             auto returnExpression = node->childs.front();
             if (node->ownerInline)
             {
-                if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
+                if (returnType->kind == TypeInfoKind::Struct)
                     return internalError(context, "emitReturn, invalid inline return");
-                else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+                else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
                     return internalError(context, "emitReturn, invalid inline return");
                 else
                 {
@@ -69,7 +70,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else
             {
-                if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
+                if (returnType->kind == TypeInfoKind::Struct)
                 {
                     waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(returnExpression->typeInfo, TypeInfoKind::Struct));
                     if (context->result == ContextResult::Pending)
@@ -81,7 +82,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
                     freeRegisterRC(context, r0);
                 }
-                else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+                else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
                 {
                     auto r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
