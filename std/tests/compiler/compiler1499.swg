@@ -13,10 +13,10 @@ func set(ptr: [..] u16, val: u16)
     set(buffer, 555)
     @assert(buffer[0] == 555)
 
-    let a: [..] u16 = [&buffer[0], 64]
+    let a: [..] u16 = {&buffer[0], 64}
     set(a, 666)
     @assert(buffer[0] == 666)
 
-    set([&buffer[0], 64], 777)
+    set({&buffer[0], 64}, 777)
     @assert(buffer[0] == 777)
 }

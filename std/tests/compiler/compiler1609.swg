@@ -7,6 +7,6 @@
     buffer[0] = 65
     buffer[1] = 66
     buffer[2] = 0
-    var str: string = cast(string) [&buffer[0], 2]
+    var str: string = cast(string) {&buffer[0], 2}
     @assert(str == "AB")
 }

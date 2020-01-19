@@ -7,7 +7,7 @@ impl titi
 {
 	func toString(using self) -> const [..] u8
 	{
-		return [&buf[0], 4]
+		return {&buf[0], 4}
 	}
 }
 

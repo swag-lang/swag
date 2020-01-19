@@ -43,7 +43,7 @@ namespace std
             func(T) opCast(using self)->T
             {
                 #if @typeof(T) == @typeof(string)
-                    return [buffer, length]
+                    return {buffer, length}
                 #else
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }
@@ -61,6 +61,7 @@ namespace std
                 reserve(self, newCapacity)
                 memory.copy(buffer, @dataof(value), length)
                 buffer[length] = 0
+                //@print({buffer, length})
             }
 
             func opEquals(using self, other: [..] u8)->bool

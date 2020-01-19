@@ -1772,7 +1772,7 @@ bool TypeManager::castSliceFromTypeList(SemanticContext* context, TypeInfo* poin
     TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
 
     // Can only cast array to slice
-    if (fromTypeList->listKind != TypeInfoListKind::Bracket)
+    if (fromTypeList->listKind != TypeInfoListKind::Curly)
         return false;
 
     // Special case when typelist is one pointer and one int
