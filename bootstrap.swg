@@ -35,25 +35,25 @@ namespace swag
         All             = 0x0FFFFFFF
     }
 
-	// #########################################################
-	// Attributes
-	// #########################################################
+    // #########################################################
+    // Attributes
+    // #########################################################
 
     // Hardcoded usage
     attr attributeUsage(usage: AttributeUsage);
     attr attributeMulti();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr constexpr();
+    attr constexpr();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr printbc();
+    attr printbc();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr compiler();
+    attr compiler();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr inline();
+    attr inline();
 
     #[attributeUsage(AttributeUsage.Function)]
     attr macro();
@@ -62,74 +62,74 @@ namespace swag
     attr mixin();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr test();
+    attr test();
 
     #[attributeUsage(AttributeUsage.Function | AttributeUsage.Switch)]
     attr complete();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr property();
+    attr property();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr nodoc();
+    attr nodoc();
 
     #[attributeUsage(AttributeUsage.Function)]
-	attr foreign(module: string, function: string = "");
+    attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
-	attr pack();
+    attr pack();
 
     #[attributeUsage(AttributeUsage.Field)]
     attr offset(name: string);
 
     #[attributeUsage(AttributeUsage.Enum)]
-	attr flags();
+    attr flags();
 
     #[attributeUsage(AttributeUsage.GlobalVariable)]
-	attr nobss();
-	
-	// #########################################################
-	// Constants
-	// #########################################################
+    attr nobss();
+    
+    // #########################################################
+    // Constants
+    // #########################################################
 
-	const MinS8  = -127's8 - 1
-	const MinS16 = -32767's16 - 1
-	const MinS32 = -2147483647's32 - 1
-	const MinS64 = -9223372036854775807's64 - 1
+    const MinS8  = -127's8 - 1
+    const MinS16 = -32767's16 - 1
+    const MinS32 = -2147483647's32 - 1
+    const MinS64 = -9223372036854775807's64 - 1
 
-	const MaxS8  = 127's8
-	const MaxS16 = 32767's16
-	const MaxS32 = 2147483647's32
-	const MaxS64 = 9223372036854775807's64
+    const MaxS8  = 127's8
+    const MaxS16 = 32767's16
+    const MaxS32 = 2147483647's32
+    const MaxS64 = 9223372036854775807's64
 
-	const MaxU8  = 0xFF'u8
-	const MaxU16 = 0xFFFF'u16
-	const MaxU32 = 0xFFFF_FFFF'u32
-	const MaxU64 = 0xFFFF_FFFF_FFFF_FFFF'u64
+    const MaxU8  = 0xFF'u8
+    const MaxU16 = 0xFFFF'u16
+    const MaxU32 = 0xFFFF_FFFF'u32
+    const MaxU64 = 0xFFFF_FFFF_FFFF_FFFF'u64
 
-	const MinF32 = 1.175494e-38'f32
-	const MaxF32 = 3.402822e+38'f32
-	const MinF64 = 2.22507e-308'f64
-	const MaxF64 = 1.79769e+308'f64
+    const MinF32 = 1.175494e-38'f32
+    const MaxF32 = 3.402822e+38'f32
+    const MinF64 = 2.22507e-308'f64
+    const MaxF64 = 1.79769e+308'f64
 
 
-	// #########################################################
-	// Context & allocators
-	// #########################################################
+    // #########################################################
+    // Context & allocators
+    // #########################################################
 
-	enum AllocatorMode
-	{
-		Alloc
-		Free
-		Realloc
-	}
+    enum AllocatorMode
+    {
+        Alloc
+        Free
+        Realloc
+    }
 
-	struct AllocatorRequest
-	{
-		mode:		AllocatorMode = AllocatorMode.Alloc
-		size:		u32
-		address:	*void
-	}
+    struct AllocatorRequest
+    {
+        mode:		AllocatorMode = AllocatorMode.Alloc
+        size:		u32
+        address:	*void
+    }
     
     interface IAllocator
     {
@@ -156,153 +156,153 @@ namespace swag
         }
     }
 
-	struct Context
-	{
-		allocator: IAllocator
-	}
+    struct Context
+    {
+        allocator: IAllocator
+    }
 
-	// #########################################################
-	// Type reflection
-	// #########################################################
+    // #########################################################
+    // Type reflection
+    // #########################################################
 
-	enum TypeInfoKind
-	{
-		Invalid
-		Native
-		Namespace
-		Enum
-		FuncAttr
-		Param
-		Lambda
-		Pointer
-		Array
-		Slice
-		TypeList
-		Variadic
-		TypedVariadic
-		Struct
-		Generic
-		Alias
+    enum TypeInfoKind
+    {
+        Invalid
+        Native
+        Namespace
+        Enum
+        FuncAttr
+        Param
+        Lambda
+        Pointer
+        Array
+        Slice
+        TypeList
+        Variadic
+        TypedVariadic
+        Struct
+        Generic
+        Alias
         Code
         Interface
-	}
+    }
 
-	enum TypeInfoNativeKind
-	{
-		Void
-		S8
-		S16
-		S32
-		S64
-		U8
-		U16
-		U32
-		U64
-		F32
-		F64
-		Bool
-		Char
-		String
-		Any
-	}
+    enum TypeInfoNativeKind
+    {
+        Void
+        S8
+        S16
+        S32
+        S64
+        U8
+        U16
+        U32
+        U64
+        F32
+        F64
+        Bool
+        Char
+        String
+        Any
+    }
 
-	struct TypeInfo
-	{
-		name:	string
-		kind: 	TypeInfoKind = ?
-		sizeof: u32
-	}
+    struct TypeInfo
+    {
+        name:	string
+        kind: 	TypeInfoKind = ?
+        sizeof: u32
+    }
 
-	struct TypeInfoNative
-	{
-		base: 			TypeInfo
-		nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
-	}
+    struct TypeInfoNative
+    {
+        base: 			TypeInfo
+        nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
+    }
 
-	struct TypeInfoPointer
-	{
-		base: 			TypeInfo
-		finalType:		const *TypeInfo
-		pointedType:	const *TypeInfo
-		ptrCount:		u32
-	}
+    struct TypeInfoPointer
+    {
+        base: 			TypeInfo
+        finalType:		const *TypeInfo
+        pointedType:	const *TypeInfo
+        ptrCount:		u32
+    }
 
-	struct TypeInfoAttributeParameter
-	{
-		name:	string
-		value:	any
-	}
+    struct TypeInfoAttributeParameter
+    {
+        name:	string
+        value:	any
+    }
 
-	struct TypeInfoAttribute
-	{
-		name:		string
-		params:		const [..] TypeInfoAttributeParameter
-	}
+    struct TypeInfoAttribute
+    {
+        name:		string
+        params:		const [..] TypeInfoAttributeParameter
+    }
     
-	struct TypeInfoParam
-	{
-		name:		    string
-		pointedType:	const *TypeInfo
-		value:			*void
-		attributes:	    const [..] TypeInfoAttribute
-		offset:			u32
+    struct TypeInfoParam
+    {
+        name:		    string
+        pointedType:	const *TypeInfo
+        value:			*void
+        attributes:	    const [..] TypeInfoAttribute
+        offset:			u32
         padding:		u32
-	}
+    }
 
-	struct TypeInfoStruct
-	{
-		base: 		TypeInfo
-		fields:		const [..] TypeInfoParam
-		methods:	const [..] TypeInfoParam
+    struct TypeInfoStruct
+    {
+        base: 		TypeInfo
+        fields:		const [..] TypeInfoParam
+        methods:	const [..] TypeInfoParam
         interfaces: const [..] TypeInfoParam
-		attributes:	const [..] TypeInfoAttribute
-	}
+        attributes:	const [..] TypeInfoAttribute
+    }
     
-	struct TypeInfoFunc
-	{
-		base: 			TypeInfo
-		parameters:		const [..] TypeInfoParam
-		returnType:		const *TypeInfo
-		attributes:	    const [..] TypeInfoAttribute
-	}
+    struct TypeInfoFunc
+    {
+        base: 			TypeInfo
+        parameters:		const [..] TypeInfoParam
+        returnType:		const *TypeInfo
+        attributes:	    const [..] TypeInfoAttribute
+    }
 
-	struct TypeInfoEnum
-	{
-		base: 		TypeInfo
-		values:		const [..] TypeInfoParam
-		rawType:	const *TypeInfo
-		attributes:	const [..] TypeInfoAttribute
-	}
+    struct TypeInfoEnum
+    {
+        base: 		TypeInfo
+        values:		const [..] TypeInfoParam
+        rawType:	const *TypeInfo
+        attributes:	const [..] TypeInfoAttribute
+    }
 
-	struct TypeInfoVariadic
-	{
-		base:	TypeInfo
-	}
+    struct TypeInfoVariadic
+    {
+        base:	TypeInfo
+    }
 
-	struct TypeInfoArray
-	{
-		base: 			TypeInfo
-		pointedType:	const *TypeInfo
-		finalType:		const *TypeInfo
-		count:			u32
-		totalCount:		u32
-	}
+    struct TypeInfoArray
+    {
+        base: 			TypeInfo
+        pointedType:	const *TypeInfo
+        finalType:		const *TypeInfo
+        count:			u32
+        totalCount:		u32
+    }
 
-	struct TypeInfoSlice
-	{
-		base: 			TypeInfo
-		pointedType:	const *TypeInfo
-	}
+    struct TypeInfoSlice
+    {
+        base: 			TypeInfo
+        pointedType:	const *TypeInfo
+    }
 
-	struct TypeInfoGeneric
-	{
-		base: 		TypeInfo
-		rawType:	const *TypeInfo
-	}
+    struct TypeInfoGeneric
+    {
+        base: 		TypeInfo
+        rawType:	const *TypeInfo
+    }
     
-	// #########################################################
-	// Compiler
-	// #########################################################
+    // #########################################################
+    // Compiler
+    // #########################################################
     
     struct CompilerParamsBackendC
     {
@@ -330,9 +330,9 @@ namespace swag
         backendC: CompilerParamsBackendC
     }
         
-	// #########################################################
-	// Default compiler configuration
-	// #########################################################
+    // #########################################################
+    // Default compiler configuration
+    // #########################################################
     
     // Platform setup
     #if #arch == "win64"

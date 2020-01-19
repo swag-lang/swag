@@ -176,8 +176,12 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(sourceFile->astRoot, &funcNode, TokenId::CompilerAst));
         auto idRef                 = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        idRef->token.startLocation = node->token.startLocation;
+        idRef->token.endLocation   = node->token.endLocation;
         auto identifier            = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
+        identifier->token.startLocation = node->token.startLocation;
+        identifier->token.endLocation   = node->token.endLocation;
     }
     else
     {

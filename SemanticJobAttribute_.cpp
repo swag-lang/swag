@@ -10,15 +10,15 @@
 enum AttributeUsage
 {
     // Usage
-    Enum            = 0x00000001,
-    EnumValue       = 0x00000002,
-    Field           = 0x00000004,
-    GlobalVariable  = 0x00000008,
-    Struct          = 0x00000010,
-    Function        = 0x00000020,
-    Attribute       = 0x00000040,
-    Switch          = 0x00000080,
-    All             = 0x0FFFFFFF,
+    Enum           = 0x00000001,
+    EnumValue      = 0x00000002,
+    Field          = 0x00000004,
+    GlobalVariable = 0x00000008,
+    Struct         = 0x00000010,
+    Function       = 0x00000020,
+    Attribute      = 0x00000040,
+    Switch         = 0x00000080,
+    All            = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,
 };
@@ -73,10 +73,20 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
-    Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode).c_str())};
-    Diagnostic note1{checkNode, format("this is the %s", AstNode::getNakedKindName(checkNode).c_str()), DiagnosticLevel::Note};
-    Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-    return context->report(diag, &note1, &note2);
+    auto nakedName = AstNode::getKindName(checkNode);
+    if (nakedName == "<node>")
+    {
+        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->name.c_str())};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note1);
+    }
+    else
+    {
+        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), nakedName.c_str())};
+        Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note1, &note2);
+    }
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
