@@ -121,6 +121,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
     if (!result)
         return false;
 
+    // Get result
     if (node->resultRegisterRC.size())
     {
         node->typeInfo = TypeManager::concreteType(node->typeInfo);

@@ -69,7 +69,8 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
         syntaxJob.constructEmbedded(expression->computedValue.text, context->node, context->sourceFile, &expression->token, node->embeddedKind);
 
         job->nodes.pop_back();
-        job->nodes.append(context->node->childs);
+        for (int i = (int) context->node->childs.size() - 1; i >= 0; i--)
+            job->nodes.push_back(context->node->childs[i]);
         job->nodes.push_back(context->node);
     }
 
