@@ -47,7 +47,7 @@ namespace std
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }
 
-            func opAffect(using self, value: [..] u8)
+            func opAffect(using self, value: string)
             {
                 if @dataof(value) == null
                 {
