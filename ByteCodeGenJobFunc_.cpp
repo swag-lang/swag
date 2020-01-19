@@ -1,18 +1,21 @@
 #include "pch.h"
-#include "ThreadManager.h"
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "Module.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+
+    // No need to do the scope leave stuff if the function does return something, because
+    // it has been covered by the mandatory return
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
+        return true;
 
     SWAG_CHECK(emitLeaveScope(context, node->scope));
     if (context->result != ContextResult::Done)
