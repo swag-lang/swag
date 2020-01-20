@@ -246,7 +246,14 @@ namespace std.text
                     length -= cast(u32) (ptr - previousPtr)
                     ptr = previousPtr
                 }
-            }            
+            }     
+
+            /// Remove whitespaces at the start and end of the [String]
+            func trim(using self)       
+            {
+                trimLeft(self)
+                trimRight(self)
+            }
         }
     }
 }
