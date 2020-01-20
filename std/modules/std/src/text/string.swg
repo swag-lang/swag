@@ -137,8 +137,8 @@ namespace std.text
                 }
             }            
 
-            /// Visit the [String] unicode characters
             #[swag.macro]
+            /// Visit the [String] unicode characters
             func(ptr: bool) opVisit(using self, stmt: code)
             {
                 if !length

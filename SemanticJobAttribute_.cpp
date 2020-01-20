@@ -219,13 +219,28 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto node          = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
-    auto nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
+    auto node = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
 
-    if (!nextStatement)
+    // Attribute use must not be the last one, because we need a valid statement after it
+    if (node->childParentIdx >= node->parent->childs.size() - 1)
     {
         context->report({node, "attribute belongs to nothing (no valid statement after)"});
         return false;
+    }
+
+    // Need to zap doc comments, when generating doc
+    auto idx           = node->childParentIdx + 1;
+    auto nextStatement = node->parent->childs[idx];
+    while (nextStatement->kind == AstNodeKind::DocComment)
+    {
+        idx++;
+        if (idx >= node->parent->childs.size())
+        {
+            context->report({node, "attribute belongs to nothing (no valid statement after)"});
+            return false;
+        }
+
+        nextStatement = node->parent->childs[idx];
     }
 
     AstNodeKind kind = nextStatement ? nextStatement->kind : AstNodeKind::Module;
