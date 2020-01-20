@@ -755,7 +755,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     {
         SWAG_VERIFY(acceptDeref, error(leftNode->token, format("cannot destructure a tuple in %s", Scope::getArticleKindName(currentScope->kind))));
 
-        auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         if (result)
             *result = parentNode;
 

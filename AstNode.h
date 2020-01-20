@@ -70,6 +70,7 @@ enum class AstNodeKind : uint8_t
     Break,
     Continue,
     Statement,
+    StatementNoScope,
     LabelBreakable,
     EnumDecl,
     StructDecl,

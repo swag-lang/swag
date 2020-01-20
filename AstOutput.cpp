@@ -384,6 +384,16 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::StatementNoScope:
+            for (auto child : node->childs)
+            {
+                concat.addIndent(1);
+                SWAG_CHECK(output(concat, child, indent + 1));
+                concat.addEolIndent(indent);
+            }
+
+            break;
+
         case AstNodeKind::Statement:
             concat.addChar('{');
             concat.addEolIndent(indent);
