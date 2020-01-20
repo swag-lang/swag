@@ -23,10 +23,11 @@ namespace std.text
                 return 0
             }    
 
+            /// Get the address of the previous utf8 character, and the corresponding unicode character
             public func getPrevChar(start, buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null || buffer == start
-                    return {null, acast 0}
+                    return {buffer, acast 0}
 
                 ptr := buffer - 1
                 while true
@@ -35,14 +36,15 @@ namespace std.text
                     if c >> 6 != 2
                         break
                     if ptr == start
-                        return {null, acast 0}
+                        return {start, acast 0}
                     ptr -= 1
                 }
 
-                return {null, acast 0}
+                result := getChar(ptr)
+                return {ptr, result.item1}
             }
 
-            /// Get the unicode character, and the address of the next utf8 character
+            /// Get the unicode character pointed by `buffer`, and the address of the next utf8 character
             public func getChar(buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null
