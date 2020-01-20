@@ -336,6 +336,13 @@ namespace Ast
             int idx = 0;
             for (auto child : node->childs)
             {
+                // No need to output some scope names because the identifier will be generated with a full name
+                if (child->resolvedSymbolName &&
+                    child->resolvedSymbolName->kind == SymbolKind::Namespace &&
+                    child == node->childs.front() &&
+                    node->childs.size() > 1)
+                    continue;
+
                 if (idx)
                     CONCAT_FIXED_STR(concat, ".");
                 SWAG_CHECK(output(concat, child));

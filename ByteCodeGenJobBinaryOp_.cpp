@@ -23,6 +23,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
             emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::BinOpPlusU32, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
@@ -82,6 +83,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
             emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
             return true;
         case NativeTypeKind::U64:
@@ -126,6 +128,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, u
         emitInstruction(context, ByteCodeOp::BinOpMulS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BinOpMulU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -158,6 +161,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
         emitInstruction(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -190,6 +194,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -216,6 +221,7 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, ui
         emitInstruction(context, ByteCodeOp::BitmaskAndS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BitmaskAndU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -242,6 +248,7 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, uint32_t r0, uin
         emitInstruction(context, ByteCodeOp::BitmaskOrS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BitmaskOrU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:

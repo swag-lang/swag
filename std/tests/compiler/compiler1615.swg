@@ -1,0 +1,14 @@
+//#[swag.printbc]
+#test
+{
+    var c: char = "a"'char
+    c = c & ~0x20
+    @assert(c == "A"'char)
+
+    c = c | 1
+    c = c + 1
+    c = c - 1
+    c = c * 2
+    c = c / 2
+    c = c % 500
+}

@@ -121,5 +121,12 @@ namespace std.text.unicode
                 return latin1.isDigit(cast(u8) c)
             return getCategory(c) == UnicodeCategory.DecimalDigitNumber
         }
+
+        func toUpper(c: char)->char
+        {
+            if isAscii(c)
+                return latin1.toUpper(c)
+            return c;                
+        }
     }
 }
