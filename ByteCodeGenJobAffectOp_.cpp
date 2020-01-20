@@ -548,6 +548,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU16, r0, r1);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU32, r0, r1);
         return true;
     case NativeTypeKind::U64:
