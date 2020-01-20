@@ -150,7 +150,10 @@ namespace std.text
                         break
                     #macro
                     {
-                        let @alias0 = `c
+                        #if ptr
+                            let @alias0 = `scan
+                        #else
+                            let @alias0 = `c
                         let @alias1 = `idx
                         #mixin `stmt
                     }
