@@ -6,11 +6,24 @@
 #include "TypeInfo.h"
 #include "LanguageSpec.h"
 #include "DocContent.h"
+#include "OutputFile.h"
 
 #define isBlank(__c) (__c == ' ' || __c == '\t')
 
 namespace DocHtmlHelper
 {
+    void syntaxHilight(OutputFile& result, const Utf8& name)
+    {
+        const char* pz = name.c_str();
+        Utf8        res;
+        while (*pz)
+        {
+            pz = syntaxHilight(res, pz);
+        }
+
+        result.addString(res);
+    }
+
     const char* syntaxHilight(Utf8& result, const char* pz)
     {
         if (*pz == '@')
@@ -26,7 +39,7 @@ namespace DocHtmlHelper
         if (isalpha(*pz))
         {
             Utf8 word;
-            while (isalpha(*pz))
+            while (isalpha(*pz) || isdigit(*pz) || *pz == '_')
                 word += *pz++;
             if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
             {

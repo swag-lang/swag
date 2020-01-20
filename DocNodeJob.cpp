@@ -32,11 +32,13 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
                     CONCAT_FIXED_STR(concat, ": ");
                 }
 
-                concat.addString(light ? p->typeInfo->name : p->typeInfo->getFullName());
+                DocHtmlHelper::syntaxHilight(concat, light ? p->typeInfo->name : p->typeInfo->getFullName());
             }
             else
             {
+                concat.addString("<span class = \"typeKwd\">");
                 concat.addString(p->name);
+                concat.addString("</span>");
             }
 
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
@@ -57,7 +59,7 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
-        concat.addString(light ? typeFunc->returnType->name : typeFunc->returnType->getFullName());
+        DocHtmlHelper::syntaxHilight(concat, light ? typeFunc->returnType->name : typeFunc->returnType->getFullName());
     }
 
     concat.addEol();

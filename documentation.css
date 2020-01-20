@@ -154,6 +154,10 @@ pre code, pre tt {
     color: #0066FF;
 }
 
+.typeKwd {
+    color: #0066FF;
+}
+
 .nativeType {
     color: #0066FF;
 }
