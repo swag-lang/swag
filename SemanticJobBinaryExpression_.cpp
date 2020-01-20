@@ -139,10 +139,23 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         return true;
     }
 
-    // Pointer arithmetic
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo = leftTypeInfo;
+
+        // Substract two pointers of the same type, this is a s64 result
+        if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto leftTypePointer  = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
+            auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
+            if (leftTypePointer->ptrCount == rightTypePointer->ptrCount && leftTypePointer->pointedType->kind == rightTypePointer->pointedType->kind)
+            {
+                node->typeInfo = g_TypeMgr.typeInfoS64;
+                return true;
+            }
+        }
+
+        // Pointer arithmetic
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
         switch (rightTypeInfo->nativeType)
         {

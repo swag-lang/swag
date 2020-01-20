@@ -644,6 +644,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].s32 *= ip->b.s32;
         break;
     }
+    case ByteCodeOp::DivRAVB:
+    {
+        if (ip->b.s32 == 0)
+            context->error("division by zero");
+        else
+            registersRC[ip->a.u32].s32 /= ip->b.s32;
+        break;
+    }
+
     case ByteCodeOp::BinOpMulS32:
     {
         registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 * registersRC[ip->b.u32].s32;

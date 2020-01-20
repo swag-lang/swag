@@ -745,6 +745,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::MulRAVB:
             concat.addStringFormat("r[%u].s32 *= %u;", ip->a.u32, ip->b.u32);
             break;
+        case ByteCodeOp::DivRAVB:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            concat.addStringFormat("r[%u].s32 /= %u;", ip->a.u32, ip->b.u32);
+            break;
 
         case ByteCodeOp::RAFromDataSeg8:
             concat.addStringFormat("r[%u].u8 = *(swag_uint8_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
@@ -1676,7 +1681,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             SWAG_ASSERT(funcNode);
             SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
             TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue foreignValue;
+            ComputedValue     foreignValue;
             typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
             SWAG_ASSERT(!foreignValue.text.empty());
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());

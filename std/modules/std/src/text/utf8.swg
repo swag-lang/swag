@@ -23,6 +23,25 @@ namespace std.text
                 return 0
             }    
 
+            public func getPrevChar(start, buffer: const *u8)->(const *u8, char)
+            {
+                if buffer == null || buffer == start
+                    return {null, acast 0}
+
+                ptr := buffer - 1
+                while true
+                {
+                    c := deref ptr
+                    if c >> 6 != 2
+                        break
+                    if ptr == start
+                        return {null, acast 0}
+                    ptr -= 1
+                }
+
+                return {null, acast 0}
+            }
+
             /// Get the unicode character, and the address of the next utf8 character
             public func getChar(buffer: const *u8)->(const *u8, char)
             {

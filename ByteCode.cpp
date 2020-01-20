@@ -298,6 +298,7 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromDataSeg:
         case ByteCodeOp::RARefFromBssSeg:
         case ByteCodeOp::MulRAVB:
+        case ByteCodeOp::DivRAVB:
             wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
             break;
 

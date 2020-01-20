@@ -2219,12 +2219,19 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
         {
-            if (!(castFlags & CASTFLAG_UNCONST))
-                return castError(context, toType, fromType, fromNode, castFlags);
+            if (toType->isNative(NativeTypeKind::U64) && fromType->kind == TypeInfoKind::Pointer)
+            { 
+                // this is fine
+            }
+            else
+            {
+                if (!(castFlags & CASTFLAG_UNCONST))
+                    return castError(context, toType, fromType, fromNode, castFlags);
 
-            // We can affect a const to an unconst if type is by copy, and we are in an affectation
-            if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
-                return castError(context, toType, fromType, fromNode, castFlags);
+                // We can affect a const to an unconst if type is by copy, and we are in an affectation
+                if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
+                    return castError(context, toType, fromType, fromNode, castFlags);
+            }
         }
     }
 

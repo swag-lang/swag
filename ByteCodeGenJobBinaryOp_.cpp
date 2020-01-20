@@ -56,6 +56,21 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
 
+    // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
+    if (typeInfo->isNative(NativeTypeKind::S64))
+    {
+        auto rightTypeInfo = TypeManager::concreteType(node->childs[1]->typeInfo);
+        if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
+            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
+            auto sizeOf = rightTypePointer->pointedType->sizeOf;
+            if (sizeOf > 1)
+                emitInstruction(context, ByteCodeOp::DivRAVB, r2)->b.s32 = sizeOf;
+            return true;
+        }
+    }
+
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
