@@ -57,6 +57,10 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::Index:
+            concat.addString("@index");
+            break;
+
         case AstNodeKind::MakePointer:
             concat.addChar('&');
             SWAG_CHECK(output(concat, node->childs.front(), indent));
@@ -348,7 +352,7 @@ namespace Ast
 
             if (identifier->genericParameters)
             {
-                concat.addChar('!');
+                concat.addChar('\'');
                 concat.addChar('(');
                 SWAG_CHECK(output(concat, identifier->genericParameters));
                 concat.addChar(')');

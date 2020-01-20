@@ -254,6 +254,44 @@ namespace std.text
                 trimStart(self)
                 trimEnd(self)
             }
+
+            func indexOf(using self, value: char)->s32
+            {
+                if !length
+                    return -1 
+
+                idx := 0
+                ptr := cast(const *u8) buffer
+                while true
+                {
+                    var (nextPtr, c) = utf8.nextChar(ptr)
+                    if c == 0
+                        return -1
+                    if c == value
+                        return idx
+                    idx += cast(s32) (nextPtr - ptr)
+                    ptr = nextPtr
+                }
+
+                return -1
+            }
+
+            #[swag.macro]
+            func(ptr: bool) opVisitBytes(using self, stmt: code)
+            {
+                ptr := buffer
+                loop length
+                {
+                    #macro   
+                    {
+                        let @alias0 = deref ptr
+                        let @alias1 = @index
+                        #mixin `code
+                    }
+
+                    ptr += 1
+                }
+            }
         }
     }
 }
