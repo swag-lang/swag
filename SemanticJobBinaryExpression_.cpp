@@ -663,6 +663,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Char:
         break;
     default:
         return context->report({left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -689,6 +690,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
@@ -721,6 +723,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Char:
         break;
     default:
         return context->report({left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -747,6 +750,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
@@ -791,6 +795,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Char:
         break;
     default:
         return context->report({context->node, format("operator '^' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -809,6 +814,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
             node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 ^ right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:

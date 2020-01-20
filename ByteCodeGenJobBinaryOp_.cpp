@@ -275,6 +275,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, uint32_t r0, uin
         emitInstruction(context, ByteCodeOp::ShiftLeftS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::ShiftLeftU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -301,6 +302,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, uint32_t r0, ui
         emitInstruction(context, ByteCodeOp::ShiftRightS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::ShiftRightU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
@@ -327,6 +329,7 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t 
         emitInstruction(context, ByteCodeOp::XorS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::XorU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
