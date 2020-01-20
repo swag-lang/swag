@@ -16,13 +16,67 @@ namespace DocHtmlHelper
         Utf8 result;
         result.reserve(msg.length() * 2);
 
-        bool openEm     = false;
-        bool openStrong = false;
-        bool openCode1  = false;
+        bool openEm          = false;
+        bool openStrong      = false;
+        bool openCode1       = false;
+        int  inUnorderedList = false;
+        int  inListItem = false;
 
-        const char* pz = msg.c_str();
+        const char* pz     = msg.c_str();
+        bool        wasEol = false;
         while (*pz)
         {
+            // Title
+            if (pz[0] == '#')
+            {
+                int idx = 1;
+                while (pz[0] == '#')
+                    idx++, pz++;
+                result += format("<h%d>", idx);
+                while (pz[0] && pz[0] != '\n')
+                    result += *pz++;
+                result += format("</h%d>", idx);
+                continue;
+            }
+
+            // EOL
+            if (*pz == '\n')
+            {
+                wasEol = true;
+                if (inListItem)
+                {
+                    inListItem = false;
+                    result += "</li>";
+                }
+            }
+            else if (wasEol && !isBlank(*pz))
+            {
+                wasEol = false;
+                if (*pz == '*' && !inUnorderedList)
+                {
+                    inUnorderedList = true;
+                    inListItem      = true;
+                    result += "<ul>\n";
+                    result += "<li>";
+                    pz++;
+                    continue;
+                }
+
+                if (*pz == '*' && inUnorderedList)
+                {
+                    inListItem = true;
+                    result += "<li>";
+                    pz++;
+                    continue;
+                }
+
+                if (inUnorderedList)
+                {
+                    inUnorderedList = false;
+                    result += "</ul>\n";
+                }
+            }
+
             // Escape
             if (pz[0] == '\\' && (pz[1] == '*' || pz[1] == '_'))
             {
@@ -31,7 +85,7 @@ namespace DocHtmlHelper
                     result += *pz++;
             }
 
-            // [something]
+            // [something] : reference
             else if (pz[0] == '[' && pz[1] != pz[0])
             {
                 Utf8 ref;

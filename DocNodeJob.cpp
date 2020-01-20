@@ -151,8 +151,15 @@ void DocNodeJob::emitFunction(OutputFile& outFile, AstNode* node)
     ///////////////////////////
     if (node->docContent && !node->docContent->docDescription.empty())
     {
-        DocHtmlHelper::sectionTitle2(outFile, "Description");
+        DocHtmlHelper::sectionTitle1(outFile, "Remarks");
         outFile.addString(node->docContent->docDescription);
+    }
+
+    // Content
+    ///////////////////////////
+    if (node->docContent && !node->docContent->docContent.empty())
+    {
+        outFile.addString(node->docContent->docContent);
     }
 }
 

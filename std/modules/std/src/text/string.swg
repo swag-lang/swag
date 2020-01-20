@@ -137,8 +137,8 @@ namespace std.text
                 }
             }            
 
-            #[swag.macro]
             /// Visit the [String] unicode characters
+            #[swag.macro]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
                 if !length
@@ -299,7 +299,18 @@ namespace std.text
                 }
             }     
 
-            /// Remove whitespaces at the start and end of the [String]
+            /// Removes all leading and trailing white-space characters from the current [String]
+            ///
+            /// The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing 
+            /// trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
+            /// function returns "abc xyz".
+            ///
+            /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters 
+            /// that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
+            ///
+            /// #See also
+            /// * [std.text.String.trimStart]
+            /// * [std.text.String.trimEnd]
             func trim(using self)       
             {
                 trimStart(self)
