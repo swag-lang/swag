@@ -68,11 +68,18 @@ namespace std.text.latin1
                     c == cast(u8) "\x85"'char
         }
 
-        func toUpper(c: char)->char
+        func toUpper(c: u8)->u8
         {
-            if c >= "a"'char && c <= "z"'char
-                return c & ~0x20
+            if c >= cast(u8) "a"'char && c <= cast(u8) "z"'char
+                return cast(u8) (c & ~0x20)
             return c;                
         }        
+
+        func toLower(c: u8)->u8
+        {
+            if c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char
+                return cast(u8) (c | 0x20)
+            return c;                
+        }          
     }
 }

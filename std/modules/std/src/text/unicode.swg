@@ -125,8 +125,15 @@ namespace std.text.unicode
         func toUpper(c: char)->char
         {
             if isAscii(c)
-                return latin1.toUpper(c)
-            return c;                
+                return cast(char) latin1.toUpper(cast(u8) c)
+            return c; // @todo         
         }
+
+        func toLower(c: char)->char
+        {
+            if isAscii(c)
+                return cast(char) latin1.toLower(cast(u8) c)
+            return c; // @todo             
+        }        
     }
 }
