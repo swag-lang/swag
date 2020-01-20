@@ -49,8 +49,7 @@ namespace std.text.unicode
 
     #init
     {
-        using UnicodeCategory
-        using SubCateg
+        using UnicodeCategory, SubCateg
         g_subCateg[cast(u32) UppercaseLetter]           = Letter
         g_subCateg[cast(u32) LowercaseLetter]           = Letter
         g_subCateg[cast(u32) TitlecaseLetter]           = Letter
@@ -92,7 +91,7 @@ namespace std.text.unicode
         {
             if isLatin1(c)
                 return latin1.charCategory[cast(u8) c]
-            return UnicodeCategory.OtherNotAssigned // TODO
+            return UnicodeCategory.OtherNotAssigned // @todo
         }
 
         func isWhiteSpace(c: char)->bool

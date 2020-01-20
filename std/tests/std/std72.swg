@@ -5,13 +5,13 @@ using std.text
 #test
 {
     var str: String = "  ⺗AA⺗"
-    str.trimLeft()
+    str.trimStart()
     @assert(str == "⺗AA⺗")
 
     str.clear()
     loop 50
         str += "    "       
-    str.trimLeft()
+    str.trimStart()
     @assert(str.length == 0)
     @assert(@countof(str) == 0)
     @assert(str == "")

@@ -5,6 +5,6 @@ using std.text
 #test
 {
     var str: String = "A⺗B   "
-    str.trimRight()
+    str.trimEnd()
     @assert(str == "A⺗B")
 }

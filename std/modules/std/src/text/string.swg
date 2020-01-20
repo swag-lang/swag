@@ -213,7 +213,7 @@ namespace std.text
             }
 
             /// Remove whitespaces at the start of the [String]
-            func trimLeft(using self)
+            func trimStart(using self)
             {
                 if !length
                     return                
@@ -232,7 +232,7 @@ namespace std.text
             }
 
             /// Remove whitespaces at the end of the [String]
-            func trimRight(using self)
+            func trimEnd(using self)
             {
                 if !length
                     return   
@@ -251,8 +251,8 @@ namespace std.text
             /// Remove whitespaces at the start and end of the [String]
             func trim(using self)       
             {
-                trimLeft(self)
-                trimRight(self)
+                trimStart(self)
+                trimEnd(self)
             }
         }
     }
