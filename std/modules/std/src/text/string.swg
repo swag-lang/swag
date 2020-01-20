@@ -317,6 +317,7 @@ namespace std.text
                 trimEnd(self)
             }
 
+            /// Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this [String].
             func indexOf(using self, value: char)->s32
             {
                 if !length
