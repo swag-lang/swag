@@ -34,11 +34,13 @@ namespace std.text
         public
         {
             #[swag.inline]
+            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return length
             }
 
+            #[swag.nodoc]
             func(T) opCast(using self)->T
             {
                 #if @typeof(T) == @typeof(string)
@@ -47,6 +49,7 @@ namespace std.text
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }
 
+            #[swag.nodoc]
             func opAffect(using self, value: string)
             {
                 if @dataof(value) == null
@@ -62,6 +65,7 @@ namespace std.text
                 buffer[length] = 0
             }
 
+            #[swag.nodoc]
             func opEquals(using self, other: string)->bool
             {
                 if buffer == @dataof(other)
@@ -71,6 +75,7 @@ namespace std.text
                 return memory.compare(buffer, @dataof(other), length) == 0
             }
 
+            #[swag.nodoc]
             func(op: string) opAssign(using self, value: string)
             {
                 #if op == "+="
@@ -216,7 +221,7 @@ namespace std.text
                 ptr := cast(const *u8) buffer
                 while true
                 {
-                    var (nextPtr, c) = utf8.getChar(ptr)
+                    var (nextPtr, c) = utf8.nextChar(ptr)
                     if !unicode.isWhiteSpace(c)
                         break
                     length -= cast(u32) (nextPtr - ptr)

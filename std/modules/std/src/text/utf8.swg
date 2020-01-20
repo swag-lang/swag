@@ -5,7 +5,7 @@ namespace std.text
         public
         {
             /// Returns the number of unicode characters in an utf8 buffer
-            public func getCharCount(buffer: const *u8)->u32
+            public func countChar(buffer: const *u8)->u32
             {
                 if buffer == null
                     return 0
@@ -14,7 +14,7 @@ namespace std.text
                 var c: char = ?
                 while true
                 {
-                    (ptr, c) = getChar(ptr)
+                    (ptr, c) = nextChar(ptr)
                     if !c
                         return cpt
                     cpt += 1
@@ -24,7 +24,7 @@ namespace std.text
             }    
 
             /// Get the address of the previous utf8 character, and the corresponding unicode character
-            public func getPrevChar(start, buffer: const *u8)->(const *u8, char)
+            public func previousChar(start, buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null || buffer == start
                     return {buffer, acast 0}
@@ -40,12 +40,12 @@ namespace std.text
                     ptr -= 1
                 }
 
-                result := getChar(ptr)
+                result := nextChar(ptr)
                 return {ptr, result.item1}
             }
 
             /// Get the unicode character pointed by `buffer`, and the address of the next utf8 character
-            public func getChar(buffer: const *u8)->(const *u8, char)
+            public func nextChar(buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null
                     return {null, acast 0}

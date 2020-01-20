@@ -7,7 +7,7 @@ func Visit(str: const [..] u8, user: code)
     var ptr: const *u8 = @dataof(str)
 	while true
 	{
-		(ptr, c) = std.text.utf8.getChar(ptr)
+		(ptr, c) = std.text.utf8.nextChar(ptr)
 		if !c
 			break
 		#macro 

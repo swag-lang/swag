@@ -10,7 +10,7 @@ using std
 	cpt := 0
 	while true
 	{
-		(ptr, c) = std.text.utf8.getChar(ptr)
+		(ptr, c) = std.text.utf8.nextChar(ptr)
 		if !c
 			break
 		cpt += 1
