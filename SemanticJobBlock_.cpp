@@ -277,6 +277,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         child->computedValue.reg.b = node->wantPointer;
         child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
 
+        // Call with arguments
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
         newExpression              = identifierRef;
 

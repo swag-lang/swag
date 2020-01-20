@@ -12,8 +12,11 @@ thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode, bool light)
 {
     if (!light)
-        CONCAT_FIXED_STR(concat, "func ");
+        CONCAT_FIXED_STR(concat, "<span class = \"declKwd\">func </span>");
+
+    concat.addString("<span class = \"funcCall\">");
     concat.addString(funcNode->name.c_str());
+    concat.addString("</span>");
     CONCAT_FIXED_STR(concat, "(");
 
     if (funcNode->parameters)
@@ -83,7 +86,7 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
     if (nodes.size() > 1)
     {
         DocHtmlHelper::sectionTitle1(outFile, "Overloads");
-        CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
+        CONCAT_FIXED_STR(outFile, "<pre>");
         for (auto one : nodes)
             emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, (AstFuncDecl*) one);
         CONCAT_FIXED_STR(outFile, "</pre>");
@@ -104,7 +107,7 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
 
 void DocNodeJob::emitFunction(OutputFile& outFile, AstNode* node)
 {
-    CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
+    CONCAT_FIXED_STR(outFile, "<pre>");
     emitFuncSignature(outFile, (TypeInfoFuncAttr*) node->typeInfo, (AstFuncDecl*) node);
     CONCAT_FIXED_STR(outFile, "</pre>");
 
@@ -179,7 +182,7 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     DocHtmlHelper::sectionTitle1(outFile, "Syntax");
-    CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
+    CONCAT_FIXED_STR(outFile, "<pre>");
     emitEnumSignature(outFile, (TypeInfoEnum*) node->typeInfo, (AstNode*) node);
     CONCAT_FIXED_STR(outFile, "</pre>");
 

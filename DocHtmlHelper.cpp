@@ -4,12 +4,45 @@
 #include "Scope.h"
 #include "AstNode.h"
 #include "TypeInfo.h"
+#include "LanguageSpec.h"
 #include "DocContent.h"
 
 #define isBlank(__c) (__c == ' ' || __c == '\t')
 
 namespace DocHtmlHelper
 {
+    const char* syntaxHilight(Utf8& result, const char* pz)
+    {
+        if (*pz == '@')
+        {
+            result += "<span class=\"intrinsic\">";
+            result += *pz++;
+            while (isalpha(*pz))
+                result += *pz++;
+            result += "</span>";
+            return pz;
+        }
+
+        if (isalpha(*pz))
+        {
+            Utf8 word;
+            while (isalpha(*pz))
+                word += *pz++;
+            if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
+            {
+                result += "<span class=\"nativeType\">";
+                result += word;
+                result += "</span>";
+            }
+            else
+                result += word;
+            return pz;
+        }
+
+        result += *pz++;
+        return pz;
+    }
+
     // https://daringfireball.net/projects/markdown/syntax
     Utf8 markdown(const Utf8& msg, const Utf8& currentFile)
     {
@@ -19,6 +52,7 @@ namespace DocHtmlHelper
         bool openEm          = false;
         bool openStrong      = false;
         bool openCode1       = false;
+        bool openCode2       = false;
         bool inUnorderedList = false;
         bool inListItem      = false;
         bool inParagraph     = false;
@@ -56,7 +90,7 @@ namespace DocHtmlHelper
                 }
                 else if (wasEol)
                 {
-                    if(inParagraph)
+                    if (inParagraph)
                         result += "</p>\n";
                     inParagraph = true;
                     result += "<p>";
@@ -180,7 +214,7 @@ namespace DocHtmlHelper
                 pz += 1;
             }
 
-            // something*
+            // something`
             else if (openCode1 && !isBlank(pz[0]) && pz[0] != '`' && pz[1] == '`' && pz[2] != pz[1])
             {
                 openCode1 = false;
@@ -188,8 +222,31 @@ namespace DocHtmlHelper
                 result += "</code>";
                 pz += 2;
             }
+
+            // ```
+            else if (pz[0] == '`' && pz[1] == '`' && pz[2] == '`')
+            {
+                if (openCode2)
+                {
+                    openCode2 = false;
+                    result += "</pre>";
+                }
+                else
+                {
+                    openCode2 = true;
+                    result += "<pre>";
+                }
+
+                pz += 3;
+            }
+            else if (openCode2)
+            {
+                pz = syntaxHilight(result, pz);
+            }
             else
+            {
                 result += *pz++;
+            }
         }
 
         return result;

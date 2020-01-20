@@ -308,7 +308,7 @@ namespace std.text
             /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters 
             /// that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
             ///
-            /// #See also
+            /// # See also
             /// * [std.text.String.trimStart]
             /// * [std.text.String.trimEnd]
             func trim(using self)       
@@ -318,6 +318,18 @@ namespace std.text
             }
 
             /// Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this [String].
+            ///
+            /// # Remarks
+            /// The function will return -1 if the `value` cannot be found
+            ///
+            /// # Examples
+            /// ```
+            /// let str: String = "ABC"
+            /// @assert(str.indexOf("A"'char) == 0)
+            /// @assert(str.indexOf("B"'char) == 1)
+            /// @assert(str.indexOf("C"'char) == 2)
+            /// @assert(str.indexOf("D"'char) == -1)
+            /// ```
             func indexOf(using self, value: char)->s32
             {
                 if !length
