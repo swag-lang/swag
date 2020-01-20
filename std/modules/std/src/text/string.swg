@@ -230,6 +230,23 @@ namespace std.text
 
                 memory.copy(buffer, ptr, length)
             }
+
+            /// Remove whitespaces at the end of the [String]
+            func trimRight(using self)
+            {
+                if !length
+                    return   
+
+                ptr := cast(const *u8) buffer + length
+                while true
+                {
+                    var (previousPtr, c) = utf8.previousChar(buffer, ptr)
+                    if !unicode.isWhiteSpace(c)
+                        break
+                    length -= cast(u32) (ptr - previousPtr)
+                    ptr = previousPtr
+                }
+            }            
         }
     }
 }

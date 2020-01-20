@@ -19,4 +19,6 @@ using std.text
     result = utf8.previousChar(str.buffer, result.item0)
     @assert(result.item0 == str.buffer)
     @assert(result.item1 == 0)
+
+    @assert(utf8.countChar(str.buffer) == 3)
 }
