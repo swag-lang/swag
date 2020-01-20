@@ -236,6 +236,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         typeStruct = swagScope.regTypeInfoSlice;
         break;
     case TypeInfoKind::Generic:
+    case TypeInfoKind::Code:
         typeStruct = swagScope.regTypeInfoGeneric;
         break;
     default:

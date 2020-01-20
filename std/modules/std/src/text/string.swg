@@ -113,6 +113,26 @@ namespace std.text
                 if buffer && buffer != acast &allocator
                     free(self)
             }
+
+            #[swag.macro]
+            func(ptr: bool) opVisitBytes(using self, stmt: code)
+            {
+                scan := buffer
+                loop length
+                {
+                    #macro   
+                    {
+                        #if ptr
+                            let @alias0 = `scan
+                        #else
+                            let @alias0 = deref `scan
+                        let @alias1 = @index
+                        #mixin `stmt
+                    }
+
+                    scan += 1
+                }
+            }            
         }
     }
 
@@ -274,23 +294,6 @@ namespace std.text
                 }
 
                 return -1
-            }
-
-            #[swag.macro]
-            func(ptr: bool) opVisitBytes(using self, stmt: code)
-            {
-                ptr := buffer
-                loop length
-                {
-                    #macro   
-                    {
-                        let @alias0 = deref ptr
-                        let @alias1 = @index
-                        #mixin `code
-                    }
-
-                    ptr += 1
-                }
             }
         }
     }
