@@ -219,7 +219,7 @@ namespace std.text
                     var (nextPtr, c) = utf8.getChar(ptr)
                     if !unicode.isWhiteSpace(c)
                         break
-                    length -= cast(u32) (cast(u64) nextPtr - cast(u64) ptr)
+                    length -= cast(u32) (nextPtr - ptr)
                     ptr = nextPtr
                 }
 

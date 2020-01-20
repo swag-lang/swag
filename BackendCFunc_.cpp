@@ -743,12 +743,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::MulRAVB:
-            concat.addStringFormat("r[%u].s32 *= %u;", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::DivRAVB:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                concat.addStringFormat("__assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            concat.addStringFormat("r[%u].s32 /= %u;", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("__assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::RAFromDataSeg8:
