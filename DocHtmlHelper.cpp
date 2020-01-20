@@ -19,8 +19,9 @@ namespace DocHtmlHelper
         bool openEm          = false;
         bool openStrong      = false;
         bool openCode1       = false;
-        int  inUnorderedList = false;
-        int  inListItem = false;
+        bool inUnorderedList = false;
+        bool inListItem      = false;
+        bool inParagraph     = false;
 
         const char* pz     = msg.c_str();
         bool        wasEol = false;
@@ -29,6 +30,12 @@ namespace DocHtmlHelper
             // Title
             if (pz[0] == '#')
             {
+                if (inParagraph)
+                {
+                    inParagraph = false;
+                    result += "</p>\n";
+                }
+
                 int idx = 1;
                 while (pz[0] == '#')
                     idx++, pz++;
@@ -42,12 +49,20 @@ namespace DocHtmlHelper
             // EOL
             if (*pz == '\n')
             {
-                wasEol = true;
                 if (inListItem)
                 {
                     inListItem = false;
                     result += "</li>";
                 }
+                else if (wasEol)
+                {
+                    if(inParagraph)
+                        result += "</p>\n";
+                    inParagraph = true;
+                    result += "<p>";
+                }
+
+                wasEol = true;
             }
             else if (wasEol && !isBlank(*pz))
             {

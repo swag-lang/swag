@@ -171,7 +171,7 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
 
         // Description
         case 2:
-            if (token.text.empty())
+            if (!token.text.empty() && token.text[0] == '#')
                 pass = 3;
             else
                 attrBlockNode->docContent->docDescription += token.text + "\n";
