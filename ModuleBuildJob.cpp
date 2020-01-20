@@ -112,7 +112,7 @@ JobResult ModuleBuildJob::execute()
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;
 
-            shared_lock lk(depModule->mutexDependency);
+            unique_lock lk(depModule->mutexDependency);
             if (depModule->hasBeenBuilt != BUILDRES_FULL)
             {
                 depModule->dependentJobs.add(this);

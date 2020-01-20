@@ -142,7 +142,7 @@ namespace std.text
                 if !length
                     return
                 idx := 0
-                scan := cast(const *u8) buffer
+                scan := buffer
                 while true
                 {
                     var (nextScan, c) = utf8.nextChar(scan)
@@ -159,7 +159,7 @@ namespace std.text
                     }
 
                     idx += 1
-                    scan = nextScan
+                    scan = cast(*u8) nextScan
                 }
             }             
         }
