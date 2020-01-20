@@ -79,7 +79,7 @@ namespace std.text
             func(op: string) opAssign(using self, value: string)
             {
                 #if op == "+="
-                    concat(self, value)
+                    append(self, value)
                 #else
                     #assert(false, "invalid binary operator '" ~ op ~ "'")
             }
@@ -114,6 +114,7 @@ namespace std.text
                     free(self)
             }
 
+            /// Visit the [String] utf8 bytes
             #[swag.macro]
             func(ptr: bool) opVisitBytes(using self, stmt: code)
             {
@@ -136,6 +137,7 @@ namespace std.text
                 }
             }            
 
+            /// Visit the [String] unicode characters
             #[swag.macro]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
@@ -193,8 +195,8 @@ namespace std.text
                 return buffer == null || length == 0
             }
 
-            /// Concat the [String] with a buffer of bytes
-            func concat(using self, value: string)
+            /// Append a string to the [String]
+            func append(using self, value: string)
             {
                 concatLength := @countof(value)
                 if concatLength == 0
@@ -216,7 +218,7 @@ namespace std.text
                 reserve(self, newCapacity)
             }
 
-            /// Reserve room for newCapacity bytes without changing the string length
+            /// Reserve room for `newCapacity` bytes without changing the string length
             func reserve(using self, newCapacity: u32)
             {
                 // Small size, just be sure with have a valid buffer address
