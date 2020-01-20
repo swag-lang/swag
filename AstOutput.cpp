@@ -61,6 +61,22 @@ namespace Ast
             concat.addString("@index");
             break;
 
+        case AstNodeKind::Break:
+        {
+            auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+            concat.addString("break ");
+            concat.addString(nodeBreak->label);
+            break;
+        }
+
+        case AstNodeKind::Continue:
+        {
+            auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
+            concat.addString("continue ");
+            concat.addString(nodeContinue->label);
+            break;
+        }
+
         case AstNodeKind::MakePointer:
             concat.addChar('&');
             SWAG_CHECK(output(concat, node->childs.front(), indent));

@@ -117,6 +117,8 @@ namespace std.text
             #[swag.macro]
             func(ptr: bool) opVisitBytes(using self, stmt: code)
             {
+                if !length
+                    return
                 scan := buffer
                 loop length
                 {
@@ -133,6 +135,30 @@ namespace std.text
                     scan += 1
                 }
             }            
+
+            #[swag.macro]
+            func(ptr: bool) opVisit(using self, stmt: code)
+            {
+                if !length
+                    return
+                idx := 0
+                scan := buffer
+                while true
+                {
+                    var (nextScan, c) = utf8.nextChar(scan)
+                    if c == 0
+                        break
+                    #macro
+                    {
+                        let @alias0 = `c
+                        let @alias1 = `idx
+                        #mixin `stmt
+                    }
+
+                    idx += 1
+                    ptr = nextScan
+                }
+            }             
         }
     }
 
