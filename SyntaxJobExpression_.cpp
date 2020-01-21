@@ -169,7 +169,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     else if (token.id == TokenId::KwdDeRef)
     {
         SWAG_CHECK(eatToken());
-        auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
+        auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
+        auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef);
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
         SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
 
@@ -179,7 +180,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         literal->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         literal->semanticFct = SemanticJob::resolveLiteral;
         arrayNode->access    = literal;
-        exprNode             = arrayNode;
+
+        exprNode = identifierRef;
     }
     else
     {

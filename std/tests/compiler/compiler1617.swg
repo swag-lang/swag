@@ -16,8 +16,8 @@ impl A
         x := 10'u32
         ptr := &x
 
-        /*visit deref self
+        visit deref self
         {
-        }*/
+        }
     }
 }

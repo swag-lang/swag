@@ -264,6 +264,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
+        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, internalError(context, "cannot resolve visit, expression is not an identifier"));
         auto identifierRef     = Ast::clone(node->expression, node);
         auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
         identifier->aliasNames = node->aliasNames;
