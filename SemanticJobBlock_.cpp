@@ -312,7 +312,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("let %s = @index; ", alias0Name.c_str());
         content += "} ";
         SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, sourceFile, &node->token, CompilerAstKind::EmbeddedInstruction);
+        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
 
         newExpression = node->childs.back();
         auto loopNode = CastAst<AstLoop>(newExpression, AstNodeKind::Loop);
@@ -341,7 +341,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("let %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, sourceFile, &node->token, CompilerAstKind::EmbeddedInstruction);
+        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
 
         newExpression = node->childs.back();
 
@@ -370,7 +370,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("let %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, sourceFile, &node->token, CompilerAstKind::EmbeddedInstruction);
+        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
 
         newExpression = node->childs.back();
 

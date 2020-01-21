@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Job.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -16,7 +17,7 @@ struct StackValue
     void*    addr;
 };
 
-struct ByteCodeRunContext
+struct ByteCodeRunContext: public JobContext
 {
     Register* registersRR    = nullptr;
     uint32_t  numRegistersRR = 0;
@@ -28,7 +29,6 @@ struct ByteCodeRunContext
     uint32_t             stackSize = 0;
     ByteCodeInstruction* ip        = nullptr;
 
-    SourceFile* sourceFile = nullptr;
     AstNode*    node       = nullptr;
     bool        hasError   = false;
     Utf8        errorMsg;
@@ -39,9 +39,9 @@ struct ByteCodeRunContext
     template<typename T>
     inline T pop()
     {
-        auto result = *(T*) sp;
+        auto popResult = *(T*) sp;
         sp += sizeof(T);
-        return result;
+        return popResult;
     }
 
     template<typename T>

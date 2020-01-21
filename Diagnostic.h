@@ -54,6 +54,7 @@ struct Diagnostic
 
     Diagnostic(AstNode* node, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{node->sourceFile}
+        , sourceNode{node}
         , startLocation{token.startLocation}
         , endLocation{token.endLocation}
         , textMsg{msg}
@@ -67,6 +68,7 @@ struct Diagnostic
 
     Diagnostic(AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{node->sourceFile}
+        , sourceNode{node}
         , textMsg{msg}
         , errorLevel{level}
         , hasFile{true}
@@ -101,6 +103,7 @@ struct Diagnostic
     void defaultColor(bool verboseMode) const;
 
     SourceFile*     sourceFile = nullptr;
+    AstNode*        sourceNode = nullptr;
     SourceLocation  startLocation;
     SourceLocation  endLocation;
     Utf8            textMsg;

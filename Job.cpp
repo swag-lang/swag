@@ -82,16 +82,21 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             name = first->token.text;
         if (!name.empty())
         {
-            Diagnostic note{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
-            copyNotes.push_back(&note);
-            return sourceFile->report(diag, copyNotes);
+            auto note = new Diagnostic{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
+            copyNotes.push_back(note);
         }
         else
         {
-            Diagnostic note{first, first->token, "occurred during an expansion here", DiagnosticLevel::Note};
-            copyNotes.push_back(&note);
-            return sourceFile->report(diag, copyNotes);
+            auto note = new Diagnostic{first, first->token, "occurred during an expansion here", DiagnosticLevel::Note};
+            copyNotes.push_back(note);
         }
+    }
+
+    if (diag.sourceNode && diag.sourceNode->sourceFile && diag.sourceNode->sourceFile->sourceNode)
+    {
+        auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
+        auto note       = new Diagnostic{sourceNode, sourceNode->token, "occurred in generated code", DiagnosticLevel::Note};
+        copyNotes.push_back(note);
     }
 
     return sourceFile->report(diag, copyNotes);

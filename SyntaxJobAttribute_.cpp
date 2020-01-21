@@ -203,7 +203,7 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
         code += oneCode;
         code += "}\n";
 
-        SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, sourceFile, &attrBlockNode->token, CompilerAstKind::TopLevelInstruction));
+        SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, attrBlockNode, CompilerAstKind::TopLevelInstruction));
     }
 
     return true;

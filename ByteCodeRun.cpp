@@ -1854,7 +1854,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         {
             Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
             diag.showDiagnosticInfos = true;
-            context->sourceFile->report(diag);
+            context->report(diag);
             return false;
         }
     }
