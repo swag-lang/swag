@@ -204,6 +204,7 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
         code += "}\n";
 
         SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, attrBlockNode, CompilerAstKind::TopLevelInstruction));
+        //sourceFile->astRoot->childs.back()->attributeFlags |= ATTRIBUTE_PRINTBYTECODE;
     }
 
     return true;

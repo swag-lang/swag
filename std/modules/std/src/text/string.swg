@@ -280,6 +280,7 @@ namespace std.text
                 }
 
                 memory.copy(buffer, ptr, length)
+                buffer[length] = 0
             }
 
             /// Remove whitespaces at the end of the [String]
@@ -297,6 +298,8 @@ namespace std.text
                     length -= cast(u32) (ptr - previousPtr)
                     ptr = previousPtr
                 }
+
+                buffer[length] = 0
             }     
 
             /// Removes all leading and trailing white-space characters from the current [String]
@@ -307,6 +310,13 @@ namespace std.text
             ///
             /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters 
             /// that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
+            ///
+            /// # Examples
+            /// ```
+            /// let str: String = "  ABC  "
+            /// str.trim()
+            /// @assert(str == "ABC")
+            /// ```
             ///
             /// # See also
             /// * [std.text.String.trimStart]

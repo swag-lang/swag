@@ -214,16 +214,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(registersRC[ip->a.u32].u64);
         break;
     }
-    case ByteCodeOp::PushRRSaved:
-    {
-        context->push(registersRR[ip->a.u32].u64);
-        break;
-    }
-    case ByteCodeOp::PopRRSaved:
-    {
-        registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
-        break;
-    }
     case ByteCodeOp::IncSP:
     {
         context->incSP(ip->a.u32);
@@ -343,6 +333,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IncRAVB:
     {
         registersRC[ip->a.u32].u32 += ip->b.u32;
+        break;
+    }
+
+    case ByteCodeOp::PushRRSaved:
+    {
+        context->push(registersRR[ip->a.u32].u64);
+        break;
+    }
+    case ByteCodeOp::PopRRSaved:
+    {
+        registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
 
