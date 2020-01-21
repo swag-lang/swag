@@ -132,7 +132,7 @@ pre > code {
     border: none;
     background: transparent;
 }
-
+@import url('file:///F:\swag\std\modules\std\doc\swag.documentation.css');
 pre {
     background-color: #f2f2f2;
     border: 1px solid #ccc;
@@ -168,6 +168,10 @@ pre code, pre tt {
 
 .intrinsic {
     color: #FF6600;
+}
+
+.comment {
+    color: #2b862b;
 }
 
 /* QUOTES

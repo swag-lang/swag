@@ -26,6 +26,16 @@ namespace DocHtmlHelper
 
     const char* syntaxHilight(Utf8& result, Utf8* rawResult, const char* pz)
     {
+        if (pz[0] == '/' && pz[1] == '/')
+        {
+            result += "<span class=\"comment\">";
+            while (*pz && *pz != '\n')
+                result += *pz++;
+            result += "</span>";
+            return pz;
+        }
+
+        // Intrinsic
         if (*pz == '@')
         {
             result += "<span class=\"intrinsic\">";
@@ -44,6 +54,7 @@ namespace DocHtmlHelper
             return pz;
         }
 
+        // Word
         if (isalpha(*pz))
         {
             Utf8 word;
@@ -52,9 +63,16 @@ namespace DocHtmlHelper
             if (rawResult)
                 *rawResult += word;
 
+            // Native type
             if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
             {
                 result += "<span class=\"nativeType\">";
+                result += word;
+                result += "</span>";
+            }
+            else if (g_LangSpec.keywords.find(word) != g_LangSpec.keywords.end())
+            {
+                result += "<span class=\"declKwd\">";
                 result += word;
                 result += "</span>";
             }
