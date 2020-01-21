@@ -70,7 +70,6 @@ JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(compiler);
-    compiler->buildParameters = &buildParameters;
     if (!mustCompile)
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)
@@ -83,5 +82,5 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
     g_Log.messageHeaderCentered(header, module->name.c_str());
 
-    return compiler->compile();
+    return compiler->compile(buildParameters);
 }

@@ -11,8 +11,8 @@ struct OutputFile;
 namespace DocHtmlHelper
 {
     void        syntaxHilight(OutputFile& result, const Utf8& name);
-    const char* syntaxHilight(Utf8& result, const char* pz);
-    Utf8        markdown(const Utf8& msg, const Utf8& currentFile);
+    const char* syntaxHilight(Utf8& result, Utf8& rawResult, const char* pz);
+    Utf8        markdown(const Utf8& msg, const Utf8& currentFile, vector<Utf8>& code);
     void        htmlStart(Concat& outFile);
     void        htmlEnd(Concat& outFile);
     void        title(Concat& outFile, const Utf8& msg);

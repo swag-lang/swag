@@ -15,23 +15,29 @@ namespace DocHtmlHelper
     void syntaxHilight(OutputFile& result, const Utf8& name)
     {
         const char* pz = name.c_str();
-        Utf8        res;
+        Utf8        res, rawRes;
         while (*pz)
         {
-            pz = syntaxHilight(res, pz);
+            pz = syntaxHilight(res, rawRes, pz);
         }
 
         result.addString(res);
     }
 
-    const char* syntaxHilight(Utf8& result, const char* pz)
+    const char* syntaxHilight(Utf8& result, Utf8& rawResult, const char* pz)
     {
         if (*pz == '@')
         {
             result += "<span class=\"intrinsic\">";
-            result += *pz++;
+            result += *pz;
+            rawResult += *pz++;
+
             while (isalpha(*pz))
-                result += *pz++;
+            {
+                result += *pz;
+                rawResult += *pz++;
+            }
+
             result += "</span>";
             return pz;
         }
@@ -41,6 +47,8 @@ namespace DocHtmlHelper
             Utf8 word;
             while (isalpha(*pz) || isdigit(*pz) || *pz == '_')
                 word += *pz++;
+            rawResult += word;
+
             if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
             {
                 result += "<span class=\"nativeType\">";
@@ -48,16 +56,20 @@ namespace DocHtmlHelper
                 result += "</span>";
             }
             else
+            {
                 result += word;
+            }
+
             return pz;
         }
 
-        result += *pz++;
+        result += *pz;
+        rawResult += *pz++;
         return pz;
     }
 
     // https://daringfireball.net/projects/markdown/syntax
-    Utf8 markdown(const Utf8& msg, const Utf8& currentFile)
+    Utf8 markdown(const Utf8& msg, const Utf8& currentFile, vector<Utf8>& code)
     {
         Utf8 result;
         result.reserve(msg.length() * 2);
@@ -69,6 +81,7 @@ namespace DocHtmlHelper
         bool inUnorderedList = false;
         bool inListItem      = false;
         bool inParagraph     = false;
+        Utf8 lastCode;
 
         const char* pz     = msg.c_str();
         bool        wasEol = false;
@@ -241,6 +254,12 @@ namespace DocHtmlHelper
             {
                 if (openCode2)
                 {
+                    if (!lastCode.empty())
+                    {
+                        code.push_back(lastCode);
+                        lastCode.clear();
+                    }
+
                     openCode2 = false;
                     result += "</pre>";
                 }
@@ -254,7 +273,7 @@ namespace DocHtmlHelper
             }
             else if (openCode2)
             {
-                pz = syntaxHilight(result, pz);
+                pz = syntaxHilight(result, lastCode, pz);
             }
             else
             {

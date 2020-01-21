@@ -187,8 +187,24 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
     }
 
     attrBlockNode->computeFullName();
-    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->fullnameDot);
-    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->fullnameDot);
-    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->fullnameDot);
+
+    vector<Utf8> embeddedCode;
+    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->fullnameDot, embeddedCode);
+    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->fullnameDot, embeddedCode);
+    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->fullnameDot, embeddedCode);
+
+    // Construct a #test per embedded code to be able to run examples
+    SyntaxJob embeddedJob;
+    for (auto& oneCode : embeddedCode)
+    {
+        Utf8 code;
+        code = "#test {\n";
+        code += format("using %s\n", attrBlockNode->ownerScope->fullname.c_str());
+        code += oneCode;
+        code += "}\n";
+
+        SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, sourceFile, &attrBlockNode->token, CompilerAstKind::TopLevelInstruction));
+    }
+
     return true;
 }

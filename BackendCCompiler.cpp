@@ -4,22 +4,22 @@
 #include "BackendC.h"
 #include "Workspace.h"
 
-string BackendCCompiler::getResultFile()
+string BackendCCompiler::getResultFile(const BuildParameters& buildParameters)
 {
-    string destFile = g_Workspace.targetPath.string() + buildParameters->destFile;
+    string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
     string resultFile;
-    switch (buildParameters->type)
+    switch (buildParameters.type)
     {
     case BackendOutputType::StaticLib:
-        resultFile = destFile + buildParameters->postFix + ".lib";
+        resultFile = destFile + buildParameters.postFix + ".lib";
         break;
 
     case BackendOutputType::DynamicLib:
-        resultFile = destFile + buildParameters->postFix + ".dll";
+        resultFile = destFile + buildParameters.postFix + ".dll";
         break;
 
     case BackendOutputType::Binary:
-        resultFile = destFile + buildParameters->postFix + ".exe";
+        resultFile = destFile + buildParameters.postFix + ".exe";
         break;
     }
 

@@ -9,11 +9,10 @@ struct BackendCCompiler
     {
     }
 
-    virtual bool check()   = 0;
-    virtual bool compile() = 0;
+    virtual bool check()                                         = 0;
+    virtual bool compile(const BuildParameters& buildParameters) = 0;
 
-    string getResultFile();
+    string getResultFile(const BuildParameters& buildParameters);
 
-    BackendC*              backend         = nullptr;
-    const BuildParameters* buildParameters = nullptr;
+    BackendC* backend = nullptr;
 };

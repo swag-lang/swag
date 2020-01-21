@@ -137,7 +137,7 @@ bool BackendCCompilerVS::check()
     return true;
 }
 
-bool BackendCCompilerVS::compile()
+bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
 {
     auto         module = backend->module;
     vector<Utf8> libPath;
@@ -156,21 +156,21 @@ bool BackendCCompilerVS::compile()
     // Modules
     libPath.push_back(g_Workspace.targetPath.string());
 
-    string destFile = g_Workspace.targetPath.string() + buildParameters->destFile;
+    string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
 
     // CL arguments
     string clArguments = "";
-    bool   debugMode   = buildParameters->target.backendDebugInformations || g_CommandLine.debug;
+    bool   debugMode   = buildParameters.target.backendDebugInformations || g_CommandLine.debug;
     if (debugMode)
     {
-        fs::path pdbPath = destFile + buildParameters->postFix + ".pdb";
+        fs::path pdbPath = destFile + buildParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
     }
 
     // Append a string related to the version
     string outputTypeName;
-    switch (buildParameters->type)
+    switch (buildParameters.type)
     {
     case BackendOutputType::StaticLib:
         outputTypeName = ".lib";
@@ -186,13 +186,17 @@ bool BackendCCompilerVS::compile()
 
     for (int i = 0; i < backend->numPreCompileBuffers; i++)
         clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
-    clArguments += "/Fo\"" + g_Workspace.cachePath.string() + "\" ";
+
+    auto cachePath = g_Workspace.cachePath.string();
+    if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+        cachePath += ("/test/");
+    clArguments += "/Fo\"" + cachePath + "\" ";
 
     int optimLevel = 0;
     if (g_CommandLine.optim)
         optimLevel = g_CommandLine.optim;
     else if (!g_CommandLine.debug)
-        optimLevel = buildParameters->target.backendOptimizeLevel;
+        optimLevel = buildParameters.target.backendOptimizeLevel;
     switch (optimLevel)
     {
     case 0:
@@ -207,16 +211,16 @@ bool BackendCCompilerVS::compile()
 
     //clArguments += "/O2 ";
 
-    if (buildParameters->flags & BUILDPARAM_FOR_TEST)
+    if (buildParameters.flags & BUILDPARAM_FOR_TEST)
         clArguments += "/DSWAG_HAS_TEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
     uint32_t numErrors  = 0;
-    string   resultFile = getResultFile();
+    string   resultFile = getResultFile(buildParameters);
     Utf8     linkArguments;
 
-    switch (buildParameters->type)
+    switch (buildParameters.type)
     {
     case BackendOutputType::StaticLib:
     {
@@ -242,14 +246,14 @@ bool BackendCCompilerVS::compile()
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
         SWAG_CHECK(OS::doProcess(cmdLineLIB, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        break;
     }
-    break;
 
     case BackendOutputType::DynamicLib:
     case BackendOutputType::Binary:
     {
         // Registered #foreignlib
-        for (auto fl : buildParameters->foreignLibs)
+        for (auto fl : buildParameters.foreignLibs)
         {
             linkArguments += fl;
             linkArguments += ".lib ";
@@ -276,7 +280,7 @@ bool BackendCCompilerVS::compile()
         if (debugMode)
             linkArguments += "/DEBUG ";
 
-        if (buildParameters->type == BackendOutputType::DynamicLib)
+        if (buildParameters.type == BackendOutputType::DynamicLib)
         {
             linkArguments += "/DLL ";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
@@ -292,8 +296,8 @@ bool BackendCCompilerVS::compile()
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
         SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        break;
     }
-    break;
     }
 
     g_Workspace.numErrors += numErrors;
