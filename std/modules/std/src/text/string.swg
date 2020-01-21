@@ -353,6 +353,13 @@ namespace std.text
                 if !length
                     return -1 
 
+                /*visit c, i: deref self
+                {
+                    if c == value
+                        return i
+                }
+
+                return -1*/
                 idx := 0
                 ptr := cast(const *u8) buffer
                 while true

@@ -187,7 +187,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 {
     CloneContext cloneContext;
 
-    // The content will be inlined in its separated syntax block
+    // The content will be inline in its separated syntax block
     auto inlineNode                   = Ast::newInline(context->sourceFile, identifier);
     inlineNode->attributeFlags        = funcDecl->attributeFlags;
     inlineNode->func                  = funcDecl;
@@ -195,8 +195,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->alternativeScopes     = funcDecl->alternativeScopes;
     inlineNode->alternativeScopesVars = funcDecl->alternativeScopesVars;
 
-    // We need to add the parent scope of the inlined function (the global one), in order for
-    // the inlined content to be resolved in the same context os the original function
+    // We need to add the parent scope of the inline function (the global one), in order for
+    // the inline content to be resolved in the same context as the original function
     auto globalScope = funcDecl->ownerScope;
     while (!globalScope->isGlobal())
         globalScope = globalScope->parentScope;
@@ -281,7 +281,7 @@ void SemanticJob::sortParameters(AstNode* allParams)
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
-    // Test x.toto with x not a struct (like a native type for example), but toto is known, so 
+    // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
         symbol->kind == SymbolKind::Variable &&
@@ -1118,14 +1118,34 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
             continue;
         }
 
-        // Priority to concrete type, i.e. not generic
+        // Priority to a concrete type versus a generic one
         auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
         auto newOverload  = p->ownerTable->scope->owner->typeInfo;
         if (lastOverload && newOverload)
         {
             if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
+            {
                 continue;
+            }
+
             if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
+            {
+                symbol = p;
+                continue;
+            }
+        }
+
+        // Priority to the same inline scope
+        if (node->ownerInline && symbol->overloads.size() == 1 && p->overloads.size() == 1)
+        {
+            if ((p->overloads[0]->node->ownerScope != node->ownerInline->ownerScope) &&
+                (symbol->overloads[0]->node->ownerScope == node->ownerInline->ownerScope))
+            {
+                continue;
+            }
+
+            if ((p->overloads[0]->node->ownerScope == node->ownerInline->ownerScope) &&
+                (symbol->overloads[0]->node->ownerScope != node->ownerInline->ownerScope))
             {
                 symbol = p;
                 continue;
@@ -1650,6 +1670,13 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
 
             scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
         }
+    }
+
+    // If we are in an inline block, jump right to the function parent
+    if (startNode->kind == AstNodeKind::Inline)
+    {
+        while (startNode->kind != AstNodeKind::FuncDecl)
+            startNode = startNode->parent;
     }
 
     if (startNode->parent)
