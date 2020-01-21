@@ -314,7 +314,6 @@ namespace std.text
             /// # Examples
             /// ```
             /// let str: String = "  ABC  "
-            /// // This is a comment
             /// str.trim()
             /// @assert(str == "ABC")
             /// ```

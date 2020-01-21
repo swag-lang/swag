@@ -7,6 +7,8 @@
 #include "LanguageSpec.h"
 #include "DocContent.h"
 #include "OutputFile.h"
+#include "SourceFile.h"
+#include "Tokenizer.h"
 
 #define isBlank(__c) (__c == ' ' || __c == '\t')
 
@@ -15,79 +17,130 @@ namespace DocHtmlHelper
     void syntaxHilight(OutputFile& result, const Utf8& name)
     {
         const char* pz = name.c_str();
-        Utf8        res, rawRes;
+        Utf8        res;
         while (*pz)
         {
-            pz = syntaxHilight(res, nullptr, pz);
+            // Word
+            if (isalpha(*pz))
+            {
+                Utf8 word;
+                while (isalpha(*pz) || isdigit(*pz) || *pz == '_')
+                    word += *pz++;
+
+                // Native type
+                if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
+                {
+                    result.addString("<span class=\"type\">");
+                    result.addString(word);
+                    result.addString("</span>");
+                }
+                else if (g_LangSpec.keywords.find(word) != g_LangSpec.keywords.end())
+                {
+                    result.addString("<span class=\"keyword\">");
+                    result.addString(word);
+                    result.addString("</span>");
+                }
+                else
+                {
+                    result.addString(word);
+                }
+            }
+            else
+                result.addChar(*pz++);
         }
 
         result.addString(res);
     }
 
-    const char* syntaxHilight(Utf8& result, Utf8* rawResult, const char* pz)
+    const char* parseCode(Utf8& result, Utf8& rawResult, const char* pz)
     {
-        if (pz[0] == '/' && pz[1] == '/')
+        SourceFile tmpFile;
+        tmpFile.externalBuffer = (uint8_t*) pz;
+
+        // Compute length of the code segment
+        auto orgPz = pz;
+        while (*pz)
         {
-            result += "<span class=\"comment\">";
-            while (*pz && *pz != '\n')
-                result += *pz++;
-            result += "</span>";
-            return pz;
+            if (pz[0] == '`' && pz[1] == '`' && pz[2] == '`')
+                break;
+            pz++;
         }
 
-        // Intrinsic
-        if (*pz == '@')
+        tmpFile.externalSize = (uint32_t)(pz - orgPz);
+        rawResult.clear();
+        rawResult.append(orgPz, tmpFile.externalSize);
+
+        Tokenizer tokenizer;
+        Token     token;
+        tokenizer.parseFlags = TOKENIZER_KEEP_EOL | TOKENIZER_KEEP_BLANKS | TOKENIZER_KEEP_CPP_COMMENTS;
+        tokenizer.setFile(&tmpFile);
+
+        while (token.id != TokenId::EndOfFile)
         {
-            result += "<span class=\"intrinsic\">";
-            if (rawResult)
-                *rawResult += *pz;
-            result += *pz++;
-
-            while (isalpha(*pz))
+            tokenizer.getToken(token);
+            switch (token.id)
             {
-                if (rawResult)
-                    *rawResult += *pz;
-                result += *pz++;
-            }
-
-            result += "</span>";
-            return pz;
-        }
-
-        // Word
-        if (isalpha(*pz))
-        {
-            Utf8 word;
-            while (isalpha(*pz) || isdigit(*pz) || *pz == '_')
-                word += *pz++;
-            if (rawResult)
-                *rawResult += word;
-
-            // Native type
-            if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
-            {
-                result += "<span class=\"nativeType\">";
-                result += word;
+            case TokenId::NativeType:
+                result += "<span class=\"type\">";
+                result += token.text;
                 result += "</span>";
-            }
-            else if (g_LangSpec.keywords.find(word) != g_LangSpec.keywords.end())
-            {
-                result += "<span class=\"declKwd\">";
-                result += word;
+                break;
+            case TokenId::Intrinsic:
+            case TokenId::IntrinsicIndex:
+                result += "<span class=\"intrinsic\">";
+                result += token.text;
                 result += "</span>";
-            }
-            else
-            {
-                result += word;
-            }
+                break;
+            case TokenId::KwdLet:
+            case TokenId::KwdVar:
+            case TokenId::KwdConst:
+            case TokenId::KwdIf:
+            case TokenId::KwdWhile:
+            case TokenId::KwdLoop:
+            case TokenId::KwdVisit:
+            case TokenId::KwdBreak:
+            case TokenId::KwdContinue:
+            case TokenId::KwdAutoCast:
+            case TokenId::KwdCast:
+            case TokenId::KwdCase:
+            case TokenId::KwdSwitch:
+            case TokenId::KwdCode:
+            case TokenId::KwdDeRef:
+            case TokenId::KwdDefer:
+            case TokenId::KwdLabel:
+            case TokenId::KwdFunc:
+            case TokenId::KwdStruct:
+            case TokenId::KwdEnum:
+                result += "<span class=\"keyword\">";
+                result += token.text;
+                result += "</span>";
+                break;
+            case TokenId::DocComment:
+                result += "<span class=\"comment\">";
+                result += token.text;
+                result += "</span>";
+                break;
+            case TokenId::LiteralNumber:
+                result += "<span class=\"literal\">";
+                result += token.text;
+                result += "</span>";
+                break;
+            case TokenId::LiteralString:
+            case TokenId::LiteralCharacter:
+                result += "<span class=\"literal\">";
+                result += "\"";
+                result += token.text;
+                result += "\"";
+                result += "</span>";
+                break;
 
-            return pz;
+            default:
+                result += token.text;
+                break;
+            }
         }
 
-        if (rawResult)
-            *rawResult += *pz;
-        result += *pz++;
-        return pz;
+        return pz + 3;
     }
 
     // https://daringfireball.net/projects/markdown/syntax
@@ -99,7 +152,6 @@ namespace DocHtmlHelper
         bool openEm          = false;
         bool openStrong      = false;
         bool openCode1       = false;
-        bool openCode2       = false;
         bool inUnorderedList = false;
         bool inListItem      = false;
         bool inParagraph     = false;
@@ -274,28 +326,10 @@ namespace DocHtmlHelper
             // ```
             else if (pz[0] == '`' && pz[1] == '`' && pz[2] == '`')
             {
-                if (openCode2)
-                {
-                    if (!lastCode.empty())
-                    {
-                        code.push_back(lastCode);
-                        lastCode.clear();
-                    }
-
-                    openCode2 = false;
-                    result += "</pre>";
-                }
-                else
-                {
-                    openCode2 = true;
-                    result += "<pre>";
-                }
-
-                pz += 3;
-            }
-            else if (openCode2)
-            {
-                pz = syntaxHilight(result, &lastCode, pz);
+                result += "<pre>";
+                pz = parseCode(result, lastCode, pz + 3);
+                result += "</pre>";
+                code.push_back(lastCode);
             }
             else
             {

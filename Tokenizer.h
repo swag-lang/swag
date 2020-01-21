@@ -151,6 +151,7 @@ enum class TokenId
 
     Invalid,
     EndOfLine,
+    Blank,
     EndOfFile,
 };
 
@@ -166,10 +167,15 @@ struct Token
     TokenId id;
 };
 
+static const uint32_t TOKENIZER_KEEP_EOL          = 0x00000001;
+static const uint32_t TOKENIZER_KEEP_BLANKS       = 0x00000002;
+static const uint32_t TOKENIZER_KEEP_CPP_COMMENTS = 0x00000004;
+static const uint32_t TOKENIZER_KEEP_KEYWORDS     = 0x00000008;
+
 struct Tokenizer
 {
     void setFile(SourceFile* file);
-    bool getToken(Token& token, bool skipEOL = true);
+    bool getToken(Token& token);
 
     char32_t getChar();
     char32_t getCharNoSeek(unsigned& offset);
@@ -198,6 +204,7 @@ struct Tokenizer
     char32_t       cacheChar       = 0;
     unsigned       cacheCharOffset = 0;
     int            seek            = 0;
+    uint32_t       parseFlags      = 0;
     SourceLocation location;
     bool           endReached          = false;
     bool           forceLastTokenIsEOL = false;

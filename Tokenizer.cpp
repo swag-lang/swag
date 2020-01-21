@@ -159,11 +159,22 @@ void Tokenizer::doDocComment(Token& token)
     lastTokenIsEOL = true;
 }
 
-bool Tokenizer::getToken(Token& token, bool skipEOL)
+bool Tokenizer::getToken(Token& token)
 {
     unsigned offset;
+
+    if ((lastTokenIsEOL || forceLastTokenIsEOL) && (parseFlags & TOKENIZER_KEEP_EOL))
+    {
+        lastTokenIsEOL      = false;
+        forceLastTokenIsEOL = false;
+        token.id            = TokenId::EndOfLine;
+        token.text          = "\n";
+        return true;
+    }
+
     lastTokenIsEOL      = forceLastTokenIsEOL;
     forceLastTokenIsEOL = false;
+
     while (true)
     {
         token.startLocation = location;
@@ -180,8 +191,9 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         // Blank
         if (SWAG_IS_EOL(c))
         {
-            if (!skipEOL)
+            if (parseFlags & TOKENIZER_KEEP_EOL)
             {
+                token.text += c;
                 token.id = TokenId::EndOfLine;
                 return true;
             }
@@ -191,7 +203,16 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         if (SWAG_IS_BLANK(c))
+        {
+            if (parseFlags & TOKENIZER_KEEP_BLANKS)
+            {
+                token.text += c;
+                token.id = TokenId::Blank;
+                return true;
+            }
+
             continue;
+        }
 
         // Comments
         if (c == '/')
@@ -203,6 +224,22 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             {
                 treatChar(c, offset);
                 nc = getChar();
+
+                // Keep comments alive
+                if (parseFlags & TOKENIZER_KEEP_CPP_COMMENTS)
+                {
+                    token.id = TokenId::DocComment;
+                    token.text += "//";
+                    while (nc && nc != '\n')
+                    {
+                        if(nc != '\r')
+                            token.text += nc;
+                        nc = getChar();
+                    }
+
+                    lastTokenIsEOL = true;
+                    return true;
+                }
 
                 // This is a '///' doc comment
                 if (nc == '/' && (g_CommandLine.generateDoc || g_CommandLine.test))

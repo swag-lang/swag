@@ -150,11 +150,11 @@ pre code, pre tt {
 /* SYNTAX
 =============================================================================*/
 
-.declKwd {
+.keyword {
     color: #0066FF;
 }
 
-.typeKwd {
+.type {
     color: #0066FF;
 }
 
@@ -168,6 +168,10 @@ pre code, pre tt {
 
 .intrinsic {
     color: #FF6600;
+}
+
+.literal {
+    color: #17c2bd;
 }
 
 .comment {

@@ -12,7 +12,7 @@ thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode, bool light)
 {
     if (!light)
-        CONCAT_FIXED_STR(concat, "<span class = \"declKwd\">func </span>");
+        CONCAT_FIXED_STR(concat, "<span class = \"keyword\">func </span>");
 
     concat.addString("<span class = \"funcCall\">");
     concat.addString(funcNode->name.c_str());
@@ -36,7 +36,7 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
             }
             else
             {
-                concat.addString("<span class = \"typeKwd\">");
+                concat.addString("<span class = \"keyword\">");
                 concat.addString(p->name);
                 concat.addString("</span>");
             }
