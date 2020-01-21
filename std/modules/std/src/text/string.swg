@@ -340,6 +340,14 @@ namespace std.text
             /// @assert(str.indexOf("C"'char) == 2)
             /// @assert(str.indexOf("D"'char) == -1)
             /// ```
+            /// The returned index is a byte index, not the index of the unicode character
+            /// ```
+            /// var str: String = "A⻨C"
+            /// @assert(str.indexOf("A"'char) == 0)
+            /// @assert(str.indexOf("⻨"'char) == 1)
+            /// @assert(str.indexOf("C"'char) == 4)
+            /// @assert(str.indexOf("D"'char) == -1)
+            /// ```
             func indexOf(using self, value: char)->s32
             {
                 if !length
