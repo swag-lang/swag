@@ -125,8 +125,17 @@ namespace DocHtmlHelper
                 result += token.text;
                 result += "</span>";
                 break;
-            case TokenId::LiteralString:
             case TokenId::LiteralCharacter:
+                result += "<span class=\"literal\">";
+                result += "\"";
+                result += token.text;
+                result += "\"";
+                result += "</span>'";
+                result += "<span class=\"keyword\">";
+                result += "char";
+                result += "</span>";
+                break;
+            case TokenId::LiteralString:
                 result += "<span class=\"literal\">";
                 result += "\"";
                 result += token.text;
