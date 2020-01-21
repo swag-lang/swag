@@ -18,24 +18,26 @@ namespace DocHtmlHelper
         Utf8        res, rawRes;
         while (*pz)
         {
-            pz = syntaxHilight(res, rawRes, pz);
+            pz = syntaxHilight(res, nullptr, pz);
         }
 
         result.addString(res);
     }
 
-    const char* syntaxHilight(Utf8& result, Utf8& rawResult, const char* pz)
+    const char* syntaxHilight(Utf8& result, Utf8* rawResult, const char* pz)
     {
         if (*pz == '@')
         {
             result += "<span class=\"intrinsic\">";
-            result += *pz;
-            rawResult += *pz++;
+            if (rawResult)
+                *rawResult += *pz;
+            result += *pz++;
 
             while (isalpha(*pz))
             {
-                result += *pz;
-                rawResult += *pz++;
+                if (rawResult)
+                    *rawResult += *pz;
+                result += *pz++;
             }
 
             result += "</span>";
@@ -47,7 +49,8 @@ namespace DocHtmlHelper
             Utf8 word;
             while (isalpha(*pz) || isdigit(*pz) || *pz == '_')
                 word += *pz++;
-            rawResult += word;
+            if (rawResult)
+                *rawResult += word;
 
             if (g_LangSpec.nativeTypes.find(word) != g_LangSpec.nativeTypes.end())
             {
@@ -63,8 +66,9 @@ namespace DocHtmlHelper
             return pz;
         }
 
-        result += *pz;
-        rawResult += *pz++;
+        if (rawResult)
+            *rawResult += *pz;
+        result += *pz++;
         return pz;
     }
 
@@ -273,7 +277,7 @@ namespace DocHtmlHelper
             }
             else if (openCode2)
             {
-                pz = syntaxHilight(result, lastCode, pz);
+                pz = syntaxHilight(result, &lastCode, pz);
             }
             else
             {
