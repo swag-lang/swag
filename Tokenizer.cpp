@@ -205,7 +205,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 nc = getChar();
 
                 // This is a '///' doc comment
-                if (nc == '/' && g_CommandLine.generateDoc)
+                if (nc == '/' && (g_CommandLine.generateDoc || g_CommandLine.test))
                 {
                     getChar();
                     doDocComment(token);
