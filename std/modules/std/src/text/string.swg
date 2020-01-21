@@ -325,7 +325,7 @@ namespace std.text
             /// # Examples
             /// ```
             /// let str: String = "ABC"
-            /// @assert(str.indexOf("A"'char) == 0)
+            /// @assert(str.indexOf("A"'char) == 1)
             /// @assert(str.indexOf("B"'char) == 1)
             /// @assert(str.indexOf("C"'char) == 2)
             /// @assert(str.indexOf("D"'char) == -1)

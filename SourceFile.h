@@ -38,8 +38,9 @@ struct SourceFile : public File
     char getPrivateChar();
     bool checkFormat();
 
-    Module*  module         = nullptr;
-    AstNode* astRoot        = nullptr;
+    Module*  module  = nullptr;
+    AstNode* astRoot = nullptr;
+    Utf8     externalContent;
     uint8_t* externalBuffer = nullptr;
     uint32_t externalSize   = 0;
     uint32_t seekExternal   = 0;
@@ -52,11 +53,10 @@ struct SourceFile : public File
     uint32_t  indexInModule = UINT32_MAX;
     BuildPass buildPass     = BuildPass::Full;
 
-    char*       buffer        = nullptr;
-    Scope*      scopeRoot     = nullptr;
-    Scope*      scopePrivate  = nullptr;
-    SourceFile* originalFile  = nullptr;
-    Token*      originalToken = nullptr;
+    char*       buffer       = nullptr;
+    Scope*      scopeRoot    = nullptr;
+    Scope*      scopePrivate = nullptr;
+    SourceFile* originalFile = nullptr;
 
     TextFormat   textFormat    = TextFormat::UTF8;
     int          headerSize    = 0;

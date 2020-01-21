@@ -219,25 +219,25 @@ bool SyntaxJob::recoverError()
 
 bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, SourceFile* originalFile, Token* originalToken, CompilerAstKind kind)
 {
-    SourceFile tmpFile;
-    tmpFile.externalBuffer = (uint8_t*) content.c_str();
-    tmpFile.externalSize   = (uint32_t) content.length();
-    tmpFile.module         = originalFile ? originalFile->module : parent->sourceFile->module;
-    tmpFile.path           = "generated";
-    tmpFile.originalFile   = originalFile;
-    tmpFile.originalToken  = originalToken;
-    sourceFile             = &tmpFile;
-    currentScope           = parent->ownerScope;
-    currentStructScope     = parent->ownerStructScope;
-    currentMainNode        = parent->ownerMainNode;
-    currentFct             = parent->ownerFct;
+    SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
+    tmpFile->externalContent = content;
+    tmpFile->externalBuffer  = (uint8_t*) tmpFile->externalContent.c_str();
+    tmpFile->externalSize    = (uint32_t) tmpFile->externalContent.length();
+    tmpFile->module          = originalFile ? originalFile->module : parent->sourceFile->module;
+    tmpFile->path            = "generated";
+    tmpFile->originalFile    = originalFile;
+    sourceFile               = tmpFile;
+    currentScope             = parent->ownerScope;
+    currentStructScope       = parent->ownerStructScope;
+    currentMainNode          = parent->ownerMainNode;
+    currentFct               = parent->ownerFct;
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
     if (g_CommandLine.debug)
     {
         g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
-        g_diagnosticInfos.last().sourceFile = &tmpFile;
+        g_diagnosticInfos.last().sourceFile = tmpFile;
     }
 #endif
 

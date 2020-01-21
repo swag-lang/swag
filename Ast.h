@@ -58,16 +58,6 @@ namespace Ast
         }
 
         lastGeneratedNode = node;
-
-        // This will be defined when generating code from #ast
-        if (sourceFile && sourceFile->originalFile)
-        {
-            node->sourceFile = sourceFile->originalFile;
-            SWAG_ASSERT(sourceFile->originalToken);
-            node->token.startLocation = sourceFile->originalToken->startLocation;
-            node->token.endLocation   = sourceFile->originalToken->endLocation;
-        }
-
         return node;
     }
 
