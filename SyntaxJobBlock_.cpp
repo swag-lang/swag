@@ -314,6 +314,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     if (tokenizer.lastTokenIsEOL)
         return true;
+
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "invalid label name, you should add ';' or put a valid label identifier"));
@@ -333,6 +334,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     if (tokenizer.lastTokenIsEOL)
         return true;
+
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "invalid label name, identifier expected"));
