@@ -89,7 +89,7 @@
  * @internal
  */
 #ifndef U_DISABLE_RENAMING
-#define U_DISABLE_RENAMING 0
+#define U_DISABLE_RENAMING 1
 #endif
 
 /**

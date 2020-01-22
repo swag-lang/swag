@@ -1,0 +1,5 @@
+v 65.1
+- sln is in \source\allinone\allinone.sln
+- windows sdk is in Build.Windows.ProjectConfiguration.props under 'WindowsTargetPlatformVersion'
+- set #define U_DISABLE_RENAMING to 1 in uconfig.h, or all exported functions will have the icu version in their name
+- dlls are in bin64. libs are in lib64. Remove the version from the dll names and copy the files in \publish

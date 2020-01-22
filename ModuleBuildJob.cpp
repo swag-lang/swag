@@ -23,7 +23,11 @@ JobResult ModuleBuildJob::execute()
         for (auto dep : module->moduleDependencies)
         {
             auto depModule = g_Workspace.getModuleByName(dep.first);
-            SWAG_ASSERT(depModule);
+            if (!depModule)
+            {
+                module->error(format("unknown module dependency '%s'", dep.first.c_str()));
+                return JobResult::ReleaseJob;
+            }
 
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;

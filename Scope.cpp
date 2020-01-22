@@ -90,8 +90,6 @@ void Scope::addPublicFunc(AstNode* node)
 void Scope::addPublicGenericFunc(AstNode* node)
 {
     unique_lock lk(mutexPublicGenericFunc);
-    if (node->name == "opVisit")
-        node = node;
     publicGenericFunc.insert(node);
     setHasExports();
 }

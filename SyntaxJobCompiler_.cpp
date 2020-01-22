@@ -12,6 +12,8 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "#foreignlib invalid string"));
+
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
     SWAG_VERIFY(literal->token.literalType->isNative(NativeTypeKind::String), syntaxError(literal->token, "#foreignlib invalid string"));
