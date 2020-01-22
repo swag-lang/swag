@@ -3,7 +3,7 @@
 	#import "win32"
 
     #foreignlib "xinput"
-	using win32, std.input, std.math
+	using swag, win32
 
 	namespace xinput
 	{
@@ -45,7 +45,7 @@
             wRightMotorSpeed:   WORD
         }
 
-		#[swag.foreign("xinput")]
+		#[foreign("xinput")]
 		{
 			func XInputGetState(dwUserIndex: DWORD,  pState: *XINPUT_STATE)->DWORD;
             func XInputSetState(dwUserIndex: DWORD,  pVibration: *XINPUT_VIBRATION)->DWORD;
