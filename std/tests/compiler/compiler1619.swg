@@ -1,13 +1,11 @@
 #[swag.mixin]
-func mac(stmt: code)
+func mac()->s32
 {
-    #mixin stmt
+    return 1
 }
 
 #test
 {
-    mac()
-    {
-        //return 1
-    }
+    a := mac()
+    @assert(a == 1)
 }

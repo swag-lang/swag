@@ -941,7 +941,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    SWAG_CHECK(eatSemiCol("after left expression"));
+    if(token.id != TokenId::SymLeftCurly)
+        SWAG_CHECK(eatSemiCol("after left expression"));
     return true;
 }
 
