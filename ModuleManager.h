@@ -6,7 +6,7 @@ struct ByteCodeRunContext;
 
 struct ModuleManager
 {
-    bool  loadModule(const Utf8& name);
+    bool  loadModule(const Utf8& name, bool canBeSystem = true, bool acceptNotHere = false);
     bool  isModuleLoaded(const Utf8& name);
     void* getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName);
 

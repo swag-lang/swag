@@ -127,7 +127,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::BuildBuildSwg;
         for (const auto& dep : module->moduleDependencies)
         {
-            if (!g_ModuleMgr.loadModule(dep.first))
+            if (!g_ModuleMgr.loadModule(dep.first, false, true))
             {
                 module->error(format("fail to load module '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
                 return JobResult::ReleaseJob;

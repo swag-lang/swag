@@ -11,7 +11,7 @@ bool ModuleManager::isModuleLoaded(const Utf8& name)
     return loadedModules.find(name) != loadedModules.end();
 }
 
-bool ModuleManager::loadModule(const Utf8& name)
+bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNotHere)
 {
     unique_lock lk(mutex);
 
@@ -31,13 +31,19 @@ bool ModuleManager::loadModule(const Utf8& name)
     if (h == NULL)
     {
         // Try on system folders
-        path = name.c_str();
-        path += ".dll";
-        h = OS::loadLibrary(path.string().c_str());
+        if (canBeSystem)
+        {
+            path = name.c_str();
+            path += ".dll";
+            h = OS::loadLibrary(path.string().c_str());
+        }
+
         if (h == NULL)
         {
             if (verbose)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
+            if (acceptNotHere)
+                return true;
             return false;
         }
     }
