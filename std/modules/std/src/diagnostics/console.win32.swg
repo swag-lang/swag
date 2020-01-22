@@ -1,9 +1,9 @@
 #if swag.WINDOWS
 {
+    using win32
+
 	namespace std.console
-	{
-		using os
-		
+	{	
 		#[swag.nobss]
 		var g_colorToWin: [@countof(Color)] u16
 		

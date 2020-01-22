@@ -1,7 +1,7 @@
 #if swag.WINDOWS
 {
     #foreignlib "xinput"
-	using std.os, std.input, std.math
+	using win32, std.input, std.math
 
 	namespace std.input.os
 	{
@@ -74,7 +74,7 @@
 		{
 			using std.input.os
 			var state: XINPUT_STATE = ?
-			return XInputGetState(padIndex, &state) != std.os.ERROR_SUCCESS
+			return XInputGetState(padIndex, &state) != ERROR_SUCCESS
 		}
 		
         func setGamePadVibration(padIndex: u32, left, right: f32)->bool
@@ -83,7 +83,7 @@
             var vibration: XINPUT_VIBRATION = ?
             vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * saturate(left))
             vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * saturate(right))
-            return XInputSetState(padIndex, &vibration) == std.os.ERROR_SUCCESS
+            return XInputSetState(padIndex, &vibration) == ERROR_SUCCESS
         }		
     }
 
@@ -96,7 +96,7 @@
             {
                 using std.input.os
                 var state: XINPUT_STATE = ?
-                if XInputGetState(padIndex, &state) != std.os.ERROR_SUCCESS
+                if XInputGetState(padIndex, &state) != ERROR_SUCCESS
                     return false
 
                 // Button pressed state

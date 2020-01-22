@@ -1,10 +1,12 @@
 #if swag.WINDOWS
 {
+    using win32
+
 	private var g_perfCounterFreq: u64
 
 	#init
 	{
-		std.os.QueryPerformanceFrequency(acast &g_perfCounterFreq)
+		QueryPerformanceFrequency(acast &g_perfCounterFreq)
 	}
 
 	namespace std.time

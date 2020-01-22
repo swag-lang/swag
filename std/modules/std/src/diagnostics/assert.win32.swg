@@ -1,5 +1,6 @@
 #if swag.WINDOWS && swag.ASSERT
 {
+    using win32
     namespace std.os
     {
     	public func assertMessage(message: string)

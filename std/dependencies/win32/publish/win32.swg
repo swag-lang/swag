@@ -3,7 +3,7 @@
     #foreignlib "kernel32"
     #foreignlib "user32"
 
-    namespace std.os
+    namespace win32
     {
         typealias HANDLE: 			*void
 		typealias HWND: 			*void

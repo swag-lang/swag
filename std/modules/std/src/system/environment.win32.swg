@@ -1,14 +1,17 @@
 #if swag.WINDOWS
 {
+    using win32
+
     namespace std.environment
-    {
-        using os
-        
+    {        
         public
         {
             const EndLine = "\r\n"
             
             func getProcessorCount() => g_sysInfo.dwNumberOfProcessors	
+
+            /// Exit the application with a given code
+		    func exit(exitCode: u32) => ExitProcess(exitCode)
         }
         
         var g_sysInfo: SYSTEM_INFO

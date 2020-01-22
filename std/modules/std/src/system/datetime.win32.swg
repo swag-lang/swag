@@ -1,9 +1,9 @@
 #if swag.WINDOWS
 {
+    using win32
+
 	namespace std.time
 	{
-		using os
-
 		impl DateTime
 		{
             /// Initialize the structure with the current local date and time
