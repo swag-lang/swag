@@ -1,0 +1,2 @@
+v 1.2.11
+- sln is in \foreign\contrib\vstudio
