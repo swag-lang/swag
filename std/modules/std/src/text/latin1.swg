@@ -40,6 +40,7 @@ namespace std.text.latin1
 	#[swag.inline, swag.constexpr]        
     public
     {
+        func isAscii(c: u8)         => c <= 0x7F
         func isDigit(c: u8)         => c >= cast(u8) "0"'char && c <= cast(u8) "9"'char
         func isUpper(c: u8)         => charCategory[c] == unicode.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode.UnicodeCategory.LowercaseLetter

@@ -363,6 +363,48 @@ namespace std.text
 
                 return -1
             }
+
+            /// Returns the first Unicode character of the [String]
+            ///
+            /// # Remarks
+            /// This function will return 0 if the [String] is null or empty
+            /// # Examples
+            /// ```
+            /// let str1: String = "ABC"
+            /// @assert(str1.front() == "A"'char)
+            /// let str2: String = "⾆BC"
+            /// @assert(str2.front() == "⾆"'char)
+            /// ```
+            func front(using self)->char
+            {
+                if !length 
+                    return 0
+                if latin1.isAscii(buffer[0]) 
+                    return cast(char) buffer[0]
+                let (b, c) = utf8.nextChar(buffer)
+                return c
+            }
+
+            /// Returns the last Unicode character of the [String]
+            ///
+            /// # Remarks
+            /// This function will return 0 if the [String] is null or empty
+            /// # Examples
+            /// ```
+            /// let str1: String = "ABC"
+            /// @assert(str1.back() == "C"'char)
+            /// let str2: String = "AB⾆"
+            /// @assert(str2.back() == "⾆"'char)
+            /// ```
+            func back(using self)->char
+            {
+                if !length 
+                    return 0
+                if latin1.isAscii(buffer[length - 1]) 
+                    return cast(char) buffer[length - 1]
+                let (b, c) = utf8.previousChar(buffer, buffer + length)
+                return c
+            }            
         }
     }
 }
