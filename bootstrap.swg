@@ -74,6 +74,9 @@ namespace swag
     attr nodoc();
 
     #[attributeUsage(AttributeUsage.Function)]
+    attr noreturn();
+
+    #[attributeUsage(AttributeUsage.Function)]
     attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
@@ -87,7 +90,7 @@ namespace swag
 
     #[attributeUsage(AttributeUsage.GlobalVariable)]
     attr nobss();
-    
+   
     // #########################################################
     // Constants
     // #########################################################

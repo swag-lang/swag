@@ -461,9 +461,15 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = node->ownerFct;
 
-    // For a return inside an inline block, take the original function
+    // For a return inside an inline block, take the original function, except if it is flags with 'swag.noreturn'
     if (node->ownerInline)
-        funcNode = node->ownerInline->func;
+    {
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NORETURN))
+        {
+            node->flags |= AST_EMBEDDED_RETURN;
+            funcNode = node->ownerInline->func;
+        }
+    }
 
     node->byteCodeFct = ByteCodeGenJob::emitReturn;
 

@@ -705,7 +705,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
         {
             if (node->attributeFlags & ATTRIBUTE_NOBSS)
+            {
                 SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+            }
             else
             {
                 symbolFlags |= OVERLOAD_VAR_BSS;

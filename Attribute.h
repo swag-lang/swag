@@ -25,6 +25,7 @@ static const uint32_t ATTRIBUTE_PROPERTY      = 0x00080000;
 static const uint32_t ATTRIBUTE_NOBSS         = 0x00100000;
 static const uint32_t ATTRIBUTE_NODOC         = 0x00200000;
 static const uint32_t ATTRIBUTE_AST_FUNC      = 0x00400000;
+static const uint32_t ATTRIBUTE_NORETURN      = 0x00800000;
 
 struct TypeInfoFuncAttr;
 struct AstNode;

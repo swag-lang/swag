@@ -49,7 +49,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!node->childs.empty())
         {
             auto returnExpression = node->childs.front();
-            if (node->ownerInline)
+            if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
             {
                 if (returnType->kind == TypeInfoKind::Struct)
                     return internalError(context, "emitReturn, invalid inline return");
@@ -117,7 +117,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
 
     // Leave all scopes
-    auto topScope = node->ownerInline ? node->ownerInline->scope : funcNode->scope;
+    Scope* topScope = nullptr;
+    if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
+        topScope = node->ownerInline->scope;
+    else
+        topScope = funcNode->scope;
+
     Scope::collectScopeFrom(node->ownerScope, topScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
@@ -127,7 +132,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline)
+    if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);

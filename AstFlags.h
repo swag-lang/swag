@@ -53,6 +53,7 @@ static const uint64_t AST_NO_BACKEND                 = 0x00040000'00000000;
 static const uint64_t AST_FORCE_UFCS                 = 0x00080000'00000000;
 static const uint64_t AST_NO_LEFT_DROP               = 0x00100000'00000000;
 static const uint64_t AST_NO_RIGHT_DROP              = 0x00200000'00000000;
+static const uint64_t AST_EMBEDDED_RETURN            = 0x00400000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
