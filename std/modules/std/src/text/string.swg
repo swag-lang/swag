@@ -368,6 +368,7 @@ namespace std.text
             ///
             /// # Remarks
             /// This function will return 0 if the [String] is null or empty
+            ///
             /// # Examples
             /// ```
             /// let str1: String = "ABC"
@@ -375,6 +376,9 @@ namespace std.text
             /// let str2: String = "⾆BC"
             /// @assert(str2.front() == "⾆"'char)
             /// ```
+            ///
+            /// # See also
+            /// * [std.text.String.back]
             func front(using self)->char
             {
                 if !length 
@@ -389,6 +393,7 @@ namespace std.text
             ///
             /// # Remarks
             /// This function will return 0 if the [String] is null or empty
+            ///
             /// # Examples
             /// ```
             /// let str1: String = "ABC"
@@ -396,6 +401,9 @@ namespace std.text
             /// let str2: String = "AB⾆"
             /// @assert(str2.back() == "⾆"'char)
             /// ```
+            ///
+            /// # See also
+            /// * [std.text.String.front]
             func back(using self)->char
             {
                 if !length 
