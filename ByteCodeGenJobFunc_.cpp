@@ -39,10 +39,9 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
-    AstReturn* node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
-    auto       funcNode = node->ownerFct;
-    SWAG_ASSERT(funcNode);
-    auto returnType = funcNode->returnType->typeInfo;
+    AstReturn* node       = CastAst<AstReturn>(context->node, AstNodeKind::Return);
+    auto       funcNode   = node->ownerFct;
+    auto       returnType = funcNode->returnType->typeInfo;
 
     // Copy result to RR0... registers
     if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
@@ -130,7 +129,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // A return inside an inline function is just a jump to the end of the block
     if (node->ownerInline)
     {
-        SWAG_ASSERT(node->ownerInline);
         node->seekJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
         node->ownerInline->returnList.push_back(node);
