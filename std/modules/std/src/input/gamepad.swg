@@ -22,7 +22,7 @@ namespace std.input
             /// Update the GamePad current state
             func update(using self)
             {
-                newConnected := std.input.os.isGamePadConnected(padIndex)
+                newConnected := std.input.isGamePadConnected(padIndex)
                 if !newConnected
                 {
                     if connected
@@ -76,7 +76,7 @@ namespace std.input
             /// Set the vibration motor speeds
             func setVibration(using self, left, right: f32)->bool
             {
-                return std.input.os.setGamePadVibration(padIndex, left, right)
+                return std.input.setGamePadVibration(padIndex, left, right)
             }
         }
     }
