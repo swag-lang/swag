@@ -13,7 +13,7 @@ using std.text
                 @assert(c == "A"'char)
             case 1:
                 @assert(c == "⻨"'char)
-            case 2:
+            case 4:
                 @assert(c == "C"'char)                
             default:
                 @assert(false)

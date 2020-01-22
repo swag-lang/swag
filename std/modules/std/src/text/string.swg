@@ -161,7 +161,7 @@ namespace std.text
                             #mixin `stmt
                         }
 
-                        idx += 1
+                        idx += cast(s32) (nextScan - scan)
                         scan = cast(*u8) nextScan
                     }
                 }
