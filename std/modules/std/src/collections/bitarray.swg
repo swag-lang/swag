@@ -82,7 +82,7 @@ namespace std.collections
             }
 
             /// Visit all the booleans of the [BitArray]
-            #[swag.macro]
+            #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
                 if !count return

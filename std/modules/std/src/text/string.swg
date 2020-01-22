@@ -115,53 +115,55 @@ namespace std.text
             }
 
             /// Visit the [String] utf8 bytes
-            #[swag.macro]
+            #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisitBytes(using self, stmt: code)
             {
-                if !length
-                    return
-                scan := buffer
-                loop length
+                if length
                 {
-                    #macro   
+                    scan := buffer
+                    loop length
                     {
-                        #if ptr
-                            let @alias0 = `scan
-                        #else
-                            let @alias0 = deref `scan
-                        let @alias1 = @index
-                        #mixin `stmt
-                    }
+                        #macro   
+                        {
+                            #if ptr
+                                let @alias0 = `scan
+                            #else
+                                let @alias0 = deref `scan
+                            let @alias1 = @index
+                            #mixin `stmt
+                        }
 
-                    scan += 1
+                        scan += 1
+                    }
                 }
             }            
 
             /// Visit the [String] unicode characters
-            #[swag.macro]
+            #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
-                if !length
-                    return
-                idx := 0
-                scan := buffer
-                while true
+                if length
                 {
-                    var (nextScan, c) = utf8.nextChar(scan)
-                    if c == 0
-                        break
-                    #macro
+                    idx := 0
+                    scan := buffer
+                    while true
                     {
-                        #if ptr
-                            let @alias0 = `scan
-                        #else
-                            let @alias0 = `c
-                        let @alias1 = `idx
-                        #mixin `stmt
-                    }
+                        var (nextScan, c) = utf8.nextChar(scan)
+                        if c == 0
+                            break
+                        #macro
+                        {
+                            #if ptr
+                                let @alias0 = `scan
+                            #else
+                                let @alias0 = `c
+                            let @alias1 = `idx
+                            #mixin `stmt
+                        }
 
-                    idx += 1
-                    scan = cast(*u8) nextScan
+                        idx += 1
+                        scan = cast(*u8) nextScan
+                    }
                 }
             }             
         }

@@ -41,6 +41,8 @@ bool Backend::emitAttributes(AstNode* node)
     else if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[printbc]\n");
 
+    if (node->attributeFlags & ATTRIBUTE_NORETURN)
+        CONCAT_FIXED_STR(bufferSwg, "\t#[noreturn]\n");
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
         CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
     if (node->attributeFlags & ATTRIBUTE_PROPERTY)
