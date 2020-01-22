@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Scope.h"
+#include "AstNode.h"
 
 const char* Scope::getNakedKindName(ScopeKind kind)
 {
@@ -89,6 +90,8 @@ void Scope::addPublicFunc(AstNode* node)
 void Scope::addPublicGenericFunc(AstNode* node)
 {
     unique_lock lk(mutexPublicGenericFunc);
+    if (node->name == "opVisit")
+        node = node;
     publicGenericFunc.insert(node);
     setHasExports();
 }

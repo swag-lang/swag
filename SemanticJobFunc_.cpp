@@ -137,7 +137,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     if (node->attributeFlags & ATTRIBUTE_MACRO)
     {
-        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
+        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED) && !(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicGenericFunc(node);
         SWAG_CHECK(setFullResolve(context, node));
         return true;

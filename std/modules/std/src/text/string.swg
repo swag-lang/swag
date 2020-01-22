@@ -355,24 +355,10 @@ namespace std.text
                 if !length
                     return -1 
 
-                /*visit c, i: deref self
+                visit c, i: deref self
                 {
                     if c == value
                         return i
-                }
-
-                return -1*/
-                idx := 0
-                ptr := cast(const *u8) buffer
-                while true
-                {
-                    var (nextPtr, c) = utf8.nextChar(ptr)
-                    if c == 0
-                        return -1
-                    if c == value
-                        return idx
-                    idx += cast(s32) (nextPtr - ptr)
-                    ptr = nextPtr
                 }
 
                 return -1
