@@ -8,7 +8,7 @@ namespace icu
     typealias UBool:    u8
     typealias UChar32:  char
     
-    #[foreign("icuuc")]
+    #[foreign("icuuc65")]
     {
         func u_isUWhiteSpace(c: UChar32)->UBool;
     }
