@@ -461,19 +461,15 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = node->ownerFct;
 
+    // For a return inside an inline block, take the original function
+    if (node->ownerInline)
+        funcNode = node->ownerInline->func;
+
     node->byteCodeFct = ByteCodeGenJob::emitReturn;
 
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
         return true;
-
-    // For a return inside an inline block, just get the type of the expression
-    if (node->ownerInline)
-    {
-        if (!node->childs.empty())
-            node->typeInfo = node->childs.front()->typeInfo;
-        return true;
-    }
 
     // Check return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
