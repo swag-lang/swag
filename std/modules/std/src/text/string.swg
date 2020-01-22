@@ -212,11 +212,11 @@ namespace std.text
             }
 
             /// Ensure the [String] is big enough to store a given amount of bytes
-            func ensureCapacity(using self, newLength: u32)
+            func ensureCapacity(using self, wantedCapacity: u32)
             {
-                if newLength <= capacity
+                if wantedCapacity <= capacity
                     return
-                newCapacity := math.max(capacity * 2, newLength)
+                newCapacity := math.max(capacity * 2, wantedCapacity)
                 reserve(self, newCapacity)
             }
 
