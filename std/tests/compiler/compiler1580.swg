@@ -10,3 +10,9 @@
     a := Color.Green
     @assert(a == 1)
 }
+
+func toto()
+{
+}
+
+#run toto()

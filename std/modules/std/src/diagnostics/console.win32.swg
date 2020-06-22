@@ -52,6 +52,7 @@
 			resetColor()
 		}
 
+        /// Set the console foreground color
 		public func setTextColor(color: Color)
 		{
 			attributes := g_colorToWin[cast(u32) color]
@@ -60,6 +61,7 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
 		
+        /// Set the console background color
 		public func setBackColor(color: Color)
 		{
 			attributes := cast(u16) (g_colorToWin[cast(u32) color] << 4)
@@ -68,11 +70,13 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
 
+        /// Restore the console colors to their default values
 		public func resetColor()
 		{
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 		}
 		
+        /// Write a message to the console
 		public func write(message: string)
 		{
             if g_silentMode

@@ -25,7 +25,7 @@ namespace std.time
 	{
 		public func opEquals(self, other: Self)->bool
 		{
-			return @memcmp(self, other, @sizeof(Self)) == 0
+			return @memcmp(self, other, @sizeof(Self)) == 0            
 		}
 	}
 }
