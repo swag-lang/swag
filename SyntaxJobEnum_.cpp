@@ -12,7 +12,7 @@
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
-    auto enumNode = Ast::newNode<AstNode>(this,  AstNodeKind::EnumDecl, sourceFile, parent);
+    auto enumNode = Ast::newNode<AstNode>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     if (result)
         *result = enumNode;
     enumNode->semanticFct = SemanticJob::resolveEnum;
@@ -29,10 +29,12 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo      = g_Allocator.alloc<TypeInfoEnum>();
-            newScope           = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
+            typeInfo->declNode = enumNode;
             typeInfo->name     = enumNode->name;
+            newScope           = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
+            typeInfo->computeName();
             currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
         }
         else
@@ -48,7 +50,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
-    auto typeNode         = Ast::newNode<AstNode>(this,  AstNodeKind::EnumType, sourceFile, enumNode);
+    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
     typeNode->semanticFct = SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -104,7 +106,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
 
         case TokenId::SymLeftCurly:
         {
-            auto stmt = Ast::newNode<AstNode>(this,  AstNodeKind::Statement, sourceFile, parent);
+            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
             break;
         }
