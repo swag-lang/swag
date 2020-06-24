@@ -662,12 +662,7 @@ void TypeInfoStruct::computeName()
     unique_lock lk(mutex);
 
     name = structName;
-    if (genericParameters.size() == 1)
-    {
-        name += "'";
-        name += genericParameters[0]->typeInfo ? genericParameters[0]->typeInfo->name : genericParameters[0]->name;
-    }
-    else if (genericParameters.size() == 1)
+    if (genericParameters.size() > 0)
     {
         name += "'(";
         for (int i = 0; i < genericParameters.size(); i++)

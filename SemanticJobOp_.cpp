@@ -158,14 +158,14 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_VERIFY(parameters && parameters->childs.size() >= 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType->typeInfo != g_TypeMgr.typeInfoVoid, context->report({node, node->token, format("missing return type for special function '%s'", name.c_str())}));
         for (int i = 1; i < parameters->childs.size(); i++)
-            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
+            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('u32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
     }
     else if (name == "opIndexAssign")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() >= 3, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
         for (int i = 2; i < parameters->childs.size(); i++)
-            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
+            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('u32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
     }
     else if (name == "opIndexAffect")
     {

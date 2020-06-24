@@ -9,7 +9,7 @@ struct BABA
 #test
 {
     var arr: Array'BABA
-    @assert(@typeof(arr).name == "Array'BABA")
+    @assert(@typeof(arr).name == "Array'(BABA)")
 
     var x: BABA
     arr.addBack(x)

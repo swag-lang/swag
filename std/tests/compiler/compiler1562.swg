@@ -20,5 +20,5 @@ impl BOUBOU
 #test
 {
     var arr: Array'BOUBOU
-    @assert(@typeof(arr).name == "Array'BOUBOU")
+    @assert(@typeof(arr).name == "Array'(BOUBOU)")
 }

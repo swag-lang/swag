@@ -6,5 +6,5 @@ struct(T) A
 #test
 {
     var x: A's32
-    @assert(@typeof(x).name == "A's32")
+    @assert(@typeof(x).name == "A'(s32)")
 }
