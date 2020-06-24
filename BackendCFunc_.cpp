@@ -423,7 +423,9 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         }
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
-            CONCAT_FIXED_STR(concat, "\treturn rr0.pointer;\n");
+            Utf8 returnCast;
+            SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnCast));
+            concat.addStringFormat("\treturn (%s) rr0.pointer;\n", returnCast.c_str());
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
