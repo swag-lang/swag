@@ -239,12 +239,6 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
-    node->computeScopedName();
-    typeInfo->scopedName = node->ownerScope->fullname;
-    if (!typeInfo->scopedName.empty())
-        typeInfo->scopedName += ".";
-    typeInfo->scopedName += typeInfo->name;
-
     // Add generic parameters
     uint32_t symbolFlags = 0;
     if (!(node->flags & AST_FROM_GENERIC))
@@ -540,8 +534,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     auto job           = context->job;
 
     typeInterface->declNode = node;
-    typeInterface->name       = node->name;
-    typeInterface->kind       = TypeInfoKind::Interface;
+    typeInterface->name     = node->name;
+    typeInterface->kind     = TypeInfoKind::Interface;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;

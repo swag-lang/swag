@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TypeManager.h"
 #include "Allocator.h"
+#include "AstNode.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -128,7 +129,7 @@ void TypeInfoPointer::computeName()
     scopedName.clear();
     if (flags & TYPEINFO_CONST)
     {
-        name     = "const ";
+        name       = "const ";
         scopedName = "const ";
     }
 
@@ -213,7 +214,7 @@ void TypeInfoArray::computeName()
     scopedName.clear();
     if (flags & TYPEINFO_CONST)
     {
-        name     = "const ";
+        name       = "const ";
         scopedName = "const ";
     }
 
@@ -247,7 +248,7 @@ void TypeInfoSlice::computeName()
     name.clear();
     if (flags & TYPEINFO_CONST)
     {
-        name     = "const ";
+        name       = "const ";
         scopedName = "const ";
     }
 
@@ -659,6 +660,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 void TypeInfoStruct::computeName()
 {
     unique_lock lk(mutex);
+
     name = structName;
     if (genericParameters.size() == 1)
     {
@@ -677,4 +679,9 @@ void TypeInfoStruct::computeName()
 
         name += ")";
     }
+
+    scopedName = declNode->ownerScope->fullname;
+    if (!scopedName.empty())
+        scopedName += ".";
+    scopedName += name;
 }
