@@ -240,7 +240,10 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     node->computeScopedName();
-    typeInfo->scopedName = node->scopedName;
+    typeInfo->scopedName = node->ownerScope->fullname;
+    if (!typeInfo->scopedName.empty())
+        typeInfo->scopedName += ".";
+    typeInfo->scopedName += typeInfo->name;
 
     // Add generic parameters
     uint32_t symbolFlags = 0;
