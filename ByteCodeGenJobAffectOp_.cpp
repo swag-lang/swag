@@ -586,9 +586,9 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
-        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
         {
-            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
+            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             AstNode allParams;
             allParams.childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));

@@ -71,9 +71,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Is this an array like affectation ?
     AstPointerDeRef* arrayNode = nullptr;
-    if (left->kind == AstNodeKind::IdentifierRef && left->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+    if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
     {
-        arrayNode = CastAst<AstPointerDeRef>(left->childs.front(), AstNodeKind::ArrayPointerIndex);
+        arrayNode = CastAst<AstPointerDeRef>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
 
         // Add self and value in list of parameters
         if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
@@ -130,13 +130,22 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             if (arrayNode)
             {
-                if (!hasUserOp(context, "opIndexAffect", left))
+                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST))
                 {
-                    Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
-                    return context->report({node, msg});
+                    SWAG_CHECK(waitForStructUserOps(context, left));
+                    if (context->result == ContextResult::Pending)
+                        return true;
                 }
+                else
+                {
+                    if (!hasUserOp(context, "opIndexAffect", left))
+                    {
+                        Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
+                        return context->report({node, msg});
+                    }
 
-                SWAG_CHECK(resolveUserOp(context, "opIndexAffect", nullptr, nullptr, left, arrayNode->structFlatParams, false));
+                    SWAG_CHECK(resolveUserOp(context, "opIndexAffect", nullptr, nullptr, left, arrayNode->structFlatParams, false));
+                }
             }
             else
             {
