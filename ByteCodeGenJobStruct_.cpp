@@ -258,7 +258,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
-        emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, true, typeParam->offset);
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
     }
 
     // Then call user function if defined

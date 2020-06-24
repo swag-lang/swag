@@ -1,7 +1,10 @@
 #import "std"
 using std.collections
 
-var g: Array'(*u8)
+public struct BB
+{
+     g: Array'(*u8)
+}
 
 //#[swag.printbc]
 #test
