@@ -221,7 +221,8 @@ struct TypeInfoNative : public TypeInfo
     bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    union {
+    union
+    {
         int32_t valueInteger;
         float   valueFloat;
     };
@@ -297,6 +298,20 @@ enum class MatchResult
     DuplicatedNamedParameter,
 };
 
+struct BadSignatureInfos
+{
+    TypeInfo* badSignatureRequestedType;
+    TypeInfo* badSignatureGivenType;
+    int       badSignatureParameterIdx;
+
+    void clear()
+    {
+        badSignatureParameterIdx  = -1;
+        badSignatureRequestedType = nullptr;
+        badSignatureGivenType     = nullptr;
+    }
+};
+
 struct SymbolMatchContext
 {
     static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
@@ -313,10 +328,8 @@ struct SymbolMatchContext
 
     void reset()
     {
-        badSignatureParameterIdx  = 0;
-        badSignatureRequestedType = nullptr;
-        badSignatureGivenType     = nullptr;
-        result                    = MatchResult::Ok;
+        result = MatchResult::Ok;
+        badSignatureInfos.clear();
         genericParameters.clear();
         parameters.clear();
         doneParameters.clear();
@@ -342,13 +355,10 @@ struct SymbolMatchContext
     map<Utf8Crc, TypeInfo*>      genericReplaceTypes;
     map<Utf8Crc, uint32_t>       mapGenericTypesIndex;
     MatchResult                  result;
-
-    TypeInfo* badSignatureRequestedType;
-    TypeInfo* badSignatureGivenType;
+    BadSignatureInfos            badSignatureInfos;
 
     uint32_t flags;
     int      cptResolved;
-    int      badSignatureParameterIdx;
 
     bool hasNamedParameters;
 };

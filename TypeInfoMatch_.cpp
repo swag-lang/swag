@@ -12,7 +12,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     // Solve unnamed parameters
     bool isAfterVariadic = false;
     int  numParams       = (int) context.parameters.size();
-    for (int i = 0; i < numParams; i++)
+    for (int i = 0; i < numParams && context.result != MatchResult::BadSignature; i++)
     {
         auto callParameter = context.parameters[i];
 
@@ -29,8 +29,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (i >= parameters.size() && !isAfterVariadic)
         {
-            context.badSignatureParameterIdx = i;
-            context.result                   = MatchResult::TooManyParameters;
+            context.badSignatureInfos.badSignatureParameterIdx = i;
+
+            context.result = MatchResult::TooManyParameters;
             return;
         }
 
@@ -59,10 +60,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, nullptr, castFlags);
         if (!same)
         {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolTypeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadSignature;
+            context.badSignatureInfos.badSignatureParameterIdx  = i;
+            context.badSignatureInfos.badSignatureRequestedType = symbolTypeInfo;
+            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+            context.result                                      = MatchResult::BadSignature;
         }
         else
         {
@@ -90,10 +91,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         same = TypeManager::makeCompatibles(nullptr, it->second, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                         if (!same)
                         {
-                            context.badSignatureParameterIdx  = i;
-                            context.badSignatureRequestedType = it->second;
-                            context.badSignatureGivenType     = typeInfo;
-                            context.result                    = MatchResult::BadSignature;
+                            context.badSignatureInfos.badSignatureParameterIdx  = i;
+                            context.badSignatureInfos.badSignatureRequestedType = it->second;
+                            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                            context.result                                      = MatchResult::BadSignature;
                         }
                     }
                     else
@@ -226,8 +227,8 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
         if (param->namedParam.empty())
         {
-            context.badSignatureParameterIdx = i;
-            context.result                   = MatchResult::MissingNamedParameter;
+            context.badSignatureInfos.badSignatureParameterIdx = i;
+            context.result                                     = MatchResult::MissingNamedParameter;
             return;
         }
 
@@ -238,8 +239,8 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             {
                 if (context.doneParameters[j])
                 {
-                    context.badSignatureParameterIdx = i;
-                    context.result                   = MatchResult::DuplicatedNamedParameter;
+                    context.badSignatureInfos.badSignatureParameterIdx = i;
+                    context.result                                     = MatchResult::DuplicatedNamedParameter;
                     return;
                 }
 
@@ -247,10 +248,10 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
                 bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
                 if (!same)
                 {
-                    context.badSignatureParameterIdx  = i;
-                    context.badSignatureRequestedType = symbolParameter->typeInfo;
-                    context.badSignatureGivenType     = typeInfo;
-                    context.result                    = MatchResult::BadSignature;
+                    context.badSignatureInfos.badSignatureParameterIdx  = i;
+                    context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                    context.result                                      = MatchResult::BadSignature;
                 }
 
                 context.solvedParameters[j] = symbolParameter;
@@ -264,8 +265,8 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 
         if (!param->resolvedParameter)
         {
-            context.badSignatureParameterIdx = i;
-            context.result                   = MatchResult::InvalidNamedParameter;
+            context.badSignatureInfos.badSignatureParameterIdx = i;
+            context.result                                     = MatchResult::InvalidNamedParameter;
             return;
         }
     }
@@ -340,20 +341,20 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             {
                 if ((symbolParameter->typeInfo->kind == TypeInfoKind::Generic) && (firstChild->kind == AstNodeKind::Literal))
                 {
-                    context.badSignatureParameterIdx  = i;
-                    context.badSignatureRequestedType = symbolParameter->typeInfo;
-                    context.badSignatureGivenType     = typeInfo;
-                    context.result                    = MatchResult::BadGenericSignature;
+                    context.badSignatureInfos.badSignatureParameterIdx  = i;
+                    context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                    context.result                                      = MatchResult::BadGenericSignature;
                     context.flags |= SymbolMatchContext::MATCH_ERROR_VALUE_TYPE;
                     continue;
                 }
 
                 if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && (firstChild->kind != AstNodeKind::Literal))
                 {
-                    context.badSignatureParameterIdx  = i;
-                    context.badSignatureRequestedType = symbolParameter->typeInfo;
-                    context.badSignatureGivenType     = typeInfo;
-                    context.result                    = MatchResult::BadGenericSignature;
+                    context.badSignatureInfos.badSignatureParameterIdx  = i;
+                    context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                    context.result                                      = MatchResult::BadGenericSignature;
                     context.flags |= SymbolMatchContext::MATCH_ERROR_TYPE_VALUE;
                     continue;
                 }
@@ -363,10 +364,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
         if (!same)
         {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadGenericSignature;
+            context.badSignatureInfos.badSignatureParameterIdx  = i;
+            context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+            context.result                                      = MatchResult::BadGenericSignature;
         }
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->value == callParameter->computedValue))
         {
@@ -378,10 +379,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         }
         else
         {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadGenericSignature;
+            context.badSignatureInfos.badSignatureParameterIdx  = i;
+            context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+            context.result                                      = MatchResult::BadGenericSignature;
         }
     }
 }
