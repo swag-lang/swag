@@ -125,6 +125,7 @@ void TypeInfoPointer::computeName()
 {
     unique_lock lk(mutex);
     name.clear();
+    fullname.clear();
     if (flags & TYPEINFO_CONST)
     {
         name     = "const ";
