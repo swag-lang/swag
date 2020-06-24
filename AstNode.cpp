@@ -34,7 +34,7 @@ void AstNode::inheritLocationFromChilds()
         token.endLocation = back->token.endLocation;
 }
 
-void AstNode::computeFullName()
+void AstNode::computeScopedName()
 {
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);

@@ -267,7 +267,7 @@ struct AstNode
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
-    void             computeFullName();
+    void             computeScopedName();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 

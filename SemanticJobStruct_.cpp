@@ -239,7 +239,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
-    node->computeFullName();
+    node->computeScopedName();
     typeInfo->scopedName = node->fullnameDot;
 
     // Add generic parameters

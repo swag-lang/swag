@@ -186,7 +186,7 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    attrBlockNode->computeFullName();
+    attrBlockNode->computeScopedName();
 
     vector<Utf8> embeddedCode;
     attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->fullnameDot, embeddedCode);

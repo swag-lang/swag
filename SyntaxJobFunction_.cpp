@@ -108,7 +108,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         typeNode->isConst    = isConst;
         typeNode->isSelf     = true;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
-        typeNode->computeFullName();
+        typeNode->computeScopedName();
         paramNode->type = typeNode;
     }
     else
@@ -272,7 +272,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
 
-    funcNode->computeFullName();
+    funcNode->computeScopedName();
 
     // Return type
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
@@ -392,7 +392,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         funcNode->inheritTokenName(token);
     }
 
-    funcNode->computeFullName();
+    funcNode->computeScopedName();
 
     // Register function name
     Scope* newScope = nullptr;
