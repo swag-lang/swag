@@ -160,8 +160,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrPointer->flags |= TYPEINFO_SELF;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
-        ptrPointer->pointedType = ptrPointer->computePointedType();
-        typeNode->typeInfo      = ptrPointer;
+        ptrPointer->computePointedType();
+        typeNode->typeInfo = ptrPointer;
     }
 
     // A struct function parameter is const

@@ -111,15 +111,20 @@ TypeInfo* TypeInfoPointer::clone()
     return newType;
 }
 
-TypeInfo* TypeInfoPointer::computePointedType()
+void TypeInfoPointer::computePointedType()
 {
     if (ptrCount == 1)
-        return finalType;
-    auto result = (TypeInfoPointer*) clone();
-    result->ptrCount--;
-    result->computeName();
-    result->pointedType = result->computePointedType();
-    return result;
+    {
+        pointedType = finalType;
+    }
+    else
+    {
+        auto result = (TypeInfoPointer*) clone();
+        result->ptrCount--;
+        result->computeName();
+        result->computePointedType();
+        pointedType = result;
+    }
 }
 
 void TypeInfoPointer::computeName()

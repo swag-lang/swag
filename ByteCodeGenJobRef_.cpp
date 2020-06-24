@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (typeInfo->finalType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->finalType));
         else if (!(node->flags & AST_TAKE_ADDRESS))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->finalType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);

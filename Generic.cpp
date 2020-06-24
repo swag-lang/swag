@@ -111,7 +111,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             typePointer->finalType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
-            typePointer->pointedType = typePointer->computePointedType();
+            typePointer->computePointedType();
             return typePointer;
         }
 

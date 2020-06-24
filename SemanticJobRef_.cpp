@@ -99,7 +99,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
             if (typeReturn->kind == TypeInfoKind::Pointer)
             {
                 auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
-                typeReturn = typePointer->pointedType;
+                typeReturn       = typePointer->pointedType;
             }
 
             // And this is is a struct, we fill the startScope
@@ -140,7 +140,17 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
-        arrayNode->typeInfo    = typePtr->finalType;
+        if (typePtr->ptrCount == 1)
+            arrayNode->typeInfo = typePtr->finalType;
+        else
+        {
+            auto newTypePtr = (TypeInfoPointer*) typePtr->clone();
+            newTypePtr->ptrCount--;
+            newTypePtr->computeName();
+            newTypePtr->computePointedType();
+            arrayNode->typeInfo = newTypePtr;
+        }
+
         arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
         break;
     }

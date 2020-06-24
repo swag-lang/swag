@@ -1,19 +1,41 @@
 namespace std.collections
 {
-    using swag, std.collections
+    using swag
 
     public struct Buffer
     {
-        buckets:    Array'(*bool)
-        allocator:  IAllocator
+        firstBucket:    *u8
+        lastBucket:     *u8
+        allocator:      IAllocator 
 
-        count:      u32
-        capacity:   u32
-        bucketSize: u32 = 1024
+        numBuckets:     u32
+        sizeBucket:     u32 = 1024
+        count:          u32
     }
 
     impl Buffer
     {    
+        func newBucket(using self)
+        {
+            if allocator == null
+                allocator = @getcontext().allocator
+            newBucket := acast memory.alloc(&allocator, sizeBucket + @sizeof(*void))
+            if !firstBucket
+            {
+                firstBucket, lastBucket = newBucket
+                ptr := cast(**void) newBucket
+                ptr[0] = null
+            }
+            else
+            {
+                ptr := cast(**void) lastBucket
+                ptr[0] = newBucket
+                lastBucket = newBucket
+            }
+
+            numBuckets += 1
+        }
+
         public
         {
             #[nodoc]
@@ -34,17 +56,11 @@ namespace std.collections
             #[nodoc]
             func free(using self)
             {
-                loop i: buckets
-                {
-                    memory.free(&allocator, cast(*void) buckets[i])
-                    //buckets[i] = null
-                }
             }
 
             /// Clear the content of the buffer
             func clear(using self)
             {
-                buckets.clear()
                 count = 0
             }
         }
