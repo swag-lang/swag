@@ -108,7 +108,6 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         typeNode->isConst    = isConst;
         typeNode->isSelf     = true;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
-        typeNode->computeScopedName();
         paramNode->type = typeNode;
     }
     else
@@ -271,8 +270,6 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
-
-    funcNode->computeScopedName();
 
     // Return type
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
