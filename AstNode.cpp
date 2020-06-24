@@ -39,9 +39,9 @@ void AstNode::computeScopedName()
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
     if (ownerScope->fullname.empty())
-        fullnameDot = name;
+        scopedName = name;
     else
-        fullnameDot = ownerScope->fullname + "." + name.c_str();
+        scopedName = ownerScope->fullname + "." + name.c_str();
 }
 
 Utf8 AstNode::getKindName(AstNode* node)
@@ -175,7 +175,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     computedValue        = from->computedValue;
     name                 = from->name;
-    fullnameDot          = from->fullnameDot;
+    scopedName          = from->scopedName;
     sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;

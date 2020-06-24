@@ -93,7 +93,7 @@ JobResult DocScopeJob::execute()
     {
         for (auto node : scope->publicFunc)
         {
-            auto it = nameToJob.find(node->fullnameDot);
+            auto it = nameToJob.find(node->scopedName);
             if (it == nameToJob.end())
             {
                 if (node->flags & AST_IS_SPECIAL_FUNC)
@@ -105,7 +105,7 @@ JobResult DocScopeJob::execute()
                 auto nodeJob    = g_Pool_docNodeJob.alloc();
                 nodeJob->module = module;
                 nodeJob->nodes.push_back(node);
-                nameToJob[node->fullnameDot] = nodeJob;
+                nameToJob[node->scopedName] = nodeJob;
             }
             else
                 it->second->nodes.push_back(node);
@@ -113,7 +113,7 @@ JobResult DocScopeJob::execute()
 
         for (auto node : scope->publicGenericFunc)
         {
-            auto it = nameToJob.find(node->fullnameDot);
+            auto it = nameToJob.find(node->scopedName);
             if (it == nameToJob.end())
             {
                 if (node->flags & AST_IS_SPECIAL_FUNC)
@@ -123,7 +123,7 @@ JobResult DocScopeJob::execute()
                 auto nodeJob    = g_Pool_docNodeJob.alloc();
                 nodeJob->module = module;
                 nodeJob->nodes.push_back(node);
-                nameToJob[node->fullnameDot] = nodeJob;
+                nameToJob[node->scopedName] = nodeJob;
             }
             else
                 it->second->nodes.push_back(node);

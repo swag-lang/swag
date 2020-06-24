@@ -22,7 +22,7 @@ Utf8 ByteCode::callName()
 {
     Utf8 callName;
     if (name.empty())
-        callName = node->fullnameDot;
+        callName = node->scopedName;
     else
         callName = name;
     callName += format("_%lX", (uint64_t) this);
