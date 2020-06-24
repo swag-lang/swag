@@ -264,6 +264,9 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
     bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
 
+    if (node->name == "BB11")
+        node = node;
+
     for (auto p : typeStruct->fields)
     {
         SWAG_CHECK(emitAttributes(p));

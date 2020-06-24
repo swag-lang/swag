@@ -96,7 +96,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto offset     = storageOffset;
-        auto result     = collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->structNode, seg);
+        auto result     = collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->declNode, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -177,7 +177,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
         else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->structNode, segment));
+            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->declNode, segment));
             ptrDest = segment->addressNoLock(offset);
         }
     }
@@ -310,7 +310,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     {
         auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        typeInfo->structNode = structNode;
+        typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->name;
         typeInfo->structName = typeInfo->name;
         typeInfo->scope      = newScope;

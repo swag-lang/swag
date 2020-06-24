@@ -259,7 +259,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
-    newType->structNode  = structNode;
+    newType->declNode  = structNode;
     newType->fromGeneric = oldType;
     structNode->typeInfo = newType;
 
@@ -339,7 +339,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
         if (typeExpr->identifier)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            auto nodeStruct = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);
+            auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
             if (nodeStruct->genericParameters)
             {
                 auto idRef      = CastAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);

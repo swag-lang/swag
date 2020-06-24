@@ -11,7 +11,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (fromType->kind == TypeInfoKind::Struct && (castFlags & CASTFLAG_EXPLICIT))
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        auto structNode = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);
+        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
         auto symbol     = structNode->scope->symTable.find("opCast");
         if (symbol)
         {
@@ -2053,7 +2053,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type = typeNode;
 
-    typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->structNode->name, typeNode);
+    typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->declNode->name, typeNode);
     typeNode->identifier->flags |= AST_GENERATED;
     typeNode->identifier->inheritTokenLocation(fromNode->token);
 

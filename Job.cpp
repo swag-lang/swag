@@ -28,7 +28,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingInterfaces == 0)
         return;
-    SWAG_ASSERT(typeInfoStruct->structNode);
+    SWAG_ASSERT(typeInfoStruct->declNode);
     SWAG_ASSERT(typeInfoStruct->scope);
     scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
@@ -46,7 +46,7 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
-    SWAG_ASSERT(typeInfoStruct->structNode);
+    SWAG_ASSERT(typeInfoStruct->declNode);
     SWAG_ASSERT(typeInfoStruct->scope);
     scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);

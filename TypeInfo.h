@@ -176,6 +176,7 @@ struct TypeInfo
         name       = from->name;
         fullname   = from->fullname;
         sizeOf     = from->sizeOf;
+        declNode   = from->declNode;
     }
 
     const Utf8& getFullName()
@@ -193,6 +194,7 @@ struct TypeInfo
     Utf8         fullname;
     shared_mutex mutex;
     TypeInfo*    constCopy = nullptr;
+    AstNode*     declNode  = nullptr;
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
@@ -544,7 +546,6 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoStruct* itable            = nullptr;
     TypeInfoStruct* fromGeneric       = nullptr;
     Scope*          scope             = nullptr;
-    AstNode*        structNode        = nullptr;
     ByteCode*       opInit            = nullptr;
     AstFuncDecl*    opUserPostCopyFct = nullptr;
     ByteCode*       opPostCopy        = nullptr;

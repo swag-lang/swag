@@ -30,7 +30,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     }
 
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
@@ -184,9 +184,9 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opDrop)
         return true;
 
-    SWAG_ASSERT(typeInfoStruct->structNode);
+    SWAG_ASSERT(typeInfoStruct->declNode);
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     // Do we need a drop ?
     bool needDrop = false;
@@ -314,7 +314,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         return true;
 
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     // Do we need a postmove ?
     bool needPostMove = false;
@@ -407,7 +407,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         return true;
 
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     // Do we need a postcopy ?
     bool needPostCopy = false;
@@ -493,10 +493,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
 void ByteCodeGenJob::waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    if (typeInfoStruct->structNode->kind == AstNodeKind::InterfaceDecl)
+    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
     if (!(structNode->flags & AST_BYTECODE_GENERATED))
     {
@@ -525,7 +525,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
             return true;
     }
 
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
     structNode->flags |= AST_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();

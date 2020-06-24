@@ -80,7 +80,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeParamItf             = g_Allocator.alloc<TypeInfoParam>();
             typeParamItf->namedParam = typeBaseInterface->name;
             typeParamItf->typeInfo   = typeBaseInterface;
-            typeParamItf->node       = typeBaseInterface->structNode;
+            typeParamItf->node       = typeBaseInterface->declNode;
             typeStruct->interfaces.push_back(typeParamItf);
         }
     }
@@ -130,7 +130,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!symbolName)
         {
             Diagnostic diag{child, child->token, format("function '%s' is not part of interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{typeBaseInterface->structNode, typeBaseInterface->structNode->token, format("this is the definition of interface '%s'", typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, format("this is the definition of interface '%s'", typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -281,8 +281,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->job;
 
-    SWAG_ASSERT(typeInfo->structNode);
-    SWAG_ASSERT(typeInfo->structNode == node);
+    SWAG_ASSERT(typeInfo->declNode);
+    SWAG_ASSERT(typeInfo->declNode == node);
 
     if (node->attributeFlags & ATTRIBUTE_PACK)
         node->packing = 1;
@@ -536,7 +536,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job           = context->job;
 
-    typeInterface->structNode = node;
+    typeInterface->declNode = node;
     typeInterface->name       = node->name;
     typeInterface->kind       = TypeInfoKind::Interface;
 

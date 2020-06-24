@@ -132,7 +132,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             }
 
             structNode->typeInfo           = newScope->owner->typeInfo;
-            typeInfo->structNode           = structNode;
+            typeInfo->declNode           = structNode;
             newScope->owner                = structNode;
             typeInfo->name                 = structNode->name;
             typeInfo->structName           = typeInfo->name;

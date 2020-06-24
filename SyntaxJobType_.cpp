@@ -161,7 +161,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     {
         auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        typeInfo->structNode = structNode;
+        typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->name;
         typeInfo->structName = typeInfo->name;
         typeInfo->scope      = newScope;

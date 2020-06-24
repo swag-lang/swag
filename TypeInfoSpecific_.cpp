@@ -546,7 +546,6 @@ TypeInfo* TypeInfoStruct::clone()
 {
     auto newType               = g_Allocator.alloc<TypeInfoStruct>();
     newType->scope             = scope;
-    newType->structNode        = structNode;
     newType->opInit            = opInit;
     newType->opUserPostCopyFct = opUserPostCopyFct;
     newType->opPostCopy        = opPostCopy;
