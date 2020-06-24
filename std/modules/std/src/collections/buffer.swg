@@ -4,7 +4,7 @@ namespace std.collections
 
     public struct Buffer
     {
-        //buffer:     Array'(*u8)
+        buffer:     Array'(*u8)
         allocator:  IAllocator
 
         count:      u32

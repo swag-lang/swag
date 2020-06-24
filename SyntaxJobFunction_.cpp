@@ -30,6 +30,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doLiteral(param));
             break;
         case TokenId::NativeType:
+        case TokenId::SymAsterisk:
             SWAG_CHECK(doTypeExpression(param));
             break;
         default:
