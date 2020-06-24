@@ -11,6 +11,9 @@ const Utf8& TypeInfo::getScopedName()
 
 void TypeInfo::computeName()
 {
+    unique_lock lk(mutex);
+    if (!scopedName.empty())
+        return;
     scopedName.clear();
     if (declNode && declNode->ownerScope)
         scopedName = declNode->ownerScope->fullname;
