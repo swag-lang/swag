@@ -107,7 +107,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->getFullName());
+                bufferSwg.addString(p->typeInfo->getScopedName());
             }
 
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
@@ -128,7 +128,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        bufferSwg.addString(typeFunc->returnType->getFullName());
+        bufferSwg.addString(typeFunc->returnType->getScopedName());
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
@@ -163,7 +163,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->getFullName());
+                bufferSwg.addString(p->typeInfo->getScopedName());
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
@@ -184,7 +184,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        bufferSwg.addString(typeFunc->returnType->getFullName());
+        bufferSwg.addString(typeFunc->returnType->getScopedName());
     }
 
     bufferSwg.addEolIndent(1);
@@ -275,7 +275,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
             CONCAT_FIXED_STR(bufferSwg, "private ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        bufferSwg.addString(p->typeInfo->getFullName());
+        bufferSwg.addString(p->typeInfo->getScopedName());
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
         {

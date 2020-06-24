@@ -1,5 +1,13 @@
 #include "pch.h"
 #include "TypeInfo.h"
+#include "AstNode.h"
+
+const Utf8& TypeInfo::getScopedName()
+{
+    if (!scopedName.empty())
+        return scopedName;
+    return name;
+}
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
 {

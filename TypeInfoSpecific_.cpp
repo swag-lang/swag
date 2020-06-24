@@ -125,22 +125,22 @@ void TypeInfoPointer::computeName()
 {
     unique_lock lk(mutex);
     name.clear();
-    fullname.clear();
+    scopedName.clear();
     if (flags & TYPEINFO_CONST)
     {
         name     = "const ";
-        fullname = "const ";
+        scopedName = "const ";
     }
 
     for (uint32_t i = 0; i < ptrCount; i++)
     {
         name += "*";
-        fullname += "*";
+        scopedName += "*";
     }
 
     finalType->computeName();
     name += finalType->name;
-    fullname += finalType->getFullName();
+    scopedName += finalType->getScopedName();
 }
 
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -210,33 +210,33 @@ void TypeInfoArray::computeName()
     unique_lock lk(mutex);
     pointedType->computeName();
     name.clear();
-    fullname.clear();
+    scopedName.clear();
     if (flags & TYPEINFO_CONST)
     {
         name     = "const ";
-        fullname = "const ";
+        scopedName = "const ";
     }
 
     if (count == UINT32_MAX)
     {
         name += format("[] %s", pointedType->name.c_str());
-        fullname += format("[] %s", pointedType->getFullName().c_str());
+        scopedName += format("[] %s", pointedType->getScopedName().c_str());
     }
     else
     {
         name += format("[%d", count);
-        fullname += format("[%d", count);
+        scopedName += format("[%d", count);
         auto pType = pointedType;
         while (pType->kind == TypeInfoKind::Array)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
             name += format(",%d", subType->count);
-            fullname += format(",%d", subType->count);
+            scopedName += format(",%d", subType->count);
             pType = subType->pointedType;
         }
 
         name += format("] %s", pType->name.c_str());
-        fullname += format("] %s", pType->getFullName().c_str());
+        scopedName += format("] %s", pType->getScopedName().c_str());
     }
 }
 
@@ -248,11 +248,11 @@ void TypeInfoSlice::computeName()
     if (flags & TYPEINFO_CONST)
     {
         name     = "const ";
-        fullname = "const ";
+        scopedName = "const ";
     }
 
     name += format("[..] %s", pointedType->name.c_str());
-    fullname += format("[..] %s", pointedType->getFullName().c_str());
+    scopedName += format("[..] %s", pointedType->getScopedName().c_str());
 }
 
 TypeInfo* TypeInfoSlice::clone()

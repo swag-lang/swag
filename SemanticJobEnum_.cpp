@@ -13,7 +13,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
 
     node->computeFullName();
-    typeInfo->fullname = node->fullnameDot;
+    typeInfo->scopedName = node->fullnameDot;
 
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)

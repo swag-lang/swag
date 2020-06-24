@@ -154,7 +154,7 @@ struct TypeInfo
     {
         flags |= TYPEINFO_CONST;
         name     = "const " + name;
-        fullname = "const " + fullname;
+        scopedName = "const " + scopedName;
     }
 
     virtual int numRegisters()
@@ -174,24 +174,18 @@ struct TypeInfo
         kind       = from->kind;
         nativeType = from->nativeType;
         name       = from->name;
-        fullname   = from->fullname;
+        scopedName   = from->scopedName;
         sizeOf     = from->sizeOf;
         declNode   = from->declNode;
     }
 
-    const Utf8& getFullName()
-    {
-        if (!fullname.empty())
-            return fullname;
-        return name;
-    }
-
     virtual TypeInfo*  clone() = 0;
+    const Utf8&        getScopedName();
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
     Utf8         name;
-    Utf8         fullname;
+    Utf8         scopedName;
     shared_mutex mutex;
     TypeInfo*    constCopy = nullptr;
     AstNode*     declNode  = nullptr;
@@ -570,7 +564,7 @@ struct TypeInfoAlias : public TypeInfo
     {
         rawType->computeName();
         name     = rawType->name;
-        fullname = rawType->getFullName();
+        scopedName = rawType->getScopedName();
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;

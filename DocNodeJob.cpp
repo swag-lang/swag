@@ -32,7 +32,7 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
                     CONCAT_FIXED_STR(concat, ": ");
                 }
 
-                DocHtmlHelper::syntaxHilight(concat, light ? p->typeInfo->name : p->typeInfo->getFullName());
+                DocHtmlHelper::syntaxHilight(concat, light ? p->typeInfo->name : p->typeInfo->getScopedName());
             }
             else
             {
@@ -59,7 +59,7 @@ void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
-        DocHtmlHelper::syntaxHilight(concat, light ? typeFunc->returnType->name : typeFunc->returnType->getFullName());
+        DocHtmlHelper::syntaxHilight(concat, light ? typeFunc->returnType->name : typeFunc->returnType->getScopedName());
     }
 
     concat.addEol();
@@ -70,9 +70,9 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
     Utf8 name;
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
-        name = ((TypeInfoPointer*) typeInfo)->finalType->fullname;
+        name = ((TypeInfoPointer*) typeInfo)->finalType->scopedName;
     else
-        name = typeInfo->fullname;
+        name = typeInfo->scopedName;
 
     return name;
 }
@@ -173,7 +173,7 @@ void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, A
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(enumNode->name.c_str());
     CONCAT_FIXED_STR(concat, ": ");
-    concat.addString(typeEnum->rawType->getFullName());
+    concat.addString(typeEnum->rawType->getScopedName());
 }
 
 void DocNodeJob::emitEnum(OutputFile& outFile)
