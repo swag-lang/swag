@@ -153,7 +153,7 @@ struct TypeInfo
     void setConst()
     {
         flags |= TYPEINFO_CONST;
-        name     = "const " + name;
+        name       = "const " + name;
         scopedName = "const " + scopedName;
     }
 
@@ -164,22 +164,19 @@ struct TypeInfo
         return max(sizeOf, sizeof(void*)) / sizeof(void*);
     }
 
-    virtual void computeName()
-    {
-    }
-
     void copyFrom(TypeInfo* from)
     {
         flags      = from->flags & ~TYPEINFO_IN_EXACT_LIST;
         kind       = from->kind;
         nativeType = from->nativeType;
         name       = from->name;
-        scopedName   = from->scopedName;
+        scopedName = from->scopedName;
         sizeOf     = from->sizeOf;
         declNode   = from->declNode;
     }
 
     virtual TypeInfo*  clone() = 0;
+    virtual void       computeName();
     const Utf8&        getScopedName();
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
@@ -563,7 +560,7 @@ struct TypeInfoAlias : public TypeInfo
     void computeName() override
     {
         rawType->computeName();
-        name     = rawType->name;
+        name       = rawType->name;
         scopedName = rawType->getScopedName();
     }
 

@@ -9,6 +9,16 @@ const Utf8& TypeInfo::getScopedName()
     return name;
 }
 
+void TypeInfo::computeName()
+{
+    scopedName.clear();
+    if (declNode && declNode->ownerScope)
+        scopedName = declNode->ownerScope->fullname;
+    if (!scopedName.empty())
+        scopedName += ".";
+    scopedName += name;
+}
+
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
 {
     switch (typeInfo->kind)
