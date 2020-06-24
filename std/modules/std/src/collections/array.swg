@@ -127,7 +127,13 @@ namespace std.collections
                 reserve(self, count + 1)
                 buffer[count] = nodrop move deref value
                 count += 1
-            }            
+            } 
+
+            /// Set the number of elements to 0
+            func clear(using self)
+            {
+                count = 0
+            }          
         }
     }
 }

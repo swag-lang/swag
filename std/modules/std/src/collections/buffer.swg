@@ -4,11 +4,12 @@ namespace std.collections
 
     public struct Buffer
     {
-        buffer:     Array'(*bool)
+        buckets:    Array'(*bool)
         allocator:  IAllocator
 
         count:      u32
         capacity:   u32
+        bucketSize: u32 = 1024
     }
 
     impl Buffer
@@ -33,7 +34,19 @@ namespace std.collections
             #[nodoc]
             func free(using self)
             {
-            }  
+                loop i: buckets
+                {
+                    memory.free(&allocator, cast(*void) buckets[i])
+                    //buckets[i] = null
+                }
+            }
+
+            /// Clear the content of the buffer
+            func clear(using self)
+            {
+                buckets.clear()
+                count = 0
+            }
         }
     }
 }
