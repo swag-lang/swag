@@ -6,7 +6,7 @@ namespace std.diagnostics.debug
 		#if swag.ASSERT
 		{
 			if !expr
-				os.assertMessage(message)
+				assertMessage(message)
 		}
 	}
 }
