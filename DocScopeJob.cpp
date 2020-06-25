@@ -50,7 +50,7 @@ JobResult DocScopeJob::execute()
         VectorNative<TypeInfoParam*> members;
         for (auto param : typeStruct->fields)
         {
-            if (param->node->attributeFlags & ATTRIBUTE_INTERNAL)
+            if (param->node->attributeFlags & ATTRIBUTE_NODOC)
                 continue;
             members.push_back(param);
         }

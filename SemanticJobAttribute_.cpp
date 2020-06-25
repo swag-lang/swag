@@ -111,8 +111,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     {
         flags |= curAttr->attributeFlags;
 
-        if ((flags & ATTRIBUTE_INTERNAL) && (flags & ATTRIBUTE_READONLY))
-            return context->report({curAttr, "attribute 'internal' and attribute 'readonly' are mutually exclusive"});
+        //if ((flags & ATTRIBUTE_PUBLIC) && (flags & ATTRIBUTE_READONLY))
+        //    return context->report({curAttr, "attribute 'public' and attribute 'readonly' are mutually exclusive"});
 
         for (auto child : curAttr->childs)
         {

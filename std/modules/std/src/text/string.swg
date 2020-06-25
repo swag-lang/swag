@@ -7,11 +7,13 @@ namespace std.text
 
     public struct String
     {
-        readonly buffer:     *u8
-        readonly length:     u32
-        readonly capacity:   u32
-        internal allocator:  IAllocator
-        internal padding:    [SmallSizeInternal] u8
+        readonly buffer:    *u8
+        readonly length:    u32
+        readonly capacity:  u32        
+        allocator:          IAllocator
+
+        #[swag.nodoc]
+        padding: [SmallSizeInternal] u8
     }
     
     impl String

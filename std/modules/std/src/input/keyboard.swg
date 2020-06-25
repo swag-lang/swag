@@ -3,10 +3,13 @@ namespace std.input
     /// Allows getting keystrokes from keyboard
     public struct Keyboard
     {
-        internal previousState:  KeyboardState
-        internal currentState:   KeyboardState
-        internal pressedRepeat:  [@countof(Key)] bool
-        internal pressedTime:    [@countof(Key)] u32
+        #[swag.nodoc]
+        {
+            previousState:  KeyboardState
+            currentState:   KeyboardState
+            pressedRepeat:  [@countof(Key)] bool
+            pressedTime:    [@countof(Key)] u32
+        }
 
         /// Delay, in milliseconds, before a repeated key stroke starts
         pressedRepeatStartTimeMs:   u32 = 400

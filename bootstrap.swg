@@ -70,7 +70,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr property();
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function | AttributeUsage.Field)]
     attr nodoc();
 
     #[attributeUsage(AttributeUsage.Function)]

@@ -242,15 +242,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
-        case TokenId::KwdInternal:
-        {
-            auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-            attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
-            attrBlockNode->attributeFlags |= ATTRIBUTE_INTERNAL;
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
         case TokenId::KwdReadOnly:
         {
             auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);

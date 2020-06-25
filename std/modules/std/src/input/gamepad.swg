@@ -5,8 +5,10 @@ namespace std.input
     /// Represents a gamepad
     public struct GamePad
     {
-        internal previousState:  GamePadState
-        internal currentState:   GamePadState
+        #[swag.nodoc]
+        previousState:  GamePadState
+        #[swag.nodoc]
+        currentState:   GamePadState
 
         /// The pad index associated with that GamePad instance
         padIndex: u32
