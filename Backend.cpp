@@ -270,6 +270,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
         CONCAT_FIXED_STR(bufferSwg, "\t\t");
         if (p->node->attributeFlags & ATTRIBUTE_PRIVATE)
             CONCAT_FIXED_STR(bufferSwg, "private ");
+        if (p->node->attributeFlags & ATTRIBUTE_READONLY)
+            CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
         bufferSwg.addString(p->typeInfo->getScopedName());

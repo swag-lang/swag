@@ -6,14 +6,16 @@ namespace std.collections
     /// the buffer becomes too small to hold a given value. This is the main difference with [Array]
     public struct ConcatBuffer
     {
-        firstBucket:    *u8
-        curBucket:      *u8
-        allocator:      IAllocator 
+        allocator:  IAllocator 
 
-        totalBuckets:   u32
-        usedBuckets:    u32
-        curCount:       u32
-        sizeBucket:     u32 = 1024
+        readonly firstBucket:   *u8
+        readonly curBucket:     *u8
+
+        readonly totalBuckets:  u32
+        readonly usedBuckets:   u32
+        readonly curCount:      u32
+
+        readonly sizeBucket:    u32 = 1024
     }
 
     impl ConcatBuffer
@@ -41,16 +43,17 @@ namespace std.collections
             newBucket := acast memory.alloc(&allocator, sizeBucket)
             if !firstBucket
             {
-                firstBucket, curBucket = newBucket
-                ptr := cast(**void) newBucket
-                ptr[0] = null
+                firstBucket = newBucket
             }
             else
             {
                 ptr := cast(**void) curBucket
                 ptr[0] = newBucket
-                curBucket = newBucket
             }
+
+            curBucket = newBucket
+            newPtr := cast(**void) newBucket
+            newPtr[0] = null
 
             usedBuckets += 1
             totalBuckets += 1
@@ -64,7 +67,7 @@ namespace std.collections
             while ptr != null
             {                    
                 nextPtr := cast(**void) ptr
-                nextPtrValue := nextPtr[0]
+                nextPtrValue := nextPtr[0]        
                 memory.free(&allocator, ptr)
                 ptr = nextPtrValue
             }
@@ -91,6 +94,16 @@ namespace std.collections
 
         public
         {
+            /// Set the size of one given bucket. Minimal size is 16.
+            ///
+            /// The buffer will be erased before the change, even if the new size is the same as the current one.
+            func setBucketSize(using self, size: u32)
+            {
+                diagnostics.debug.assert(size >= 16)
+                free(self)
+                sizeBucket = size
+            }
+
             /// Release the content of the buffer
             func free(using self)
             {
