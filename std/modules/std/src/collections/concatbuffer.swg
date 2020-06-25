@@ -2,8 +2,8 @@ namespace std.collections
 {
     using swag, std.diagnostics
 
-    /// Represents an always growable buffer, which is divided in buckets to avoid a copy/realloc when
-    /// the buffer becomes too small to hold a given value. This is the main difference with [Array]
+    /// Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
+    /// the buffer needs to increase its size. This is the main difference with [Array]
     public struct ConcatBuffer
     {
         allocator:  IAllocator 

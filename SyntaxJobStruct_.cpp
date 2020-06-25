@@ -234,8 +234,12 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         case TokenId::KwdUsing:
         {
             SWAG_CHECK(eatToken());
+
+            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+
             AstNode* varDecl;
-            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
+            SWAG_CHECK(doVarDecl(stmt, &varDecl, AstNodeKind::VarDecl));
             varDecl->flags |= AST_DECL_USING;
             if (!waitCurly)
                 return true;
@@ -247,8 +251,16 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
             attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
             attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
+
             SWAG_CHECK(eatToken());
-            continue;
+
+            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+
+            SWAG_CHECK(doVarDecl(stmt, nullptr, AstNodeKind::VarDecl));
+            if (!waitCurly)
+                return true;
+            break;
         }
 
         default:
