@@ -6,16 +6,19 @@ namespace std.collections
     /// the buffer needs to increase its size. This is the main difference with [Array]
     public struct ConcatBuffer
     {
-        allocator:  IAllocator 
+        readonly
+        {
+            allocator:  IAllocator 
+            
+            firstBucket:   *u8
+            curBucket:     *u8
 
-        readonly firstBucket:   *u8
-        readonly curBucket:     *u8
+            totalBuckets:  u32
+            usedBuckets:   u32
+            curCount:      u32
 
-        readonly totalBuckets:  u32
-        readonly usedBuckets:   u32
-        readonly curCount:      u32
-
-        readonly sizeBucket:    u32 = 1024
+            sizeBucket:    u32 = 1024
+        }
     }
 
     impl ConcatBuffer
@@ -94,6 +97,15 @@ namespace std.collections
 
         public
         {
+            /// Associate an allocator with the buffer.
+            ///
+            /// The allocator can only be changed if the buffer has no pending buckets.
+            func setAllocator(using self, alloc: IAllocator)
+            {
+                diagnostics.debug.assert(firstBucket == null, "bucket is not empty")
+                //allocator = alloc;
+            }
+
             /// Set the size of one given bucket. Minimal size is 16.
             ///
             /// The buffer will be erased before the change, even if the new size is the same as the current one.
