@@ -47,18 +47,28 @@ JobResult DocScopeJob::execute()
     if (scope->kind == ScopeKind::Struct)
     {
         auto                         typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
-        VectorNative<TypeInfoParam*> members;
+
+        VectorNative<TypeInfoParam*> rwmembers, romembers;
         for (auto param : typeStruct->fields)
         {
-            if (param->node->attributeFlags & ATTRIBUTE_NODOC)
+            if (param->node->attributeFlags & (ATTRIBUTE_INTERNAL | ATTRIBUTE_NODOC))
                 continue;
-            members.push_back(param);
+            if (param->node->attributeFlags & ATTRIBUTE_READONLY)
+                romembers.push_back(param);
+            else
+                rwmembers.push_back(param);
         }
 
-        if (!members.empty())
+        if (!rwmembers.empty())
         {
-            DocHtmlHelper::sectionTitle1(outFile, "Members");
-            DocHtmlHelper::table(outFile, scope, members, false);
+            DocHtmlHelper::sectionTitle1(outFile, "Read/Write Members");
+            DocHtmlHelper::table(outFile, scope, rwmembers, false);
+        }
+
+        if (!romembers.empty())
+        {
+            DocHtmlHelper::sectionTitle1(outFile, "Read Only Members");
+            DocHtmlHelper::table(outFile, scope, romembers, false);
         }
     }
 
@@ -96,6 +106,8 @@ JobResult DocScopeJob::execute()
             auto it = nameToJob.find(node->scopedName);
             if (it == nameToJob.end())
             {
+                if (node->attributeFlags & ATTRIBUTE_NODOC)
+                    continue;
                 if (node->flags & AST_IS_SPECIAL_FUNC)
                     operators.insert(node);
                 else if (node->attributeFlags & ATTRIBUTE_PROPERTY)
@@ -116,6 +128,8 @@ JobResult DocScopeJob::execute()
             auto it = nameToJob.find(node->scopedName);
             if (it == nameToJob.end())
             {
+                if (node->attributeFlags & ATTRIBUTE_NODOC)
+                    continue;
                 if (node->flags & AST_IS_SPECIAL_FUNC)
                     operators.insert(node);
                 else

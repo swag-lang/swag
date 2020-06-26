@@ -468,8 +468,6 @@ namespace DocHtmlHelper
 
         for (auto node : sorted)
         {
-            if (node->attributeFlags & ATTRIBUTE_INTERNAL)
-                continue;
             if (node->attributeFlags & ATTRIBUTE_NODOC)
                 continue;
             DocHtmlHelper::startTableRow(outFile);
