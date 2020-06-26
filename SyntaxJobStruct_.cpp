@@ -254,6 +254,9 @@ bool SyntaxJob::doStructContent(AstNode* parent)
 
             SWAG_CHECK(eatToken());
 
+            if (token.id == TokenId::SymLeftCurly)
+                continue;
+
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
 
