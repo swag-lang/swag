@@ -4,21 +4,18 @@ namespace std.collections
 
     /// Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
     /// the buffer needs to increase its size. This is the main difference with [Array]
-    public struct ConcatBuffer
+    public readonly struct ConcatBuffer
     {
-        readonly
-        {
-            allocator:  IAllocator 
-            
-            firstBucket:   *u8
-            curBucket:     *u8
+        allocator:  IAllocator 
+        
+        firstBucket:   *u8
+        curBucket:     *u8
 
-            totalBuckets:  u32
-            usedBuckets:   u32
-            curCount:      u32
+        totalBuckets:  u32
+        usedBuckets:   u32
+        curCount:      u32
 
-            sizeBucket:    u32 = 1024
-        }
+        sizeBucket:    u32 = 1024
     }
 
     impl ConcatBuffer

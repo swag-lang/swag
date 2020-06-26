@@ -65,11 +65,16 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
     switch (token.id)
     {
+    case TokenId::KwdInternal:
+        attr |= ATTRIBUTE_INTERNAL;
+        SWAG_CHECK(tokenizer.getToken(token));
+        break;
     case TokenId::KwdReadOnly:
         attr |= ATTRIBUTE_READONLY;
-        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PUBLIC), error(token, "attribute 'private' and attribute 'public' are mutually exclusive"));
-        SWAG_VERIFY(currentScope->isGlobal(), error(token, "a private definition must appear at file or namespace scope"));
-        newScope = sourceFile->scopePrivate;
+        SWAG_CHECK(tokenizer.getToken(token));
+        break;
+    case TokenId::KwdReadWrite:
+        attr |= ATTRIBUTE_READWRITE;
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     default:

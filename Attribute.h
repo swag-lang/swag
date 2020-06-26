@@ -20,12 +20,13 @@ static const uint32_t ATTRIBUTE_PRIVATE       = 0x00004000;
 static const uint32_t ATTRIBUTE_MACRO         = 0x00008000;
 static const uint32_t ATTRIBUTE_MIXIN         = 0x00010000;
 static const uint32_t ATTRIBUTE_READONLY      = 0x00020000;
-//static const uint32_t ATTRIBUTE_INTERNAL      = 0x00040000;
+static const uint32_t ATTRIBUTE_READWRITE     = 0x00040000;
 static const uint32_t ATTRIBUTE_PROPERTY      = 0x00080000;
 static const uint32_t ATTRIBUTE_NOBSS         = 0x00100000;
 static const uint32_t ATTRIBUTE_NODOC         = 0x00200000;
 static const uint32_t ATTRIBUTE_AST_FUNC      = 0x00400000;
 static const uint32_t ATTRIBUTE_NORETURN      = 0x00800000;
+static const uint32_t ATTRIBUTE_INTERNAL      = 0x01000000;
 
 struct TypeInfoFuncAttr;
 struct AstNode;
