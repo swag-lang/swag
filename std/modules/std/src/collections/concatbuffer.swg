@@ -128,7 +128,7 @@ namespace std.collections
             }
 
             #[swag.inline]
-            func bucketToDatas(bucket: *u8)->*u8
+            func bucketToDatas(using self, bucket: *u8)->*u8
             {
                 return bucket + @sizeof(*void)
             }
@@ -137,7 +137,7 @@ namespace std.collections
             func addByte(using self, byte: u8)
             {
                 growBuckets(self, 1)
-                ptr := curBucket + curCount + @sizeof(*void)
+                ptr := bucketToDatas(self, curBucket) + curCount
                 ptr[0] = byte
                 curCount += 1
             }
@@ -150,24 +150,26 @@ namespace std.collections
                     return
 
                 slicePtr := @dataof(bytes)
-                remain := sizeBucket - curCount
 
                 // Be sure we have a buffer
                 if !curBucket
                     growBuckets(self, 1)
 
+                // Divide the slice in the given amount of buckets if necessary
+                remain := sizeBucket - curCount
                 ptr := curBucket
-
                 while(num > remain)
                 {
-                    ptr = curBucket + curCount + @sizeof(*void)
+                    ptr = bucketToDatas(self, curBucket) + curCount
                     memory.copy(ptr, slicePtr, remain)
                     num -= remain
+                    curCount = sizeBucket
                     growBuckets(self, 1)
+                    slicePtr += remain
                     remain = sizeBucket
                 }
 
-                ptr = curBucket + curCount + @sizeof(*void)
+                ptr = bucketToDatas(self, curBucket) + curCount
                 memory.copy(ptr, slicePtr, num)
                 curCount += num
             }            
