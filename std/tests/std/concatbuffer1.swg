@@ -37,3 +37,15 @@ using std.collections
     loop 50
         b.addByte(0xFE)
 }
+
+#test
+{
+    var b: ConcatBuffer
+    b.addBytes([1,2,3,4])
+
+    ptr := b.curBucket + @sizeof(*void)
+    @assert(ptr[0] == 1)
+    @assert(ptr[1] == 2)
+    @assert(ptr[2] == 3)
+    @assert(ptr[3] == 4)
+}

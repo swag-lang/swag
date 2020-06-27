@@ -22,10 +22,10 @@ namespace std.collections
     {    
         func growBuckets(using self, size: u32)
         {
-            if curBucket != null && curCount + size + @sizeof(*void) < sizeBucket
+            if curBucket != null && curCount + size < sizeBucket
                 return
 
-            debug.assert(size + @sizeof(*void) <= sizeBucket)
+            debug.assert(size <= sizeBucket)
             curCount = 0
 
             // No need to allocate a new bucket if we are not already using them all
@@ -40,7 +40,7 @@ namespace std.collections
 
             if allocator == null
                 allocator = @getcontext().allocator
-            newBucket := acast memory.alloc(&allocator, sizeBucket)
+            newBucket := acast memory.alloc(&allocator, sizeBucket + @sizeof(*void))
             if !firstBucket
             {
                 firstBucket = newBucket
@@ -80,9 +80,7 @@ namespace std.collections
             {
                 if curBucket == null
                     return 0
-                total := ((usedBuckets - 1) * (sizeBucket - @sizeof(*void)))
-                total += curCount
-                return total
+                return ((usedBuckets - 1) * sizeBucket) + curCount
             }
 
             #[nodoc]
@@ -130,13 +128,43 @@ namespace std.collections
             }
 
             /// Add one byte to the buffer
-            func addByte(using self, value: u8)
+            func addByte(using self, byte: u8)
             {
                 growBuckets(self, 1)
                 ptr := curBucket + curCount + @sizeof(*void)
-                ptr[0] = value
+                ptr[0] = byte
                 curCount += 1
             }
+
+            /// Add a slice of bytes to the buffer
+            func addBytes(using self, bytes: [..] u8)
+            {
+                num := @countof(bytes)
+                if !num 
+                    return
+
+                slicePtr := @dataof(bytes)
+                remain := sizeBucket - curCount
+
+                // Be sure we have a buffer
+                if !curBucket
+                    growBuckets(self, 1)
+
+                ptr := curBucket
+
+                while(num > remain)
+                {
+                    ptr = curBucket + curCount + @sizeof(*void)
+                    memory.copy(ptr, slicePtr, remain)
+                    num -= remain
+                    growBuckets(self, 1)
+                    remain = sizeBucket
+                }
+
+                ptr = curBucket + curCount + @sizeof(*void)
+                memory.copy(ptr, slicePtr, num)
+                curCount += num
+            }            
         }
     }
 }
