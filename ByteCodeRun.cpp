@@ -1855,7 +1855,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         if (context->hasError)
         {
             Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
-            diag.showDiagnosticInfos = true;
+            diag.criticalError = true;
             context->report(diag);
             return false;
         }
@@ -1868,15 +1868,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext)
 {
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
-    diag.showDiagnosticInfos = true;
+    diag.criticalError = true;
     runContext->bc->sourceFile->report(diag);
-
-    if (g_CommandLine.devMode)
-    {
-        SWAG_ASSERT(false);
-        return EXCEPTION_CONTINUE_EXECUTION;
-    }
-
     return EXCEPTION_EXECUTE_HANDLER;
 }
 

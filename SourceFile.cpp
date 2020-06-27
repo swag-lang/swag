@@ -279,10 +279,13 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             note->report();
     }
 
-    if (diag.showDiagnosticInfos)
+    // Block execution in devmode, to be able to attach...
+    if (diag.criticalError && g_CommandLine.devMode)
+    {
         g_diagnosticInfos.log();
-
-    //::MessageBoxA(NULL, "", "", 0);
+        ::MessageBoxA(0, "Error raised !", "[Developer Mode]", 0x10);
+        return false;
+    }
 
     return false;
 }

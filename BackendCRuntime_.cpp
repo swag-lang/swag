@@ -194,7 +194,7 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 
 #ifdef _WIN32
 #ifdef SWAG_DEVMODE
-	MessageBoxA(0, "[Developer Mode] Assertion failed", "Native Assert", 0);
+	MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
 	RaiseException(0x666, 0, 0, 0);
 #endif
