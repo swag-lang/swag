@@ -5,7 +5,7 @@ namespace std.collections
     public struct(T) Array
     {
         buffer:     *T
-        allocator:  IAllocator
+        allocator:  const IAllocator
 
         /// Number of valid elements in the [Array]
         count:      u32

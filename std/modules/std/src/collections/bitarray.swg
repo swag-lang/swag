@@ -8,7 +8,7 @@ namespace std.collections
     public struct BitArray
     {
         buffer:     *u32
-        allocator:  IAllocator
+        allocator:  const IAllocator
 
         /// Maximum number of bits the [BitArray] can hold
         count:      u32
