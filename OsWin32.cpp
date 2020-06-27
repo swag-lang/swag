@@ -473,6 +473,11 @@ namespace OS
         return true;
     }
 
+    void errorBox(const char* title, const char* expr)
+    {
+        ::MessageBoxA(NULL, expr, title, MB_OK | MB_ICONERROR);
+    }
+
     void assertBox(const char* expr, const char* file, int line)
     {
         string msg;

@@ -25,6 +25,7 @@ namespace OS
     extern void          visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     extern void          setThreadName(thread* thread, const char* threadName);
     extern uint64_t      getFileWriteTime(const char* fileName);
+    extern void          errorBox(const char* expr, const char* title);
     extern void          assertBox(const char* expr, const char* file, int line);
     extern void          setSwagFolder(const string& folder);
     extern bool          touchFile(const fs::path& path);

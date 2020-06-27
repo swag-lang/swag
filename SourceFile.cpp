@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "Stats.h"
 #include "DiagnosticInfos.h"
+#include "Os.h"
 
 const auto BUF_SIZE = 2048;
 
@@ -283,7 +284,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (diag.criticalError && g_CommandLine.devMode)
     {
         g_diagnosticInfos.log();
-        ::MessageBoxA(0, "Error raised !", "[Developer Mode]", 0x10);
+        OS::errorBox("[Developer Mode]", "Error raised !");
         return false;
     }
 
