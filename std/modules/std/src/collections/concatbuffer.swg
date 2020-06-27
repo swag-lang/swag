@@ -101,12 +101,12 @@ namespace std.collections
                 allocator = alloc;
             }
 
-            /// Set the size of one given bucket. Minimal size is 16.
+            /// Set the size of one given bucket. Minimal size is 4.
             ///
             /// The buffer will be erased before the change, even if the new size is the same as the current one.
             func setBucketSize(using self, size: u32)
             {
-                diagnostics.debug.assert(size >= 16)
+                diagnostics.debug.assert(size >= 4)
                 free(self)
                 sizeBucket = size
             }
@@ -125,6 +125,12 @@ namespace std.collections
                 curCount = 0
                 curBucket = firstBucket
                 usedBuckets = curBucket ? 1 : 0
+            }
+
+            #[swag.inline]
+            func bucketToDatas(bucket: *u8)->*u8
+            {
+                return bucket + @sizeof(*void)
             }
 
             /// Add one byte to the buffer
