@@ -212,8 +212,11 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
 {
-	if(g_CommandLine.devMode)
+	if (g_CommandLine.devMode)
+	{
+		CONCAT_FIXED_STR(bufferC, "/* FILE GENERATED WITH --DEVMODE:true */\n");
 		CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
+	}
 
     emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
