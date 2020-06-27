@@ -41,6 +41,7 @@ SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
 SWAG_IMPORT void*				GetStdHandle(swag_uint32_t);
 SWAG_IMPORT swag_int32_t		WriteFile(void*, void*, swag_uint32_t, swag_uint32_t*, swag_uint32_t*);
 SWAG_IMPORT void				RaiseException(swag_uint32_t, swag_uint32_t, swag_uint32_t, void*);
+SWAG_IMPORT void				MessageBoxA(void*, void*, void*, swag_uint32_t);
 
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
@@ -192,6 +193,7 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 		__print(": native code assertion failed\n");
 
 #ifdef _WIN32
+	MessageBoxA(0, "Swag Assertion failed", "Assert", 0x16);
 	RaiseException(0x666, 0, 0, 0);
 #endif
 	exit(-1);

@@ -14,8 +14,15 @@ bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
     auto child1 = node->childs[1];
     auto child2 = node->childs[2];
 
-    reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
+    if (!(child0->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, child0, child0->typeInfo, child0->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        child0->doneFlags |= AST_DONE_CAST1;
+    }
 
+    reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
     emitInstruction(context, ByteCodeOp::JumpNotTrue, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
 
     // If true
