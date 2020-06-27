@@ -14,7 +14,7 @@ void DiagnosticInfos::log()
 {
     if (steps.empty())
         return;
-    if (!g_CommandLine.debug)
+    if (!g_CommandLine.devMode)
         return;
 
     g_Log.setColor(LogColor::DarkYellow);

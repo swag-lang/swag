@@ -16,7 +16,7 @@ JobResult ModuleTestJob::execute()
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().message = "ModuleTestJob - " + path.string();
     }

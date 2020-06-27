@@ -30,6 +30,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
+    addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "developer mode");
 
     addArg("--config", nullptr, CommandLineType::String, &cmdLine->config, nullptr, "set the build config");
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64", "set the build architecture");

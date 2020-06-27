@@ -32,6 +32,7 @@ struct CommandLine
     bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
+    bool devMode          = false;
 
     // Language options
     uint32_t staticArrayMaxSize = 32 * 1024 * 1024;

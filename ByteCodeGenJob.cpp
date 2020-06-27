@@ -277,7 +277,7 @@ JobResult ByteCodeGenJob::execute()
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().message    = "ByteCodeGenJob";
         g_diagnosticInfos.last().sourceFile = sourceFile;
@@ -314,7 +314,7 @@ JobResult ByteCodeGenJob::execute()
             auto node = nodes.back();
 
 #ifdef SWAG_HAS_ASSERT
-            if (g_CommandLine.debug)
+            if (g_CommandLine.devMode)
             {
                 g_diagnosticInfos.last().node = node;
             }

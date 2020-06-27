@@ -234,7 +234,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
         g_diagnosticInfos.last().sourceFile = tmpFile;
@@ -276,7 +276,7 @@ JobResult SyntaxJob::execute()
 {
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().message    = "SyntaxJob";
         g_diagnosticInfos.last().sourceFile = sourceFile;

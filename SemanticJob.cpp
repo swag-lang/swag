@@ -78,7 +78,7 @@ JobResult SemanticJob::execute()
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().message    = "SemanticJob";
         g_diagnosticInfos.last().sourceFile = sourceFile;
@@ -98,7 +98,7 @@ JobResult SemanticJob::execute()
         context.node = node;
 
 #ifdef SWAG_HAS_ASSERT
-        if (g_CommandLine.debug)
+        if (g_CommandLine.devMode)
         {
             g_diagnosticInfos.last().node = node;
         }

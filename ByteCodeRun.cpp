@@ -1871,7 +1871,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext)
     diag.showDiagnosticInfos = true;
     runContext->bc->sourceFile->report(diag);
 
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         SWAG_ASSERT(false);
         return EXCEPTION_CONTINUE_EXECUTION;

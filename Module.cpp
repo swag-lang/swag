@@ -102,7 +102,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.last().sourceFile = sourceFile;
         g_diagnosticInfos.last().node       = node;

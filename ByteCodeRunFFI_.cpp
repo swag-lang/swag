@@ -148,7 +148,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         return;
 
 #ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.push();
         AstFuncDecl* funcDecl               = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
@@ -286,7 +286,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
 
 #ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.debug)
+    if (g_CommandLine.devMode)
     {
         g_diagnosticInfos.pop();
     }

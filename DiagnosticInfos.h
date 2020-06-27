@@ -50,13 +50,13 @@ struct PushDiagnosticInfos
 {
     PushDiagnosticInfos()
     {
-        if (g_CommandLine.debug)
+        if (g_CommandLine.devMode)
             g_diagnosticInfos.push();
     }
 
     ~PushDiagnosticInfos()
     {
-        if (g_CommandLine.debug)
+        if (g_CommandLine.devMode)
             g_diagnosticInfos.pop();
     }
 };
