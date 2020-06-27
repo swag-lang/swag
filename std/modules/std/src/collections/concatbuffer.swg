@@ -63,13 +63,12 @@ namespace std.collections
         {  
             if firstBucket == null
                 return
-            ptr := cast(*void) firstBucket
+            ptr := firstBucket
             while ptr != null
             {                    
-                nextPtr := cast(**void) ptr
-                nextPtrValue := nextPtr[0]        
-                memory.free(&allocator, ptr)
-                ptr = nextPtrValue
+                nextPtr := bucketToNext(self,  ptr)
+                memory.free(&allocator, cast(*void) ptr)
+                ptr = nextPtr
             }
         }
 
@@ -127,11 +126,20 @@ namespace std.collections
                 usedBuckets = curBucket ? 1 : 0
             }
 
+            /// Get the address of datas in a given bucket pointer
             #[swag.inline]
             func bucketToDatas(using self, bucket: *u8)->*u8
             {
                 return bucket + @sizeof(*void)
             }
+
+            /// Get the address of the next bucket
+            #[swag.inline]
+            func bucketToNext(using self, bucket: *u8)->*u8
+            {
+                nextPtr := cast(**u8) bucket
+                return nextPtr[0]
+            }            
 
             /// Add one byte to the buffer
             func addByte(using self, byte: u8)
@@ -162,13 +170,18 @@ namespace std.collections
                 {
                     ptr = bucketToDatas(self, curBucket) + curCount
                     memory.copy(ptr, slicePtr, remain)
+
                     num -= remain
                     curCount = sizeBucket
-                    growBuckets(self, 1)
                     slicePtr += remain
+                    if !num
+                        return
+                    growBuckets(self, 1)
                     remain = sizeBucket
                 }
 
+                // We should have enough size in the last bucket to store the
+                // rest of the slice
                 ptr = bucketToDatas(self, curBucket) + curCount
                 memory.copy(ptr, slicePtr, num)
                 curCount += num
