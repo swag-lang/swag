@@ -193,7 +193,9 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 		__print(": native code assertion failed\n");
 
 #ifdef _WIN32
-	MessageBoxA(0, "Swag Assertion failed", "Assert", 0x16);
+#ifdef SWAG_DEVMODE
+	MessageBoxA(0, "[Developer Mode] Assertion failed", "Native Assert", 0);
+#endif
 	RaiseException(0x666, 0, 0, 0);
 #endif
 	exit(-1);
@@ -210,6 +212,9 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
 {
+	if(g_CommandLine.devMode)
+		CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
+
     emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     emitSeparator(bufferC, "INTRINSICS");
