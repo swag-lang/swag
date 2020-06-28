@@ -5,15 +5,15 @@ namespace std.text
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
 
-    public struct String
+    public readonly struct String
     {
-        readonly buffer:    *u8
-        readonly length:    u32
-        readonly capacity:  u32        
-        allocator:          IAllocator
+        buffer:     *u8
+        length:     u32
+        capacity:   u32        
+        allocator:  IAllocator
 
-        #[swag.nodoc]
-        padding: [SmallSizeInternal] u8
+        //#[swag.nodoc]
+        internal padding: [SmallSizeInternal] u8
     }
     
     impl String
