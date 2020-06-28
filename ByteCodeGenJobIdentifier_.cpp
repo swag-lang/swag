@@ -3,8 +3,10 @@
 #include "SymTable.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
+#include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "Module.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -40,8 +42,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             reserveRegisterRC(context, node->resultRegisterRC, 2);
             node->parent->resultRegisterRC = node->resultRegisterRC;
             auto inst                      = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            auto storageOffset             = node->resolvedSymbolOverload->storageOffset;
-            inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
+            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+            auto storageOffset = node->resolvedSymbolOverload->storageOffset;
+            inst->c.u64        = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
             return true;
         }
 
@@ -52,6 +55,22 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            return true;
+        }
+
+        if (typeInfo->isNative(NativeTypeKind::String))
+        {
+            // Not yet stored in the constant segment
+            unique_lock lk(node->resolvedSymbolName->mutex);
+            if (node->resolvedSymbolOverload->storageOffset == UINT32_MAX)
+                node->resolvedSymbolOverload->storageOffset = context->sourceFile->module->constantSegment.addString(node->resolvedSymbolOverload->computedValue.text);
+
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            node->parent->resultRegisterRC = node->resultRegisterRC;
+            auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1], (uint32_t)node->resolvedSymbolOverload->computedValue.text.length());
             return true;
         }
 

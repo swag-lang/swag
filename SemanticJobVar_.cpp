@@ -660,11 +660,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 
-    // A constant does nothing on backend, except if it can't be stored in a register
-    uint32_t storageOffset = UINT32_MAX;
     if (isCompilerConstant)
     {
-        node->inheritComputedValue(node->assignment);
         if (symbolFlags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_LOCAL))
         {
             if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
@@ -690,7 +687,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto     typeInfo      = TypeManager::concreteType(node->typeInfo);
+    uint32_t storageOffset = UINT32_MAX;
 
     // Collect all attributes for the variable
     SymbolAttributes attributes;
@@ -700,7 +698,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
-        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+
+        // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
+        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+
+        node->inheritComputedValue(node->assignment);
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {

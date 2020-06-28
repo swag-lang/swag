@@ -611,7 +611,6 @@
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="CopyFileJob.h" />
     <ClInclude Include="File.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -635,6 +634,9 @@
     </ClInclude>
     <ClInclude Include="TypeTableJob.h">
       <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyFileJob.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
