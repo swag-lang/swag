@@ -1,3 +1,4 @@
+//#[swag.printbc]
 #test
 {  
     const a = 1

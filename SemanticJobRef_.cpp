@@ -219,7 +219,32 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Native:
         if (arrayType->nativeType == NativeTypeKind::String)
+        {
+            // Can we just change the computed value to a single u8 ?
+            if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+            {
+                if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+                {
+                    arrayNode->flags |= AST_VALUE_COMPUTED;
+                    auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
+                    switch (arrayNode->access->typeInfo->nativeType)
+                    {
+                    case NativeTypeKind::S32:
+                        arrayNode->computedValue.reg.u8 = text[arrayNode->access->computedValue.reg.s32];
+                        break;
+                    case NativeTypeKind::U32:
+                        arrayNode->computedValue.reg.u8 = text[arrayNode->access->computedValue.reg.u32];
+                        break;
+                    default:
+                        SWAG_ASSERT(false);
+                        break;
+                    }
+                }
+            }
+
             arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+        }
+
         break;
 
     case TypeInfoKind::Pointer:
