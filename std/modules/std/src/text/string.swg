@@ -12,7 +12,6 @@ namespace std.text
         capacity:   u32        
         allocator:  IAllocator
 
-        //#[swag.nodoc]
         internal padding: [SmallSizeInternal] u8
     }
     
