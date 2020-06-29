@@ -6,6 +6,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "DocContent.h"
+#include "DocModuleJob.h"
 
 thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 
@@ -73,6 +74,12 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
         name = ((TypeInfoPointer*) typeInfo)->finalType->scopedName;
     else
         name = typeInfo->scopedName;
+
+    if (name.find("const ") == 0)
+    {
+        auto tmp = name;
+        name     = tmp.c_str() + 6;
+    }
 
     return name;
 }
@@ -198,6 +205,8 @@ JobResult DocNodeJob::execute()
     OutputFile outFile;
     auto       node = nodes.front();
     outFile.path    = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name.c_str() + ".html";
+    if (docFileAlreadyDone(outFile.path))
+        return JobResult::ReleaseJob;
 
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));

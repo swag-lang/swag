@@ -339,6 +339,8 @@ void Utf8::pop_back()
 
 int Utf8::find(const char* str) const
 {
+    if (!buffer)
+        return -1;
     auto pz = strstr(buffer, str);
     if (!pz)
         return -1;
@@ -435,21 +437,21 @@ void Utf8::append(char32_t utf)
     }
     else if (utf <= 0x07FF)
     {
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x1F) | 0xC0);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 6) & 0x1F) | 0xC0);
+        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0xFFFF)
     {
-        buffer[count++] = (uint8_t) (((utf >> 12) & 0x0F) | 0xE0);
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 12) & 0x0F) | 0xE0);
+        buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0x10FFFF)
     {
-        buffer[count++] = (uint8_t) (((utf >> 18) & 0x07) | 0xF0);
-        buffer[count++] = (uint8_t) (((utf >> 12) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 18) & 0x07) | 0xF0);
+        buffer[count++] = (uint8_t)(((utf >> 12) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
     }
     else
     {

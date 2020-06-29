@@ -7,6 +7,7 @@
 #include "AstNode.h"
 #include "DocHtmlHelper.h"
 #include "DocContent.h"
+#include "DocModuleJob.h"
 
 thread_local Pool<DocScopeJob> g_Pool_docScopeJob;
 
@@ -19,24 +20,57 @@ JobResult DocScopeJob::execute()
         case ScopeKind::Namespace:
         case ScopeKind::File:
         case ScopeKind::Module:
-        case ScopeKind::Struct:
-        case ScopeKind::Enum:
-            auto scopeJob    = g_Pool_docScopeJob.alloc();
+        {
+            if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+                return JobResult::ReleaseJob;
+            auto scopeJob = g_Pool_docScopeJob.alloc();
             scopeJob->module = module;
-            scopeJob->scope  = child;
+            scopeJob->scope = child;
             g_ThreadMgr.addJob(scopeJob);
             break;
+        }
+
+        case ScopeKind::Struct:
+        {
+            auto scopeJob = g_Pool_docScopeJob.alloc();
+            scopeJob->module = module;
+            scopeJob->scope = child;
+            g_ThreadMgr.addJob(scopeJob);
+            break;
+        }
+
+        case ScopeKind::Enum:
+        {
+            if (scope->publicEnum.find(child->owner) != scope->publicEnum.end())
+                continue;
+            auto scopeJob = g_Pool_docScopeJob.alloc();
+            scopeJob->module = module;
+            scopeJob->scope = child;
+            g_ThreadMgr.addJob(scopeJob);
+            break;
+        }
         }
     }
 
     if (scope->name.empty())
         return JobResult::ReleaseJob;
-    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
-        return JobResult::ReleaseJob;
+
+    switch (scope->kind)
+    {
+    case ScopeKind::Namespace:
+    case ScopeKind::File:
+    case ScopeKind::Module:
+        if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+            return JobResult::ReleaseJob;
+        break;
+    }
 
     OutputFile outFile;
     scope->fullname = scope->parentScope ? Scope::makeFullName(scope->parentScope->fullname, scope->name) : scope->name;
     outFile.path    = module->documentPath.string() + "/" + scope->fullname + ".html";
+    if (docFileAlreadyDone(outFile.path))
+        return JobResult::ReleaseJob;
+
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
     DocHtmlHelper::summary(outFile, scope->owner->docContent ? scope->owner->docContent->docSummary : Utf8(""));
@@ -46,7 +80,7 @@ JobResult DocScopeJob::execute()
     /////////////////////////////////
     if (scope->kind == ScopeKind::Struct)
     {
-        auto                         typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
 
         VectorNative<TypeInfoParam*> rwmembers, romembers;
         for (auto param : typeStruct->fields)
@@ -204,6 +238,13 @@ JobResult DocScopeJob::execute()
     {
         DocHtmlHelper::sectionTitle1(outFile, "Types");
         DocHtmlHelper::table(outFile, scope, scope->publicTypeAlias);
+    }
+
+    // Content
+    ///////////////////////////
+    if (scope->owner && scope->owner->docContent && !scope->owner->docContent->docContent.empty())
+    {
+        outFile.addString(scope->owner->docContent->docContent);
     }
 
     DocHtmlHelper::htmlEnd(outFile);

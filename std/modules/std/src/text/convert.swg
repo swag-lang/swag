@@ -2,19 +2,30 @@ namespace std.text
 {
     using std.collections, std.diagnostics
 
+    /// Format structure to convert an integer to a string
+    ///
+    /// # See also
+    /// * [std.text.convertInt]
     public struct ConvertFormatInt
     {
+        /// The unsigned  value to convert to string
         unsignedValue:  u64
+
+        /// The signed  value to convert to string
         #[swag.offset("unsignedValue")]
         signedValue:    s64
 
+        /// Number of valid bits in the value
         bits:           u32 = 32
+        /// Base of the conversion (2 for binary, 10 for decimal, 16 for hexadecimal)
         base:           u32 = 10
+        /// Is the value signed or unsigned
         signed:         bool
     }
 
     public 
     {
+        /// Convert an integer to a string, and put the result in a [ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             const tbl = "0123456789ABCDEF"
@@ -43,6 +54,7 @@ namespace std.text
             buf.addBytes(cast([..] u8) {&tmp[cpt], 63 - cpt});
         }
 
+        /// Convert an s32 integer to a string, and put the result in a [ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s32)
         {
             var fmt: ConvertFormatInt
