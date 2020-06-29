@@ -7,19 +7,6 @@
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 
-mutex       g_docLockDoneFiles;
-set<string> g_docDoneFiles;
-
-bool docFileAlreadyDone(const string& path)
-{
-    unique_lock lk(g_docLockDoneFiles);
-    auto        it = g_docDoneFiles.find(path);
-    if (it != g_docDoneFiles.end())
-        return true;
-    g_docDoneFiles.insert(path);
-    return false;
-}
-
 JobResult DocModuleJob::execute()
 {
     g_Log.messageHeaderCentered("Documenting", module->name.c_str());

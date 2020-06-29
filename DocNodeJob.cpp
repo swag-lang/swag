@@ -205,8 +205,6 @@ JobResult DocNodeJob::execute()
     OutputFile outFile;
     auto       node = nodes.front();
     outFile.path    = module->documentPath.string() + "/" + node->ownerScope->fullname + "." + node->name.c_str() + ".html";
-    if (docFileAlreadyDone(outFile.path))
-        return JobResult::ReleaseJob;
 
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s.%s %s", node->ownerScope->name.c_str(), node->name.c_str(), "function"));

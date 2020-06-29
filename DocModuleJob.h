@@ -8,4 +8,3 @@ struct DocModuleJob : public Job
 };
 
 extern thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
-extern bool                            docFileAlreadyDone(const string& path);
