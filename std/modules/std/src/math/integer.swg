@@ -35,5 +35,17 @@ namespace std.math
                 i <<= 1
             return i
         }
+
+        #[swag.constexpr]
+        {
+            /// Returns the absolute value
+            func abs(x: s64) => x < 0 ? -x : x
+            /// Returns the absolute value
+            func abs(x: s32) => x < 0 ? -x : x
+            /// Returns the absolute value
+            func abs(x: s16) => x < 0 ? -x : x
+            /// Returns the absolute value
+            func abs(x: s8) => x < 0 ? -x : x
+        }
     }
 }

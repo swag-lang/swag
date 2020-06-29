@@ -67,6 +67,7 @@ static void forceConstType(AstTypeExpression* typeNode)
             if (!typeNode->typeInfo->constCopy)
             {
                 auto copyType = typeNode->typeInfo->clone();
+                copyType->computeName();
                 copyType->setConst();
                 typeNode->typeInfo->constCopy = copyType;
             }

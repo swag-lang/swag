@@ -493,9 +493,15 @@ namespace Ast
             for (int i = 0; i < typeNode->ptrCount; i++)
                 concat.addChar('*');
             if (typeNode->identifier)
+            {
                 SWAG_CHECK(output(concat, typeNode->identifier));
+            }
             else
+            {
+                SWAG_ASSERT(!node->token.literalType->name.empty());
                 concat.addString(node->token.literalType->name);
+            }
+
             break;
         }
 
