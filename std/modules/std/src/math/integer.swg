@@ -40,11 +40,8 @@ namespace std.math
         {
             /// Returns the absolute value
             func abs(x: s64) => x < 0 ? -x : x
-            /// Returns the absolute value
             func abs(x: s32) => x < 0 ? -x : x
-            /// Returns the absolute value
             func abs(x: s16) => x < 0 ? -x : x
-            /// Returns the absolute value
             func abs(x: s8) => x < 0 ? -x : x
         }
     }
