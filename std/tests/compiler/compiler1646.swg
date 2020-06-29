@@ -1,0 +1,12 @@
+#module compiler1646
+#unittest error
+
+//#[swag.printbc]
+#run
+{
+    const tbl = "0123456789ABCDEF"
+    c := tbl[100]
+    //@print(cast(s64) c)
+    @assert(tbl[0] == cast(u8) "0"'char)
+    @assert(tbl[1] == cast(u8) "1"'char)
+}

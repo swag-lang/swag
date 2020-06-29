@@ -1,6 +1,6 @@
 namespace std.text
 {
-    using std.collections
+    using std.collections, std.diagnostics
 
     public struct ConvertFormatInt
     {
@@ -18,7 +18,7 @@ namespace std.text
         const tbl = "0123456789ABCDEF"
         var value: u64 = fmt.signed ? acast -fmt.signedValue : fmt.unsignedValue
 
-        diagnostics.debug.assert(fmt.bits > 0 && fmt.bits <= 64, "bad 'bits' value (should be > 0 and <= 64)")
+        debug.assert(fmt.bits > 0 && fmt.bits <= 64, "bad 'bits' value (should be > 0 and <= 64)")
         loop fmt.bits
         {
             //c := tbl[value % fmt.base]

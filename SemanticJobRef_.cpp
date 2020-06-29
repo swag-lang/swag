@@ -203,6 +203,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto arrayAccess       = arrayNode->access;
     auto arrayType         = TypeManager::concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerDeRef;
 
@@ -227,14 +228,24 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 {
                     arrayNode->flags |= AST_VALUE_COMPUTED;
                     auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
-                    switch (arrayNode->access->typeInfo->nativeType)
+                    switch (arrayAccess->typeInfo->nativeType)
                     {
                     case NativeTypeKind::S32:
-                        arrayNode->computedValue.reg.u8 = text[arrayNode->access->computedValue.reg.s32];
+                    {
+                        auto idx = arrayAccess->computedValue.reg.s32;
+                        if (idx < 0 || idx >= text.length())
+                            return context->report({arrayNode->access, format("index out of range (index is '%d', maximum index is '%u')", idx, text.length() - 1)});
+                        arrayNode->computedValue.reg.u8 = text[idx];
                         break;
+                    }
                     case NativeTypeKind::U32:
-                        arrayNode->computedValue.reg.u8 = text[arrayNode->access->computedValue.reg.u32];
+                    {
+                        auto idx = arrayAccess->computedValue.reg.u32;
+                        if (idx >= (uint32_t) text.length())
+                            return context->report({arrayNode->access, format("index out of range (index is '%u', maximum index is '%u')", idx, text.length() - 1)});
+                        arrayNode->computedValue.reg.u8 = text[idx];
                         break;
+                    }
                     default:
                         SWAG_ASSERT(false);
                         break;
