@@ -1,12 +1,12 @@
 namespace std.collections
 {
-    using swag, std.diagnostics
+    using std.diagnostics, std.text
 
     /// Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
     /// the buffer needs to increase its size. This is the main difference with [Array]
     public readonly struct ConcatBuffer
     {
-        allocator:      const IAllocator 
+        allocator:      const swag.IAllocator 
         
         firstBucket:    *u8
         curBucket:      *u8
@@ -72,17 +72,22 @@ namespace std.collections
             }
         }
 
+        func count(using self)->u32 
+        {
+            if curBucket == null
+                return 0
+            return ((usedBuckets - 1) * sizeBucket) + curCount            
+        }
+
         public
         {
-            #[nodoc]
+            #[swag.nodoc]
             func opCount(using self)->u32
             {
-                if curBucket == null
-                    return 0
-                return ((usedBuckets - 1) * sizeBucket) + curCount
+                return count(self)
             }
 
-            #[nodoc]
+            #[swag.nodoc]
             func opDrop(using self)
             {
                 release(self)
@@ -94,7 +99,7 @@ namespace std.collections
             /// Associate an allocator with the buffer.
             ///
             /// The allocator can only be changed if the buffer has no pending buckets.
-            func setAllocator(using self, alloc: IAllocator)
+            func setAllocator(using self, alloc: swag.IAllocator)
             {
                 diagnostics.debug.assert(firstBucket == null, "bucket is not empty")
                 allocator = alloc;
@@ -185,7 +190,34 @@ namespace std.collections
                 ptr = bucketToDatas(self, curBucket) + curCount
                 memory.copy(ptr, slicePtr, num)
                 curCount += num
-            }            
+            }  
+
+            /// Convert buffer to a [String]
+            func toString(using self) -> String
+            {
+                var result: String
+                if firstBucket == null
+                    return result
+
+                totalCpt := count(self)
+                result.ensureCapacity(totalCpt + 1)
+
+                ptr := firstBucket
+                dst := result.buffer
+
+                while totalCpt
+                {                    
+                    nextPtr := bucketToNext(self,  ptr)
+                    offset := 0'u32//math.min(totalCpt, sizeBucket)
+                    memory.copy(dst, ptr, offset)
+
+                    totalCpt -= offset
+                    dst += offset
+                    ptr = nextPtr
+                }
+
+                return result
+            }
         }
     }
 }

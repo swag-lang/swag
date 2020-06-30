@@ -51,9 +51,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             auto returnExpression = node->childs.front();
             if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
             {
-                if (returnType->kind == TypeInfoKind::Struct)
+                auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
+                if (inlineReturnType->kind == TypeInfoKind::Struct)
                     return internalError(context, "emitReturn, invalid inline return");
-                else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+                else if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
                     return internalError(context, "emitReturn, invalid inline return");
                 else
                 {
