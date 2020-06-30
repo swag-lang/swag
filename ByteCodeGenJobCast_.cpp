@@ -673,10 +673,14 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     }
     else if (fromTypeInfo->kind == TypeInfoKind::TypeList)
     {
-        auto fromTypeList      = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
-        int  diff              = fromTypeList->childs.front()->sizeOf / toTypeSlice->pointedType->sizeOf;
-        auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
-        inst->b.u32            = diff;
+        if (!(exprNode->flags & AST_SLICE_INIT_EXPRESSION))
+        {
+            auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
+            int  diff         = fromTypeList->childs.front()->sizeOf / toTypeSlice->pointedType->sizeOf;
+            auto inst         = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+            inst->b.u32       = diff;
+        }
+
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Array)

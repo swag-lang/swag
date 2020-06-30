@@ -175,7 +175,6 @@ namespace std.collections
                 {
                     ptr = bucketToDatas(self, curBucket) + curCount
                     memory.copy(ptr, slicePtr, remain)
-
                     num -= remain
                     curCount = sizeBucket
                     slicePtr += remain
@@ -189,8 +188,8 @@ namespace std.collections
                 // rest of the slice
                 ptr = bucketToDatas(self, curBucket) + curCount
                 memory.copy(ptr, slicePtr, num)
-                curCount += num
-            }  
+                curCount += num  
+            }
 
             /// Convert buffer to a [String]
             func toString(using self) -> String
@@ -199,21 +198,18 @@ namespace std.collections
                 if firstBucket == null
                     return result
 
-                totalCpt := count(self)
-                result.ensureCapacity(totalCpt + 1)
-
                 ptr := firstBucket
-                dst := result.buffer
+                totalCpt := count(self)
 
+                result.ensureCapacity(totalCpt + 1)
                 while totalCpt
                 {                    
-                    nextPtr := bucketToNext(self,  ptr)
-                    offset := 0'u32//math.min(totalCpt, sizeBucket)
-                    memory.copy(dst, ptr, offset)
+                    offset := math.min(totalCpt, sizeBucket)                  
+                    ptrData := bucketToDatas(self, ptr)
+                    result.append(cast(string) {ptrData, offset})
 
                     totalCpt -= offset
-                    dst += offset
-                    ptr = nextPtr
+                    ptr = bucketToNext(self,  ptr)
                 }
 
                 return result

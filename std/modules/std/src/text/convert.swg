@@ -51,7 +51,7 @@ namespace std.text
                 cpt -= 1
             }
 
-            buf.addBytes(cast([..] u8) {&tmp[cpt], 63 - cpt});
+            buf.addBytes(cast([..] u8) {&tmp[cpt + 1], 63 - cpt});
         }
 
         /// Convert an s32 integer to a string, and put the result in a [ConcatBuffer]
