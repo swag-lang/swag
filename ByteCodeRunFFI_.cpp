@@ -39,7 +39,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     if (!fn)
     {
         ComputedValue foreignValue;
-        if(typeFunc->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        if (typeFunc->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
             fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), foreignValue.text);
     }
 
@@ -103,6 +103,7 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         typeInfo->kind == TypeInfoKind::Struct ||
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::Variadic ||
         typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->kind == TypeInfoKind::Interface)
         return &ffi_type_pointer;
@@ -170,6 +171,27 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     ffiArgs.clear();
     ffiArgsValues.clear();
     Register* sp = (Register*) context->sp;
+
+    // Variadic parameters are first on the stack, so need to treat them before
+    if (numParameters)
+    {
+        auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters.back())->typeInfo;
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            // Pointer
+            ffiArgs.push_back(ffiFromTypeInfo(typeParam));
+            ffiArgsValues.push_back(&sp->pointer);
+            sp++;
+
+            // Count
+            ffiArgs.push_back(&ffi_type_uint64);
+            ffiArgsValues.push_back(&sp->u64);
+            sp++;
+
+            numParameters--;
+        }
+    }
+
     for (int i = 0; i < numParameters; i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
@@ -184,9 +206,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
 
         if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
+            // Pointer
             ffiArgsValues.push_back(&sp->pointer);
             sp++;
 
+            // Count
             ffiArgs.push_back(&ffi_type_uint32);
             ffiArgsValues.push_back(&sp->u32);
             sp++;

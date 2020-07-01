@@ -62,7 +62,9 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array || typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->isNative(NativeTypeKind::String))
     {
         cType = "void*";
         return true;
@@ -190,11 +192,31 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     concat.addChar('(');
 
     int numCallParams = (int) typeFuncBC->parameters.size();
+
+    // Variadic are first
+    bool first = true;
+    if (numCallParams)
+    {
+        auto typeParam = TypeManager::concreteType(typeFuncBC->parameters.back()->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            auto index = pushParams.back();
+            pushParams.pop_back();
+            CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            index = pushParams.back();
+            pushParams.pop_back();
+            CONCAT_STR_1(concat, ", r[", index, "].u32");
+            numCallParams--;
+            first = false;
+        }
+    }
+
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
-        if (idxCall)
+        if (!first)
             concat.addChar(',');
+        first = false;
 
         auto index = pushParams.back();
         pushParams.pop_back();
@@ -323,8 +345,25 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         CONCAT_FIXED_STR(concat, "\trr0.pointer = result;\n");
     }
 
-    for (auto param : typeFunc->parameters)
+    auto numParams = typeFunc->parameters.size();
+
+    // Variadic must be pushed first
+    if (numParams)
     {
+        auto param     = typeFunc->parameters.back();
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
+            concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
+            idx += 2;
+            numParams--;
+        }
+    }
+
+    for (int i = 0; i < numParams; i++)
+    {
+        auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
@@ -335,7 +374,9 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
         }
-        else if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Array || typeParam->kind == TypeInfoKind::Interface)
+        else if (typeParam->kind == TypeInfoKind::Struct ||
+                 typeParam->kind == TypeInfoKind::Array ||
+                 typeParam->kind == TypeInfoKind::Interface)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }
@@ -501,9 +542,27 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     bool first = true;
     if (node->parameters)
     {
-        Utf8 cType;
-        for (auto param : node->parameters->childs)
+        // Variadic parameters are always first
+        auto numParams = node->parameters->childs.size();
+        if (numParams)
         {
+            auto param = node->parameters->childs.back();
+            if (param->typeInfo->kind == TypeInfoKind::Variadic)
+            {
+                CONCAT_FIXED_STR(buffer, "void* ");
+                buffer.addString(param->name);
+                CONCAT_FIXED_STR(buffer, ",swag_uint32_t ");
+                buffer.addString(param->name);
+                CONCAT_FIXED_STR(buffer, "_count");
+                numParams--;
+                first = false;
+            }
+        }
+
+        Utf8 cType;
+        for (int i = 0; i < numParams; i++)
+        {
+            auto param = node->parameters->childs[i];
             if (!first)
                 buffer.addChar(',');
             first = false;
@@ -515,7 +574,7 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
 
             if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
             {
-                CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
+                CONCAT_FIXED_STR(buffer, ",swag_uint32_t ");
                 buffer.addString(param->name);
                 CONCAT_FIXED_STR(buffer, "_count");
             }
