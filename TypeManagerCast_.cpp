@@ -38,7 +38,25 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         SWAG_ASSERT(fromNode);
-        context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+
+        // Is there an explicit cast possible ?
+        if (!(castFlags & CASTFLAG_EXPLICIT))
+        {
+            if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            {
+                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()};
+                diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
+                context->report(diag);
+            }
+            else
+            {
+                context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            }
+        }
+        else
+        {
+            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+        }
     }
 
     return false;
@@ -2220,7 +2238,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
         {
             if (toType->isNative(NativeTypeKind::U64) && fromType->kind == TypeInfoKind::Pointer)
-            { 
+            {
                 // this is fine
             }
             else

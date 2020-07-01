@@ -12,5 +12,20 @@ using std.text, std.collections
     var buf: ConcatBuffer
     convertInt(&buf, 123456's32)
     str := buf.toString()
-    console.write(cast(string) str)
+    @assert(str == "123456")
+}
+
+#test
+{
+    var buf: ConcatBuffer
+    var fmt: ConvertFormatInt
+
+    fmt.unsignedValue = 0xFFFFFFFF
+    fmt.signed = false
+    fmt.base = 16
+    fmt.bits = 32
+    convertInt(&buf, fmt)
+    str := buf.toString()
+    @assert(str == "FFFFFFFF")
+    //console.write(cast(string) str)
 }

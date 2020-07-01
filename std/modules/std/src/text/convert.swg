@@ -40,7 +40,7 @@ namespace std.text
                 c := tbl[value % fmt.base]
                 tmp[cpt] = c
                 cpt -= 1
-                value /= 10
+                value /= cast(u64) fmt.base
                 if !value
                     break
             }
