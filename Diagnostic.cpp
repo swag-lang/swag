@@ -59,7 +59,7 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("remark => ");
+        g_Log.print("remark: ");
         g_Log.print(codeComment);
         g_Log.eol();
     }

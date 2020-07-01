@@ -27,5 +27,5 @@ using std.text, std.collections
     convertInt(&buf, fmt)
     str := buf.toString()
     @assert(str == "FFFFFFFF")
-    //console.write(cast(string) str)
+    console.write(/*cast(string)*/ str)
 }
