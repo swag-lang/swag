@@ -16,7 +16,6 @@ namespace aa1650
 {
     x := @typeof(aa1650.B)
     y := @typeof(bool)
-    @print(x.name)
     if(x == y)
     {
         @assert(false)

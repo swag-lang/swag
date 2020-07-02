@@ -10,7 +10,7 @@ struct Point
 func(T) toto()
 {
 	t := @typeof(T)
-	@assert(t.name == "Point")
+	@assert(t.name == "compiler793.Point")
 	if(t == @typeof(Point))
 		cpt = 1
 }

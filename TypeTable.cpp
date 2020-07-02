@@ -181,6 +181,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
     unique_lock lk(mutexTypes);
     unique_lock lk1(module->constantSegment.mutex);
+    typeInfo->computeName();
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage));
     return true;
 }
@@ -248,7 +249,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->name, OFFSETOF(concreteTypeInfoValue->name)));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->scopedName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 

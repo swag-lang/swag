@@ -9,5 +9,5 @@ var g = @countof(@typeof(Days).name)
 
 #test
 {
-	@assert(g == 4)
+	@assert(g == 17)
 }

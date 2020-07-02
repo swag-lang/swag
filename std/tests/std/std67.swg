@@ -10,7 +10,7 @@ struct BABA
 {
     var arr: Array'BABA
     //@print(@typeof(arr).name)
-    @assert(@typeof(arr).name == "Array'(BABA)")
+    @assert(@typeof(arr).name == "std.collections.Array'(BABA)")
 
     var x: BABA
     arr.emplaceBack(&x)
