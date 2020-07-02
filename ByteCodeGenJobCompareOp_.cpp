@@ -64,6 +64,9 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
 
+        // Special case for typeinfos, as this is not safe to just compare pointers.
+        // The same typeinfo can be different if defined in two different modules, so we need
+        // to make a compare by name too
         if (typeInfo->scopedName == "const *swag.TypeInfo")
         {
             emitInstruction(context, ByteCodeOp::JumpTrue, r2);
