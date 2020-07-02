@@ -315,6 +315,7 @@ void ByteCode::print()
             wprintf(bcNum, ip->a.s32 + i + 1);
             break;
         case ByteCodeOp::JumpZero32:
+        case ByteCodeOp::JumpZero64:
         case ByteCodeOp::JumpNotZero32:
         case ByteCodeOp::JumpNotTrue:
         case ByteCodeOp::JumpTrue:

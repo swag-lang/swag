@@ -211,7 +211,7 @@ namespace swag
 
     struct TypeInfo
     {
-        name:	string
+        name:	string  // Must remain first !! (see emitCompareOpEqual when comparing two typeinfos)
         kind: 	TypeInfoKind = ?
         sizeof: u32
     }

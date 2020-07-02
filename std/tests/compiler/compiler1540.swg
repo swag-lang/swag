@@ -16,6 +16,7 @@ impl X
     }    
 }
 
+//#[swag.printbc]
 #test
 {
     using swag

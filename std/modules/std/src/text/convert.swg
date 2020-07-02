@@ -29,9 +29,9 @@ namespace std.text
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
-            @print(type.name)
-            if(type == @typeof(s32))
-            @print("type.name")
+            //@print(type.name)
+            //if(type == @typeof(s32))
+            //@print("type.name")
             switch type
             {
                 case @typeof(s32):

@@ -16,6 +16,7 @@ BYTECODE_OP(IntrinsicTarget)
 BYTECODE_OP(IntrinsicIsByteCode)
 
 BYTECODE_OP(JumpZero32)
+BYTECODE_OP(JumpZero64)
 BYTECODE_OP(JumpNotZero32)
 BYTECODE_OP(JumpNotTrue)
 BYTECODE_OP(JumpTrue)

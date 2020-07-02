@@ -60,18 +60,59 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             return internalError(context, "emitCompareOpEqual, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
+
+        if (typeInfo->scopedName == "const *swag.TypeInfo")
+        {
+            emitInstruction(context, ByteCodeOp::JumpTrue, r2);
+            auto instBig = context->bc->numInstructions;
+
+            emitInstruction(context, ByteCodeOp::JumpZero64, r0);
+            auto instBig1 = context->bc->numInstructions;
+
+            emitInstruction(context, ByteCodeOp::JumpZero64, r1);
+            auto instBig2 = context->bc->numInstructions;
+
+            // Typeinfo pointers are not equal. Need to do the full check with the names
+            // (names are supposed to be the same even across all modules)
+            RegisterList tmpReg;
+            reserveRegisterRC(context, tmpReg, 4);
+            emitInstruction(context, ByteCodeOp::CopyRARB, tmpReg[0], r0);
+            emitInstruction(context, ByteCodeOp::DeRefStringSlice, tmpReg[0], tmpReg[1]);
+            emitInstruction(context, ByteCodeOp::CopyRARB, tmpReg[2], r1);
+            emitInstruction(context, ByteCodeOp::DeRefStringSlice, tmpReg[2], tmpReg[3]);
+
+            // Compare name lengths : if not true, exit the test
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, tmpReg[1], tmpReg[3], r2);
+            emitInstruction(context, ByteCodeOp::JumpNotTrue, r2);
+            auto instLength = context->bc->numInstructions;
+
+            // Compare names
+            emitInstruction(context, ByteCodeOp::CompareOpEqualString, tmpReg[0], tmpReg[2], r2);
+
+            // Jump here when comparison is done
+            context->bc->out[instLength - 1].b.s32 = context->bc->numInstructions - instLength;
+
+            freeRegisterRC(context, tmpReg);
+            context->bc->out[instBig - 1].b.s32  = context->bc->numInstructions - instBig;
+            context->bc->out[instBig1 - 1].b.s32 = context->bc->numInstructions - instBig1;
+            context->bc->out[instBig2 - 1].b.s32 = context->bc->numInstructions - instBig2;
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
     }
     else if (typeInfo->kind == TypeInfoKind::Interface)
     {
-		emitInstruction(context, ByteCodeOp::CompareOpEqualInterface, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::CompareOpEqualInterface, r0, r1, r2);
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-		// Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
-		emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+        // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
     }
     else
     {
