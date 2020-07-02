@@ -93,7 +93,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             auto instLength = context->bc->numInstructions;
 
             // Compare names
-            emitInstruction(context, ByteCodeOp::CompareOpEqualString, tmpReg[0], tmpReg[2], r2);
+            emitInstruction(context, ByteCodeOp::CompareOpEqualString, tmpReg[0], tmpReg[2], tmpReg[1]);
 
             // Jump here when comparison is done
             context->bc->out[instLength - 1].b.s32 = context->bc->numInstructions - instLength;

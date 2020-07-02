@@ -26,6 +26,7 @@ namespace std.text
     public 
     {
         /// Convert a value to a string, and put the result in a [ConcatBuffer]
+        //#[swag.printbc]
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
@@ -35,7 +36,7 @@ namespace std.text
             switch type
             {
                 case @typeof(s32):
-                    @print("toto")
+                    @print("toto\n")
 
             }
         }
