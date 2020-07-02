@@ -127,6 +127,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
             (returnType->isNative(NativeTypeKind::String)) ||
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
@@ -228,14 +229,19 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
         }
-        else if (typeParam->kind == TypeInfoKind::Slice ||
-                 typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->isNative(NativeTypeKind::String))
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             index = pushParams.back();
             pushParams.pop_back();
             CONCAT_STR_1(concat, ", r[", index, "].u32");
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            index = pushParams.back();
+            pushParams.pop_back();
+            CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {

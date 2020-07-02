@@ -104,8 +104,9 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Variadic ||
-        typeInfo->isNative(NativeTypeKind::String) ||
-        typeInfo->kind == TypeInfoKind::Interface)
+        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->isNative(NativeTypeKind::Any) ||
+        typeInfo->isNative(NativeTypeKind::String))
         return &ffi_type_pointer;
 
     if (typeInfo->kind != TypeInfoKind::Native)
@@ -206,13 +207,18 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
 
         if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
-            // Pointer
-            ffiArgsValues.push_back(&sp->pointer);
+            ffiArgsValues.push_back(&sp->pointer); // Pointer
             sp++;
-
-            // Count
-            ffiArgs.push_back(&ffi_type_uint32);
+            ffiArgs.push_back(&ffi_type_uint32); // Count
             ffiArgsValues.push_back(&sp->u32);
+            sp++;
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            ffiArgsValues.push_back(&sp->pointer); // Value
+            sp++;
+            ffiArgs.push_back(&ffi_type_pointer); // Type
+            ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
@@ -254,7 +260,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         // Special return
-        if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
+        if (returnType->kind == TypeInfoKind::Slice || 
+            returnType->isNative(NativeTypeKind::Any) || 
+            returnType->isNative(NativeTypeKind::String))
         {
             numParameters++;
             ffiArgs.push_back(&ffi_type_pointer);

@@ -25,6 +25,12 @@ namespace std.text
 
     public 
     {
+        /// Convert a value to a string, and put the result in a [ConcatBuffer]
+        func convertAny(buf: *ConcatBuffer, value: any)
+        {
+
+        }
+
         /// Convert an integer to a string, and put the result in a [ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
