@@ -28,7 +28,16 @@ namespace std.text
         /// Convert a value to a string, and put the result in a [ConcatBuffer]
         func convertAny(buf: *ConcatBuffer, value: any)
         {
+            type := @kindof(value)
+            @print(type.name)
+            if(type == @typeof(s32))
+            @print("type.name")
+            switch type
+            {
+                case @typeof(s32):
+                    @print("toto")
 
+            }
         }
 
         /// Convert an integer to a string, and put the result in a [ConcatBuffer]
