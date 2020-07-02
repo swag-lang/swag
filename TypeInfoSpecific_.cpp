@@ -680,7 +680,8 @@ void TypeInfoStruct::computeName()
         name += ")";
     }
 
-    scopedName = declNode->ownerScope->fullname;
+    if (declNode && declNode->ownerScope)
+        scopedName = declNode->ownerScope->fullname;
     if (!scopedName.empty())
         scopedName += ".";
     scopedName += name;

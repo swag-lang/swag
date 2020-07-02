@@ -181,13 +181,13 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
     unique_lock lk(mutexTypes);
     unique_lock lk1(module->constantSegment.mutex);
-    typeInfo->computeName();
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage));
     return true;
 }
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
+    typeInfo->computeName();
     if (typeInfo->kind != TypeInfoKind::Param)
         typeInfo = concreteList.registerType(typeInfo);
 
