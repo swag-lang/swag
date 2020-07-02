@@ -49,21 +49,20 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         SWAG_CHECK(swagTypeToCType(moduleToGen, typeInfoPointer->finalType, cType));
         uint32_t ptrCount = typeInfoPointer->ptrCount;
-        if (typeInfoPointer->finalType->kind == TypeInfoKind::Struct || typeInfoPointer->finalType->kind == TypeInfoKind::Slice)
+        if (typeInfoPointer->finalType->kind == TypeInfoKind::Struct ||
+            typeInfoPointer->finalType->isNative(NativeTypeKind::Any) ||
+            typeInfoPointer->finalType->kind == TypeInfoKind::Slice)
             ptrCount--;
         for (uint32_t i = 0; i < ptrCount; i++)
             cType += "*";
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
-    {
-        cType = "void*";
-        return true;
-    }
-
     if (typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isNative(NativeTypeKind::String))
     {
         cType = "void*";
@@ -229,7 +228,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
         }
-        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        else if (typeParam->kind == TypeInfoKind::Slice ||
+                 typeParam->isNative(NativeTypeKind::Any) ||
+                 typeParam->isNative(NativeTypeKind::String))
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             index = pushParams.back();
@@ -288,7 +289,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     }
 
     // Return by parameter
-    if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String))
     {
         if (numCallParams)
             concat.addChar(',');
@@ -374,6 +377,11 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
             concat.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
         }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s_value;\n", idx, param->namedParam.c_str());
+            concat.addStringFormat("\trr%d.pointer = %s_type;\n", idx + 1, param->namedParam.c_str());
+        }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Array ||
                  typeParam->kind == TypeInfoKind::Interface)
@@ -452,7 +460,9 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
-        if (returnType->kind == TypeInfoKind::Slice || returnType->isNative(NativeTypeKind::String))
+        if (returnType->kind == TypeInfoKind::Slice ||
+            returnType->isNative(NativeTypeKind::Any) ||
+            returnType->isNative(NativeTypeKind::String))
         {
             CONCAT_FIXED_STR(concat, "\t*((void **) result) = rr0.pointer;\n");
             CONCAT_FIXED_STR(concat, "\t*((void **) result + 1) = rr1.pointer;\n");
@@ -577,6 +587,12 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
                 CONCAT_FIXED_STR(buffer, ",swag_uint32_t ");
                 buffer.addString(param->name);
                 CONCAT_FIXED_STR(buffer, "_count");
+            }
+            else if (param->typeInfo->isNative(NativeTypeKind::Any))
+            {
+                CONCAT_FIXED_STR(buffer, "_value,void* ");
+                buffer.addString(param->name);
+                CONCAT_FIXED_STR(buffer, "_type");
             }
         }
     }
