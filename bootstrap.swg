@@ -254,11 +254,11 @@ namespace swag
 
     struct TypeInfoStruct
     {
-        base: 		TypeInfo
-        fields:		const [..] TypeInfoParam
-        methods:	const [..] TypeInfoParam
-        interfaces: const [..] TypeInfoParam
-        attributes:	const [..] TypeInfoAttribute
+        base: 		    TypeInfo
+        fields:		    const [..] TypeInfoParam
+        methods:	    const [..] TypeInfoParam
+        interfaces:     const [..] TypeInfoParam
+        attributes:	    const [..] TypeInfoAttribute
     }
     
     struct TypeInfoFunc
@@ -271,10 +271,10 @@ namespace swag
 
     struct TypeInfoEnum
     {
-        base: 		TypeInfo
-        values:		const [..] TypeInfoParam
-        rawType:	const *TypeInfo
-        attributes:	const [..] TypeInfoAttribute
+        base: 		    TypeInfo
+        values:		    const [..] TypeInfoParam
+        rawType:	    const *TypeInfo
+        attributes:	    const [..] TypeInfoAttribute
     }
 
     struct TypeInfoVariadic

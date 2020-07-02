@@ -2,3 +2,23 @@ public func aa(x: u32, y: any)
 {
     
 }
+
+namespace aa1650
+{
+    struct B
+    {
+
+    }
+}
+
+#[swag.printbc]
+#run
+{
+    x := @typeof(aa1650.B)
+    y := @typeof(bool)
+    @print(x.name)
+    if(x == y)
+    {
+        @assert(false)
+    }
+}
