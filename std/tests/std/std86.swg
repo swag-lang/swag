@@ -4,12 +4,8 @@ using std.text, std.collections
 #test
 {
     var buf: ConcatBuffer
-    format(&buf, "toto")
+    format(&buf, "titi%%")
     str := buf.toString()
-    @assert(str == "toto")
     //@print(cast(string) str)
-
-    /*format(&buf, "titi##")
-    str = buf.toString()
-    @assert(str == "titi#")*/
+    @assert(str == "titi%")
 }
