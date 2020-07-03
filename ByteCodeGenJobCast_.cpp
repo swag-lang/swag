@@ -728,11 +728,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
             inst->b.u32 = exprNode->concreteTypeInfoStorage;
 
-            emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, exprNode->resultRegisterRC[1], r0);
+            RegisterList result = reserveRegisterRC(context);
+            SWAG_CHECK(emitCompareTypeInfos(context, r0, exprNode->resultRegisterRC[1], result));
 
-            inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0);
+            inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result);
             inst->c.pointer = (uint8_t*) "invalid cast from 'any'";
             inherhitLocation(inst, exprNode);
+            freeRegisterRC(context, result);
         }
 
         SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));

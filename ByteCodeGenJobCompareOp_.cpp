@@ -11,7 +11,7 @@
 #include "CommandLine.h"
 #include "SymTable.h"
 
-bool ByteCodeGenJob::emitCompareTypeInfos(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGenJob::emitCompareTypeInfos(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
     emitInstruction(context, ByteCodeOp::JumpTrue, r2);
@@ -108,7 +108,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         typeInfo->computeScopedName();
         if (typeInfo->scopedName == "const *swag.TypeInfo")
         {
-            SWAG_CHECK(emitCompareTypeInfos(context, r0, r1, r2));
+            SWAG_CHECK(emitCompareTypeInfos(context, r0[0], r1[0], r2[0]));
         }
 
         // Simple pointer compare
