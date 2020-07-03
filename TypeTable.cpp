@@ -170,6 +170,7 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteStringSlice* res
     auto offset     = module->constantSegment.addStringNoLock(str);
     module->constantSegment.addInitPtr(offsetInBuffer, offset);
     result->buffer = (void*) str.c_str();
+    SWAG_ASSERT(result->buffer);
     result->count  = str.length();
     return true;
 }
@@ -249,6 +250,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
+    SWAG_ASSERT(!typeInfo->scopedName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->scopedName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;

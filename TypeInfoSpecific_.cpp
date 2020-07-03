@@ -435,6 +435,8 @@ void TypeInfoFuncAttr::computeName()
         name += format("->%s", returnType->name.c_str());
     else
         name += "->void";
+
+    TypeInfo::computeNameNoLock();
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)

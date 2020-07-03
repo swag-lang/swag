@@ -9,9 +9,8 @@ const Utf8& TypeInfo::getScopedName()
     return name;
 }
 
-void TypeInfo::computeName()
+void TypeInfo::computeNameNoLock()
 {
-    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
     scopedName.clear();
@@ -20,6 +19,12 @@ void TypeInfo::computeName()
     if (!scopedName.empty())
         scopedName += ".";
     scopedName += name;
+}
+
+void TypeInfo::computeName()
+{
+    unique_lock lk(mutex);
+    computeNameNoLock();
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

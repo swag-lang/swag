@@ -27,6 +27,9 @@ struct Point
     @assert(@countof(p.attributes[1].params) == 1)
 
 	ptr := @kindof(p.attributes[1].params[0].value)
+    //@print(cast(s64) ptr.sizeof)
+    //@print(ptr.name)
+    //@print("\n")
 	@assert(ptr.name == "s32")
 	ptr1 := cast(*s32) @dataof(p.attributes[1].params[0].value)
 	@assert(ptr1[0] == 666)
