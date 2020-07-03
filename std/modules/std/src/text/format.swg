@@ -1,6 +1,6 @@
 namespace std.text
 {
-    using std.collections
+    using std.collections, std.diagnostics
 
     public func format(buf: *ConcatBuffer, fmt: string, values: ...)
     {
@@ -11,6 +11,7 @@ namespace std.text
         idx := 0'u32
         nextIdx := 0'u32
         paramIdx := 0'u32
+        numParams := @countof(values)
 
         while nextIdx < cpt
         {
@@ -21,14 +22,19 @@ namespace std.text
                 idx = nextIdx + 1
                 nextIdx = idx
 
-                // Deal with the parameter
+                // Deal with the parameter. %% is for one % only
                 if ptr[nextIdx] == cast(u8) "%"'char
                 {
                     buf.addByte(cast(u8) "%"'char)
                     nextIdx += 1
                     idx += 1
                     continue
-                }                
+                }  
+
+                // Deal with the parameter
+                debug.assert(paramIdx < numParams, "not enough 'format' parameters")
+                convertAny(buf, values[paramIdx])
+                paramIdx += 1
             }
             else
             {
