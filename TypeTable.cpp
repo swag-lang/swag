@@ -171,7 +171,7 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteStringSlice* res
     module->constantSegment.addInitPtr(offsetInBuffer, offset);
     result->buffer = (void*) str.c_str();
     SWAG_ASSERT(result->buffer);
-    result->count  = str.length();
+    result->count = str.length();
     return true;
 }
 
@@ -188,7 +188,6 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
-    typeInfo->computeName();
     if (typeInfo->kind != TypeInfoKind::Param)
         typeInfo = concreteList.registerType(typeInfo);
 
@@ -250,6 +249,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
+    typeInfo->computeScopedName();
     SWAG_ASSERT(!typeInfo->scopedName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->scopedName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;

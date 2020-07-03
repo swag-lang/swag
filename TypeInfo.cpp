@@ -2,29 +2,27 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 
-const Utf8& TypeInfo::getScopedName()
-{
-    if (!scopedName.empty())
-        return scopedName;
-    return name;
-}
-
-void TypeInfo::computeNameNoLock()
-{
-    if (!scopedName.empty())
-        return;
-    scopedName.clear();
-    if (declNode && declNode->ownerScope)
-        scopedName = declNode->ownerScope->fullname;
-    if (!scopedName.empty())
-        scopedName += ".";
-    scopedName += name;
-}
-
 void TypeInfo::computeName()
 {
+}
+
+void TypeInfo::computeScopedName()
+{
     unique_lock lk(mutex);
-    computeNameNoLock();
+    if (!scopedName.empty())
+        return;
+
+    scopedName = preName;
+
+    if (declNode && declNode->ownerScope)
+    {
+        scopedName += declNode->ownerScope->fullname;
+        if (!scopedName.empty())
+            scopedName += ".";
+    }
+
+    SWAG_ASSERT(!nakedName.empty());
+    scopedName += nakedName;
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

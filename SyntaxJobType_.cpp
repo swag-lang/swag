@@ -163,7 +163,8 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->name;
-        typeInfo->structName = typeInfo->name;
+        typeInfo->nakedName  = structNode->name;
+        typeInfo->structName = structNode->name;
         typeInfo->scope      = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo   = typeInfo;

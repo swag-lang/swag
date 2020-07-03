@@ -132,10 +132,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             }
 
             structNode->typeInfo           = newScope->owner->typeInfo;
-            typeInfo->declNode           = structNode;
+            typeInfo->declNode             = structNode;
             newScope->owner                = structNode;
             typeInfo->name                 = structNode->name;
-            typeInfo->structName           = typeInfo->name;
+            typeInfo->nakedName            = structNode->name;
+            typeInfo->structName           = structNode->name;
             typeInfo->scope                = newScope;
             structNode->scope              = newScope;
             auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
@@ -253,9 +254,9 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
             attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
 
-            if(token.id == TokenId::KwdReadOnly)
+            if (token.id == TokenId::KwdReadOnly)
                 attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
-            else if(token.id == TokenId::KwdReadWrite)
+            else if (token.id == TokenId::KwdReadWrite)
                 attrBlockNode->attributeFlags |= ATTRIBUTE_READWRITE;
             else if (token.id == TokenId::KwdInternal)
                 attrBlockNode->attributeFlags |= ATTRIBUTE_INTERNAL;

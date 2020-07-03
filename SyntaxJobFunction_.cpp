@@ -470,6 +470,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeExpression->token.literalType = g_TypeMgr.typeInfoString;
     }
 
+    funcNode->typeInfo->computeName();
+
     // Content of function
     if (token.id == TokenId::SymSemiColon || isIntrinsic)
     {

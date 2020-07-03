@@ -107,7 +107,8 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->getScopedName());
+                p->typeInfo->computeScopedName();
+                bufferSwg.addString(p->typeInfo->scopedName);
             }
 
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
@@ -128,7 +129,8 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        bufferSwg.addString(typeFunc->returnType->getScopedName());
+        typeFunc->returnType->computeScopedName();
+        bufferSwg.addString(typeFunc->returnType->scopedName);
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
@@ -167,7 +169,8 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->getScopedName());
+                p->typeInfo->computeScopedName();
+                bufferSwg.addString(p->typeInfo->scopedName);
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
@@ -188,7 +191,8 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        bufferSwg.addString(typeFunc->returnType->getScopedName());
+        typeFunc->returnType->computeScopedName();
+        bufferSwg.addString(typeFunc->returnType->scopedName);
     }
 
     bufferSwg.addEolIndent(1);
@@ -280,7 +284,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
             CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        bufferSwg.addString(p->typeInfo->getScopedName());
+        p->typeInfo->computeScopedName();
+        bufferSwg.addString(p->typeInfo->scopedName);
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
         {

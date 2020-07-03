@@ -121,6 +121,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
         typeNode->typeInfo               = g_Allocator.alloc<TypeInfoGeneric>();
         typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
+        typeNode->typeInfo->nakedName    = typeNode->resolvedSymbolName->name;
         typeNode->typeInfo               = typeNode->typeInfo;
     }
 

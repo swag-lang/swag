@@ -60,6 +60,25 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
     return false;
 }
 
+void TypeInfoAlias::computeScopedName()
+{
+    unique_lock lk(mutex);
+    if (rawType->kind == TypeInfoKind::Native)
+        scopedName = name;
+    else
+        TypeInfo::computeScopedName();
+}
+
+void TypeInfoAlias::computeName()
+{
+    unique_lock lk(mutex);
+
+    rawType->computeName();
+    preName   = rawType->preName;
+    nakedName = rawType->nakedName;
+    name      = rawType->name;
+}
+
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Allocator.alloc<TypeInfoAlias>();
@@ -127,26 +146,38 @@ void TypeInfoPointer::computePointedType()
     }
 }
 
+void TypeInfoPointer::computeScopedName()
+{
+    unique_lock lk(mutex);
+    if (!scopedName.empty())
+        return;
+
+    if (!finalType) // "null"
+        scopedName = name;
+    else
+    {
+        finalType->computeScopedName();
+        scopedName = preName;
+        scopedName += finalType->scopedName;
+    }
+}
+
 void TypeInfoPointer::computeName()
 {
     unique_lock lk(mutex);
-    name.clear();
-    scopedName.clear();
+
+    preName.clear();
     if (flags & TYPEINFO_CONST)
-    {
-        name       = "const ";
-        scopedName = "const ";
-    }
+        preName = "const ";
 
     for (uint32_t i = 0; i < ptrCount; i++)
-    {
-        name += "*";
-        scopedName += "*";
-    }
+        preName += "*";
 
+    nakedName = finalType->nakedName;
     finalType->computeName();
+
+    name = preName;
     name += finalType->name;
-    scopedName += finalType->getScopedName();
 }
 
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -211,54 +242,65 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+void TypeInfoArray::computeScopedName()
+{
+    unique_lock lk(mutex);
+    if (!scopedName.empty())
+        return;
+
+    pointedType->computeScopedName();
+    scopedName = preName;
+    scopedName += finalType->scopedName;
+}
+
 void TypeInfoArray::computeName()
 {
     unique_lock lk(mutex);
+
     pointedType->computeName();
-    name.clear();
-    scopedName.clear();
+
+    preName.clear();
     if (flags & TYPEINFO_CONST)
-    {
-        name       = "const ";
-        scopedName = "const ";
-    }
+        preName = "const ";
 
     if (count == UINT32_MAX)
     {
-        name += format("[] %s", pointedType->name.c_str());
-        scopedName += format("[] %s", pointedType->getScopedName().c_str());
+        preName += "[] ";
+        nakedName = pointedType->nakedName;
     }
     else
     {
-        name += format("[%d", count);
-        scopedName += format("[%d", count);
+        preName += format("[%d", count);
         auto pType = pointedType;
         while (pType->kind == TypeInfoKind::Array)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
-            name += format(",%d", subType->count);
-            scopedName += format(",%d", subType->count);
+            preName += format(",%d", subType->count);
             pType = subType->pointedType;
         }
 
-        name += format("] %s", pType->name.c_str());
-        scopedName += format("] %s", pType->getScopedName().c_str());
+        preName += "] ";
+        nakedName = pType->nakedName;
     }
+
+    name = preName;
+    name += nakedName;
 }
 
 void TypeInfoSlice::computeName()
 {
     unique_lock lk(mutex);
-    pointedType->computeName();
-    name.clear();
-    if (flags & TYPEINFO_CONST)
-    {
-        name       = "const ";
-        scopedName = "const ";
-    }
 
-    name += format("[..] %s", pointedType->name.c_str());
-    scopedName += format("[..] %s", pointedType->getScopedName().c_str());
+    pointedType->computeName();
+    nakedName = pointedType->nakedName;
+
+    preName.clear();
+    if (flags & TYPEINFO_CONST)
+        preName = "const ";
+    preName += "[..] ";
+
+    name = preName;
+    name += nakedName;
 }
 
 TypeInfo* TypeInfoSlice::clone()
@@ -403,40 +445,41 @@ TypeInfo* TypeInfoFuncAttr::clone()
 void TypeInfoFuncAttr::computeName()
 {
     unique_lock lk(mutex);
-    name.clear();
+
+    nakedName.clear();
     if (genericParameters.size() == 1)
     {
-        name += "'";
-        name += genericParameters[0]->typeInfo ? genericParameters[0]->typeInfo->name : genericParameters[0]->name;
+        nakedName += "'";
+        nakedName += genericParameters[0]->typeInfo ? genericParameters[0]->typeInfo->name : genericParameters[0]->name;
     }
     else if (genericParameters.size())
     {
-        name += "'(";
+        nakedName += "'(";
         for (int i = 0; i < genericParameters.size(); i++)
         {
             if (i)
-                name += ", ";
-            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+                nakedName += ", ";
+            nakedName += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
         }
 
-        name += ")";
+        nakedName += ")";
     }
 
-    name += format("(");
+    nakedName += format("(");
     for (int i = 0; i < parameters.size(); i++)
     {
         if (i)
-            name += ", ";
-        name += parameters[i]->typeInfo->name;
+            nakedName += ", ";
+        nakedName += parameters[i]->typeInfo->name;
     }
 
-    name += ")";
+    nakedName += ")";
     if (returnType)
-        name += format("->%s", returnType->name.c_str());
+        nakedName += format("->%s", returnType->name.c_str());
     else
-        name += "->void";
+        nakedName += "->void";
 
-    TypeInfo::computeNameNoLock();
+    name = nakedName;
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
@@ -668,23 +711,19 @@ void TypeInfoStruct::computeName()
 {
     unique_lock lk(mutex);
 
-    name = structName;
+    nakedName = structName;
     if (genericParameters.size() > 0)
     {
-        name += "'(";
+        nakedName += "'(";
         for (int i = 0; i < genericParameters.size(); i++)
         {
             if (i)
-                name += ", ";
-            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+                nakedName += ", ";
+            nakedName += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
         }
 
-        name += ")";
+        nakedName += ")";
     }
 
-    if (declNode && declNode->ownerScope)
-        scopedName = declNode->ownerScope->fullname;
-    if (!scopedName.empty())
-        scopedName += ".";
-    scopedName += name;
+    name = nakedName;
 }

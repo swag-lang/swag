@@ -1,5 +1,5 @@
 
-
+//#[swag.printbc]
 #test
 {
 	using swag

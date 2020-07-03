@@ -547,7 +547,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // itable
     auto typeITable        = g_Allocator.alloc<TypeInfoStruct>();
     typeITable->name       = node->name;
-    typeITable->structName = typeITable->name;
+    typeITable->nakedName  = node->name;
+    typeITable->structName = node->name;
     typeITable->scope      = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
 
     for (int i = 0; i < childs.size(); i++)
