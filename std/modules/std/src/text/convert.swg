@@ -33,11 +33,11 @@ namespace std.text
 
             ptr := cast(*s32) @dataof(value)
 
-            switch type
+            /*switch type
             {
                 case @typeof(s32):
                     convertInt(buf, cast(s32) value)
-            }
+            }*/
         }
 
         /// Convert an integer to a string, and put the result in a [ConcatBuffer]
