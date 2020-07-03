@@ -342,7 +342,7 @@ bool Workspace::build()
     setup();
 
     if (g_CommandLine.devMode)
-        g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Red, LogColor::Red);
+        g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
