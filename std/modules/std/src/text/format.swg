@@ -15,6 +15,12 @@ namespace std.text
         {
             if ptr[nextIdx] == cast(u8) "%"'char
             {
+                if ptr[nextIdx + 1] == cast(u8) "%"'char
+                {
+                    buf.addByte(cast(u8) "%"'char)
+                    continue
+                }
+
                 // Add remaining text, and starts again after the mark
                 buf.addBytes(cast([..] u8) {ptr + idx, nextIdx - idx})
                 idx = nextIdx + 1

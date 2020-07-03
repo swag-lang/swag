@@ -499,17 +499,22 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!covered)
             {
                 auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                SWAG_ASSERT(defaultParam->assignment);
 
-                RegisterList regList;
-                SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
-
-                toFree += regList;
-                for (int r = regList.size() - 1; r >= 0; r--)
+                // Empty variadic parameter
+                if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic && defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
                 {
-                    emitInstruction(context, ByteCodeOp::PushRAParam, regList[r]);
-                    precallStack += sizeof(Register);
-                    numPushParams++;
+                    SWAG_ASSERT(defaultParam->assignment);
+
+                    RegisterList regList;
+                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
+
+                    toFree += regList;
+                    for (int r = regList.size() - 1; r >= 0; r--)
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam, regList[r]);
+                        precallStack += sizeof(Register);
+                        numPushParams++;
+                    }
                 }
             }
         }

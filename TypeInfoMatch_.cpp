@@ -454,8 +454,15 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         firstDefault = (int) parameters.size();
     if (context.cptResolved < firstDefault)
     {
-        context.result = MatchResult::NotEnoughParameters;
-        return;
+        // We can have empty variadics
+        if (parameters.size())
+        {
+            if (parameters.back()->typeInfo->kind != TypeInfoKind::Variadic && parameters.back()->typeInfo->kind != TypeInfoKind::TypedVariadic)
+            {
+                context.result = MatchResult::NotEnoughParameters;
+                return;
+            }
+        }
     }
 
     matchGenericParameters(context, this, genericParameters);
