@@ -30,11 +30,13 @@ namespace std.text
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
+
+            ptr := cast(*s32) @dataof(value)
+
             switch type
             {
                 case @typeof(s32):
-                    @print("toto\n")
-
+                    convertInt(buf, cast(s32) value)
             }
         }
 

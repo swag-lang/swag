@@ -5,5 +5,7 @@ using std.text, std.collections
 {
     var buf: ConcatBuffer
     @print("starts\n")
-    convertAny(&buf, 1)
+    convertAny(&buf, 666)
+    str := buf.toString()
+    @print(cast(string) str)
 }

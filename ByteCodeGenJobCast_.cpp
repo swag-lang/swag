@@ -729,7 +729,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             inst->b.u32 = exprNode->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, exprNode->resultRegisterRC[1], r0);
             inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0);
-            inst->c.pointer = (uint8_t*) "invalid cast";
+            inst->c.pointer = (uint8_t*) "invalid cast from 'any'";
             inherhitLocation(inst, exprNode);
         }
 

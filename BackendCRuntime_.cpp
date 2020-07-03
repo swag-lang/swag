@@ -183,12 +183,16 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 	if(expr) 
 		return;
 
-	__print("error: "); 
+	__print("error: [backend] "); 
 	__print(file); 
 	__print(":"); 
 	__print_i64(line);
 	if(msg)
+	{
+		__print(": ");
 		__print(msg);
+		__print("\n");
+	}
 	else	
 		__print(": native code assertion failed\n");
 

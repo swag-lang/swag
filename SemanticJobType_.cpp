@@ -275,6 +275,8 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     auto typeNode = node->childs[0];
     auto exprNode = node->childs[1];
 
+    SWAG_CHECK(checkIsConcrete(context, exprNode));
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
     node->typeInfo = typeNode->typeInfo;
 
