@@ -7,5 +7,5 @@ using std.text, std.collections
     format(&buf, "value: %", -3.1415)
     str := buf.toString()
     @print(cast(string) str)
-    //@assert(str == "toto: 3")
+    @assert(str == "value: -3.14150")
 }

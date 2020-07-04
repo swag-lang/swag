@@ -7,10 +7,9 @@
 #include "ThreadManager.h"
 #include "Ast.h"
 
-bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -52,10 +51,10 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
     return internalError(context, "emitBinaryOpPlus, invalid native");
 }
 
-bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))
@@ -112,10 +111,10 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
     return internalError(context, "emitBinaryOpMinus, invalid native");
 }
 
-bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpMul, type not native");
 
@@ -145,10 +144,10 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
-bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpDiv, type not native");
 
@@ -178,10 +177,10 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
-bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpModulo, type not native");
 
@@ -205,10 +204,11 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
-bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBitmaskAnd, type not native");
 
@@ -232,10 +232,10 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, ui
     }
 }
 
-bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBitmaskOr, type not native");
 
@@ -259,10 +259,10 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, uint32_t r0, uin
     }
 }
 
-bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitShiftLeft, type not native");
 
@@ -286,10 +286,10 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, uint32_t r0, uin
     }
 }
 
-bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitShiftRight, type not native");
 
@@ -313,10 +313,10 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, uint32_t r0, ui
     }
 }
 
-bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitXor, type not native");
 
@@ -377,22 +377,24 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             auto r2                = reserveRegisterRC(context);
             node->resultRegisterRC = r2;
 
+            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+
             switch (node->token.id)
             {
             case TokenId::SymPlus:
-                SWAG_CHECK(emitBinaryOpPlus(context, r0, r1, r2));
+                SWAG_CHECK(emitBinaryOpPlus(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymMinus:
-                SWAG_CHECK(emitBinaryOpMinus(context, r0, r1, r2));
+                SWAG_CHECK(emitBinaryOpMinus(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymAsterisk:
-                SWAG_CHECK(emitBinaryOpMul(context, r0, r1, r2));
+                SWAG_CHECK(emitBinaryOpMul(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymSlash:
-                SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
+                SWAG_CHECK(emitBinaryOpDiv(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymPercent:
-                SWAG_CHECK(emitBinaryOpModulo(context, r0, r1, r2));
+                SWAG_CHECK(emitBinaryOpModulo(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymAmpersandAmpersand:
                 emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
@@ -401,19 +403,19 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
                 break;
             case TokenId::SymVertical:
-                SWAG_CHECK(emitBitmaskOr(context, r0, r1, r2));
+                SWAG_CHECK(emitBitmaskOr(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymAmpersand:
-                SWAG_CHECK(emitBitmaskAnd(context, r0, r1, r2));
+                SWAG_CHECK(emitBitmaskAnd(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymLowerLower:
-                SWAG_CHECK(emitShiftLeft(context, r0, r1, r2));
+                SWAG_CHECK(emitShiftLeft(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymGreaterGreater:
-                SWAG_CHECK(emitShiftRight(context, r0, r1, r2));
+                SWAG_CHECK(emitShiftRight(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymCircumflex:
-                SWAG_CHECK(emitXor(context, r0, r1, r2));
+                SWAG_CHECK(emitXor(context, typeInfoExpr, r0, r1, r2));
                 break;
             default:
                 return internalError(context, "emitBinaryOp, invalid token op");

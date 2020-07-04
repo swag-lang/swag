@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 #run
 {
     var precision: u32 = 5

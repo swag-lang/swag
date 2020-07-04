@@ -87,6 +87,13 @@ namespace std.text
                 buf.addByte("-"'u8)
             }
 
+            // Round with precision
+            var roundValue: f64 = 0.5
+            pervision := math.min(fmt.precision, 100)
+            if fmt.precision
+                roundValue = 0.5'f64 / math.pow(cast(f64) pervision, 10'f64)
+            value += roundValue
+
             // Convert integer part
             intPart := cast(u64) value
             var fmtInt: ConvertFormatInt
@@ -99,9 +106,7 @@ namespace std.text
             value -= cast(f64) intPart
             buf.addByte("."'u8)
 
-            roundValue := 0.5 / (10 * fmt.precision)
-            
-            loop fmt.precision
+            loop pervision
             {
                 value *= 10
                 c := cast(u32) value
