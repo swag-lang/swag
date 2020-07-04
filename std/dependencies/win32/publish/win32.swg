@@ -346,6 +346,7 @@
 			func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
 			func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
 			func GetLocalTime(lpSystemTime: *SYSTEMTIME);
+            func SetConsoleOutputCP(codePage: UINT);
         }
 
         #[swag.foreign("user32")]
