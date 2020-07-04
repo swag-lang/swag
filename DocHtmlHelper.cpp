@@ -257,10 +257,7 @@ namespace DocHtmlHelper
                     ref += *pz++;
                 if (*pz)
                     pz++;
-                char* pz1 = strstr(refFile.buffer, ref.buffer);
-
-                if (ref == "ConcatBuffer")
-                    pz1 = pz1;
+                char* pz1 = refFile.buffer ? strstr(refFile.buffer, ref.buffer) : nullptr;
 
                 if (pz1 && pz1 != refFile.buffer)
                 {

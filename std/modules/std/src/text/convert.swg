@@ -4,13 +4,16 @@ namespace std.text
 
     /// Format structure to convert a float to a string
     ///
-    /// * [std.text.convertInt]
+    /// # See also
+    /// * [std.text.convertFloat]
     public struct ConvertFormatFloat
     {
         /// The  value to convert to string
-        value:  f64
+        value:      f64
         /// Number of valid bits in the value (32 or 64)
-        bits:   u32 = 32
+        bits:       u32 = 32
+        /// Number of digits in the decimal part
+        precision:  u32 = 5
     }
 
     /// Format structure to convert an integer to a string
@@ -75,11 +78,36 @@ namespace std.text
         /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
-            bool neg = buf.value < 0
-
+            neg := fmt.value < 0
             value := fmt.value
+
             if(neg)
+            {
                 value = -value
+                buf.addByte("-"'u8)
+            }
+
+            // Convert integer part
+            intPart := cast(u64) value
+            var fmtInt: ConvertFormatInt
+            fmtInt.signed = false
+            fmtInt.bits = fmt.bits
+            fmtInt.unsignedValue = intPart
+            convertInt(buf, fmtInt)
+
+            // Decimal part
+            value -= cast(f64) intPart
+            buf.addByte("."'u8)
+
+            roundValue := 0.5 / (10 * fmt.precision)
+            
+            loop fmt.precision
+            {
+                value *= 10
+                c := cast(u32) value
+                buf.addByte(cast(u8) (c + "0"'u8))
+                value -= cast(f64) c
+            }
         }
 
         /// Convert a `f64` to a string, and put the result in a [std.collections.ConcatBuffer]
