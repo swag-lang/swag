@@ -14,7 +14,7 @@
 		    func exit(exitCode: u32) => ExitProcess(exitCode)
         }
         
-        var g_sysInfo: SYSTEM_INFO
+        private var g_sysInfo: SYSTEM_INFO
         
         #init
         {
