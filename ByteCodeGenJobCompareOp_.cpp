@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
         typeInfo->computeScopedName();
-        if (typeInfo->scopedName == "const *swag.TypeInfo")
+        if (typeInfo->flags & TYPEINFO_TYPEINFO_PTR)
         {
             SWAG_CHECK(emitCompareTypeInfos(context, r0[0], r1[0], r2[0]));
         }

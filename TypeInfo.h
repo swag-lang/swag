@@ -105,6 +105,7 @@ static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
 static const uint32_t TYPEINFO_IN_CONCRETE_LIST         = 0x00100000;
 static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00200000;
 static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x00400000;
+static const uint32_t TYPEINFO_TYPEINFO_PTR             = 0x00800000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;

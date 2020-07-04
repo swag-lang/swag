@@ -261,7 +261,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     concreteTypes[typeInfo] = {typePtr, storageOffset};
 
     // Build pointer type to structure
-    typePtr->flags |= TYPEINFO_CONST;
+    typePtr->flags |= TYPEINFO_CONST | TYPEINFO_TYPEINFO_PTR;
     typePtr->ptrCount    = 1;
     typePtr->finalType   = ((TypeInfoParam*) typeStruct->fields[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
     typePtr->pointedType = typePtr->finalType;
