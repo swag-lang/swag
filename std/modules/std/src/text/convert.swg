@@ -8,10 +8,10 @@ namespace std.text
     /// * [std.text.convertInt]
     public struct ConvertFormatInt
     {
-        /// The unsigned  value to convert to string
+        /// The unsigned value to convert to string (`signed` must be `false`)
         unsignedValue:  u64
 
-        /// The signed  value to convert to string
+        /// The signed  value to convert to string (`signed` must be `true`)
         #[swag.offset("unsignedValue")]
         signedValue:    s64
 

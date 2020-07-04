@@ -165,13 +165,14 @@ struct Token
 
     TypeInfo* literalType;
 
-    TokenId id;
+    TokenId id = TokenId::Invalid;
 };
 
-static const uint32_t TOKENIZER_KEEP_EOL          = 0x00000001;
-static const uint32_t TOKENIZER_KEEP_BLANKS       = 0x00000002;
-static const uint32_t TOKENIZER_KEEP_CPP_COMMENTS = 0x00000004;
-static const uint32_t TOKENIZER_KEEP_KEYWORDS     = 0x00000008;
+static const uint32_t TOKENIZER_KEEP_EOL              = 0x00000001;
+static const uint32_t TOKENIZER_KEEP_BLANKS           = 0x00000002;
+static const uint32_t TOKENIZER_KEEP_CPP_COMMENTS     = 0x00000004;
+static const uint32_t TOKENIZER_KEEP_KEYWORDS         = 0x00000008;
+static const uint32_t TOKENIZER_NO_LITERAL_CONVERSION = 0x00000010;
 
 struct Tokenizer
 {

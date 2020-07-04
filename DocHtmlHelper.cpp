@@ -74,7 +74,7 @@ namespace DocHtmlHelper
 
         Tokenizer tokenizer;
         Token     token;
-        tokenizer.parseFlags = TOKENIZER_KEEP_EOL | TOKENIZER_KEEP_BLANKS | TOKENIZER_KEEP_CPP_COMMENTS;
+        tokenizer.parseFlags = TOKENIZER_KEEP_EOL | TOKENIZER_KEEP_BLANKS | TOKENIZER_KEEP_CPP_COMMENTS | TOKENIZER_NO_LITERAL_CONVERSION;
         tokenizer.setFile(&tmpFile);
 
         while (token.id != TokenId::EndOfFile)
@@ -113,6 +113,9 @@ namespace DocHtmlHelper
             case TokenId::KwdFunc:
             case TokenId::KwdStruct:
             case TokenId::KwdEnum:
+            case TokenId::KwdTrue:
+            case TokenId::KwdFalse:
+            case TokenId::KwdNull:
                 result += "<span class=\"keyword\">";
                 result += token.text;
                 result += "</span>";
