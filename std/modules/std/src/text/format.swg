@@ -15,7 +15,7 @@ namespace std.text
 
         while nextIdx < cpt
         {
-            if ptr[nextIdx] == cast(u8) "%"'char
+            if ptr[nextIdx] == "%"'u8
             {
                 // Add remaining text, and starts again after the mark
                 buf.addBytes(cast([..] u8) {ptr + idx, nextIdx - idx})
@@ -23,9 +23,9 @@ namespace std.text
                 nextIdx = idx
 
                 // Deal with the parameter. %% is for one % only
-                if ptr[nextIdx] == cast(u8) "%"'char
+                if ptr[nextIdx] == "%"'u8
                 {
-                    buf.addByte(cast(u8) "%"'char)
+                    buf.addByte("%"'u8)
                     nextIdx += 1
                     idx += 1
                     continue

@@ -2,6 +2,17 @@ namespace std.text
 {
     using std.collections, std.diagnostics
 
+    /// Format structure to convert a float to a string
+    ///
+    /// * [std.text.convertInt]
+    public struct ConvertFormatFloat
+    {
+        /// The  value to convert to string
+        value:  f64
+        /// Number of valid bits in the value (32 or 64)
+        bits:   u32 = 32
+    }
+
     /// Format structure to convert an integer to a string
     ///
     /// # Remarks
@@ -51,11 +62,43 @@ namespace std.text
                 case @typeof(u32):
                     convertInt(buf, cast(u32) value)                    
                 case @typeof(u64):
-                    convertInt(buf, cast(u64) value)  
+                    convertInt(buf, cast(u64) value)
+                case @typeof(f32):
+                    convertFloat(buf, cast(f32) value)
+                case @typeof(f64):
+                    convertFloat(buf, cast(f64) value)
                 case @typeof(string):
                     buf.addBytes(cast(string) value)             
             }
         }
+
+        /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
+        {
+            bool neg = buf.value < 0
+
+            value := fmt.value
+            if(neg)
+                value = -value
+        }
+
+        /// Convert a `f64` to a string, and put the result in a [std.collections.ConcatBuffer]
+        func convertFloat(buf: *ConcatBuffer, value: f64)
+        {
+            var fmt: ConvertFormatFloat
+            fmt.value = value
+            fmt.bits = 64
+            convertFloat(buf, fmt)
+        }   
+
+        /// Convert a `f32` to a string, and put the result in a [std.collections.ConcatBuffer]
+        func convertFloat(buf: *ConcatBuffer, value: f32)
+        {
+            var fmt: ConvertFormatFloat
+            fmt.value = cast(f64) value
+            fmt.bits = 32
+            convertFloat(buf, fmt)
+        }          
 
         /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
