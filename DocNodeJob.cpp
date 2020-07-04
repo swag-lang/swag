@@ -110,6 +110,7 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
             CONCAT_FIXED_STR(outFile, "<h2>");
             emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, (AstFuncDecl*) one, true);
             CONCAT_FIXED_STR(outFile, "</h2>\n");
+            DocHtmlHelper::summary(outFile, one->docContent ? one->docContent->docSummary : Utf8(""));
         }
 
         emitFunction(outFile, one);

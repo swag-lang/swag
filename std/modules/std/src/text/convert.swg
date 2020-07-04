@@ -25,7 +25,7 @@ namespace std.text
 
     public 
     {
-        /// Convert a value to a string, and put the result in a [ConcatBuffer]
+        /// Convert a value to an utf8 string, and put the result in a [ConcatBuffer]
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
@@ -51,7 +51,7 @@ namespace std.text
             }
         }
 
-        /// Convert an integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             const tbl = "0123456789ABCDEF"
@@ -80,7 +80,7 @@ namespace std.text
             buf.addBytes(cast([..] u8) {&tmp[cpt + 1], 63 - cpt});
         }
 
-        /// Convert a s8 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `s8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s8)
         {
             var fmt: ConvertFormatInt
@@ -90,7 +90,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a s16 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `s16` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s16)
         {
             var fmt: ConvertFormatInt
@@ -100,7 +100,7 @@ namespace std.text
             convertInt(buf, fmt)
         }        
 
-        /// Convert a s32 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `s32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s32)
         {
             var fmt: ConvertFormatInt
@@ -110,7 +110,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a s64 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `s64` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s64)
         {
             var fmt: ConvertFormatInt
@@ -120,7 +120,7 @@ namespace std.text
             convertInt(buf, fmt)
         }        
 
-        /// Convert a u8 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `u8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u8)
         {
             var fmt: ConvertFormatInt
@@ -130,7 +130,7 @@ namespace std.text
             convertInt(buf, fmt)
         }   
 
-        /// Convert a u16 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `u16` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u16)
         {
             var fmt: ConvertFormatInt
@@ -140,7 +140,7 @@ namespace std.text
             convertInt(buf, fmt)
         }           
 
-        /// Convert a u32 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `u32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u32)
         {
             var fmt: ConvertFormatInt
@@ -150,7 +150,7 @@ namespace std.text
             convertInt(buf, fmt)
         }   
 
-        /// Convert a u64 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a `u64` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u64)
         {
             var fmt: ConvertFormatInt

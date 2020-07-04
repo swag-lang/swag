@@ -52,7 +52,7 @@ namespace DocHtmlHelper
         result.addString(res);
     }
 
-    const char* parseCode(Utf8& result, Utf8& rawResult, const char* pz)
+    const char* parseCode(Utf8& result, Utf8& rawResult, const char* pz, bool bigEnd)
     {
         SourceFile tmpFile;
         tmpFile.externalBuffer = (uint8_t*) pz;
@@ -61,7 +61,9 @@ namespace DocHtmlHelper
         auto orgPz = pz;
         while (*pz)
         {
-            if (pz[0] == '`' && pz[1] == '`' && pz[2] == '`')
+            if (bigEnd && (pz[0] == '`' && pz[1] == '`' && pz[2] == '`'))
+                break;
+            if (!bigEnd && (pz[0] == '`'))
                 break;
             pz++;
         }
@@ -149,7 +151,7 @@ namespace DocHtmlHelper
             }
         }
 
-        return pz + 3;
+        return bigEnd ? pz + 3 : pz + 1;
     }
 
     // https://daringfireball.net/projects/markdown/syntax
@@ -160,7 +162,6 @@ namespace DocHtmlHelper
 
         bool openEm          = false;
         bool openStrong      = false;
-        bool openCode1       = false;
         bool inUnorderedList = false;
         bool inListItem      = false;
         bool inParagraph     = false;
@@ -255,6 +256,9 @@ namespace DocHtmlHelper
                     pz++;
                 char* pz1 = strstr(refFile.buffer, ref.buffer);
 
+                if (ref == "ConcatBuffer")
+                    pz1 = pz1;
+
                 if (pz1 && pz1 != refFile.buffer)
                 {
                     pz1 = strstr(pz1, ".");
@@ -315,28 +319,19 @@ namespace DocHtmlHelper
                 pz += 3;
             }
 
-            // `something
-            else if (!openCode1 && pz[0] == '`' && !isBlank(pz[1]) && pz[1] != pz[0])
+            // `something` : embedded code, with syntax detection
+            else if (pz[0] == '`' && !isBlank(pz[1]) && pz[1] != pz[0])
             {
-                openCode1 = true;
                 result += "<code>";
-                pz += 1;
-            }
-
-            // something`
-            else if (openCode1 && !isBlank(pz[0]) && pz[0] != '`' && pz[1] == '`' && pz[2] != pz[1])
-            {
-                openCode1 = false;
-                result += *pz;
+                pz = parseCode(result, lastCode, pz + 1, false);
                 result += "</code>";
-                pz += 2;
             }
 
-            // ```
+            // ```code``` : real code that should compile and run !
             else if (pz[0] == '`' && pz[1] == '`' && pz[2] == '`')
             {
                 result += "<pre>";
-                pz = parseCode(result, lastCode, pz + 3);
+                pz = parseCode(result, lastCode, pz + 3, true);
                 result += "</pre>";
                 code.push_back(lastCode);
             }
