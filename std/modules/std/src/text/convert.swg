@@ -4,6 +4,10 @@ namespace std.text
 
     /// Format structure to convert an integer to a string
     ///
+    /// # Remarks
+    /// If `signed` is `true`, the value to convert must be stored in `signedValue`, otherwise it must
+    /// be stored in `unsignedValue`.
+    ///
     /// # See also
     /// * [std.text.convertInt]
     public struct ConvertFormatInt
@@ -15,11 +19,11 @@ namespace std.text
         #[swag.offset("unsignedValue")]
         signedValue:    s64
 
-        /// Number of valid bits in the value
+        /// Number of valid bits in the value (usually 8, 16, 32 or 64)
         bits:           u32 = 32
         /// Base of the conversion (2 for binary, 10 for decimal, 16 for hexadecimal)
         base:           u32 = 10
-        /// Is the value signed or unsigned
+        /// `true` if the value to convert is signed, `false` if it is unsigned
         signed:         bool
     }
 
@@ -47,7 +51,9 @@ namespace std.text
                 case @typeof(u32):
                     convertInt(buf, cast(u32) value)                    
                 case @typeof(u64):
-                    convertInt(buf, cast(u64) value)                     
+                    convertInt(buf, cast(u64) value)  
+                case @typeof(string):
+                    buf.addBytes(cast(string) value)             
             }
         }
 
