@@ -26,15 +26,16 @@ namespace std.text
     public 
     {
         /// Convert a value to a string, and put the result in a [ConcatBuffer]
+        #[swag.printbc]
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
             ptr := cast(*s32) @dataof(value)
-
             switch type
             {
                 case @typeof(s32):
-                    convertInt(buf, cast(s32) value)
+                    //@print(type.name)
+                    //convertInt(buf, cast(s32) value)
             }
         }
 
@@ -67,7 +68,7 @@ namespace std.text
             buf.addBytes(cast([..] u8) {&tmp[cpt + 1], 63 - cpt});
         }
 
-        /// Convert an s32 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a s32 integer to a string, and put the result in a [ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s32)
         {
             var fmt: ConvertFormatInt
@@ -77,7 +78,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert an u32 integer to a string, and put the result in a [ConcatBuffer]
+        /// Convert a u32 integer to a string, and put the result in a [ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u32)
         {
             var fmt: ConvertFormatInt
