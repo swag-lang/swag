@@ -252,15 +252,49 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 
         getIdentifier(tokenSuffix, c, offset);
         SWAG_VERIFY(tokenSuffix.id == TokenId::NativeType, error(tokenSuffix, format("invalid literal string suffix '%s'", tokenSuffix.text.c_str())));
-        SWAG_VERIFY(tokenSuffix.literalType->nativeType == NativeTypeKind::Char, error(tokenSuffix, format("invalid literal string suffix '%s' ('char' expected)", tokenSuffix.text.c_str())));
 
         VectorNative<char32_t> uni;
         token.text.toUni32(uni);
-        SWAG_VERIFY(uni.size() == 1, sourceFile->report({sourceFile, token, format("ivalid character literal '%s', this is a string, not a character", token.text.c_str())}));
+        SWAG_VERIFY(uni.size() == 1, sourceFile->report({sourceFile, token, format("invalid character literal '%s', this is a string, not a character", token.text.c_str())}));
 
-        token.id              = TokenId::LiteralCharacter;
-        token.literalType     = g_TypeMgr.typeInfoChar;
-        token.literalValue.ch = uni[0];
+        switch (tokenSuffix.literalType->nativeType)
+        {
+        case NativeTypeKind::Char:
+            token.id              = TokenId::LiteralCharacter;
+            token.literalType     = g_TypeMgr.typeInfoChar;
+            token.literalValue.ch = uni[0];
+            break;
+
+        case NativeTypeKind::U8:
+            SWAG_VERIFY(uni[0] <= UINT8_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u8', value '%d' is too big", token.text.c_str(), uni[0])}));
+            token.id              = TokenId::LiteralNumber;
+            token.literalType     = g_TypeMgr.typeInfoU8;
+            token.literalValue.u8 = (uint8_t) uni[0];
+            break;
+
+        case NativeTypeKind::U16:
+            SWAG_VERIFY(uni[0] <= UINT16_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u16', value '%d' is too big", token.text.c_str(), uni[0])}));
+            token.id               = TokenId::LiteralNumber;
+            token.literalType      = g_TypeMgr.typeInfoU16;
+            token.literalValue.u16 = (uint16_t) uni[0];
+            break;
+
+        case NativeTypeKind::U32:
+            token.id               = TokenId::LiteralNumber;
+            token.literalType      = g_TypeMgr.typeInfoU32;
+            token.literalValue.u32 = uni[0];
+            break;
+
+        case NativeTypeKind::U64:
+            token.id               = TokenId::LiteralNumber;
+            token.literalType      = g_TypeMgr.typeInfoU64;
+            token.literalValue.u64 = uni[0];
+            break;
+
+        default:
+            error(tokenSuffix, format("invalid literal string suffix '%s'", tokenSuffix.text.c_str()));
+            break;
+        }
     }
 
     return true;
