@@ -30,7 +30,7 @@ namespace std.text
         {
             type := @kindof(value)
             ptr := cast(*s32) @dataof(value)
-            
+
             switch type
             {
                 case @typeof(s32):
@@ -58,7 +58,7 @@ namespace std.text
                     break
             }
 
-            if fmt.signed && value
+            if fmt.signed && fmt.signedValue < 0
             {
                 tmp[cpt] = cast(u8) "-"'char
                 cpt -= 1
@@ -73,7 +73,18 @@ namespace std.text
             var fmt: ConvertFormatInt
             fmt.signedValue = acast value
             fmt.bits = 32
+            fmt.signed = true
             convertInt(buf, fmt)
         }
+
+        /// Convert an u32 integer to a string, and put the result in a [ConcatBuffer]
+        func convertInt(buf: *ConcatBuffer, value: u32)
+        {
+            var fmt: ConvertFormatInt
+            fmt.unsignedValue = acast value
+            fmt.signed = false
+            fmt.bits = 32
+            convertInt(buf, fmt)
+        }        
     }
 }
