@@ -39,6 +39,7 @@ bool ByteCodeGenJob::emitCompareTypeInfos(ByteCodeGenContext* context, uint32_t 
 
     // Compare names
     emitInstruction(context, ByteCodeOp::CompareOpEqualString, tmpReg[0], tmpReg[2], tmpReg[1]);
+    emitInstruction(context, ByteCodeOp::CopyRARB, r2, tmpReg[1]);
 
     // Jump here when comparison is done
     context->bc->out[instLength - 1].b.s32 = context->bc->numInstructions - instLength;
