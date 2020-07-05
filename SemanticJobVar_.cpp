@@ -127,6 +127,9 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
 
     auto ptrDest    = segment->addressNoLock(offset);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
+
+    auto cptField  = 0;
+    auto numFields = typeStruct->fields.size();
     for (auto field : typeStruct->fields)
     {
         auto child   = field->node;
@@ -166,6 +169,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
                     return internalError(context, "collectStructLiterals, invalid native type sizeof");
                 }
 
+                SWAG_ASSERT(typeInfo->sizeOf);
                 ptrDest += typeInfo->sizeOf;
                 offset += typeInfo->sizeOf;
             }
@@ -178,8 +182,11 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->declNode, segment));
-            ptrDest = segment->addressNoLock(offset);
+            if (cptField != numFields - 1)
+                ptrDest = segment->addressNoLock(offset);
         }
+
+        cptField++;
     }
 
     return true;
