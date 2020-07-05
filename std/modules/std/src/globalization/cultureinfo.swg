@@ -5,5 +5,5 @@ namespace std.globalization
         numberFormat: NumberFormatInfo
     }
 
-    public var g_CultureInfo: CultureInfo
+    var g_CultureInfo: CultureInfo
 }
