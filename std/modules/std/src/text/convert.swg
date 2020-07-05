@@ -71,12 +71,10 @@ namespace std.text
                     convertFloat(buf, cast(f64) value)
                 case @typeof(string):
                     buf.addBytes(cast(string) value)   
+                case @typeof(ConvertFormatInt):  
+                    convertInt(buf, cast(ConvertFormatInt) value)
                 case @typeof(ConvertFormatFloat):  
-                    pp := cast(ConvertFormatFloat) value
-                    //@print(pp.value)
-                    //@print(" ")
-                    //@print(cast(s64) pp.bits)
-                    //convertFloat(buf, cast(ConvertFormatFloat) value)
+                    convertFloat(buf, cast(ConvertFormatFloat) value)
             }
         }
 

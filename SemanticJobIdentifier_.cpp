@@ -288,6 +288,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         overload->typeInfo->kind != TypeInfoKind::Lambda &&
         !parent->startScope &&
         parent->previousResolvedNode &&
+        parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
         return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->name.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});

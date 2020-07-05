@@ -101,7 +101,9 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
         {
-            node->flags |= AST_TAKE_ADDRESS;
+            // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
+            if (node->childs[0]->kind != AstNodeKind::ArrayPointerIndex)
+                node->flags |= AST_TAKE_ADDRESS;
 
             // In order to resolve what's next, we need to fill the startScope of the identifier ref
             auto typeReturn = node->array->typeInfo;
@@ -286,6 +288,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
             newType->ptrCount--;
             newType->computeName();
+            newType->computePointedType();
             arrayNode->typeInfo = newType;
         }
 

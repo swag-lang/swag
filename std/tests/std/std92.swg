@@ -8,5 +8,5 @@ using std.text, std.collections
     convertAny(&buf, ConvertFormatFloat(-3.1415))
     str := buf.toString()
     //@print(cast(string) str)
-    //@assert(str == "value: -3.14150")
+    @assert(str == "-3.14150")
 }
