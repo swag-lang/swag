@@ -47,7 +47,6 @@ namespace std.text
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
-            ptr := cast(*s32) @dataof(value)
             switch type
             {
                 case @typeof(s8):
@@ -71,7 +70,13 @@ namespace std.text
                 case @typeof(f64):
                     convertFloat(buf, cast(f64) value)
                 case @typeof(string):
-                    buf.addBytes(cast(string) value)             
+                    buf.addBytes(cast(string) value)   
+                case @typeof(ConvertFormatFloat):  
+                    pp := cast(ConvertFormatFloat) value
+                    @print(pp.value)
+                    @print(" ")
+                    @print(cast(s64) pp.bits)
+                    //convertFloat(buf, cast(ConvertFormatFloat) value)
             }
         }
 
