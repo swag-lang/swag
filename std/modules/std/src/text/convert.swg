@@ -46,6 +46,10 @@ namespace std.text
         /// Convert a value to an utf8 string, and put the result in a [ConcatBuffer]
         func convertAny(buf: *ConcatBuffer, value: any)
         {
+            pp := cast(*ConvertFormatFloat) @dataof(value)
+            @print(pp.value)
+
+/*
             type := @kindof(value)
             switch type
             {
@@ -77,7 +81,7 @@ namespace std.text
                     @print(" ")
                     @print(cast(s64) pp.bits)
                     //convertFloat(buf, cast(ConvertFormatFloat) value)
-            }
+            }*/
         }
 
         /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]

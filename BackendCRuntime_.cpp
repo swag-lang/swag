@@ -160,6 +160,7 @@ static void __ftoa(char* result, swag_float64_t value)
 	char* n = __itoa(result, ipart);
 	*n++ = '.';
 	int afterPoint = 5;
+	if(fpart < 0) fpart = -fpart;
 	while(afterPoint--) fpart *= 10;
 	__itoa(n, (swag_int64_t) fpart);
 }

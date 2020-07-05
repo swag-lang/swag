@@ -4,8 +4,9 @@ using std.text, std.collections
 #test
 {
     var buf: ConcatBuffer
-    format(&buf, "value: %", ConvertFormatFloat(-3.1415))
+    //format(&buf, "value: %", ConvertFormatFloat(-3.1415))
+    convertAny(&buf, ConvertFormatFloat(-3.1415))
     str := buf.toString()
-    @print(cast(string) str)
+    //@print(cast(string) str)
     //@assert(str == "value: -3.14150")
 }

@@ -1,18 +1,24 @@
 struct TT
 {
     value:  f64
-    bits:   s64 = 32
 }
 
+//#[swag.printbc]
 func A(x: any)
 {
-    ptr := cast(TT) x
-    @assert(ptr.value == -1.0)
-    @assert(ptr.bits == 32)
+    ptr := cast(*TT) @dataof(x)
+    @print(ptr.value)
+    //@assert(ptr.value == -1.0)
+}
+
+func C(x: ...)
+{
+    A(x[0])
 }
 
 //#[swag.printbc]
 #run
 {
-    A(TT(-1.0))
+    x := TT(-1.0)
+    C(x)
 }
