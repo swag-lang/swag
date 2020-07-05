@@ -2,7 +2,7 @@ namespace std.globalization
 {
     public struct CultureInfo
     {
-        numberFomat: NumberFormatInfo
+        numberFormat: NumberFormatInfo
     }
 
     public var g_CultureInfo: CultureInfo

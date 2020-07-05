@@ -1,6 +1,6 @@
 namespace std.text
 {
-    using std.collections, std.diagnostics
+    using std.collections, std.diagnostics, std.globalization
 
     /// Format structure to convert a float to a string
     ///
@@ -84,7 +84,7 @@ namespace std.text
             if(neg)
             {
                 value = -value
-                buf.addByte("-"'u8)
+                buf.addByte(cast(u8) g_CultureInfo.numberFormat.negativeSign)
             }
 
             // Round with precision
@@ -105,7 +105,7 @@ namespace std.text
             // Decimal part
             value -= cast(f64) intPart
             if precision
-                buf.addByte("."'u8)
+                buf.addByte(cast(u8) g_CultureInfo.numberFormat.decimalSeparator);
 
             loop precision
             {
@@ -156,7 +156,7 @@ namespace std.text
 
             if fmt.signed && fmt.signedValue < 0
             {
-                tmp[cpt] = cast(u8) "-"'char
+                tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.negativeSign
                 cpt -= 1
             }
 
