@@ -37,21 +37,36 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     {
         node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
 
-        auto ptrType      = g_Allocator.alloc<TypeInfoPointer>();
-        ptrType->ptrCount = 1;
+        TypeInfoPointer* ptrType = nullptr;
 
-        // If this is an array, then this is legit, the pointer will address the first
-        // element : need to find it's type
-        while (typeInfo->kind == TypeInfoKind::Array)
+        // Pointer on a pointer
+        if (typeInfo->kind == TypeInfoKind::Pointer)
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            typeInfo       = typeArray->pointedType;
+            TypeInfoPointer* typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            ptrType                      = (TypeInfoPointer*) typeInfoPtr->clone();
+            ptrType->ptrCount++;
+            ptrType->computeName();
         }
 
-        ptrType->finalType   = typeInfo;
-        ptrType->pointedType = typeInfo;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*" + typeInfo->name;
+        // Else new pointer
+        else
+        {
+            ptrType           = g_Allocator.alloc<TypeInfoPointer>();
+            ptrType->ptrCount = 1;
+
+            // If this is an array, then this is legit, the pointer will address the first
+            // element : need to find it's type
+            while (typeInfo->kind == TypeInfoKind::Array)
+            {
+                auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                typeInfo       = typeArray->pointedType;
+            }
+
+            ptrType->finalType   = typeInfo;
+            ptrType->pointedType = typeInfo;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*" + typeInfo->name;
+        }
 
         // Type is constant if we take address of a readonly variable
         if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN)
