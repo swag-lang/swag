@@ -20,7 +20,8 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 {
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    auto  typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    auto& funcName = nodeFunc->name;
 
     // Load module if specified
     ComputedValue moduleName;
@@ -29,13 +30,25 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     {
         if (!g_ModuleMgr.loadModule(moduleName.text))
         {
-            context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
-            return nullptr;
+            // Sometimes it fails, don't know why. With another attempt just after, it's fine !
+            int attempt = 5;
+            while (attempt > 0)
+            {
+                this_thread::sleep_for(100ms);
+                if (g_ModuleMgr.loadModule(moduleName.text))
+                    break;
+                attempt--;
+            }
+
+            if (attempt == 0)
+            {
+                context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
+                return nullptr;
+            }
         }
     }
 
-    auto& funcName = nodeFunc->name;
-    auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
+    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
     if (!fn)
     {
         ComputedValue foreignValue;
@@ -47,7 +60,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     {
         if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
         {
-            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
@@ -55,7 +68,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
         auto externalModule = g_Workspace.getModuleByName(moduleName.text);
         if (!externalModule)
         {
-            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
@@ -82,14 +95,14 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
         // Last try
         if (!g_ModuleMgr.loadModule(moduleName.text))
         {
-            context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
+            context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
             return nullptr;
         }
 
         fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
         if (!externalModule)
         {
-            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
             return nullptr;
         }
     }
@@ -260,8 +273,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         // Special return
-        if (returnType->kind == TypeInfoKind::Slice || 
-            returnType->isNative(NativeTypeKind::Any) || 
+        if (returnType->kind == TypeInfoKind::Slice ||
+            returnType->isNative(NativeTypeKind::Any) ||
             returnType->isNative(NativeTypeKind::String))
         {
             numParameters++;

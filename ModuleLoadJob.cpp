@@ -10,7 +10,7 @@ JobResult ModuleLoadJob::execute()
 {
     if (!g_ModuleMgr.loadModule(module->name, false, true))
     {
-        module->error(format("fail to load module '%s' => %s", module->name.c_str(), OS::getLastErrorAsString().c_str()));
+        module->error(format("failed to load module '%s' => %s", module->name.c_str(), OS::getLastErrorAsString().c_str()));
         return JobResult::ReleaseJob;
     }
 
