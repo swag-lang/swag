@@ -211,7 +211,7 @@ JobResult ModuleBuildJob::execute()
             }
 
             // #TEST
-            if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty())
+            if (!module->byteCodeTestFunc.empty())
             {
                 if (!module->numErrors)
                 {
@@ -280,7 +280,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Output)
     {
         pass = ModuleBuildPass::End;
-        if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
+        if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
         {
             if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
             {
