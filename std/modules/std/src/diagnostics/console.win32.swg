@@ -87,6 +87,8 @@
                 using std.collections, std.text
                 var buf: ConcatBuffer
                 format(&buf, message, params)
+                str := buf.toString()
+                //WriteFile(g_stdOutputHandle, @dataof(str), @countof(str), null, null)
             }
             else
             {

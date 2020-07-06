@@ -8,7 +8,68 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    if (typeInfo->isNative(NativeTypeKind::String))
+    {
+        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        ptrType->ptrCount    = 1;
+        ptrType->finalType   = g_TypeMgr.typeInfoU8;
+        ptrType->pointedType = g_TypeMgr.typeInfoU8;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*u8";
+        ptrType->setConst();
+        node->typeInfo    = ptrType;
+        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+    }
+    else if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        ptrType->ptrCount    = 1;
+        ptrType->finalType   = ptrSlice->pointedType;
+        ptrType->pointedType = ptrSlice->pointedType;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*" + ptrSlice->pointedType->name;
+        if (ptrSlice->isConst())
+            ptrType->setConst();
+        node->typeInfo    = ptrType;
+        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto ptrArray        = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        ptrType->ptrCount    = 1;
+        ptrType->finalType   = ptrArray->pointedType;
+        ptrType->pointedType = ptrArray->pointedType;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*" + ptrArray->pointedType->name;
+        if (ptrArray->isConst())
+            ptrType->setConst();
+        node->typeInfo    = ptrType;
+        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+    }
+    else if (typeInfo->isNative(NativeTypeKind::Any))
+    {
+        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        ptrType->ptrCount    = 1;
+        ptrType->finalType   = g_TypeMgr.typeInfoVoid;
+        ptrType->pointedType = g_TypeMgr.typeInfoVoid;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
+        node->typeInfo       = ptrType;
+        node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -114,69 +175,15 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
-        if (!resolveCountProperty(context, node, expr->typeInfo))
-            return context->report({node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
+        if (!resolveCountOfProperty(context, node, expr->typeInfo))
+            return context->report({node->expression, format("'countof' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
     case Property::DataOf:
         SWAG_CHECK(checkIsConcrete(context, expr));
-        if (expr->typeInfo->isNative(NativeTypeKind::String))
-        {
-            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
-            ptrType->ptrCount    = 1;
-            ptrType->finalType   = g_TypeMgr.typeInfoU8;
-            ptrType->pointedType = g_TypeMgr.typeInfoU8;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*u8";
-            ptrType->setConst();
-            node->typeInfo    = ptrType;
-            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
-        }
-        else if (expr->typeInfo->kind == TypeInfoKind::Slice)
-        {
-            auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(expr->typeInfo, TypeInfoKind::Slice);
-            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
-            ptrType->ptrCount    = 1;
-            ptrType->finalType   = ptrSlice->pointedType;
-            ptrType->pointedType = ptrSlice->pointedType;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*" + ptrSlice->pointedType->name;
-            if (ptrSlice->isConst())
-                ptrType->setConst();
-            node->typeInfo    = ptrType;
-            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
-        }
-        else if (expr->typeInfo->kind == TypeInfoKind::Array)
-        {
-            auto ptrArray        = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
-            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
-            ptrType->ptrCount    = 1;
-            ptrType->finalType   = ptrArray->pointedType;
-            ptrType->pointedType = ptrArray->pointedType;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*" + ptrArray->pointedType->name;
-            if (ptrArray->isConst())
-                ptrType->setConst();
-            node->typeInfo    = ptrType;
-            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
-        }
-        else if (expr->typeInfo->isNative(NativeTypeKind::Any))
-        {
-            auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
-            ptrType->ptrCount    = 1;
-            ptrType->finalType   = g_TypeMgr.typeInfoVoid;
-            ptrType->pointedType = g_TypeMgr.typeInfoVoid;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
-            node->typeInfo       = ptrType;
-            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
-        }
-        else
-        {
-            return context->report({expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
-        }
-
+        if (!resolveDataOfProperty(context, node, expr->typeInfo))
+            return context->report({expr, format("'dataof' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
         break;
     }
 
