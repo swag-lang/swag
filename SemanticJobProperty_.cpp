@@ -61,6 +61,16 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
         node->typeInfo       = ptrType;
         node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
     }
+    else if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        node->typeInfo = typeInfo;
+        SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, node, nullptr, false));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->typeInfo = g_TypeMgr.typeInfoPVoid;
+        if (!node->byteCodeFct)
+            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+    }
     else
     {
         return false;
@@ -121,6 +131,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
         return false;
     }
 
+    node->typeInfo = g_TypeMgr.typeInfoU32;
     return true;
 }
 
@@ -177,7 +188,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->inheritComputedValue(expr);
         if (!resolveCountOfProperty(context, node, expr->typeInfo))
             return context->report({node->expression, format("'countof' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
-        node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
     case Property::DataOf:

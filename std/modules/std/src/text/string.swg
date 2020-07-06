@@ -41,6 +41,13 @@ namespace std.text
                 return length
             }
 
+            #[swag.inline]
+            #[swag.nodoc]
+            func opData(using self)->const *void
+            {
+                return buffer
+            }            
+
             #[swag.nodoc]
             func(T) opCast(using self)->T
             {

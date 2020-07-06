@@ -82,6 +82,7 @@ struct TypeManager
     TypeInfoNative*   typeInfoVoid;
     TypeInfoPointer*  typeInfoNull;
     TypeInfoPointer*  typeInfoPVoid;
+    TypeInfoPointer*  typeInfoConstPVoid;
     TypeInfoVariadic* typeInfoVariadic;
     TypeInfoNative*   typeInfoUntypedU64;
     TypeInfoFuncAttr* typeInfoOpCall;

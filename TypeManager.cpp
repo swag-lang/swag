@@ -41,6 +41,14 @@ void TypeManager::setup()
     typeInfoPVoid->computeName();
     typeInfoPVoid->sizeOf = sizeof(Register);
 
+    typeInfoConstPVoid              = new TypeInfoPointer();
+    typeInfoConstPVoid->finalType   = typeInfoVoid;
+    typeInfoConstPVoid->pointedType = typeInfoVoid;
+    typeInfoConstPVoid->ptrCount    = 1;
+    typeInfoConstPVoid->computeName();
+    typeInfoConstPVoid->setConst();
+    typeInfoConstPVoid->sizeOf = sizeof(Register);
+
     typeInfoCode = new TypeInfoCode();
 
     typeInfoOpCall             = new TypeInfoFuncAttr();

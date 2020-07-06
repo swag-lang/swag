@@ -44,6 +44,12 @@ bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
+    if (node->resolvedUserOpSymbolName)
+    {
+        SWAG_CHECK(emitUserOp(context));
+        return true;
+    }
+
     if (typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->kind == TypeInfoKind::Slice ||
