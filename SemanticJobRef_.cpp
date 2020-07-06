@@ -350,8 +350,16 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto typeInfo = arrayNode->array->typeInfo;
             if (!hasUserOp(context, "opIndex", arrayNode->array))
             {
-                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->name.c_str(), typeInfo->name.c_str());
-                return context->report({arrayNode->access, msg});
+                if (arrayNode->array->name.empty())
+                {
+                    Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->name.c_str());
+                    return context->report({arrayNode->access, msg});
+                }
+                else
+                {
+                    Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->name.c_str(), typeInfo->name.c_str());
+                    return context->report({arrayNode->access, msg});
+                }
             }
 
             SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
