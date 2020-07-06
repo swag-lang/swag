@@ -767,13 +767,23 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
 
     case ByteCodeOp::IntrinsicAssert:
+        if (!registersRC[ip->a.u32].b)
+            context->error("assertion failed");
+        break;
+    case ByteCodeOp::IntrinsicAssertCastAny:
     {
         if (!registersRC[ip->a.u32].b)
         {
-            if (ip->c.pointer)
-                context->error(format("assertion failed, %s", ip->c.pointer));
-            else
-                context->error("assertion failed");
+            // Get the names from the 2 typeinfos.
+            // Name must be the first pointer of the TypeInfo struct for that to work !
+            Utf8        msg;
+            SWAG_ASSERT(registersRC[ip->b.u32].pointer);
+            SWAG_ASSERT(registersRC[ip->c.u32].pointer);
+            const char* msg1 = *(char**) registersRC[ip->b.u32].pointer;
+            const char* msg2 = *(char**) registersRC[ip->c.u32].pointer;
+            SWAG_ASSERT(msg1); 
+            SWAG_ASSERT(msg2);
+            context->error(format("assertion failed, cannot cast from '%s' to '%s'", msg2, msg1));
         }
         break;
     }

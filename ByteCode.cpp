@@ -228,6 +228,7 @@ void ByteCode::print()
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
+        case ByteCodeOp::IntrinsicAssertCastAny:
         case ByteCodeOp::AffectOp8:
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOpPointer:

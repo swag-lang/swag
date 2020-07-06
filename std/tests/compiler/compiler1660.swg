@@ -1,3 +1,6 @@
+#module compiler1660
+#unittest error
+
 struct TT
 {
     value:  s64 = 456

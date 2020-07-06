@@ -1579,10 +1579,14 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            if (ip->c.pointer)
-                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->c.pointer);
-            else
-                concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            break;
+        case ByteCodeOp::IntrinsicAssertCastAny:
+            CONCAT_FIXED_STR(concat, "{ ");
+            concat.addStringFormat("const char* typeTo = *(char**)r[%u].pointer; ", ip->b.u32);
+            concat.addStringFormat("const char* typeFrom = *(char**)r[%u].pointer; ", ip->c.u32);
+            concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, \"invalid cast from 'any'\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            CONCAT_FIXED_STR(concat, "}");
             break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
