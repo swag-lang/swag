@@ -8,12 +8,11 @@ func C(x: ...)
 {
     //ptr := @kindof(x[0])   
     //@print(ptr.name)
-    ptr1 := cast(TT) x[0]
-    @print(ptr1[0,0].value)
+    ptr1 := cast(*TT) x[0]
+    //@print(ptr1.value)
     //ptr1 := cast(*s64) @dataof(x[0])
 }
 
-//#[swag.printbc]
 #run
 {
     var x: TT

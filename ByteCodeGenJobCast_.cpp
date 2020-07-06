@@ -722,6 +722,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (fromTypeInfo->isNative(NativeTypeKind::Any))
     {
         auto r0 = reserveRegisterRC(context);
+
+        // Check that the type is correct
         if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
         {
             auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
