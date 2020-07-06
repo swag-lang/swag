@@ -153,6 +153,8 @@ struct TypeInfo
 
     void setConst()
     {
+        if (flags & TYPEINFO_CONST)
+            return;
         flags |= TYPEINFO_CONST;
         preName = "const " + preName;
         name    = "const " + name;
