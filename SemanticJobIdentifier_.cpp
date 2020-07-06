@@ -547,7 +547,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                         // When we pass a structure as a variadic parameter, we convert the type to a const pointer (because this is what is really stored).
                         // This is necessary, because on the other side, we want to dereference the 'any' with the correct type
-                        if (nodeCall->typeInfo->kind == TypeInfoKind::Struct)
+                        /*if (nodeCall->typeInfo->kind == TypeInfoKind::Struct)
                         {
                             auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
                             ptrType->ptrCount    = 1;
@@ -557,7 +557,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                             ptrType->computeName();
                             ptrType->setConst();
                             nodeCall->typeInfo = ptrType;
-                        }
+                        }*/
 
                         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
                     }

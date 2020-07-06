@@ -453,13 +453,25 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0)->b.u64 = child->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
-            // Store address of value on the stack
-            auto r1 = reserveRegisterRC(context);
-            toFree += r1;
-            inst        = emitInstruction(context, ByteCodeOp::MovRASP, r1);
-            inst->b.u32 = offset;
-            inst->c.u32 = child->resultRegisterRC[0];
-            emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            if (typeParam->kind == TypeInfoKind::Struct)
+            {
+                // For a struct (and not a pointer to struct), we directly set the data pointer in the 'any' instead
+                // of pushing it to the stack.
+                emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
+            }
+            else
+            {
+                auto r1 = reserveRegisterRC(context);
+                toFree += r1;
+
+                // The value will be stored on the stack (1 or 2 registers max). So we push now the address
+                // of that value on that stack. This is the data part of the 'any'
+                // Store address of value on the stack
+                inst = emitInstruction(context, ByteCodeOp::MovRASP, r1);
+                inst->b.u32 = offset;
+                inst->c.u32 = child->resultRegisterRC[0];
+                emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            }
 
             precallStack += 2 * sizeof(Register);
             offset -= 2 * sizeof(Register);

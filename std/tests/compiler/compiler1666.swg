@@ -6,7 +6,7 @@ struct TT
 //#[swag.printbc]
 func C(x: ...)
 {
-    ptr1 := cast(const *TT) x[0]
+    ptr1 := cast(TT) x[0]
     @assert(ptr1.value == 456)
 }
 
