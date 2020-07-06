@@ -77,11 +77,21 @@
 		}
 		
         /// Write a message to the console
-		public func write(message: string)
+		public func write(message: string, params: ...)
 		{
             if g_silentMode
                 return
-			WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
+
+            if @countof(params)
+            {
+                using std.collections, std.text
+                var buf: ConcatBuffer
+                format(&buf, message, params)
+            }
+            else
+            {
+			    WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
+            }
 		}	
 	}
 }
