@@ -544,11 +544,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
                     {
                         auto& typeTable = sourceFile->module->typeTable;
-
-                        // When we pass a structure as a variadic parameter, be sure this is const
-                        //if (nodeCall->typeInfo->kind == TypeInfoKind::Struct)
-                        //    nodeCall->typeInfo->setConst();
-
                         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
                     }
                 }

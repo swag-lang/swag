@@ -1569,7 +1569,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 toNode->castedTypeInfo = toType;
-                toNode->typeInfo       = fromNode->typeInfo;
+                toNode->typeInfo       = fromType;
                 auto& typeTable        = context->sourceFile->module->typeTable;
                 SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
             }
@@ -1579,7 +1579,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
@@ -1589,9 +1589,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
-            auto& typeTable          = context->sourceFile->module->typeTable;
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo = toType;
+            auto& typeTable    = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }
     }

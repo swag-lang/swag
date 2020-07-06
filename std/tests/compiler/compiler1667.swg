@@ -1,5 +1,5 @@
 /*#module compiler1667
-#unittest error
+#unittest error*/
 
 struct TT
 {
@@ -17,4 +17,4 @@ func C(x: ...)
 {
     var x: TT
     C(x)
-}*/
+}
