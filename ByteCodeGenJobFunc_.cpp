@@ -388,8 +388,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
-        SWAG_ASSERT(typeInfoFunc->declNode);
-        funcNode = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
     }
 
     // Be sure referenced function has bytecode
@@ -512,7 +510,15 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // If not covered, then this is a default value
             if (!covered)
             {
-                auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                // funcnode can be null in case of a lambda, so we need to retreive the function description from the type
+                auto funcDescription = funcNode;
+                if (!funcDescription)
+                {
+                    SWAG_ASSERT(typeInfoFunc->declNode);
+                    funcDescription = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                }
+
+                auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
 
                 // Empty variadic parameter
                 if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic && defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
