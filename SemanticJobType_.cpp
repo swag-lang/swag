@@ -24,9 +24,10 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
-    auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo  = g_Allocator.alloc<TypeInfoFuncAttr>();
-    typeInfo->kind = TypeInfoKind::Lambda;
+    auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
+    typeInfo->kind     = TypeInfoKind::Lambda;
+    typeInfo->declNode = node;
 
     if (node->returnType)
     {

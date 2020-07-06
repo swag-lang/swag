@@ -388,6 +388,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+        SWAG_ASSERT(typeInfoFunc->declNode);
+        funcNode = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
     }
 
     // Be sure referenced function has bytecode
@@ -467,7 +469,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // The value will be stored on the stack (1 or 2 registers max). So we push now the address
                 // of that value on that stack. This is the data part of the 'any'
                 // Store address of value on the stack
-                inst = emitInstruction(context, ByteCodeOp::MovRASP, r1);
+                inst        = emitInstruction(context, ByteCodeOp::MovRASP, r1);
                 inst->b.u32 = offset;
                 inst->c.u32 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
