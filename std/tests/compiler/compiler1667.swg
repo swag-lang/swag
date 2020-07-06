@@ -1,5 +1,5 @@
-/*#module compiler1667
-#unittest error*/
+//#module compiler1667
+//#unittest error
 
 struct TT
 {
@@ -9,8 +9,9 @@ struct TT
 //#[swag.printbc]
 func C(x: ...)
 {
-    ptr1 := cast(TT) x[0]
-    ptr1.value = 456
+    //@print(@typeof(x[0]).name)
+    //ptr1 := cast(const TT) x[0]
+    //ptr1.value = 456
 }
 
 #run

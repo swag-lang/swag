@@ -6,8 +6,9 @@
 
 bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    node->resultRegisterRC = node->expression->resultRegisterRC[1];
+    auto node                      = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    node->resultRegisterRC         = node->expression->resultRegisterRC[1];
+    node->parent->resultRegisterRC = node->resultRegisterRC;
     return true;
 }
 
@@ -55,7 +56,8 @@ bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Array)
     {
-        node->resultRegisterRC = node->expression->resultRegisterRC[0];
+        node->resultRegisterRC         = node->expression->resultRegisterRC[0];
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
