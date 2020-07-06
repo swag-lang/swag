@@ -160,7 +160,7 @@
       "patterns": [
         {
           "name": "entity.name.function.op",
-          "match": "\\b(opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
+          "match": "\\b(opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
         },
         {
           "name": "entity.name.function.op",
