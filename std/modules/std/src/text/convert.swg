@@ -71,10 +71,10 @@ namespace std.text
                     convertFloat(buf, cast(f64) value)
                 case @typeof(string):
                     buf.addBytes(cast(string) value)   
-                case @typeof(ConvertFormatInt):  
-                    convertInt(buf, cast(ConvertFormatInt) value)
-                case @typeof(ConvertFormatFloat):  
-                    convertFloat(buf, cast(ConvertFormatFloat) value)
+                case @typeof(const ConvertFormatInt):  
+                    convertInt(buf, cast(const ConvertFormatInt) value)
+                case @typeof(const ConvertFormatFloat):  
+                    convertFloat(buf, cast(const ConvertFormatFloat) value)
             }
         }
 

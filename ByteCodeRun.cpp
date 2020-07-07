@@ -783,7 +783,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             const char* msg2 = *(char**) registersRC[ip->c.u32].pointer;
             SWAG_ASSERT(msg1); 
             SWAG_ASSERT(msg2);
-            context->error(format("assertion failed, cannot cast from '%s' to '%s'", msg2, msg1));
+            context->error(format("assertion failed, type '%s' does not match the 'any' type name '%s'", msg2, msg1));
         }
         break;
     }

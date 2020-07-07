@@ -428,6 +428,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+            if (identifier->identifierRef->parent->kind == AstNodeKind::FuncCallParam)
+                typeNode->forceConstType = true;
             varNode->type        = typeNode;
             typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
             auto back            = typeNode->identifier->childs.back();
@@ -535,6 +537,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                    if (nodeCall->castedTypeInfo && nodeCall->castedTypeInfo->kind == TypeInfoKind::Struct)
+                    {
+                        if ((i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC)) || // Variadic
+                            (typeInfoFunc->parameters[i]->isNative(NativeTypeKind::Any)))                              // Cast to any
+                        {
+                            unique_lock lk(nodeCall->castedTypeInfo->mutex);
+                            nodeCall->castedTypeInfo->setConst();
+                        }
+                    }
+
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
                     else if (oneMatch->solvedParameters.size() && oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
