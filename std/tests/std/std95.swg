@@ -1,6 +1,7 @@
 #import "std"
 using std.collections, std.diagnostics, std.text
 
+//#[swag.printbc]
 #test
 {
     var buf: ConcatBuffer
