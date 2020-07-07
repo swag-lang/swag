@@ -56,25 +56,35 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     return true;
 }
 
-static void forceConstType(AstTypeExpression* typeNode)
+void SemanticJob::forceConstNode(SemanticContext* context, AstNode* node)
 {
-    if (typeNode->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
-    {
-        if (typeNode->forceConstType)
-            typeNode->isConst = true;
-        if (typeNode->isConst && !typeNode->typeInfo->isConst())
-        {
-            unique_lock lk(typeNode->typeInfo->mutex);
-            if (!typeNode->typeInfo->constCopy)
-            {
-                auto copyType = typeNode->typeInfo->clone();
-                copyType->computeName();
-                copyType->setConst();
-                typeNode->typeInfo->constCopy = copyType;
-            }
+    auto typeInfo = node->typeInfo;
+    SWAG_ASSERT(typeInfo->flags & TYPEINFO_RETURN_BY_COPY);
 
-            typeNode->typeInfo = typeNode->typeInfo->constCopy;
+    unique_lock lk(typeInfo->mutex);
+    if (!typeInfo->isConst())
+    {
+        if (!typeInfo->constCopy)
+        {
+            auto copyType = typeInfo->clone();
+            copyType->computeName();
+            copyType->setConst();
+            typeInfo->constCopy = copyType;
         }
+
+        node->typeInfo = typeInfo->constCopy;
+    }
+}
+
+void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
+{
+    if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        if (node->forceConstType)
+            node->isConst = true;
+
+        if (node->isConst)
+            forceConstNode(context, node);
     }
 }
 
@@ -85,7 +95,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // Already solved
     if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo)
     {
-        forceConstType(typeNode);
+        forceConstType(context, typeNode);
         return true;
     }
 
@@ -170,7 +180,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // A struct function parameter is const
     else
     {
-        forceConstType(typeNode);
+        forceConstType(context, typeNode);
     }
 
     // In fact, this is an array

@@ -538,14 +538,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
 
-                    if (nodeCall->typeInfo->kind == TypeInfoKind::Struct && !nodeCall->typeInfo->isConst())
+                    // When we call an 'any' (variadic or not), the struct is forced to be const
+                    // (if we do not want a const, then we must use a pointer)
+                    if (nodeCall->typeInfo->kind == TypeInfoKind::Struct)
                     {
                         if ((i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC)) || // Variadic
                             (typeInfoFunc->parameters[i]->isNative(NativeTypeKind::Any)))                              // Cast to any
                         {
-                            unique_lock lk(nodeCall->typeInfo->mutex);
-                            nodeCall->typeInfo = nodeCall->typeInfo->clone();
-                            nodeCall->typeInfo->setConst();
+                            forceConstNode(context, nodeCall);
                         }
                     }
 
