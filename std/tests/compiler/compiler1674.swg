@@ -1,6 +1,3 @@
-#module compiler1667
-#unittest error
-
 struct TT
 {
     value:  s64 = 456
@@ -11,7 +8,7 @@ func C(x: ...)
 {
     //@print(@typeof(x[0]).name)
     ptr1 := cast(const TT) x[0]
-    ptr1.value = 456
+    //ptr1.value = 456
 }
 
 #run

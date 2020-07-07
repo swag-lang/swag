@@ -537,13 +537,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                    if (nodeCall->castedTypeInfo && nodeCall->castedTypeInfo->kind == TypeInfoKind::Struct)
+
+                    if (nodeCall->typeInfo->kind == TypeInfoKind::Struct && !nodeCall->typeInfo->isConst())
                     {
                         if ((i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC)) || // Variadic
                             (typeInfoFunc->parameters[i]->isNative(NativeTypeKind::Any)))                              // Cast to any
                         {
-                            unique_lock lk(nodeCall->castedTypeInfo->mutex);
-                            nodeCall->castedTypeInfo->setConst();
+                            unique_lock lk(nodeCall->typeInfo->mutex);
+                            nodeCall->typeInfo = nodeCall->typeInfo->clone();
+                            nodeCall->typeInfo->setConst();
                         }
                     }
 
