@@ -421,11 +421,34 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         node->ownerBreakable = breakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable scope"}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable block"}));
     node->ownerBreakable->breakList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitBreak;
+    return true;
+}
+
+bool SemanticJob::resolveFallThrough(SemanticContext* context)
+{
+    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
+    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, node->token, "'fallthrough' can only be used inside a 'switch' block"}));
+    node->ownerBreakable->fallThroughList.push_back(node);
+
+    // Be sure we are in a case
+    auto parent = node->parent;
+    while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
+        parent = parent->parent;
+    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, node->token, "'fallthrough' can only be used inside a 'case' block"}));
+    node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+
+    // 'fallthrough' cannot be used on the last case, this has no sens
+    auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({ node, node->token, "'fallthrough' cannot be used in the last 'case' of the swtich" }));
+
+    SWAG_CHECK(checkUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
+
     return true;
 }
 

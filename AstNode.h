@@ -68,6 +68,7 @@ enum class AstNodeKind : uint8_t
     Switch,
     SwitchCase,
     Break,
+    FallThrough,
     Continue,
     Statement,
     StatementNoScope,
@@ -414,6 +415,8 @@ struct AstBreakContinue : public AstNode
 
     Utf8 label;
 
+    AstSwitchCase* switchCase = nullptr; // The corresponding case, if inside a switch
+
     int jumpInstruction = 0;
 };
 
@@ -432,6 +435,7 @@ struct AstBreakable : public AstNode
 
     VectorNative<AstBreakContinue*> breakList;
     VectorNative<AstBreakContinue*> continueList;
+    VectorNative<AstBreakContinue*> fallThroughList;
 
     uint32_t breakableFlags           = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
     uint32_t registerIndex            = 0;
@@ -517,6 +521,8 @@ struct AstSwitchCase : public AstNode
     AstNode*   block       = nullptr;
     AstSwitch* ownerSwitch = nullptr;
 
+    int caseIndex = 0;
+
     bool isDefault = false;
 };
 
@@ -526,6 +532,7 @@ struct AstSwitchCaseBlock : public AstNode
 
     AstSwitchCase* ownerCase = nullptr;
 
+    int seekStart        = 0;
     int seekJumpNextCase = 0;
 
     bool isDefault = false;

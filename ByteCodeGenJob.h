@@ -130,6 +130,7 @@ struct ByteCodeGenJob : public Job
     static bool emitVarDecl(ByteCodeGenContext* context);
     static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset);
     static bool emitBreak(ByteCodeGenContext* context);
+    static bool emitFallThrough(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);

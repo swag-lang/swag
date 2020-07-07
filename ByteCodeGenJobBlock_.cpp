@@ -385,6 +385,20 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
         inst->a.s32 = diff;
     }
 
+    // Resolve all fallthrough instructions
+    for (auto fallNode : switchNode->fallThroughList)
+    {
+        SWAG_ASSERT(fallNode->switchCase);
+        SWAG_ASSERT(fallNode->switchCase->caseIndex < switchNode->cases.size() - 1);
+
+        auto nextCase = switchNode->cases[fallNode->switchCase->caseIndex + 1];
+        auto nextCaseBlock = CastAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::Statement);
+
+        inst = context->bc->out + fallNode->jumpInstruction;
+        diff = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
     return true;
 }
 
@@ -431,6 +445,9 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
 
+        // Save start of the case
+        blockNode->seekStart = context->bc->numInstructions;
+
         // Now this is the beginning of the block, so we can resolve all Jump
         for (auto jumpIdx : allJumps)
         {
@@ -465,6 +482,24 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto fallNode = CastAst<AstBreakContinue>(node, AstNodeKind::FallThrough);
+
+    Scope::collectScopeFrom(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->job->collectScopes);
+    for (auto scope : context->job->collectScopes)
+    {
+        SWAG_CHECK(emitLeaveScope(context, scope));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    fallNode->jumpInstruction = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump);
+    return true;
+}
+
 bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
 {
     auto node      = context->node;
@@ -485,10 +520,10 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
 {
-    auto node      = context->node;
-    auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
+    auto node         = context->node;
+    auto continueNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
+    Scope::collectScopeFrom(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope));
@@ -496,7 +531,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
             return true;
     }
 
-    breakNode->jumpInstruction = context->bc->numInstructions;
+    continueNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
     return true;
 }
@@ -530,7 +565,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table.structVarsToDrop[i];
+        auto one = table.structVarsToDrop[i];
         if (one == forceNoDrop)
             continue;
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);

@@ -38,8 +38,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "c_vs|c_clang", "the type of backend to use");
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug, nullptr, "force to compile in debug mode");
     addArg("--optim", nullptr, CommandLineType::Int, &cmdLine->optim, nullptr, "force the backend to be optimized");
-
-    //g_CommandLine.addBootstrap = false;
 }
 
 void CommandLineParser::logArguments()

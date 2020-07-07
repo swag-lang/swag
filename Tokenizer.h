@@ -134,6 +134,7 @@ enum class TokenId
     KwdNoDrop,
     KwdSwitch,
     KwdCase,
+    KwdFallThrough,
     KwdDefault,
     KwdFor,
     KwdDefer,

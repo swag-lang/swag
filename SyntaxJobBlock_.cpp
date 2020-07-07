@@ -78,6 +78,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             defaultCase = caseNode;
         else
             switchNode->cases.push_back(caseNode);
+        caseNode->caseIndex = (int) switchNode->cases.size() - 1;
 
         // Case expressions
         if (!isDefault)
@@ -322,6 +323,16 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
     }
 
+    return true;
+}
+
+bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveFallThrough;
+    if (result)
+        *result = node;
+    SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 

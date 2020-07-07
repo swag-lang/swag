@@ -321,6 +321,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdBreak:
         SWAG_CHECK(doBreak(parent, result));
         break;
+    case TokenId::KwdFallThrough:
+        SWAG_CHECK(doFallThrough(parent));
+        break;
     case TokenId::KwdContinue:
         SWAG_CHECK(doContinue(parent, result));
         break;
