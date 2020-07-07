@@ -49,6 +49,10 @@ namespace std.text
             type := @kindof(value)
             switch type
             {
+                case @typeof(bool):
+                    convertBool(buf, cast(bool) value)
+                case @typeof(char):
+                    convertChar(buf, cast(char) value)                    
                 case @typeof(s8):
                     convertInt(buf, cast(s8) value)                
                 case @typeof(s16):
@@ -245,5 +249,27 @@ namespace std.text
             fmt.bits = 64
             convertInt(buf, fmt)
         }          
+
+        /// Convert a `bool` to a string, and put the result in a [std.collections.ConcatBuffer]
+        func convertBool(buf: *ConcatBuffer, value: bool)
+        {
+            if value
+                buf.addBytes("true")
+            else
+                buf.addBytes("false")
+        }         
+
+        /// Convert a `char` to a string, and put the result in a [std.collections.ConcatBuffer]
+        func convertChar(buf: *ConcatBuffer, value: char)
+        {
+            if value <= 0xFF
+                buf.addByte(cast(u8) value)
+            else if(value  <= 0xFFFF)
+                buf.addBytes({cast(*u8) &value, 2})
+            else if(value  <= 0xFFFFFF)
+                buf.addBytes({cast(*u8) &value, 3})
+            else
+                buf.addBytes({cast(*u8) &value, 4})
+        }         
     }
 }
