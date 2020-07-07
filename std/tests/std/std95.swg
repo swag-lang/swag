@@ -13,6 +13,8 @@ using std.collections, std.diagnostics, std.text
     format(&buf, "%", "1"'char)
     @assert(buf.toString() == "1")
 
+    //format(&buf, "%", &buf)
+
     //str := buf.toString()
     //console.write(cast(string) str)
 }

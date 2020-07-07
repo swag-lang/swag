@@ -47,6 +47,15 @@ namespace std.text
         func convertAny(buf: *ConcatBuffer, value: any)
         {
             type := @kindof(value)
+
+            // A pointer, whatever type
+            if type.kind == swag.TypeInfoKind.Pointer
+            {
+                ptr := cast(*void) value
+                buf.addBytes({cast(*u8) &value, @sizeof(*void)})
+                return
+            }
+
             switch type
             {
                 case @typeof(bool):
