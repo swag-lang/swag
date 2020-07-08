@@ -16,6 +16,7 @@ struct Point
 }
 
 #unittest error
+#unittest error
 impl Point
 {
 	func opAffect(self, other: Self)

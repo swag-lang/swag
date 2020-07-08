@@ -182,6 +182,7 @@ struct TypeInfo
     virtual TypeInfo*  clone() = 0;
     virtual void       computeName();
     virtual void       computeScopedName();
+    void               computeScopedNameNoLock();
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 

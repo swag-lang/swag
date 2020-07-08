@@ -110,6 +110,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
 {
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
     if (typeInfo->numRegisters() == 2)
     {
         r0 += reserveRegisterRC(context);

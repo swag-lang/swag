@@ -5,6 +5,7 @@
 #include "Allocator.h"
 #include "ThreadManager.h"
 #include "TypeTableJob.h"
+#include "TypeManager.h"
 
 TypeTable::TypeTable()
 {
@@ -188,6 +189,8 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
     if (typeInfo->kind != TypeInfoKind::Param)
         typeInfo = concreteList.registerType(typeInfo);
 

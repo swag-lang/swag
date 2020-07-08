@@ -6,9 +6,8 @@ void TypeInfo::computeName()
 {
 }
 
-void TypeInfo::computeScopedName()
+void TypeInfo::computeScopedNameNoLock()
 {
-    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -23,6 +22,12 @@ void TypeInfo::computeScopedName()
 
     SWAG_ASSERT(!nakedName.empty());
     scopedName += nakedName;
+}
+
+void TypeInfo::computeScopedName()
+{
+    unique_lock lk(mutex);
+    computeScopedNameNoLock();
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

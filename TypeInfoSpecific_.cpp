@@ -66,7 +66,7 @@ void TypeInfoAlias::computeScopedName()
     if (rawType->kind == TypeInfoKind::Native)
         scopedName = name;
     else
-        TypeInfo::computeScopedName();
+        TypeInfo::computeScopedNameNoLock();
 }
 
 void TypeInfoAlias::computeName()

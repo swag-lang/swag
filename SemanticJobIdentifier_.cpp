@@ -71,6 +71,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->flags |= AST_IS_CONST_ASSIGN_INHERIT;
     }
 
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     identifierRef->typeInfo             = typeInfo;
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
