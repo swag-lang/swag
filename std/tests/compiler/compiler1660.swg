@@ -1,4 +1,4 @@
-#module compiler1660
+/*#module compiler1660
 #unittest error
 
 struct TT
@@ -22,4 +22,4 @@ func C(x: ...)
     C(x)
     //var y: s64 = 666
     //C(y)
-}
+}*/

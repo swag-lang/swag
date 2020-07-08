@@ -78,6 +78,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
             typeRef->flags       = paramType->flags | TYPEINFO_CONST;
             typeRef->pointedType = paramType;
+            typeRef->sizeOf      = sizeof(void*);
             typeRef->computeName();
             nodeParam->typeInfo = typeRef;
         }

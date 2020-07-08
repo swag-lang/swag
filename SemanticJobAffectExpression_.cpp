@@ -109,6 +109,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymEqual:
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
+            leftTypeInfo->kind != TypeInfoKind::Reference &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
             leftTypeInfo->kind != TypeInfoKind::TypeList &&
@@ -118,6 +119,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return context->report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
+            rightTypeInfo->kind != TypeInfoKind::Reference &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&

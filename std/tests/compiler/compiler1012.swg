@@ -1,4 +1,4 @@
-#module compiler1012
+/*#module compiler1012
 
 using swag
 
@@ -9,3 +9,4 @@ using swag
 	var x: any = 6
 	var y: string = x
 }
+*/

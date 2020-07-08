@@ -724,7 +724,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         auto r0 = reserveRegisterRC(context);
 
         // Check that the type is correct
-        if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
+        /*if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
         {
             auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
             SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
@@ -736,9 +736,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             inst = emitInstruction(context, ByteCodeOp::IntrinsicAssertCastAny, result, r0, exprNode->resultRegisterRC[1]);
             inherhitLocation(inst, exprNode);
             freeRegisterRC(context, result);
+        }*/
+
+        if (typeInfo->kind != TypeInfoKind::Reference)
+        {
+            SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
         }
 
-        SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->typeInfo       = typeInfo;
         exprNode->castedTypeInfo = nullptr;

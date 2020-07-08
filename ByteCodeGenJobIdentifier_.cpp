@@ -224,7 +224,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (typeInfo->kind == TypeInfoKind::Array ||
+
+        if (resolved->typeInfo->kind == TypeInfoKind::Reference)
+        {
+            if (node->flags & AST_TAKE_ADDRESS)
+                emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            else
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC);
+                inst->b.u32 = resolved->storageOffset;
+            }
+        }
+        else if (typeInfo->kind == TypeInfoKind::Array ||
             typeInfo->kind == TypeInfoKind::TypeList ||
             typeInfo->kind == TypeInfoKind::Struct)
         {

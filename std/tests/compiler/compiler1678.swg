@@ -5,12 +5,16 @@ struct TT
     value2: s64 = 456
 }
 
-//#[swag.printbc]
-func C(x: ...)
+func D(x: TT)
 {
-    ptr1 := cast(TT) x[0]
-    //@print(cast(s64) ptr1.value)
-    @assert(ptr1.value == 456)
+    //@print(cast(s64) x.value)
+    @assert(x.value == 456)
+}
+
+//#[swag.printbc]
+func C(x: any)
+{
+    D(x)
 }
 
 #run

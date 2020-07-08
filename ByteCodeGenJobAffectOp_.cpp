@@ -9,10 +9,18 @@
 
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
-    AstNode* node          = context->node;
-    auto     typeInfo      = TypeManager::concreteReference(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
-    typeInfo               = TypeManager::concreteType(typeInfo);
+    AstNode*  node         = context->node;
+    auto      typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
     TypeInfo* fromTypeInfo = from ? from->typeInfo : nullptr;
+
+    if (typeInfo->kind == TypeInfoKind::Reference)
+    {
+        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        return true;
+    }
+
+    typeInfo = TypeManager::concreteReference(typeInfo);
+    typeInfo = TypeManager::concreteType(typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
