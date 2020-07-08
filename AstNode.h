@@ -547,6 +547,7 @@ struct AstTypeExpression : public AstNode
     int ptrCount = 0;
     int arrayDim = 0;
 
+    bool isRef          = false;
     bool isSlice        = false;
     bool isConst        = false;
     bool isCode         = false;

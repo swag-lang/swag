@@ -177,6 +177,20 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         typeNode->typeInfo = ptrPointer;
     }
 
+    // In fact, this is a reference
+    else if (typeNode->isRef)
+    {
+        auto ptrRef         = g_Allocator.alloc<TypeInfoReference>();
+        ptrRef->pointedType = typeNode->typeInfo;
+        ptrRef->sizeOf      = typeNode->typeInfo->sizeOf;
+        SWAG_VERIFY(typeNode->isConst, context->report({typeNode, "a reference must be declared as 'const'"}));
+        if (typeNode->isConst)
+            ptrRef->flags |= TYPEINFO_CONST;
+        ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
+        ptrRef->computeName();
+        typeNode->typeInfo = ptrRef;
+    }
+
     // A struct function parameter is const
     else
     {

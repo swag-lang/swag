@@ -261,6 +261,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
+    node->isRef = false;
+    if (token.id == TokenId::SymAmpersand)
+    {
+        node->isRef = true;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_VERIFY(!node->ptrCount, syntaxError(token, "'&' is invalid for a pointer"));
+    }
+
     if (token.id == TokenId::NativeType)
     {
         node->token = move(token);

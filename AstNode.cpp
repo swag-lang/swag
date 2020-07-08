@@ -175,7 +175,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     computedValue        = from->computedValue;
     name                 = from->name;
-    scopedName          = from->scopedName;
+    scopedName           = from->scopedName;
     sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;
@@ -476,6 +476,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->identifier     = findChildRef(identifier, newNode);
     newNode->ptrCount       = ptrCount;
     newNode->arrayDim       = arrayDim;
+    newNode->isRef          = isRef;
     newNode->isSlice        = isSlice;
     newNode->isConst        = isConst;
     newNode->isCode         = isCode;

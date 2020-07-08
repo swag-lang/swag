@@ -5,11 +5,9 @@ struct TT
     value2: s64 = 456
 }
 
-#[swag.printbc]
-func C(x: ...)
+func C(x: const &TT)
 {
-    ptr1 := cast(TT) x[0]
-    @assert(ptr1.value == 456)
+    @assert(x.value == 456)
 }
 
 #run
