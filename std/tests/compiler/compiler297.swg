@@ -1,6 +1,3 @@
-;
-;
-
 //#[swag.printbc]
 func test1 ()-> string
 {

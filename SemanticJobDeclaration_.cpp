@@ -3,6 +3,7 @@
 #include "SymTable.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {
@@ -18,6 +19,8 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
 
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
+
+    typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
@@ -34,7 +37,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
         {
-			SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
+            SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
             regNode->alternativeScopes.push_back(typeStruct->scope);
             regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
         }
@@ -86,7 +89,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     }
 
     {
-		SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
+        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
     }
 

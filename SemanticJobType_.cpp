@@ -289,6 +289,17 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, exprNode));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
+
+    if (typeNode->typeInfo->kind == TypeInfoKind::Struct || typeNode->typeInfo->kind == TypeInfoKind::Interface)
+    {
+        auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
+        typeRef->flags       = typeNode->typeInfo->flags | TYPEINFO_CONST;
+        typeRef->pointedType = typeNode->typeInfo;
+        typeRef->computeName();
+        typeRef->sizeOf    = typeNode->typeInfo->sizeOf;
+        typeNode->typeInfo = typeRef;
+    }
+
     node->typeInfo = typeNode->typeInfo;
 
     // Revert the implicit cast informations

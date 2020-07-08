@@ -44,6 +44,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a slice";
     case TypeInfoKind::Pointer:
         return "a pointer";
+    case TypeInfoKind::Reference:
+        return "a reference";
     case TypeInfoKind::FuncAttr:
         return "a function";
     case TypeInfoKind::Lambda:
@@ -84,6 +86,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "slice";
     case TypeInfoKind::Pointer:
         return "pointer";
+    case TypeInfoKind::Reference:
+        return "reference";
     case TypeInfoKind::FuncAttr:
         return "function";
     case TypeInfoKind::Lambda:

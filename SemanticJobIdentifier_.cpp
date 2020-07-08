@@ -54,6 +54,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
+    if (node->typeInfo->kind == TypeInfoKind::Reference && node->typeInfo->isConst())
+        node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->flags |= AST_IS_CONST_ASSIGN;
@@ -71,13 +73,24 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->flags |= AST_IS_CONST_ASSIGN_INHERIT;
     }
 
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    typeInfo                            = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     identifierRef->typeInfo             = typeInfo;
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 
     switch (typeInfo->kind)
     {
+    case TypeInfoKind::Reference:
+    {
+        auto typeReference = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+        if (typeReference->pointedType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeReference->pointedType)->scope;
+        else if (typeReference->pointedType->kind == TypeInfoKind::Interface)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeReference->pointedType)->itable->scope;
+        node->typeInfo = typeInfo;
+        break;
+    }
+
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
@@ -429,8 +442,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-            if (identifier->identifierRef->parent->kind == AstNodeKind::FuncCallParam)
-                typeNode->forceConstType = true;
             varNode->type        = typeNode;
             typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
             auto back            = typeNode->identifier->childs.back();
@@ -538,17 +549,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-
-                    // When we call an 'any' (variadic or not), the struct is forced to be const
-                    // (if we do not want a const, then we must use a pointer)
-                    if (nodeCall->typeInfo->kind == TypeInfoKind::Struct)
-                    {
-                        if ((i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC)) || // Variadic
-                            (typeInfoFunc->parameters[i]->isNative(NativeTypeKind::Any)))                              // Cast to any
-                        {
-                            forceConstNode(context, nodeCall);
-                        }
-                    }
 
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));

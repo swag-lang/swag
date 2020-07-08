@@ -18,11 +18,11 @@ static const uint32_t CASTFLAG_BIJECTIF      = 0x00000080;
 static const uint32_t CASTFLAG_STRICT        = 0x00000100;
 static const uint32_t CASTFLAG_FORCE_UNCONST = 0x00000200;
 
-static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
-static const uint32_t CONCRETE_ENUM    = 0x00000001;
-static const uint32_t CONCRETE_FUNC    = 0x00000002;
-static const uint32_t CONCRETE_GENERIC = 0x00000004;
-static const uint32_t CONCRETE_ALIAS   = 0x00000008;
+static const uint32_t CONCRETE_ALL       = 0xFFFFFFFF;
+static const uint32_t CONCRETE_ENUM      = 0x00000001;
+static const uint32_t CONCRETE_FUNC      = 0x00000002;
+static const uint32_t CONCRETE_GENERIC   = 0x00000004;
+static const uint32_t CONCRETE_ALIAS     = 0x00000008;
 
 struct TypeManager
 {
@@ -48,6 +48,7 @@ struct TypeManager
     static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags);
+    static bool castToReference(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
@@ -63,6 +64,8 @@ struct TypeManager
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
+    static TypeInfo* concreteReferenceType(TypeInfo* typeInfo);
+    static TypeInfo* concreteReference(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
 
     TypeInfoNative*   typeInfoS8;

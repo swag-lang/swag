@@ -1590,13 +1590,41 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo = toType;
-            auto& typeTable    = context->sourceFile->module->typeTable;
+            fromNode->typeInfo       = toType;
+            auto& typeTable          = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }
     }
 
     return true;
+}
+
+bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto toTypeReference = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
+
+    // Same referenced type
+    if (toTypeReference->pointedType->isSame(fromType, ISSAME_CAST))
+        return true;
+
+    // Structure to interface reference
+    if (fromType->kind == TypeInfoKind::Struct && toTypeReference->pointedType->kind == TypeInfoKind::Interface)
+    {
+        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Interface);
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        if (!fromTypeStruct->hasInterface(toTypeItf))
+            return castError(context, toType, fromType, fromNode, castFlags);
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toTypeItf;
+        }
+
+        return true;
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
 }
 
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -1670,6 +1698,33 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                     }
 
                     return true;
+                }
+            }
+        }
+    }
+
+    // Struct/Interface reference to pointer
+    if (fromType->kind == TypeInfoKind::Reference)
+    {
+        auto typeRef = TypeManager::concreteReference(fromType);
+        if (typeRef->kind == TypeInfoKind::Struct || typeRef->kind == TypeInfoKind::Interface)
+        {
+            if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst())
+            {
+                if (toTypePointer->ptrCount == 1)
+                {
+                    // to *void or *structure
+                    if (toTypePointer->finalType->isNative(NativeTypeKind::Void) ||
+                        toTypePointer->finalType->isSame(typeRef, ISSAME_CAST))
+                    {
+                        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK) && !(toTypePointer->flags & TYPEINFO_SELF))
+                        {
+                            fromNode->castedTypeInfo = fromNode->typeInfo;
+                            fromNode->typeInfo       = toType;
+                        }
+
+                        return true;
+                    }
                 }
             }
         }
@@ -2190,12 +2245,20 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
     auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     SWAG_ASSERT(realFromType && realToType);
-    if (realFromType->kind == TypeInfoKind::TypeList && realToType->kind == TypeInfoKind::Struct)
+    if (realFromType->kind == TypeInfoKind::TypeList)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
         if (typeList->listKind == TypeInfoListKind::Curly)
         {
-            return true;
+            if (realToType->kind == TypeInfoKind::Struct)
+                return true;
+
+            if (realToType->kind == TypeInfoKind::Reference && realToType->isConst())
+            {
+                auto ptrRef = CastTypeInfo<TypeInfoReference>(realToType, TypeInfoKind::Reference);
+                if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
+                    return true;
+            }
         }
     }
 
@@ -2253,6 +2316,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
+    // From a reference
+    if (fromType->kind == TypeInfoKind::Reference)
+    {
+        auto fromTypeRef = TypeManager::concreteReference(fromType);
+        if (fromTypeRef == toType)
+            return true;
+        if (fromTypeRef->isSame(toType, ISSAME_CAST))
+            return true;
+    }
+
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
 
@@ -2265,6 +2338,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     switch (toType->kind)
     {
+    // Cast to reference
+    case TypeInfoKind::Reference:
+        return castToReference(context, toType, fromType, fromNode, castFlags);
+
     // Cast to pointer
     case TypeInfoKind::Pointer:
         return castToPointer(context, toType, fromType, fromNode, castFlags);

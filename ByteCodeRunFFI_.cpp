@@ -209,6 +209,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     for (int i = 0; i < numParameters; i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
+        typeParam      = TypeManager::concreteReference(typeParam);
         typeParam      = TypeManager::concreteType(typeParam);
         ffiArgs.push_back(ffiFromTypeInfo(typeParam));
         if (!ffiArgs.back())

@@ -299,8 +299,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     case TypeInfoKind::Reference:
     {
-        auto concreteType = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
-        auto realType     = (TypeInfoPointer*) typeInfo;
+        auto concreteType = (ConcreteTypeInfoReference*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoReference*) typeInfo;
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }

@@ -23,7 +23,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
     auto resolved   = node->resolvedSymbolOverload;
-    auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
+    auto typeInfo   = TypeManager::concreteReference(resolved->typeInfo);
+    typeInfo        = TypeManager::concreteType(typeInfo);
     SWAG_ASSERT(typeInfo->kind != TypeInfoKind::Generic);
 
     // Will be done in the variable declaration
@@ -70,7 +71,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1], (uint32_t)node->resolvedSymbolOverload->computedValue.text.length());
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1], (uint32_t) node->resolvedSymbolOverload->computedValue.text.length());
             return true;
         }
 

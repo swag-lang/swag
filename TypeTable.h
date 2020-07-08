@@ -84,6 +84,12 @@ struct ConcreteTypeInfoPointer
     uint32_t          ptrCount;
 };
 
+struct ConcreteTypeInfoReference
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+};
+
 struct ConcreteTypeInfoParam
 {
     ConcreteStringSlice name;

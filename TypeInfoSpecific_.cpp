@@ -164,7 +164,7 @@ bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    auto other = static_cast<TypeInfoPointer*>(to);
+    auto other = static_cast<TypeInfoReference*>(to);
     return pointedType->isSame(other->pointedType, isSameFlags);
 }
 

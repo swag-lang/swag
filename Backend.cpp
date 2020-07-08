@@ -99,18 +99,22 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         uint32_t idx = 0;
         for (auto p : node->parameters->childs)
         {
+            // Name
             if (p->name == "self" && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
             bufferSwg.addString(p->name);
 
+            // Type
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                p->typeInfo->computeScopedName();
-                bufferSwg.addString(p->typeInfo->scopedName);
+                auto typeParam = TypeManager::concreteReference(p->typeInfo);
+                typeParam->computeScopedName();
+                bufferSwg.addString(typeParam->scopedName);
             }
 
+            // Assignment
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
             if (varDecl->assignment)
             {
@@ -169,8 +173,9 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                p->typeInfo->computeScopedName();
-                bufferSwg.addString(p->typeInfo->scopedName);
+                auto typeParam = TypeManager::concreteReference(p->typeInfo);
+                typeParam->computeScopedName();
+                bufferSwg.addString(typeParam->scopedName);
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);

@@ -718,7 +718,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({ node, "a global variable cannot be declared as 'public'" }));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, "a global variable cannot be declared as 'public'"}));
 
         node->flags |= AST_R_VALUE;
 
@@ -768,6 +768,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->flags |= AST_R_VALUE;
+
+        // A struct/interface is forced to be a const reference
+        if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
+        {
+            if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
+            {
+                auto typeRef = g_Allocator.alloc<TypeInfoReference>();
+                typeRef->flags = typeInfo->flags | TYPEINFO_CONST;
+                typeRef->pointedType = typeInfo;
+                typeRef->computeName();
+                node->typeInfo = typeRef;
+            }
+        }
     }
 
     // A using on a variable

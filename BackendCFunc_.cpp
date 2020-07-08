@@ -21,7 +21,7 @@ void BackendC::addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, V
     for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteType(typeParam);
+        typeParam      = TypeManager::concreteReferenceType(typeParam);
         for (int j = 0; j < typeParam->numRegisters(); j++)
         {
             if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
@@ -63,7 +63,8 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         typeInfo->kind == TypeInfoKind::Struct ||
         typeInfo->kind == TypeInfoKind::Interface ||
         typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->isNative(NativeTypeKind::String))
+        typeInfo->isNative(NativeTypeKind::String) ||
+        typeInfo->kind == TypeInfoKind::Reference)
     {
         cType = "void*";
         return true;
@@ -123,7 +124,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
@@ -197,7 +198,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     bool first = true;
     if (numCallParams)
     {
-        auto typeParam = TypeManager::concreteType(typeFuncBC->parameters.back()->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
             auto index = pushParams.back();
@@ -213,7 +214,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
 
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
-        auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
         if (!first)
             concat.addChar(',');
         first = false;
@@ -325,7 +326,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     auto n = typeFunc->numReturnRegisters();
     for (auto param : typeFunc->parameters)
     {
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         n += typeParam->numRegisters();
     }
 
@@ -360,7 +361,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     if (numParams)
     {
         auto param     = typeFunc->parameters.back();
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
@@ -373,7 +374,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
             concat.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
@@ -637,7 +638,7 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
     int index = 0;
     for (auto param : typeFunc->parameters)
     {
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         for (int i = 0; i < typeParam->numRegisters(); i++)
         {
             if (index || i || typeFunc->numReturnRegisters())

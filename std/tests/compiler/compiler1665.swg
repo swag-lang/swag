@@ -1,3 +1,6 @@
+#module compiler1665
+#unittest error
+
 struct TT
 {
     value:  s64 = 456
@@ -6,7 +9,8 @@ struct TT
 //#[swag.printbc]
 func C(x: ...)
 {
-    ptr1 := cast(const TT) x[0]
+    ptr1 := cast(TT) x[0]
+    ptr1.value = 0
 }
 
 #run

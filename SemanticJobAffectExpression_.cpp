@@ -14,7 +14,7 @@ bool SemanticJob::resolveRawMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!node->typeInfo->isConst(), context->report({right, "'move' cannot be applied to a constant expression"}));
+        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, "'move' cannot be applied to a constant expression"}));
     }
 
     return true;
@@ -39,7 +39,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forEnumFlags  = false;
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
-
     if (node->token.id != TokenId::SymEqual)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
@@ -59,7 +58,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
     }
 
-    rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    rightTypeInfo = TypeManager::concreteReference(right->typeInfo);
+    rightTypeInfo = TypeManager::concreteType(rightTypeInfo);
 
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->report({left, "affect operation not allowed on array"}));
 
