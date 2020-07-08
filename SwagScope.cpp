@@ -23,6 +23,11 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         SWAG_ASSERT(!regTypeInfoPointer);
         regTypeInfoPointer = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     }
+    else if (typeInfo->name == "TypeInfoReference")
+    {
+        SWAG_ASSERT(!regTypeInfoReference);
+        regTypeInfoReference = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    }
     else if (typeInfo->name == "TypeInfoStruct")
     {
         SWAG_ASSERT(!regTypeInfoStruct);

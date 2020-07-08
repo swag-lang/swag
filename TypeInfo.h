@@ -29,6 +29,7 @@ enum class TypeInfoKind
     Param,
     Lambda,
     Pointer,
+    Reference,
     Array,
     Slice,
     TypeList,
@@ -418,6 +419,21 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfo* pointedType = nullptr;
 
     uint32_t ptrCount = 0;
+};
+
+struct TypeInfoReference : public TypeInfo
+{
+    TypeInfoReference()
+    {
+        kind = TypeInfoKind::Reference;
+    }
+
+    void      computeName() override;
+    void      computeScopedName() override;
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
+    TypeInfo* clone() override;
+
+    TypeInfo* pointedType = nullptr;
 };
 
 struct TypeInfoArray : public TypeInfo

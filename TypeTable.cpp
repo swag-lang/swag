@@ -216,6 +216,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Pointer:
         typeStruct = swagScope.regTypeInfoPointer;
         break;
+    case TypeInfoKind::Reference:
+        typeStruct = swagScope.regTypeInfoReference;
+        break;
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
         typeStruct = swagScope.regTypeInfoStruct;
@@ -290,6 +293,14 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        break;
+    }
+
+    case TypeInfoKind::Reference:
+    {
+        auto concreteType = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoPointer*) typeInfo;
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }

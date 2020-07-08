@@ -120,6 +120,54 @@ bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
     return typeInfo->isSame(other->typeInfo, isSameFlags);
 }
 
+TypeInfo* TypeInfoReference::clone()
+{
+    auto newType         = g_Allocator.alloc<TypeInfoReference>();
+    newType->pointedType = pointedType;
+    newType->copyFrom(this);
+    return newType;
+}
+
+void TypeInfoReference::computeScopedName()
+{
+    unique_lock lk(mutex);
+    if (!scopedName.empty())
+        return;
+
+    pointedType->computeScopedName();
+    scopedName = preName;
+    scopedName += pointedType->scopedName;
+}
+
+void TypeInfoReference::computeName()
+{
+    unique_lock lk(mutex);
+
+    preName.clear();
+    if (flags & TYPEINFO_CONST)
+        preName = "const ";
+
+    preName += "&";
+
+    nakedName = pointedType->nakedName;
+    pointedType->computeName();
+
+    name = preName;
+    name += pointedType->name;
+}
+
+bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+
+    auto other = static_cast<TypeInfoPointer*>(to);
+    return pointedType->isSame(other->pointedType, isSameFlags);
+}
+
 TypeInfo* TypeInfoPointer::clone()
 {
     auto newType         = g_Allocator.alloc<TypeInfoPointer>();

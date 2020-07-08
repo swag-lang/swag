@@ -178,6 +178,7 @@ namespace swag
         Param
         Lambda
         Pointer
+        Reference
         Array
         Slice
         TypeList
@@ -228,6 +229,12 @@ namespace swag
         finalType:		const *TypeInfo
         pointedType:	const *TypeInfo
         ptrCount:		u32
+    }
+
+    struct TypeInfoReference
+    {
+        base: 			TypeInfo
+        pointedType:	const *TypeInfo
     }
 
     struct TypeInfoAttributeParameter
