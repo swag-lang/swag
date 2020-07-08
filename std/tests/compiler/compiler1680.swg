@@ -16,9 +16,7 @@ func D(x: ...)
 //#[swag.printbc]
 func E(x: any)
 {
-    ptr := cast(TT) x
-    //C(cast(TT) x)
-    C(ptr)
+    C(cast(TT) x)
 }
 
 //#[swag.printbc]
