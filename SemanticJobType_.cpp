@@ -302,8 +302,19 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, exprNode));
 
+    // When we cast from a structure to an interface, we need to be sure that every interfaces are
+    // registered in the structure type, otherwise the cast can fail depending on the compile order
+    auto exprTypeInfo = TypeManager::concreteReference(exprNode->typeInfo);
+    if (typeNode->typeInfo->kind == TypeInfoKind::Interface && exprTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        context->job->waitForAllStructInterfaces(exprTypeInfo);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
 
+    // When we cast to a structure or interface, in fact we cast to a const reference
     if (typeNode->typeInfo->kind == TypeInfoKind::Struct || typeNode->typeInfo->kind == TypeInfoKind::Interface)
     {
         auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
