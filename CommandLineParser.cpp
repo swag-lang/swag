@@ -12,7 +12,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
     addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the workspace to compile/document/create");
-    addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (same as the output folder if empty)");
+    addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
 
     addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput, nullptr, "output backend");
     addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit, nullptr, "output native backend");

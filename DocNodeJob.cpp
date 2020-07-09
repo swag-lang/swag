@@ -72,15 +72,23 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
 {
     Utf8 name;
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
-        name = ((TypeInfoPointer*) typeInfo)->finalType->scopedName;
-    else
-        name = typeInfo->scopedName;
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Reference:
+        typeInfo = ((TypeInfoReference*) typeInfo)->pointedType;
+        break;
+    case TypeInfoKind::Pointer:
+        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+        break;
+    }
 
-    if (name.find("const ") == 0)
+    name = typeInfo->scopedName;
+
+    // Remove prename (like const, pointer etc.)
+    if (typeInfo->preName.length())
     {
         auto tmp = name;
-        name     = tmp.c_str() + 6;
+        name     = tmp.c_str() + typeInfo->preName.length();
     }
 
     return name;

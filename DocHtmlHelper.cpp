@@ -102,6 +102,7 @@ namespace DocHtmlHelper
             case TokenId::KwdVisit:
             case TokenId::KwdBreak:
             case TokenId::KwdContinue:
+            case TokenId::KwdFallThrough:
             case TokenId::KwdAutoCast:
             case TokenId::KwdCast:
             case TokenId::KwdCase:
