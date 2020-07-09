@@ -174,10 +174,10 @@ void TypeManager::setup()
     promoteMatrix[(int) NativeTypeKind::F64][(int) NativeTypeKind::F64] = typeInfoF64;
 }
 
-TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo)
+TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo, uint32_t flags)
 {
     typeInfo = concreteReference(typeInfo);
-    typeInfo = concreteType(typeInfo);
+    typeInfo = concreteType(typeInfo, flags);
     return typeInfo;
 }
 

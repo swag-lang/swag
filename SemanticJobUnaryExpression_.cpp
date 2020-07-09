@@ -5,7 +5,7 @@
 
 bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 {
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -48,7 +48,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
-    auto typeInfo = TypeManager::concreteType(op->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Lambda)
         return true;
 
@@ -90,7 +90,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
 {
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -140,14 +140,14 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     node->flags |= AST_R_VALUE;
 
     // Special case for enum : nothing is possible, except for flags
-    auto typeInfo = TypeManager::concreteType(op->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteReferenceType(op->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return notAllowed(context, node, typeInfo);
     }
 
-    typeInfo = TypeManager::concreteType(op->typeInfo);
+    typeInfo = TypeManager::concreteReferenceType(op->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
