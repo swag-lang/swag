@@ -369,7 +369,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var has an initialization
         else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "initialization expression cannot be evaluated at compile time"}));
 
             auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
