@@ -19,8 +19,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    typeInfo = TypeManager::concreteReference(typeInfo);
-    typeInfo = TypeManager::concreteType(typeInfo);
+    typeInfo = TypeManager::concreteReferenceType(typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

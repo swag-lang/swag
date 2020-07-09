@@ -58,8 +58,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
     }
 
-    rightTypeInfo = TypeManager::concreteReference(right->typeInfo);
-    rightTypeInfo = TypeManager::concreteType(rightTypeInfo);
+    rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->report({left, "affect operation not allowed on array"}));
 
