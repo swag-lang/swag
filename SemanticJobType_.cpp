@@ -314,8 +314,8 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
 
-    // When we cast to a structure or interface, in fact we cast to a const reference
-    if (typeNode->typeInfo->kind == TypeInfoKind::Struct || typeNode->typeInfo->kind == TypeInfoKind::Interface)
+    // When we cast to a structure, in fact we cast to a const reference
+    if (typeNode->typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
         typeRef->flags       = typeNode->typeInfo->flags | TYPEINFO_CONST;
