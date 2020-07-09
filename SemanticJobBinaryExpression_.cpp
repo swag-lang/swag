@@ -9,8 +9,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -40,7 +40,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '+' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-    leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -131,8 +131,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -175,7 +175,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '-' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-    leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -266,7 +266,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 {
     auto node         = context->node;
     auto sourceFile   = context->sourceFile;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -362,7 +362,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -438,7 +438,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -521,7 +521,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -584,7 +584,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -839,8 +839,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool isEnumFlags   = false;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS);
     if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
@@ -857,8 +857,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         isEnumFlags = true;
     }
 
-    leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
