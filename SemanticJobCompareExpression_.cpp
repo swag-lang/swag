@@ -186,8 +186,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReference(left->typeInfo);
+    leftTypeInfo       = TypeManager::concreteType(leftTypeInfo);
+    auto rightTypeInfo = TypeManager::concreteReference(right->typeInfo);
+    rightTypeInfo      = TypeManager::concreteType(rightTypeInfo);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 
@@ -244,7 +246,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
+
+    left->typeInfo  = TypeManager::concreteReference(left->typeInfo);
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ENUM);
+    right->typeInfo = TypeManager::concreteReference(right->typeInfo);
     right->typeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ENUM);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
