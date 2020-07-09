@@ -700,7 +700,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     return true;
 }
 
-bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, bool isExplicit)
 {
     if (fromTypeInfo == nullptr)
         return true;
@@ -724,20 +724,25 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         auto r0 = reserveRegisterRC(context);
 
         // Check that the type is correct
-        /*if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
+        if (isExplicit)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
-            SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
-            inst->b.u32 = exprNode->concreteTypeInfoStorage;
+            if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
+                SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
+                inst->b.u32 = exprNode->concreteTypeInfoStorage;
 
-            RegisterList result = reserveRegisterRC(context);
-            SWAG_CHECK(emitCompareTypeInfos(context, r0, exprNode->resultRegisterRC[1], result));
+                RegisterList result = reserveRegisterRC(context);
+                SWAG_CHECK(emitCompareTypeInfos(context, r0, exprNode->resultRegisterRC[1], result));
 
-            inst = emitInstruction(context, ByteCodeOp::IntrinsicAssertCastAny, result, r0, exprNode->resultRegisterRC[1]);
-            inherhitLocation(inst, exprNode);
-            freeRegisterRC(context, result);
-        }*/
+                inst = emitInstruction(context, ByteCodeOp::IntrinsicAssertCastAny, result, r0, exprNode->resultRegisterRC[1]);
+                inherhitLocation(inst, exprNode);
+                freeRegisterRC(context, result);
+            }
+        }
 
+        // Dereference the any content, except for a reference, where we want to keep the pointer
+        // (pointer that comes from the data is already in the correct register)
         if (typeInfo->kind != TypeInfoKind::Reference)
         {
             SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
@@ -841,7 +846,7 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
     auto     typeInfo     = node->typeInfo;
     auto     exprNode     = node->childs[1];
     auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, true));
     return true;
 }
 
