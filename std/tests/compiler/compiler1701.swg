@@ -1,6 +1,6 @@
 interface Print
 {
-    toto: func(self)
+    toto: func(self)->s32
 }
 
 struct A
@@ -10,15 +10,19 @@ struct A
 
 impl Print for A
 {
-    func toto(using self)
+    func toto(using self)->s32
     {
-        @print(x)   
+        @assert(x == 666)
+        return 667
     }
 }
 
 func callAny(value: any)
 {
-    
+    ptr := cast(A) value
+    var itf: Print = cast(Print) ptr
+    @assert(itf.toto() == 667)
+    @assert(@typeof(itf).name == "compiler1701.Print")
 }
 
 #test
