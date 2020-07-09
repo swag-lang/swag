@@ -2264,6 +2264,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     SWAG_ASSERT(toType && fromType);
 
+    // Cast from a reference to the type of the reference
+    if (fromType->kind == TypeInfoKind::Reference)
+    {
+        auto typeRef = CastTypeInfo<TypeInfoReference>(fromType, TypeInfoKind::Reference);
+        fromType = typeRef->pointedType;
+    }
+
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
     if (fromType->kind == TypeInfoKind::FuncAttr)

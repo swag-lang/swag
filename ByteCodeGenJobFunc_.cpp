@@ -163,7 +163,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case Intrinsic::IntrinsicPrint:
     {
         auto child0   = callParams->childs[0];
-        auto typeInfo = TypeManager::concreteType(child0->typeInfo);
+        auto typeInfo = TypeManager::concreteReference(child0->typeInfo);
+        typeInfo      = TypeManager::concreteType(typeInfo);
         if (typeInfo->kind == TypeInfoKind::Native)
         {
             switch (typeInfo->nativeType)
