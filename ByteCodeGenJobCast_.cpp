@@ -610,46 +610,38 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
+        return true;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Struct)
+
+    TypeInfoStruct* fromTypeStruct = nullptr;
+
+    if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
-        auto itf            = fromTypeStruct->hasInterface(toTypeItf);
-        SWAG_ASSERT(itf);
-
-        RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
-
-        // We use registers as a storage for the interface, in order to have just one register in the end
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
-        SWAG_ASSERT(itf->offset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
-        emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
-
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+        fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
     }
     else if (fromTypeInfo->isPointerTo(TypeInfoKind::Struct))
     {
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer);
-        auto fromTypeStruct  = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-        auto itf             = fromTypeStruct->hasInterface(toTypeItf);
-        SWAG_ASSERT(itf);
-
-        RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
-
-        // We use registers as a storage for the interface, in order to have just one register in the end
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
-        SWAG_ASSERT(itf->offset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
-        emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
-
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+        fromTypeStruct       = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
     }
     else
     {
         return internalError(context, "emitCastToInterface, invalid type");
     }
+
+    auto itf = fromTypeStruct->hasInterface(toTypeItf);
+    SWAG_ASSERT(itf);
+
+    RegisterList r0;
+    reserveLinearRegisterRC(context, r0, 2);
+
+    // We use registers as a storage for the interface, in order to have just one register in the end
+    emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+    SWAG_ASSERT(itf->offset != UINT32_MAX);
+    emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
+    emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
+
+    node->resultRegisterRC = exprNode->resultRegisterRC;
 
     return true;
 }
@@ -706,7 +698,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     SWAG_ASSERT(typeInfo);
 
-    typeInfo = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
+    typeInfo     = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
     fromTypeInfo = TypeManager::concreteReference(fromTypeInfo);
 
     // opCast
