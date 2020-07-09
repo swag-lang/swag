@@ -20,7 +20,7 @@ impl Print for A
 func callAny(value: any)
 {
     ptr := cast(A) value
-    var itf: Print = cast(Print) ptr
+    itf := cast(Print) ptr
     @assert(itf.toto() == 667)
     @assert(@typeof(itf).name == "compiler1701.Print")
 }
