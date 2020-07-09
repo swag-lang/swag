@@ -647,8 +647,8 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -707,8 +707,8 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -780,7 +780,7 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
 bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -951,8 +951,8 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
@@ -1001,8 +1001,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
