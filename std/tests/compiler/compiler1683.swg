@@ -1,0 +1,21 @@
+#module compiler1683
+#unittest error
+
+struct TT
+{
+    value:  s64 = 456
+    value1: s64 = 456
+    value2: s64 = 456
+}
+
+//#[swag.printbc]
+func C(x: any)
+{
+    ptr := cast(s32) x
+}
+
+#test
+{
+    var x: TT
+    C(x)
+}

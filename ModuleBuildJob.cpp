@@ -211,17 +211,20 @@ JobResult ModuleBuildJob::execute()
             }
 
             // #TEST
-            if (!module->byteCodeTestFunc.empty())
+            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
             {
-                if (!module->numErrors)
+                if (!module->byteCodeTestFunc.empty())
                 {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-                    for (auto func : module->byteCodeTestFunc)
+                    if (!module->numErrors)
                     {
-                        g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
+                        if (g_CommandLine.verboseBuildPass)
+                            g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+                        for (auto func : module->byteCodeTestFunc)
+                        {
+                            g_Stats.testFunctions++;
+                            module->executeNode(func->node->sourceFile, func->node);
+                        }
                     }
                 }
             }

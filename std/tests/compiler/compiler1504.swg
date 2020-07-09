@@ -8,7 +8,7 @@ func set()
 }
 
 //#[swag.printbc]
-#test
+#run
 {
     #run set()
     @assert(X == 6)
