@@ -12,7 +12,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
     addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the workspace to compile/document/create");
+
     addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
+    addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
 
     addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput, nullptr, "output backend");
     addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit, nullptr, "output native backend");
@@ -28,12 +30,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
-    addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
-    addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
     addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "developer mode");
 
     addArg("--config", nullptr, CommandLineType::String, &cmdLine->config, nullptr, "set the build config");
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64", "set the build architecture");
+    addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "c_vs|c_clang", "the type of backend to use");
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug, nullptr, "force to compile in debug mode");
