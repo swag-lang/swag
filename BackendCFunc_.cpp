@@ -1589,6 +1589,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("__assert(r[%u].b, \"%s\", %d, \"invalid cast from 'any'\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             CONCAT_FIXED_STR(concat, "}");
             break;
+        case ByteCodeOp::IntrinsicTarget:
+            concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
+            break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
@@ -1857,7 +1860,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             ok = false;
             CONCAT_FIXED_STR(concat, "// ");
             concat.addString(g_ByteCodeOpNames[(int) ip->op]);
-            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+            moduleToGen->internalError(format("unknown instruction '%s' during C backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
 

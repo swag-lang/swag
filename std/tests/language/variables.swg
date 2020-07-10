@@ -54,7 +54,7 @@
         var c = 1.5'f64
         @assert(c == 1.5)
         @assert(@typeof(c) == @typeof(f64))
-    }    
+    }
 
     // Same for multiple variables
     {
@@ -83,6 +83,22 @@
 
         c := 1.5'f64
         @assert(c == 1.5)
-        @assert(@typeof(c) == @typeof(f64))        
+        @assert(@typeof(c) == @typeof(f64))
+    }
+
+    // If you use 'const' instead of 'var', the value is only known by the compiler
+    // (no memory footprint)
+    {
+        const a = 666
+        #assert(a == 666)
+
+        const b: string = "string"
+        #assert(b == "string")
+    }
+
+    // If you use 'let' instead of 'var', the variable is immutable and cannot be changed after
+    {
+        let a = 666
+        // 'a = 0'  would raise en error
     }
 }
