@@ -10,6 +10,8 @@
     {
         var a: [..] u32 = [10, 20, 30, 40, 50]
         @assert(@countof(a) == 5)
+        @assert(a[0] == 10)
+        @assert(a[4] == 50)
     }
 
     // You can create a slice with your own pointer and count using a tuple
@@ -25,7 +27,7 @@
         @assert(array[2] == 314)
     }
 
-    // For a string, slice must be 'const'
+    // For a string, the slice must be 'const' because a string is immutable
     {
         var str = "string"
         var strSlice: const [..] u8 = {@dataof(str), 2}
