@@ -7,8 +7,11 @@ attr attributeA();
 // Attributes can have parameters
 attr attributeB(x, y: s32, z: string);
 
+// Attributes can have default values
+attr attributeBA(x: s32, y: string = "string");
+
 // You can define a usage before the attribute definition to restric its use
-#[swag.attributeUsage(AttributeUsage.Function)]
+#[attributeUsage(AttributeUsage.Function)]
 attr attributeC();
 
 // To use an attribute, syntax is #[attribute, attribute...]
@@ -29,4 +32,15 @@ func function2()
 #[attributeD(150)]
 struct struct1
 {
+}
+
+#test
+{
+    // Attributes can be retreived by reflection
+    {
+        type := cast(const *TypeInfoFunc) @typeof(&function2)
+        @assert(@countof(type.attributes) == 1)
+        firstOne := type.attributes[0]
+        @assert(firstOne.name == "attributes.attributeD") // Full scoped name
+    }
 }
