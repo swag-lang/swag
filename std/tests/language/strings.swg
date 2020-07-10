@@ -121,4 +121,14 @@
         @assert(e == 52)
         @assert(@typeof(e)== @typeof(char))
     }
+
+    // A string can be null if not defined
+    {
+        var a: string
+        @assert(a == null)
+        a = "null"
+        @assert(a != null)
+        a = null
+        @assert(a == null)
+    }
 }
