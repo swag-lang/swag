@@ -9,14 +9,15 @@
         @assert(b == "this are some cyrillic characters: ӜИ")
     }
 
-    // A character is unicode 32
+    // A character is unicode, and 32 bits
     {
         const a = "是"'char
         @assert(a == "是"'char)
         @assert(@sizeof(a) == @sizeof(u32))
     }
 
-    // You cannot index a string to get a character. You will retreive a byte instead, which will be a character only if the string is ascii
+    // You cannot index a string to get a character, except in ascii strings.
+    // You will retreive a byte
     {
         const a = "this is a chinese character: 是"
         const b = a[0]
@@ -46,5 +47,78 @@
 
         let d = "they are " ~ 4 ~ " apples in " ~ (2*2) ~ " baskets"
         @assert(d == "they are 4 apples in 4 baskets")
+    }
+
+    // A string and a character can contain escape sequences for special characters
+    // An escape sequence starts with '\'
+    {
+        const a = "this is code ascii 0x00:   \0"
+        const b = "this is code ascii 0x07:   \a"
+        const c = "this is code ascii 0x08:   \b"
+        const d = "this is code ascii 0x09:   \t"
+        const e = "this is code ascii 0x0A:   \n"
+        const f = "this is code ascii 0x0B:   \v"
+        const g = "this is code ascii 0x0C:   \f"
+        const h = "this is code ascii 0x0D:   \r"
+        const i = "this is code ascii 0x22:   \""
+        const j = "this is code ascii 0x27:   \'"
+        const k = "this is code ascii 0x5C:   \\"
+    }
+
+    // An escape sequence can be used to specify an ascii or unicode value
+    {
+        const a = "\x26"        // 1 byte, extended ascii
+        const b = "\u2626"      // 2 bytes, unicode 16 bits
+        const c = "\U26262626"  // 4 bytes, unicode 32 bits
+
+        const d = "\u2F46"
+        @assert(d == "⽆")
+    }
+
+    // A raw string does not transform the escape sequences
+    // A raw string starts and ends with the character '#'
+    {
+        const a = #"\u2F46"#
+        @assert(a != "⽆")
+        @assert(a == #"\u2F46"#)
+    }
+
+    // A raw string can be declared on several lines because <eol> is now
+    // part of the string
+    {
+        const a = #"this is
+                    a
+                    string
+                    "#
+
+        // Every blanks before the ending mark '"#' will be removed from every other lines,
+        // so the string before is equivalent to :
+        //
+        // this is
+        // a
+        // string
+    }
+
+    // A single character can be casted to every unsigned int type
+    {
+        let a = "0"'u8
+        @assert(a == 48)
+        @assert(@typeof(a)== @typeof(u8))
+
+        let b = "1"'u16
+        @assert(b == 49)
+        @assert(@typeof(b)== @typeof(u16))
+
+        let c = "2"'u32
+        @assert(c == 50)
+        @assert(@typeof(c)== @typeof(u32))
+
+        let d = "3"'u64
+        @assert(d == 51)
+        @assert(@typeof(d)== @typeof(u64))
+
+        let e = "4"'char
+        @assert(e == 52)
+        @assert(@typeof(e)== @typeof(char))
     }
 }
