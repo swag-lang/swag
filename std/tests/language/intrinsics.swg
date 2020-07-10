@@ -45,4 +45,14 @@
     {
         tgt := @target()
     }
+
+    // @isbytecode()->bool
+    //
+    // Returns true during bytecode execution, false in native code
+    {
+        if @isbytecode()
+        {
+            //@print("this is it")
+        }
+    }
 }
