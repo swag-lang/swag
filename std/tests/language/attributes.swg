@@ -1,0 +1,32 @@
+using swag
+
+// Attributes are tags associated with functions, structures etc...
+// They are declared like functions, with 'attr' before instead of 'func'
+attr attributeA();
+
+// Attributes can have parameters
+attr attributeB(x, y: s32, z: string);
+
+// You can define a usage before the attribute definition to restric its use
+#[swag.attributeUsage(AttributeUsage.Function)]
+attr attributeC();
+
+// To use an attribute, syntax is #[attribute, attribute...]
+#[attributeA, attributeB(0, 0, "string")]
+func function1()
+{
+}
+
+// You can declare multiple usages
+#[attributeUsage(AttributeUsage.Function | AttributeUsage.Struct)]
+attr attributeD(x: s32);
+
+#[attributeD(6)]
+func function2()
+{
+}
+
+#[attributeD(150)]
+struct struct1
+{
+}

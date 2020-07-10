@@ -1,0 +1,30 @@
+#test
+{
+    // Reflection is with the intrinsic @typeof
+    {
+        ptr1 := @typeof(s8)
+        @assert(ptr1.name == "s8")
+
+        ptr2 := @typeof(s16)
+        @assert(ptr2.name == "s16")
+
+        ptr3 := @typeof(s32)
+        @assert(ptr3.name == "s32")
+
+        ptr4 := @typeof(s64)
+        @assert(ptr4.name == "s64")
+    }
+
+    // The return result is a const pointer to a swag.TypeInfo structure
+    {
+        ptr := @typeof(bool)
+        @assert(@typeof(ptr) == @typeof(const *swag.TypeInfo))
+    }
+
+    // The TypeInfo structure contains a different enum value for each type
+    {
+        ptr := @typeof(f64)
+        @assert(@typeof(ptr.kind).name == "swag.TypeInfoKind")
+        @assert(ptr.sizeof == 8)
+    }
+}
