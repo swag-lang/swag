@@ -368,6 +368,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdLabel:
         SWAG_CHECK(doLabel(parent, result));
         break;
+    case TokenId::KwdTypeAlias:
+        SWAG_CHECK(doTypeAlias(parent, result));
+        break;
     default:
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
