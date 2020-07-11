@@ -195,6 +195,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case Property::KindOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(!(expr->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({expr, "'@kindof' cannot be used on a tuple type"}));
         SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->report({expr, format("'@kindof' can only be used with type 'any' ('%s' provided)", expr->typeInfo->name.c_str())}));
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
