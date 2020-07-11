@@ -2,6 +2,10 @@
 {
     {
         typealias point: string
-        func toto(x: point) {}
+        func toto(x: point)
+        {
+            var y: point
+        }
+        toto("string")
     }
 }

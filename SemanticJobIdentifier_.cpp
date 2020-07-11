@@ -1289,11 +1289,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
-    auto  job                = context->job;
-    auto& scopeHierarchy     = job->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    auto& dependentSymbols   = job->cacheDependentSymbols;
-    auto  identifierRef      = node->identifierRef;
+    auto  job                 = context->job;
+    auto& scopeHierarchy      = job->cacheScopeHierarchy;
+    auto& scopeHierarchyVars  = job->cacheScopeHierarchyVars;
+    auto& scopeHierarchyTypes = job->cacheScopeHierarchyTypes;
+    auto& dependentSymbols    = job->cacheDependentSymbols;
+    auto  identifierRef       = node->identifierRef;
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -1312,6 +1313,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
+        scopeHierarchyTypes.clear();
         dependentSymbols.clear();
     }
 
@@ -1332,7 +1334,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     collectFlags = COLLECT_PASS_INLINE;
 
                 startScope = node->ownerScope;
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, scopeHierarchyTypes, node, collectFlags));
+                scopeHierarchy.insert(scopeHierarchyTypes.begin(), scopeHierarchyTypes.end());
 
                 // Be sure this is the last try
                 oneTry++;
@@ -1357,6 +1360,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
                 {
+                    // Hierarchy type is the hieararchy of scopes that can only be tested for specific symbols, like types
+                    // For example we define a typealias inside a function, and we use that typealias in an embedded function. So we must find
+                    // the type, without testing all symbols like variables etc...
+                    if (symbol->kind != SymbolKind::TypeAlias && scopeHierarchyTypes.find(scope) != scopeHierarchyTypes.end())
+                        continue;
+
                     dependentSymbols.insert(symbol);
 
                     // Tentative to have a better error message in the case of local variables problem (a local variable is referencing another one
@@ -1719,7 +1728,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, set<Scope*>& scopesTypes, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1751,10 +1760,14 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an embedded function, jump right to its parent
+        // Collect them because we can search for types in those scopes
         if (scope->kind == ScopeKind::Function)
         {
             while (scope->parentScope->kind == ScopeKind::Function || scope->parentScope->owner->ownerFct)
+            {
                 scope = scope->parentScope;
+                scopesTypes.insert(scope);
+            }
         }
 
         // For an inline scope, jump right to the function
@@ -1821,7 +1834,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
-    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
+    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, job->cacheScopeHierarchyTypes, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)
     {
