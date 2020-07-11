@@ -86,6 +86,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     node->typeInfo = g_TypeMgr.typeInfoBool;
 
     bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
+    bool forTuple  = leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE;
 
     SWAG_CHECK(evaluateConstExpression(context, right));
     if (context->result == ContextResult::Pending)
@@ -137,6 +138,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (context->result == ContextResult::Pending)
                         return true;
                 }
+                else if (forTuple)
+                {
+                    return context->report({node, "invalid operation on a tuple type"});
+                }
                 else
                 {
                     if (!hasUserOp(context, "opIndexAffect", left))
@@ -180,7 +185,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
-        if (forStruct)
+        if (forTuple)
+            return context->report({node, "invalid operation on a tuple type"});
+        else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
@@ -206,7 +213,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
     case TokenId::SymTildeEqual:
-        if (forStruct)
+        if (forTuple)
+            return context->report({node, "invalid operation on a tuple type"});
+        else if (forStruct)
         {
             const char* op = "&=";
             if (tokenId == TokenId::SymVerticalEqual)
@@ -236,7 +245,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymPlusEqual:
     case TokenId::SymMinusEqual:
-        if (forStruct)
+        if (forTuple)
+            return context->report({node, "invalid operation on a tuple type"});
+        else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
@@ -275,7 +286,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     case TokenId::SymSlashEqual:
-        if (forStruct)
+        if (forTuple)
+            return context->report({node, "invalid operation on a tuple type"});
+        else if (forStruct)
         {
             if (arrayNode)
                 SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", nullptr, left, arrayNode->structFlatParams, false));
@@ -296,7 +309,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
-        if (forStruct)
+        if (forTuple)
+            return context->report({node, "invalid operation on a tuple type"});
+        else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)

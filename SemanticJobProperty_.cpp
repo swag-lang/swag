@@ -63,6 +63,8 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
+        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            return context->report({node, "'@dataof' cannot be used on a tuple type"});
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -73,7 +75,7 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
     }
     else
     {
-        return false;
+        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", node->typeInfo->name.c_str())});
     }
 
     return true;
@@ -118,6 +120,8 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
+        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            return context->report({node, "'@countof' cannot be used on a tuple type"});
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -128,7 +132,34 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     }
     else
     {
-        return false;
+        typeInfo = TypeManager::concreteType(typeInfo);
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
+        SWAG_VERIFY(typeInfo->sizeOf <= 4, context->report({node, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
+        if (node->flags & AST_VALUE_COMPUTED)
+        {
+            if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
+            {
+                switch (typeInfo->nativeType)
+                {
+                case NativeTypeKind::S8:
+                    if (node->computedValue.reg.s8 < 0)
+                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s8)});
+                    break;
+                case NativeTypeKind::S16:
+                    if (node->computedValue.reg.s16 < 0)
+                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s16)});
+                    break;
+                case NativeTypeKind::S32:
+                    if (node->computedValue.reg.s32 < 0)
+                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s32)});
+                    break;
+                }
+            }
+        }
+        else
+        {
+            SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, context->report({node, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
+        }
     }
 
     node->typeInfo = g_TypeMgr.typeInfoU32;
@@ -187,14 +218,12 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
-        if (!resolveCountOfProperty(context, node, expr->typeInfo))
-            return context->report({node->expression, format("'countof' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
+        SWAG_CHECK(resolveCountOfProperty(context, node, expr->typeInfo));
         break;
 
     case Property::DataOf:
         SWAG_CHECK(checkIsConcrete(context, expr));
-        if (!resolveDataOfProperty(context, node, expr->typeInfo))
-            return context->report({expr, format("'dataof' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
+        SWAG_CHECK(resolveDataOfProperty(context, node, expr->typeInfo));
         break;
     }
 

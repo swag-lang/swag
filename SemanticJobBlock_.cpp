@@ -212,38 +212,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     auto expression = node->expression;
-
-    if (!resolveCountOfProperty(context, expression, expression->typeInfo))
-    {
-        auto typeInfo = TypeManager::concreteType(expression->typeInfo);
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
-        SWAG_VERIFY(typeInfo->sizeOf <= 4, context->report({expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
-        if (expression->flags & AST_VALUE_COMPUTED)
-        {
-            if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
-            {
-                switch (typeInfo->nativeType)
-                {
-                case NativeTypeKind::S8:
-                    if (expression->computedValue.reg.s8 < 0)
-                        return context->report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s8)});
-                    break;
-                case NativeTypeKind::S16:
-                    if (expression->computedValue.reg.s16 < 0)
-                        return context->report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s16)});
-                    break;
-                case NativeTypeKind::S32:
-                    if (expression->computedValue.reg.s32 < 0)
-                        return context->report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s32)});
-                    break;
-                }
-            }
-        }
-        else
-        {
-            SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, context->report({expression, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
-        }
-    }
+    SWAG_CHECK(resolveCountOfProperty(context, expression, expression->typeInfo));
 
     node->typeInfo                     = g_TypeMgr.typeInfoU32;
     node->byteCodeFct                  = ByteCodeGenJob::emitLoop;
@@ -444,7 +413,7 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({ node, node->token, "'fallthrough' cannot be used in the last 'case' of the swtich" }));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, node->token, "'fallthrough' cannot be used in the last 'case' of the swtich"}));
 
     SWAG_CHECK(checkUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;

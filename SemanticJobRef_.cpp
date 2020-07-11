@@ -226,6 +226,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
+
+    if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return context->report({arrayAccess, "cannot dereference a tuple type"});
+
     arrayNode->flags |= AST_R_VALUE;
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))

@@ -1,9 +1,9 @@
-#module compiler1706
+#module compiler1707
 #unittest error
 
 #test
 {
     var str = "string"
     var tuple = {@dataof(str), 2}
-    tuple[0] = 0
+    ptr := tuple[0]
 }
