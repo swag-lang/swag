@@ -1,4 +1,4 @@
-#test
+/*#test
 {
     {
         typealias point: string
@@ -8,4 +8,4 @@
         }
         toto("string")
     }
-}
+}*/
