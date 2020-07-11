@@ -6,8 +6,8 @@ namespace std.collections
     /// the buffer needs to increase its size. This is the main difference with [Array]
     public readonly struct ConcatBuffer
     {
-        allocator:      const swag.IAllocator 
-        
+        allocator:      const swag.IAllocator
+
         firstBucket:    *u8
         curBucket:      *u8
 
@@ -19,7 +19,7 @@ namespace std.collections
     }
 
     impl ConcatBuffer
-    {    
+    {
         func growBuckets(using self, size: u32)
         {
             if curBucket != null && curCount + size < sizeBucket
@@ -60,23 +60,23 @@ namespace std.collections
         }
 
         func release(using self)
-        {  
+        {
             if firstBucket == null
                 return
             ptr := firstBucket
             while ptr != null
-            {                    
+            {
                 nextPtr := bucketToNext(self,  ptr)
                 memory.free(&allocator, cast(*void) ptr)
                 ptr = nextPtr
             }
         }
 
-        func count(using self)->u32 
+        func count(using self)->u32
         {
             if curBucket == null
                 return 0
-            return ((usedBuckets - 1) * sizeBucket) + curCount            
+            return ((usedBuckets - 1) * sizeBucket) + curCount
         }
 
         public
@@ -144,7 +144,7 @@ namespace std.collections
             {
                 nextPtr := cast(**u8) bucket
                 return nextPtr[0]
-            }            
+            }
 
             /// Add one byte to the buffer
             func addByte(using self, byte: u8)
@@ -156,10 +156,10 @@ namespace std.collections
             }
 
             /// Add a slice of bytes to the buffer
-            func addBytes(using self, bytes: [..] u8)
+            func addBytes(using self, bytes: const [..] u8)
             {
                 num := @countof(bytes)
-                if !num 
+                if !num
                     return
 
                 slicePtr := @dataof(bytes)
@@ -188,7 +188,7 @@ namespace std.collections
                 // rest of the slice
                 ptr = bucketToDatas(self, curBucket) + curCount
                 memory.copy(ptr, slicePtr, num)
-                curCount += num  
+                curCount += num
             }
 
             /// Convert buffer to a [String]
@@ -203,8 +203,8 @@ namespace std.collections
 
                 result.ensureCapacity(totalCpt + 1)
                 while totalCpt
-                {                    
-                    offset := math.min(totalCpt, sizeBucket)                  
+                {
+                    offset := math.min(totalCpt, sizeBucket)
                     ptrData := bucketToDatas(self, ptr)
                     result.append(cast(string) {ptrData, offset})
 

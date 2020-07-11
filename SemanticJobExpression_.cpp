@@ -33,7 +33,8 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
             typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
 
-        if (!child->name.empty())
+        // Value has been named
+        if (!child->name.empty() && (child->flags & AST_IS_NAMED))
         {
             typeInfo->name += child->name;
             typeInfo->name += ": ";

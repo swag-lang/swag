@@ -18,7 +18,7 @@ namespace std.text
             if ptr[nextIdx] == "%"'u8
             {
                 // Add remaining text, and starts again after the mark
-                buf.addBytes(cast([..] u8) {ptr + idx, nextIdx - idx})
+                buf.addBytes(cast(const [..] u8) {ptr + idx, nextIdx - idx})
                 idx = nextIdx + 1
                 nextIdx = idx
 
@@ -29,7 +29,7 @@ namespace std.text
                     nextIdx += 1
                     idx += 1
                     continue
-                }  
+                }
 
                 // Deal with the parameter
                 debug.assert(paramIdx < numParams, "not enough 'format' parameters")
@@ -44,6 +44,6 @@ namespace std.text
 
         // Add remaining text
         if idx < nextIdx
-            buf.addBytes(cast([..] u8) {ptr + idx, nextIdx - idx})
+            buf.addBytes(cast(const [..] u8) {ptr + idx, nextIdx - idx})
     }
 }

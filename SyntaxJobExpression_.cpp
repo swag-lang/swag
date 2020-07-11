@@ -503,6 +503,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
                 else
                     SWAG_CHECK(doExpression(initNode, &paramExpression));
                 paramExpression->name = name;
+                paramExpression->flags |= AST_IS_NAMED;
             }
             else
             {

@@ -1553,7 +1553,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         }
 
         // [pointer, count]
-        if (castSliceFromTypeList(context, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags))
+        if (castSliceFromTypeList(context, true, g_TypeMgr.typeInfoU8, fromType, fromNode, castFlags))
             return true;
     }
 
@@ -1837,7 +1837,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castSliceFromTypeList(SemanticContext* context, TypeInfo* pointedType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::castSliceFromTypeList(SemanticContext* context, bool sliceIsConst, TypeInfo* pointedType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (fromType->kind != TypeInfoKind::TypeList)
         return false;
@@ -1859,6 +1859,8 @@ bool TypeManager::castSliceFromTypeList(SemanticContext* context, TypeInfo* poin
     if (childFront->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = static_cast<TypeInfoPointer*>(childFront);
+        if (!sliceIsConst && typePointer->isConst())
+            castCanBeDone = false;
         if (!TypeManager::makeCompatibles(context, pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             castCanBeDone = false;
     }
@@ -1895,7 +1897,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
     // [pointer, count]
-    if (castSliceFromTypeList(context, toTypeSlice->pointedType, fromType, fromNode, castFlags))
+    if (castSliceFromTypeList(context, toTypeSlice->isConst(), toTypeSlice->pointedType, fromType, fromNode, castFlags))
         return true;
 
     if (fromType->kind == TypeInfoKind::TypeList)
