@@ -12,4 +12,20 @@
         @assert(myFunction1(2) == 4)
         @assert(ptr1(2) == 4)
     }
+
+    // A lambda can be null
+    {
+        var lambda: func()->bool
+        @assert(lambda == null)
+    }
+
+    {
+        /*typealias callback: func(s32)->s32
+        func toDo(value: s32, ptr: callback)->s32
+        {
+            return ptr(value)
+        }
+
+        func square(x: s32) => x * x*/
+    }
 }
