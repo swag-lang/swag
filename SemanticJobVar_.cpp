@@ -272,6 +272,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         {
             auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             typeExpression->ptrCount = typeInfoPointer->ptrCount;
+            typeExpression->isConst  = typeInfoPointer->isConst();
             if (typeInfoPointer->finalType->kind != TypeInfoKind::Native)
                 return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->finalType->name.c_str()).c_str(), assignment->childs[idx]);
             typeExpression->token.id          = TokenId::NativeType;
@@ -347,7 +348,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     AstStruct* structNode;
     SWAG_CHECK(convertAssignementToStruct(context, assignement, &structNode));
 
-    // Reference to that struct
+    // Reference to that generated structure
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
@@ -774,8 +775,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
             {
-                auto typeRef = g_Allocator.alloc<TypeInfoReference>();
-                typeRef->flags = typeInfo->flags | TYPEINFO_CONST;
+                auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
+                typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
                 typeRef->pointedType = typeInfo;
                 typeRef->computeName();
                 node->typeInfo = typeRef;
