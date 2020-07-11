@@ -41,6 +41,6 @@ struct struct1
         type := cast(const *TypeInfoFunc) @typeof(&function2)
         @assert(@countof(type.attributes) == 1)
         firstOne := type.attributes[0]
-        @assert(firstOne.name == "attributes.attributeD") // Full scoped name
+        @assert(firstOne.name == "attribute.attributeD") // Full scoped name
     }
 }
