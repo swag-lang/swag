@@ -74,7 +74,7 @@ struct SemanticJob : public Job
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
     static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
-    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, set<Scope*>& scopesTypes, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
@@ -214,7 +214,6 @@ struct SemanticJob : public Job
     set<SymbolName*>              cacheDependentSymbols;
     set<Scope*>                   cacheScopeHierarchy;
     vector<AlternativeScope>      cacheScopeHierarchyVars;
-    set<Scope*>                   cacheScopeHierarchyTypes;
     VectorNative<Scope*>          scopesHere;
     vector<OneMatch>              cacheMatches;
     vector<OneGenericMatch>       cacheGenericMatches;
@@ -231,7 +230,6 @@ struct SemanticJob : public Job
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();
         cacheScopeHierarchyVars.clear();
-        cacheScopeHierarchyTypes.clear();
         scopesHere.clear();
         cacheMatches.clear();
         cacheGenericMatches.clear();
