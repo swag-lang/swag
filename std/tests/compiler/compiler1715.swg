@@ -1,9 +1,9 @@
 #test
 {
-    func toto(x: func(s32)->s32)
+    func toto(x: func(string))
     {
-
+        x("64")
     }
 
-    toto(x: func(x) => x * x)
+    toto(func(x) { @assert(x == "64"); })
 }

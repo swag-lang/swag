@@ -5,21 +5,22 @@ TypeManager g_TypeMgr;
 
 void TypeManager::setup()
 {
-    typeInfoS8     = new TypeInfoNative(NativeTypeKind::S8, "s8", 1, TYPEINFO_INTEGER);
-    typeInfoS16    = new TypeInfoNative(NativeTypeKind::S16, "s16", 2, TYPEINFO_INTEGER);
-    typeInfoS32    = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER);
-    typeInfoS64    = new TypeInfoNative(NativeTypeKind::S64, "s64", 8, TYPEINFO_INTEGER);
-    typeInfoU8     = new TypeInfoNative(NativeTypeKind::U8, "u8", 1, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoU16    = new TypeInfoNative(NativeTypeKind::U16, "u16", 2, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoU32    = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoU64    = new TypeInfoNative(NativeTypeKind::U64, "u64", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoBool   = new TypeInfoNative(NativeTypeKind::Bool, "bool", 1, 0);
-    typeInfoF32    = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT);
-    typeInfoF64    = new TypeInfoNative(NativeTypeKind::F64, "f64", 8, TYPEINFO_FLOAT);
-    typeInfoChar   = new TypeInfoNative(NativeTypeKind::Char, "char", 4, 0);
-    typeInfoVoid   = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
-    typeInfoString = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
-    typeInfoAny    = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
+    typeInfoS8        = new TypeInfoNative(NativeTypeKind::S8, "s8", 1, TYPEINFO_INTEGER);
+    typeInfoS16       = new TypeInfoNative(NativeTypeKind::S16, "s16", 2, TYPEINFO_INTEGER);
+    typeInfoS32       = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER);
+    typeInfoS64       = new TypeInfoNative(NativeTypeKind::S64, "s64", 8, TYPEINFO_INTEGER);
+    typeInfoU8        = new TypeInfoNative(NativeTypeKind::U8, "u8", 1, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU16       = new TypeInfoNative(NativeTypeKind::U16, "u16", 2, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU32       = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU64       = new TypeInfoNative(NativeTypeKind::U64, "u64", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoBool      = new TypeInfoNative(NativeTypeKind::Bool, "bool", 1, 0);
+    typeInfoF32       = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT);
+    typeInfoF64       = new TypeInfoNative(NativeTypeKind::F64, "f64", 8, TYPEINFO_FLOAT);
+    typeInfoChar      = new TypeInfoNative(NativeTypeKind::Char, "char", 4, 0);
+    typeInfoVoid      = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
+    typeInfoString    = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
+    typeInfoAny       = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
+    typeInfoUndefined = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
 
     typeInfoUntypedU64 = (TypeInfoNative*) typeInfoU64->clone();
     typeInfoUntypedU64->flags |= TYPEINFO_UNTYPED_INTEGER;

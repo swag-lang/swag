@@ -535,8 +535,9 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 {
     AstNode* lambda = nullptr;
     SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
+    lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
 
-    // Retreive the point of the function
+    // Retrieve the point of the function
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, parent);
     exprNode->inheritTokenLocation(lambda->token);
     exprNode->semanticFct  = SemanticJob::resolveMakePointer;

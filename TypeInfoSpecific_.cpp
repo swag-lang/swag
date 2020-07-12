@@ -557,6 +557,10 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 
     for (int i = 0; i < parameters.size(); i++)
     {
+        if (parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+            continue;
+        if (other->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+            continue;
         if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
             return false;
     }

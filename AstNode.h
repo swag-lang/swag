@@ -367,6 +367,7 @@ struct AstFuncDecl : public AstNode
     AstNode*       content           = nullptr;
     Scope*         scope             = nullptr;
     TypeInfoParam* methodParam       = nullptr;
+    Job*           pendingLambdaJob  = nullptr;
 
     uint32_t stackSize = 0;
 };

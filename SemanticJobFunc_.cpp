@@ -256,6 +256,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto funcNode   = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
 
+    // This is a lambda that was waiting for a match.
+    // We are now awake, so everything has been done already
+    if (funcNode->pendingLambdaJob)
+    {
+        funcNode->pendingLambdaJob = nullptr;
+        return true;
+    }
+
     // Return type
     if (!typeNode->childs.empty())
         typeNode->typeInfo = typeNode->childs.front()->typeInfo;
@@ -387,6 +395,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
     SWAG_CHECK(registerFuncSymbol(context, funcNode, shortLambda ? OVERLOAD_INCOMPLETE : 0));
+
+    // If this is a lambda waiting for a match to know the types of its parameters, need to wait
+    // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
+    if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
+    {
+        funcNode->pendingLambdaJob = context->job;
+        context->result = ContextResult::Pending;
+        return true;
+    }
+
     return true;
 }
 

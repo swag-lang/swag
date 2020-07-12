@@ -64,6 +64,7 @@ enum class NativeTypeKind
     Char,
     String,
     Any,
+    Undefined,
     Count,
 };
 

@@ -6,6 +6,7 @@
 #include "Generic.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -549,6 +550,27 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+
+                    // This is a lambda that was waiting for a match to have its types, and to continue solving its content
+                    if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+                    {
+                        auto funcDecl         = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
+                        auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+                        auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->solvedParameters[i]->typeInfo, TypeInfoKind::Lambda);
+                        for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
+                        {
+                            funcDecl->parameters->childs[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
+                            funcDecl->parameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = typeDefinedFct->parameters[paramIdx]->typeInfo;
+                            typeUndefinedFct->parameters[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
+                        }
+
+                        typeUndefinedFct->computeName();
+
+                        // Wake up semantic lambda job
+                        SWAG_ASSERT(funcDecl->pendingLambdaJob);
+                        funcDecl->flags &= ~AST_PENDING_LAMBDA_TYPING;
+                        g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
+                    }
 
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
@@ -1333,7 +1355,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
                 // If we collect for a type, it's legit to collect emmbedded function scopes, as the type can be defined
                 // just before the function, in another function body (for embedded functions)
-                if(node->parent->parent->kind == AstNodeKind::TypeExpression)
+                if (node->parent->parent->kind == AstNodeKind::TypeExpression)
                     collectFlags = COLLECT_FCT_HIERARCHY;
 
                 startScope = node->ownerScope;

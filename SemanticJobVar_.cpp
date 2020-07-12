@@ -646,6 +646,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // If this is lambda parameter in an expression, this is fine, we will try to deduce the type
+    if (!node->typeInfo && node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
+    {
+        node->typeInfo = g_TypeMgr.typeInfoUndefined;
+        genericType    = false;
+        // Will stop semantic to not evaluate the content of the function, until types are known
+        node->ownerFct->flags |= AST_PENDING_LAMBDA_TYPING;
+    }
+
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getNakedKindName(node).c_str(), node->name.c_str())}));
 
