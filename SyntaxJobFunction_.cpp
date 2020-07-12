@@ -179,10 +179,6 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         }
     }
 
-    // Be sure we will be able to have a type
-    if (!paramNode->type && !paramNode->assignment)
-        return error(paramNode->token, "parameter must be initialized because no type is specified");
-
     return true;
 }
 
