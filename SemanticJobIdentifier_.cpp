@@ -564,6 +564,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                             typeUndefinedFct->parameters[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
                         }
 
+                        // Set return type
+                        if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
+                        {
+                            typeUndefinedFct->returnType = typeDefinedFct->returnType;
+                            if (funcDecl->returnType)
+                                funcDecl->returnType->typeInfo = typeDefinedFct->returnType;
+                        }
+
                         typeUndefinedFct->computeName();
 
                         // Wake up semantic lambda job

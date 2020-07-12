@@ -543,7 +543,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
             return false;
         if (returnType && !returnType->isNative(NativeTypeKind::Void) && !other->returnType)
             return false;
-        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
+        if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, isSameFlags))
             return false;
     }
 
@@ -593,7 +593,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
         if (!returnType && other->returnType && other->returnType != g_TypeMgr.typeInfoVoid)
             return false;
-        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
+        if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, isSameFlags))
             return false;
     }
 

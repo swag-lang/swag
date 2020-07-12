@@ -270,6 +270,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
+    // If a lambda function will wait for a match, then no need to deduce the return type
+    // It will be done in the same way as parameters
+    if ((funcNode->flags & AST_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
+    {
+        typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
+        funcNode->flags &= ~AST_SHORT_LAMBDA;
+    }
+
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
