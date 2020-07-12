@@ -1331,6 +1331,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 if (node->flags & AST_IDENTIFIER_BACKTICK)
                     collectFlags = COLLECT_PASS_INLINE;
 
+                // If we collect for a type, it's legit to collect emmbedded function scopes, as the type can be defined
+                // just before the function, in another function body (for embedded functions)
+                if(node->parent->parent->kind == AstNodeKind::TypeExpression)
+                    collectFlags = COLLECT_FCT_HIERARCHY;
+
                 startScope = node->ownerScope;
                 SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
 
@@ -1356,7 +1361,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
+                {
                     dependentSymbols.insert(symbol);
+                }
             }
 
             if (!dependentSymbols.empty())
@@ -1732,12 +1739,15 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an embedded function, jump right to its parent
-        if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
+        if (!(flags & COLLECT_FCT_HIERARCHY))
         {
-            while (scope->owner->ownerFct)
+            if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
+            {
+                while (scope->owner->ownerFct)
+                    scope = scope->parentScope;
+                SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
                 scope = scope->parentScope;
-            SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
-            scope = scope->parentScope;
+            }
         }
 
         // For an inline scope, jump right to the function
@@ -1804,6 +1814,10 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
+
+    if (kind == SymbolKind::TypeAlias)
+        collectFlags = COLLECT_FCT_HIERARCHY;
+
     collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)

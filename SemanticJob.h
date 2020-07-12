@@ -48,8 +48,9 @@ struct OneGenericMatch
     uint32_t flags;
 };
 
-static const uint32_t COLLECT_ALL         = 0x00000000;
-static const uint32_t COLLECT_PASS_INLINE = 0x00000001;
+static const uint32_t COLLECT_ALL           = 0x00000000;
+static const uint32_t COLLECT_PASS_INLINE   = 0x00000001;
+static const uint32_t COLLECT_FCT_HIERARCHY = 0x00000002;
 
 struct SemanticJob : public Job
 {
