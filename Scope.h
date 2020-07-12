@@ -19,6 +19,7 @@ enum class ScopeKind
     Enum,
     Struct,
     Function,
+    FunctionBody,
     Attribute,
     Statement,
     Breakable,
@@ -55,6 +56,7 @@ struct Scope
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result);
+    bool               isParentOf(Scope* child);
 
     bool isGlobal()
     {

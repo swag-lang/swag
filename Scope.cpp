@@ -127,3 +127,16 @@ void Scope::addPublicNamespace(AstNode* node)
     unique_lock lk(mutexPublicNamespace);
     publicNamespace.insert(node);
 }
+
+bool Scope::isParentOf(Scope* child)
+{
+    unique_lock lk(lockChilds);
+    while (child)
+    {
+        if (child == this)
+            return true;
+        child = child->parentScope;
+    }
+
+    return false;
+}

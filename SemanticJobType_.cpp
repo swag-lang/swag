@@ -35,6 +35,10 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
         if (typeInfo->returnType->flags & TYPEINFO_GENERIC)
             typeInfo->flags |= TYPEINFO_GENERIC;
     }
+    else
+    {
+        typeInfo->returnType = g_TypeMgr.typeInfoVoid;
+    }
 
     if (node->parameters)
     {

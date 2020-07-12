@@ -264,18 +264,27 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
-    auto parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
-    newNode->scope        = parentScope;
+    auto functionScope    = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
+    newNode->scope        = functionScope;
 
-    cloneContext.parentScope   = parentScope;
+    cloneContext.parentScope   = functionScope;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
 
     cloneContext.parentScope = context.parentScope;
     newNode->returnType      = returnType ? returnType->clone(cloneContext) : nullptr;
 
-    cloneContext.parentScope = parentScope;
-    newNode->content         = content ? content->clone(cloneContext) : nullptr;
+    if (content)
+    {
+        auto bodyScope           = Ast::newScope(newNode, newNode->name, ScopeKind::FunctionBody, functionScope);
+        cloneContext.parentScope = bodyScope;
+        newNode->content         = content->clone(cloneContext);
+        bodyScope->owner         = newNode->content;
+    }
+    else
+    {
+        newNode->content = nullptr;
+    }
 
     return newNode;
 }

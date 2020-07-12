@@ -4,6 +4,7 @@
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "TypeManager.h"
+#include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
@@ -289,6 +290,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 
     // Body
     {
+        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
@@ -309,6 +311,9 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
             funcNode->content->token = token;
         }
+
+        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner                     = funcNode->content;
     }
 
     return true;
@@ -482,6 +487,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
 
     {
+        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
@@ -504,6 +510,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
             funcNode->content->token = token;
         }
+
+        newScope->owner = funcNode->content;
+        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;

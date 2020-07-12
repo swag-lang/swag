@@ -1167,14 +1167,14 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         // Priority to the same inline scope
         if (node->ownerInline && symbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
         {
-            if ((oneSymbol->overloads[0]->node->ownerScope != node->ownerInline->ownerScope) &&
-                (symbol->overloads[0]->node->ownerScope == node->ownerInline->ownerScope))
+            if ((!oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (symbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
             {
                 continue;
             }
 
-            if ((oneSymbol->overloads[0]->node->ownerScope == node->ownerInline->ownerScope) &&
-                (symbol->overloads[0]->node->ownerScope != node->ownerInline->ownerScope))
+            if ((oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (!symbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
             {
                 symbol = oneSymbol;
                 continue;
@@ -1356,26 +1356,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
-                {
                     dependentSymbols.insert(symbol);
-
-                    // Tentative to have a better error message in the case of local variables problem (a local variable is referencing another one
-                    // defined later).
-                    if (!scope->isGlobal() && symbol->kind == SymbolKind::Variable)
-                    {
-                        scoped_lock lkn(symbol->mutex);
-                        if (symbol->cptOverloads && node->ownerFct)
-                        {
-                            auto testScope = identifierRef->ownerScope;
-                            while (testScope && testScope != node->ownerFct->scope && testScope != scope)
-                                testScope = testScope->parentScope;
-                            if (testScope == scope)
-                            {
-                                return context->report({node, node->token, format("unknown identifier '%s' (seems to be defined later)", node->name.c_str())});
-                            }
-                        }
-                    }
-                }
             }
 
             if (!dependentSymbols.empty())
@@ -1751,13 +1732,12 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an embedded function, jump right to its parent
-        // Collect them because we can search for types in those scopes
-        if (scope->kind == ScopeKind::Function)
+        if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
         {
-            while (scope->parentScope->kind == ScopeKind::Function || scope->parentScope->owner->ownerFct)
-            {
+            while (scope->owner->ownerFct)
                 scope = scope->parentScope;
-            }
+            SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
+            scope = scope->parentScope;
         }
 
         // For an inline scope, jump right to the function
