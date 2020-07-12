@@ -249,76 +249,6 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
-{
-    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
-    funcNode->semanticFct = SemanticJob::resolveFuncDecl;
-    if (result)
-        *result = funcNode;
-    int id         = g_Global.uniqueID.fetch_add(1);
-    funcNode->name = "__lambda" + to_string(id);
-
-    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
-    typeInfo->declNode = funcNode;
-
-    auto newScope      = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
-    funcNode->typeInfo = typeInfo;
-    funcNode->scope    = newScope;
-    currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
-
-    {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
-    }
-
-    // Return type
-    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
-    funcNode->returnType  = typeNode;
-    typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
-    if (token.id == TokenId::SymMinusGreat)
-    {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-        AstNode* typeExpression;
-        SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-        Ast::setForceConstType(typeExpression);
-        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
-    }
-
-    // Body
-    {
-        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-
-        // One single return expression
-        if (token.id == TokenId::SymEqualGreater)
-        {
-            SWAG_CHECK(eatToken());
-            auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
-            returnNode->semanticFct = SemanticJob::resolveReturn;
-            funcNode->content       = returnNode;
-            funcNode->flags |= AST_SHORT_LAMBDA;
-            SWAG_CHECK(doExpression(returnNode));
-        }
-
-        // Normal curly statement
-        else
-        {
-            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-            funcNode->content->token = token;
-        }
-
-        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
-        newScope->owner                     = funcNode->content;
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
@@ -511,7 +441,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content->token = token;
         }
 
-        newScope->owner = funcNode->content;
+        newScope->owner                     = funcNode->content;
         funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
@@ -532,5 +462,93 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymSemiColon)
         SWAG_CHECK(doExpression(node));
 
+    return true;
+}
+
+bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
+{
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    funcNode->semanticFct = SemanticJob::resolveFuncDecl;
+    if (result)
+        *result = funcNode;
+    int id         = g_Global.uniqueID.fetch_add(1);
+    funcNode->name = "__lambda" + to_string(id);
+
+    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
+    typeInfo->declNode = funcNode;
+
+    auto newScope      = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
+    funcNode->typeInfo = typeInfo;
+    funcNode->scope    = newScope;
+    currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
+
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
+    }
+
+    // Return type
+    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    funcNode->returnType  = typeNode;
+    typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+        AstNode* typeExpression;
+        SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
+        Ast::setForceConstType(typeExpression);
+        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+    }
+
+    // Body
+    {
+        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+
+        // One single return expression
+        if (token.id == TokenId::SymEqualGreater)
+        {
+            SWAG_CHECK(eatToken());
+            auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
+            returnNode->semanticFct = SemanticJob::resolveReturn;
+            funcNode->content       = returnNode;
+            funcNode->flags |= AST_SHORT_LAMBDA;
+            SWAG_CHECK(doExpression(returnNode));
+        }
+
+        // Normal curly statement
+        else
+        {
+            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+            funcNode->content->token = token;
+        }
+
+        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner                     = funcNode->content;
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
+{
+    AstNode* lambda = nullptr;
+    SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
+
+    // Retreive the point of the function
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, parent);
+    exprNode->inheritTokenLocation(lambda->token);
+    exprNode->semanticFct  = SemanticJob::resolveMakePointer;
+    AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->name, exprNode, this);
+    identifierRef->inheritTokenLocation(lambda->token);
+    forceTakeAddress(identifierRef);
+
+    if (result)
+        *result = exprNode;
     return true;
 }

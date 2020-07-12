@@ -122,19 +122,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::KwdFunc:
-    {
-        AstNode* lambda;
-        SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
-        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, parent);
-        exprNode->inheritTokenLocation(lambda->token);
-        exprNode->semanticFct  = SemanticJob::resolveMakePointer;
-        AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->name, exprNode, this);
-        identifierRef->inheritTokenLocation(lambda->token);
-        forceTakeAddress(identifierRef);
-        if (result)
-            *result = exprNode;
+        SWAG_CHECK(doLambdaExpression(parent, result));
         break;
-    }
 
     default:
         return invalidTokenError(InvalidTokenError::PrimaryExpression);
@@ -942,7 +931,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    if(token.id != TokenId::SymLeftCurly)
+    if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("after left expression"));
     return true;
 }
