@@ -1116,21 +1116,21 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
     }
 
     SymbolName* symbol = nullptr;
-    for (auto p : dependentSymbols)
+    for (auto oneSymbol : dependentSymbols)
     {
-        if (node->callParameters && p->kind == SymbolKind::Variable)
+        if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
             continue;
-        if (!node->callParameters && p->kind == SymbolKind::Function)
+        if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
             continue;
 
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
-        if (p->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
+        if (oneSymbol->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
         {
             isValid = false;
             for (auto& dep : scopeHierarchyVars)
             {
-                if (dep.scope->fullname == p->ownerTable->scope->fullname)
+                if (dep.scope->fullname == oneSymbol->ownerTable->scope->fullname)
                 {
                     isValid = true;
                     break;
@@ -1143,13 +1143,13 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 
         if (!symbol)
         {
-            symbol = p;
+            symbol = oneSymbol;
             continue;
         }
 
         // Priority to a concrete type versus a generic one
         auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
-        auto newOverload  = p->ownerTable->scope->owner->typeInfo;
+        auto newOverload  = oneSymbol->ownerTable->scope->owner->typeInfo;
         if (lastOverload && newOverload)
         {
             if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
@@ -1159,34 +1159,34 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 
             if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
             {
-                symbol = p;
+                symbol = oneSymbol;
                 continue;
             }
         }
 
         // Priority to the same inline scope
-        if (node->ownerInline && symbol->overloads.size() == 1 && p->overloads.size() == 1)
+        if (node->ownerInline && symbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
         {
-            if ((p->overloads[0]->node->ownerScope != node->ownerInline->ownerScope) &&
+            if ((oneSymbol->overloads[0]->node->ownerScope != node->ownerInline->ownerScope) &&
                 (symbol->overloads[0]->node->ownerScope == node->ownerInline->ownerScope))
             {
                 continue;
             }
 
-            if ((p->overloads[0]->node->ownerScope == node->ownerInline->ownerScope) &&
+            if ((oneSymbol->overloads[0]->node->ownerScope == node->ownerInline->ownerScope) &&
                 (symbol->overloads[0]->node->ownerScope != node->ownerInline->ownerScope))
             {
-                symbol = p;
+                symbol = oneSymbol;
                 continue;
             }
         }
 
         // Error this is ambiguous
-        if (symbol->kind != p->kind || p->kind != SymbolKind::Function)
+        if (symbol->kind != oneSymbol->kind || oneSymbol->kind != SymbolKind::Function)
         {
             Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
             Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-            Diagnostic note2{p->overloads[0]->node, p->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
+            Diagnostic note2{oneSymbol->overloads[0]->node, oneSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
             context->report(diag, &note1, &note2);
             return false;
         }
@@ -1289,11 +1289,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
-    auto  job                 = context->job;
-    auto& scopeHierarchy      = job->cacheScopeHierarchy;
-    auto& scopeHierarchyVars  = job->cacheScopeHierarchyVars;
-    auto& dependentSymbols    = job->cacheDependentSymbols;
-    auto  identifierRef       = node->identifierRef;
+    auto  job                = context->job;
+    auto& scopeHierarchy     = job->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto& dependentSymbols   = job->cacheDependentSymbols;
+    auto  identifierRef      = node->identifierRef;
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
