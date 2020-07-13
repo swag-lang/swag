@@ -35,55 +35,6 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     return true;
 }
 
-bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType)
-{
-    auto                   sourceFile   = context->sourceFile;
-    auto                   module       = sourceFile->module;
-    ConcreteTypeInfoParam* concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
-
-    concreteType->offsetOf = realType->offset;
-
-    SWAG_CHECK(makeConcreteString(context, &concreteType->name, realType->namedParam, OFFSETOF(concreteType->name)));
-    SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
-    SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
-
-    // Value
-    if (realType->flags & TYPEINFO_DEFINED_VALUE)
-    {
-        concreteType->value = nullptr;
-        if (realType->typeInfo->isNative(NativeTypeKind::String))
-        {
-            auto tmpStorageOffset = module->constantSegment.reserveNoLock(sizeof(ConcreteStringSlice));
-            concreteType->value   = module->constantSegment.addressNoLock(tmpStorageOffset);
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->value), tmpStorageOffset);
-            SWAG_CHECK(makeConcreteString(context, (ConcreteStringSlice*) concreteType->value, realType->value.text, tmpStorageOffset));
-        }
-        else
-        {
-            auto tmpStorageOffset = module->constantSegment.reserveNoLock(realType->typeInfo->sizeOf);
-            concreteType->value   = module->constantSegment.addressNoLock(tmpStorageOffset);
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->value), tmpStorageOffset);
-            switch (realType->typeInfo->sizeOf)
-            {
-            case 1:
-                *(uint8_t*) concreteType->value = realType->value.reg.u8;
-                break;
-            case 2:
-                *(uint16_t*) concreteType->value = realType->value.reg.u16;
-                break;
-            case 4:
-                *(uint32_t*) concreteType->value = realType->value.reg.u32;
-                break;
-            case 8:
-                *(uint64_t*) concreteType->value = realType->value.reg.u64;
-                break;
-            }
-        }
-    }
-
-    return true;
-}
-
 bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo)
 {
     auto sourceFile = context->sourceFile;
@@ -100,6 +51,29 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
 
     // Type of the value
     SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, storageOffset + sizeof(void*), &ptrAny->type, typeInfo));
+    return true;
+}
+
+bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType)
+{
+    auto                   sourceFile   = context->sourceFile;
+    auto                   module       = sourceFile->module;
+    ConcreteTypeInfoParam* concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
+
+    concreteType->offsetOf = realType->offset;
+
+    SWAG_CHECK(makeConcreteString(context, &concreteType->name, realType->namedParam, OFFSETOF(concreteType->name)));
+    SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+    SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+
+    // Value
+    if (realType->flags & TYPEINFO_DEFINED_VALUE)
+    {
+        auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
+        concreteType->value     = module->constantSegment.addressNoLock(storageOffsetValue);
+        module->constantSegment.addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
+    }
+
     return true;
 }
 
