@@ -106,4 +106,45 @@
         @assert(@countof(Value) == 3)
         #assert(@countof(Value) == 3)
     }
+
+    // You can use 'using' for an enum
+    {
+        enum Value
+        {
+            A
+            B
+            C
+        }
+
+        using Value
+        @assert(A == 0)
+        @assert(B == 1)
+        @assert(C == 2)
+        @assert(Value.A == 0)
+        @assert(Value.B == 1)
+        @assert(Value.C == 2)
+    }
+
+    // Enum can be a set of flags with the #[swag.flags] attribute
+    // Type should be u8, u16, u32 or u64
+    {
+        #[swag.flags]
+        enum MyFlags: u8
+        {
+            A
+            B
+            C
+            D
+        }
+
+        @assert(MyFlags.A == 0b00000000)
+        @assert(MyFlags.B == 0b00000001)
+        @assert(MyFlags.C == 0b00000010)
+        @assert(MyFlags.D == 0b00000100)
+
+        value := MyFlags.B | MyFlags.C
+        @assert(value == 0b00000011)
+        @assert(value & MyFlags.B == MyFlags.B)
+        @assert(value & MyFlags.C == MyFlags.C)
+    }
 }

@@ -1,12 +1,13 @@
 #test
 {
-    /*func B(a: s32)
+    enum A
     {
+        AA
+        BB
     }
 
-    func A()
-    {
-        B(0)
-        a := 0
-    }*/
+    typealias my: A
+    const Z = A.AA
+    #assert(Z == 0)
+    #assert(A.AA == 0)
 }

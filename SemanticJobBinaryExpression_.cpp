@@ -872,6 +872,10 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
     }
 
+    // Remember left type info before promotion, because for enum flags, we should
+    // not transform them to an u32
+    auto leftTypeInfoBeforePromote = left->typeInfo;
+
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
     node->inheritAndFlag(AST_R_VALUE);
@@ -915,21 +919,21 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
         SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
         SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
         SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
         SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveXor(context, left, right));
         break;
     case TokenId::SymTilde:
