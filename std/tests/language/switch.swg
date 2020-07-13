@@ -15,7 +15,7 @@
         switch ch
         {
             case "B"'char: @assert(false)
-            case "A"'char:
+            case "A"'char: break
         }
     }
 
@@ -65,6 +65,17 @@
                 @assert(false)
             default:
                 @assert(false)
+        }
+    }
+
+    // A 'case' statement cannot be empty. Use 'break' if you want to do nothing
+    {
+        value := 6
+        switch value
+        {
+            case 5:     @assert(false)
+            case 6:     break
+            default:    @assert(false)
         }
     }
 }

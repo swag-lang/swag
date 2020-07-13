@@ -15,7 +15,7 @@
     #[swag.complete]
     switch a
     {
-        case Color.Red:
-        case Color.Green:
+        case Color.Red: break
+        case Color.Green: break
     }
 }

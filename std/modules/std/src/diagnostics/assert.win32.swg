@@ -1,7 +1,7 @@
 #if swag.WINDOWS && swag.ASSERT
 {
     using win32, std
-    
+
     namespace std.diagnostics.debug
     {
         /// Generate an assert dialog box
@@ -11,7 +11,7 @@
             var messageW: [512] u16
             count1 := text.unicode16.fromUtf8(messageW, message)
 
-            const info = 
+            const info =
             #"
             - Press Cancel to exit
             - Press Retry to debug the application
@@ -34,6 +34,7 @@
                 case IDTRYAGAIN:
                     DebugBreak();
                 case IDCONTINUE:
+                    break
             }
         }
     }

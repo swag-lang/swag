@@ -73,6 +73,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         caseNode->isDefault   = isDefault;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = SemanticJob::resolveCase;
+        auto previousToken    = token;
         SWAG_CHECK(tokenizer.getToken(token));
         if (isDefault)
             defaultCase = caseNode;
@@ -115,6 +116,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);
+
+            SWAG_CHECK(verifyError(previousToken, token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly, "'case' statement is empty"));
+
             while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
             {
                 SWAG_CHECK(doEmbeddedInstruction(statement));
