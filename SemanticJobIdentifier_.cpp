@@ -1845,10 +1845,8 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
-
     if (kind == SymbolKind::TypeAlias)
         collectFlags = COLLECT_FCT_HIERARCHY;
-
     collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)
