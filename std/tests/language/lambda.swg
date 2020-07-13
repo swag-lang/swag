@@ -46,7 +46,7 @@
         @assert(toDo(4, func(x: s32)->s32 { return x - x; }) == 0)
     }
 
-    // Types of parameters, and return type, can be deduced
+    // Types of parameters can be deduced
     {
         typealias callback: func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
