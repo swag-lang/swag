@@ -84,6 +84,25 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
+bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeInfo, computedValue);
+        ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
+        module->constantSegment.addInitPtr(storageOffset, storageOffsetValue);
+    }
+    else
+        ptrAny->value = nullptr;
+
+    // Type of the value
+    SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, storageOffset + sizeof(void*), &ptrAny->type, typeInfo));
+    return true;
+}
+
 bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
 {
     if (attributes.empty())
@@ -132,18 +151,8 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
                 ptrStorageAllParams += sizeof(ConcreteStringSlice);
 
                 // Value of the parameter
-                auto ptrAny = (ConcreteAny*) ptrStorageAllParams;
-                if (oneParam.typeInfo->kind == TypeInfoKind::Native)
-                {
-                    auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, oneParam.typeInfo, oneParam.value);
-                    ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
-                    module->constantSegment.addInitPtr(curOffsetParams, storageOffsetValue);
-                }
-                else
-                    ptrAny->value = nullptr;
+                makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, curOffsetParams, oneParam.value, oneParam.typeInfo);
 
-                // Type of the value
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffsetParams + sizeof(void*), &ptrAny->type, oneParam.typeInfo));
                 curOffsetParams += sizeof(ConcreteAny);
                 ptrStorageAllParams += sizeof(ConcreteAny);
             }
