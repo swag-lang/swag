@@ -1362,7 +1362,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 if (node->flags & AST_IDENTIFIER_BACKTICK)
                     collectFlags = COLLECT_PASS_INLINE;
 
-                // If we collect for a type, it's legit to collect emmbedded function scopes, as the type can be defined
+                // If we collect for a type, it's legit to collect embedded function scopes, as the type can be defined
                 // just before the function, in another function body (for embedded functions)
                 if (node->parent->parent->kind == AstNodeKind::TypeExpression)
                     collectFlags = COLLECT_FCT_HIERARCHY;
