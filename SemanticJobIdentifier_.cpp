@@ -556,7 +556,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     {
                         auto funcDecl         = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
                         auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-                        auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->solvedParameters[i]->typeInfo, TypeInfoKind::Lambda);
+                        auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
+                        auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
                         for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
                         {
                             funcDecl->parameters->childs[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
