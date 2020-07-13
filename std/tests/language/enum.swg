@@ -1,0 +1,109 @@
+#test
+{
+    // Enums values, unlike C, must end with ';' or an <eol>
+    {
+        enum Values
+        {
+            A
+            B
+        }
+    }
+
+    // By default, an enum is of type 's32'
+    {
+        using swag
+        enum Values { A; B; }
+        type := cast(const *TypeInfoEnum) @typeof(Values)
+        @assert(type.rawType == @typeof(s32))
+    }
+
+    // You can specify your own type
+    {
+        enum Value1: s64
+        {
+            A
+            B
+            C
+        }
+    }
+
+    // Each value, if not specified, starts with 0 and increase at each new value
+    {
+        enum Value: s64
+        {
+            A
+            B
+            C
+        }
+
+        @assert(Value.A == 0)
+        @assert(Value.B == 1)
+        @assert(Value.C == 2)
+    }
+
+    // You can specify your own values
+    {
+        enum Value: s64
+        {
+            A = 10
+            B = 20
+            C = 30
+        }
+
+        @assert(Value.A == 10)
+        @assert(Value.B == 20)
+        @assert(Value.C == 30)
+    }
+
+    // If you omit one value, it will be the previous value + 1
+    {
+        enum Value: u32
+        {
+            A = 10
+            B
+            C
+        }
+
+        @assert(Value.A == 10)
+        @assert(Value.B == 11)
+        @assert(Value.C == 12)
+    }
+
+    // For non integer types, you must specify the values
+    {
+        enum Value1: string
+        {
+            A = "string 1"
+            B = "string 2"
+            C = "string 3"
+        }
+
+        @assert(Value1.A == "string 1")
+        @assert(Value1.B == "string 2")
+        @assert(Value1.C == "string 3")
+
+        enum Value2: f32
+        {
+            A = 1.0
+            B = 3.14
+            C = 6
+        }
+
+        @assert(Value2.A == 1.0)
+        @assert(Value2.B == 3.14)
+        @assert(Value2.C == 6)
+    }
+
+    // '@countof' can be used on an enum
+    {
+        enum Value: string
+        {
+            A = "string 1"
+            B = "string 2"
+            C = "string 3"
+        }
+
+        @assert(@countof(Value) == 3)
+        #assert(@countof(Value) == 3)
+    }
+}
