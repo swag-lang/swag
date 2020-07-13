@@ -19,13 +19,23 @@
         }
     }
 
-    // You can put multiple value on the same 'case'
+    // You can put multiple values on the same 'case'
     {
         value := 6
         switch value
         {
             case 2, 4, 6:   @assert(true)
             default:        @assert(false)
+        }
+
+        switch value
+        {
+            case 2,
+                 4,
+                 6:
+                @assert(true)
+            default:
+                @assert(false)
         }
     }
 
