@@ -254,8 +254,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC(context, regList, 2);
-        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
 
+        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         uint32_t storageOffset = node->resolvedSymbolOverload->storageOffset;
