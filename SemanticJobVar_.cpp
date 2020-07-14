@@ -466,6 +466,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         return true;
 
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
+    bool isLocalConstant    = false;
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
@@ -478,6 +479,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_STRUCT;
     else if (!isCompilerConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
+    else
+        isLocalConstant = true;
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
 
@@ -557,8 +560,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
-        SWAG_VERIFY(!isCompilerConstant, context->report({ node, "a constant must be explicitly initialized" }));
-        SWAG_VERIFY(node->kind != AstNodeKind::LetDecl, context->report({ node, "a 'let' declaration must be explicitly initialized" }));
+        SWAG_VERIFY(!isCompilerConstant, context->report({node, "a constant must be explicitly initialized"}));
+        SWAG_VERIFY(node->kind != AstNodeKind::LetDecl, context->report({node, "a 'let' declaration must be explicitly initialized"}));
     }
 
     // Find type
@@ -691,9 +694,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 
-    if (isCompilerConstant)
+    if (isCompilerConstant && !(node->flags & AST_FROM_GENERIC))
     {
-        if (symbolFlags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_LOCAL))
+        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
         {
             if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
             {

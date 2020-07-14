@@ -1,10 +1,14 @@
+#module compiler1738
+#unittest error
+
 #[swag.printbc]
 #test
 {
     {
         const array: [2] s32 = [1, 2]
+        ptr := @dataof(array)
+        ptr[0] = 0
 
-        ptr := cast(*s32) @dataof(array)
         //@assert(ptr[0] == 1)
 
         /*result := 0

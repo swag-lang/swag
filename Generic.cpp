@@ -65,7 +65,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
         auto nodeParam           = nodeGenericParameters[i];
         nodeParam->kind          = AstNodeKind::ConstDecl;
         nodeParam->computedValue = param->value;
-        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_FROM_GENERIC;
     }
 
     return true;
