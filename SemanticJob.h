@@ -157,6 +157,7 @@ struct SemanticJob : public Job
     static bool resolveImplFor(SemanticContext* context);
     static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
     static bool preResolveStruct(SemanticContext* context);
+    static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     static bool resolveStruct(SemanticContext* context);
     static bool resolveInterface(SemanticContext* context);
     static bool resolveEnum(SemanticContext* context);
