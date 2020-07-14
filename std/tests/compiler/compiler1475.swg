@@ -1,4 +1,4 @@
-#test
+/*#test
 {
     cpt := 0
     visit c: 16
@@ -18,4 +18,4 @@
     }
 
     @assert(cpt == 16)
-}
+}*/

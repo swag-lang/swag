@@ -275,31 +275,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
-    if (typeInfo->flags & TYPEINFO_INTEGER)
-    {
-        SWAG_VERIFY(!node->wantPointer, context->report({node, node->wantPointerToken, "cannot visit by pointer for integers"}));
-        content = format("loop %s { ", (const char*) concat.firstBucket->datas, alias0Name.c_str());
-        content += format("let %s = @index; ", alias0Name.c_str());
-        content += "} ";
-        SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
-
-        newExpression = node->childs.back();
-        auto loopNode = CastAst<AstLoop>(newExpression, AstNodeKind::Loop);
-        Ast::addChildBack(loopNode->block, node->block);
-        Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
-        node->block->flags &= ~AST_NO_SEMANTIC;
-
-        // Re-root the parent scope of the user block so that it points to the scope of the loop block
-        node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
-
-        job->nodes.pop_back();
-        job->nodes.push_back(newExpression);
-        job->nodes.push_back(node);
-    }
-
-    // Multi dimensional array : special case, as we want to visit everything
-    else if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
+    if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
         auto typeArray = (TypeInfoArray*) typeInfo;
         content += format("{ let __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
