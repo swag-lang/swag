@@ -1772,6 +1772,29 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
+    // Pointer to struct to pointer to struct. Take care of using
+    if (fromType->kind == TypeInfoKind::Pointer && toTypePointer->ptrCount == 1 && toTypePointer->finalType->kind == TypeInfoKind::Struct)
+    {
+        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        if (fromTypePointer->ptrCount == 1 && fromTypePointer->finalType->kind == TypeInfoKind::Struct)
+        {
+            auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->finalType, TypeInfoKind::Struct);
+            auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->finalType, TypeInfoKind::Struct);
+            for (auto field : fromStruct->fields)
+            {
+                if (field->typeInfo != toStruct || !field->hasUsing)
+                    continue;
+
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo = toType;
+                }
+                return true;
+            }
+        }
+    }
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
@@ -2270,7 +2293,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->kind == TypeInfoKind::Reference)
     {
         auto typeRef = CastTypeInfo<TypeInfoReference>(fromType, TypeInfoKind::Reference);
-        fromType = typeRef->pointedType;
+        fromType     = typeRef->pointedType;
     }
 
     if (toType->kind == TypeInfoKind::FuncAttr)

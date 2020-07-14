@@ -333,6 +333,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
+            typeParam->hasUsing   = varDecl->flags & AST_DECL_USING;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
             typeInfo->fields.push_back(typeParam);

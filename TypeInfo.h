@@ -265,8 +265,9 @@ struct TypeInfoParam : public TypeInfo
     TypeInfo* typeInfo = nullptr;
     AstNode*  node     = nullptr;
 
-    int index  = 0;
-    int offset = 0;
+    int  index    = 0;
+    int  offset   = 0;
+    bool hasUsing = false;
 };
 
 struct TypeInfoEnum : public TypeInfo
