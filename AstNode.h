@@ -317,6 +317,7 @@ struct AstNode
 
     uint32_t doneFlags               = 0;
     uint32_t fctCallStorageOffset    = 0;
+    uint32_t castOffset              = 0;
     uint32_t concreteTypeInfoStorage = UINT32_MAX;
     uint32_t childParentIdx          = 0;
     uint32_t attributeFlags          = 0;

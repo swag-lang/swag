@@ -1652,11 +1652,12 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                     if (done)
                     {
                         Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because structure '%s' has multiple fields of type '%s' with 'using'", fromType->name.c_str(), toType->name.c_str(), fromStruct->name.c_str(), toStruct->name.c_str())};
-                        Diagnostic note1{done->node, "this is one", DiagnosticLevel::Note };
+                        Diagnostic note1{done->node, "this is one", DiagnosticLevel::Note};
                         Diagnostic note2{field->node, "this is another", DiagnosticLevel::Note};
                         return context->report(diag, &note1, &note2);
                     }
 
+                    fromNode->castOffset     = field->offset;
                     fromNode->castedTypeInfo = fromNode->typeInfo;
                     fromNode->typeInfo       = toType;
                 }
@@ -1666,7 +1667,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
             if (done)
                 return true;
-            //return castError(context, toType, fromType, fromNode, castFlags);
         }
     }
 

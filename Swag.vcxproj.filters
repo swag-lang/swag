@@ -176,9 +176,6 @@
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenJobFunc_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeRunContext.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -376,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="SemanticJobFunction_.cpp">
       <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobFunction_.cpp">
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;
     fctCallStorageOffset = from->fctCallStorageOffset;
+    castOffset           = from->castOffset;
 
     parent = context.parent;
     if (parent)

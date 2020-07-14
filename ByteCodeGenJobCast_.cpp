@@ -751,6 +751,17 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
+        // Cast with to a pointer with an offset
+        if (exprNode->castOffset)
+        {
+            SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Pointer);
+            node->resultRegisterRC   = exprNode->resultRegisterRC[0];
+            exprNode->castedTypeInfo = nullptr;
+            auto inst                = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
+            inst->b.u32              = exprNode->castOffset;
+            return true;
+        }
+
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
