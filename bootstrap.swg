@@ -219,7 +219,7 @@ namespace swag
 
     struct TypeInfoNative
     {
-        base: 			TypeInfo
+        base:           TypeInfo
         nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
     }
 
@@ -278,7 +278,7 @@ namespace swag
 
     struct TypeInfoEnum
     {
-        base: 		    TypeInfo
+        base:           TypeInfo
         values:		    const [..] TypeInfoParam
         rawType:	    const *TypeInfo
         attributes:	    const [..] TypeInfoAttribute
