@@ -1631,6 +1631,45 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
+    // Pointer to struct to pointer to struct. Take care of using
+    if (fromType->kind == TypeInfoKind::Pointer && toTypePointer->ptrCount == 1 && toTypePointer->finalType->kind == TypeInfoKind::Struct)
+    {
+        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        if (fromTypePointer->ptrCount == 1 && fromTypePointer->finalType->kind == TypeInfoKind::Struct)
+        {
+            auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->finalType, TypeInfoKind::Struct);
+            auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->finalType, TypeInfoKind::Struct);
+
+            TypeInfoParam* done = nullptr;
+            for (auto field : fromStruct->fields)
+            {
+                if (field->typeInfo != toStruct || !field->hasUsing)
+                    continue;
+
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    // Ambiguous ! Two fields with a 'using' on the same struct
+                    if (done)
+                    {
+                        Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because structure '%s' has multiple fields of type '%s' with 'using'", fromType->name.c_str(), toType->name.c_str(), fromStruct->name.c_str(), toStruct->name.c_str())};
+                        Diagnostic note1{done->node, "this is one", DiagnosticLevel::Note };
+                        Diagnostic note2{field->node, "this is another", DiagnosticLevel::Note};
+                        return context->report(diag, &note1, &note2);
+                    }
+
+                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfo       = toType;
+                }
+
+                done = field;
+            }
+
+            if (done)
+                return true;
+            //return castError(context, toType, fromType, fromNode, castFlags);
+        }
+    }
+
     // Pointer to pointer
     if (fromType->kind == TypeInfoKind::Pointer)
     {
@@ -1768,29 +1807,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
                     return true;
                 }
-            }
-        }
-    }
-
-    // Pointer to struct to pointer to struct. Take care of using
-    if (fromType->kind == TypeInfoKind::Pointer && toTypePointer->ptrCount == 1 && toTypePointer->finalType->kind == TypeInfoKind::Struct)
-    {
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (fromTypePointer->ptrCount == 1 && fromTypePointer->finalType->kind == TypeInfoKind::Struct)
-        {
-            auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->finalType, TypeInfoKind::Struct);
-            auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->finalType, TypeInfoKind::Struct);
-            for (auto field : fromStruct->fields)
-            {
-                if (field->typeInfo != toStruct || !field->hasUsing)
-                    continue;
-
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo = toType;
-                }
-                return true;
             }
         }
     }
