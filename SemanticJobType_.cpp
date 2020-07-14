@@ -269,6 +269,10 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;
 
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     auto typeInfo      = g_Allocator.alloc<TypeInfoAlias>();
     typeInfo->declNode = node;
     typeInfo->rawType  = node->childs.front()->typeInfo;
@@ -286,7 +290,6 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
     SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, "type alias cannot be generic"}));
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
 
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)

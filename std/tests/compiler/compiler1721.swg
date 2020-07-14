@@ -9,15 +9,5 @@
         {
             typealias a: s32
         }
-
-        /*func A()
-        {
-            B()
-        }
-
-        func B()
-        {
-
-        }*/
     }
 }

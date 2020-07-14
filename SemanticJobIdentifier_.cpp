@@ -1323,6 +1323,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto& scopeEmbedded      = job->cacheScopeEmbedded;
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
@@ -1343,6 +1344,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
+        scopeEmbedded.clear();
         dependentSymbols.clear();
     }
 
@@ -1362,13 +1364,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 if (node->flags & AST_IDENTIFIER_BACKTICK)
                     collectFlags = COLLECT_PASS_INLINE;
 
-                // If we collect for a type, it's legit to collect embedded function scopes, as the type can be defined
-                // just before the function, in another function body (for embedded functions)
-                if (node->parent->parent->kind == AstNodeKind::TypeExpression)
-                    collectFlags = COLLECT_FCT_HIERARCHY;
-
                 startScope = node->ownerScope;
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, scopeEmbedded, node, collectFlags));
 
                 // Be sure this is the last try
                 oneTry++;
@@ -1392,8 +1389,19 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
-                {
                     dependentSymbols.insert(symbol);
+            }
+
+            // Search in embedded scopes if we are inside a function, for just some sort of symbols
+            if (node->ownerFct)
+            {
+                for (auto scope : scopeEmbedded)
+                {
+                    auto symbol = scope->symTable.find(node->name);
+                    if (!symbol)
+                        continue;
+                    if (symbol->kind == SymbolKind::TypeAlias || symbol->kind == SymbolKind::Function)
+                        dependentSymbols.insert(symbol);
                 }
             }
 
@@ -1738,7 +1746,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, vector<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1770,15 +1778,17 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an embedded function, jump right to its parent
-        if (!(flags & COLLECT_FCT_HIERARCHY))
+        if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
         {
-            if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
+            while (scope->owner->ownerFct)
             {
-                while (scope->owner->ownerFct)
-                    scope = scope->parentScope;
-                SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
+                scopesEmbedded.push_back(scope);
                 scope = scope->parentScope;
             }
+
+            SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
+            scopesEmbedded.push_back(scope);
+            scope = scope->parentScope;
         }
 
         // For an inline scope, jump right to the function
@@ -1845,9 +1855,10 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
-    if (kind == SymbolKind::TypeAlias)
-        collectFlags = COLLECT_FCT_HIERARCHY;
-    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
+    job->cacheScopeHierarchy.clear();
+    job->cacheScopeHierarchyVars.clear();
+    job->cacheScopeEmbedded.clear();
+    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, job->cacheScopeEmbedded, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)
     {
@@ -1877,6 +1888,29 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         }
 
         SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
+    }
+
+    // Search in embedded function scopes
+    if (kind == SymbolKind::TypeAlias || kind == SymbolKind::Function || kind == SymbolKind::Interface)
+    {
+        for (auto scope : job->cacheScopeEmbedded)
+        {
+            auto symbol = scope->symTable.find(node->name);
+            if (!symbol)
+                continue;
+
+            scoped_lock lock(symbol->mutex);
+            if (symbol->cptOverloadsInit != symbol->overloads.size())
+            {
+                if (symbol->cptOverloads)
+                {
+                    job->waitForSymbolNoLock(symbol);
+                    return true;
+                }
+            }
+
+            SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
+        }
     }
 
     return true;
