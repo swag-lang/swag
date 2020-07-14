@@ -90,7 +90,7 @@ namespace swag
 
     #[attributeUsage(AttributeUsage.GlobalVariable)]
     attr nobss();
-   
+
     // #########################################################
     // Constants
     // #########################################################
@@ -133,7 +133,7 @@ namespace swag
         size:		u32
         address:	*void
     }
-    
+
     interface IAllocator
     {
         alloc: func(self, *AllocatorRequest)
@@ -142,7 +142,7 @@ namespace swag
     struct SystemAllocator
     {
     }
-    
+
     impl IAllocator for SystemAllocator
     {
         func alloc(self, request: *AllocatorRequest)
@@ -219,13 +219,13 @@ namespace swag
 
     struct TypeInfoNative
     {
-        base:           TypeInfo
+        using base:     TypeInfo
         nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
     }
 
     struct TypeInfoPointer
     {
-        base: 			TypeInfo
+        using base: 	TypeInfo
         finalType:		const *TypeInfo
         pointedType:	const *TypeInfo
         ptrCount:		u32
@@ -233,7 +233,7 @@ namespace swag
 
     struct TypeInfoReference
     {
-        base: 			TypeInfo
+        using base: 	TypeInfo
         pointedType:	const *TypeInfo
     }
 
@@ -248,7 +248,7 @@ namespace swag
         name:		string
         params:		const [..] TypeInfoAttributeParameter
     }
-    
+
     struct TypeInfoParam
     {
         name:		    string
@@ -261,16 +261,16 @@ namespace swag
 
     struct TypeInfoStruct
     {
-        base: 		    TypeInfo
+        using base: 	TypeInfo
         fields:		    const [..] TypeInfoParam
         methods:	    const [..] TypeInfoParam
         interfaces:     const [..] TypeInfoParam
         attributes:	    const [..] TypeInfoAttribute
     }
-    
+
     struct TypeInfoFunc
     {
-        base: 			TypeInfo
+        using base: 	TypeInfo
         parameters:		const [..] TypeInfoParam
         returnType:		const *TypeInfo
         attributes:	    const [..] TypeInfoAttribute
@@ -278,7 +278,7 @@ namespace swag
 
     struct TypeInfoEnum
     {
-        base:           TypeInfo
+        using base:     TypeInfo
         values:		    const [..] TypeInfoParam
         rawType:	    const *TypeInfo
         attributes:	    const [..] TypeInfoAttribute
@@ -286,12 +286,12 @@ namespace swag
 
     struct TypeInfoVariadic
     {
-        base:	TypeInfo
+        using base:	TypeInfo
     }
 
     struct TypeInfoArray
     {
-        base: 			TypeInfo
+        using base: 	TypeInfo
         pointedType:	const *TypeInfo
         finalType:		const *TypeInfo
         count:			u32
@@ -300,20 +300,20 @@ namespace swag
 
     struct TypeInfoSlice
     {
-        base: 			TypeInfo
+        using base: 	TypeInfo
         pointedType:	const *TypeInfo
     }
 
     struct TypeInfoGeneric
     {
-        base: 		TypeInfo
+        using base: TypeInfo
         rawType:	const *TypeInfo
     }
-    
+
     // #########################################################
     // Compiler
     // #########################################################
-    
+
     struct CompilerParamsBackendC
     {
         writeSourceCode: bool           = false
@@ -327,7 +327,7 @@ namespace swag
         debugBoundCheck: bool    = true
         debugAnyCastCheck: bool  = true
         debugDivZeroCheck: bool  = true
-        
+
         // Bytecode
         byteCodeMaxRecurse: u32     = 1024
         byteCodeStackSize: u32      = 16 * 1024
@@ -335,15 +335,15 @@ namespace swag
         // Backend common
         backendDebugInformations: bool  = false
         backendOptimizeLevel: u32       = 0
-        
+
         // Backend specific
         backendC: CompilerParamsBackendC
     }
-        
+
     // #########################################################
     // Default compiler configuration
     // #########################################################
-    
+
     // Platform setup
     #if #arch == "win64"
     {
@@ -370,6 +370,5 @@ namespace swag
     {
         const DEBUG = false
         const ASSERT = false
-    }    
+    }
 }
-
