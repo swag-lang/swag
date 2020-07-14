@@ -55,4 +55,13 @@
 
         @assert(result == 10+20+30)
     }
+
+    // Works also for multi dimensional arrays
+    {
+        let array: [2, 2] s32 = [[1, 2], [3, 4]]
+
+        result := 0
+        visit it: array result += it
+        @assert(result == 1+2+3+4)
+    }
 }
