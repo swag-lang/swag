@@ -555,6 +555,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
+    {
+        SWAG_VERIFY(!isCompilerConstant, context->report({ node, "a constant must be explicitly initialized" }));
+        SWAG_VERIFY(node->kind != AstNodeKind::LetDecl, context->report({ node, "a 'let' declaration must be explicitly initialized" }));
+    }
+
     // Find type
     if (node->type && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
