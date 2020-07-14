@@ -236,8 +236,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO &&
         symbol->kind == SymbolKind::Variable)
     {
-        SWAG_CHECK(derefTypeInfo(context, parent, overload));
-        return true;
+        auto concreteType = TypeManager::concreteType(overload->typeInfo);
+        if (concreteType->kind == TypeInfoKind::Native)
+        {
+            SWAG_CHECK(derefTypeInfo(context, parent, overload));
+            return true;
+        }
+        else
+        {
+            identifier->flags |= AST_R_VALUE;
+        }
     }
 
     // Can access a private member of a struct only from the same scope (impl or struct)
