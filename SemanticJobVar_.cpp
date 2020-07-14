@@ -694,6 +694,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 
+    // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
+    // and has an address
     if (isCompilerConstant && !(node->flags & AST_FROM_GENERIC))
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
@@ -735,7 +737,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
         if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
+        {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+        }
 
         node->inheritComputedValue(node->assignment);
     }

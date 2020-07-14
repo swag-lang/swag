@@ -123,6 +123,9 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     }
     else
     {
+        if (node->name == "array666")
+            node = node;
+
         // Emit a reference to the buffer
         auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
@@ -249,11 +252,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
-        auto     typeArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        uint32_t storageOffset = node->computedValue.reg.u32;
+        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC(context, regList, 2);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
-        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
+        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
+
+        SWAG_ASSERT(node->resolvedSymbolOverload);
+        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+        uint32_t storageOffset = node->resolvedSymbolOverload->storageOffset;
+        inst->c.u64            = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
