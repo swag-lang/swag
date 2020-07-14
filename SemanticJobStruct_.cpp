@@ -259,7 +259,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
 void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
-    auto node = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    auto node = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     for (auto child : parent->childs)
     {
         switch (child->kind)
@@ -545,7 +545,10 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
-        job->tmpNodes = node->content->childs;
+    {
+        job->tmpNodes.clear();
+        flattenStructChilds(context, node->content, job->tmpNodes);
+    }
 
     // itable
     auto typeITable        = g_Allocator.alloc<TypeInfoStruct>();
@@ -561,19 +564,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         {
         case AstNodeKind::AttrUse:
         case AstNodeKind::DocComment:
-            continue;
-        case AstNodeKind::Statement:
-        case AstNodeKind::CompilerIfBlock:
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.append(child->childs);
-            continue;
-        case AstNodeKind::CompilerIf:
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
-                job->tmpNodes.push_back(compilerIf->ifBlock);
-            else if (compilerIf->elseBlock)
-                job->tmpNodes.push_back(compilerIf->elseBlock);
             continue;
         }
 
