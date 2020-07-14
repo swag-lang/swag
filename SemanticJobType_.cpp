@@ -103,6 +103,12 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         return true;
     }
 
+    if (typeNode->isTypeOf)
+    {
+        typeNode->typeInfo = g_TypeMgr.typeInfoS32;
+        return true;
+    }
+
     // Code
     if (typeNode->isCode)
     {

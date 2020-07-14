@@ -3,6 +3,6 @@
 {
     {
         x := 0
-        //var y: @typeof(x) = 6
+        var y: @typeof(x) = 6
     }
 }

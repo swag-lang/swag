@@ -493,6 +493,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->isCode         = isCode;
     newNode->forceConstType = forceConstType;
     newNode->isSelf         = isSelf;
+    newNode->isTypeOf       = isTypeOf;
     return newNode;
 }
 
@@ -523,6 +524,8 @@ AstNode* AstProperty::clone(CloneContext& context)
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->prop       = prop;
+    newNode->typeOfAsType  = typeOfAsType;
+
     return newNode;
 }
 

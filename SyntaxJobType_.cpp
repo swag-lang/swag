@@ -9,6 +9,7 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
@@ -219,10 +220,26 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
-    node->isConst = isConst;
+    node->isConst  = isConst;
+    node->arrayDim = 0;
+    node->ptrCount = 0;
+    node->isRef    = false;
+
+    // This is a @typeof
+    if (token.id == TokenId::Intrinsic)
+    {
+        if (token.text == "@typeof")
+        {
+            AstNode* typeOfNode = nullptr;
+            SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
+            node->isTypeOf = true;
+            auto typeNode  = CastAst<AstProperty>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
+            typeNode->typeOfAsType = true;
+            return true;
+        }
+    }
 
     // Array
-    node->arrayDim = 0;
     if (token.id == TokenId::SymLeftSquare)
     {
         SWAG_CHECK(tokenizer.getToken(token));
@@ -254,14 +271,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Pointers
-    node->ptrCount = 0;
     while (token.id == TokenId::SymAsterisk)
     {
         node->ptrCount++;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    node->isRef = false;
     if (token.id == TokenId::SymAmpersand)
     {
         node->isRef = true;

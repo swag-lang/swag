@@ -553,6 +553,7 @@ struct AstTypeExpression : public AstNode
     bool isRef          = false;
     bool isSlice        = false;
     bool isConst        = false;
+    bool isTypeOf       = false;
     bool isCode         = false;
     bool forceConstType = false;
     bool isSelf         = false;
@@ -582,6 +583,8 @@ struct AstProperty : public AstNode
 
     AstNode* expression = nullptr;
     Property prop;
+
+    bool typeOfAsType = false;
 };
 
 struct AstExpressionList : public AstNode

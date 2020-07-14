@@ -175,13 +175,22 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
     expr->flags |= AST_NO_BYTECODE;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
-    typeTable.waitForTypeTableJobs(context->job);
-    if (context->result != ContextResult::Done)
-        return true;
-    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
 
-    SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+    // A @typeof as a type in a declaration
+    if (node->typeOfAsType)
+    {
+        node->typeInfo = expr->typeInfo;
+    }
+    else
+    {
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
+        typeTable.waitForTypeTableJobs(context->job);
+        if (context->result != ContextResult::Done)
+            return true;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+    }
+
     return true;
 }
 
