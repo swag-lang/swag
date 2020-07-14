@@ -1,6 +1,6 @@
 #test
 {
-    // Reflection is with the intrinsic @typeof
+    // You can get the type of an expression with '@typeof'
     {
         ptr1 := @typeof(s8)
         @assert(ptr1.name == "s8")
@@ -18,7 +18,7 @@
     // The return result is a const pointer to a swag.TypeInfo structure
     {
         ptr := @typeof(bool)
-        @assert(@typeof(ptr) == @typeof(const *swag.TypeInfo))
+        @assert(@typeof(ptr) == @typeof(const *swag.TypeInfoNative))
     }
 
     // The TypeInfo structure contains a different enum value for each type

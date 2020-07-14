@@ -252,7 +252,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST | TYPEINFO_TYPEINFO_PTR;
     typePtr->ptrCount    = 1;
-    typePtr->finalType = g_Workspace.swagScope.regTypeInfo;
+    typePtr->finalType = typeStruct;
     typePtr->pointedType = typePtr->finalType;
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);

@@ -1675,6 +1675,13 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         if (castFlags & CASTFLAG_EXPLICIT)
             return true;
+
+        // Fine to compare pointers of TypeInfos, even if not of the same type
+        if (castFlags & CASTFLAG_COMPARE)
+        {
+            if ((fromType->flags & TYPEINFO_TYPEINFO_PTR) && (toType->flags & TYPEINFO_TYPEINFO_PTR))
+                return true;
+        }
     }
 
     // Array to pointer of the same type

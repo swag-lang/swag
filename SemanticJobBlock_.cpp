@@ -197,7 +197,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     for (auto oneExpression : node->expressions)
     {
         SWAG_CHECK(checkIsConcrete(context, oneExpression));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
     }
 
     node->typeInfo                 = node->ownerSwitch->expression->typeInfo;

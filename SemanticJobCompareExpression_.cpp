@@ -252,7 +252,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // a opCmp operator
     if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF | CASTFLAG_FORCE_UNCONST));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitCompareOp;
