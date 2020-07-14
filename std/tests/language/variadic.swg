@@ -48,9 +48,13 @@
 
     // Variadic parameters can be passed from function to function
      {
-         /*func A(params: ...)
+         func A(params: ...)
          {
-
+             @assert(@countof(params) == 2)
+             @assert(@kindof(params[0]) == @typeof(string))
+             @assert(@kindof(params[1]) == @typeof(bool))
+             @assert(cast(string) params[0] == "value")
+             @assert(cast(bool) params[1] == true)
          }
 
          func B(params: ...)
@@ -58,6 +62,6 @@
              A(params)
          }
 
-         B("value", true)*/
+         B("value", true)
      }
 }
