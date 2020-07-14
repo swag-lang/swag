@@ -45,7 +45,10 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
-        job->tmpNodes = node->childs;
+    {
+        job->tmpNodes.clear();
+        flattenStructChilds(context, node, job->tmpNodes);
+    }
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
@@ -88,23 +91,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        switch (child->kind)
-        {
-        case AstNodeKind::Statement:
-        case AstNodeKind::CompilerIfBlock:
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.append(child->childs);
-            continue;
-        case AstNodeKind::CompilerIf:
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
-            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
-                job->tmpNodes.push_back(compilerIf->ifBlock);
-            else if (compilerIf->elseBlock)
-                job->tmpNodes.push_back(compilerIf->elseBlock);
-            continue;
-        }
-
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
 
