@@ -275,6 +275,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
+    // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
         auto typeArray = (TypeInfoArray*) typeInfo;

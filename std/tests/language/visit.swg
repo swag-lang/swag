@@ -64,4 +64,17 @@
         visit it: array result += it
         @assert(result == 1+2+3+4)
     }
+
+    // You can visit with a pointer to the value, and not the value itself
+    {
+        let array: [2, 2] s32 = [[1, 2], [3, 4]]
+
+        result := 0
+        visit *it: array
+        {
+            result += deref it
+        }
+
+        @assert(result == 1+2+3+4)
+    }
 }
