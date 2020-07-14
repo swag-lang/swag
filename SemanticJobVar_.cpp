@@ -457,9 +457,14 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto sourceFile         = context->sourceFile;
-    auto module             = sourceFile->module;
-    auto node               = static_cast<AstVarDecl*>(context->node);
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto node       = static_cast<AstVarDecl*>(context->node);
+
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
@@ -809,7 +814,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                  nullptr,
                                                                  storageOffset);
     SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 
     return true;
