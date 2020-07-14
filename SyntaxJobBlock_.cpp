@@ -203,6 +203,13 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
+    if (token.id == TokenId::KwdConst)
+    {
+        node->wantConstPointer = true;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::SymAsterisk, "'const' must be followed here by '*' to get a pointer"));
+    }
+
     if (token.id == TokenId::SymAsterisk)
     {
         node->wantPointerToken = move(token);

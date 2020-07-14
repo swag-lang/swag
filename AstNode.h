@@ -495,7 +495,8 @@ struct AstVisit : public AstNode
     AstNode* expression = nullptr;
     AstNode* block      = nullptr;
 
-    bool wantPointer = false;
+    bool wantPointer      = false;
+    bool wantConstPointer = false;
 };
 
 struct AstSwitch : public AstBreakable
