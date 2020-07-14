@@ -63,6 +63,7 @@ namespace Ast
 
     extern Scope*   newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void     removeFromParent(AstNode* child);
+    extern void     insertChild(AstNode* parent, AstNode* child, uint32_t index);
     extern void     addChildBack(AstNode* parent, AstNode* child);
     extern void     addChildFront(AstNode* parent, AstNode* child);
     extern int      findChildIndex(AstNode* parent, AstNode* child);

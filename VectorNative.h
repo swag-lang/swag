@@ -105,6 +105,15 @@ struct VectorNative
         count++;
     }
 
+    void insertAtIndex(const T& val, int index)
+    {
+        SWAG_ASSERT(index < count);
+        reserve(count + 1);
+        memmove(buffer + index + 1, buffer + index, (count - index) * sizeof(T));
+        buffer[index] = val;
+        count++;
+    }
+
     void pop_back()
     {
         SWAG_ASSERT(count);

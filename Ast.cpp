@@ -107,6 +107,27 @@ namespace Ast
         }
     }
 
+    void insertChild(AstNode* parent, AstNode* child, uint32_t index)
+    {
+        if (!child)
+            return;
+
+        if (parent)
+        {
+            scoped_lock lk(parent->mutex);
+            child->childParentIdx = index;
+            parent->childs.insertAtIndex(child, index);
+            for (auto i = index; i < parent->childs.size(); i++)
+                parent->childs[i]->childParentIdx = i;
+        }
+        else
+        {
+            SWAG_ASSERT(index == 0);
+        }
+
+        child->parent = parent;
+    }
+
     void addChildFront(AstNode* parent, AstNode* child)
     {
         if (!child)
