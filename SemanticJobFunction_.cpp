@@ -409,7 +409,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
     {
         funcNode->pendingLambdaJob = context->job;
-        context->result = ContextResult::Pending;
+        context->result            = ContextResult::Pending;
         return true;
     }
 
@@ -616,5 +616,83 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
     }
 
+    return true;
+}
+
+bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+{
+    CloneContext cloneContext;
+
+    // The content will be inline in its separated syntax block
+    auto inlineNode                   = Ast::newInline(context->sourceFile, identifier);
+    inlineNode->attributeFlags        = funcDecl->attributeFlags;
+    inlineNode->func                  = funcDecl;
+    inlineNode->scope                 = identifier->ownerScope;
+    inlineNode->alternativeScopes     = funcDecl->alternativeScopes;
+    inlineNode->alternativeScopesVars = funcDecl->alternativeScopesVars;
+
+    // We need to add the parent scope of the inline function (the global one), in order for
+    // the inline content to be resolved in the same context as the original function
+    auto globalScope = funcDecl->ownerScope;
+    while (!globalScope->isGlobal())
+        globalScope = globalScope->parentScope;
+    inlineNode->alternativeScopes.push_back(globalScope);
+
+    // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
+    // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
+    // they are other stuff here)
+    if (funcDecl->genericParameters)
+    {
+        Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
+        inlineNode->alternativeScopes.push_back(scope);
+        for (auto child : funcDecl->genericParameters->childs)
+        {
+            auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);
+            symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload->computedValue);
+            symName->cptOverloads = 0; // Simulate a done resolution
+        }
+    }
+
+    Scope* newScope = identifier->ownerScope;
+    if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
+    {
+        newScope          = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        inlineNode->scope = newScope;
+    }
+
+    // Clone the function body
+    cloneContext.parent         = inlineNode;
+    cloneContext.ownerInline    = inlineNode;
+    cloneContext.ownerFct       = identifier->ownerFct;
+    cloneContext.ownerBreakable = identifier->ownerBreakable;
+    cloneContext.parentScope    = newScope;
+
+    // Register all aliases
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        auto id  = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        int  idx = 0;
+        for (const auto& alias : id->aliasNames)
+        {
+            cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
+        }
+    }
+
+    cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
+    cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
+
+    auto newContent               = funcDecl->content->clone(cloneContext);
+    newContent->byteCodeBeforeFct = nullptr;
+    newContent->flags &= ~AST_NO_SEMANTIC;
+
+    identifier->semanticState = AstNodeResolveState::Enter;
+    identifier->bytecodeState = AstNodeResolveState::Enter;
+    return true;
+}
+
+bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+{
+    SWAG_CHECK(makeInline((JobContext*) context, funcDecl, identifier));
+    context->result = ContextResult::NewChilds;
     return true;
 }

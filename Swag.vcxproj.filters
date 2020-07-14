@@ -134,9 +134,6 @@
     <ClCompile Include="SemanticJobIdentifier_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticJobFunc_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SemanticJobEnum_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -375,6 +372,9 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="TypeTableJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobFunction_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
