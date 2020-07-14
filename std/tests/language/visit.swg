@@ -1,0 +1,58 @@
+#test
+{
+    // 'visit' is used to visit all the elements of a collection
+    {
+        visit value: "ABC"
+        {
+            a := @index
+            switch a
+            {
+            case 0: @assert(value == "A"'u8)
+            case 1: @assert(value == "B"'u8)
+            case 2: @assert(value == "C"'u8)
+            }
+        }
+    }
+
+    // You can name both the value and the loop index
+    {
+        visit value, index: "ABC"
+        {
+            a := index
+            switch a
+            {
+            case 0: @assert(value == "A"'u8)
+            case 1: @assert(value == "B"'u8)
+            case 2: @assert(value == "C"'u8)
+            }
+        }
+    }
+
+    // Both names are optional. In that case, you can use '@alias0' and '@alias1'
+    {
+        visit "ABC"
+        {
+            a := @alias1
+            @assert(a == @index)
+            switch a
+            {
+            case 0: @assert(@alias0 == "A"'u8)
+            case 1: @assert(@alias0 == "B"'u8)
+            case 2: @assert(@alias0 == "C"'u8)
+            }
+        }
+    }
+
+    // You can visit arrays or slices
+    {
+        array := [10, 20, 30]
+
+        result := 0
+        visit it: array
+        {
+            result += it
+        }
+
+        @assert(result == 10+20+30)
+    }
+}

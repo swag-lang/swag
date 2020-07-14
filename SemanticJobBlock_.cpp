@@ -287,6 +287,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         newExpression = node->childs.back();
         auto loopNode = CastAst<AstLoop>(newExpression, AstNodeKind::Loop);
         Ast::addChildBack(loopNode->block, node->block);
+        Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
         node->block->flags &= ~AST_NO_SEMANTIC;
 
         // Re-root the parent scope of the user block so that it points to the scope of the loop block
@@ -318,6 +319,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         // First child is the let in the statement, and first child of this is the loop node
         auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
         Ast::addChildBack(loopNode->block, node->block);
+        Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
         node->block->flags &= ~AST_NO_SEMANTIC;
 
         // Re-root the parent scope of the user block so that it points to the scope of the loop block
@@ -347,6 +349,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         // First child is the let in the statement, and first child of this is the loop node
         auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
         Ast::addChildBack(loopNode->block, node->block);
+        Ast::visit(node->block, [&](AstNode* x) { if(!x->ownerBreakable) x->ownerBreakable = loopNode; });
         node->block->flags &= ~AST_NO_SEMANTIC;
 
         // Re-root the parent scope of the user block so that it points to the scope of the loop block
@@ -367,8 +370,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 bool SemanticJob::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'index' can only be used inside a breakable loop"}));
-    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, context->report({node, node->token, "'index' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
 
     node->ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
     node->typeInfo    = g_TypeMgr.typeInfoU32;
