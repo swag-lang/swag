@@ -1,5 +1,5 @@
-//#module compiler1753
-//#unittest error
+#module compiler1753
+#unittest error
 
 //#[swag.printbc]
 #test

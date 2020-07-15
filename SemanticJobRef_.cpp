@@ -65,11 +65,13 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             ptrType->finalType   = typeInfo;
             ptrType->pointedType = typeInfo;
             ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*" + typeInfo->name;
+            ptrType->computeName();
         }
 
         // Type is constant if we take address of a readonly variable
         if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN)
+            ptrType->setConst();
+        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->typeInfo->isNative(NativeTypeKind::String))
             ptrType->setConst();
 
         node->typeInfo = ptrType;
@@ -176,12 +178,12 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         if (arrayType->nativeType == NativeTypeKind::String)
         {
-            arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+            arrayNode->typeInfo    = g_TypeMgr.typeInfoU8;
             arrayNode->byteCodeFct = ByteCodeGenJob::emitStringRef;
         }
         else
         {
-            return context->report({ arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str()) });
+            return context->report({arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
         }
 
         break;
