@@ -40,10 +40,10 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
 
         if (h == NULL)
         {
-            if (verbose)
-                g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             if (acceptNotHere)
                 return true;
+            if (verbose)
+                g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
         }
     }
