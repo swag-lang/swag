@@ -282,7 +282,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += format("{ let __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count = @sizeof(%s) / %d; ", (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count { ", (const char*) concat.firstBucket->datas);
-        if (node->wantPointer)
+        if (node->wantConstPointer)
+            content += format("let %s: const @typeof(__addr) = __addr + @index; ", alias0Name.c_str());
+        else if (node->wantPointer)
             content += format("let %s = __addr + @index; ", alias0Name.c_str());
         else
             content += format("let %s = __addr[@index]; ", alias0Name.c_str());
@@ -312,7 +314,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         content += format("{ let __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
-        if (node->wantPointer)
+        if (node->wantConstPointer)
+            content += format("let %s: const @typeof(__addr) = __addr + @index; ", alias0Name.c_str());
+        else if (node->wantPointer)
             content += format("let %s = __addr + @index; ", alias0Name.c_str());
         else
             content += format("let %s = __addr[@index]; ", alias0Name.c_str());
