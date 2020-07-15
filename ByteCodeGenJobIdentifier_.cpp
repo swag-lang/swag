@@ -231,19 +231,26 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
             else
             {
-                auto inst = emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC);
+                auto inst   = emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC);
                 inst->b.u32 = resolved->storageOffset;
             }
         }
         else if (typeInfo->kind == TypeInfoKind::Array ||
-            typeInfo->kind == TypeInfoKind::TypeList ||
-            typeInfo->kind == TypeInfoKind::Struct)
+                 typeInfo->kind == TypeInfoKind::TypeList ||
+                 typeInfo->kind == TypeInfoKind::Struct)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (node->flags & AST_TAKE_ADDRESS)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (typeInfo->isNative(NativeTypeKind::String) && node->parent->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+                emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            }
+            else
+                emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (typeInfo->numRegisters() == 2)
         {

@@ -171,6 +171,22 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
         break;
     }
+
+    case TypeInfoKind::Native:
+    {
+        if (arrayType->nativeType == NativeTypeKind::String)
+        {
+            arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+            arrayNode->byteCodeFct = ByteCodeGenJob::emitStringRef;
+        }
+        else
+        {
+            return context->report({ arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str()) });
+        }
+
+        break;
+    }
+
     case TypeInfoKind::Array:
     {
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
@@ -178,6 +194,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
         break;
     }
+
     case TypeInfoKind::Slice:
     {
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
@@ -185,6 +202,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
         break;
     }
+
     case TypeInfoKind::Struct:
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)

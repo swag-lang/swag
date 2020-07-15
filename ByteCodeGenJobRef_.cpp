@@ -2,12 +2,9 @@
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
-#include "SourceFile.h"
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "SymTable.h"
-#include "ThreadManager.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
@@ -20,6 +17,19 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
+
+    freeRegisterRC(context, node->access);
+    return true;
+}
+
+bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+
+    if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
+        emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
     return true;
