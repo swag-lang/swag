@@ -15,10 +15,14 @@
         @assert(ptr4.name == "s64")
     }
 
-    // The return result is a const pointer to a swag.TypeInfo structure
+    // The return result is a const pointer to a swag.TypeInfo kind of structure
     {
         ptr := @typeof(bool)
         @assert(@typeof(ptr) == @typeof(const *swag.TypeInfoNative))
+
+        ptr1 := @typeof([2] s32)
+        @assert(@typeof(ptr1) == @typeof(const *swag.TypeInfoArray))
+        @assert(ptr1.name == "[2] s32")
     }
 
     // The TypeInfo structure contains a different enum value for each type
