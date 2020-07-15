@@ -314,7 +314,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u32 * typePtr->finalType->sizeOf;
-                if(derefToValue(context, arrayNode, typePtr->finalType, ptr))
+                if (derefToValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                     arrayNode->flags |= AST_VALUE_COMPUTED;
             }
         }
@@ -459,37 +459,78 @@ bool SemanticJob::resolveDrop(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::derefToValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, void* ptr)
+bool SemanticJob::derefToValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr)
 {
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (kind == TypeInfoKind::Native)
     {
-        switch (typeInfo->nativeType)
+        switch (nativeKind)
         {
         case NativeTypeKind::String:
             node->computedValue.text = *(const char**) ptr;
+            node->typeInfo           = g_TypeMgr.typeInfoString;
             break;
         case NativeTypeKind::S8:
+            node->typeInfo             = g_TypeMgr.typeInfoS8;
+            node->computedValue.reg.s8 = *(int8_t*) ptr;
+            break;
         case NativeTypeKind::U8:
+            node->typeInfo             = g_TypeMgr.typeInfoU8;
             node->computedValue.reg.u8 = *(uint8_t*) ptr;
             break;
         case NativeTypeKind::S16:
+            node->typeInfo              = g_TypeMgr.typeInfoS16;
+            node->computedValue.reg.s16 = *(int16_t*) ptr;
+            break;
         case NativeTypeKind::U16:
+            node->typeInfo              = g_TypeMgr.typeInfoU16;
             node->computedValue.reg.u16 = *(uint16_t*) ptr;
             break;
         case NativeTypeKind::S32:
+            node->typeInfo              = g_TypeMgr.typeInfoS32;
+            node->computedValue.reg.s32 = *(int32_t*) ptr;
+            break;
         case NativeTypeKind::U32:
-        case NativeTypeKind::F32:
-        case NativeTypeKind::Char:
+            node->typeInfo              = g_TypeMgr.typeInfoU32;
             node->computedValue.reg.u32 = *(uint32_t*) ptr;
             break;
+        case NativeTypeKind::F32:
+            node->typeInfo              = g_TypeMgr.typeInfoF32;
+            node->computedValue.reg.f32 = *(float*) ptr;
+            break;
+        case NativeTypeKind::Char:
+            node->typeInfo             = g_TypeMgr.typeInfoChar;
+            node->computedValue.reg.ch = *(uint32_t*) ptr;
+            break;
         case NativeTypeKind::S64:
+            node->typeInfo              = g_TypeMgr.typeInfoS64;
+            node->computedValue.reg.s64 = *(int64_t*) ptr;
+            break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::F64:
+            node->typeInfo              = g_TypeMgr.typeInfoU64;
             node->computedValue.reg.u64 = *(uint64_t*) ptr;
             break;
+        case NativeTypeKind::F64:
+            node->typeInfo              = g_TypeMgr.typeInfoF64;
+            node->computedValue.reg.f64 = *(double*) ptr;
+            break;
         case NativeTypeKind::Bool:
+            node->typeInfo            = g_TypeMgr.typeInfoBool;
             node->computedValue.reg.b = *(bool*) ptr;
             break;
+        case NativeTypeKind::Any:
+        {
+            void**            ppt         = (void**) ptr;
+            void*             anyValue    = ppt[0];
+            ConcreteTypeInfo* anyTypeInfo = (ConcreteTypeInfo*) ppt[1];
+            if (anyTypeInfo->kind == TypeInfoKind::Native)
+            {
+                ConcreteTypeInfoNative* anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
+                return derefToValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
+            }
+
+            return false;
+        }
+
         default:
             return false;
         }
@@ -511,7 +552,7 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     ptr += overload->storageOffset;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (!derefToValue(context, node, concreteType, ptr))
+    if (!derefToValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
         return internalError(context, "derefTypeInfo, invalid type", node);
 
     node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
