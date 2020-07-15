@@ -17,7 +17,7 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
         ptrType->finalType   = g_TypeMgr.typeInfoU8;
         ptrType->pointedType = g_TypeMgr.typeInfoU8;
         ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*u8";
+        ptrType->computeName();
         ptrType->setConst();
         node->typeInfo    = ptrType;
         node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
@@ -30,7 +30,7 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
         ptrType->finalType   = ptrSlice->pointedType;
         ptrType->pointedType = ptrSlice->pointedType;
         ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*" + ptrSlice->pointedType->name;
+        ptrType->computeName();
         if (ptrSlice->isConst())
             ptrType->setConst();
         node->typeInfo    = ptrType;
@@ -44,7 +44,7 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
         ptrType->finalType   = ptrArray->pointedType;
         ptrType->pointedType = ptrArray->pointedType;
         ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*" + ptrArray->pointedType->name;
+        ptrType->computeName();
         if (ptrArray->isConst())
             ptrType->setConst();
         node->typeInfo    = ptrType;
@@ -57,9 +57,9 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
         ptrType->finalType   = g_TypeMgr.typeInfoVoid;
         ptrType->pointedType = g_TypeMgr.typeInfoVoid;
         ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
-        node->typeInfo       = ptrType;
-        node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
+        ptrType->computeName();
+        node->typeInfo    = ptrType;
+        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -179,7 +179,15 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
     // A @typeof as a type in a declaration
     if (node->typeOfAsType)
     {
-        node->typeInfo = expr->typeInfo;
+        if (node->typeOfAsConst && !expr->typeInfo->isConst())
+        {
+            node->typeInfo = expr->typeInfo->clone();
+            node->typeInfo->setConst();
+        }
+        else
+        {
+            node->typeInfo = expr->typeInfo;
+        }
     }
     else
     {

@@ -105,7 +105,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
     if (typeNode->isTypeOf)
     {
-        typeNode->typeInfo = g_TypeMgr.typeInfoS32;
+        typeNode->typeInfo = typeNode->childs.front()->typeInfo;
         return true;
     }
 

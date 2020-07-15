@@ -584,7 +584,8 @@ struct AstProperty : public AstNode
     AstNode* expression = nullptr;
     Property prop;
 
-    bool typeOfAsType = false;
+    bool typeOfAsType  = false;
+    bool typeOfAsConst = false;
 };
 
 struct AstExpressionList : public AstNode

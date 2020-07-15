@@ -235,6 +235,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             node->isTypeOf = true;
             auto typeNode  = CastAst<AstProperty>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
             typeNode->typeOfAsType = true;
+            typeNode->typeOfAsConst = isConst;
             return true;
         }
     }
