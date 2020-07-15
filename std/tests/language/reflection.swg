@@ -29,6 +29,6 @@
     {
         ptr := @typeof(f64)
         @assert(@typeof(ptr.kind).name == "swag.TypeInfoKind")
-        @assert(ptr.sizeof == 8)
+        @assert(ptr.sizeof == @sizeof(f64))
     }
 }

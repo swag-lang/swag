@@ -613,16 +613,36 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
             if (typeList->listKind == TypeInfoListKind::Bracket)
             {
-                auto typeArray         = g_Allocator.alloc<TypeInfoArray>();
-                typeArray->pointedType = typeList->childs.front();
-                typeArray->finalType   = typeArray->pointedType;
-                typeArray->sizeOf      = node->typeInfo->sizeOf;
-                typeArray->count       = (uint32_t) typeList->childs.size();
-                typeArray->totalCount  = typeArray->count;
-                if (isCompilerConstant)
-                    typeArray->flags |= TYPEINFO_CONST;
-                typeArray->computeName();
+                auto typeArray = g_Allocator.alloc<TypeInfoArray>();
                 node->typeInfo = typeArray;
+                auto finalType = node->typeInfo;
+
+                while (true)
+                {
+                    typeArray->pointedType = typeList->childs.front();
+                    finalType              = typeArray->pointedType;
+                    typeArray->sizeOf      = typeList->sizeOf;
+                    typeArray->count       = (uint32_t) typeList->childs.size();
+                    typeArray->totalCount  = typeArray->count;
+                    if (isCompilerConstant)
+                        typeArray->flags |= TYPEINFO_CONST;
+                    if (typeArray->pointedType->kind != TypeInfoKind::TypeList)
+                        break;
+                    typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeList);
+                    typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
+                    typeArray              = (TypeInfoArray*) typeArray->pointedType;
+                }
+
+                // Compute all the type names
+                typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+                while (typeArray)
+                {
+                    typeArray->finalType = finalType;
+                    typeArray->computeName();
+                    if (typeArray->pointedType->kind != TypeInfoKind::Array)
+                        break;
+                    typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+                }
 
                 // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
                 if (symbolFlags & OVERLOAD_VAR_GLOBAL)

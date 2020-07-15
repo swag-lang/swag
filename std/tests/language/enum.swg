@@ -13,7 +13,7 @@
     {
         using swag
         enum Values { A; B; }
-        type := cast(const *TypeInfoEnum) @typeof(Values)
+        type := @typeof(Values)
         @assert(type.rawType == @typeof(s32))
     }
 
