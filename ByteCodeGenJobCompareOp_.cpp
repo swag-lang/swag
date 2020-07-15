@@ -14,32 +14,32 @@
 bool ByteCodeGenJob::emitCompareTypeInfos(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
-    emitInstruction(context, ByteCodeOp::JumpTrue, r2);
+    emitInstruction(context, ByteCodeOp::JumpIfTrue, r2);
     auto instBig = context->bc->numInstructions;
 
-    emitInstruction(context, ByteCodeOp::JumpZero64, r0);
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, r0);
     auto instBig1 = context->bc->numInstructions;
 
-    emitInstruction(context, ByteCodeOp::JumpZero64, r1);
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, r1);
     auto instBig2 = context->bc->numInstructions;
 
     // Typeinfo pointers are not equal. Need to do the full check with the names
     // (names are supposed to be the same even across all modules)
     RegisterList tmpReg;
     reserveRegisterRC(context, tmpReg, 4);
-    emitInstruction(context, ByteCodeOp::CopyRARB, tmpReg[0], r0);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, tmpReg[0], r0);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, tmpReg[0], tmpReg[1]);
-    emitInstruction(context, ByteCodeOp::CopyRARB, tmpReg[2], r1);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, tmpReg[2], r1);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, tmpReg[2], tmpReg[3]);
 
     // Compare name lengths : if not true, exit the test
     emitInstruction(context, ByteCodeOp::CompareOpEqual64, tmpReg[1], tmpReg[3], r2);
-    emitInstruction(context, ByteCodeOp::JumpNotTrue, r2);
+    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, r2);
     auto instLength = context->bc->numInstructions;
 
     // Compare names
     emitInstruction(context, ByteCodeOp::CompareOpEqualString, tmpReg[0], tmpReg[2], tmpReg[1]);
-    emitInstruction(context, ByteCodeOp::CopyRARB, r2, tmpReg[1]);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, tmpReg[1]);
 
     // Jump here when comparison is done
     context->bc->out[instLength - 1].b.s32 = context->bc->numInstructions - instLength;
@@ -91,9 +91,9 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             {
                 // First compare string sizes
                 emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0[1], r1[1], r2);
-                emitInstruction(context, ByteCodeOp::JumpNotTrue, r2)->b.s32 = 2;
+                emitInstruction(context, ByteCodeOp::JumpIfNotTrue, r2)->b.s32 = 2;
                 // Then compare strings
-                emitInstruction(context, ByteCodeOp::CopyRARB, r2, r0[1]);
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
                 emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
             }
             return true;
@@ -335,7 +335,7 @@ bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
     if (left->typeInfo->isNative(NativeTypeKind::Any))
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+        auto inst              = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
         inst->b.u32            = right->computedValue.reg.u32;
         emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
         freeRegisterRC(context, left);

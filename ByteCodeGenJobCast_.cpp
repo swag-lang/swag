@@ -27,7 +27,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
     }
     else
     {
@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     // Get concrete typeinfo from constant segment
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
-    emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
+    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
     exprNode->additionalRegisterRC = exprNode->resultRegisterRC;
     exprNode->resultRegisterRC     = r0;
@@ -575,8 +575,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         auto         typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0[1])->b.u32 = typeArray->count;
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyVBtoRA64, r0[1])->b.u32 = typeArray->count;
         freeRegisterRC(context, node);
         exprNode->resultRegisterRC = r0;
         return true;
@@ -591,8 +591,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[1], exprNode->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], exprNode->resultRegisterRC[1]);
         freeRegisterRC(context, node);
         exprNode->resultRegisterRC = r0;
         return true;
@@ -636,9 +636,9 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     reserveLinearRegisterRC(context, r0, 2);
 
     // We use registers as a storage for the interface, in order to have just one register in the end
-    emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
     SWAG_ASSERT(itf->offset != UINT32_MAX);
-    emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
+    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0[1])->b.u64 = itf->offset;
     emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
 
     node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -680,7 +680,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         node->resultRegisterRC += reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1]);
+        auto inst   = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1]);
         inst->b.u32 = fromTypeArray->count;
         transformResultToLinear2(context, node);
     }
@@ -722,7 +722,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         {
             if (context->sourceFile->module->buildParameters.target.debugAnyCastCheck || g_CommandLine.debug)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
+                auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0);
                 SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
                 inst->b.u32 = exprNode->concreteTypeInfoStorage;
 
@@ -757,7 +757,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Pointer);
             node->resultRegisterRC   = exprNode->resultRegisterRC[0];
             exprNode->castedTypeInfo = nullptr;
-            auto inst                = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
+            auto inst                = emitInstruction(context, ByteCodeOp::IncPointerVB32, node->resultRegisterRC);
             inst->b.u32              = exprNode->castOffset;
             return true;
         }

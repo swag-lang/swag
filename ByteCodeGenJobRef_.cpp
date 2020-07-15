@@ -14,7 +14,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
 
@@ -28,7 +28,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 
     if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         auto r0       = reserveRegisterRC(context);
 
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count;
+        emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r0)->b.u32 = typeInfo->count;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
         freeRegisterRC(context, r0);
@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
@@ -73,7 +73,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
@@ -174,7 +174,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -194,7 +194,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfo->finalType->isNative(NativeTypeKind::String))
@@ -238,7 +238,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
             auto r0                                                     = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r0)->b.u32 = typeInfo->count;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
             freeRegisterRC(context, r0);
         }
@@ -250,7 +250,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
@@ -270,24 +270,24 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
-            emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
             emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u64 = 0x00000000'FFFFFFFF;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         // Get total number of pushed arguments
         emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
         // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32 = sizeof(Register);
         // r0[1] now points to the list of any
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
+        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0[0], r0[1]);
 
         // Now we point to the first 'any' of the argument list
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[0]);
+        emitInstruction(context, ByteCodeOp::IncPointer32, r0[1], node->access->resultRegisterRC, r0[0]);
 
         // Deref the any
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
@@ -304,7 +304,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         {
-            emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
             emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u64 = 0x00000000'FFFFFFFF;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
@@ -313,15 +313,15 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto rawType = ((TypeInfoVariadic*) typeArray)->rawType;
 
         // Offset from variadic named parameter to the first parameter on the stack
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
 
         // Offset pointer to the parameter
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
         node->resultRegisterRC = node->array->resultRegisterRC;
 
@@ -465,9 +465,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
             if (numToInit != 1)
             {
-                emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeStruct->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
-                auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::IncPointerVB32, node->expression->resultRegisterRC)->b.u32 = typeStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
             }
         }
@@ -479,9 +479,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         SWAG_CHECK(emitAffectEqual(context, node->expression->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child));
         if (numToInit != 1)
         {
-            emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
-            emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointerVB32, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+            emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
             instJump->b.s32 = startLoop - context->bc->numInstructions;
         }
     }
@@ -495,18 +495,18 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         {
             auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-            emitInstruction(context, ByteCodeOp::CopyRARB, r1, node->expression->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, node->expression->resultRegisterRC);
             if (typeParam->offset)
-                emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
+                emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
             freeRegisterRC(context, child);
         }
 
         if (numToInit != 1)
         {
-            emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
-            emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointerVB32, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+            emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
             instJump->b.s32 = startLoop - context->bc->numInstructions;
         }
 
@@ -549,9 +549,9 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
 
             if (numToInit != 1)
             {
-                emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
-                auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::IncPointerVB32, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
             }
         }
@@ -567,19 +567,19 @@ bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint3
     switch (sizeOf)
     {
     case 1:
-        emitInstruction(context, ByteCodeOp::Clear8, registerIndex);
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointer8, registerIndex);
         break;
     case 2:
-        emitInstruction(context, ByteCodeOp::Clear16, registerIndex);
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointer16, registerIndex);
         break;
     case 4:
-        emitInstruction(context, ByteCodeOp::Clear32, registerIndex);
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointer32, registerIndex);
         break;
     case 8:
-        emitInstruction(context, ByteCodeOp::Clear64, registerIndex);
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, registerIndex);
         break;
     default:
-        emitInstruction(context, ByteCodeOp::ClearX, registerIndex)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u32 = sizeOf;
         break;
     }
 

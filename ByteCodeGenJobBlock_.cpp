@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 {
     auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If);
 
-    // Resolve ByteCodeOp::JumpNotTrue expression
+    // Resolve ByteCodeOp::JumpIfNotTrue expression
     auto instruction = context->bc->out + ifNode->seekJumpExpression;
     auto diff        = ifNode->seekJumpAfterIf - ifNode->seekJumpExpression;
 
@@ -163,7 +163,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
     ifNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
     freeRegisterRC(context, node);
     return true;
 }
@@ -189,7 +189,7 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
 {
     auto loopNode = static_cast<AstBreakable*>(context->node);
 
-    // Resolve ByteCodeOp::JumpNotTrue expression
+    // Resolve ByteCodeOp::JumpIfNotTrue expression
     auto instruction   = context->bc->out + loopNode->seekJumpExpression;
     auto diff          = loopNode->seekJumpAfterBlock - loopNode->seekJumpExpression;
     instruction->b.s32 = diff - 1;
@@ -214,22 +214,22 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     if (loopNode->needIndex())
     {
         loopNode->registerIndex = reserveRegisterRC(context);
-        auto inst               = emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex);
+        auto inst               = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, loopNode->registerIndex);
         inst->b.s32             = -1;
     }
 
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
     loopNode->seekJumpExpression       = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpZero32, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfZero32, node->resultRegisterRC);
 
     // Decrement the loop variable
-    emitInstruction(context, ByteCodeOp::DecRA, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::DecrementRA32, node->resultRegisterRC);
 
     // Increment the index
     if (loopNode->needIndex())
     {
-        emitInstruction(context, ByteCodeOp::IncRA, loopNode->registerIndex);
+        emitInstruction(context, ByteCodeOp::IncrementRA32, loopNode->registerIndex);
     }
 
     return true;
@@ -281,7 +281,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     if (whileNode->needIndex())
     {
         whileNode->registerIndex = reserveRegisterRC(context);
-        auto inst                = emitInstruction(context, ByteCodeOp::CopyRAVB32, whileNode->registerIndex);
+        auto inst                = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, whileNode->registerIndex);
         inst->b.s32              = -1;
     }
 
@@ -297,12 +297,12 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 
     auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
 
     // Increment the index
     if (whileNode->needIndex())
     {
-        emitInstruction(context, ByteCodeOp::IncRA, whileNode->registerIndex);
+        emitInstruction(context, ByteCodeOp::IncrementRA32, whileNode->registerIndex);
     }
 
     return true;
@@ -317,7 +317,7 @@ bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
     if (forNode->needIndex())
     {
         forNode->registerIndex = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::CopyRAVB32, forNode->registerIndex);
+        auto inst              = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, forNode->registerIndex);
         inst->b.s32            = -1;
     }
 
@@ -331,12 +331,12 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
     forNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
 
     // Increment the index
     if (forNode->needIndex())
     {
-        emitInstruction(context, ByteCodeOp::IncRA, forNode->registerIndex);
+        emitInstruction(context, ByteCodeOp::IncrementRA32, forNode->registerIndex);
     }
 
     // Jump to the block
@@ -435,7 +435,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         {
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
             allJumps.push_back(context->bc->numInstructions);
-            auto inst   = emitInstruction(context, ByteCodeOp::JumpTrue, r0);
+            auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, r0);
             inst->b.u32 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
         }
 
@@ -540,7 +540,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     node->resultRegisterRC = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC, node->ownerBreakable->registerIndex);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, node->ownerBreakable->registerIndex);
     return true;
 }
 
@@ -573,7 +573,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         {
             auto r0 = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.u32 = one->storageOffset;
+            emitInstruction(context, ByteCodeOp::MakePointerToStack, r0)->b.u32 = one->storageOffset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
 

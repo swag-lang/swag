@@ -56,7 +56,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // No special value, so we can just clear the struct
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
         SWAG_CHECK(emitClearRefConstantSize(&cxt, typeInfoStruct->sizeOf, 0));
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
@@ -69,9 +69,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (param->offset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = param->offset;
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB32, 0)->b.u32 = param->offset;
 
         if (varDecl->assignment)
         {
@@ -80,7 +80,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
 
-                auto inst = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
+                auto inst = emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointerOC, 1, 2);
                 SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
                 inst->c.u64 = ((uint64_t) exprList->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
 
@@ -90,30 +90,30 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             {
                 auto offset = sourceFile->module->constantSegment.addString(varDecl->assignment->computedValue.text);
                 SWAG_ASSERT(offset != UINT32_MAX);
-                emitInstruction(&cxt, ByteCodeOp::RAAddrFromConstantSeg, 1, offset);
-                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.length());
-                emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);
-                emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 2, 8);
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1, offset);
+                emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, 2, (uint32_t) varDecl->assignment->computedValue.text.length());
+                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1, 0);
+                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2, 8);
             }
             else if (typeVar->kind == TypeInfoKind::Native)
             {
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u8;
-                    emitInstruction(&cxt, ByteCodeOp::AffectOp8, 0, 1);
+                    emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u8;
+                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
                     break;
                 case 2:
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u16;
-                    emitInstruction(&cxt, ByteCodeOp::AffectOp16, 0, 1);
+                    emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u16;
+                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
                     break;
                 case 4:
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u32;
-                    emitInstruction(&cxt, ByteCodeOp::AffectOp32, 0, 1);
+                    emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u32;
+                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
                     break;
                 case 8:
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB64, 1)->b.u64 = varDecl->assignment->computedValue.reg.u64;
-                    emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1);
+                    emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA64, 1)->b.u64 = varDecl->assignment->computedValue.reg.u64;
+                    emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
                     return internalError(context, "generateStructInit, invalid native type sizeof", varDecl);
@@ -139,15 +139,15 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 // Need to loop on every element of the array in order to initialize them
                 RegisterList r0 = reserveRegisterRC(&cxt);
 
-                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeArray->totalCount;
+                emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, r0)->b.u32 = typeArray->totalCount;
                 auto seekJump                                            = cxt.bc->numInstructions;
 
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                 emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
 
-                emitInstruction(&cxt, ByteCodeOp::DecRA, r0);
-                emitInstruction(&cxt, ByteCodeOp::IncRAVB, 0)->b.u32        = typeInVarStruct->sizeOf;
-                emitInstruction(&cxt, ByteCodeOp::JumpNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
+                emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
+                emitInstruction(&cxt, ByteCodeOp::AddVBtoRA32, 0)->b.u32        = typeInVarStruct->sizeOf;
+                emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
                 freeRegisterRC(&cxt, r0);
             }
@@ -279,9 +279,9 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
 
     if (pushParam)
     {
-        emitInstruction(context, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (offset)
-            emitInstruction(context, ByteCodeOp::IncPointerVB, 0)->b.u32 = offset;
+            emitInstruction(context, ByteCodeOp::IncPointerVB32, 0)->b.u32 = offset;
         emitInstruction(context, ByteCodeOp::PushRAParam, 0);
     }
 
@@ -581,7 +581,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::ClearX, r1)->b.u32 = typeInfoStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r1)->b.u32 = typeInfoStruct->sizeOf;
             }
         }
     }
@@ -601,7 +601,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     // Just clear the content of the structure
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
+        auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
         inst->a.u32 = resolved->storageOffset;
         inst->b.u32 = typeInfoStruct->sizeOf;
     }
@@ -609,12 +609,12 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     {
         // Push self
         RegisterList r0   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+        auto         inst = emitInstruction(context, ByteCodeOp::MakePointerToStack, r0);
         inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
-            emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
 
         // Then call
         SWAG_ASSERT(typeInfoStruct->opInit);
@@ -635,12 +635,12 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
     {
         RegisterList r0   = reserveRegisterRC(context);
         RegisterList r1   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+        auto         inst = emitInstruction(context, ByteCodeOp::MakePointerToStack, r0);
         inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
-            emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
 
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
@@ -652,9 +652,9 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-                emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, r0);
                 if (typeParam->offset)
-                    emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
+                    emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
                 emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
                 freeRegisterRC(context, child);
             }

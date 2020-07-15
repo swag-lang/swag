@@ -48,7 +48,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
                 RegisterList r0                                                 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::MakePointerToStack, r0)->b.s32 = resolved->storageOffset;
                 node->type->resultRegisterRC                                    = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
@@ -68,7 +68,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
             node->doneFlags |= AST_DONE_PRE_CAST;
-            auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->additionalRegisterRC);
+            auto inst              = emitInstruction(context, ByteCodeOp::MakePointerToStack, node->additionalRegisterRC);
             inst->b.s32            = resolved->storageOffset;
             node->resultRegisterRC = node->assignment->resultRegisterRC;
         }
@@ -97,7 +97,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
                     reserveRegisterRC(context, r0, 2);
-                    emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[0])->b.u32 = typeArray->totalCount;
+                    emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r0[0])->b.u32 = typeArray->totalCount;
                     emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
 
@@ -105,10 +105,10 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                         emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1]);
                     emitStructParameters(context, r0[1]);
 
-                    emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
+                    emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
                     if (typeArray->finalType->sizeOf)
-                        emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->finalType->sizeOf;
-                    emitInstruction(context, ByteCodeOp::JumpNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                        emitInstruction(context, ByteCodeOp::AddVBtoRA32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
+                    emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                 }
@@ -127,20 +127,20 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         switch (typeInfo->sizeOf)
         {
         case 1:
-            emitInstruction(context, ByteCodeOp::ClearRefFromStack8)->a.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->storageOffset;
             break;
         case 2:
-            emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->storageOffset;
             break;
         case 4:
-            emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->storageOffset;
             break;
         case 8:
-            emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->storageOffset;
             break;
         default:
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
             inst->a.u32 = resolved->storageOffset;
             inst->b.u32 = typeInfo->sizeOf;
             break;

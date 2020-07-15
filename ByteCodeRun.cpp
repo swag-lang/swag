@@ -17,31 +17,31 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
-    case ByteCodeOp::JumpZero32:
+    case ByteCodeOp::JumpIfZero32:
     {
         if (!registersRC[ip->a.u32].u32)
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpZero64:
+    case ByteCodeOp::JumpIfZero64:
     {
         if (!registersRC[ip->a.u32].u64)
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpNotZero32:
+    case ByteCodeOp::JumpIfNotZero32:
     {
         if (registersRC[ip->a.u32].u32)
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpNotTrue:
+    case ByteCodeOp::JumpIfNotTrue:
     {
         if (!registersRC[ip->a.u32].b)
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpTrue:
+    case ByteCodeOp::JumpIfTrue:
     {
         if (registersRC[ip->a.u32].b)
             context->ip += ip->b.s32;
@@ -125,17 +125,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IncPointerVB:
+    case ByteCodeOp::IncPointerVB32:
     {
         registersRC[ip->a.u32].pointer += ip->b.s32;
         break;
     }
-    case ByteCodeOp::IncPointer:
+    case ByteCodeOp::IncPointer32:
     {
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::DecPointer:
+    case ByteCodeOp::DecPointer32:
     {
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - registersRC[ip->b.u32].u32;
         break;
@@ -297,7 +297,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::CopyRARB:
+    case ByteCodeOp::CopyRBtoRA:
     {
         registersRC[ip->a.u32] = registersRC[ip->b.u32];
         break;
@@ -307,12 +307,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) (registersRC + ip->b.u32);
         break;
     }
-    case ByteCodeOp::CopyRAVB32:
+    case ByteCodeOp::CopyVBtoRA32:
     {
         registersRC[ip->a.u32].u32 = ip->b.u32;
         break;
     }
-    case ByteCodeOp::CopyRAVB64:
+    case ByteCodeOp::CopyVBtoRA64:
     {
         registersRC[ip->a.u32].u64 = ip->b.u64;
         break;
@@ -322,46 +322,46 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = 0;
         break;
     }
-    case ByteCodeOp::DecRA:
+    case ByteCodeOp::DecrementRA32:
     {
         registersRC[ip->a.u32].u32--;
         break;
     }
-    case ByteCodeOp::IncRA:
+    case ByteCodeOp::IncrementRA32:
     {
         registersRC[ip->a.u32].u32++;
         break;
     }
-    case ByteCodeOp::IncRA64:
+    case ByteCodeOp::IncrementRA64:
     {
         registersRC[ip->a.u32].u64++;
         break;
     }
-    case ByteCodeOp::IncRAVB:
+    case ByteCodeOp::AddVBtoRA32:
     {
         registersRC[ip->a.u32].u32 += ip->b.u32;
         break;
     }
 
-    case ByteCodeOp::PushRRSaved:
+    case ByteCodeOp::PushRR:
     {
         context->push(registersRR[ip->a.u32].u64);
         break;
     }
-    case ByteCodeOp::PopRRSaved:
+    case ByteCodeOp::PopRR:
     {
         registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
 
-    case ByteCodeOp::CopyRRxRCx:
-    case ByteCodeOp::CopyRRxRCxCall:
+    case ByteCodeOp::CopyRCtoRR:
+    case ByteCodeOp::CopyRCtoRRCall:
     {
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
-    case ByteCodeOp::CopyRCxRRx:
-    case ByteCodeOp::CopyRCxRRxCall:
+    case ByteCodeOp::CopyRRtoRC:
+    case ByteCodeOp::CopyRRtoRCCall:
     {
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;
@@ -376,70 +376,94 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->bp = context->pop<uint8_t*>();
         break;
     }
-    case ByteCodeOp::MovSPBP:
+    case ByteCodeOp::CopySPtoBP:
     {
         context->bp = context->sp;
         break;
     }
-    case ByteCodeOp::MovRASP:
-    case ByteCodeOp::MovRASPVaargs:
+    case ByteCodeOp::CopySP:
+    case ByteCodeOp::CopySPVaargs:
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
 
-    case ByteCodeOp::RAFromStack8:
+    case ByteCodeOp::GetFromStack8:
         registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RAFromStack16:
+    case ByteCodeOp::GetFromStack16:
         registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RAFromStack32:
+    case ByteCodeOp::GetFromStack32:
         registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RAFromStack64:
-    case ByteCodeOp::RAFromStackParam64:
+    case ByteCodeOp::GetFromStack64:
+    case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RARefFromStack:
-    case ByteCodeOp::RARefFromStackParam:
+    case ByteCodeOp::MakePointerToStack:
+    case ByteCodeOp::MakePointerToStackParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
 
-    case ByteCodeOp::ClearRefFromStack8:
+    case ByteCodeOp::SetZeroStack8:
         *(uint8_t*) (context->bp + ip->a.u32) = 0;
         break;
-    case ByteCodeOp::ClearRefFromStack16:
+    case ByteCodeOp::SetZeroStack16:
         *(uint16_t*) (context->bp + ip->a.u32) = 0;
         break;
-    case ByteCodeOp::ClearRefFromStack32:
+    case ByteCodeOp::SetZeroStack32:
         *(uint32_t*) (context->bp + ip->a.u32) = 0;
         break;
-    case ByteCodeOp::ClearRefFromStack64:
+    case ByteCodeOp::SetZeroStack64:
         *(uint64_t*) (context->bp + ip->a.u32) = 0;
         break;
-    case ByteCodeOp::ClearRefFromStackX:
+    case ByteCodeOp::SetZeroStackX:
         memset(context->bp + ip->a.u32, 0, ip->b.u32);
         break;
 
-    case ByteCodeOp::Clear8:
-        *(uint8_t*) (registersRC[ip->a.u32].pointer) = 0;
+    case ByteCodeOp::SetZeroAtPointer8:
+    {
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            *(uint8_t*) (ptr + ip->b.u32) = 0;
         break;
-    case ByteCodeOp::Clear16:
-        *(uint16_t*) (registersRC[ip->a.u32].pointer) = 0;
+    }
+    case ByteCodeOp::SetZeroAtPointer16:
+    {
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            *(uint16_t*) (ptr + ip->b.u32) = 0;
         break;
-    case ByteCodeOp::Clear32:
-        *(uint32_t*) (registersRC[ip->a.u32].pointer) = 0;
+    }
+    case ByteCodeOp::SetZeroAtPointer32:
+    {
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            *(uint32_t*) (ptr + ip->b.u32) = 0;
         break;
-    case ByteCodeOp::Clear64:
-        *(uint64_t*) (registersRC[ip->a.u32].pointer) = 0;
+    }
+    case ByteCodeOp::SetZeroAtPointer64:
+    {
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            *(uint64_t*) (ptr + ip->b.u32) = 0;
         break;
-    case ByteCodeOp::ClearX:
+    }
+    case ByteCodeOp::SetZeroAtPointerX:
         memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
     case ByteCodeOp::ClearXVar:
         memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 
-    case ByteCodeOp::RAFromDataSeg8:
+    case ByteCodeOp::GetFromDataSeg8:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -447,7 +471,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromDataSeg16:
+    case ByteCodeOp::GetFromDataSeg16:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -455,7 +479,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromDataSeg32:
+    case ByteCodeOp::GetFromDataSeg32:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -463,7 +487,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromDataSeg64:
+    case ByteCodeOp::GetFromDataSeg64:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -472,7 +496,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::RAFromBssSeg8:
+    case ByteCodeOp::GetFromBssSeg8:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -480,7 +504,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromBssSeg16:
+    case ByteCodeOp::GetFromBssSeg16:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -488,7 +512,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromBssSeg32:
+    case ByteCodeOp::GetFromBssSeg32:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -496,7 +520,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
         break;
     }
-    case ByteCodeOp::RAFromBssSeg64:
+    case ByteCodeOp::GetFromBssSeg64:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -505,7 +529,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::RARefFromDataSeg:
+    case ByteCodeOp::MakeDataSegPointer:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -513,7 +537,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
-    case ByteCodeOp::RARefFromBssSeg:
+    case ByteCodeOp::MakeBssSegPointer:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
@@ -522,7 +546,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::RAAddrFromConstantSeg:
+    case ByteCodeOp::MakeConstantSegPointer:
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
@@ -531,7 +555,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
-    case ByteCodeOp::RARefFromConstantSeg:
+    case ByteCodeOp::MakeConstantSegPointerOC:
     {
         auto module = context->sourceFile->module;
         auto offset = (uint32_t)(ip->c.u64 >> 32);
@@ -839,7 +863,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::AffectOp8:
+    case ByteCodeOp::SetAtPointer8:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)
@@ -848,7 +872,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             *(uint8_t*) ptr = registersRC[ip->b.u32].u8;
         break;
     }
-    case ByteCodeOp::AffectOp16:
+    case ByteCodeOp::SetAtPointer16:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)
@@ -857,7 +881,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             *(uint16_t*) ptr = registersRC[ip->b.u32].u16;
         break;
     }
-    case ByteCodeOp::AffectOp32:
+    case ByteCodeOp::SetAtPointer32:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)
@@ -866,7 +890,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             *(uint32_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::AffectOp64:
+    case ByteCodeOp::SetAtPointer64:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)
@@ -875,16 +899,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             *(uint64_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u64;
         break;
     }
-    case ByteCodeOp::AffectOp64Null:
-    {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(uint64_t*) (ptr + ip->b.u32) = 0;
-        break;
-    }
-    case ByteCodeOp::AffectOpPointer:
+    case ByteCodeOp::SetPointerAtPointer:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)

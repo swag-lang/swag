@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
-        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
         return true;
     }
 
@@ -38,13 +38,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
-        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
         return true;
     }
 
@@ -52,8 +52,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0);
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
         }
         else
         {
@@ -67,25 +67,25 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0);
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             auto r2        = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r2, 8);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, r2)->b.u64 = typeArray->count;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2, 8);
 
             freeRegisterRC(context, r2);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
         }
 
         return true;
@@ -99,38 +99,38 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     case NativeTypeKind::Bool:
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOp8, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOp16, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::F32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOp32, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     case NativeTypeKind::String:
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0);
-            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
         }
         return true;
     case NativeTypeKind::Any:
-        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
         return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");

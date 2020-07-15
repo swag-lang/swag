@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                         auto sizeChilds = child->resultRegisterRC.size();
                         for (int r = 0; r < sizeChilds; r++)
                         {
-                            emitInstruction(context, ByteCodeOp::CopyRARB, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
+                            emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
                         }
                     }
                 }
@@ -76,7 +76,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     if (context->result == ContextResult::Pending)
                         return true;
                     RegisterList r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                     // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                     returnExpression->flags |= AST_NO_LEFT_DROP;
                     SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
@@ -85,7 +85,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
                 {
                     auto r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                     emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
                     freeRegisterRC(context, r0);
                 }
@@ -97,8 +97,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                         emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
                     }
 
-                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC[0]);
-                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, 1, child->resultRegisterRC[1]);
+                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
+                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 1, child->resultRegisterRC[1]);
                 }
                 else
                 {
@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                         auto sizeChilds = child->resultRegisterRC.size();
                         for (int r = 0; r < sizeChilds; r++)
                         {
-                            emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                            emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
                         }
                     }
                 }
@@ -340,7 +340,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerCallerLine:
         {
             reserveRegisterRC(context, regList, 1);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->token.startLocation.line + 1;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.u32 = node->token.startLocation.line + 1;
             break;
         }
         case TokenId::CompilerCallerFile:
@@ -349,8 +349,8 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto str    = Utf8(node->sourceFile->path);
             auto offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList[1], (uint32_t) str.length());
             break;
         }
         case TokenId::CompilerCallerFunction:
@@ -359,8 +359,8 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             const auto& str    = node->ownerFct->scopedName;
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList[1], (uint32_t) str.length());
             break;
         }
         default:
@@ -405,7 +405,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         node->ownerFct->returnType->typeInfo &&
         (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
     {
-        emitInstruction(context, ByteCodeOp::PushRRSaved, 0);
+        emitInstruction(context, ByteCodeOp::PushRR, 0);
         rr0Saved = true;
     }
 
@@ -413,9 +413,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
+        auto inst              = emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC);
         inst->b.u32            = node->fctCallStorageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRCtoRRCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
     }
 
@@ -450,7 +450,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
             SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0)->b.u64 = child->concreteTypeInfoStorage;
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = child->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             if (typeParam->kind == TypeInfoKind::Struct)
@@ -467,7 +467,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // The value will be stored on the stack (1 or 2 registers max). So we push now the address
                 // of that value on that stack. This is the data part of the 'any'
                 // Store address of value on the stack
-                inst        = emitInstruction(context, ByteCodeOp::MovRASP, r1);
+                inst        = emitInstruction(context, ByteCodeOp::CopySP, r1);
                 inst->b.u32 = offset;
                 inst->c.u32 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
@@ -569,10 +569,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], lastParam->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[0]);
-        emitInstruction(context, ByteCodeOp::IncPointerVB, lastParam->resultRegisterRC)->b.s32 = -8;
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[1], lastParam->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointerVB32, lastParam->resultRegisterRC)->b.s32 = -8;
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[1]);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0[0]);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0[1]);
@@ -591,13 +591,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store number of extra parameters
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
-            emitInstruction(context, ByteCodeOp::MovRASPVaargs, r1);
+            emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
 
             precallStack += 2 * sizeof(Register);
@@ -611,13 +611,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store number of extra parameters
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | (offset << 32);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, r0)->b.u64 = numVariadic | (offset << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
-            emitInstruction(context, ByteCodeOp::MovRASPVaargs, r1);
+            emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
 
             precallStack += 2 * sizeof(Register);
@@ -657,7 +657,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
             for (int idx = 0; idx < numRegs; idx++)
-                emitInstruction(context, ByteCodeOp::CopyRCxRRxCall, node->resultRegisterRC[idx], idx);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRCCall, node->resultRegisterRC[idx], idx);
         }
     }
 
@@ -670,7 +670,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // If we are in a function that need to keep the RR0 register alive, we need to restore it
     if (rr0Saved)
     {
-        emitInstruction(context, ByteCodeOp::PopRRSaved, 0);
+        emitInstruction(context, ByteCodeOp::PopRR, 0);
     }
 
     // This is usefull when function call is inside an expression like func().something
@@ -733,7 +733,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::DecSP);
         inst->a.u32 = funcNode->stackSize;
-        emitInstruction(context, ByteCodeOp::MovSPBP);
+        emitInstruction(context, ByteCodeOp::CopySPtoBP);
     }
 
     return true;

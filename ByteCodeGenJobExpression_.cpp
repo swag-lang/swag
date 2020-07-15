@@ -23,16 +23,16 @@ bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
     }
 
     reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
-    emitInstruction(context, ByteCodeOp::JumpNotTrue, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
+    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
 
     // If true
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
     emitInstruction(context, ByteCodeOp::Jump)->a.s32 = node->resultRegisterRC.size();
 
     // If false
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[r], child2->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child2->resultRegisterRC[r]);
 
     freeRegisterRC(context, child0);
     freeRegisterRC(context, child1);
@@ -72,8 +72,8 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNo
     {
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], node->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRARB, r0[1], node->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->resultRegisterRC[1]);
         freeRegisterRC(context, node->resultRegisterRC);
         node->resultRegisterRC = r0;
     }
@@ -111,15 +111,15 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         uint32_t oneOffset = typeList->childs.front()->sizeOf;
         for (auto child : job->collectChilds)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
+            emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC)->b.u32 = offsetIdx;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
 
         // Reference to the stack, and store the number of element in a register
-        emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC[0])->b.u32 = listNode->storageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32     = (uint32_t) listNode->childs.size();
+        emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC[0])->b.u32 = listNode->storageOffset;
+        emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1])->b.u32     = (uint32_t) listNode->childs.size();
     }
     else
     {
@@ -127,7 +127,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             node = node;
 
         // Emit a reference to the buffer
-        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointerOC, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
         inst->c.u64 = ((uint64_t) node->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
     }
@@ -181,7 +181,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
         SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0])->b.u32 = node->computedValue.reg.u32;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
         node->parent->resultRegisterRC                                                 = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
@@ -189,48 +189,48 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.b = node->computedValue.reg.b;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.b = node->computedValue.reg.b;
             return true;
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u8 = node->computedValue.reg.u8;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.u8 = node->computedValue.reg.u8;
             return true;
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u16 = node->computedValue.reg.u16;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.u16 = node->computedValue.reg.u16;
             return true;
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.u64 = node->computedValue.reg.u64;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, regList)->b.u64 = node->computedValue.reg.u64;
             return true;
         case NativeTypeKind::S8:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s8 = node->computedValue.reg.s8;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.s8 = node->computedValue.reg.s8;
             return true;
         case NativeTypeKind::S16:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s16 = node->computedValue.reg.s16;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.s16 = node->computedValue.reg.s16;
             return true;
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s32 = node->computedValue.reg.s32;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.s32 = node->computedValue.reg.s32;
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.s64 = node->computedValue.reg.s64;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, regList)->b.s64 = node->computedValue.reg.s64;
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.f32 = node->computedValue.reg.f32;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.f32 = node->computedValue.reg.f32;
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.f64 = node->computedValue.reg.f64;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA64, regList)->b.f64 = node->computedValue.reg.f64;
             return true;
         case NativeTypeKind::Char:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::String:
         {
             reserveLinearRegisterRC(context, regList, 2);
             auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
             SWAG_ASSERT(offset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) node->computedValue.text.length());
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, regList[1], (uint32_t) node->computedValue.text.length());
             return true;
         }
         default:
@@ -255,7 +255,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC(context, regList, 2);
 
-        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
+        auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointerOC, regList[0], regList[1]);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         uint32_t storageOffset = node->resolvedSymbolOverload->storageOffset;
@@ -263,7 +263,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
+        auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
@@ -272,7 +272,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
         SWAG_ASSERT(offset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
     }
     else
     {
