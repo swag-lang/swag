@@ -665,6 +665,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
+    // Slices can't be constant. Use array
+    SWAG_VERIFY(!isCompilerConstant || node->typeInfo->kind != TypeInfoKind::Slice, context->report({ node, "cannot declare slices as 'const'. Use an array instead" }));
+
     if (node->type)
         node->inheritOrFlag(node->type, AST_IS_GENERIC);
     if (node->flags & AST_IS_GENERIC)
