@@ -240,9 +240,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     switch (arrayType->kind)
     {
     case TypeInfoKind::Native:
+        // Can we just change the computed value to a single u8 ?
         if (arrayType->nativeType == NativeTypeKind::String)
         {
-            // Can we just change the computed value to a single u8 ?
             if (arrayNode->access->flags & AST_VALUE_COMPUTED)
             {
                 if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
@@ -305,6 +305,20 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+
+        // Try to dereference as a constant if we can
+        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
+        {
+            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+            {
+                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
+                ptr += arrayNode->access->computedValue.reg.u32 * typePtr->finalType->sizeOf;
+                if(derefToValue(context, arrayNode, typePtr->finalType, ptr))
+                    arrayNode->flags |= AST_VALUE_COMPUTED;
+            }
+        }
+
         break;
     }
 
@@ -442,5 +456,64 @@ bool SemanticJob::resolveDrop(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitDrop;
 
+    return true;
+}
+
+bool SemanticJob::derefToValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, void* ptr)
+{
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::String:
+            node->computedValue.text = *(const char**) ptr;
+            break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            node->computedValue.reg.u8 = *(uint8_t*) ptr;
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            node->computedValue.reg.u16 = *(uint16_t*) ptr;
+            break;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::Char:
+            node->computedValue.reg.u32 = *(uint32_t*) ptr;
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::F64:
+            node->computedValue.reg.u64 = *(uint64_t*) ptr;
+            break;
+        case NativeTypeKind::Bool:
+            node->computedValue.reg.b = *(bool*) ptr;
+            break;
+        default:
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
+{
+    auto sourceFile = context->sourceFile;
+    auto node       = context->node;
+
+    uint8_t* ptr = sourceFile->module->constantSegment.address(parent->previousResolvedNode->computedValue.reg.u32);
+    ptr += overload->storageOffset;
+
+    auto concreteType = TypeManager::concreteType(overload->typeInfo);
+    if (!derefToValue(context, node, concreteType, ptr))
+        return internalError(context, "derefTypeInfo, invalid type", node);
+
+    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
     return true;
 }

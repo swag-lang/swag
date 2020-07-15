@@ -147,57 +147,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
-{
-    auto sourceFile = context->sourceFile;
-    auto node       = context->node;
-
-    uint8_t* ptr = sourceFile->module->constantSegment.address(parent->previousResolvedNode->computedValue.reg.u32);
-    ptr += overload->storageOffset;
-
-    auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (concreteType->kind == TypeInfoKind::Native)
-    {
-        switch (concreteType->nativeType)
-        {
-        case NativeTypeKind::String:
-            node->computedValue.text = *(const char**) ptr;
-            break;
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue.reg.u8 = *(uint8_t*) ptr;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue.reg.u16 = *(uint16_t*) ptr;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::F32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = *(uint32_t*) ptr;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-        case NativeTypeKind::F64:
-            node->computedValue.reg.u64 = *(uint64_t*) ptr;
-            break;
-        case NativeTypeKind::Bool:
-            node->computedValue.reg.b = *(bool*) ptr;
-            break;
-        default:
-            return internalError(context, "derefTypeInfo, invalid type", node);
-        }
-    }
-    else
-    {
-        return internalError(context, "derefTypeInfo, invalid type", node);
-    }
-
-    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-    return true;
-}
-
 void SemanticJob::sortParameters(AstNode* allParams)
 {
     unique_lock lk(allParams->mutex);
