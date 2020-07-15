@@ -101,4 +101,11 @@
         let a = 666
         // 'a = 0'  would raise en error
     }
+
+    // You can use '@typeof' to get the type of another expression
+    {
+        let a = 0
+        let b: @typeof(a) = 1
+        @assert(@typeof(a) == @typeof(b))
+    }
 }

@@ -7,6 +7,24 @@
         array[1] = 2
     }
 
+    // You can get the number of elements of an array with '@countof'
+    {
+        var array: [2] s32
+        @assert(@countof(array) == 2)
+        @assert(@sizeof(array) == 2 * @sizeof(s32))
+    }
+
+    // You can get the address of the array with '@dataof'
+    {
+        var array: [2] s32
+        ptr := @dataof(array)
+        ptr[0] = 1
+        ptr[1] = 2
+
+        @assert(array[0] == 1)
+        @assert(array[1] == 2)
+    }
+
     // Size can be deduced from initialisation
     {
         var array: [] s32 = [1, 2]
