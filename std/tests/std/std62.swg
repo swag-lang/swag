@@ -4,7 +4,7 @@ using std.console
 //#[swag.printbc]
 #test
 {
-    silent(true)   
+    silent(true)
     ptr := &write
     ptr("toto")
     silent(false)

@@ -1811,7 +1811,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::LambdaCall:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64 & 1) { ");
+            concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
 
             CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
             if (typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters())
