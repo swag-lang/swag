@@ -76,6 +76,7 @@
     }
 
     // Null conditional operator
+    // Works with strings, pointers and structure with the 'opData' operator
     {
         a := "string1"
         b := "string2"
