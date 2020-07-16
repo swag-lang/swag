@@ -74,4 +74,16 @@
         a = (1 > 10) && (10 < 1)    // And
         a = (1 > 10) || (10 < 1)    // Or
     }
+
+    // Null conditional operator
+    {
+        a := "string1"
+        b := "string2"
+        c := a ?? b
+        @assert(c == "string1")
+
+        a = null
+        c = a ?? b
+        @assert(c == "string2")
+    }
 }
