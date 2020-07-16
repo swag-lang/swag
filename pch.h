@@ -1,6 +1,22 @@
 #ifndef PCH_H
 #define PCH_H
 
+// LLVM stuff
+// Before the rest, or it does not compile (yeahhh)
+#pragma warning(push, 0)
+#pragma warning(disable:4996)
+#include "llvm/ADT/APFloat.h"
+#include "llvm/ADT/STLExtras.h"
+#include "llvm/IR/BasicBlock.h"
+#include "llvm/IR/Constants.h"
+#include "llvm/IR/DerivedTypes.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/LLVMContext.h"
+#include "llvm/IR/Module.h"
+#include "llvm/IR/Type.h"
+#include "llvm/IR/Verifier.h"
+
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include "windows.h"
@@ -20,6 +36,7 @@
 #include <string>
 #include <shared_mutex>
 #include <unordered_set>
+#pragma warning(pop)
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

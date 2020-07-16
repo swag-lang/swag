@@ -377,6 +377,9 @@
     <ClCompile Include="ByteCodeGenJobFunction_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="LLVMSetup.cpp">
+      <Filter>Backend\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -669,6 +672,9 @@
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{db70f2f6-b909-4fab-a3c3-a23454ba5a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\LLVM">
+      <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
