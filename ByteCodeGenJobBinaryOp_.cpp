@@ -451,7 +451,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     return true;
 }
 
-bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode)
+bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode, bool freeRegisterParams)
 {
     AstNode* node           = forNode ? forNode : context->node;
     auto     symbolOverload = node->resolvedUserOpSymbolOverload;
@@ -490,5 +490,5 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     }
 
     bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
-    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign);
+    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign, freeRegisterParams);
 }

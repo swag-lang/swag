@@ -165,8 +165,17 @@ bool SemanticJob::resolveNullCondtionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, ifTrue));
 
     auto typeInfo = expression->typeInfo;
-    if(!typeInfo->isNative(NativeTypeKind::String) && typeInfo->kind != TypeInfoKind::Pointer)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoConstPVoid, nullptr, expression));
+
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, expression, nullptr, false));
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+    else if (!typeInfo->isNative(NativeTypeKind::String) && typeInfo->kind != TypeInfoKind::Pointer)
+    {
+        return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
+    }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
 

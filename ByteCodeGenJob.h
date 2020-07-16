@@ -59,7 +59,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitCall(ByteCodeGenContext* context);
-    static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign);
+    static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams = true);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
@@ -145,7 +145,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDataOfProperty(ByteCodeGenContext* context);
     static bool emitKindOfProperty(ByteCodeGenContext* context);
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
-    static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
+    static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);

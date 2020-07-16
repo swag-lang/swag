@@ -21,8 +21,20 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         child0->doneFlags |= AST_DONE_CAST1;
     }
 
-    reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
-    emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1; // After the "if not null"
+    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+    {
+        SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
+        if (context->result == ContextResult::Pending)
+            return true;
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
+        freeRegisterRC(context, node->resultRegisterRC);
+        reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+    }
+    else
+    {
+        reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
+    }
 
     // If not null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)

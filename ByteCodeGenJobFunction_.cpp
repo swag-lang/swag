@@ -376,7 +376,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     return true;
 }
 
-bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign)
+bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
@@ -494,7 +494,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
                 if (param->index == i)
                 {
-                    toFree += param->resultRegisterRC;
+                    if (freeRegistersParams)
+                        toFree += param->resultRegisterRC;
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                     {
                         emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
@@ -552,7 +553,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             }
             else
             {
-                toFree += param->resultRegisterRC;
+                if (freeRegistersParams)
+                    toFree += param->resultRegisterRC;
                 for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                 {
                     emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
