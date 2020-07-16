@@ -118,6 +118,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
         registersRC[ip->a.u32].pointer = (uint8_t*) ffiGetFuncAddress(context, funcNode);
+
+        // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
+        // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1). 
+        // So now its the highest bit.
+        SWAG_ASSERT(!isByteCodeLambda(registersRC[ip->a.u32].pointer));
         break;
     }
     case ByteCodeOp::MakeLambda:
@@ -806,12 +811,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         {
             // Get the names from the 2 typeinfos.
             // Name must be the first pointer of the TypeInfo struct for that to work !
-            Utf8        msg;
+            Utf8 msg;
             SWAG_ASSERT(registersRC[ip->b.u32].pointer);
             SWAG_ASSERT(registersRC[ip->c.u32].pointer);
             const char* msg1 = *(char**) registersRC[ip->b.u32].pointer;
             const char* msg2 = *(char**) registersRC[ip->c.u32].pointer;
-            SWAG_ASSERT(msg1); 
+            SWAG_ASSERT(msg1);
             SWAG_ASSERT(msg2);
             context->error(format("type '%s' does not match the 'any' type name '%s'", msg1, msg2));
         }
