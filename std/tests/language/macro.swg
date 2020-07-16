@@ -107,4 +107,33 @@
         repeat(3) { a += index; }
         @assert(a == 10+3)
     }
+
+    // When you need 'break' in the user code to break outside of
+    // a multi loop
+    {
+        #[swag.macro]
+        func repeatSquare(count: u32, what: code)
+        {
+            label up loop count
+            {
+                loop count
+                {
+                    #macro
+                    {
+                        #mixin `what { break = break up; }
+                    }
+                }
+            }
+        }
+
+        a := 0
+        repeatSquare(5)
+        {
+            a += 1
+            if a == 10
+                break
+        }
+
+        @assert(a == 10)
+    }
 }
