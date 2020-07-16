@@ -90,7 +90,18 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
     auto symbol = findNoLock(*aliasName);
     if (!symbol)
+    {
         symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
+    }
+
+    // Only add an inline parameter once in a given scope
+    else if (flags & OVERLOAD_VAR_INLINE)
+    {
+        if (resultName)
+            *resultName = symbol;
+        return symbol->overloads[0];
+    }
+
     if (resultName)
         *resultName = symbol;
 
@@ -132,7 +143,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         result->flags |= flags;
         result->storageOffset = storageOffset;
 
-        // One less overload. When this reached zero, this means we known every types for the same symbol,
+        // One less overload. When this reached zero, this means we know every types for the same symbol,
         // and so we can wakeup all jobs waiting for that symbol to be solved
         if (!(flags & OVERLOAD_INCOMPLETE))
         {
