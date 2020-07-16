@@ -1,0 +1,110 @@
+#test
+{
+    // A macro, like a mixin, is declared like a function, but with the attribute 'swag.macro'
+    {
+        #[swag.macro]
+        func myMacro()
+        {
+        }
+    }
+
+    // Unlike a mixin, a macro has its own scope, and cannot conflict with the function
+    // it is inserted inside
+    {
+        #[swag.macro]
+        func myMacro()
+        {
+            a := 666
+        }
+
+        a := 0
+        myMacro()
+        myMacro()
+        @assert(a == 0)
+    }
+
+    // But you can force an identifier to be found outside of the scope of the macro
+    {
+        #[swag.macro]
+        func myMacro()
+        {
+            `a += 1 // Back ticked to reference the 'a' of the caller
+        }
+
+        a := 0
+        myMacro()
+        myMacro()
+        @assert(a == 2)
+    }
+
+    // Like a mixin, macro accepts 'code' parameters
+    {
+        #[swag.macro]
+        func myMacro(what: code)
+        {
+            #mixin what
+        }
+
+        a := 0
+
+        myMacro(#code { `a += 1; })
+
+        myMacro()
+        {
+            `a += 1
+        }
+
+        @assert(a == 2)
+    }
+
+    // You can use #macro inside a macro to force the code after to be in the
+    // same scope of the caller. That is, no back tick is necessary to reference
+    // variables of the caller.
+    {
+        #[swag.macro]
+        func myMacro(what: code)
+        {
+            // No conflict, in its own scope
+            a := 0
+
+            #macro
+            {
+                // In the scope of the caller
+                #mixin `what
+            }
+        }
+
+        a := 0
+        myMacro()
+        {
+            a += 2
+        }
+
+        @assert(a == 2)
+    }
+
+    // You can extend the language with macros
+    {
+        #[swag.macro]
+        func repeat(count: s32, what: code)
+        {
+            a := 0
+            while a < count
+            {
+                #macro
+                {
+                    let index = `a
+                    #mixin `what
+                }
+
+                a += 1
+            }
+        }
+
+        a := 0
+        repeat(5) { a += index; }
+        @assert(a == 0+1+2+3+4)
+        repeat(3) { a += index; }
+        @assert(a == 10+3)
+    }
+}
