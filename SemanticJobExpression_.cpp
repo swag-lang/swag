@@ -164,10 +164,13 @@ bool SemanticJob::resolveNullCondtionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcrete(context, ifTrue));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoConstPVoid, nullptr, expression));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
-    node->typeInfo = ifTrue->typeInfo;
+    auto typeInfo = expression->typeInfo;
+    if(!typeInfo->isNative(NativeTypeKind::String) && typeInfo->kind != TypeInfoKind::Pointer)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoConstPVoid, nullptr, expression));
 
+    SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
+
+    node->typeInfo = expression->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     return true;
 }
