@@ -150,7 +150,8 @@ struct ByteCodeGenJob : public Job
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
-    static bool emitTrinaryOp(ByteCodeGenContext* context);
+    static bool emitConditionalOp(ByteCodeGenContext* context);
+    static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitIs(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context);

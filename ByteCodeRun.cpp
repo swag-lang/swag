@@ -35,6 +35,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::JumpIfNotZero64:
+    {
+        if (registersRC[ip->a.u32].u64)
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfNotTrue:
     {
         if (!registersRC[ip->a.u32].b)

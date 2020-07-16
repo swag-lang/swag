@@ -431,17 +431,30 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         break;
     }
 
+    // A ? B : C
     if (token.id == TokenId::SymQuestion)
     {
         SWAG_CHECK(eatToken());
-        auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::QuestionExpression, sourceFile, parent);
-        triNode->semanticFct = SemanticJob::resolveTrinaryOp;
+        auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::ConditionalExpression, sourceFile, parent);
+        triNode->semanticFct = SemanticJob::resolveCondtionalOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
 
         SWAG_CHECK(doExpression(triNode));
         SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doExpression(triNode));
+    }
+
+    // A ?? B
+    else if (token.id == TokenId::SymQuestionQuestion)
+    {
+        SWAG_CHECK(eatToken());
+        auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::NullConditionalExpression, sourceFile, parent);
+        triNode->semanticFct = SemanticJob::resolveNullCondtionalOp;
+        if (result)
+            *result = triNode;
+        Ast::addChildBack(triNode, boolExpression);
         SWAG_CHECK(doExpression(triNode));
     }
     else
@@ -542,7 +555,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
-    // var x = ?
+    // var x = ? : not initialized
     if (token.id == TokenId::SymQuestion)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::ExplicitNoInit, sourceFile, parent);

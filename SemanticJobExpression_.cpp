@@ -126,7 +126,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
+bool SemanticJob::resolveCondtionalOp(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 3);
@@ -150,6 +150,24 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
             node->inheritComputedValue(ifFalse);
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitTrinaryOp;
+    node->byteCodeFct = ByteCodeGenJob::emitConditionalOp;
+    return true;
+}
+
+bool SemanticJob::resolveNullCondtionalOp(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_ASSERT(node->childs.size() == 2);
+
+    auto expression = node->childs[0];
+    auto ifTrue     = node->childs[1];
+    SWAG_CHECK(checkIsConcrete(context, expression));
+    SWAG_CHECK(checkIsConcrete(context, ifTrue));
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoConstPVoid, nullptr, expression));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
+    node->typeInfo = ifTrue->typeInfo;
+
+    node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     return true;
 }

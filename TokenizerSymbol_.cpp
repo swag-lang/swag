@@ -43,11 +43,19 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     case ',':
         token.id = TokenId::SymComma;
         return true;
-    case '?':
-        token.id = TokenId::SymQuestion;
-        return true;
     case '@':
         token.id = TokenId::SymAt;
+        return true;
+
+    case '?':
+        token.id = TokenId::SymQuestion;
+        c        = getCharNoSeek(offset);
+        if (c == '?')
+        {
+            token.text += c;
+            treatChar(c, offset);
+            token.id = TokenId::SymQuestionQuestion;
+        }
         return true;
 
     case '.':

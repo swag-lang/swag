@@ -7,7 +7,39 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
-bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
+{
+    auto node   = context->node;
+    auto child0 = node->childs[0];
+    auto child1 = node->childs[1];
+
+    if (!(child0->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, child0, child0->typeInfo, child0->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        child0->doneFlags |= AST_DONE_CAST1;
+    }
+
+    reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1; // After the "if not null"
+
+    // If not null
+    for (int r = 0; r < node->resultRegisterRC.size(); r++)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
+    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = node->resultRegisterRC.size(); // After the if null
+
+    // If null
+    for (int r = 0; r < node->resultRegisterRC.size(); r++)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
+
+    freeRegisterRC(context, child0);
+    freeRegisterRC(context, child1);
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
 {
     auto node   = context->node;
     auto child0 = node->childs[0];
@@ -119,7 +151,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC[0])->b.u32 = listNode->storageOffset;
-        emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1])->b.u32     = (uint32_t) listNode->childs.size();
+        emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1])->b.u32       = (uint32_t) listNode->childs.size();
     }
     else
     {
@@ -182,7 +214,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
-        node->parent->resultRegisterRC                                                 = node->resultRegisterRC;
+        node->parent->resultRegisterRC                                                  = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {

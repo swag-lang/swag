@@ -238,7 +238,7 @@ namespace Ast
             break;
         }
 
-        case AstNodeKind::QuestionExpression:
+        case AstNodeKind::ConditionalExpression:
             SWAG_CHECK(output(concat, node->childs[0]));
             CONCAT_FIXED_STR(concat, " ? (");
             SWAG_CHECK(output(concat, node->childs[1]));

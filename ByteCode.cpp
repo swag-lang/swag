@@ -317,6 +317,7 @@ void ByteCode::print()
         case ByteCodeOp::JumpIfZero32:
         case ByteCodeOp::JumpIfZero64:
         case ByteCodeOp::JumpIfNotZero32:
+        case ByteCodeOp::JumpIfNotZero64:
         case ByteCodeOp::JumpIfNotTrue:
         case ByteCodeOp::JumpIfTrue:
             g_Log.setColor(LogColor::Gray);

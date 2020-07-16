@@ -666,7 +666,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Slices can't be constant. Use array
-    SWAG_VERIFY(!isCompilerConstant || node->typeInfo->kind != TypeInfoKind::Slice, context->report({ node, "cannot declare slices as 'const'. Use an array instead" }));
+    SWAG_VERIFY(!isCompilerConstant || node->typeInfo->kind != TypeInfoKind::Slice, context->report({node, "cannot declare slices as 'const'. Use an array instead"}));
 
     if (node->type)
         node->inheritOrFlag(node->type, AST_IS_GENERIC);
@@ -697,6 +697,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Will stop semantic to not evaluate the content of the function, until types are known
         node->ownerFct->flags |= AST_PENDING_LAMBDA_TYPING;
     }
+
+    // Type should be a correct one
+    SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoNull, context->report({node, node->token, "cannot deduce type from 'null'"}));
 
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getNakedKindName(node).c_str(), node->name.c_str())}));
