@@ -102,6 +102,14 @@ namespace Ast
             {
                 parent->childs.erase(i);
                 child->parent = nullptr;
+
+                // Update of each child index
+                while (i < parent->childs.size())
+                {
+                    parent->childs[i]->childParentIdx = i;
+                    i++;
+                }
+
                 return;
             }
         }

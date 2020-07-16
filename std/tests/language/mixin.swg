@@ -66,6 +66,11 @@
             a += value
         }
 
-        @assert(a == 8)
+        doItTwice(2)
+        {
+            a += value
+        }
+
+        @assert(a == 12)
     }
 }
