@@ -47,7 +47,7 @@
 
         a := 0
 
-        myMacro(#code { `a += 1; })
+        myMacro(#code { `a += 1; } )
 
         myMacro()
         {
