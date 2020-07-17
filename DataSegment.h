@@ -51,5 +51,6 @@ struct DataSegment
     map<Utf8, uint32_t>      mapString;
     map<uint32_t, ByteCode*> initFuncPtr;
     vector<DataSegmentRef>   initPtr;
+    uint32_t                 totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

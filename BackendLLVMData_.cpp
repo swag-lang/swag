@@ -7,18 +7,13 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
 {
     if (!dataSegment->buckets.size())
         return true;
+    if (!dataSegment->totalCount)
+        return true;
 
     auto segSize = dataSegment->buckets.size();
 
-    // Collect segment count
-    int count = 0;
-    for (int bucket = 0; bucket < segSize; bucket++)
-        count += (int) dataSegment->buckets[bucket].count;
-    if (!count)
-        return true;
-
     llvm::Type*      type      = llvm::Type::getInt8Ty(llvmContext);
-    llvm::ArrayType* arrayType = llvm::ArrayType::get(type, count);
+    llvm::ArrayType* arrayType = llvm::ArrayType::get(type, dataSegment->totalCount);
 
     if (dataSegment == &module->bssSegment)
     {
@@ -29,7 +24,7 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
     {
         // Collect datas
         std::vector<llvm::Constant*> values;
-        values.reserve(count);
+        values.reserve(dataSegment->totalCount);
         for (int bucket = 0; bucket < segSize; bucket++)
         {
             int  bkCount = (int) dataSegment->buckets[bucket].count;

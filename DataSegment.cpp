@@ -28,6 +28,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         {
             uint32_t result = last->totalCountBefore + last->count;
             last->count += size;
+            totalCount += size;
             return result;
         }
     }
@@ -38,6 +39,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.emplace_back(bucket);
+    totalCount += size;
+
     return bucket.totalCountBefore;
 }
 
