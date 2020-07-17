@@ -207,7 +207,7 @@
     <ClCompile Include="BackendCCompilerWin32.cpp" />
     <ClCompile Include="BackendCData_.cpp" />
     <ClCompile Include="BackendCFunctionBodyJob.cpp" />
-    <ClCompile Include="BackendCFunc_.cpp" />
+    <ClCompile Include="BackendCFunction_.cpp" />
     <ClCompile Include="BackendCMain_.cpp" />
     <ClCompile Include="BackendCRuntime_.cpp" />
     <ClCompile Include="BackendLLVMData_.cpp" />

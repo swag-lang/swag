@@ -10,6 +10,14 @@
 
 namespace BackendLinkerWin32
 {
+    string getCacheFolder(const BuildParameters& buildParameters)
+    {
+        auto targetPath = g_Workspace.cachePath.string();
+        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+            targetPath += "/test/";
+        return targetPath;
+    }
+
     void getLibPaths(vector<Utf8>& libPath)
     {
         // For vcruntime & msvcrt (mandatory under windows, even with clang...)

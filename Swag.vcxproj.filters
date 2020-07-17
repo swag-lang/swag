@@ -224,9 +224,6 @@
     <ClCompile Include="BackendCData_.cpp">
       <Filter>Backend\Native\C</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCFunc_.cpp">
-      <Filter>Backend\Native\C</Filter>
-    </ClCompile>
     <ClCompile Include="BackendCMain_.cpp">
       <Filter>Backend\Native\C</Filter>
     </ClCompile>
@@ -391,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="BackendLLVMData_.cpp">
       <Filter>Backend\Native\LLVM</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCFunction_.cpp">
+      <Filter>Backend\Native\C</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

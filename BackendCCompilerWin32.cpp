@@ -31,9 +31,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     for (int i = 0; i < backend->numPreCompileBuffers; i++)
         clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
 
-    auto cachePath = g_Workspace.cachePath.string();
-    if (buildParameters.flags & BUILDPARAM_FOR_TEST)
-        cachePath += ("/test/");
+    auto cachePath = BackendLinkerWin32::getCacheFolder(buildParameters);
     clArguments += "/Fo\"" + cachePath + "\" ";
 
     int optimLevel = 0;

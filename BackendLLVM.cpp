@@ -13,7 +13,7 @@ void BackendLLVM::setup()
 }
 
 JobResult BackendLLVM::preCompile(Job* ownerJob, int preCompileIndex)
-{  
+{
     SWAG_ASSERT(preCompileIndex == 0);
 
     llvmModule = new llvm::Module(module->name.c_str(), llvmContext);
@@ -31,7 +31,7 @@ bool BackendLLVM::link(const BuildParameters& buildParameters)
     Utf8 linkArguments;
     BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
-    auto targetPath = g_Workspace.cachePath.string();
+    auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     auto path       = targetPath + "/" + module->name.c_str() + ".obj";
     linkArguments += path + " ";
 
@@ -60,7 +60,7 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
     llvmModule->setDataLayout(theTargetMachine->createDataLayout());
 
-    auto targetPath = g_Workspace.cachePath.string();
+    auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     auto path       = targetPath + "/" + module->name.c_str() + ".obj";
 
     auto                 filename = path;
