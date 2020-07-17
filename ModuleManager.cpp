@@ -17,8 +17,6 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
 
     if (loadedModules.find(name) != loadedModules.end())
         return true;
-    //if (isNotHereModule.find(name) != isNotHereModule.end())
-    //    return true;
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
     if (verbose)
@@ -32,6 +30,9 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
+        if (name == "icu")
+            h = h;
+
         // Try on system folders
         if (canBeSystem)
         {
@@ -43,11 +44,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
         if (h == NULL)
         {
             if (acceptNotHere)
-            {
-                isNotHereModule.insert(name);
                 return true;
-            }
-
             if (verbose)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
