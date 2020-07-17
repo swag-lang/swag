@@ -374,9 +374,6 @@
     <ClCompile Include="ByteCodeGenJobFunction_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="LLVMSetup.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
-    </ClCompile>
     <ClCompile Include="BackendLLVM.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
@@ -388,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="BackendLinkerWin32.cpp">
       <Filter>Backend\Native</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkLLVM.cpp">
+      <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
