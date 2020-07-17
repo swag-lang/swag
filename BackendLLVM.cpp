@@ -5,6 +5,7 @@
 #include "Workspace.h"
 #include "OS.h"
 #include "BackendSetupWin32.h"
+#include "BackendLinkerWin32.h"
 
 void BackendLLVM::setup()
 {
@@ -54,11 +55,7 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     dest.close();
 
     vector<Utf8> libPath;
-    libPath.push_back(format(R"(%s\lib\x64)", BackendSetupWin32::visualStudioPath.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
-    libPath.push_back(g_Workspace.targetPath.string());
-    libPath.push_back(g_CommandLine.exePath.parent_path().string());
+    BackendLinkerWin32::getLibPaths(libPath);
 
     string linkArguments;
 

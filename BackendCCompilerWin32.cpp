@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 #include "BackendCCompilerWin32.h"
+#include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
 
@@ -16,18 +17,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
     g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
 
-    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-    libPath.push_back(format(R"(%s\lib\x64)", BackendSetupWin32::visualStudioPath.c_str()));
-
-    // Windows sdk library paths
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
-
-    // Modules
-    libPath.push_back(g_Workspace.targetPath.string());
-
-    // Runtime
-    libPath.push_back(g_CommandLine.exePath.parent_path().string());
+    BackendLinkerWin32::getLibPaths(libPath);
 
     string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
 
