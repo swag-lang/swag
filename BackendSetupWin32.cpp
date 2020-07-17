@@ -22,13 +22,34 @@ namespace BackendSetupWin32
         return strValue;
     }
 
+    static bool getLLVMBinFolder(string& folder)
+    {
+        vector<string> toTest;
+        toTest.push_back(R"("C:/Program Files/LLVM/bin)");
+        toTest.push_back(R"("D:/Program Files/LLVM/bin)");
+        for (auto& one : toTest)
+        {
+            if (fs::exists(one))
+            {
+                folder = one;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     static bool getVSFolder(string& vsTarget)
     {
         vector<string> toTest;
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
+        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
+        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
+        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
+        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
         for (auto& one : toTest)
         {
             if (fs::exists(one))
@@ -115,7 +136,11 @@ namespace BackendSetupWin32
             break;
         case BackendType::C_Clang:
             compilerExe  = "clang-cl.exe";
-            compilerPath = "C:/Program Files/LLVM/bin/";
+            if (!getLLVMBinFolder(compilerPath))
+            {
+                g_Log.error("error: backend: cannot locate llvm binary folder");
+                exit(-1);
+            }
             break;
         case BackendType::LLVM:
             llvm::InitializeNativeTarget();
@@ -130,7 +155,16 @@ namespace BackendSetupWin32
             auto fullPath = compilerPath + compilerExe;
             if (!fs::exists(fullPath))
             {
-                g_Log.error(format("error: c backend: cannot locate compiler '%s'", fullPath.c_str()));
+                g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
+                exit(-1);
+            }
+        }
+        else
+        {
+            auto fullPath = linkerPath + linkerExe;
+            if (!fs::exists(fullPath))
+            {
+                g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
                 exit(-1);
             }
         }
