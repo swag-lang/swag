@@ -74,7 +74,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
       <AdditionalLibraryDirectories>llvm-bin/debug/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -100,7 +100,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
       <AdditionalLibraryDirectories>llvm-bin/release/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
