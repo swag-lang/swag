@@ -264,11 +264,6 @@ __pycache__/
 *.pyc
 
 *.tlog
-.out/*.exe
-.out/*.pdb
-.out/*.ipdb
-.out/*.iobj
-.out/*.lib
-.out/*.dll
+.out/
 std/output/
 doc/
