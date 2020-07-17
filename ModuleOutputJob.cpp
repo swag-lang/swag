@@ -43,9 +43,16 @@ JobResult ModuleOutputJob::execute()
     if (pass == ModuleOutputJobPass::PreCompile)
     {
         // Magic number : max number of functions per file
-        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
-        module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
-        module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        if (g_CommandLine.backendType != BackendType::LLVM)
+        {
+            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
+            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        }
+        else
+        {
+            module->backend->numPreCompileBuffers = 1;
+        }
 
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)

@@ -12,7 +12,22 @@ void BackendLLVM::setup()
 }
 
 JobResult BackendLLVM::preCompile(Job* ownerJob, int preCompileIndex)
-{
+{  
+    llvmModule = new llvm::Module(module->name.c_str(), llvmContext);
+
+    std::vector<llvm::Type*> params;
+    params.push_back(llvm::Type::getInt32Ty(llvmContext));
+    params.push_back(llvm::Type::getInt32PtrTy(llvmContext));
+    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(llvmContext), params, false);
+    llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", llvmModule);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(llvmContext, "entry", F);
+    llvmBuilder.SetInsertPoint(BB);
+
+    uint32_t value = 0;
+    auto retVal = llvm::ConstantInt::get(llvmContext, llvm::APInt(32, value));
+    llvmBuilder.CreateRet(retVal);
+
     return JobResult::ReleaseJob;
 }
 
@@ -36,11 +51,7 @@ bool BackendLLVM::link(const BuildParameters& buildParameters)
 
 bool BackendLLVM::compile(const BuildParameters& buildParameters)
 {
-    if (module->name != "tests.compiler")
-        return true;
-
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
-    llvmModule        = new llvm::Module(module->name.c_str(), llvmContext);
     llvmModule->setTargetTriple(targetTriple);
 
     std::string Error;
