@@ -6,6 +6,7 @@
 
 string BackendCCompiler::getResultFile(const BuildParameters& buildParameters)
 {
+    SWAG_ASSERT(!buildParameters.destFile.empty());
     string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
     string resultFile;
     switch (buildParameters.type)

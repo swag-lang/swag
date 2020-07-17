@@ -380,6 +380,9 @@
     <ClCompile Include="LLVMSetup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
+    <ClCompile Include="BackendLLVM.cpp">
+      <Filter>Backend\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -640,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="CopyFileJob.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendLLVM.h">
+      <Filter>Backend\LLVM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

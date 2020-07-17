@@ -8,6 +8,7 @@
 #include "DiagnosticInfos.h"
 #include "TypeManager.h"
 #include "BackendC.h"
+#include "BackendLLVM.h"
 #include "ThreadManager.h"
 
 bool Module::setup(const Utf8& moduleName)
@@ -32,6 +33,9 @@ bool Module::setup(const Utf8& moduleName)
     case BackendType::C_Vs:
     case BackendType::C_Clang:
         backend = new BackendC(this);
+        break;
+    case BackendType::LLVM:
+        backend = new BackendLLVM(this);
         break;
     default:
         SWAG_ASSERT(false);

@@ -116,6 +116,7 @@
     <ClInclude Include="BackendCCompiler.h" />
     <ClInclude Include="BackendCCompilerVS.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
+    <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BuildParameters.h" />
     <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="BackendCFunc_.cpp" />
     <ClCompile Include="BackendCMain_.cpp" />
     <ClCompile Include="BackendCRuntime_.cpp" />
+    <ClCompile Include="BackendLLVM.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobAffectOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />

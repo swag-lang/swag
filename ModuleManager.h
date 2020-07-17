@@ -12,6 +12,7 @@ struct ModuleManager
 
     shared_mutex     mutex;
     map<Utf8, void*> loadedModules;
+    set<Utf8>        isNotHereModule;
 };
 
 extern ModuleManager g_ModuleMgr;

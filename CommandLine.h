@@ -10,7 +10,8 @@ enum class BackendArchi
 enum class BackendType
 {
     C_Vs,
-    C_Clang
+    C_Clang,
+    LLVM,
 };
 
 struct CommandLine
