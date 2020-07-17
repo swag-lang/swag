@@ -24,15 +24,6 @@ typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
 
-/* Visual studio */
-#ifdef _MSC_VER
-#define SWAG_IMPORT __declspec(dllimport)
-#define SWAG_EXPORT __declspec(dllexport)
-#else
-#define SWAG_IMPORT 
-#define SWAG_EXPORT
-#endif
-
 #ifdef _WIN32
 typedef swag_uint32_t swag_tls_id_t;
 #endif
@@ -80,6 +71,15 @@ typedef struct swag_process_infos_t {
 )";
 
 static constexpr const char* g_SwagRuntime = R"(
+/* Visual studio */
+#ifdef _MSC_VER
+#define SWAG_IMPORT __declspec(dllimport)
+#define SWAG_EXPORT __declspec(dllexport)
+#else
+#define SWAG_IMPORT 
+#define SWAG_EXPORT
+#endif
+
 SWAG_IMPORT void*           swag_runtime_loadDynamicLibrary(const char*);
 SWAG_IMPORT swag_uint32_t   swag_runtime_tlsAlloc();
 SWAG_IMPORT void            swag_runtime_tlsSetValue(swag_uint32_t, void*);
