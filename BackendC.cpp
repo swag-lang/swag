@@ -21,11 +21,12 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     if (pass[preCompileIndex] == BackendPreCompilePass::Init)
     {
         pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
         auto targetPath = g_Workspace.cachePath.string();
-        bufferC.path    = targetPath + "/" + format("%s%d", module->name.c_str(), preCompileIndex) + ".c";
+        auto moduleName = format("%s%d", module->name.c_str(), preCompileIndex);
+        bufferC.path    = targetPath + "/" + moduleName + ".c";
+        if (g_CommandLine.verboseBuildPass)
+            g_Log.verbose(format("   module '%s', C backend, generating files", moduleName.c_str(), module->byteCodeTestFunc.size()));
 
         // Do we need to generate the file ?
         if (!mustCompile)

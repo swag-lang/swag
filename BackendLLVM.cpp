@@ -17,12 +17,14 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     if (pass[preCompileIndex] == BackendPreCompilePass::Init)
     {
         pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', llvm backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-        llvmModule = new llvm::Module(module->name.c_str(), llvmContext);
 
         bufferFiles[preCompileIndex] = format("%s%d", module->name.c_str(), preCompileIndex) + ".obj";
+        llvmContext[preCompileIndex] = new llvm::LLVMContext();
+        llvmModule[preCompileIndex]  = new llvm::Module(bufferFiles[preCompileIndex].c_str(), *llvmContext[preCompileIndex]);
+        llvmBuilder[preCompileIndex] = new llvm::IRBuilder<>(*llvmContext[preCompileIndex]);
+
+        if (g_CommandLine.verboseBuildPass)
+            g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[preCompileIndex].c_str(), module->byteCodeTestFunc.size()));
 
         // Do we need to generate the file ?
         if (!mustCompile)
@@ -42,7 +44,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
             emitDataSegment(&module->bssSegment, preCompileIndex);
             emitDataSegment(&module->mutableSegment, preCompileIndex);
             emitDataSegment(&module->constantSegment, preCompileIndex);
-            emitMain();
+            emitMain(preCompileIndex);
         }
 
         // Output file
@@ -55,7 +57,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
 bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int preCompileIndex)
 {
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
-    llvmModule->setTargetTriple(targetTriple);
+    llvmModule[preCompileIndex]->setTargetTriple(targetTriple);
 
     std::string Error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
@@ -66,7 +68,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     llvm::TargetOptions opt;
     auto                RM               = llvm::Optional<llvm::Reloc::Model>();
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
-    llvmModule->setDataLayout(theTargetMachine->createDataLayout());
+    llvmModule[preCompileIndex]->setDataLayout(theTargetMachine->createDataLayout());
 
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     auto path       = targetPath + "/" + bufferFiles[preCompileIndex];
@@ -83,7 +85,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
         return false;
     }
 
-    llvmPass.run(*llvmModule);
+    llvmPass.run(*llvmModule[preCompileIndex]);
     dest.flush();
     dest.close();
     return true;
@@ -96,10 +98,8 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
 
     // Add all object files
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
-    for (auto i = 0; i < MAX_PRECOMPILE_BUFFERS; i++)
+    for (auto i = 0; i < numPreCompileBuffers; i++)
     {
-        if (bufferFiles[i].empty())
-            break;
         auto path = targetPath + "/" + bufferFiles[i].c_str();
         linkArguments += path + " ";
     }

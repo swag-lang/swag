@@ -11,7 +11,6 @@ struct BackendLLVM : public Backend
 {
     BackendLLVM(Module* mdl)
         : Backend{mdl}
-        , llvmBuilder(llvmContext)
     {
     }
 
@@ -21,12 +20,11 @@ struct BackendLLVM : public Backend
     bool      generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
 
     bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
-    bool emitMain();
+    bool emitMain(int precompileIndex);
 
-    llvm::LLVMContext llvmContext;
-    llvm::IRBuilder<> llvmBuilder;
-    llvm::Module*     llvmModule = nullptr;
-
+    llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS];
+    llvm::IRBuilder<>*    llvmBuilder[MAX_PRECOMPILE_BUFFERS];
+    llvm::Module*         llvmModule[MAX_PRECOMPILE_BUFFERS];
     string                bufferFiles[MAX_PRECOMPILE_BUFFERS];
     BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
 };
