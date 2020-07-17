@@ -20,7 +20,10 @@ bool BackendLLVM::link(const BuildParameters& buildParameters)
 {
     Utf8 linkArguments;
     BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
-    linkArguments += "f:/output.obj ";
+
+    auto targetPath = g_Workspace.cachePath.string();
+    auto path       = targetPath + "/" + module->name.c_str() + ".obj";
+    linkArguments += path + " ";
 
     uint32_t numErrors = 0;
     auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
@@ -51,7 +54,10 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
     llvmModule->setDataLayout(theTargetMachine->createDataLayout());
 
-    auto                 filename = "f:/output.obj";
+    auto targetPath = g_Workspace.cachePath.string();
+    auto path       = targetPath + "/" + module->name.c_str() + ".obj";
+
+    auto                 filename = path;
     std::error_code      EC;
     llvm::raw_fd_ostream dest(filename, EC, llvm::sys::fs::OF_None);
 
