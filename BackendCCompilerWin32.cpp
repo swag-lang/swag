@@ -31,18 +31,6 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
         clArguments += "/Zi ";
     }
 
-    // Append a string related to the version
-    string outputTypeName;
-    switch (buildParameters.type)
-    {
-    case BackendOutputType::StaticLib:
-        outputTypeName = ".lib";
-        break;
-    case BackendOutputType::DynamicLib:
-        outputTypeName = ".dll";
-        break;
-    }
-
     clArguments += "/nologo ";
     clArguments += "/GS- ";
     clArguments += "/MD ";
@@ -72,15 +60,12 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
         break;
     }
 
-    //clArguments += "/O2 ";
-
     if (buildParameters.flags & BUILDPARAM_FOR_TEST)
         clArguments += "/DSWAG_HAS_TEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
-    uint32_t numErrors  = 0;
-    string   resultFile = getResultFile(buildParameters);
+    uint32_t numErrors = 0;
     Utf8     linkArguments;
 
     switch (buildParameters.type)
@@ -96,6 +81,8 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
+
+        string resultFile = getResultFile(buildParameters);
         libArguments += "/OUT:\"" + resultFile + "\" ";
 
         for (int i = 0; i < backend->numPreCompileBuffers; i++)

@@ -41,50 +41,26 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     llvm::raw_fd_ostream dest(filename, EC, llvm::sys::fs::OF_None);
 
     llvm::legacy::PassManager pass;
-    // auto                      FileType = llvm::CGFT_ObjectFile;
-
     if (theTargetMachine->addPassesToEmitFile(pass, dest, nullptr, llvm::CGFT_ObjectFile))
     {
         //errs() << "TheTargetMachine can't emit a file of this type";
         SWAG_ASSERT(false);
-        return 1;
+        return false;
     }
 
     pass.run(*llvmModule);
     dest.flush();
     dest.close();
 
-    vector<Utf8> libPath;
-    BackendLinkerWin32::getLibPaths(libPath);
+    Utf8 linkArguments;
+    BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+    linkArguments += "f:/output.obj ";
 
-    string linkArguments;
+    uint32_t numErrors = 0;
+    auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
+    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, true, numErrors, LogColor::DarkCyan, "CL "));
 
-    // This is mandatory under windows
-    linkArguments += "kernel32.lib ";
-    linkArguments += "user32.lib ";
-
-    // Add swag.runtime
-    linkArguments += "swag.runtime.lib ";
-
-    // Default libraries
-    linkArguments += "/NODEFAULTLIB ";
-    linkArguments += "ucrt.lib ";
-    linkArguments += "vcruntime.lib ";
-    linkArguments += "msvcrt.lib ";
-
-    linkArguments += "f:\\output.obj ";
-
-    for (const auto& oneLibPath : libPath)
-        linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
-
-    linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-    linkArguments += "/OUT:f:\\tt.exe\" ";
-
-    auto     compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
-    uint32_t numErrors    = 0;
-
-    auto cmdLineCL = "\"" + compilerPath + "link.exe\" " + linkArguments;
-    SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, true, numErrors, LogColor::DarkCyan, "CL "));
-
+    g_Workspace.numErrors += numErrors;
+    module->numErrors += numErrors;
     return true;
 }

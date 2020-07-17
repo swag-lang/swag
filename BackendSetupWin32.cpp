@@ -7,6 +7,8 @@ namespace BackendSetupWin32
     string winSdkPath, winSdkVersion;
     string compilerPath;
     string compilerExe;
+    string linkerExe;
+    string linkerPath;
 
     static string getStringRegKey(HKEY hKey, const string& strValueName)
     {
@@ -118,6 +120,8 @@ namespace BackendSetupWin32
         case BackendType::LLVM:
             llvm::InitializeNativeTarget();
             llvm::InitializeNativeTargetAsmPrinter();
+            linkerExe  = "link.exe";
+            linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
         }
 
@@ -132,4 +136,4 @@ namespace BackendSetupWin32
         }
     }
 
-} // namespace BackendHelpersWin32
+} // namespace BackendSetupWin32
