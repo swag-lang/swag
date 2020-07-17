@@ -4,7 +4,7 @@
 #include "ModulePreCompileJob.h"
 #include "ModuleCompileJob.h"
 #include "DocModuleJob.h"
-#include "BackendC.h"
+#include "Backend.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
 
