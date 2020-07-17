@@ -156,6 +156,9 @@ bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
     // Modules
     libPath.push_back(g_Workspace.targetPath.string());
 
+    // Runtime
+    libPath.push_back(g_CommandLine.exePath.parent_path().string());
+
     string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
 
     // CL arguments
@@ -283,6 +286,9 @@ bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
         // This is mandatory under windows
         linkArguments += "kernel32.lib ";
         linkArguments += "user32.lib ";
+
+        // Add swag.runtime
+        linkArguments += "swag.runtime.lib ";
 
         // Default libraries
         linkArguments += "/NODEFAULTLIB ";

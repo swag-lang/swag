@@ -13,7 +13,6 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const Utf8& moduleName);
 
-    void    addRuntime();
     void    addBootstrap();
     void    setupPaths();
     void    setup();

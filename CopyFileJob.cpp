@@ -18,7 +18,13 @@ JobResult CopyFileJob::execute()
         if (tdest > tsrc)
         {
             if (g_CommandLine.verboseBuildPass)
-                g_Log.verbose(format("   module '%s', file '%s' is up to date", module->name.c_str(), sourcePath.c_str()));
+            {
+                if (module)
+                    g_Log.verbose(format("   module '%s', file '%s' is up to date", module->name.c_str(), sourcePath.c_str()));
+                else
+                    g_Log.verbose(format("   file '%s' is up to date", sourcePath.c_str()));
+            }
+
             return JobResult::ReleaseJob;
         }
     }
@@ -35,7 +41,12 @@ JobResult CopyFileJob::execute()
     }
 
     if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("   module '%s', copy file '%s' to '%s'", module->name.c_str(), sourcePath.c_str(), destPath.c_str()));
+    {
+        if (module)
+            g_Log.verbose(format("   module '%s', copy file '%s' to '%s'", module->name.c_str(), sourcePath.c_str(), destPath.c_str()));
+        else
+            g_Log.verbose(format("   copy file '%s' to '%s'", sourcePath.c_str(), destPath.c_str()));
+    }
 
     uint8_t buffer[4096];
     while (true)

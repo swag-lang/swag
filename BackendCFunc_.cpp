@@ -1577,7 +1577,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "__print_f64(r[", ip->a.u32, "].f64);");
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            concat.addStringFormat("__print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::IntrinsicAssert:

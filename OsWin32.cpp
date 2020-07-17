@@ -499,6 +499,20 @@ namespace OS
         }
     }
 
+    bool getSwagFolder(string& folder)
+    {
+        HKEY key;
+        if (RegOpenKeyExA(HKEY_CURRENT_USER, "Environment", NULL, KEY_READ, &key) != ERROR_SUCCESS)
+            return false;
+
+        unsigned long type = REG_SZ, size = 1024;
+        char          res[1024] = "";
+        auto          result    = RegQueryValueExA(key, "SWAG_FOLDER", NULL, &type, (LPBYTE) &res[0], &size);
+        RegCloseKey(key);
+        folder = res;
+        return result == ERROR_SUCCESS;
+    }
+
     void setSwagFolder(const string& folder)
     {
         // SWAG_FOLDER

@@ -80,8 +80,26 @@ int main(int argc, const char* argv[])
     }
 
     // Command
-    g_CommandLine.exePath = fs::absolute(argv[0]).string();
-    string command        = argv[1];
+    string command = argv[1];
+
+    // Verify that the swag folder has been registered
+    string swagFolder;
+    if (!OS::getSwagFolder(swagFolder))
+    {
+        if (command != "env")
+        {
+            g_Log.message("cannot find 'SWAG_FOLDER' in the environment. You must run 'swag env' first at the swag.exe location to register its path.\n");
+            exit(-1);
+        }
+    }
+    else
+    {
+        g_CommandLine.exePath = swagFolder;
+        g_CommandLine.exePath += "\\";
+        fs::path pathF = fs::absolute(argv[0]).string();
+        g_CommandLine.exePath += pathF.filename();
+    }
+
     if (command == "build" || command == "new")
     {
     }
@@ -92,6 +110,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "env")
     {
+        g_CommandLine.exePath = fs::absolute(argv[0]).string();
         OS::setSwagFolder(g_CommandLine.exePath.parent_path().string());
         exit(0);
     }

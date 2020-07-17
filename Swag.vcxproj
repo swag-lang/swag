@@ -46,14 +46,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\.out\</OutDir>
-    <IntDir>$(SolutionDir)\.out\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\.out\swag\$(Configuration)\</IntDir>
     <TargetName>swag_d</TargetName>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\.out\</OutDir>
-    <IntDir>$(SolutionDir)\.out\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\.out\swag\$(Configuration)\</IntDir>
     <TargetName>swag</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -346,15 +346,15 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.out/swag/$(Configuration)/win64.obj win64_plain.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)/.out/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)/.out/swag/$(Configuration)/win64.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.out/swag/$(Configuration)/win64.obj win64_plain.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)/.out/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)/.out/swag/$(Configuration)/win64.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -167,9 +167,6 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     }
     else
     {
-        if (node->name == "array666")
-            node = node;
-
         // Emit a reference to the buffer
         auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointerOC, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved

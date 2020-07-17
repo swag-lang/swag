@@ -92,7 +92,7 @@ typedef struct swag_process_infos_t {
 } swag_process_infos_t;
 )";
 
-static constexpr const char* g_Intrinsics = R"(
+static constexpr const char* g_SwagRuntime = R"(
 extern void* malloc(swag_uint64_t);
 extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
@@ -107,111 +107,15 @@ extern swag_int32_t memcmp(const void*,const void*,swag_uint64_t);
 #define __memcpy	memcpy
 #define __memcmp	memcmp
 
-static void __print_n(const char* message, int len) 
-{ 
-	if(!message) message = "<null>";
-#ifdef _WIN32	
-	WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
-#else
-#endif
-}
-
-static swag_int32_t __strlen(const char* message) 
-{
-	swag_int32_t len = 0;
-	while(*message++) len++;
-	return len;
-}
-
-static void __print(const char* message) 
-{ 
-	if(!message) message = "<null>";
-	__print_n(message, __strlen(message));
-}
-
-static char* __itoa(char* result, swag_int64_t value) 
-{
-    char* ptr = result, *ptr1 = result, tmp_char;
-    swag_int64_t tmp_value;
-    do 
-	{
-        tmp_value = value;
-        value /= 10;
-        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * 10)];
-    } while (value);
-
-    if (tmp_value < 0) *ptr++ = '-';
-	char* retVal = ptr;
-    *ptr-- = 0;
-    while(ptr1 < ptr) 
-	{
-        tmp_char = *ptr;
-        *ptr--= *ptr1;
-        *ptr1++ = tmp_char;
-    }
-
-	return retVal;
-}
-
-static void __ftoa(char* result, swag_float64_t value) 
-{
-	swag_int64_t	ipart = (swag_int64_t) value;
-	swag_float64_t	fpart = value - (swag_float64_t) ipart;
-	char* n = __itoa(result, ipart);
-	*n++ = '.';
-	int afterPoint = 5;
-	if(fpart < 0) fpart = -fpart;
-	while(afterPoint--) fpart *= 10;
-	__itoa(n, (swag_int64_t) fpart);
-}
-
-static void __print_i64(swag_int64_t value)   
-{ 
-	char buf[100]; 
-	__itoa(buf, value); 
-	__print(buf);
-}
-
-static void __print_f64(swag_float64_t value)
-{ 
-	char buf[100]; 
-	__ftoa(buf, value); 
-	__print(buf);
-}
-
-static void __assert(swag_bool_t expr, const char* file, int line, const char* msg)
-{
-	if(expr) 
-		return;
-
-	__print("error: [backend] "); 
-	__print(file); 
-	__print(":"); 
-	__print_i64(line);
-	if(msg)
-	{
-		__print(": ");
-		__print(msg);
-		__print("\n");
-	}
-	else	
-		__print(": native code assertion failed\n");
-
-#ifdef _WIN32
-#ifdef SWAG_DEVMODE
-	MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
-#endif
-	RaiseException(0x666, 0, 0, 0);
-#endif
-	exit(-1);
-}
-
-static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t num)
-{
-	if(!str1 || !str2)
-		return str1 == str2;
-	return !__memcmp((void*) str1, (void*) str2, num);
-}
+SWAG_IMPORT void            __print_n(const char* message, int len);
+SWAG_IMPORT swag_int32_t    __strlen(const char* message);
+SWAG_IMPORT void            __print(const char* message);
+SWAG_IMPORT char*           __itoa(char* result, swag_int64_t value);
+SWAG_IMPORT void            __ftoa(char* result, swag_float64_t value);
+SWAG_IMPORT void            __print_i64(swag_int64_t value);
+SWAG_IMPORT void            __print_f64(swag_float64_t value);
+SWAG_IMPORT void            __assert(swag_bool_t expr, const char* file, int line, const char* msg);
+SWAG_IMPORT swag_bool_t     __strcmp(const char* str1, const char* str2, swag_uint32_t num);
 
 )";
 
@@ -225,8 +129,8 @@ bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
 
     emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
-    emitSeparator(bufferC, "INTRINSICS");
-    CONCAT_FIXED_STR(bufferC, g_Intrinsics);
+    emitSeparator(bufferC, "SWAG RUNTIME");
+    CONCAT_FIXED_STR(bufferC, g_SwagRuntime);
 
     if (preCompileIndex == 0)
     {

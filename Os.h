@@ -27,6 +27,7 @@ namespace OS
     extern uint64_t      getFileWriteTime(const char* fileName);
     extern void          errorBox(const char* expr, const char* title);
     extern void          assertBox(const char* expr, const char* file, int line);
+    extern bool          getSwagFolder(string& folder);
     extern void          setSwagFolder(const string& folder);
     extern bool          touchFile(const fs::path& path);
     extern bool          watch(function<void(const string&)> cb);
