@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "BackendLLVM.h"
 
-void BackendLLVM::emitMain()
+bool BackendLLVM::emitMain()
 {  
     std::vector<llvm::Type*> params;
     params.push_back(llvm::Type::getInt32Ty(llvmContext));
@@ -15,4 +15,6 @@ void BackendLLVM::emitMain()
     uint32_t value = 0;
     auto retVal = llvm::ConstantInt::get(llvmContext, llvm::APInt(32, value));
     llvmBuilder.CreateRet(retVal);
+
+    return true;
 }

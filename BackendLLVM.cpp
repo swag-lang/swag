@@ -6,6 +6,7 @@
 #include "OS.h"
 #include "BackendSetupWin32.h"
 #include "BackendLinkerWin32.h"
+#include "DataSegment.h"
 
 void BackendLLVM::setup()
 {
@@ -17,6 +18,9 @@ JobResult BackendLLVM::preCompile(Job* ownerJob, int preCompileIndex)
 
     llvmModule = new llvm::Module(module->name.c_str(), llvmContext);
 
+    emitDataSegment(&module->bssSegment, preCompileIndex);
+    emitDataSegment(&module->mutableSegment, preCompileIndex);
+    emitDataSegment(&module->constantSegment, preCompileIndex);
     emitMain();
 
     return JobResult::ReleaseJob;

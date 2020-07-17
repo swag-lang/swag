@@ -3,6 +3,7 @@
 struct Module;
 struct BuildParameters;
 struct Job;
+struct DataSegment;
 
 struct BackendLLVM : public Backend
 {
@@ -17,7 +18,8 @@ struct BackendLLVM : public Backend
     bool      compile(const BuildParameters& backendParameters) override;
     bool      link(const BuildParameters& buildParameters);
 
-    void emitMain();
+    bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
+    bool emitMain();
 
     llvm::LLVMContext llvmContext;
     llvm::IRBuilder<> llvmBuilder;
