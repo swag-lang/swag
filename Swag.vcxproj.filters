@@ -380,14 +380,14 @@
     <ClCompile Include="BackendCCompilerWin32.cpp">
       <Filter>Backend\Native\C</Filter>
     </ClCompile>
-    <ClCompile Include="BackendHelpersWin32.cpp">
-      <Filter>Backend\Native</Filter>
-    </ClCompile>
     <ClCompile Include="BackendLinkerWin32.cpp">
       <Filter>Backend\Native</Filter>
     </ClCompile>
     <ClCompile Include="LinkLLVM.cpp">
       <Filter>Backend\Native\LLVM</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendSetupWin32.cpp">
+      <Filter>Backend\Native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -653,10 +653,10 @@
     <ClInclude Include="BackendCCompilerWin32.h">
       <Filter>Backend\Native\C</Filter>
     </ClInclude>
-    <ClInclude Include="BackendHelpersWin32.h">
+    <ClInclude Include="BackendLinkerWin32.h">
       <Filter>Backend\Native</Filter>
     </ClInclude>
-    <ClInclude Include="BackendLinkerWin32.h">
+    <ClInclude Include="BackendSetupWin32.h">
       <Filter>Backend\Native</Filter>
     </ClInclude>
   </ItemGroup>

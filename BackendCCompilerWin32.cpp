@@ -4,7 +4,7 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 #include "BackendCCompilerWin32.h"
-#include "BackendHelpersWin32.h"
+#include "BackendSetupWin32.h"
 #include "Workspace.h"
 
 bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)

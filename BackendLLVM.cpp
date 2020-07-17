@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Workspace.h"
 #include "OS.h"
-#include "BackendHelpersWin32.h"
+#include "BackendSetupWin32.h"
 
 void BackendLLVM::setup()
 {
@@ -19,14 +19,6 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
 {
     if (module->name != "tests.compiler")
         return true;
-
-    llvm::InitializeNativeTarget();
-    llvm::InitializeNativeTargetAsmPrinter();
-    //llvm::InitializeAllTargetInfos();
-    //llvm::InitializeAllTargets();
-    //llvm::InitializeAllTargetMCs();
-    //llvm::InitializeAllAsmParsers();
-    //llvm::InitializeAllAsmPrinters();
 
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
     llvmModule        = new llvm::Module(module->name.c_str(), llvmContext);

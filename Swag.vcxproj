@@ -116,7 +116,7 @@
     <ClInclude Include="BackendCCompiler.h" />
     <ClInclude Include="BackendCCompilerWin32.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
-    <ClInclude Include="BackendHelpersWin32.h" />
+    <ClInclude Include="BackendSetupWin32.h" />
     <ClInclude Include="BackendLinkerWin32.h" />
     <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BuildParameters.h" />
@@ -211,7 +211,7 @@
     <ClCompile Include="BackendCFunc_.cpp" />
     <ClCompile Include="BackendCMain_.cpp" />
     <ClCompile Include="BackendCRuntime_.cpp" />
-    <ClCompile Include="BackendHelpersWin32.cpp" />
+    <ClCompile Include="BackendSetupWin32.cpp" />
     <ClCompile Include="BackendLinkerWin32.cpp" />
     <ClCompile Include="BackendLLVM.cpp" />
     <ClCompile Include="ByteCode.cpp" />
