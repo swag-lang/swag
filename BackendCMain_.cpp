@@ -41,9 +41,9 @@ bool BackendC::emitMain(OutputFile& bufferC)
     SWAG_ASSERT(bcAlloc);
     bufferC.addStringFormat("\tstatic swag_allocator_t defaultAllocTable = &%s;\n", bcAlloc->callName().c_str());
     CONCAT_FIXED_STR(bufferC, "\tmainContext.allocator.itable = &defaultAllocTable;\n");
-    CONCAT_FIXED_STR(bufferC, "\t__process_infos.contextTlsId = __tlsAlloc();\n");
+    CONCAT_FIXED_STR(bufferC, "\t__process_infos.contextTlsId = swag_runtime_tlsAlloc();\n");
     CONCAT_FIXED_STR(bufferC, "\t__process_infos.defaultContext = &mainContext;\n");
-    CONCAT_FIXED_STR(bufferC, "\t__tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);\n");
+    CONCAT_FIXED_STR(bufferC, "\tswag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);\n");
 
     // Arguments
     bufferC.addEol();
@@ -56,7 +56,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
     {
         auto nameDown = dep.first;
         nameDown.replaceAll('.', '_');
-        bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
+        bufferC.addStringFormat("\tswag_runtime_loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
         if (dep.second.generated)
         {
             bufferC.addStringFormat("\textern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());

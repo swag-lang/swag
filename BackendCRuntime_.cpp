@@ -80,49 +80,34 @@ typedef struct swag_process_infos_t {
 )";
 
 static constexpr const char* g_SwagRuntime = R"(
-#ifdef _WIN32
-SWAG_IMPORT void*				LoadLibraryA(const char*);
-SWAG_IMPORT swag_uint32_t		TlsAlloc();
-SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
-SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
-
-#define __loadDynamicLibrary	LoadLibraryA
-#define __tlsAlloc				TlsAlloc
-#define __tlsSetValue			TlsSetValue
-#define __tlsGetValue			TlsGetValue
-#endif
-
-extern void* malloc(swag_uint64_t);
-extern void* realloc(void*, swag_uint64_t);
-extern void  free(void*);
-extern void* memcpy(void*,const void*,swag_uint64_t);
-extern void* memset(void*,swag_int32_t,swag_uint64_t);
-extern void exit(swag_int32_t);
-extern swag_int32_t memcmp(const void*,const void*,swag_uint64_t);
-#define __malloc	malloc
-#define __realloc	realloc
-#define __free		free
-#define __memset	memset
-#define __memcpy	memcpy
-#define __memcmp	memcmp
-
+SWAG_IMPORT void*           swag_runtime_loadDynamicLibrary(const char*);
+SWAG_IMPORT swag_uint32_t   swag_runtime_tlsAlloc();
+SWAG_IMPORT void            swag_runtime_tlsSetValue(swag_uint32_t, void*);
+SWAG_IMPORT void*           swag_runtime_tlsGetValue(swag_uint32_t);
+SWAG_IMPORT void*           swag_runtime_malloc(swag_uint64_t);
+SWAG_IMPORT void*           swag_runtime_realloc(void*, swag_uint64_t);
+SWAG_IMPORT void            swag_runtime_free(void*);
+SWAG_IMPORT void*           swag_runtime_memcpy(void*,const void*,swag_uint64_t);
+SWAG_IMPORT void*           swag_runtime_memset(void*,swag_int32_t,swag_uint64_t);
+SWAG_IMPORT swag_int32_t    swag_runtime_memcmp(const void*,const void*,swag_uint64_t);
+SWAG_IMPORT void            swag_runtime_exit(swag_int32_t);
 SWAG_IMPORT void            swag_runtime_print_n(const char* message, int len);
-SWAG_IMPORT swag_int32_t    swag_runtime_strlen(const char* message);
 SWAG_IMPORT void            swag_runtime_print(const char* message);
 SWAG_IMPORT void            swag_runtime_print_i64(swag_int64_t value);
 SWAG_IMPORT void            swag_runtime_print_f64(swag_float64_t value);
 SWAG_IMPORT void            swag_runtime_assert(swag_bool_t expr, const char* file, int line, const char* msg);
 SWAG_IMPORT swag_bool_t     swag_runtime_strcmp(const char* str1, const char* str2, swag_uint32_t num);
+SWAG_IMPORT swag_int32_t    swag_runtime_strlen(const char* message);
 
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
 {
-	if (g_CommandLine.devMode)
-	{
-		CONCAT_FIXED_STR(bufferC, "/* FILE GENERATED WITH --DEVMODE:true */\n");
-		CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
-	}
+    if (g_CommandLine.devMode)
+    {
+        CONCAT_FIXED_STR(bufferC, "/* FILE GENERATED WITH --DEVMODE:true */\n");
+        CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
+    }
 
     emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);

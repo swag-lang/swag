@@ -861,7 +861,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ClearXVar:
-            concat.addStringFormat("__memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::SetZeroStack8:
@@ -877,7 +877,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "*(swag_uint64_t*)(stack + ", ip->a.u32, ") = 0;");
             break;
         case ByteCodeOp::SetZeroStackX:
-            concat.addStringFormat("__memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::MakeDataSegPointer:
@@ -911,17 +911,17 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::MemCpy:
-            concat.addStringFormat("__memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("swag_runtime_memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemSet:
-            concat.addStringFormat("__memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("swag_runtime_memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemCmp:
-            concat.addStringFormat("r[%u].s32 = __memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+            concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
 
         case ByteCodeOp::CopyVC:
-            concat.addStringFormat("__memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::CopyVBtoRA32:
             concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
@@ -977,7 +977,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
             break;
         case ByteCodeOp::SetZeroAtPointerX:
-            concat.addStringFormat("__memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetPointerAtPointer:
             CONCAT_STR_2(concat, "*(void**)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].pointer;");
@@ -1594,19 +1594,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicAlloc:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::IntrinsicFree:
-            concat.addStringFormat("__free(r[%u].pointer);", ip->a.u32);
+            concat.addStringFormat("swag_runtime_free(r[%u].pointer);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicGetContext:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
+            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicSetContext:
-            concat.addStringFormat("__tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
+            concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicArguments:
             concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
