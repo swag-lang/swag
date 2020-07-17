@@ -211,6 +211,7 @@
     <ClCompile Include="BackendCFunc_.cpp" />
     <ClCompile Include="BackendCMain_.cpp" />
     <ClCompile Include="BackendCRuntime_.cpp" />
+    <ClCompile Include="BackendLLVMMain_.cpp" />
     <ClCompile Include="BackendSetupWin32.cpp" />
     <ClCompile Include="BackendLinkerWin32.cpp" />
     <ClCompile Include="BackendLLVM.cpp" />

@@ -17,6 +17,8 @@ struct BackendLLVM : public Backend
     bool      compile(const BuildParameters& backendParameters) override;
     bool      link(const BuildParameters& buildParameters);
 
+    void emitMain();
+
     llvm::LLVMContext llvmContext;
     llvm::IRBuilder<> llvmBuilder;
     llvm::Module*     llvmModule = nullptr;

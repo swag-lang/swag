@@ -389,6 +389,9 @@
     <ClCompile Include="BackendSetupWin32.cpp">
       <Filter>Backend\Native</Filter>
     </ClCompile>
+    <ClCompile Include="BackendLLVMMain_.cpp">
+      <Filter>Backend\Native\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
