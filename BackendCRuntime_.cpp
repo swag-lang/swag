@@ -110,8 +110,6 @@ extern swag_int32_t memcmp(const void*,const void*,swag_uint64_t);
 SWAG_IMPORT void            swag_runtime_print_n(const char* message, int len);
 SWAG_IMPORT swag_int32_t    swag_runtime_strlen(const char* message);
 SWAG_IMPORT void            swag_runtime_print(const char* message);
-SWAG_IMPORT char*           swag_runtime_itoa(char* result, swag_int64_t value);
-SWAG_IMPORT void            swag_runtime_ftoa(char* result, swag_float64_t value);
 SWAG_IMPORT void            swag_runtime_print_i64(swag_int64_t value);
 SWAG_IMPORT void            swag_runtime_print_f64(swag_float64_t value);
 SWAG_IMPORT void            swag_runtime_assert(swag_bool_t expr, const char* file, int line, const char* msg);
