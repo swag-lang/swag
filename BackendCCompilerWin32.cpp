@@ -12,16 +12,16 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     auto         module = backend->module;
     vector<Utf8> libPath;
 
-    g_Log.verbose(format("VS compilerPath is '%s'\n", BackendHelpersWin32::compilerPath.c_str()));
-    g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendHelpersWin32::winSdkPath.c_str()));
-    g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendHelpersWin32::winSdkVersion.c_str()));
+    g_Log.verbose(format("VS compilerPath is '%s'\n", BackendSetupWin32::compilerPath.c_str()));
+    g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
+    g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
 
     // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-    libPath.push_back(format(R"(%s\lib\x64)", BackendHelpersWin32::visualStudioPath.c_str()));
+    libPath.push_back(format(R"(%s\lib\x64)", BackendSetupWin32::visualStudioPath.c_str()));
 
     // Windows sdk library paths
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
 
     // Modules
     libPath.push_back(g_Workspace.targetPath.string());
@@ -97,10 +97,10 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     {
     case BackendOutputType::StaticLib:
     {
-        auto cmdLineCL = "\"" + BackendHelpersWin32::compilerPath + BackendHelpersWin32::compilerExe + "\" " + clArguments + " /c";
+        auto cmdLineCL = "\"" + BackendSetupWin32::compilerPath + BackendSetupWin32::compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -115,10 +115,10 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
             libArguments += "\"" + nameObj.string() + "\" ";
         }
 
-        auto cmdLineLIB = "\"" + BackendHelpersWin32::compilerPath + "lib.exe\" " + libArguments;
+        auto cmdLineLIB = "\"" + BackendSetupWin32::compilerPath + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
 
@@ -185,10 +185,10 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
             clArguments += "/DSWAG_IS_BINARY ";
         }
 
-        auto cmdLineCL = "\"" + BackendHelpersWin32::compilerPath + BackendHelpersWin32::compilerExe + "\" " + clArguments + "/link " + linkArguments;
+        auto cmdLineCL = "\"" + BackendSetupWin32::compilerPath + BackendSetupWin32::compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
     }

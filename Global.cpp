@@ -12,7 +12,7 @@ void Global::setup()
     g_LangSpec.setup();
     
 #ifdef _WIN32
-    BackendHelpersWin32::setup();
+    BackendSetupWin32::setup();
 #endif
 }
 

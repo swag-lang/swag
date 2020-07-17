@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Log.h"
 
-namespace BackendHelpersWin32
+namespace BackendSetupWin32
 {
     string visualStudioPath;
     string winSdkPath, winSdkVersion;
@@ -109,7 +109,7 @@ namespace BackendHelpersWin32
         {
         case BackendType::C_Vs:
             compilerExe  = "cl.exe";
-            compilerPath = BackendHelpersWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
+            compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
         case BackendType::C_Clang:
             compilerExe  = "clang-cl.exe";

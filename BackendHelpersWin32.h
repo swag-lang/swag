@@ -1,7 +1,7 @@
 #pragma once
 #ifdef _WIN32
 
-namespace BackendHelpersWin32
+namespace BackendSetupWin32
 {
     extern string visualStudioPath;
     extern string winSdkPath, winSdkVersion;

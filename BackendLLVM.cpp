@@ -62,9 +62,9 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     dest.close();
 
     vector<Utf8> libPath;
-    libPath.push_back(format(R"(%s\lib\x64)", BackendHelpersWin32::visualStudioPath.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\x64)", BackendSetupWin32::visualStudioPath.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
     libPath.push_back(g_CommandLine.exePath.parent_path().string());
 
@@ -91,7 +91,7 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
     linkArguments += "/OUT:f:\\tt.exe\" ";
 
-    auto     compilerPath = BackendHelpersWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
+    auto     compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
     uint32_t numErrors    = 0;
 
     auto cmdLineCL = "\"" + compilerPath + "link.exe\" " + linkArguments;
