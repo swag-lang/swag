@@ -10,14 +10,7 @@
 
 bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
 {
-    auto         module = backend->module;
-    vector<Utf8> libPath;
-
-    g_Log.verbose(format("VS compilerPath is '%s'\n", BackendSetupWin32::compilerPath.c_str()));
-    g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
-    g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
-
-    BackendLinkerWin32::getLibPaths(libPath);
+    auto module = backend->module;
 
     string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
 
