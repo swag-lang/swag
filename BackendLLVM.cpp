@@ -16,6 +16,21 @@ JobResult BackendLLVM::preCompile(Job* ownerJob, int preCompileIndex)
     return JobResult::ReleaseJob;
 }
 
+bool BackendLLVM::link(const BuildParameters& buildParameters)
+{
+    Utf8 linkArguments;
+    BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+    linkArguments += "f:/output.obj ";
+
+    uint32_t numErrors = 0;
+    auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
+    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, true, numErrors, LogColor::DarkCyan, "CL "));
+
+    g_Workspace.numErrors += numErrors;
+    module->numErrors += numErrors;
+    return numErrors == 0;
+}
+
 bool BackendLLVM::compile(const BuildParameters& buildParameters)
 {
     if (module->name != "tests.compiler")
@@ -52,15 +67,6 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     dest.flush();
     dest.close();
 
-    Utf8 linkArguments;
-    BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
-    linkArguments += "f:/output.obj ";
-
-    uint32_t numErrors = 0;
-    auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
-    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, true, numErrors, LogColor::DarkCyan, "CL "));
-
-    g_Workspace.numErrors += numErrors;
-    module->numErrors += numErrors;
+    SWAG_CHECK(link(buildParameters));
     return true;
 }

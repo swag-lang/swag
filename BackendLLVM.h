@@ -15,6 +15,7 @@ struct BackendLLVM : public Backend
     void      setup() override;
     JobResult preCompile(Job* ownerJob, int preCompileIndex) override;
     bool      compile(const BuildParameters& backendParameters) override;
+    bool      link(const BuildParameters& buildParameters);
 
     llvm::LLVMContext llvmContext;
     llvm::IRBuilder<> llvmBuilder;
