@@ -114,8 +114,10 @@
     <ClInclude Include="Backend.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCCompiler.h" />
-    <ClInclude Include="BackendCCompilerVS.h" />
+    <ClInclude Include="BackendCCompilerWin32.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
+    <ClInclude Include="BackendHelpersWin32.h" />
+    <ClInclude Include="BackendLinkerWin32.h" />
     <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BuildParameters.h" />
     <ClInclude Include="BuildPass.h" />
@@ -203,12 +205,14 @@
     <ClCompile Include="Backend.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="BackendCCompiler.cpp" />
-    <ClCompile Include="BackendCCompilerVS.cpp" />
+    <ClCompile Include="BackendCCompilerWin32.cpp" />
     <ClCompile Include="BackendCData_.cpp" />
     <ClCompile Include="BackendCFunctionBodyJob.cpp" />
     <ClCompile Include="BackendCFunc_.cpp" />
     <ClCompile Include="BackendCMain_.cpp" />
     <ClCompile Include="BackendCRuntime_.cpp" />
+    <ClCompile Include="BackendHelpersWin32.cpp" />
+    <ClCompile Include="BackendLinkerWin32.cpp" />
     <ClCompile Include="BackendLLVM.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobAffectOp_.cpp" />

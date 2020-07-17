@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVS.h"
+#include "BackendCCompilerWin32.h"
 #include "Global.h"
 #include "Module.h"
 #include "ByteCode.h"

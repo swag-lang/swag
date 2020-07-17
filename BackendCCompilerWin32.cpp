@@ -3,155 +3,25 @@
 #include "Os.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVS.h"
+#include "BackendCCompilerWin32.h"
+#include "BackendHelpersWin32.h"
 #include "Workspace.h"
 
-mutex  lockCheck;
-string visualStudioPath;
-string winSdkPath;
-string winSdkVersion;
-string compilerExe;
-string compilerPath;
-
-static bool getVSTarget(string& vsTarget)
-{
-    vector<string> toTest;
-    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
-    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
-    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
-    toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
-    for (auto& one : toTest)
-    {
-        if (fs::exists(one))
-        {
-            vsTarget = one;
-            break;
-        }
-    }
-
-    if (vsTarget.empty())
-        return false;
-
-    for (auto& p : fs::directory_iterator(vsTarget))
-        vsTarget = p.path().string();
-
-    return !vsTarget.empty();
-}
-
-static string getStringRegKey(HKEY hKey, const string& strValueName)
-{
-    string strValue;
-    char   szBuffer[512];
-    DWORD  dwBufferSize = sizeof(szBuffer);
-    ULONG  nError;
-    nError = RegQueryValueExA(hKey, strValueName.c_str(), 0, NULL, (LPBYTE) szBuffer, &dwBufferSize);
-    if (nError == ERROR_SUCCESS)
-        strValue = szBuffer;
-    return strValue;
-}
-
-static bool getWinSdkFolder(string& libPath, string& libVersion)
-{
-    HKEY hKey;
-
-    // Folder, try in register first
-    LONG lRes = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Microsoft SDKs\\Windows\\v10.0\\", 0, KEY_READ, &hKey);
-    if (lRes == ERROR_SUCCESS)
-    {
-        libPath    = getStringRegKey(hKey, "InstallationFolder");
-        libVersion = getStringRegKey(hKey, "ProductVersion");
-        if (!libVersion.empty())
-            libVersion += ".0";
-        RegCloseKey(hKey);
-    }
-
-    // Folder, fallback to direct folder
-    if (libPath.empty())
-    {
-        libPath = R"(C:\Program Files (x86)\Windows Kits\10)";
-        if (!fs::exists(libPath))
-            return false;
-    }
-
-    // Version, fallback to direct folder
-    if (libVersion.empty())
-    {
-        auto libSub = libPath + "\\" + "lib";
-        if (!fs::exists(libSub))
-            return false;
-        fs::path tmpPath;
-        for (auto& p : fs::directory_iterator(libSub))
-            tmpPath = p.path();
-        libVersion = tmpPath.filename().string();
-    }
-
-    return !libPath.empty() && !libVersion.empty();
-}
-
-bool BackendCCompilerVS::check()
-{
-    if (!g_CommandLine.backendOutput)
-        return true;
-
-    // Need to be done only once
-    unique_lock lk(lockCheck);
-    if (!visualStudioPath.empty())
-        return true;
-
-    // Visual studio folder
-    // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-    // For clang-cl, it seems that it can find the folder itself
-    if (!getVSTarget(visualStudioPath))
-    {
-        g_Log.error("error: c backend: cannot locate visual studio folder");
-        return false;
-    }
-
-    // Windows sdk folders and version
-    if (!getWinSdkFolder(winSdkPath, winSdkVersion))
-    {
-        g_Log.error("error: c backend: cannot locate windows sdk folder");
-        return false;
-    }
-
-    // Compiler
-    switch (g_CommandLine.backendType)
-    {
-    case BackendType::C_Vs:
-        compilerExe  = "cl.exe";
-        compilerPath = visualStudioPath + R"(\bin\Hostx64\x64\)";
-        break;
-    case BackendType::C_Clang:
-        compilerExe  = "clang-cl.exe";
-        compilerPath = "C:/Program Files/LLVM/bin/";
-        break;
-    }
-
-    auto fullPath = compilerPath + compilerExe;
-    if (!fs::exists(fullPath))
-    {
-        g_Log.error(format("error: c backend: cannot locate compiler '%s'", fullPath.c_str()));
-        return false;
-    }
-
-    return true;
-}
-
-bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
+bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
 {
     auto         module = backend->module;
     vector<Utf8> libPath;
 
-    g_Log.verbose(format("VS compilerPath is '%s'\n", compilerPath.c_str()));
-    g_Log.verbose(format("VS winSdkPath is '%s'\n", winSdkPath.c_str()));
-    g_Log.verbose(format("VS winSdkVersion is '%s'\n", winSdkVersion.c_str()));
+    g_Log.verbose(format("VS compilerPath is '%s'\n", BackendHelpersWin32::compilerPath.c_str()));
+    g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendHelpersWin32::winSdkPath.c_str()));
+    g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendHelpersWin32::winSdkVersion.c_str()));
 
     // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-    libPath.push_back(format(R"(%s\lib\x64)", visualStudioPath.c_str()));
+    libPath.push_back(format(R"(%s\lib\x64)", BackendHelpersWin32::visualStudioPath.c_str()));
 
     // Windows sdk library paths
-    libPath.push_back(format(R"(%s\lib\%s\um\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
-    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", winSdkPath.c_str(), winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
+    libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendHelpersWin32::winSdkPath.c_str(), BackendHelpersWin32::winSdkVersion.c_str()));
 
     // Modules
     libPath.push_back(g_Workspace.targetPath.string());
@@ -227,10 +97,10 @@ bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
     {
     case BackendOutputType::StaticLib:
     {
-        auto cmdLineCL = "\"" + compilerPath + compilerExe + "\" " + clArguments + " /c";
+        auto cmdLineCL = "\"" + BackendHelpersWin32::compilerPath + BackendHelpersWin32::compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -245,10 +115,10 @@ bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
             libArguments += "\"" + nameObj.string() + "\" ";
         }
 
-        auto cmdLineLIB = "\"" + compilerPath + "lib.exe\" " + libArguments;
+        auto cmdLineLIB = "\"" + BackendHelpersWin32::compilerPath + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
 
@@ -315,10 +185,10 @@ bool BackendCCompilerVS::compile(const BuildParameters& buildParameters)
             clArguments += "/DSWAG_IS_BINARY ";
         }
 
-        auto cmdLineCL = "\"" + compilerPath + compilerExe + "\" " + clArguments + "/link " + linkArguments;
+        auto cmdLineCL = "\"" + BackendHelpersWin32::compilerPath + BackendHelpersWin32::compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendHelpersWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
     }

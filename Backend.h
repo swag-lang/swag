@@ -23,7 +23,7 @@ struct Backend
     {
     }
 
-    virtual bool      check()                                           = 0;
+    virtual void      setup()                                           = 0;
     virtual JobResult preCompile(Job* ownerJob, int preCompileIndex)    = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
 

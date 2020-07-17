@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "BackendHelpersWin32.h"
 
 Global g_Global;
 
@@ -9,6 +10,10 @@ void Global::setup()
 {
     g_TypeMgr.setup();
     g_LangSpec.setup();
+    
+#ifdef _WIN32
+    BackendHelpersWin32::setup();
+#endif
 }
 
 Utf8 format(const char* format, ...)

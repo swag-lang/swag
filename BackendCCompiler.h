@@ -9,7 +9,6 @@ struct BackendCCompiler
     {
     }
 
-    virtual bool check()                                         = 0;
     virtual bool compile(const BuildParameters& buildParameters) = 0;
 
     string getResultFile(const BuildParameters& buildParameters);

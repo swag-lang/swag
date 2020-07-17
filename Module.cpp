@@ -42,7 +42,8 @@ bool Module::setup(const Utf8& moduleName)
         break;
     }
 
-    return backend->check();
+    backend->setup();
+    return true;
 }
 
 void Module::addFile(SourceFile* file)

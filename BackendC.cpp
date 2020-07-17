@@ -4,16 +4,14 @@
 #include "Job.h"
 #include "OutputFile.h"
 #ifdef _WIN32
-#include "BackendCCompilerVS.h"
+#include "BackendCCompilerWin32.h"
 #endif
 
-bool BackendC::check()
+void BackendC::setup()
 {
 #ifdef _WIN32
-    compiler = new BackendCCompilerVS(this);
+    compiler = new BackendCCompilerWin32(this);
 #endif
-
-    return compiler->check();
 }
 
 JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)

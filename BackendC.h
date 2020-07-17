@@ -29,7 +29,7 @@ struct BackendC : public Backend
     {
     }
 
-    bool      check() override;
+    void      setup();
     JobResult preCompile(Job* ownerJob, int preCompileIndex) override;
     bool      compile(const BuildParameters& backendParameters) override;
 
