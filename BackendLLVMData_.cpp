@@ -10,6 +10,7 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
 
     auto segSize = dataSegment->buckets.size();
 
+    // Collect segment count
     int count = 0;
     for (int bucket = 0; bucket < segSize; bucket++)
         count += (int) dataSegment->buckets[bucket].count;
@@ -26,6 +27,7 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
     }
     else
     {
+        // Collect datas
         std::vector<llvm::Constant*> values;
         values.reserve(count);
         for (int bucket = 0; bucket < segSize; bucket++)
@@ -39,6 +41,7 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
             }
         }
 
+        // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
             new llvm::GlobalVariable(*llvmModule, arrayType, false, llvm::GlobalValue::InternalLinkage, constArray, "__mutableseg");
