@@ -10,8 +10,5 @@ struct BackendCCompiler
     }
 
     virtual bool compile(const BuildParameters& buildParameters) = 0;
-
-    string getResultFile(const BuildParameters& buildParameters);
-
     BackendC* backend = nullptr;
 };

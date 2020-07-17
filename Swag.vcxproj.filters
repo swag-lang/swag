@@ -347,9 +347,6 @@
     <ClCompile Include="CopyFileJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCCompiler.cpp">
-      <Filter>Backend\Native\C</Filter>
-    </ClCompile>
     <ClCompile Include="File.cpp">
       <Filter>Main</Filter>
     </ClCompile>

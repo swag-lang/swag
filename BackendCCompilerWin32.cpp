@@ -75,7 +75,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
 
-        string resultFile = getResultFile(buildParameters);
+        string resultFile = BackendLinkerWin32::getResultFile(buildParameters);
         libArguments += "/OUT:\"" + resultFile + "\" ";
 
         for (int i = 0; i < backend->numPreCompileBuffers; i++)

@@ -25,8 +25,8 @@ namespace BackendSetupWin32
     static bool getLLVMBinFolder(string& folder)
     {
         vector<string> toTest;
-        toTest.push_back(R"("C:/Program Files/LLVM/bin)");
-        toTest.push_back(R"("D:/Program Files/LLVM/bin)");
+        toTest.push_back(R"(C:\Program Files\LLVM\bin)");
+        toTest.push_back(R"(D:\Program Files\LLVM\bin)");
         for (auto& one : toTest)
         {
             if (fs::exists(one))
@@ -134,6 +134,7 @@ namespace BackendSetupWin32
             compilerExe  = "cl.exe";
             compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
+
         case BackendType::C_Clang:
             compilerExe  = "clang-cl.exe";
             if (!getLLVMBinFolder(compilerPath))
@@ -141,7 +142,9 @@ namespace BackendSetupWin32
                 g_Log.error("error: backend: cannot locate llvm binary folder");
                 exit(-1);
             }
+            compilerPath += "\\";
             break;
+
         case BackendType::LLVM:
             llvm::InitializeNativeTarget();
             llvm::InitializeNativeTargetAsmPrinter();
