@@ -16,7 +16,7 @@ SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 #endif
 }
 
-SWAG_EXPORT int32_t __strlen(const char* message)
+SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
 {
     int32_t len = 0;
     while (*message++)
@@ -24,14 +24,14 @@ SWAG_EXPORT int32_t __strlen(const char* message)
     return len;
 }
 
-SWAG_EXPORT void __print(const char* message)
+SWAG_EXPORT void swag_runtime_print(const char* message)
 {
     if (!message)
         message = "<null>";
-    swag_runtime_print_n(message, __strlen(message));
+    swag_runtime_print_n(message, swag_runtime_strlen(message));
 }
 
-SWAG_EXPORT char* __itoa(char* result, int64_t value)
+SWAG_EXPORT char* swag_runtime_itoa(char* result, int64_t value)
 {
     char *  ptr = result, *ptr1 = result, tmp_char;
     int64_t tmp_value;
@@ -56,51 +56,51 @@ SWAG_EXPORT char* __itoa(char* result, int64_t value)
     return retVal;
 }
 
-SWAG_EXPORT void __ftoa(char* result, double value)
+SWAG_EXPORT void swag_runtime_ftoa(char* result, double value)
 {
     int64_t ipart  = (int64_t) value;
     double  fpart  = value - (double) ipart;
-    char*   n      = __itoa(result, ipart);
+    char*   n      = swag_runtime_itoa(result, ipart);
     *n++           = '.';
     int afterPoint = 5;
     if (fpart < 0)
         fpart = -fpart;
     while (afterPoint--)
         fpart *= 10;
-    __itoa(n, (int64_t) fpart);
+    swag_runtime_itoa(n, (int64_t) fpart);
 }
 
-SWAG_EXPORT void __print_i64(int64_t value)
+SWAG_EXPORT void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
-    __itoa(buf, value);
-    __print(buf);
+    swag_runtime_itoa(buf, value);
+    swag_runtime_print(buf);
 }
 
-SWAG_EXPORT void __print_f64(double value)
+SWAG_EXPORT void swag_runtime_print_f64(double value)
 {
     char buf[100];
-    __ftoa(buf, value);
-    __print(buf);
+    swag_runtime_ftoa(buf, value);
+    swag_runtime_print(buf);
 }
 
-SWAG_EXPORT void __assert(bool expr, const char* file, int line, const char* msg)
+SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg)
 {
     if (expr)
         return;
 
-    __print("error: [backend] ");
-    __print(file);
-    __print(":");
-    __print_i64(line);
+    swag_runtime_print("error: [backend] ");
+    swag_runtime_print(file);
+    swag_runtime_print(":");
+    swag_runtime_print_i64(line);
     if (msg)
     {
-        __print(": ");
-        __print(msg);
-        __print("\n");
+        swag_runtime_print(": ");
+        swag_runtime_print(msg);
+        swag_runtime_print("\n");
     }
     else
-        __print(": native code assertion failed\n");
+        swag_runtime_print(": native code assertion failed\n");
 
 #ifdef _WIN32
 #ifdef SWAG_DEVMODE
@@ -111,7 +111,7 @@ SWAG_EXPORT void __assert(bool expr, const char* file, int line, const char* msg
     exit(-1);
 }
 
-SWAG_EXPORT bool __strcmp(const char* str1, const char* str2, uint32_t num)
+SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
 {
     if (!str1 || !str2)
         return str1 == str2;

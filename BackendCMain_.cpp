@@ -11,12 +11,12 @@ void BackendC::emitArgcArgv(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "{\n");
 
     bufferC.addStringFormat("\tstatic swag_uint64_t argumentsStr[%d];\n", module->buildParameters.target.backendC.maxApplicationArguments);
-    bufferC.addStringFormat("\t__assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->buildParameters.target.backendC.maxApplicationArguments);
+    bufferC.addStringFormat("\tswag_runtime_assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->buildParameters.target.backendC.maxApplicationArguments);
     bufferC.addEol();
 
     CONCAT_FIXED_STR(bufferC, "\tfor(int i = 0; i < argc; i++) {\n");
     CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
-    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) __strlen(argv[i]);\n");
+    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) swag_runtime_strlen(argv[i]);\n");
     CONCAT_FIXED_STR(bufferC, "\t}\n");
     bufferC.addEol();
     CONCAT_FIXED_STR(bufferC, "\t__process_infos.arguments.addr = &argumentsStr[0];\n");
