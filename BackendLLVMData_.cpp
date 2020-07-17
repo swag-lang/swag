@@ -23,13 +23,14 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int preCompileIndex)
     else
     {
         // Collect datas
+        // Would be faster if done by 32 or 64 bits !
         std::vector<llvm::Constant*> values;
         values.reserve(dataSegment->totalCount);
         for (int bucket = 0; bucket < segSize; bucket++)
         {
-            int  bkCount = (int) dataSegment->buckets[bucket].count;
-            auto pz      = dataSegment->buckets[bucket].buffer;
-            while (bkCount--)
+            int  count = (int) dataSegment->buckets[bucket].count;
+            auto pz    = dataSegment->buckets[bucket].buffer;
+            while (count--)
             {
                 values.push_back(llvm::ConstantInt::get(llvmContext, llvm::APInt(8, *pz)));
                 pz++;
