@@ -2,6 +2,7 @@
 #include "Backend.h"
 #include "OutputFile.h"
 #include "VectorNative.h"
+#include "BackendHelpers.h"
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
@@ -15,13 +16,6 @@ struct Utf8;
 struct Job;
 struct BackendCCompiler;
 
-enum class BackendCPreCompilePass
-{
-    Init,
-    FunctionBodies,
-    End,
-};
-
 struct BackendC : public Backend
 {
     BackendC(Module* mdl)
@@ -30,7 +24,7 @@ struct BackendC : public Backend
     }
 
     void      setup();
-    JobResult preCompile(Job* ownerJob, int preCompileIndex) override;
+    JobResult preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
     bool      compile(const BuildParameters& backendParameters) override;
 
     bool emitRuntime(OutputFile& bufferC, int preCompileIndex);
@@ -52,8 +46,8 @@ struct BackendC : public Backend
     static bool emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc);
     static bool emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
-    OutputFile             bufferCFiles[MAX_PRECOMPILE_BUFFERS];
-    BackendCPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendCPreCompilePass::Init};
-    mutex                  lock;
-    BackendCCompiler*      compiler = nullptr;
+    OutputFile            bufferCFiles[MAX_PRECOMPILE_BUFFERS];
+    BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
+    mutex                 lock;
+    BackendCCompiler*     compiler = nullptr;
 };

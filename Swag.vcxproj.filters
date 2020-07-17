@@ -662,6 +662,9 @@
     <ClInclude Include="BackendSetupWin32.h">
       <Filter>Backend\Native</Filter>
     </ClInclude>
+    <ClInclude Include="BackendHelpers.h">
+      <Filter>Backend\Native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

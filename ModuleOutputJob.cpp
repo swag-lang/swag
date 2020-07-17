@@ -43,16 +43,9 @@ JobResult ModuleOutputJob::execute()
     if (pass == ModuleOutputJobPass::PreCompile)
     {
         // Magic number : max number of functions per file
-        if (g_CommandLine.backendType != BackendType::LLVM)
-        {
-            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
-            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
-            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
-        }
-        else
-        {
-            module->backend->numPreCompileBuffers = 1;
-        }
+        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
+        module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+        module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
@@ -61,6 +54,9 @@ JobResult ModuleOutputJob::execute()
             preCompileJob->module          = module;
             preCompileJob->dependentJob    = this;
             preCompileJob->precompileIndex = i;
+            preCompileJob->buildParameters = module->buildParameters;
+            if (module->fromTests)
+                preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
             jobsToAdd.push_back(preCompileJob);
         }
 

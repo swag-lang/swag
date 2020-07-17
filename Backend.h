@@ -23,9 +23,9 @@ struct Backend
     {
     }
 
-    virtual void      setup()                                           = 0;
-    virtual JobResult preCompile(Job* ownerJob, int preCompileIndex)    = 0;
-    virtual bool      compile(const BuildParameters& backendParameters) = 0;
+    virtual void      setup()                                                                                = 0;
+    virtual JobResult preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) = 0;
+    virtual bool      compile(const BuildParameters& backendParameters)                                      = 0;
 
     void emitSeparator(Concat& buffer, const char* title);
     bool generateExportFile();

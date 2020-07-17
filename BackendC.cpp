@@ -14,13 +14,13 @@ void BackendC::setup()
 #endif
 }
 
-JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
+JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex)
 {
     OutputFile& bufferC = bufferCFiles[preCompileIndex];
 
-    if (pass[preCompileIndex] == BackendCPreCompilePass::Init)
+    if (pass[preCompileIndex] == BackendPreCompilePass::Init)
     {
-        pass[preCompileIndex] = BackendCPreCompilePass::FunctionBodies;
+        pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
@@ -42,14 +42,14 @@ JobResult BackendC::preCompile(Job* ownerJob, int preCompileIndex)
         bufferC.flush(false);
     }
 
-    if (pass[preCompileIndex] == BackendCPreCompilePass::FunctionBodies)
+    if (pass[preCompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
-        pass[preCompileIndex] = BackendCPreCompilePass::End;
+        pass[preCompileIndex] = BackendPreCompilePass::End;
         emitAllFunctionBody(bufferC, ownerJob, preCompileIndex);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (pass[preCompileIndex] == BackendCPreCompilePass::End)
+    if (pass[preCompileIndex] == BackendPreCompilePass::End)
     {
         if (preCompileIndex == 0)
         {
