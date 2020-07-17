@@ -34,20 +34,7 @@ typedef double				swag_float64_t;
 #endif
 
 #ifdef _WIN32
-SWAG_IMPORT void*				LoadLibraryA(const char*);
-SWAG_IMPORT swag_uint32_t		TlsAlloc();
-SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
-SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
-SWAG_IMPORT void*				GetStdHandle(swag_uint32_t);
-SWAG_IMPORT swag_int32_t		WriteFile(void*, void*, swag_uint32_t, swag_uint32_t*, swag_uint32_t*);
-SWAG_IMPORT void				RaiseException(swag_uint32_t, swag_uint32_t, swag_uint32_t, void*);
-SWAG_IMPORT void				MessageBoxA(void*, void*, void*, swag_uint32_t);
-
-#define __loadDynamicLibrary	LoadLibraryA
-#define __tlsAlloc				TlsAlloc
-#define __tlsSetValue			TlsSetValue
-#define __tlsGetValue			TlsGetValue
-typedef swag_uint32_t			swag_tls_id_t;
+typedef swag_uint32_t swag_tls_id_t;
 #endif
 
 typedef union swag_register_t {
@@ -93,6 +80,22 @@ typedef struct swag_process_infos_t {
 )";
 
 static constexpr const char* g_SwagRuntime = R"(
+#ifdef _WIN32
+SWAG_IMPORT void*				LoadLibraryA(const char*);
+SWAG_IMPORT swag_uint32_t		TlsAlloc();
+SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
+SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
+SWAG_IMPORT void*				GetStdHandle(swag_uint32_t);
+SWAG_IMPORT swag_int32_t		WriteFile(void*, void*, swag_uint32_t, swag_uint32_t*, swag_uint32_t*);
+SWAG_IMPORT void				RaiseException(swag_uint32_t, swag_uint32_t, swag_uint32_t, void*);
+SWAG_IMPORT void				MessageBoxA(void*, void*, void*, swag_uint32_t);
+
+#define __loadDynamicLibrary	LoadLibraryA
+#define __tlsAlloc				TlsAlloc
+#define __tlsSetValue			TlsSetValue
+#define __tlsGetValue			TlsGetValue
+#endif
+
 extern void* malloc(swag_uint64_t);
 extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
