@@ -35,7 +35,6 @@ struct BackendC : public Backend
 
     bool emitRuntime(OutputFile& bufferC, int preCompileIndex);
     bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex);
-    void emitArgcArgv(OutputFile& bufferC);
     bool emitMain(OutputFile& bufferC);
     bool emitAllFunctionBody(OutputFile& bufferC, Job* ownerJob, int preCompileIndex);
     bool emitAllFunctionBody(OutputFile& bufferC, Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full);

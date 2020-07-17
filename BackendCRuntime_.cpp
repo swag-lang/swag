@@ -98,7 +98,7 @@ SWAG_IMPORT void            swag_runtime_print_f64(swag_float64_t value);
 SWAG_IMPORT void            swag_runtime_assert(swag_bool_t expr, const char* file, int line, const char* msg);
 SWAG_IMPORT swag_bool_t     swag_runtime_strcmp(const char* str1, const char* str2, swag_uint32_t num);
 SWAG_IMPORT swag_int32_t    swag_runtime_strlen(const char* message);
-
+SWAG_IMPORT void            swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[]);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)

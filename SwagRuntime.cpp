@@ -180,3 +180,19 @@ SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
     return TlsGetValue(id);
 #endif
 }
+
+SWAG_EXPORT void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
+{
+    uint64_t argumentsStr[64];
+    swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments");
+
+    for (int i = 0; i < argc; i++)
+    {
+        argumentsStr[i * 2]       = (int64_t) argv[i];
+        argumentsStr[(i * 2) + 1] = (int64_t) swag_runtime_strlen(argv[i]);
+    }
+
+    void** p = (void**) dest;
+    p[0]     = &argumentsStr[0];
+    p[1]     = (void*) (uint64_t) argc;
+}

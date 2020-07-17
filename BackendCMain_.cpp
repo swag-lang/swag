@@ -5,32 +5,11 @@
 #include "AstNode.h"
 #include "Context.h"
 
-void BackendC::emitArgcArgv(OutputFile& bufferC)
-{
-    CONCAT_FIXED_STR(bufferC, "static void convertArgcArgv(int argc, char *argv[])\n");
-    CONCAT_FIXED_STR(bufferC, "{\n");
-
-    bufferC.addStringFormat("\tstatic swag_uint64_t argumentsStr[%d];\n", module->buildParameters.target.backendC.maxApplicationArguments);
-    bufferC.addStringFormat("\tswag_runtime_assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->buildParameters.target.backendC.maxApplicationArguments);
-    bufferC.addEol();
-
-    CONCAT_FIXED_STR(bufferC, "\tfor(int i = 0; i < argc; i++) {\n");
-    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
-    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) swag_runtime_strlen(argv[i]);\n");
-    CONCAT_FIXED_STR(bufferC, "\t}\n");
-    bufferC.addEol();
-    CONCAT_FIXED_STR(bufferC, "\t__process_infos.arguments.addr = &argumentsStr[0];\n");
-    CONCAT_FIXED_STR(bufferC, "\t__process_infos.arguments.count = (swag_uint64_t) argc;\n");
-
-    CONCAT_FIXED_STR(bufferC, "}\n\n");
-}
-
 bool BackendC::emitMain(OutputFile& bufferC)
 {
     emitSeparator(bufferC, "MAIN");
 
     CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_BINARY\n");
-    emitArgcArgv(bufferC);
     CONCAT_FIXED_STR(bufferC, "int main(int argc, char *argv[])\n");
     CONCAT_FIXED_STR(bufferC, "{\n");
 
@@ -47,7 +26,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
 
     // Arguments
     bufferC.addEol();
-    CONCAT_FIXED_STR(bufferC, "\tconvertArgcArgv(argc, argv);\n");
+    CONCAT_FIXED_STR(bufferC, "\tswag_runtime_convertArgcArgv(&__process_infos.arguments, argc, argv);\n");
     bufferC.addEol();
 
     // Call to global init of this module, and dependencies
