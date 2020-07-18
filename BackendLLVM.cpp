@@ -29,21 +29,23 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         // Do we need to generate the file ?
         if (!mustCompile)
             return JobResult::ReleaseJob;
+
+        emitDataSegment(&module->bssSegment, preCompileIndex);
+        emitDataSegment(&module->mutableSegment, preCompileIndex);
+        emitDataSegment(&module->constantSegment, preCompileIndex);
     }
 
     if (pass[preCompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
         pass[preCompileIndex] = BackendPreCompilePass::End;
-        //return JobResult::KeepJobAlivePending;
+        emitAllFunctionBody(ownerJob, preCompileIndex);
+        return JobResult::KeepJobAlivePending;
     }
 
     if (pass[preCompileIndex] == BackendPreCompilePass::End)
     {
         if (preCompileIndex == 0)
         {
-            emitDataSegment(&module->bssSegment, preCompileIndex);
-            emitDataSegment(&module->mutableSegment, preCompileIndex);
-            emitDataSegment(&module->constantSegment, preCompileIndex);
             emitMain(preCompileIndex);
         }
 
