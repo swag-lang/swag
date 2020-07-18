@@ -12,6 +12,11 @@ struct CompilerParamsBackendC
     uint32_t maxApplicationArguments  = 64;
 };
 
+struct CompilerParamsBackendLLVM
+{
+    bool outputIR = true;  // Write a 'file.ir' text file just next to the output file
+};
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -31,6 +36,7 @@ struct CompilerTarget
     bool     backendDebugInformations = false;
     uint32_t backendOptimizeLevel     = 0;
 
-    // Backend specific
-    CompilerParamsBackendC backendC;
+    // Specific backend parameters
+    CompilerParamsBackendC      backendC;
+    CompilerParamsBackendLLVM   backendLLVM;
 };

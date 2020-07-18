@@ -321,6 +321,11 @@ namespace swag
         maxApplicationArguments: u32    = 64
     }
 
+    struct CompilerParamsBackendLLVM
+    {
+        outputIR: bool = true;
+    }
+
     struct CompilerTarget
     {
         // Debug
@@ -336,8 +341,9 @@ namespace swag
         backendDebugInformations: bool  = false
         backendOptimizeLevel: u32       = 0
 
-        // Backend specific
-        backendC: CompilerParamsBackendC
+        // Specific backend parameters
+        backendC:       CompilerParamsBackendC
+        backendLLVM:    CompilerParamsBackendLLVM
     }
 
     // #########################################################

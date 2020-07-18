@@ -104,11 +104,14 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     dest.close();
 
     ///////////// OUTPUT RESULT /////////////
-    auto                 filename1 = path;
-    llvm::raw_fd_ostream dest1(filename + ".txt", EC, llvm::sys::fs::OF_None);
-    llvmModule[preCompileIndex]->print(dest1, nullptr);
-    dest1.flush();
-    dest1.close();
+    if (buildParameters.target.backendLLVM.outputIR)
+    {
+        auto                 filename1 = path;
+        llvm::raw_fd_ostream dest1(filename + ".ir", EC, llvm::sys::fs::OF_None);
+        llvmModule[preCompileIndex]->print(dest1, nullptr);
+        dest1.flush();
+        dest1.close();
+    }
 
     return true;
 }
