@@ -32,24 +32,6 @@ JobResult BackendCFunctionBodyJob::execute()
             bachendC->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
     }
 
-    if (!canSave)
-        return JobResult::ReleaseJob;
-
-    // Must save one by one, so we must get the lock
-    // During that time, we can execute jobs
-    static mutex lockSave;
-    g_ThreadMgr.participate(lockSave, AFFINITY_ALL, [this](Job* job) {
-        if (job->jobKind == JobKind::BACKEND_FCT_BODY)
-        {
-            auto cJob = (BackendCFunctionBodyJob*) job;
-            if (cJob->backend != backend)
-                return false;
-            cJob->canSave = false;
-        }
-
-        return true;
-    });
-
     // Flush all
     auto firstBucket = g_Concat.firstBucket;
     while (firstBucket)
@@ -63,8 +45,6 @@ JobResult BackendCFunctionBodyJob::execute()
         firstBucket = firstBucket->nextBucket;
     }
 
-    lockSave.unlock();
     g_Concat.clear();
-
     return JobResult::ReleaseJob;
 }

@@ -11,14 +11,6 @@ struct BackendCFunctionBodyJob : public BackendFunctionBodyJob
         extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
         g_Pool_backendCFunctionBodyJob.release(this);
     }
-
-    void reset() override
-    {
-        BackendFunctionBodyJob::reset();
-        canSave = true;
-    }
-
-    bool canSave = true;
 };
 
 extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
