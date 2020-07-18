@@ -63,9 +63,11 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters, int pre
     auto& builder = *llvmBuilder[precompileIndex];
     auto  modu    = llvmModule[precompileIndex];
 
-    auto              fccType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function*   F       = llvm::Function::Create(fccType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
-    llvm::BasicBlock* BB      = llvm::BasicBlock::Create(context, "entry", F);
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
+    fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
     for (auto bc : module->byteCodeDropFunc)
@@ -73,7 +75,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters, int pre
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fccType);
+        auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
         builder.CreateCall(fcc);
     }
 

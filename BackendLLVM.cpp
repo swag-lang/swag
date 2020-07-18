@@ -96,7 +96,6 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     dest.flush();
     dest.close();
 
-
     ///////////// OUTPUT RESULT /////////////
     auto                 filename1 = path;
     llvm::raw_fd_ostream dest1(filename + ".txt", EC, llvm::sys::fs::OF_None);
@@ -121,9 +120,10 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
         linkArguments += path + " ";
     }
 
+    bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
     uint32_t numErrors = 0;
     auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
-    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, true, numErrors, LogColor::DarkCyan, "CL "));
+    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
     g_Workspace.numErrors += numErrors;
     module->numErrors += numErrors;

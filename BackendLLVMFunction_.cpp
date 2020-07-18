@@ -21,6 +21,7 @@ bool BackendLLVM::emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precom
     //std::vector<llvm::Type*> params;
     llvm::FunctionType*      FT = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function*          F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, bc->callName().c_str(), llvmModule[precompileIndex]);
+    //F->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
