@@ -46,7 +46,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     {
         if (preCompileIndex == 0)
         {
-            emitMain(preCompileIndex);
+            emitMain(buildParameters, preCompileIndex);
         }
 
         // Output file
@@ -90,6 +90,15 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     llvmPass.run(*llvmModule[preCompileIndex]);
     dest.flush();
     dest.close();
+
+
+    ///////////// OUTPUT RESULT /////////////
+    auto                 filename1 = path;
+    llvm::raw_fd_ostream dest1(filename + ".txt", EC, llvm::sys::fs::OF_None);
+    llvmModule[preCompileIndex]->print(dest1, nullptr);
+    dest1.flush();
+    dest1.close();
+
     return true;
 }
 
