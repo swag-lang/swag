@@ -67,8 +67,10 @@ bool BackendC::emitMain(OutputFile& bufferC)
         bufferC.addEol();
     }
 
-    // Call to global drop of this module, and dependencies
+    // Call to global drop of this module
     bufferC.addStringFormat("\t%s_globalDrop();\n", module->nameDown.c_str());
+
+    // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
         if (!dep.second.generated)

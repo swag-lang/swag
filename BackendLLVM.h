@@ -24,6 +24,8 @@ struct BackendLLVM : public Backend
 
     bool generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
     bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
+
+    bool emitGlobalDrop(const BuildParameters& buildParameters, int precompileIndex);
     bool emitMain(const BuildParameters& buildParameters, int precompileIndex);
 
     llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS];
