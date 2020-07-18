@@ -50,14 +50,46 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
-            auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
-            preCompileJob->module          = module;
-            preCompileJob->dependentJob    = this;
-            preCompileJob->precompileIndex = i;
-            preCompileJob->buildParameters = module->buildParameters;
-            if (module->fromTests)
-                preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
-            jobsToAdd.push_back(preCompileJob);
+            // Precompile a specific version, to test it
+            // No need for C backend, because the C backend will generate only one .C file compatible will all cases
+            if (g_CommandLine.backendType == BackendType::LLVM)
+            {
+                if (g_CommandLine.test && g_CommandLine.backendOutputTest)
+                {
+                    if (module->fromTests || module->byteCodeTestFunc.size() > 0)
+                    {
+                        auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
+                        preCompileJob->module          = module;
+                        preCompileJob->dependentJob    = this;
+                        preCompileJob->precompileIndex = i;
+                        preCompileJob->buildParameters = module->buildParameters;
+                        if (!module->fromTests)
+                            preCompileJob->buildParameters.postFix = ".test";
+                        preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
+                        jobsToAdd.push_back(preCompileJob);
+                    }
+                }
+
+                // Precompile the normal version
+                if (!module->fromTests && g_CommandLine.backendOutputLegit)
+                {
+                    auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
+                    preCompileJob->module          = module;
+                    preCompileJob->dependentJob    = this;
+                    preCompileJob->precompileIndex = i;
+                    preCompileJob->buildParameters = module->buildParameters;
+                    jobsToAdd.push_back(preCompileJob);
+                }
+            }
+            else
+            {
+                auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
+                preCompileJob->module          = module;
+                preCompileJob->dependentJob    = this;
+                preCompileJob->precompileIndex = i;
+                preCompileJob->buildParameters = module->buildParameters;
+                jobsToAdd.push_back(preCompileJob);
+            }
         }
 
         return JobResult::KeepJobAlivePending;
@@ -94,8 +126,6 @@ JobResult ModuleOutputJob::execute()
             compileJob->module          = module;
             compileJob->dependentJob    = dependentJob;
             compileJob->buildParameters = module->buildParameters;
-
-            // Temp output type
             if (module->byteCodeMainFunc)
                 compileJob->buildParameters.type = BackendOutputType::Binary;
             else

@@ -18,7 +18,11 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     {
         pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
 
-        bufferFiles[preCompileIndex] = format("%s%d", module->name.c_str(), preCompileIndex) + ".obj";
+        SWAG_ASSERT(!module->name.empty());
+        bufferFiles[preCompileIndex] = format("%s%d", module->name.c_str(), preCompileIndex);
+        bufferFiles[preCompileIndex] += buildParameters.postFix;
+        bufferFiles[preCompileIndex] += ".obj";
+
         llvmContext[preCompileIndex] = new llvm::LLVMContext();
         llvmModule[preCompileIndex]  = new llvm::Module(bufferFiles[preCompileIndex].c_str(), *llvmContext[preCompileIndex]);
         llvmBuilder[preCompileIndex] = new llvm::IRBuilder<>(*llvmContext[preCompileIndex]);
@@ -112,6 +116,7 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     for (auto i = 0; i < numPreCompileBuffers; i++)
     {
+        SWAG_ASSERT(!bufferFiles[i].empty());
         auto path = targetPath + "/" + bufferFiles[i].c_str();
         linkArguments += path + " ";
     }
