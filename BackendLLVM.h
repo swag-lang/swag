@@ -6,6 +6,7 @@ struct Module;
 struct BuildParameters;
 struct Job;
 struct DataSegment;
+struct ByteCode;
 
 struct BackendLLVM : public Backend
 {
@@ -18,6 +19,8 @@ struct BackendLLVM : public Backend
     JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
+
+    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc, int preCompileIndex);
 
     bool generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
     bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);

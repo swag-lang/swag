@@ -32,8 +32,8 @@ struct Backend
     void setMustCompile();
     bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
 
-    bool emitAllFunctionBody(Job* ownerJob, int preCompileIndex);
-    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full);
+    void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end);
+    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex);
 
     void emitSeparator(Concat& buffer, const char* title);
     bool generateExportFile();
