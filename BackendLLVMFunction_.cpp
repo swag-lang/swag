@@ -273,6 +273,26 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
 
     auto numParams = typeFunc->parameters.size();
 
+    // Variadic must be pushed first
+    if (numParams)
+    {
+        auto param     = typeFunc->parameters.back();
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            auto rr0 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst0, rr0);
+
+            auto rr1 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::ZExt, func->getArg(1), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst1, rr1);
+
+            idx += 2;
+            numParams--;
+        }
+    }
+
     // Make the call
     vector<llvm::Value*> args;
     for (int i = 0; i < n; i++)
