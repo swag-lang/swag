@@ -46,7 +46,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     if (pass[preCompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
         pass[preCompileIndex] = BackendPreCompilePass::End;
-        emitAllFunctionBody(bufferC, ownerJob, preCompileIndex);
+        emitAllFunctionBody(ownerJob, preCompileIndex);
         return JobResult::KeepJobAlivePending;
     }
 

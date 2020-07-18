@@ -1876,26 +1876,27 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     return ok;
 }
 
-bool BackendC::emitAllFunctionBody(OutputFile& bufferC, Job* ownerJob, int preCompileIndex)
+bool BackendC::emitAllFunctionBody(Job* ownerJob, int preCompileIndex)
 {
     if (preCompileIndex == 0)
     {
-        if (!emitAllFunctionBody(bufferC, g_Workspace.bootstrapModule, ownerJob, preCompileIndex, true))
+        if (!emitAllFunctionBody(g_Workspace.bootstrapModule, ownerJob, preCompileIndex, true))
             return false;
     }
 
-    if (!emitAllFunctionBody(bufferC, module, ownerJob, preCompileIndex, false))
+    if (!emitAllFunctionBody(module, ownerJob, preCompileIndex, false))
         return false;
+
     return true;
 }
 
-bool BackendC::emitAllFunctionBody(OutputFile& bufferC, Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full)
+bool BackendC::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full)
 {
     SWAG_ASSERT(moduleToGen);
 
-    bool                     ok         = true;
-    int                      batchCount = 8;
-    BackendCFunctionBodyJob* job        = nullptr;
+    bool                    ok         = true;
+    int                     batchCount = 8;
+    BackendFunctionBodyJob* job        = nullptr;
 
     // Batch functions between files
     int start = 0;
