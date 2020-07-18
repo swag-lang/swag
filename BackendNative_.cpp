@@ -58,8 +58,10 @@ bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCom
     job->precompileIndex        = preCompileIndex;
     job->backend                = this;
 
+    // Put the bootstrap in the first file
     if (preCompileIndex == 0)
         addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
+
     addFunctionsToJob(moduleToGen, job, start, end);
 
     ownerJob->jobsToAdd.push_back(job);
