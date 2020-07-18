@@ -7,6 +7,7 @@ struct BuildParameters;
 struct Job;
 struct DataSegment;
 struct ByteCode;
+struct TypeInfo;
 
 struct BackendLLVM : public Backend
 {
@@ -20,7 +21,9 @@ struct BackendLLVM : public Backend
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
+    bool swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, int precompileIndex, llvm::Type** llvmType);
     bool emitFunctionBody(Module* moduleToGen, ByteCode* bc, int preCompileIndex);
+    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one, int preCompileIndex);
 
     bool generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
     bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
