@@ -13,10 +13,10 @@ struct TypeInfo;
 enum class JobKind
 {
     MISC,
-    CFCTBODY,
+    BACKEND_FCT_BODY,
 };
 
-static const uint32_t AFFINITY_CFCTBODY = 0x00000001;
+static const uint32_t AFFINITY_BACKEND_FCTBODY = 0x00000001;
 static const uint32_t AFFINITY_EXECBC   = 0x00000002;
 static const uint32_t AFFINITY_ALL      = 0xFFFFFFFF;
 

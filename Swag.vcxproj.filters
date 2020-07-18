@@ -392,6 +392,9 @@
     <ClCompile Include="BackendCFunction_.cpp">
       <Filter>Backend\Native\C</Filter>
     </ClCompile>
+    <ClCompile Include="BackendLLVMFunction_.cpp">
+      <Filter>Backend\Native\LLVM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -663,6 +666,9 @@
       <Filter>Backend\Native</Filter>
     </ClInclude>
     <ClInclude Include="BackendHelpers.h">
+      <Filter>Backend\Native</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend\Native</Filter>
     </ClInclude>
   </ItemGroup>

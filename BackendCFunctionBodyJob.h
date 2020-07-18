@@ -1,28 +1,10 @@
 #pragma once
 #include "Job.h"
-#include "Concat.h"
-struct Module;
-struct BackendC;
-struct ByteCode;
+#include "BackendFunctionBodyJob.h"
 
-struct BackendCFunctionBodyJob : public Job
+struct BackendCFunctionBodyJob : public BackendFunctionBodyJob
 {
-    BackendCFunctionBodyJob()
-    {
-        affinity = AFFINITY_ALL ^ AFFINITY_CFCTBODY;
-        jobKind  = JobKind::CFCTBODY;
-    }
-
     JobResult execute() override;
-
-    void reset() override
-    {
-        Job::reset();
-        backend         = nullptr;
-        precompileIndex = 0;
-        byteCodeFunc.clear();
-        canSave = true;
-    }
 
     void release() override
     {
@@ -30,10 +12,13 @@ struct BackendCFunctionBodyJob : public Job
         g_Pool_backendCFunctionBodyJob.release(this);
     }
 
-    VectorNative<ByteCode*> byteCodeFunc;
-    BackendC*               backend         = nullptr;
-    int                     precompileIndex = 0;
-    bool                    canSave         = true;
+    void reset() override
+    {
+        BackendFunctionBodyJob::reset();
+        canSave = true;
+    }
+
+    bool canSave = true;
 };
 
 extern thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;

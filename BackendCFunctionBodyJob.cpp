@@ -11,6 +11,8 @@ thread_local Concat                        g_Concat;
 
 JobResult BackendCFunctionBodyJob::execute()
 {
+    BackendC* bachendC = (BackendC*) backend;
+
     for (auto one : byteCodeFunc)
     {
         TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
@@ -23,11 +25,11 @@ JobResult BackendCFunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        backend->emitFunctionBody(g_Concat, module, one);
+        bachendC->emitFunctionBody(g_Concat, module, one);
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
-            backend->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
+            bachendC->emitFuncWrapperPublic(g_Concat, module, typeFunc, node, one);
     }
 
     if (!canSave)
@@ -37,7 +39,7 @@ JobResult BackendCFunctionBodyJob::execute()
     // During that time, we can execute jobs
     static mutex lockSave;
     g_ThreadMgr.participate(lockSave, AFFINITY_ALL, [this](Job* job) {
-        if (job->jobKind == JobKind::CFCTBODY)
+        if (job->jobKind == JobKind::BACKEND_FCT_BODY)
         {
             auto cJob = (BackendCFunctionBodyJob*) job;
             if (cJob->backend != backend)
@@ -52,8 +54,8 @@ JobResult BackendCFunctionBodyJob::execute()
     auto firstBucket = g_Concat.firstBucket;
     while (firstBucket)
     {
-        backend->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
-            if (job->jobKind == JobKind::CFCTBODY)
+        bachendC->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
+            if (job->jobKind == JobKind::BACKEND_FCT_BODY)
                 return false;
             return true;
         });
