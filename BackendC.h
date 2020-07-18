@@ -23,15 +23,14 @@ struct BackendC : public Backend
     {
     }
 
-    void      setup();
-    JobResult preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
-    bool      compile(const BuildParameters& backendParameters) override;
+    void                    setup();
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
+    bool                    compile(const BuildParameters& backendParameters) override;
+    BackendFunctionBodyJob* newFunctionJob() override;
 
     bool emitRuntime(OutputFile& bufferC, int preCompileIndex);
     bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex);
     bool emitMain(OutputFile& bufferC);
-    bool emitAllFunctionBody(Job* ownerJob, int preCompileIndex);
-    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen);
     bool emitGlobalInit(OutputFile& bufferC);

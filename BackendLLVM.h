@@ -14,11 +14,12 @@ struct BackendLLVM : public Backend
     {
     }
 
-    void      setup() override;
-    JobResult preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
-    bool      compile(const BuildParameters& backendParameters) override;
-    bool      generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
+    void                    setup() override;
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
+    bool                    compile(const BuildParameters& backendParameters) override;
+    BackendFunctionBodyJob* newFunctionJob() override;
 
+    bool generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
     bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
     bool emitMain(int precompileIndex);
 

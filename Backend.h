@@ -12,6 +12,7 @@ struct Scope;
 struct TypeInfoParam;
 struct AstVarDecl;
 struct Job;
+struct BackendFunctionBodyJob;
 enum class JobResult;
 
 static const int MAX_PRECOMPILE_BUFFERS = 128;
@@ -23,16 +24,20 @@ struct Backend
     {
     }
 
-    virtual void      setup()                                                                                = 0;
-    virtual JobResult preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) = 0;
-    virtual bool      compile(const BuildParameters& backendParameters)                                      = 0;
+    virtual void                    setup()                                                                                = 0;
+    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) = 0;
+    virtual bool                    compile(const BuildParameters& backendParameters)                                      = 0;
+    virtual BackendFunctionBodyJob* newFunctionJob()                                                                       = 0;
+
+    void setMustCompile();
+    bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
+
+    bool emitAllFunctionBody(Job* ownerJob, int preCompileIndex);
+    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex, bool full);
 
     void emitSeparator(Concat& buffer, const char* title);
     bool generateExportFile();
-    void setMustCompile();
     void setupExportFile();
-    bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
-
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);
     bool emitGenericParameters(AstNode* node);

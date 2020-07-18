@@ -6,7 +6,7 @@
 #include "Ast.h"
 #include "ThreadManager.h"
 
-thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
+thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
 
 JobResult BackendLLVMFunctionBodyJob::execute()
 {

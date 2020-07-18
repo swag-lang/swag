@@ -398,6 +398,12 @@
     <ClCompile Include="BackendLLVMFunctionBodyJob.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
+    <ClCompile Include="BackendExport_.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendNative_.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
