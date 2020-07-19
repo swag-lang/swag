@@ -34,69 +34,55 @@ bool BackendLLVM::swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, in
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
         uint32_t ptrCount = typeInfoPointer->ptrCount;
-        if (typeInfoPointer->finalType->kind == TypeInfoKind::Struct ||
-            typeInfoPointer->finalType->isNative(NativeTypeKind::Any) ||
-            typeInfoPointer->finalType->kind == TypeInfoKind::Slice)
-            ptrCount--;
+        if (ptrCount != 1)
+            return moduleToGen->internalError(format("swagTypeToLLVMType, invalid pointer type '%s'", typeInfo->name.c_str()));
 
-        if (ptrCount == 0)
+        if (typeInfoPointer->finalType->kind == TypeInfoKind::Slice ||
+            typeInfoPointer->finalType->kind == TypeInfoKind::Array ||
+            typeInfoPointer->finalType->kind == TypeInfoKind::Struct ||
+            typeInfoPointer->finalType->kind == TypeInfoKind::Interface ||
+            typeInfoPointer->finalType->isNative(NativeTypeKind::Any) ||
+            typeInfoPointer->finalType->isNative(NativeTypeKind::String) ||
+            typeInfoPointer->finalType->kind == TypeInfoKind::Reference)
         {
-            SWAG_CHECK(swagTypeToLLVMType(moduleToGen, typeInfoPointer->finalType, precompileIndex, llvmType));
+            *llvmType = llvm::PointerType::getInt8PtrTy(context);
+        }
+        else if (typeInfoPointer->finalType->kind == TypeInfoKind::Native)
+        {
+            switch (typeInfoPointer->finalType->nativeType)
+            {
+            case NativeTypeKind::Bool:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                *llvmType = llvm::PointerType::getInt8PtrTy(context);
+                return true;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                *llvmType = llvm::PointerType::getInt16PtrTy(context);
+                return true;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Char:
+                *llvmType = llvm::PointerType::getInt32PtrTy(context);
+                return true;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                *llvmType = llvm::PointerType::getInt64PtrTy(context);
+                return true;
+            case NativeTypeKind::F32:
+                *llvmType = llvm::Type::getFloatPtrTy(context);
+                return true;
+            case NativeTypeKind::F64:
+                *llvmType = llvm::Type::getDoublePtrTy(context);
+                return true;
+            case NativeTypeKind::Void:
+                *llvmType = llvm::Type::getInt8PtrTy(context);
+                return true;
+            }
         }
         else
         {
-            if (ptrCount != 1)
-                return moduleToGen->internalError(format("swagTypeToLLVMType, invalid pointer type '%s'", typeInfo->name.c_str()));
-
-            if (typeInfo->kind == TypeInfoKind::Slice ||
-                typeInfo->kind == TypeInfoKind::Array ||
-                typeInfo->kind == TypeInfoKind::Struct ||
-                typeInfo->kind == TypeInfoKind::Interface ||
-                typeInfo->isNative(NativeTypeKind::Any) ||
-                typeInfo->isNative(NativeTypeKind::String) ||
-                typeInfo->kind == TypeInfoKind::Reference)
-            {
-                *llvmType = llvm::PointerType::getVoidTy(context);
-            }
-            else if (typeInfo->kind == TypeInfoKind::Native)
-            {
-                switch (typeInfoPointer->finalType->nativeType)
-                {
-                case NativeTypeKind::Bool:
-                    *llvmType = llvm::PointerType::getInt8PtrTy(context);
-                    return true;
-                case NativeTypeKind::S8:
-                case NativeTypeKind::U8:
-                    *llvmType = llvm::PointerType::getInt8PtrTy(context);
-                    return true;
-                case NativeTypeKind::S16:
-                case NativeTypeKind::U16:
-                    *llvmType = llvm::PointerType::getInt16PtrTy(context);
-                    return true;
-                case NativeTypeKind::S32:
-                case NativeTypeKind::U32:
-                case NativeTypeKind::Char:
-                    *llvmType = llvm::PointerType::getInt32PtrTy(context);
-                    return true;
-                case NativeTypeKind::S64:
-                case NativeTypeKind::U64:
-                    *llvmType = llvm::PointerType::getInt64PtrTy(context);
-                    return true;
-                case NativeTypeKind::F32:
-                    *llvmType = llvm::Type::getFloatPtrTy(context);
-                    return true;
-                case NativeTypeKind::F64:
-                    *llvmType = llvm::Type::getDoublePtrTy(context);
-                    return true;
-                case NativeTypeKind::Void:
-                    *llvmType = llvm::Type::getInt8PtrTy(context);
-                    return true;
-                }
-            }
-            else
-            {
-                return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
-            }
+            return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
         }
 
         return true;
@@ -155,6 +141,10 @@ bool BackendLLVM::swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, in
 
 bool BackendLLVM::emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precompileIndex)
 {
+    SWAG_ASSERT(llvmContext[precompileIndex]);
+    SWAG_ASSERT(llvmBuilder[precompileIndex]);
+    SWAG_ASSERT(llvmModule[precompileIndex]);
+
     auto& context  = *llvmContext[precompileIndex];
     auto& builder  = *llvmBuilder[precompileIndex];
     auto  typeFunc = bc->callType();
@@ -411,13 +401,13 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
         {
             //*((void **) result) = rr0.pointer
             auto loadInst = builder.CreateLoad(rr0);
-            auto arg0 = builder.CreatePointerCast(func->getArg((int)params.size() - 1), llvm::Type::getInt64PtrTy(context));
+            auto arg0     = builder.CreatePointerCast(func->getArg((int) params.size() - 1), llvm::Type::getInt64PtrTy(context));
             builder.CreateStore(loadInst, arg0);
 
             //*((void **) result + 1) = rr1.pointer
-            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
+            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
             auto arg1 = builder.CreateInBoundsGEP(arg0, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
-            loadInst = builder.CreateLoad(rr1);
+            loadInst  = builder.CreateLoad(rr1);
             builder.CreateStore(loadInst, arg1);
 
             builder.CreateRetVoid();
@@ -425,7 +415,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
             auto loadInst = builder.CreateLoad(rr0);
-            auto arg0 = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, llvmReturnType);
+            auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, llvmReturnType);
             builder.CreateRet(arg0);
         }
         else if (returnType->kind == TypeInfoKind::Native)

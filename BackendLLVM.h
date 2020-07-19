@@ -31,9 +31,9 @@ struct BackendLLVM : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters, int precompileIndex);
     bool emitMain(const BuildParameters& buildParameters, int precompileIndex);
 
-    llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS];
-    llvm::IRBuilder<>*    llvmBuilder[MAX_PRECOMPILE_BUFFERS];
-    llvm::Module*         llvmModule[MAX_PRECOMPILE_BUFFERS];
+    llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS] = {0};
+    llvm::IRBuilder<>*    llvmBuilder[MAX_PRECOMPILE_BUFFERS] = {0};
+    llvm::Module*         llvmModule[MAX_PRECOMPILE_BUFFERS]  = {0};
     string                bufferFiles[MAX_PRECOMPILE_BUFFERS];
     BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
 };
