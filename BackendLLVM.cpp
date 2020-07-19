@@ -85,12 +85,6 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     llvm::raw_fd_ostream dest(filename, EC, llvm::sys::fs::OF_None);
 
     llvm::legacy::PassManager llvmPass;
-    if (theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile))
-    {
-        //errs() << "TheTargetMachine can't emit a file of this type";
-        SWAG_ASSERT(false);
-        return false;
-    }
 
     llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
     llvmPass.add(llvm::createInstructionCombiningPass());
@@ -107,18 +101,25 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     //pmb.SLPVectorize       = true;
     //pmb.populateModulePassManager(llvmPass);
 
+    if (theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile))
+    {
+        //errs() << "TheTargetMachine can't emit a file of this type";
+        SWAG_ASSERT(false);
+        return false;
+    }
+
     llvmPass.run(*llvmModule[preCompileIndex]);
     dest.flush();
     dest.close();
 
-    ///////////// OUTPUT RESULT /////////////
+    // Output IR code
     if (buildParameters.target.backendLLVM.outputIR)
     {
-        auto                 filename1 = path;
-        llvm::raw_fd_ostream dest1(filename + ".ir", EC, llvm::sys::fs::OF_None);
-        llvmModule[preCompileIndex]->print(dest1, nullptr);
-        dest1.flush();
-        dest1.close();
+        auto                 filenameIR = path;
+        llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
+        llvmModule[preCompileIndex]->print(destFileIR, nullptr);
+        destFileIR.flush();
+        destFileIR.close();
     }
 
     return true;
