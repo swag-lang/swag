@@ -56,35 +56,36 @@ JobResult ModuleOutputJob::execute()
             {
                 if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
                 {
-                    auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
-                    preCompileJob->module          = module;
-                    preCompileJob->dependentJob    = this;
-                    preCompileJob->precompileIndex = i;
-                    preCompileJob->buildParameters = module->buildParameters;
+                    auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                    preCompileJob->module                          = module;
+                    preCompileJob->dependentJob                    = this;
+                    preCompileJob->buildParameters                 = module->buildParameters;
+                    preCompileJob->buildParameters.precompileIndex = i;
+                    preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
                     if (!module->fromTests)
                         preCompileJob->buildParameters.postFix = ".test";
-                    preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
                     jobsToAdd.push_back(preCompileJob);
                 }
 
                 // Precompile the normal version
                 if (!module->fromTests && g_CommandLine.backendOutputLegit)
                 {
-                    auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
-                    preCompileJob->module          = module;
-                    preCompileJob->dependentJob    = this;
-                    preCompileJob->precompileIndex = i;
-                    preCompileJob->buildParameters = module->buildParameters;
+                    auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                    preCompileJob->module                          = module;
+                    preCompileJob->dependentJob                    = this;
+                    preCompileJob->buildParameters                 = module->buildParameters;
+                    preCompileJob->buildParameters.precompileIndex = i;
+                    preCompileJob->buildParameters.compileType     = BackendCompileType::Normal;
                     jobsToAdd.push_back(preCompileJob);
                 }
             }
             else
             {
-                auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
-                preCompileJob->module          = module;
-                preCompileJob->dependentJob    = this;
-                preCompileJob->precompileIndex = i;
-                preCompileJob->buildParameters = module->buildParameters;
+                auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
                 jobsToAdd.push_back(preCompileJob);
             }
         }
@@ -100,15 +101,15 @@ JobResult ModuleOutputJob::execute()
         // Compile a specific version, to test it
         if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
         {
-            auto compileJob                      = g_Pool_moduleCompileJob.alloc();
-            compileJob->module                   = module;
-            compileJob->dependentJob             = dependentJob;
-            compileJob->buildParameters          = module->buildParameters;
-            compileJob->buildParameters.destFile = module->name;
-            compileJob->buildParameters.type     = BackendOutputType::Binary;
+            auto compileJob                         = g_Pool_moduleCompileJob.alloc();
+            compileJob->module                      = module;
+            compileJob->dependentJob                = dependentJob;
+            compileJob->buildParameters             = module->buildParameters;
+            compileJob->buildParameters.destFile    = module->name;
+            compileJob->buildParameters.type        = BackendOutputType::Binary;
+            compileJob->buildParameters.compileType = BackendCompileType::Test;
             if (!module->fromTests)
                 compileJob->buildParameters.postFix = ".test";
-            compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
             g_ThreadMgr.addJob(compileJob);
         }
 
@@ -116,10 +117,11 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (!module->fromTests && g_CommandLine.backendOutputLegit)
         {
-            auto compileJob             = g_Pool_moduleCompileJob.alloc();
-            compileJob->module          = module;
-            compileJob->dependentJob    = dependentJob;
-            compileJob->buildParameters = module->buildParameters;
+            auto compileJob                         = g_Pool_moduleCompileJob.alloc();
+            compileJob->module                      = module;
+            compileJob->dependentJob                = dependentJob;
+            compileJob->buildParameters             = module->buildParameters;
+            compileJob->buildParameters.compileType = BackendCompileType::Normal;
             if (module->byteCodeMainFunc)
                 compileJob->buildParameters.type = BackendOutputType::Binary;
             else

@@ -51,7 +51,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
         break;
     }
 
-    if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+    if (buildParameters.compileType == BackendCompileType::Test)
         clArguments += "/DSWAG_HAS_TEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;

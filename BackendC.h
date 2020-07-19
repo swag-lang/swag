@@ -24,7 +24,7 @@ struct BackendC : public Backend
     }
 
     void                    setup();
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex) override;
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 

@@ -12,14 +12,14 @@ JobResult ModuleCompileJob::execute()
 {
     if (!module->backend->mustCompile)
     {
-        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+        if (buildParameters.compileType == BackendCompileType::Test)
             g_Log.messageHeaderCentered("Skipping build test", module->name.c_str(), LogColor::Gray);
         else
             g_Log.messageHeaderCentered("Skipping build", module->name.c_str(), LogColor::Gray);
     }
     else
     {
-        const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
+        const char* header = (buildParameters.compileType == BackendCompileType::Test) ? "Building test" : "Building";
         g_Log.messageHeaderCentered(header, module->name.c_str());
 
         // Generate output file
@@ -43,7 +43,7 @@ JobResult ModuleCompileJob::execute()
     // Test can be run "on the void"
     if (g_CommandLine.runBackendTests)
     {
-        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+        if (buildParameters.compileType == BackendCompileType::Test)
         {
             auto job             = g_Pool_moduleTestJob.alloc();
             job->module          = module;

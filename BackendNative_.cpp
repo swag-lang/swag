@@ -30,7 +30,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
     }
 }
 
-bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int precompileIndex)
+bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
 {
     SWAG_ASSERT(moduleToGen);
 
@@ -38,6 +38,8 @@ bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int precom
     int start = 0;
     int end   = 0;
     int size  = (int) moduleToGen->byteCodeFunc.size();
+
+    int precompileIndex = buildParameters.precompileIndex;
 
     if (precompileIndex == 0)
     {
@@ -55,7 +57,7 @@ bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int precom
     BackendFunctionBodyJob* job = newFunctionJob();
     job->module                 = moduleToGen;
     job->dependentJob           = ownerJob;
-    job->precompileIndex        = precompileIndex;
+    job->buildParameters        = buildParameters;
     job->backend                = this;
 
     // Put the bootstrap in the first file

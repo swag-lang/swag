@@ -4,11 +4,14 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 
-bool BackendLLVM::emitMain(const BuildParameters& buildParameters, int precompileIndex)
+bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 {
-    auto& context = *llvmContext[precompileIndex];
-    auto& builder = *llvmBuilder[precompileIndex];
-    auto  modu    = llvmModule[precompileIndex];
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
 
     // Prototype
     vector<llvm::Type*> params;
@@ -23,7 +26,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters, int precompil
 
     // Generate call to test functions
     auto fccType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+    if (buildParameters.compileType == BackendCompileType::Test)
     {
         if (!module->byteCodeTestFunc.empty())
         {
@@ -57,11 +60,14 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters, int precompil
     return true;
 }
 
-bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters, int precompileIndex)
+bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 {
-    auto& context = *llvmContext[precompileIndex];
-    auto& builder = *llvmBuilder[precompileIndex];
-    auto  modu    = llvmModule[precompileIndex];
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);

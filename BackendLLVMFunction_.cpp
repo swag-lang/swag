@@ -15,9 +15,12 @@ BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
     return g_Pool_backendLLVMFunctionBodyJob.alloc();
 }
 
-bool BackendLLVM::swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, int precompileIndex, llvm::Type** llvmType)
+bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType)
 {
-    auto& context = *llvmContext[precompileIndex];
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
 
     typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     *llvmType = nullptr;
@@ -25,7 +28,7 @@ bool BackendLLVM::swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, in
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(swagTypeToLLVMType(moduleToGen, typeInfoEnum->rawType, precompileIndex, llvmType));
+        SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType, llvmType));
         return true;
     }
 
@@ -139,14 +142,14 @@ bool BackendLLVM::swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, in
     return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
-bool BackendLLVM::emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precompileIndex)
+bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
-    SWAG_ASSERT(llvmContext[precompileIndex]);
-    SWAG_ASSERT(llvmBuilder[precompileIndex]);
-    SWAG_ASSERT(llvmModule[precompileIndex]);
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context  = *llvmContext[precompileIndex];
-    auto& builder  = *llvmBuilder[precompileIndex];
+    auto& context  = *llvmContext[ct][precompileIndex];
+    auto& builder  = *llvmBuilder[ct][precompileIndex];
+    auto& modu     = *llvmModule[ct][precompileIndex];
     auto  typeFunc = bc->callType();
 
     // One int64 per register
@@ -162,7 +165,7 @@ bool BackendLLVM::emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precom
 
     // Function prototype
     llvm::FunctionType* funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
-    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), llvmModule[precompileIndex]);
+    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), modu);
 
     // Content
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
@@ -172,18 +175,21 @@ bool BackendLLVM::emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precom
     return true;
 }
 
-bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc, int precompileIndex)
+bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
-    auto& context = *llvmContext[precompileIndex];
-    auto& builder = *llvmBuilder[precompileIndex];
-    auto  modu    = llvmModule[precompileIndex];
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
 
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     // Real return type
     llvm::Type* llvmReturnType;
     llvm::Type* llvmRealReturnType;
-    SWAG_CHECK(swagTypeToLLVMType(moduleToGen, typeFunc->returnType, precompileIndex, &llvmRealReturnType));
+    SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType, &llvmRealReturnType));
     if (returnByCopy)
         llvmReturnType = llvm::Type::getVoidTy(context);
     else if (typeFunc->numReturnRegisters() > 1)
@@ -213,7 +219,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
             auto param = node->parameters->childs[i];
 
             llvm::Type* llvmType;
-            SWAG_CHECK(swagTypeToLLVMType(moduleToGen, param->typeInfo, precompileIndex, &llvmType));
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param->typeInfo, &llvmType));
             params.push_back(llvmType);
 
             if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
@@ -233,7 +239,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     auto name = Ast::computeFullNameForeign(node, true);
 
     llvm::FunctionType* funcType = llvm::FunctionType::get(llvmReturnType, params, false);
-    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), llvmModule[precompileIndex]);
+    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), *modu);
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);

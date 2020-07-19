@@ -10,7 +10,8 @@ thread_local Concat                        g_Concat;
 
 JobResult BackendCFunctionBodyJob::execute()
 {
-    BackendC* bachendC = (BackendC*) backend;
+    BackendC* bachendC        = (BackendC*) backend;
+    int       precompileIndex = buildParameters.precompileIndex;
 
     for (auto one : byteCodeFunc)
     {

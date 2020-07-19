@@ -3,12 +3,15 @@
 #include "DataSegment.h"
 #include "Module.h"
 
-bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int precompileIndex)
+bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment)
 {
     if (!dataSegment->buckets.size())
         return true;
     if (!dataSegment->totalCount)
         return true;
+
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
 
     // Generate extern vars
     if (precompileIndex)
@@ -18,7 +21,8 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int precompileIndex)
 
     // Generate content
     auto  segSize = dataSegment->buckets.size();
-    auto& context = *llvmContext[precompileIndex];
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
 
     llvm::Type*      type      = llvm::Type::getInt8Ty(context);
     llvm::ArrayType* arrayType = llvm::ArrayType::get(type, dataSegment->totalCount);
@@ -26,7 +30,7 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int precompileIndex)
     if (dataSegment == &module->bssSegment)
     {
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
-        new llvm::GlobalVariable(*llvmModule[precompileIndex], arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
+        new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
     }
     else
     {
@@ -48,9 +52,9 @@ bool BackendLLVM::emitDataSegment(DataSegment* dataSegment, int precompileIndex)
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
-            new llvm::GlobalVariable(*llvmModule[precompileIndex], arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
+            new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
         else
-            new llvm::GlobalVariable(*llvmModule[precompileIndex], arrayType, true, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
+            new llvm::GlobalVariable(*modu, arrayType, true, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
     }
 
     return true;

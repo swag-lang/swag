@@ -1,6 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Concat.h"
+#include "BuildParameters.h"
 struct Module;
 struct Backend;
 struct ByteCode;
@@ -17,11 +18,10 @@ struct BackendFunctionBodyJob : public Job
     {
         Job::reset();
         backend         = nullptr;
-        precompileIndex = 0;
         byteCodeFunc.clear();
     }
 
+    BuildParameters         buildParameters;
     VectorNative<ByteCode*> byteCodeFunc;
     Backend*                backend         = nullptr;
-    int                     precompileIndex = 0;
 };

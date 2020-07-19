@@ -24,16 +24,16 @@ struct Backend
     {
     }
 
-    virtual void                    setup()                                                                                = 0;
-    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex) = 0;
-    virtual bool                    compile(const BuildParameters& backendParameters)                                      = 0;
-    virtual BackendFunctionBodyJob* newFunctionJob()                                                                       = 0;
+    virtual void                    setup()                                                           = 0;
+    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) = 0;
+    virtual bool                    compile(const BuildParameters& backendParameters)                 = 0;
+    virtual BackendFunctionBodyJob* newFunctionJob()                                                  = 0;
 
     void setMustCompile();
     bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
 
     void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end);
-    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int precompileIndex);
+    bool emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
 
     void emitSeparator(Concat& buffer, const char* title);
     bool generateExportFile();

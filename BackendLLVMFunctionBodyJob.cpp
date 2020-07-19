@@ -24,11 +24,11 @@ JobResult BackendLLVMFunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        bachendLLVM->emitFunctionBody(module, one, precompileIndex);
+        bachendLLVM->emitFunctionBody(buildParameters, module, one);
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
-            bachendLLVM->emitFuncWrapperPublic(module, typeFunc, node, one, precompileIndex);
+            bachendLLVM->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one);
     }
 
     return JobResult::ReleaseJob;

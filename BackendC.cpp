@@ -14,13 +14,14 @@ void BackendC::setup()
 #endif
 }
 
-JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex)
+JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Do we need to generate the file ?
     if (!mustCompile)
         return JobResult::ReleaseJob;
 
-    OutputFile& bufferC = bufferCFiles[precompileIndex];
+    int         precompileIndex = buildParameters.precompileIndex;
+    OutputFile& bufferC         = bufferCFiles[precompileIndex];
 
     if (pass[precompileIndex] == BackendPreCompilePass::Init)
     {
@@ -47,7 +48,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     if (pass[precompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
         pass[precompileIndex] = BackendPreCompilePass::End;
-        emitAllFunctionBody(module, ownerJob, precompileIndex);
+        emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlivePending;
     }
 

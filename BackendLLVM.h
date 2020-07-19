@@ -1,6 +1,7 @@
 #pragma once
 #include "Backend.h"
 #include "BackendHelpers.h"
+#include "BuildParameters.h"
 
 struct Module;
 struct BuildParameters;
@@ -17,23 +18,23 @@ struct BackendLLVM : public Backend
     }
 
     void                    setup() override;
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex) override;
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, int precompileIndex, llvm::Type** llvmType);
-    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precompileIndex);
-    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one, int precompileIndex);
+    bool swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
+    bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
-    bool generateObjFile(const BuildParameters& buildParameters, int precompileIndex);
-    bool emitDataSegment(DataSegment* dataSegment, int precompileIndex);
+    bool generateObjFile(const BuildParameters& buildParameters);
+    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
 
-    bool emitGlobalDrop(const BuildParameters& buildParameters, int precompileIndex);
-    bool emitMain(const BuildParameters& buildParameters, int precompileIndex);
+    bool emitGlobalDrop(const BuildParameters& buildParameters);
+    bool emitMain(const BuildParameters& buildParameters);
 
-    llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS] = {0};
-    llvm::IRBuilder<>*    llvmBuilder[MAX_PRECOMPILE_BUFFERS] = {0};
-    llvm::Module*         llvmModule[MAX_PRECOMPILE_BUFFERS]  = {0};
-    string                bufferFiles[MAX_PRECOMPILE_BUFFERS];
-    BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
+    llvm::LLVMContext*    llvmContext[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS] = {0};
+    llvm::IRBuilder<>*    llvmBuilder[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS] = {0};
+    llvm::Module*         llvmModule[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS]  = {0};
+    string                bufferFiles[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    BackendPreCompilePass pass[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
 };

@@ -13,7 +13,7 @@ namespace BackendLinkerWin32
     string getCacheFolder(const BuildParameters& buildParameters)
     {
         auto targetPath = g_Workspace.cachePath.string();
-        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+        if (buildParameters.compileType == BackendCompileType::Test)
             targetPath += "/test/";
         return targetPath;
     }

@@ -12,59 +12,64 @@ void BackendLLVM::setup()
 {
 }
 
-JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex)
+JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Do we need to generate the file ?
     if (!mustCompile)
         return JobResult::ReleaseJob;
 
-    if (pass[precompileIndex] == BackendPreCompilePass::Init)
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+    if (pass[ct][precompileIndex] == BackendPreCompilePass::Init)
     {
-        pass[precompileIndex] = BackendPreCompilePass::FunctionBodies;
+        pass[ct][precompileIndex] = BackendPreCompilePass::FunctionBodies;
 
         SWAG_ASSERT(!module->name.empty());
-        bufferFiles[precompileIndex] = format("%s%d", module->name.c_str(), precompileIndex);
-        bufferFiles[precompileIndex] += buildParameters.postFix;
-        bufferFiles[precompileIndex] += ".obj";
+        bufferFiles[ct][precompileIndex] = format("%s%d", module->name.c_str(), precompileIndex);
+        bufferFiles[ct][precompileIndex] += buildParameters.postFix;
+        bufferFiles[ct][precompileIndex] += ".obj";
 
-        llvmContext[precompileIndex] = new llvm::LLVMContext();
-        llvmModule[precompileIndex]  = new llvm::Module(bufferFiles[precompileIndex].c_str(), *llvmContext[precompileIndex]);
-        llvmBuilder[precompileIndex] = new llvm::IRBuilder<>(*llvmContext[precompileIndex]);
+        llvmContext[ct][precompileIndex] = new llvm::LLVMContext();
+        llvmModule[ct][precompileIndex]  = new llvm::Module(bufferFiles[ct][precompileIndex].c_str(), *llvmContext[ct][precompileIndex]);
+        llvmBuilder[ct][precompileIndex] = new llvm::IRBuilder<>(*llvmContext[ct][precompileIndex]);
 
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[precompileIndex].c_str(), module->byteCodeTestFunc.size()));
+            g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[ct][precompileIndex].c_str(), module->byteCodeTestFunc.size()));
 
-        emitDataSegment(&module->bssSegment, precompileIndex);
-        emitDataSegment(&module->mutableSegment, precompileIndex);
-        emitDataSegment(&module->constantSegment, precompileIndex);
+        emitDataSegment(buildParameters, &module->bssSegment);
+        emitDataSegment(buildParameters, &module->mutableSegment);
+        emitDataSegment(buildParameters, &module->constantSegment);
     }
 
-    if (pass[precompileIndex] == BackendPreCompilePass::FunctionBodies)
+    if (pass[ct][precompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
-        pass[precompileIndex] = BackendPreCompilePass::End;
-        emitAllFunctionBody(module, ownerJob, precompileIndex);
+        pass[ct][precompileIndex] = BackendPreCompilePass::End;
+        emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (pass[precompileIndex] == BackendPreCompilePass::End)
+    if (pass[ct][precompileIndex] == BackendPreCompilePass::End)
     {
         if (precompileIndex == 0)
         {
-            emitGlobalDrop(buildParameters, precompileIndex);
-            emitMain(buildParameters, precompileIndex);
+            emitGlobalDrop(buildParameters);
+            emitMain(buildParameters);
         }
 
         // Output file
-        generateObjFile(buildParameters, precompileIndex);
+        generateObjFile(buildParameters);
     }
 
     return JobResult::ReleaseJob;
 }
 
-bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int precompileIndex)
+bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 {
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
-    llvmModule[precompileIndex]->setTargetTriple(targetTriple);
+    llvmModule[ct][precompileIndex]->setTargetTriple(targetTriple);
 
     std::string Error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
@@ -75,10 +80,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     llvm::TargetOptions opt;
     auto                RM               = llvm::Optional<llvm::Reloc::Model>();
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
-    llvmModule[precompileIndex]->setDataLayout(theTargetMachine->createDataLayout());
+    llvmModule[ct][precompileIndex]->setDataLayout(theTargetMachine->createDataLayout());
 
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
-    auto path       = targetPath + "/" + bufferFiles[precompileIndex];
+    auto path       = targetPath + "/" + bufferFiles[ct][precompileIndex];
 
     auto                 filename = path;
     std::error_code      EC;
@@ -108,7 +113,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
         return false;
     }
 
-    llvmPass.run(*llvmModule[precompileIndex]);
+    llvmPass.run(*llvmModule[ct][precompileIndex]);
     dest.flush();
     dest.close();
 
@@ -117,7 +122,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
-        llvmModule[precompileIndex]->print(destFileIR, nullptr);
+        llvmModule[ct][precompileIndex]->print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
     }
@@ -131,6 +136,8 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
+    int ct = buildParameters.compileType;
+
     Utf8 linkArguments;
     BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
@@ -138,8 +145,8 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     for (auto i = 0; i < numPreCompileBuffers; i++)
     {
-        SWAG_ASSERT(!bufferFiles[i].empty());
-        auto path = targetPath + "/" + bufferFiles[i].c_str();
+        SWAG_ASSERT(!bufferFiles[ct][i].empty());
+        auto path = targetPath + "/" + bufferFiles[ct][i].c_str();
         linkArguments += path + " ";
     }
 
