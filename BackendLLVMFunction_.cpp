@@ -267,30 +267,129 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     {
         // rr0 = result
         auto rr0  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
-        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(params.size() - 1), llvm::Type::getInt64Ty(context));
+        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), llvm::Type::getInt64Ty(context));
         builder.CreateStore(cst0, rr0);
     }
 
     auto numParams = typeFunc->parameters.size();
 
     // Variadic must be pushed first
+    int argIdx = 0;
     if (numParams)
     {
         auto param     = typeFunc->parameters.back();
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto rr0 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+            auto rr0  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), llvm::Type::getInt64Ty(context));
             builder.CreateStore(cst0, rr0);
 
-            auto rr1 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
-            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::ZExt, func->getArg(1), llvm::Type::getInt64Ty(context));
-            builder.CreateStore(cst1, rr1);
+            auto rr1  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            rr1 = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
+            builder.CreateStore(func->getArg(1), rr1);
 
             idx += 2;
+            argIdx += 2;
             numParams--;
         }
+    }
+
+    for (int i = 0; i < numParams; i++)
+    {
+        auto param     = typeFunc->parameters[i];
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        auto rr0       = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+        if (typeParam->kind == TypeInfoKind::Pointer)
+        {
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst0, rr0);
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        {
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst0, rr0);
+            auto rr1 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
+            builder.CreateStore(func->getArg(argIdx + 1), rr1);
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String) || typeParam->isNative(NativeTypeKind::Any))
+        {
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst0, rr0);
+            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx + 1), llvm::Type::getInt64Ty(context));
+            auto rr1  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            builder.CreateStore(cst1, rr1);
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct ||
+                 typeParam->kind == TypeInfoKind::Array ||
+                 typeParam->kind == TypeInfoKind::Interface)
+        {
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            builder.CreateStore(cst0, rr0);
+            break;
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
+        {
+            switch (typeParam->nativeType)
+            {
+            case NativeTypeKind::U8:
+            case NativeTypeKind::S8:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::U16:
+            case NativeTypeKind::S16:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt16PtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::U32:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::Char:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt32PtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::U64:
+            case NativeTypeKind::S64:
+            {
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::F32:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getFloatPtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::F64:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getDoublePtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            case NativeTypeKind::Bool:
+            {
+                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
+                builder.CreateStore(func->getArg(argIdx), rr0);
+                break;
+            }
+            default:
+                return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
+            }
+        }
+        else
+        {
+            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid param type '%s'", typeParam->name.c_str()));
+        }
+
+        idx += typeParam->numRegisters();
+        argIdx += typeParam->numRegisters();
     }
 
     // Make the call

@@ -93,11 +93,11 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     }
 
     // Promote allocas to registers.
-    //llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
-    //llvmPass.add(llvm::createInstructionCombiningPass());
-    //llvmPass.add(llvm::createReassociatePass());
-    //llvmPass.add(llvm::createGVNPass());
-    //llvmPass.add(llvm::createCFGSimplificationPass());
+    /*llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
+    llvmPass.add(llvm::createInstructionCombiningPass());
+    llvmPass.add(llvm::createReassociatePass());
+    llvmPass.add(llvm::createGVNPass());
+    llvmPass.add(llvm::createCFGSimplificationPass());*/
 
     llvmPass.run(*llvmModule[preCompileIndex]);
     dest.flush();
