@@ -4,7 +4,7 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 
-bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex)
+bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int precompileIndex)
 {
     if (dataSegment == &module->mutableSegment)
         emitSeparator(bufferC, "MUTABLE SEGMENT");
@@ -18,7 +18,7 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     if (!dataSegment->totalCount)
         return true;
 
-    if (preCompileIndex != 0)
+    if (precompileIndex != 0)
     {
         if (dataSegment == &module->mutableSegment)
             CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __mutableseg[];\n");

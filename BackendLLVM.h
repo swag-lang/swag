@@ -17,16 +17,16 @@ struct BackendLLVM : public Backend
     }
 
     void                    setup() override;
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
     bool swagTypeToLLVMType(Module* moduleToGen, TypeInfo* typeInfo, int precompileIndex, llvm::Type** llvmType);
-    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc, int preCompileIndex);
-    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one, int preCompileIndex);
+    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc, int precompileIndex);
+    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one, int precompileIndex);
 
-    bool generateObjFile(const BuildParameters& buildParameters, int preCompileIndex);
-    bool emitDataSegment(DataSegment* dataSegment, int preCompileIndex);
+    bool generateObjFile(const BuildParameters& buildParameters, int precompileIndex);
+    bool emitDataSegment(DataSegment* dataSegment, int precompileIndex);
 
     bool emitGlobalDrop(const BuildParameters& buildParameters, int precompileIndex);
     bool emitMain(const BuildParameters& buildParameters, int precompileIndex);

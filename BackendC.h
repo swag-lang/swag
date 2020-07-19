@@ -24,12 +24,12 @@ struct BackendC : public Backend
     }
 
     void                    setup();
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex) override;
+    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool emitRuntime(OutputFile& bufferC, int preCompileIndex);
-    bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int preCompileIndex);
+    bool emitRuntime(OutputFile& bufferC, int precompileIndex);
+    bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int precompileIndex);
     bool emitMain(OutputFile& bufferC);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen);

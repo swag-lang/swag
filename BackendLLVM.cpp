@@ -12,59 +12,59 @@ void BackendLLVM::setup()
 {
 }
 
-JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex)
+JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex)
 {
-    if (pass[preCompileIndex] == BackendPreCompilePass::Init)
+    // Do we need to generate the file ?
+    if (!mustCompile)
+        return JobResult::ReleaseJob;
+
+    if (pass[precompileIndex] == BackendPreCompilePass::Init)
     {
-        pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
+        pass[precompileIndex] = BackendPreCompilePass::FunctionBodies;
 
         SWAG_ASSERT(!module->name.empty());
-        bufferFiles[preCompileIndex] = format("%s%d", module->name.c_str(), preCompileIndex);
-        bufferFiles[preCompileIndex] += buildParameters.postFix;
-        bufferFiles[preCompileIndex] += ".obj";
+        bufferFiles[precompileIndex] = format("%s%d", module->name.c_str(), precompileIndex);
+        bufferFiles[precompileIndex] += buildParameters.postFix;
+        bufferFiles[precompileIndex] += ".obj";
 
-        llvmContext[preCompileIndex] = new llvm::LLVMContext();
-        llvmModule[preCompileIndex]  = new llvm::Module(bufferFiles[preCompileIndex].c_str(), *llvmContext[preCompileIndex]);
-        llvmBuilder[preCompileIndex] = new llvm::IRBuilder<>(*llvmContext[preCompileIndex]);
+        llvmContext[precompileIndex] = new llvm::LLVMContext();
+        llvmModule[precompileIndex]  = new llvm::Module(bufferFiles[precompileIndex].c_str(), *llvmContext[precompileIndex]);
+        llvmBuilder[precompileIndex] = new llvm::IRBuilder<>(*llvmContext[precompileIndex]);
 
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[preCompileIndex].c_str(), module->byteCodeTestFunc.size()));
+            g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[precompileIndex].c_str(), module->byteCodeTestFunc.size()));
 
-        // Do we need to generate the file ?
-        if (!mustCompile)
-            return JobResult::ReleaseJob;
-
-        emitDataSegment(&module->bssSegment, preCompileIndex);
-        emitDataSegment(&module->mutableSegment, preCompileIndex);
-        emitDataSegment(&module->constantSegment, preCompileIndex);
+        emitDataSegment(&module->bssSegment, precompileIndex);
+        emitDataSegment(&module->mutableSegment, precompileIndex);
+        emitDataSegment(&module->constantSegment, precompileIndex);
     }
 
-    if (pass[preCompileIndex] == BackendPreCompilePass::FunctionBodies)
+    if (pass[precompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
-        pass[preCompileIndex] = BackendPreCompilePass::End;
-        emitAllFunctionBody(module, ownerJob, preCompileIndex);
+        pass[precompileIndex] = BackendPreCompilePass::End;
+        emitAllFunctionBody(module, ownerJob, precompileIndex);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (pass[preCompileIndex] == BackendPreCompilePass::End)
+    if (pass[precompileIndex] == BackendPreCompilePass::End)
     {
-        if (preCompileIndex == 0)
+        if (precompileIndex == 0)
         {
-            emitGlobalDrop(buildParameters, preCompileIndex);
-            emitMain(buildParameters, preCompileIndex);
+            emitGlobalDrop(buildParameters, precompileIndex);
+            emitMain(buildParameters, precompileIndex);
         }
 
         // Output file
-        generateObjFile(buildParameters, preCompileIndex);
+        generateObjFile(buildParameters, precompileIndex);
     }
 
     return JobResult::ReleaseJob;
 }
 
-bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int preCompileIndex)
+bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int precompileIndex)
 {
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
-    llvmModule[preCompileIndex]->setTargetTriple(targetTriple);
+    llvmModule[precompileIndex]->setTargetTriple(targetTriple);
 
     std::string Error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
@@ -75,10 +75,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     llvm::TargetOptions opt;
     auto                RM               = llvm::Optional<llvm::Reloc::Model>();
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
-    llvmModule[preCompileIndex]->setDataLayout(theTargetMachine->createDataLayout());
+    llvmModule[precompileIndex]->setDataLayout(theTargetMachine->createDataLayout());
 
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
-    auto path       = targetPath + "/" + bufferFiles[preCompileIndex];
+    auto path       = targetPath + "/" + bufferFiles[precompileIndex];
 
     auto                 filename = path;
     std::error_code      EC;
@@ -108,7 +108,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
         return false;
     }
 
-    llvmPass.run(*llvmModule[preCompileIndex]);
+    llvmPass.run(*llvmModule[precompileIndex]);
     dest.flush();
     dest.close();
 
@@ -117,7 +117,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
-        llvmModule[preCompileIndex]->print(destFileIR, nullptr);
+        llvmModule[precompileIndex]->print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
     }
@@ -127,6 +127,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
 
 bool BackendLLVM::compile(const BuildParameters& buildParameters)
 {
+    // Do we need to generate the file ?
+    if (!mustCompile)
+        return true;
+
     Utf8 linkArguments;
     BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 

@@ -10,8 +10,22 @@ thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
-    // Generate output file
-    module->backend->compile(buildParameters);
+    if (!module->backend->mustCompile)
+    {
+        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+            g_Log.messageHeaderCentered("Skipping build test", module->name.c_str(), LogColor::Gray);
+        else
+            g_Log.messageHeaderCentered("Skipping build", module->name.c_str(), LogColor::Gray);
+    }
+    else
+    {
+        const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
+        g_Log.messageHeaderCentered(header, module->name.c_str());
+
+        // Generate output file
+        module->backend->compile(buildParameters);
+    }
+
     g_Stats.numGenModules++;
 
     // Notify we are done
@@ -25,8 +39,8 @@ JobResult ModuleCompileJob::execute()
     module->setHasBeenBuilt(BUILDRES_COMPILER);
 
     // Test job
-	// Do not set job->dependentJob, because nobody is dependent on that execution
-	// Test can be run "on the void"
+    // Do not set job->dependentJob, because nobody is dependent on that execution
+    // Test can be run "on the void"
     if (g_CommandLine.runBackendTests)
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)

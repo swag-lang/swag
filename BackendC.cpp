@@ -14,28 +14,29 @@ void BackendC::setup()
 #endif
 }
 
-JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int preCompileIndex)
+JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob, int precompileIndex)
 {
-    OutputFile& bufferC = bufferCFiles[preCompileIndex];
+    // Do we need to generate the file ?
+    if (!mustCompile)
+        return JobResult::ReleaseJob;
 
-    if (pass[preCompileIndex] == BackendPreCompilePass::Init)
+    OutputFile& bufferC = bufferCFiles[precompileIndex];
+
+    if (pass[precompileIndex] == BackendPreCompilePass::Init)
     {
-        pass[preCompileIndex] = BackendPreCompilePass::FunctionBodies;
+        pass[precompileIndex] = BackendPreCompilePass::FunctionBodies;
 
+        // Compute output file name depending on the precompile index
         auto targetPath = g_Workspace.cachePath.string();
-        auto moduleName = format("%s%d", module->name.c_str(), preCompileIndex);
+        auto moduleName = format("%s%d", module->name.c_str(), precompileIndex);
         bufferC.path    = targetPath + "/" + moduleName + ".c";
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', C backend, generating files", moduleName.c_str(), module->byteCodeTestFunc.size()));
 
-        // Do we need to generate the file ?
-        if (!mustCompile)
-            return JobResult::ReleaseJob;
-
-        emitRuntime(bufferC, preCompileIndex);
-        emitDataSegment(bufferC, &module->bssSegment, preCompileIndex);
-        emitDataSegment(bufferC, &module->mutableSegment, preCompileIndex);
-        emitDataSegment(bufferC, &module->constantSegment, preCompileIndex);
+        emitRuntime(bufferC, precompileIndex);
+        emitDataSegment(bufferC, &module->bssSegment, precompileIndex);
+        emitDataSegment(bufferC, &module->mutableSegment, precompileIndex);
+        emitDataSegment(bufferC, &module->constantSegment, precompileIndex);
         emitAllFuncSignatureInternalC(bufferC);
         emitPublic(bufferC, g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(bufferC, module, module->scopeRoot);
@@ -43,16 +44,16 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
         bufferC.flush(false);
     }
 
-    if (pass[preCompileIndex] == BackendPreCompilePass::FunctionBodies)
+    if (pass[precompileIndex] == BackendPreCompilePass::FunctionBodies)
     {
-        pass[preCompileIndex] = BackendPreCompilePass::End;
-        emitAllFunctionBody(module, ownerJob, preCompileIndex);
+        pass[precompileIndex] = BackendPreCompilePass::End;
+        emitAllFunctionBody(module, ownerJob, precompileIndex);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (pass[preCompileIndex] == BackendPreCompilePass::End)
+    if (pass[precompileIndex] == BackendPreCompilePass::End)
     {
-        if (preCompileIndex == 0)
+        if (precompileIndex == 0)
         {
             emitSeparator(bufferC, "INIT");
             emitGlobalInit(bufferC);
@@ -68,18 +69,10 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
 
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
-    SWAG_ASSERT(compiler);
+    // Do we need to generate the file ?
     if (!mustCompile)
-    {
-        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
-            g_Log.messageHeaderCentered("Skipping build test", module->name.c_str(), LogColor::Gray);
-        else
-            g_Log.messageHeaderCentered("Skipping build", module->name.c_str(), LogColor::Gray);
         return true;
-    }
 
-    const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
-    g_Log.messageHeaderCentered(header, module->name.c_str());
-
+    SWAG_ASSERT(compiler);
     return compiler->compile(buildParameters);
 }

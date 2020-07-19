@@ -30,7 +30,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
     }
 }
 
-bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCompileIndex)
+bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int precompileIndex)
 {
     SWAG_ASSERT(moduleToGen);
 
@@ -39,27 +39,27 @@ bool Backend::emitAllFunctionBody(Module* moduleToGen, Job* ownerJob, int preCom
     int end   = 0;
     int size  = (int) moduleToGen->byteCodeFunc.size();
 
-    if (preCompileIndex == 0)
+    if (precompileIndex == 0)
     {
         start = 0;
         end   = size / numPreCompileBuffers;
     }
     else
     {
-        start = preCompileIndex * (size / numPreCompileBuffers);
+        start = precompileIndex * (size / numPreCompileBuffers);
         end   = start + (size / numPreCompileBuffers);
-        if (preCompileIndex == numPreCompileBuffers - 1)
+        if (precompileIndex == numPreCompileBuffers - 1)
             end = size;
     }
 
     BackendFunctionBodyJob* job = newFunctionJob();
     job->module                 = moduleToGen;
     job->dependentJob           = ownerJob;
-    job->precompileIndex        = preCompileIndex;
+    job->precompileIndex        = precompileIndex;
     job->backend                = this;
 
     // Put the bootstrap in the first file
-    if (preCompileIndex == 0)
+    if (precompileIndex == 0)
         addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
 
     addFunctionsToJob(moduleToGen, job, start, end);

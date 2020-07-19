@@ -101,7 +101,7 @@ SWAG_IMPORT swag_int32_t    swag_runtime_strlen(const char* message);
 SWAG_IMPORT void            swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[]);
 )";
 
-bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
+bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)
 {
     if (g_CommandLine.devMode)
     {
@@ -114,7 +114,7 @@ bool BackendC::emitRuntime(OutputFile& bufferC, int preCompileIndex)
     emitSeparator(bufferC, "SWAG RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_SwagRuntime);
 
-    if (preCompileIndex == 0)
+    if (precompileIndex == 0)
     {
         CONCAT_FIXED_STR(bufferC, "swag_process_infos_t __process_infos = {0};\n");
     }

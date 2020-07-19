@@ -54,7 +54,7 @@ namespace std.collections
             func opIndexAffect(using self, value: bool, index: u32)
             {
                 set(self, index, value)
-            }            
+            }
 
             /// Initializes a [BitArray] that contains bit values copied from the specified array of booleans.
             func opAffect(using self, slice: [..] bool)
@@ -100,7 +100,7 @@ namespace std.collections
                             let @alias0 = cast(bool) (buffer[`idx] & `shift)
                             let @alias1 = `countBits
                             #mixin `stmt
-                        }   
+                        }
 
                         countBits += 1
                         shift <<= 1
@@ -112,7 +112,7 @@ namespace std.collections
         func free(using self)
         {
             if !buffer
-                return            
+                return
             memory.free(&allocator, buffer)
         }
 
@@ -121,7 +121,7 @@ namespace std.collections
             if allocator == null
                 allocator = @getcontext().allocator
             buffer = acast memory.realloc(&allocator, buffer, newCapacity)
-        }        
+        }
 
         public
         {
@@ -150,10 +150,10 @@ namespace std.collections
             {
                 reserve(self, maxBits)
                 memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
-            }   
+            }
 
             /// Sets all bits in the [BitArray] to the specified value
-            func setAll(using self, value: bool)    
+            func setAll(using self, value: bool)
             {
                 memory.set(buffer, value ? 0xFF : 0x00, capacity)
             }
@@ -194,7 +194,7 @@ namespace std.collections
                     buffer[val] |= shift
             }
 
-            /// Performs the bitwise AND operation between the elements of the current [BitArray] and the corresponding elements in the specified array. 
+            /// Performs the bitwise AND operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
             /// The current [BitArray] will be modified to store the result of the bitwise AND operation.
             func and(using self, other: Self)
             {
@@ -204,7 +204,7 @@ namespace std.collections
                     buffer[@index] &= other.buffer[@index]
             }
 
-            /// Performs the bitwise OR operation between the elements of the current [BitArray] and the corresponding elements in the specified array. 
+            /// Performs the bitwise OR operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
             /// The current [BitArray] will be modified to store the result of the bitwise OR operation.
             func or(using self, other: Self)
             {
@@ -212,9 +212,9 @@ namespace std.collections
                 if !count return
                 loop math.max(count >> 5, 1)
                     buffer[@index] |= other.buffer[@index]
-            }            
+            }
 
-            /// Performs the bitwise XOR operation between the elements of the current [BitArray] and the corresponding elements in the specified array. 
+            /// Performs the bitwise XOR operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
             /// The current [BitArray] will be modified to store the result of the bitwise XOR operation.
             func xor(using self, other: Self)
             {
@@ -222,7 +222,7 @@ namespace std.collections
                 if !count return
                 loop math.max(count >> 5, 1)
                     buffer[@index] ^= other.buffer[@index]
-            }            
+            }
 
             /// Inverts all the bit values in the current [BitArray], so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
             func not(using self)
@@ -230,7 +230,7 @@ namespace std.collections
                 if !count return
                 loop math.max(count >> 5, 1)
                     buffer[@index] = ~buffer[@index]
-            }              
+            }
         }
     }
 }
