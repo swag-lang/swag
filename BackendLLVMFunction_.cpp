@@ -191,15 +191,15 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     // Real return type
-    llvm::Type* returnType;
-    llvm::Type* realReturnType;
-    SWAG_CHECK(swagTypeToLLVMType(moduleToGen, typeFunc->returnType, precompileIndex, &realReturnType));
+    llvm::Type* llvmReturnType;
+    llvm::Type* llvmRealReturnType;
+    SWAG_CHECK(swagTypeToLLVMType(moduleToGen, typeFunc->returnType, precompileIndex, &llvmRealReturnType));
     if (returnByCopy)
-        returnType = llvm::Type::getVoidTy(context);
+        llvmReturnType = llvm::Type::getVoidTy(context);
     else if (typeFunc->numReturnRegisters() > 1)
-        returnType = llvm::Type::getVoidTy(context);
+        llvmReturnType = llvm::Type::getVoidTy(context);
     else
-        returnType = realReturnType;
+        llvmReturnType = llvmRealReturnType;
 
     // Real parameters
     std::vector<llvm::Type*> params;
@@ -236,13 +236,13 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     // Return value
     if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
     {
-        params.push_back(realReturnType);
+        params.push_back(llvmRealReturnType);
     }
 
     // Public foreign name
     auto name = Ast::computeFullNameForeign(node, true);
 
-    llvm::FunctionType* funcType = llvm::FunctionType::get(returnType, params, false);
+    llvm::FunctionType* funcType = llvm::FunctionType::get(llvmReturnType, params, false);
     llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), llvmModule[precompileIndex]);
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
@@ -257,7 +257,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
         n += typeParam->numRegisters();
     }
 
-    auto alloca = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), n));
+    auto allocRR = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), n));
 
     // Affect registers
     int idx = typeFunc->numReturnRegisters();
@@ -266,7 +266,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     if (returnByCopy)
     {
         // rr0 = result
-        auto rr0  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
+        auto rr0  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
         auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), llvm::Type::getInt64Ty(context));
         builder.CreateStore(cst0, rr0);
     }
@@ -281,12 +281,12 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto rr0  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+            auto rr0  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), llvm::Type::getInt64Ty(context));
             builder.CreateStore(cst0, rr0);
 
-            auto rr1  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
-            rr1 = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
+            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
             builder.CreateStore(func->getArg(1), rr1);
 
             idx += 2;
@@ -299,7 +299,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     {
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        auto rr0       = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+        auto rr0       = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
@@ -309,7 +309,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
         {
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
             builder.CreateStore(cst0, rr0);
-            auto rr1 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
             rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
@@ -318,7 +318,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
             builder.CreateStore(cst0, rr0);
             auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx + 1), llvm::Type::getInt64Ty(context));
-            auto rr1  = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
             builder.CreateStore(cst1, rr1);
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
@@ -335,6 +335,7 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
             {
             case NativeTypeKind::U8:
             case NativeTypeKind::S8:
+            case NativeTypeKind::Bool:
             {
                 rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
                 builder.CreateStore(func->getArg(argIdx), rr0);
@@ -373,12 +374,6 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
                 builder.CreateStore(func->getArg(argIdx), rr0);
                 break;
             }
-            case NativeTypeKind::Bool:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
             default:
                 return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
             }
@@ -396,13 +391,107 @@ bool BackendLLVM::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* t
     vector<llvm::Value*> args;
     for (int i = 0; i < n; i++)
     {
-        auto rr0 = builder.CreateInBoundsGEP(alloca, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), i));
+        auto rr0 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), i));
         args.push_back(rr0);
     }
 
     auto fcc = modu->getFunction(bc->callName().c_str());
     builder.CreateCall(fcc, args);
 
-    builder.CreateRetVoid();
+    // Return
+    if (typeFunc->numReturnRegisters() && !returnByCopy)
+    {
+        auto rr0        = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
+        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
+
+        if (returnType->kind == TypeInfoKind::Slice ||
+            returnType->kind == TypeInfoKind::Interface ||
+            returnType->isNative(NativeTypeKind::Any) ||
+            returnType->isNative(NativeTypeKind::String))
+        {
+            //*((void **) result) = rr0.pointer
+            auto loadInst = builder.CreateLoad(rr0);
+            auto arg0 = builder.CreatePointerCast(func->getArg((int)params.size() - 1), llvm::Type::getInt64PtrTy(context));
+            builder.CreateStore(loadInst, arg0);
+
+            //*((void **) result + 1) = rr1.pointer
+            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
+            auto arg1 = builder.CreateInBoundsGEP(arg0, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
+            loadInst = builder.CreateLoad(rr1);
+            builder.CreateStore(loadInst, arg1);
+
+            builder.CreateRetVoid();
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
+        {
+            auto loadInst = builder.CreateLoad(rr0);
+            auto arg0 = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, llvmReturnType);
+            builder.CreateRet(arg0);
+        }
+        else if (returnType->kind == TypeInfoKind::Native)
+        {
+            switch (returnType->nativeType)
+            {
+            case NativeTypeKind::U8:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::Bool:
+            {
+                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            case NativeTypeKind::U16:
+            case NativeTypeKind::S16:
+            {
+                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt16PtrTy(context));
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            case NativeTypeKind::U32:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::Char:
+            {
+                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt32PtrTy(context));
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            case NativeTypeKind::U64:
+            case NativeTypeKind::S64:
+            {
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            case NativeTypeKind::F32:
+            {
+                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getFloatPtrTy(context));
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            case NativeTypeKind::F64:
+            {
+                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getDoublePtrTy(context));
+                auto loadInst = builder.CreateLoad(rr0);
+                builder.CreateRet(loadInst);
+                break;
+            }
+            default:
+                return moduleToGen->internalError("emitFuncWrapperPublic, invalid return type");
+            }
+        }
+        else
+        {
+            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid return type '%s'", returnType->name.c_str()));
+        }
+    }
+    else
+    {
+        builder.CreateRetVoid();
+    }
+
     return true;
 }
