@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Log.h"
-#include "LLVMLink.h"
+#include "LLVMSetup.h"
 
 namespace BackendSetupWin32
 {

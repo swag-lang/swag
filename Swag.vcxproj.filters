@@ -401,7 +401,7 @@
     <ClCompile Include="BackendNative_.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="LLVMLink.cpp">
+    <ClCompile Include="LLVMSetup.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
   </ItemGroup>
@@ -686,7 +686,7 @@
     <ClInclude Include="LLVMHelpers.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="LLVMLink.h">
+    <ClInclude Include="LLVMSetup.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
   </ItemGroup>
