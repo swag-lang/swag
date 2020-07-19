@@ -36,7 +36,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64", "set the build architecture");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
-    addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "c_vs|c_clang|llvm", "the type of backend to use");
+    addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "c_vs|c_clang|llvm_link|llvm_lld", "the type of backend to use");
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug, nullptr, "force to compile in debug mode");
     addArg("--optim", nullptr, CommandLineType::Int, &cmdLine->optim, nullptr, "force the backend to be optimized");
 }

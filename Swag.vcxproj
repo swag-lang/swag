@@ -127,6 +127,7 @@
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="LLVMHelpers.h" />
+    <ClInclude Include="LLVMLink.h" />
     <ClInclude Include="ModuleManager.h" />
     <ClInclude Include="ByteCodeOp.h" />
     <ClInclude Include="ByteCodeOpList.h" />

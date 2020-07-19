@@ -34,7 +34,8 @@ bool Module::setup(const Utf8& moduleName)
     case BackendType::C_Clang:
         backend = new BackendC(this);
         break;
-    case BackendType::LLVM:
+    case BackendType::LLVM_Link:
+    case BackendType::LLVM_Lld:
         backend = new BackendLLVM(this);
         break;
     default:

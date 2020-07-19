@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Log.h"
+#include "LLVMLink.h"
 
 namespace BackendSetupWin32
 {
@@ -145,11 +146,21 @@ namespace BackendSetupWin32
             compilerPath += "\\";
             break;
 
-        case BackendType::LLVM:
-            llvm::InitializeNativeTarget();
-            llvm::InitializeNativeTargetAsmPrinter();
+        case BackendType::LLVM_Link:
+            LLVM::setup();
             linkerExe  = "link.exe";
             linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
+            break;
+
+        case BackendType::LLVM_Lld:
+            LLVM::setup();
+            if (!getLLVMBinFolder(linkerPath))
+            {
+                g_Log.error("error: backend: cannot locate llvm binary folder");
+                exit(-1);
+            }
+            linkerPath += "\\";
+            linkerExe  = "lld-link.exe";
             break;
         }
 

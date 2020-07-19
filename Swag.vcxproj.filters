@@ -686,6 +686,9 @@
     <ClInclude Include="LLVMHelpers.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
+    <ClInclude Include="LLVMLink.h">
+      <Filter>Backend\Native\LLVM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

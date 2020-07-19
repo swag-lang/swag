@@ -147,3 +147,12 @@
 #pragma comment(lib, "LLVMXCoreInfo.lib")
 #pragma comment(lib, "LLVMXRay.lib")
 #pragma comment(lib, "LLVMipo.lib")
+
+namespace LLVM
+{
+	void setup()
+	{
+        llvm::InitializeNativeTarget();
+        llvm::InitializeNativeTargetAsmPrinter();
+	}
+}

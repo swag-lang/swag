@@ -11,7 +11,8 @@ enum class BackendType
 {
     C_Vs,
     C_Clang,
-    LLVM,
+    LLVM_Link,
+    LLVM_Lld,
 };
 
 struct CommandLine

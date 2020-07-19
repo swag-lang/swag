@@ -52,7 +52,7 @@ JobResult ModuleOutputJob::execute()
         {
             // Precompile a specific version, to test it
             // No need for C backend, because the C backend will generate only one .C file compatible will all cases
-            if (g_CommandLine.backendType == BackendType::LLVM)
+            if (g_CommandLine.backendType == BackendType::LLVM_Link || g_CommandLine.backendType == BackendType::LLVM_Lld)
             {
                 if (g_CommandLine.test && g_CommandLine.backendOutputTest)
                 {
