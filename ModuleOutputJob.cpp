@@ -54,20 +54,17 @@ JobResult ModuleOutputJob::execute()
             // No need for C backend, because the C backend will generate only one .C file compatible will all cases
             if (g_CommandLine.backendType == BackendType::LLVM_Link || g_CommandLine.backendType == BackendType::LLVM_Lld)
             {
-                if (g_CommandLine.test && g_CommandLine.backendOutputTest)
+                if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
                 {
-                    if (module->fromTests || module->byteCodeTestFunc.size() > 0)
-                    {
-                        auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
-                        preCompileJob->module          = module;
-                        preCompileJob->dependentJob    = this;
-                        preCompileJob->precompileIndex = i;
-                        preCompileJob->buildParameters = module->buildParameters;
-                        if (!module->fromTests)
-                            preCompileJob->buildParameters.postFix = ".test";
-                        preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
-                        jobsToAdd.push_back(preCompileJob);
-                    }
+                    auto preCompileJob             = g_Pool_modulePreCompileJob.alloc();
+                    preCompileJob->module          = module;
+                    preCompileJob->dependentJob    = this;
+                    preCompileJob->precompileIndex = i;
+                    preCompileJob->buildParameters = module->buildParameters;
+                    if (!module->fromTests)
+                        preCompileJob->buildParameters.postFix = ".test";
+                    preCompileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
+                    jobsToAdd.push_back(preCompileJob);
                 }
 
                 // Precompile the normal version
@@ -101,21 +98,18 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
 
         // Compile a specific version, to test it
-        if (g_CommandLine.test && g_CommandLine.backendOutputTest)
+        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
         {
-            if (module->fromTests || module->byteCodeTestFunc.size() > 0)
-            {
-                auto compileJob                      = g_Pool_moduleCompileJob.alloc();
-                compileJob->module                   = module;
-                compileJob->dependentJob             = dependentJob;
-                compileJob->buildParameters          = module->buildParameters;
-                compileJob->buildParameters.destFile = module->name;
-                compileJob->buildParameters.type     = BackendOutputType::Binary;
-                if (!module->fromTests)
-                    compileJob->buildParameters.postFix = ".test";
-                compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
-                g_ThreadMgr.addJob(compileJob);
-            }
+            auto compileJob                      = g_Pool_moduleCompileJob.alloc();
+            compileJob->module                   = module;
+            compileJob->dependentJob             = dependentJob;
+            compileJob->buildParameters          = module->buildParameters;
+            compileJob->buildParameters.destFile = module->name;
+            compileJob->buildParameters.type     = BackendOutputType::Binary;
+            if (!module->fromTests)
+                compileJob->buildParameters.postFix = ".test";
+            compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
+            g_ThreadMgr.addJob(compileJob);
         }
 
         // Compile the official normal version, except if it comes from the test folder (because
