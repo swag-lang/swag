@@ -92,12 +92,20 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters, int pr
         return false;
     }
 
-    // Promote allocas to registers.
-    /*llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
+    llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
     llvmPass.add(llvm::createInstructionCombiningPass());
     llvmPass.add(llvm::createReassociatePass());
     llvmPass.add(llvm::createGVNPass());
-    llvmPass.add(llvm::createCFGSimplificationPass());*/
+    llvmPass.add(llvm::createCFGSimplificationPass());
+
+    //llvm::PassManagerBuilder pmb;
+    //pmb.OptLevel           = 3;
+    //pmb.SizeLevel          = 2;
+    //pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+    //pmb.DisableUnrollLoops = false;
+    //pmb.LoopVectorize      = true;
+    //pmb.SLPVectorize       = true;
+    //pmb.populateModulePassManager(llvmPass);
 
     llvmPass.run(*llvmModule[preCompileIndex]);
     dest.flush();
