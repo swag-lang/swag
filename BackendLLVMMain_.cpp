@@ -34,17 +34,29 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
     //mainContext.allocator.itable = &defaultAllocTable
-    llvm::Value* indices0[] = {
-        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
-    auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, indices0);
+    {
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
+        auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, indices0);
 
-    llvm::Value* indices1[] = {
-        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
-    auto toTable = builder.CreateInBoundsGEP(toAllocator, indices1);
-    auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
-    builder.CreateStore(fromTable, toTable);
+        llvm::Value* indices1[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
+        auto toTable   = builder.CreateInBoundsGEP(toAllocator, indices1);
+        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
+        builder.CreateStore(fromTable, toTable);
+    }
+
+    // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
+    {
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
+        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        auto call = builder.CreateCall(modu.getFunction("swag_runtime_tlsAlloc"));
+        builder.CreateStore(call, toTlsId);
+    }
 
     // Arguments
 

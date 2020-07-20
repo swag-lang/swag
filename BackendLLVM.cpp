@@ -31,6 +31,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* members[] = {
             pp.interfaceTy};
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
+        SWAG_ASSERT(pp.contextTy->isSized());
     }
 
     // swag_slice_t
@@ -40,6 +41,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt64Ty(context),
         };
         pp.sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
+        SWAG_ASSERT(pp.sliceTy->isSized());
     }
 
     // swag_alloctor_t
@@ -65,9 +67,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             pp.sliceTy,
             llvm::Type::getInt32Ty(context),
             pp.contextTy->getPointerTo(),
-            pp.bytecodeRunTy,
+            pp.bytecodeRunTy->getPointerTo(),
         };
-        pp.processinfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+        pp.processInfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+        SWAG_ASSERT(pp.processInfosTy->isSized());
     }
 
     // mainContext
@@ -75,6 +78,12 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     {
         pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "mainContext");
         pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "defaultAllocTable");
+        pp.processInfos      = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "processInfos");
+    }
+
+    // Runtime functions
+    {
+        modu.getOrInsertFunction("swag_runtime_tlsAlloc", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), false));
     }
 
     return true;

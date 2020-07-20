@@ -50,11 +50,12 @@ struct BackendLLVM : public Backend
         llvm::GlobalVariable* constantSeg       = nullptr;
         llvm::GlobalVariable* mainContext       = nullptr;
         llvm::GlobalVariable* defaultAllocTable = nullptr;
+        llvm::GlobalVariable* processInfos      = nullptr;
 
         llvm::Type*         interfaceTy    = nullptr;
         llvm::Type*         contextTy      = nullptr;
         llvm::Type*         sliceTy        = nullptr;
-        llvm::Type*         processinfosTy = nullptr;
+        llvm::Type*         processInfosTy = nullptr;
         llvm::FunctionType* allocatorTy    = nullptr;
         llvm::FunctionType* bytecodeRunTy  = nullptr;
 
