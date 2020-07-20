@@ -52,6 +52,8 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     {
         if (precompileIndex == 0)
         {
+            emitInitDataSeg(buildParameters);
+            emitInitConstantSeg(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);

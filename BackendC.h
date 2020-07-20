@@ -30,7 +30,8 @@ struct BackendC : public Backend
 
     bool emitRuntime(OutputFile& bufferC, int precompileIndex);
     bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int precompileIndex);
-    bool emitInitDatas(OutputFile& bufferC);
+    bool emitInitDataSeg(OutputFile& bufferC);
+    bool emitInitConstantSeg(OutputFile& bufferC);
     bool emitMain(OutputFile& bufferC);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC);
     bool emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen);

@@ -59,3 +59,41 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
 
     return true;
 }
+
+bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
+
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "emitDataSeg", modu);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(BB);
+
+    builder.CreateRetVoid();
+    return true;
+}
+
+bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
+
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "emitConstantSeg", modu);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(BB);
+
+    builder.CreateRetVoid();
+    return true;
+}

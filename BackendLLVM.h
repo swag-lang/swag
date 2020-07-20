@@ -27,7 +27,10 @@ struct BackendLLVM : public Backend
     bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
     bool generateObjFile(const BuildParameters& buildParameters);
+
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
+    bool emitInitDataSeg(const BuildParameters& buildParameters);
+    bool emitInitConstantSeg(const BuildParameters& buildParameters);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);

@@ -64,9 +64,8 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     return true;
 }
 
-bool BackendC::emitInitDatas(OutputFile& bufferC)
+bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 {
-    // Init of data segment
     CONCAT_FIXED_STR(bufferC, "static void initDataSeg() {\n");
     for (auto& k : module->mutableSegment.initPtr)
     {
@@ -79,7 +78,11 @@ bool BackendC::emitInitDatas(OutputFile& bufferC)
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
 
-    // Init of constant segment
+    return true;
+}
+
+bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
+{
     CONCAT_FIXED_STR(bufferC, "static void initConstantSeg() {\n");
     for (auto& k : module->constantSegment.initPtr)
     {
@@ -93,6 +96,5 @@ bool BackendC::emitInitDatas(OutputFile& bufferC)
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
-
     return true;
 }
