@@ -95,6 +95,21 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             modu.getOrInsertFunction("swag_runtime_tlsSetValue", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
         }
 
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt32Ty(context),
+                llvm::Type::getInt8PtrTy(context)->getPointerTo(),
+            };
+            modu.getOrInsertFunction("swag_runtime_convertArgcArgv", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_loadDynamicLibrary", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+        }
     }
 
     return true;

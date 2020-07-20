@@ -86,11 +86,40 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Arguments
+    {
+        // swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, argv)
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
+        builder.CreateCall(modu.getFunction("swag_runtime_convertArgcArgv"), {toContext, F->getArg(0), F->getArg(1)});
+    }
 
-    // Call to global init of this module, and dependencies
+    // Call to global init of this module
+    {
+        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
+        builder.CreateCall(funcInit, pp.processInfos);
+    }
+
+    // Call to global init of all dependencies
+    for (const auto& dep : module->moduleDependencies)
+    {
+        auto nameDown = dep.first;
+        nameDown.replaceAll('.', '_');
+        auto ptrStr = builder.CreateGlobalStringPtr(nameDown.c_str());
+        builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
+
+        if (dep.second.generated)
+        {
+            auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+            auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
+            builder.CreateCall(funcInit, pp.processInfos);
+        }
+    }
+
     auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    auto funcInit     = modu.getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcTypeVoid);
-    builder.CreateCall(funcInit);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test)
@@ -121,6 +150,15 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     builder.CreateCall(funcDrop);
 
     // Call to global drop of all dependencies
+    for (const auto& dep : module->moduleDependencies)
+    {
+        if (!dep.second.generated)
+            continue;
+        auto nameDown = dep.first;
+        nameDown.replaceAll('.', '_');
+        funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
+        builder.CreateCall(funcDrop);
+    }
 
     uint32_t value  = 0;
     auto     retVal = llvm::ConstantInt::get(context, llvm::APInt(32, value));
@@ -134,16 +172,22 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perThread[ct][precompileIndex].context;
-    auto& builder = *perThread[ct][precompileIndex].builder;
-    auto  modu    = perThread[ct][precompileIndex].module;
+    auto& pp      = perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& builder = *pp.builder;
+    auto  modu    = pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
     fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
+
+    // __process_infos = *processInfos;
+    {
+        //builder.CreateStore(fct->getArg(0), pp.processInfos);
+    }
 
     // Initialize data segments
     builder.CreateCall(modu->getFunction("initDataSeg"));
