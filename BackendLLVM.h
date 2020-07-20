@@ -44,8 +44,8 @@ struct BackendLLVM : public Backend
         llvm::Module*         module;
         string                filename;
         BackendPreCompilePass pass = {BackendPreCompilePass::Init};
-    } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 
-    llvm::GlobalVariable* mutableSeg  = nullptr;
-    llvm::GlobalVariable* constantSeg = nullptr;
+        llvm::GlobalVariable* mutableSeg  = nullptr;
+        llvm::GlobalVariable* constantSeg = nullptr;
+    } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

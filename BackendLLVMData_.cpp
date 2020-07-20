@@ -53,9 +53,9 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
-            mutableSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
+            perThread[ct][precompileIndex].mutableSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
         else
-            constantSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
+            perThread[ct][precompileIndex].constantSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
     }
 
     return true;
@@ -65,6 +65,7 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
+    SWAG_ASSERT(precompileIndex == 0);
 
     auto& context = *perThread[ct][precompileIndex].context;
     auto& builder = *perThread[ct][precompileIndex].builder;
@@ -85,12 +86,12 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
             llvm::Value* indices0[] = {
                 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
                 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
-            auto dest               = builder.CreateInBoundsGEP(mutableSeg, indices0);
+            auto dest               = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].mutableSeg, indices0);
             dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             llvm::Value* indices1[] = {
                 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
                 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
-            auto src = builder.CreateInBoundsGEP(mutableSeg, indices1);
+            auto src = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].mutableSeg, indices1);
             src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }
@@ -99,12 +100,12 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
             llvm::Value* indices0[] = {
                 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
                 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
-            auto dest               = builder.CreateInBoundsGEP(mutableSeg, indices0);
+            auto dest               = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].mutableSeg, indices0);
             dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             llvm::Value* indices1[] = {
                 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
                 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
-            auto src = builder.CreateInBoundsGEP(constantSeg, indices1);
+            auto src = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].constantSeg, indices1);
             src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }
@@ -118,6 +119,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
+    SWAG_ASSERT(precompileIndex == 0);
 
     auto& context = *perThread[ct][precompileIndex].context;
     auto& builder = *perThread[ct][precompileIndex].builder;
@@ -135,12 +137,12 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
         llvm::Value* indices0[] = {
             llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
             llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
-        auto dest               = builder.CreateInBoundsGEP(constantSeg, indices0);
+        auto dest               = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].constantSeg, indices0);
         dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
         llvm::Value* indices1[] = {
             llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
             llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
-        auto src = builder.CreateInBoundsGEP(constantSeg, indices1);
+        auto src = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].constantSeg, indices1);
         src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
         builder.CreateStore(src, dest);
     }
@@ -150,7 +152,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
         llvm::Value* indices0[] = {
             llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
             llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.first)};
-        auto dest = builder.CreateInBoundsGEP(constantSeg, indices0);
+        auto dest = builder.CreateInBoundsGEP(perThread[ct][precompileIndex].constantSeg, indices0);
         dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
         auto F    = modu->getOrInsertFunction(k.second->callName().c_str(), fctType);
         auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
