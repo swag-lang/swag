@@ -29,6 +29,7 @@ struct BackendLLVM : public Backend
     bool generateObjFile(const BuildParameters& buildParameters);
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
 
+    bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 

@@ -60,6 +60,35 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
+bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+    auto& builder = *llvmBuilder[ct][precompileIndex];
+    auto  modu    = llvmModule[ct][precompileIndex];
+
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
+    fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(BB);
+
+    for (auto bc : module->byteCodeInitFunc)
+    {
+        auto node = bc->node;
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
+        builder.CreateCall(fcc);
+    }
+
+    builder.CreateRetVoid();
+    return true;
+}
+
 bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
