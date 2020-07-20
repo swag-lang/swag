@@ -36,6 +36,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', llvm backend, generating files", bufferFiles[ct][precompileIndex].c_str(), module->byteCodeTestFunc.size()));
 
+        createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);
         emitDataSegment(buildParameters, &module->constantSegment);
@@ -64,6 +65,21 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     }
 
     return JobResult::ReleaseJob;
+}
+
+bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *llvmContext[ct][precompileIndex];
+
+    // swag_interface_t
+    llvm::Type* members[] = {
+        llvm::Type::getInt8PtrTy(context),
+        llvm::Type::getInt8PtrTy(context)};
+    llvm::StructType::create(context, members, "swag_interface_t");
+    return true;
 }
 
 bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
