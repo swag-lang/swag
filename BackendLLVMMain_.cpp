@@ -33,6 +33,19 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto allocFct = modu.getOrInsertFunction(bcAlloc->callName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
+    //mainContext.allocator.itable = &defaultAllocTable
+    llvm::Value* indices0[] = {
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
+    auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, indices0);
+
+    llvm::Value* indices1[] = {
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
+    auto toTable = builder.CreateInBoundsGEP(toAllocator, indices1);
+    auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
+    builder.CreateStore(fromTable, toTable);
+
     // Arguments
 
     // Call to global init of this module, and dependencies
