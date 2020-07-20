@@ -86,10 +86,11 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
-    // Init data segments
+    // Initialize data segments
     builder.CreateCall(modu->getFunction("initDataSeg"));
     builder.CreateCall(modu->getFunction("initConstantSeg"));
 
+    // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
     {
         auto node = bc->node;

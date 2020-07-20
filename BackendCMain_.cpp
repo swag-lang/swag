@@ -97,9 +97,11 @@ bool BackendC::emitGlobalInit(OutputFile& bufferC)
 
     bufferC.addEol();
 
+    // Initialize data segments
     CONCAT_FIXED_STR(bufferC, "\tinitDataSeg();\n");
     CONCAT_FIXED_STR(bufferC, "\tinitConstantSeg();\n");
 
+    // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
     {
         auto node = bc->node;
