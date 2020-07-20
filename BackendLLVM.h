@@ -41,4 +41,7 @@ struct BackendLLVM : public Backend
     llvm::Module*         llvmModule[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS]  = {0};
     string                bufferFiles[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
     BackendPreCompilePass pass[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
+
+    llvm::GlobalVariable* mutableSeg  = nullptr;
+    llvm::GlobalVariable* constantSeg = nullptr;
 };

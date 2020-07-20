@@ -169,9 +169,9 @@ uint32_t DataSegment::addString(const Utf8& str)
 void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)
 {
     DataSegmentRef ref;
-    ref.sourceOffset = fromOffset;
-    ref.destOffset   = toOffset;
-    ref.destSeg      = seg;
+    ref.destOffset = fromOffset;
+    ref.srcOffset  = toOffset;
+    ref.destSeg    = seg;
 
     scoped_lock lk(mutexPtr);
     initPtr.push_back(ref);

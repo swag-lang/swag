@@ -23,8 +23,8 @@ enum class SegmentKind
 
 struct DataSegmentRef
 {
-    uint32_t    sourceOffset;
     uint32_t    destOffset;
+    uint32_t    srcOffset;
     SegmentKind destSeg;
 };
 

@@ -2,6 +2,7 @@
 #include "BackendLLVM.h"
 #include "DataSegment.h"
 #include "Module.h"
+#include "ByteCode.h"
 
 bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment)
 {
@@ -52,9 +53,9 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
-            new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
+            mutableSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
         else
-            new llvm::GlobalVariable(*modu, arrayType, true, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
+            constantSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
     }
 
     return true;
@@ -75,6 +76,40 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
+    for (auto& k : module->mutableSegment.initPtr)
+    {
+        auto kind = k.destSeg;
+
+        if (kind == SegmentKind::Me || kind == SegmentKind::Data)
+        {
+            llvm::Value* indices0[] = {
+                llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+                llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
+            auto dest               = builder.CreateInBoundsGEP(mutableSeg, indices0);
+            dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+            llvm::Value* indices1[] = {
+                llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+                llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
+            auto src = builder.CreateInBoundsGEP(mutableSeg, indices1);
+            src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+            builder.CreateStore(src, dest);
+        }
+        else
+        {
+            llvm::Value* indices0[] = {
+                llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+                llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
+            auto dest               = builder.CreateGEP(mutableSeg, indices0);
+            dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+            llvm::Value* indices1[] = {
+                llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+                llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
+            auto src = builder.CreateGEP(constantSeg, indices1);
+            src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+            builder.CreateStore(src, dest);
+        }
+    }
+
     builder.CreateRetVoid();
     return true;
 }
@@ -93,6 +128,34 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
+
+    for (auto& k : module->constantSegment.initPtr)
+    {
+        SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.destOffset)};
+        auto dest               = builder.CreateGEP(constantSeg, indices0);
+        dest                    = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+        llvm::Value* indices1[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.srcOffset)};
+        auto src = builder.CreateGEP(constantSeg, indices1);
+        src      = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+        builder.CreateStore(src, dest);
+    }
+
+    for (auto& k : module->constantSegment.initFuncPtr)
+    {
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), k.first)};
+        auto dest = builder.CreateGEP(constantSeg, indices0);
+        dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+        auto F    = modu->getOrInsertFunction(k.second->callName().c_str(), fctType);
+        auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
+        builder.CreateStore(src, dest);
+    }
 
     builder.CreateRetVoid();
     return true;
