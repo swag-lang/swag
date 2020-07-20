@@ -106,7 +106,7 @@ JobResult ModuleOutputJob::execute()
             compileJob->dependentJob                = dependentJob;
             compileJob->buildParameters             = module->buildParameters;
             compileJob->buildParameters.destFile    = module->name;
-            compileJob->buildParameters.type        = BackendOutputType::Binary;
+            compileJob->buildParameters.outputType  = BackendOutputType::Binary;
             compileJob->buildParameters.compileType = BackendCompileType::Test;
             if (!module->fromTests)
                 compileJob->buildParameters.postFix = ".test";
@@ -123,10 +123,10 @@ JobResult ModuleOutputJob::execute()
             compileJob->buildParameters             = module->buildParameters;
             compileJob->buildParameters.compileType = BackendCompileType::Normal;
             if (module->byteCodeMainFunc)
-                compileJob->buildParameters.type = BackendOutputType::Binary;
+                compileJob->buildParameters.outputType = BackendOutputType::Binary;
             else
-                compileJob->buildParameters.type = BackendOutputType::DynamicLib;
-            module->buildParameters.type = compileJob->buildParameters.type;
+                compileJob->buildParameters.outputType = BackendOutputType::DynamicLib;
+            module->buildParameters.outputType = compileJob->buildParameters.outputType;
 
             compileJob->buildParameters.destFile = module->name;
             g_ThreadMgr.addJob(compileJob);

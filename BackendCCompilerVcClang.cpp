@@ -3,12 +3,12 @@
 #include "Os.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerWin32.h"
+#include "BackendCCompilerVcClang.h"
 #include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
 
-bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
+bool BackendCCompilerVcClang::compile(const BuildParameters& buildParameters)
 {
     auto module = backend->module;
 
@@ -59,7 +59,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     uint32_t numErrors = 0;
     Utf8     linkArguments;
 
-    switch (buildParameters.type)
+    switch (buildParameters.outputType)
     {
     case BackendOutputType::StaticLib:
     {
@@ -95,7 +95,7 @@ bool BackendCCompilerWin32::compile(const BuildParameters& buildParameters)
     {
         BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
-        if (buildParameters.type == BackendOutputType::DynamicLib)
+        if (buildParameters.outputType == BackendOutputType::DynamicLib)
             clArguments += "/DSWAG_IS_DYNAMICLIB ";
         else
             clArguments += "/DSWAG_IS_BINARY ";

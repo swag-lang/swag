@@ -74,18 +74,18 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
         // Need to compile the dll version of the module in order to be able to call a function
         // from the compiler
-        if (externalModule->buildParameters.type == BackendOutputType::DynamicLib)
+        if (externalModule->buildParameters.outputType == BackendOutputType::DynamicLib)
         {
             context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
-        auto compileJob                  = g_Pool_moduleCompileJob.alloc();
-        compileJob->module               = externalModule;
-        compileJob->buildParameters      = externalModule->buildParameters;
-        compileJob->buildParameters.type = BackendOutputType::DynamicLib;
-        compileJob->mutexDone            = &mutexDone;
-        compileJob->condVar              = &condVar;
+        auto compileJob                        = g_Pool_moduleCompileJob.alloc();
+        compileJob->module                     = externalModule;
+        compileJob->buildParameters            = externalModule->buildParameters;
+        compileJob->buildParameters.outputType = BackendOutputType::DynamicLib;
+        compileJob->mutexDone                  = &mutexDone;
+        compileJob->condVar                    = &condVar;
         g_ThreadMgr.addJob(compileJob);
 
         // Sync wait for the dll to be generated

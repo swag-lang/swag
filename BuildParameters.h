@@ -18,7 +18,7 @@ enum BackendCompileType
 
 struct BuildParameters
 {
-    BackendOutputType  type = BackendOutputType::Binary;
+    BackendOutputType  outputType = BackendOutputType::Binary;
     set<Utf8>          foreignLibs;
     string             config;
     CompilerTarget     target;

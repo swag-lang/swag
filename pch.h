@@ -6,6 +6,7 @@
 #pragma warning(push, 0)
 #pragma warning(disable:4996)
 #pragma warning(disable:4244)
+#pragma warning(disable:4702)
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"

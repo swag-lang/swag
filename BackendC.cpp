@@ -4,13 +4,13 @@
 #include "Job.h"
 #include "OutputFile.h"
 #ifdef _WIN32
-#include "BackendCCompilerWin32.h"
+#include "BackendCCompilerVcClang.h"
 #endif
 
 void BackendC::setup()
 {
 #ifdef _WIN32
-    compiler = new BackendCCompilerWin32(this);
+    compiler = new BackendCCompilerVcClang(this);
 #endif
 }
 

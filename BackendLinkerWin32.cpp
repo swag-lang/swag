@@ -39,7 +39,7 @@ namespace BackendLinkerWin32
         SWAG_ASSERT(!buildParameters.destFile.empty());
         string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
         string resultFile;
-        switch (buildParameters.type)
+        switch (buildParameters.outputType)
         {
         case BackendOutputType::StaticLib:
             resultFile = destFile + buildParameters.postFix + ".lib";
@@ -113,7 +113,7 @@ namespace BackendLinkerWin32
             arguments += "/DEBUG ";
 
         auto resultFile = getResultFile(buildParameters);
-        if (buildParameters.type == BackendOutputType::DynamicLib)
+        if (buildParameters.outputType == BackendOutputType::DynamicLib)
         {
             arguments += "/DLL ";
             arguments += "/OUT:\"" + resultFile + "\" ";

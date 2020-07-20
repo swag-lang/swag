@@ -114,7 +114,7 @@
     <ClInclude Include="Backend.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCCompiler.h" />
-    <ClInclude Include="BackendCCompilerWin32.h" />
+    <ClInclude Include="BackendCCompilerVcClang.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
     <ClInclude Include="BackendFunctionBodyJob.h" />
     <ClInclude Include="BackendHelpers.h" />
@@ -209,7 +209,7 @@
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="Backend.cpp" />
     <ClCompile Include="BackendC.cpp" />
-    <ClCompile Include="BackendCCompilerWin32.cpp" />
+    <ClCompile Include="BackendCCompilerVcClang.cpp" />
     <ClCompile Include="BackendCData_.cpp" />
     <ClCompile Include="BackendCFunctionBodyJob.cpp" />
     <ClCompile Include="BackendCFunction_.cpp" />

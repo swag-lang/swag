@@ -368,9 +368,6 @@
     <ClCompile Include="BackendLLVM.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCCompilerWin32.cpp">
-      <Filter>Backend\Native\C</Filter>
-    </ClCompile>
     <ClCompile Include="BackendLinkerWin32.cpp">
       <Filter>Backend\Native</Filter>
     </ClCompile>
@@ -403,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="ModulePrecompileJob.cpp">
       <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCCompilerVcClang.cpp">
+      <Filter>Backend\Native\C</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -662,9 +662,6 @@
     <ClInclude Include="BackendLLVM.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="BackendCCompilerWin32.h">
-      <Filter>Backend\Native\C</Filter>
-    </ClInclude>
     <ClInclude Include="BackendLinkerWin32.h">
       <Filter>Backend\Native</Filter>
     </ClInclude>
@@ -688,6 +685,9 @@
     </ClInclude>
     <ClInclude Include="ModulePrecompileJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendCCompilerVcClang.h">
+      <Filter>Backend\Native\C</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
