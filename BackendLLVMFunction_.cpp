@@ -20,7 +20,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct].llvmContext[precompileIndex];
+    auto& context = *perType[ct][precompileIndex].llvmContext;
 
     typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     *llvmType = nullptr;
@@ -147,9 +147,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context  = *perType[ct].llvmContext[precompileIndex];
-    auto& builder  = *perType[ct].llvmBuilder[precompileIndex];
-    auto& modu     = *perType[ct].llvmModule[precompileIndex];
+    auto& context  = *perType[ct][precompileIndex].llvmContext;
+    auto& builder  = *perType[ct][precompileIndex].llvmBuilder;
+    auto& modu     = *perType[ct][precompileIndex].llvmModule;
     auto  typeFunc = bc->callType();
 
     // One int64 per register
@@ -180,9 +180,9 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct].llvmContext[precompileIndex];
-    auto& builder = *perType[ct].llvmBuilder[precompileIndex];
-    auto  modu    = perType[ct].llvmModule[precompileIndex];
+    auto& context = *perType[ct][precompileIndex].llvmContext;
+    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
+    auto  modu    = perType[ct][precompileIndex].llvmModule;
 
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 

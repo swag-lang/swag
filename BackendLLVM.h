@@ -39,12 +39,12 @@ struct BackendLLVM : public Backend
 
     struct PerType
     {
-        llvm::LLVMContext*    llvmContext[MAX_PRECOMPILE_BUFFERS];
-        llvm::IRBuilder<>*    llvmBuilder[MAX_PRECOMPILE_BUFFERS];
-        llvm::Module*         llvmModule[MAX_PRECOMPILE_BUFFERS];
-        string                bufferFiles[MAX_PRECOMPILE_BUFFERS];
-        BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
-    } perType[BackendCompileType::Count];
+        llvm::LLVMContext*    llvmContext;
+        llvm::IRBuilder<>*    llvmBuilder;
+        llvm::Module*         llvmModule;
+        string                bufferFiles;
+        BackendPreCompilePass pass = {BackendPreCompilePass::Init};
+    } perType[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 
     llvm::GlobalVariable* mutableSeg  = nullptr;
     llvm::GlobalVariable* constantSeg = nullptr;

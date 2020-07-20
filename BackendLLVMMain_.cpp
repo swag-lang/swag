@@ -9,9 +9,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct].llvmContext[precompileIndex];
-    auto& builder = *perType[ct].llvmBuilder[precompileIndex];
-    auto  modu    = perType[ct].llvmModule[precompileIndex];
+    auto& context = *perType[ct][precompileIndex].llvmContext;
+    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
+    auto  modu    = perType[ct][precompileIndex].llvmModule;
 
     // Prototype
     vector<llvm::Type*> params;
@@ -75,9 +75,9 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct].llvmContext[precompileIndex];
-    auto& builder = *perType[ct].llvmBuilder[precompileIndex];
-    auto  modu    = perType[ct].llvmModule[precompileIndex];
+    auto& context = *perType[ct][precompileIndex].llvmContext;
+    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
+    auto  modu    = perType[ct][precompileIndex].llvmModule;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
@@ -109,9 +109,9 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct].llvmContext[precompileIndex];
-    auto& builder = *perType[ct].llvmBuilder[precompileIndex];
-    auto  modu    = perType[ct].llvmModule[precompileIndex];
+    auto& context = *perType[ct][precompileIndex].llvmContext;
+    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
+    auto  modu    = perType[ct][precompileIndex].llvmModule;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
