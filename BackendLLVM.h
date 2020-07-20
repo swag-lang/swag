@@ -45,10 +45,11 @@ struct BackendLLVM : public Backend
         string                filename;
         BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
-        llvm::GlobalVariable* bssSeg      = nullptr;
-        llvm::GlobalVariable* mutableSeg  = nullptr;
-        llvm::GlobalVariable* constantSeg = nullptr;
-        llvm::GlobalVariable* mainContext = nullptr;
+        llvm::GlobalVariable* bssSeg            = nullptr;
+        llvm::GlobalVariable* mutableSeg        = nullptr;
+        llvm::GlobalVariable* constantSeg       = nullptr;
+        llvm::GlobalVariable* mainContext       = nullptr;
+        llvm::GlobalVariable* defaultAllocTable = nullptr;
 
         llvm::Type*         interfaceTy    = nullptr;
         llvm::Type*         contextTy      = nullptr;

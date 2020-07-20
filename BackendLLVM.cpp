@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "BackendLLVM.h"
-#include "Job.h"
-#include "Module.h"
 #include "Workspace.h"
 #include "OS.h"
 #include "BackendSetupWin32.h"
 #include "BackendLinkerWin32.h"
-#include "DataSegment.h"
 
 void BackendLLVM::setup()
 {
@@ -76,7 +73,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // mainContext
     if (precompileIndex == 0)
     {
-        pp.mainContext = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "mainContext");
+        pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, llvm::ConstantPointerNull::get(pp.contextTy->getPointerTo()), "mainContext");
+        pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "defaultAllocTable");
     }
 
     return true;
