@@ -57,6 +57,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
         if (precompileIndex == 0)
         {
             emitSeparator(bufferC, "INIT");
+            emitInitDatas(bufferC);
             emitGlobalInit(bufferC);
             emitGlobalDrop(bufferC);
             emitMain(bufferC);
