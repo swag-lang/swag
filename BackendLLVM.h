@@ -37,14 +37,14 @@ struct BackendLLVM : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    struct PerType
+    struct
     {
-        llvm::LLVMContext*    llvmContext;
-        llvm::IRBuilder<>*    llvmBuilder;
-        llvm::Module*         llvmModule;
-        string                bufferFiles;
+        llvm::LLVMContext*    context;
+        llvm::IRBuilder<>*    builder;
+        llvm::Module*         module;
+        string                filename;
         BackendPreCompilePass pass = {BackendPreCompilePass::Init};
-    } perType[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 
     llvm::GlobalVariable* mutableSeg  = nullptr;
     llvm::GlobalVariable* constantSeg = nullptr;

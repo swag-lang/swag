@@ -22,8 +22,8 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
 
     // Generate content
     auto  segSize = dataSegment->buckets.size();
-    auto& context = *perType[ct][precompileIndex].llvmContext;
-    auto  modu    = perType[ct][precompileIndex].llvmModule;
+    auto& context = *perThread[ct][precompileIndex].context;
+    auto  modu    = perThread[ct][precompileIndex].module;
 
     llvm::Type*      type      = llvm::Type::getInt8Ty(context);
     llvm::ArrayType* arrayType = llvm::ArrayType::get(type, dataSegment->totalCount);
@@ -66,9 +66,9 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct][precompileIndex].llvmContext;
-    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
-    auto  modu    = perType[ct][precompileIndex].llvmModule;
+    auto& context = *perThread[ct][precompileIndex].context;
+    auto& builder = *perThread[ct][precompileIndex].builder;
+    auto  modu    = perThread[ct][precompileIndex].module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initDataSeg", modu);
@@ -119,9 +119,9 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perType[ct][precompileIndex].llvmContext;
-    auto& builder = *perType[ct][precompileIndex].llvmBuilder;
-    auto  modu    = perType[ct][precompileIndex].llvmModule;
+    auto& context = *perThread[ct][precompileIndex].context;
+    auto& builder = *perThread[ct][precompileIndex].builder;
+    auto  modu    = perThread[ct][precompileIndex].module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initConstantSeg", modu);
