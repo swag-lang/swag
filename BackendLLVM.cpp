@@ -12,6 +12,51 @@ void BackendLLVM::setup()
 {
 }
 
+bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& context = *perThread[ct][precompileIndex].context;
+
+    // swag_interface_t
+    {
+        llvm::Type* members[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt8PtrTy(context)};
+        perThread[ct][precompileIndex].interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
+    }
+
+    // swag_context_t
+    {
+        llvm::Type* members[] = {
+            perThread[ct][precompileIndex].interfaceTy};
+        perThread[ct][precompileIndex].contextTy = llvm::StructType::create(context, members, "swag_context_t");
+    }
+
+    // swag_slice_t
+    {
+        llvm::Type* members[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt64Ty(context),
+        };
+        perThread[ct][precompileIndex].sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
+    }
+
+    // swag_process_infos_t
+    {
+        llvm::Type* members[] = {
+            perThread[ct][precompileIndex].sliceTy,
+            llvm::Type::getInt32Ty(context),
+            perThread[ct][precompileIndex].contextTy->getPointerTo(),
+            llvm::Type::getInt8PtrTy(context), // swag_bytecoderun_t
+        };
+        perThread[ct][precompileIndex].processinfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+    }
+
+    return true;
+}
+
 JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Do we need to generate the file ?
@@ -65,21 +110,6 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     }
 
     return JobResult::ReleaseJob;
-}
-
-bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
-{
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    auto& context = *perThread[ct][precompileIndex].context;
-
-    // swag_interface_t
-    llvm::Type* members[] = {
-        llvm::Type::getInt8PtrTy(context),
-        llvm::Type::getInt8PtrTy(context)};
-    llvm::StructType::create(context, members, "swag_interface_t");
-    return true;
 }
 
 bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)

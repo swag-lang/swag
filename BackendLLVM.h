@@ -47,5 +47,11 @@ struct BackendLLVM : public Backend
 
         llvm::GlobalVariable* mutableSeg  = nullptr;
         llvm::GlobalVariable* constantSeg = nullptr;
+
+        llvm::Type* interfaceTy    = nullptr;
+        llvm::Type* contextTy      = nullptr;
+        llvm::Type* sliceTy        = nullptr;
+        llvm::Type* processinfosTy = nullptr;
+
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
