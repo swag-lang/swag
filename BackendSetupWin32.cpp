@@ -146,13 +146,7 @@ namespace BackendSetupWin32
             compilerPath += "\\";
             break;
 
-        case BackendType::LLVM_Link:
-            LLVM::setup();
-            linkerExe  = "link.exe";
-            linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
-            break;
-
-        case BackendType::LLVM_Lld:
+        case BackendType::LLVM:
             LLVM::setup();
             if (!getLLVMBinFolder(linkerPath))
             {
