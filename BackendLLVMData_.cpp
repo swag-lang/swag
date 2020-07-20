@@ -31,7 +31,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     if (dataSegment == &module->bssSegment)
     {
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
-        new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
+        perThread[ct][precompileIndex].bssSeg   = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
     }
     else
     {

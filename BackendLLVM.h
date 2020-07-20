@@ -45,13 +45,17 @@ struct BackendLLVM : public Backend
         string                filename;
         BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
+        llvm::GlobalVariable* bssSeg      = nullptr;
         llvm::GlobalVariable* mutableSeg  = nullptr;
         llvm::GlobalVariable* constantSeg = nullptr;
+        llvm::GlobalVariable* mainContext = nullptr;
 
-        llvm::Type* interfaceTy    = nullptr;
-        llvm::Type* contextTy      = nullptr;
-        llvm::Type* sliceTy        = nullptr;
-        llvm::Type* processinfosTy = nullptr;
+        llvm::Type*         interfaceTy    = nullptr;
+        llvm::Type*         contextTy      = nullptr;
+        llvm::Type*         sliceTy        = nullptr;
+        llvm::Type*         processinfosTy = nullptr;
+        llvm::FunctionType* allocatorTy    = nullptr;
+        llvm::FunctionType* bytecodeRunTy  = nullptr;
 
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

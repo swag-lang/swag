@@ -17,21 +17,23 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perThread[ct][precompileIndex].context;
+    auto& pp      = perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& modu    = *pp.module;
 
     // swag_interface_t
     {
         llvm::Type* members[] = {
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt8PtrTy(context)};
-        perThread[ct][precompileIndex].interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
+        pp.interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
     }
 
     // swag_context_t
     {
         llvm::Type* members[] = {
-            perThread[ct][precompileIndex].interfaceTy};
-        perThread[ct][precompileIndex].contextTy = llvm::StructType::create(context, members, "swag_context_t");
+            pp.interfaceTy};
+        pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
     }
 
     // swag_slice_t
@@ -40,18 +42,41 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt64Ty(context),
         };
-        perThread[ct][precompileIndex].sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
+        pp.sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
+    }
+
+    // swag_alloctor_t
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
+        };
+        pp.allocatorTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
+    }
+
+    // swag_alloctor_t
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+        };
+        pp.bytecodeRunTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, true);
     }
 
     // swag_process_infos_t
     {
         llvm::Type* members[] = {
-            perThread[ct][precompileIndex].sliceTy,
+            pp.sliceTy,
             llvm::Type::getInt32Ty(context),
-            perThread[ct][precompileIndex].contextTy->getPointerTo(),
-            llvm::Type::getInt8PtrTy(context), // swag_bytecoderun_t
+            pp.contextTy->getPointerTo(),
+            pp.bytecodeRunTy,
         };
-        perThread[ct][precompileIndex].processinfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+        pp.processinfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
+    }
+
+    // mainContext
+    if (precompileIndex == 0)
+    {
+        pp.mainContext = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "mainContext");
     }
 
     return true;

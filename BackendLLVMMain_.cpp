@@ -16,7 +16,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Prototype
     vector<llvm::Type*> params;
     params.push_back(llvm::Type::getInt32Ty(context));
-    params.push_back(llvm::Type::getInt32PtrTy(context));
+    params.push_back(llvm::Type::getInt8PtrTy(context)->getPointerTo());
     llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), params, false);
     llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", modu);
 
