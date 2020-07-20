@@ -94,11 +94,11 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     llvm::legacy::PassManager llvmPass;
 
-    llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
-    llvmPass.add(llvm::createInstructionCombiningPass());
-    llvmPass.add(llvm::createReassociatePass());
-    llvmPass.add(llvm::createGVNPass());
-    llvmPass.add(llvm::createCFGSimplificationPass());
+    //llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
+    //llvmPass.add(llvm::createInstructionCombiningPass());
+    //llvmPass.add(llvm::createReassociatePass());
+    //llvmPass.add(llvm::createGVNPass());
+    //llvmPass.add(llvm::createCFGSimplificationPass());
 
     //llvm::PassManagerBuilder pmb;
     //pmb.OptLevel           = 3;
