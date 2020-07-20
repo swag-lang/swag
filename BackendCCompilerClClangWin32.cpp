@@ -3,12 +3,12 @@
 #include "Os.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVcClang.h"
+#include "BackendCCompilerClClangWin32.h"
 #include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
 
-bool BackendCCompilerVcClang::compile(const BuildParameters& buildParameters)
+bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameters)
 {
     auto module = backend->module;
 

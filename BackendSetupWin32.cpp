@@ -131,12 +131,12 @@ namespace BackendSetupWin32
         // Compiler
         switch (g_CommandLine.backendType)
         {
-        case BackendType::C_Vs:
+        case BackendType::Cl:
             compilerExe  = "cl.exe";
             compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
 
-        case BackendType::C_Clang:
+        case BackendType::Clang:
             compilerExe  = "clang-cl.exe";
             if (!getLLVMBinFolder(compilerPath))
             {
@@ -164,7 +164,7 @@ namespace BackendSetupWin32
             break;
         }
 
-        if (g_CommandLine.backendType == BackendType::C_Vs || g_CommandLine.backendType == BackendType::C_Clang)
+        if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
         {
             auto fullPath = compilerPath + compilerExe;
             if (!fs::exists(fullPath))

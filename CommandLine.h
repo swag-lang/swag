@@ -9,8 +9,8 @@ enum class BackendArchi
 
 enum class BackendType
 {
-    C_Vs,
-    C_Clang,
+    Cl,
+    Clang,
     LLVM_Link,
     LLVM_Lld,
 };
@@ -66,7 +66,7 @@ struct CommandLine
     BackendArchi arch   = BackendArchi::Win64;
 
     // Backend
-    BackendType backendType        = BackendType::C_Vs;
+    BackendType backendType        = BackendType::Cl;
     bool        backendOutput      = true;
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;

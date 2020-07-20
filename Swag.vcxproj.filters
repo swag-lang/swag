@@ -401,7 +401,7 @@
     <ClCompile Include="ModulePrecompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCCompilerVcClang.cpp">
+    <ClCompile Include="BackendCCompilerClClangWin32.cpp">
       <Filter>Backend\Native\C</Filter>
     </ClCompile>
   </ItemGroup>
@@ -686,7 +686,7 @@
     <ClInclude Include="ModulePrecompileJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BackendCCompilerVcClang.h">
+    <ClInclude Include="BackendCCompilerClClangWin32.h">
       <Filter>Backend\Native\C</Filter>
     </ClInclude>
   </ItemGroup>

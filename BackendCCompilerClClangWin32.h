@@ -1,9 +1,9 @@
 #pragma once
 #include "BackendCCompiler.h"
 
-struct BackendCCompilerVcClang : public BackendCCompiler
+struct BackendCCompilerClClangWin32 : public BackendCCompiler
 {
-    BackendCCompilerVcClang(BackendC* bk)
+    BackendCCompilerClClangWin32(BackendC* bk)
         : BackendCCompiler{bk}
     {
     }
