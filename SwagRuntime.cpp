@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <windows.h>
+#include <stdio.h>
 
 #ifdef _MSC_VER
 #define SWAG_IMPORT __declspec(dllimport)
