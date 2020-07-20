@@ -24,8 +24,16 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
 
-    // Generate call to test functions
-    auto fccType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    // Main context
+
+    // Arguments
+
+    // Call to global init of this module, and dependencies
+    auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    auto funcInit = modu->getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcTypeVoid);
+    builder.CreateCall(funcInit);
+
+    // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test)
     {
         if (!module->byteCodeTestFunc.empty())
@@ -36,7 +44,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
                 if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                     continue;
 
-                auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fccType);
+                auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), funcTypeVoid);
                 builder.CreateCall(fcc);
             }
         }
@@ -45,13 +53,15 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        auto fcc = modu->getOrInsertFunction(module->byteCodeMainFunc->callName().c_str(), fccType);
-        builder.CreateCall(fcc);
+        auto fncMain = modu->getOrInsertFunction(module->byteCodeMainFunc->callName().c_str(), funcTypeVoid);
+        builder.CreateCall(fncMain);
     }
 
     // Call to global drop of this module
-    auto fcc = modu->getOrInsertFunction(format("%s_globalDrop", module->nameDown.c_str()).c_str(), fccType);
-    builder.CreateCall(fcc);
+    auto funcDrop = modu->getOrInsertFunction(format("%s_globalDrop", module->nameDown.c_str()).c_str(), funcTypeVoid);
+    builder.CreateCall(funcDrop);
+
+    // Call to global drop of all dependencies
 
     uint32_t value  = 0;
     auto     retVal = llvm::ConstantInt::get(context, llvm::APInt(32, value));
@@ -76,13 +86,17 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
+    // Init data segments
+    builder.CreateCall(modu->getFunction("initDataSeg"));
+    builder.CreateCall(modu->getFunction("initConstantSeg"));
+
     for (auto bc : module->byteCodeInitFunc)
     {
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
-        builder.CreateCall(fcc);
+        auto func = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
+        builder.CreateCall(func);
     }
 
     builder.CreateRetVoid();
@@ -110,8 +124,8 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto fcc = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
-        builder.CreateCall(fcc);
+        auto func = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
+        builder.CreateCall(func);
     }
 
     builder.CreateRetVoid();

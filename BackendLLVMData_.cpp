@@ -70,7 +70,7 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
     auto  modu    = llvmModule[ct][precompileIndex];
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "emitDataSeg", modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initDataSeg", modu);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
@@ -89,7 +89,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
     auto  modu    = llvmModule[ct][precompileIndex];
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "emitConstantSeg", modu);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initConstantSeg", modu);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);

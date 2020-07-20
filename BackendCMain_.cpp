@@ -45,7 +45,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
 
     bufferC.addEol();
 
-    // Generate call to test functions
+    // Call to test functions
     if (!module->byteCodeTestFunc.empty())
     {
         CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_HAS_TEST\n");
