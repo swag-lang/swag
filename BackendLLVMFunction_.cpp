@@ -946,7 +946,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::ShiftLeftS32:
+        case ByteCodeOp::BinOpShiftLeftS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -956,7 +956,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::ShiftLeftS64:
+        case ByteCodeOp::BinOpShiftLeftS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));

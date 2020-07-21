@@ -259,11 +259,11 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::ShiftLeftS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::ShiftLeftS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitShiftLeft, type not supported");
