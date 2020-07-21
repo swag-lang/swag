@@ -1,4 +1,4 @@
-var x: s8 = 4
+var x: s64
 
 #[swag.printbc]
 #test
