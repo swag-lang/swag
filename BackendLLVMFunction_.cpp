@@ -1978,17 +1978,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::InvertS8:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = ~r[", ip->a.u32, "].s8;");
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::InvertS16:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = ~r[", ip->a.u32, "].s16;");
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::InvertS32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = ~r[", ip->a.u32, "].s32;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::InvertS64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
+
         case ByteCodeOp::InvertU8:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u8 = ~r[", ip->a.u32, "].u8;");
             break;
