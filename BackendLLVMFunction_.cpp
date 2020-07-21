@@ -851,15 +851,35 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::BinOpMulS64:
+        {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
-
+        }
         case ByteCodeOp::BinOpMulF32:
+        {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpMulF64:
+        {
             //concat.addStringFormat("r[%u].f64= r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::XorS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 ^ r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -1572,8 +1592,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].u64;");
             break;
         case ByteCodeOp::CastF32S32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].f32;");
+            auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), llvm::Type::getInt32Ty(context));
+            r0      = TO_PTR_I32(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastF32S64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].f32;");
             break;
