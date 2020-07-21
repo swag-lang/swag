@@ -1532,19 +1532,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpShiftLeftEqU8:
-            //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpShiftLeftEqU16:
-            //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpShiftLeftEqU32:
-            //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpShiftLeftEqU64:
-            //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
-            break;
-
         case ByteCodeOp::AffectOpShiftRightEqS8:
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             break;

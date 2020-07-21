@@ -381,29 +381,21 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1);
         return true;
-    case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1);
-        return true;
     case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1);
         return true;
-    case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1);
-        return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1);
-        return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1);
-        return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1);
         return true;
     default:
         return internalError(context, "emitAffectShiftLeftEqual, type not supported");
