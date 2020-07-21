@@ -16,17 +16,13 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::BinOpPlusS32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
-            return true;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            emitInstruction(context, ByteCodeOp::BinOpPlusU32, r0, r1, r2);
-            return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::BinOpPlusU64, r0, r1, r2);
+            emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
             emitInstruction(context, ByteCodeOp::BinOpPlusF32, r0, r1, r2);
