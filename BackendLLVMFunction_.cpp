@@ -1533,29 +1533,86 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
+        {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqS16:
+        {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqS32:
+        {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqS64:
+        {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
+
         case ByteCodeOp::AffectOpShiftRightEqU8:
+        {
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqU16:
+        {
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqU32:
+        {
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpShiftRightEqU64:
+        {
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
 
         case ByteCodeOp::AffectOpPercentEqS8:
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
