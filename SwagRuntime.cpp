@@ -1,12 +1,12 @@
 #include <stdint.h>
 #include <windows.h>
-#include <stdio.h>
 
 #ifdef _MSC_VER
 #define SWAG_IMPORT __declspec(dllimport)
 #define SWAG_EXPORT extern "C" __declspec(dllexport)
 #endif
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 static char* __itoa(char* result, int64_t value)
 {
     char *  ptr = result, *ptr1 = result, tmp_char;
@@ -45,6 +45,8 @@ static void __ftoa(char* result, double value)
         fpart *= 10;
     __itoa(n, (int64_t) fpart);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 SWAG_EXPORT void* swag_runtime_malloc(uint64_t size)
 {

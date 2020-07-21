@@ -1,5 +1,5 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    @print("toto")
+    @print(666'f64)
 }

@@ -127,6 +127,27 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             };
             modu.getOrInsertFunction("swag_runtime_print_n", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
         }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_print", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt64Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_print_i64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getDoubleTy(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_print_f64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
     }
 
     // Cache things
