@@ -968,11 +968,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::ShiftRightS32:
+        {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::ShiftRightS64:
+        {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::ShiftRightU32:
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
