@@ -1682,9 +1682,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CastS16S32:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s16;");
             break;
-        case ByteCodeOp::CastS32S8:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = (swag_int8_t) r[", ip->a.u32, "].s32;");
-            break;
         case ByteCodeOp::CastS32S16:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s32;");
             break;
