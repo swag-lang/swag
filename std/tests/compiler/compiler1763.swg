@@ -1,4 +1,4 @@
-var x: [2] s32 = [10, 20]
+var x: [2] s32
 
 #[swag.printbc]
 #test
