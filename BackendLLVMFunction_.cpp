@@ -509,6 +509,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), typeFunc->stackSize));
 
+#define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
+#define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
+#define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
+
     // Generate bytecode
     int                    vaargsIdx = 0;
     auto                   ip        = bc->out;
@@ -623,12 +627,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::MakeConstantSegPointer:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
-            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_s32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)});
-            builder.CreateStore(r1, r0);
-
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
+            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_s32, CST_RB32});
+            builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::MakeConstantSegPointerOC:
@@ -667,10 +670,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CopyVBtoRA32:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
-            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt32PtrTy(context));
-            builder.CreateStore(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32), r0);
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt32PtrTy(context));
+            builder.CreateStore(CST_RB32, r0);
             break;
         }
         case ByteCodeOp::CopyVBtoRA64:
@@ -1314,7 +1317,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addChar(';');
             break;
         case ByteCodeOp::Ret:
-            //CONCAT_FIXED_STR(concat, "return;");
+            //return;
+            builder.CreateRetVoid();
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
@@ -1325,12 +1329,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::IntrinsicPrintString:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
+            //swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-            auto r1 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             r1      = builder.CreatePointerCast(r1, llvm::Type::getInt32PtrTy(context));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
-            //concat.addStringFormat("swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
         }
 
