@@ -311,17 +311,13 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BinOpXorS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BinOpXorS64, r0, r1, r2);
-        return true;
-    case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::BinOpXorU32, r0, r1, r2);
-        return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BinOpXorU64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpXorS64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitXor, type not supported");
