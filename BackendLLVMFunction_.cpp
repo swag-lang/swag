@@ -841,14 +841,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::BinOpMulS32:
+        case ByteCodeOp::BinOpMulU32:
+        {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpMulS64:
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BinOpMulU32:
+
+        //case ByteCodeOp::BinOpMulU32:
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 * r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
+            //break;
         case ByteCodeOp::BinOpMulU64:
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 * r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
@@ -1494,8 +1503,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::ClearMaskU64:
+        {
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB64);
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::CastBool8:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
@@ -1511,11 +1525,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::CastS8S16:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s8;");
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt16Ty(context), true);
+            r0      = TO_PTR_I16(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastS16S32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s16;");
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt32Ty(context), true);
+            r0      = TO_PTR_I32(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastS32S8:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = (swag_int8_t) r[", ip->a.u32, "].s32;");
             break;
