@@ -1555,9 +1555,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CastS32S16:
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s32;");
-            break;
         case ByteCodeOp::CastS32S64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].s32;");
@@ -1576,9 +1573,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CastS64S32:
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s64;");
-            break;
         case ByteCodeOp::CastS64F32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s64;");
             break;

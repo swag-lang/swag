@@ -186,10 +186,8 @@ void ByteCode::print()
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::CastS8S16:
         case ByteCodeOp::CastS16S32:
-        case ByteCodeOp::CastS32S16:
         case ByteCodeOp::CastS32S64:
         case ByteCodeOp::CastS32F32:
-        case ByteCodeOp::CastS64S32:
         case ByteCodeOp::CastS64F32:
         case ByteCodeOp::CastS64F64:
         case ByteCodeOp::CastU32F32:
