@@ -3,4 +3,7 @@
   <ItemGroup>
     <ClCompile Include="SwagRuntime.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SwagRuntime.h" />
+  </ItemGroup>
 </Project>

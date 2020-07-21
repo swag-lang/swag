@@ -7,6 +7,7 @@
 #include "Context.h"
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
+#include "SwagRuntime.h"
 
 ByteCodeRun g_Run;
 
@@ -851,25 +852,21 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();
-        g_Log.print(to_string(registersRC[ip->a.u32].f64));
+        swag_runtime_print_f64(registersRC[ip->a.u32].f64);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintS64:
     {
         g_Log.lock();
-        g_Log.print(to_string(registersRC[ip->a.u32].s64));
+        swag_runtime_print_i64(registersRC[ip->a.u32].s64);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintString:
     {
         g_Log.lock();
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            g_Log.print("<null>");
-        else
-            g_Log.print(string((const char*) ptr, registersRC[ip->b.u32].u32));
+        swag_runtime_print_n((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
         g_Log.unlock();
         break;
     }
