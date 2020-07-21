@@ -517,12 +517,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 #define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
 #define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
 #define TO_PTR_PTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
-#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context));
-#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context));
-#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context));
-#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context));
-#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context));
-#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context));
+#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
+#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
+#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
+#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
+#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
+#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
 
     // Generate bytecode
     int                    vaargsIdx = 0;
@@ -547,12 +547,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BoundCheck:
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             break;
+
         case ByteCodeOp::IncPointerVB32:
             //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
             break;
         case ByteCodeOp::IncPointer32:
+        {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r2 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+            auto r3 = builder.CreateInBoundsGEP(r1, r2);
+            builder.CreateStore(r3, r0);
             break;
+        }
         case ByteCodeOp::DecPointer32:
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
@@ -598,8 +606,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::MulRAVB:
+        {
             //concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32);
+            builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
             break;
+        }
         case ByteCodeOp::DivRAVB:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
