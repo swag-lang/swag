@@ -747,6 +747,30 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     auto                   ip        = bc->out;
     int                    lastLine  = -1;
     VectorNative<uint32_t> pushRAParams;
+
+    // To write the labels
+    uint32_t numJumps = bc->numJumps;
+    for (uint32_t i = 0; i < bc->numInstructions && numJumps; i++, ip++)
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::Jump:
+            ip[ip->a.s32 + 1].flags |= BCI_JUMP_DEST;
+            numJumps--;
+            break;
+        case ByteCodeOp::JumpIfTrue:
+        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfNotZero32:
+        case ByteCodeOp::JumpIfNotZero64:
+        case ByteCodeOp::JumpIfZero32:
+        case ByteCodeOp::JumpIfZero64:
+            ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
+            numJumps--;
+            break;
+        }
+    }
+
+    ip = bc->out;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -774,9 +798,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             }
         }
 
-        CONCAT_FIXED_STR(concat, "_");
-        concat.addS32Str8(i);
-        CONCAT_FIXED_STR(concat, ":; ");
+        // Label
+        if (ip->flags & BCI_JUMP_DEST)
+        {
+            CONCAT_FIXED_STR(concat, "_");
+            concat.addS32Str8(i);
+            CONCAT_FIXED_STR(concat, ":;\n");
+        }
 
         // Write the bytecode instruction name
         if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.debug)
@@ -794,7 +822,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::DecSP:
         case ByteCodeOp::IncSP:
         case ByteCodeOp::CopySPtoBP:
-            break;
+        case ByteCodeOp::PushRR:
+        case ByteCodeOp::PopRR:
+            if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.debug)
+                concat.addEol();
+            continue;
 
         case ByteCodeOp::BoundCheckString:
             concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
@@ -904,13 +936,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::MakeDataSegPointer:
-            if(ip->b.u32)
+            if (ip->b.u32)
                 CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __mutableseg + ", ip->b.u32, ";");
             else
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].pointer = __mutableseg;");
             break;
         case ByteCodeOp::MakeBssSegPointer:
-            if(ip->b.u32)
+            if (ip->b.u32)
                 CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
             else
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].pointer = __bssseg;");
@@ -1662,9 +1694,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::MakePointerToStackParam:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
-            break;
-        case ByteCodeOp::PushRR:
-        case ByteCodeOp::PopRR:
             break;
 
         case ByteCodeOp::MinusToTrue:

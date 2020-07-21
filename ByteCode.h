@@ -12,6 +12,8 @@ struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 
+static const uint32_t BCI_JUMP_DEST = 0x00000001;
+
 struct ByteCodeInstruction
 {
     Register   a;
@@ -20,6 +22,7 @@ struct ByteCodeInstruction
     Register   d;
     AstNode*   node;
     ByteCodeOp op;
+    uint32_t   flags;
 };
 
 struct ByteCode
@@ -50,6 +53,7 @@ struct ByteCode
     int32_t  maxCallResults        = 0;
     uint32_t maxReservedRegisterRC = 0;
     int32_t  curRC                 = -1;
+    uint32_t numJumps              = 0;
 
     bool compilerGenerated = false;
     bool addedToList       = false;

@@ -846,7 +846,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (ptr == nullptr)
             context->error("dereferencing a null pointer");
         else
-            *(uint8_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u32;
+            *(uint8_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u8;
         break;
     }
     case ByteCodeOp::SetAtPointer16:
@@ -855,7 +855,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (ptr == nullptr)
             context->error("dereferencing a null pointer");
         else
-            *(uint16_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u32;
+            *(uint16_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u16;
         break;
     }
     case ByteCodeOp::SetAtPointer32:

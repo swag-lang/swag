@@ -155,6 +155,19 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     if (g_CommandLine.stats)
         g_Stats.numInstructions++;
 
+    switch (op)
+    {
+    case ByteCodeOp::Jump:
+    case ByteCodeOp::JumpIfTrue:
+    case ByteCodeOp::JumpIfNotTrue:
+    case ByteCodeOp::JumpIfNotZero32:
+    case ByteCodeOp::JumpIfNotZero64:
+    case ByteCodeOp::JumpIfZero32:
+    case ByteCodeOp::JumpIfZero64:
+        bc->numJumps++;
+        break;
+    }
+
     return &ins;
 }
 
