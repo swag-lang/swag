@@ -668,17 +668,13 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
             break;
         case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
-            break;
         case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
             break;
         default:
             return internalError(context, "resolveShiftLeft, type not supported");
@@ -792,17 +788,13 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 ^ right->computedValue.reg.u32;
-            break;
         case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 ^ right->computedValue.reg.u64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
             break;
         default:
             return internalError(context, "resolveXor, type not supported");
