@@ -311,29 +311,21 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
         emitInstruction(context, ByteCodeOp::AffectOpOrEqS8, r0, r1);
         return true;
-    case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU8, r0, r1);
-        return true;
     case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::AffectOpOrEqS16, r0, r1);
         return true;
-    case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU16, r0, r1);
-        return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqS32, r0, r1);
-        return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqS64, r0, r1);
-        return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS64, r0, r1);
         return true;
     default:
         return internalError(context, "emitAffectOrEqual, type not supported");
