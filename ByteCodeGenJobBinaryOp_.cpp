@@ -72,17 +72,13 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::BinOpMinusS32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
-            return true;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            emitInstruction(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
-            return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
+            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
             emitInstruction(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);

@@ -651,16 +651,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 - registersRC[ip->b.u32].s64;
         break;
     }
-    case ByteCodeOp::BinOpMinusU32:
-    {
-        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 - registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusU64:
-    {
-        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 - registersRC[ip->b.u32].u64;
-        break;
-    }
     case ByteCodeOp::BinOpMinusF32:
     {
         registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 - registersRC[ip->b.u32].f32;
