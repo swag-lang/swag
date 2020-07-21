@@ -1513,12 +1513,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::ClearMaskU32:
+        {
             //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB32);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::ClearMaskU64:
         {
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB64);
             builder.CreateStore(v0, r0);
             break;
@@ -1574,20 +1579,50 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::CastS64F32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            r0      = TO_PTR_F32(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastS64F64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].s64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
+            r0      = TO_PTR_F64(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastU32F32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u32;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            r0      = TO_PTR_F32(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastU64F32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            r0      = TO_PTR_F32(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastU64F64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].u64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
+            r0      = TO_PTR_F64(r0);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CastF32S32:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].f32;");

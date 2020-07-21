@@ -1,7 +1,7 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    x := 0x80_00_00_00's32
-    b := cast(s8)x
-  //  @print(cast(s64)b)
+    x := 66'u8
+    y := cast(u64) x
+    @print(cast(f64)y)
 }
