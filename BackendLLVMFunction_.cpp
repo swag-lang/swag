@@ -556,18 +556,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::DecPointer32:
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
+
         case ByteCodeOp::DeRef8:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint8_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::DeRef16:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint16_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::DeRef32:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint32_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::DeRef64:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::DeRefPointer:
             //concat.addStringFormat("r[%u].pointer = *(swag_uint8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
             break;
@@ -671,8 +692,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::MakeDataSegPointer:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __mutableseg + ", ip->b.u32, ";");
+            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32});
+            builder.CreateStore(r1, r0);
             break;
+        }
         case ByteCodeOp::MakeBssSegPointer:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
             break;
