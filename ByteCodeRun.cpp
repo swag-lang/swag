@@ -1109,6 +1109,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpShiftRightS32:
+    {
+        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 >> registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightS64:
+    {
+        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 >> registersRC[ip->b.u32].u32;
+        break;
+    }
     case ByteCodeOp::BinOpShiftRightU32:
     {
         registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 >> registersRC[ip->b.u32].u32;

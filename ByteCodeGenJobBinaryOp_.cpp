@@ -280,11 +280,15 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightS32, r0, r1, r2);
+        return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2);
+        return true;
     case NativeTypeKind::U64:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2);
         return true;
