@@ -864,17 +864,33 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::BinOpMinusU32:
+        {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
+        }
         case ByteCodeOp::BinOpMinusU64:
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 - r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpMinusF32:
+        {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 - r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpMinusF64:
+        {
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 - r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::BinOpMulS32:
         {
