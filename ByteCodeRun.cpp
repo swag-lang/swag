@@ -1100,31 +1100,21 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpShiftLeftS32:
     {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 << registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 << registersRC[ip->b.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpShiftLeftS64:
     {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 << registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 << registersRC[ip->b.u32].u32;
         break;
     }
 
     case ByteCodeOp::ShiftRightS32:
     {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::ShiftRightS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::ShiftRightU32:
-    {
         registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 >> registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::ShiftRightU64:
+    case ByteCodeOp::ShiftRightS64:
     {
         registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 >> registersRC[ip->b.u32].u32;
         break;
