@@ -13,7 +13,7 @@
 
 bool ByteCodeGenJob::emitCompareTypeInfos(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
+    emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     emitInstruction(context, ByteCodeOp::JumpIfTrue, r2);
     auto instBig = context->bc->numInstructions;
 
@@ -115,12 +115,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         // Simple pointer compare
         else
         {
-            emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Lambda)
     {
-        emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
     else if (typeInfo->kind == TypeInfoKind::Interface)
     {
@@ -337,7 +337,7 @@ bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto inst              = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
         inst->b.u32            = right->computedValue.reg.u32;
-        emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
         freeRegisterRC(context, left);
         freeRegisterRC(context, right);
     }
