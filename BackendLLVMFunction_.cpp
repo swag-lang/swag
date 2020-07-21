@@ -513,10 +513,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 #define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
 #define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
 #define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
-#define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u64)
-#define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u64)
-#define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u64)
-#define R_TOPTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
+#define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
+#define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
+#define R_TO_PTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
 #define R_TO_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context));
 #define R_TO_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context));
 #define R_TO_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context));
@@ -639,7 +639,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeConstantSegPointer:
         {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
-            auto r0 = R_TOPTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = R_TO_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
@@ -1337,21 +1337,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintS64:
         {
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
-            auto r0 = R_TO_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            builder.CreateCall(modu.getFunction("swag_runtime_print_i64"), { builder.CreateLoad(r0) });
+            auto   r0 = R_TO_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            builder.CreateCall(modu.getFunction("swag_runtime_print_i64"), {builder.CreateLoad(r0)});
             break;
         }
         case ByteCodeOp::IntrinsicPrintF64:
         {
             //CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
             auto r0 = R_TO_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            builder.CreateCall(modu.getFunction("swag_runtime_print_f64"), { builder.CreateLoad(r0) });
+            builder.CreateCall(modu.getFunction("swag_runtime_print_f64"), {builder.CreateLoad(r0)});
             break;
         }
         case ByteCodeOp::IntrinsicPrintString:
         {
             //swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
-            auto r0 = R_TOPTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = R_TO_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = R_TO_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
             break;
