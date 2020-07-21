@@ -549,29 +549,21 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 | right->computedValue.reg.s8;
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 | right->computedValue.reg.s16;
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 | right->computedValue.reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue.reg.u8 = left->computedValue.reg.u8 | right->computedValue.reg.u8;
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue.reg.u16 = left->computedValue.reg.u16 | right->computedValue.reg.u16;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 | right->computedValue.reg.u32;
-            break;
         case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 | right->computedValue.reg.s64;
             break;
         default:
             return internalError(context, "resolveBitmaskOr, type not supported");
@@ -612,29 +604,21 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 & right->computedValue.reg.s8;
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 & right->computedValue.reg.s16;
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 & right->computedValue.reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue.reg.u8 = left->computedValue.reg.u8 & right->computedValue.reg.u8;
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue.reg.u16 = left->computedValue.reg.u16 & right->computedValue.reg.u16;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 & right->computedValue.reg.u32;
-            break;
         case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 & right->computedValue.reg.s64;
             break;
         default:
             return internalError(context, "resolveBitmaskAnd, type not supported");
