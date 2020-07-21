@@ -152,7 +152,6 @@ BYTECODE_OP(InvertS16)
 BYTECODE_OP(InvertS32)
 BYTECODE_OP(InvertS64)
 
-BYTECODE_OP(CompareOpEqualBool)
 BYTECODE_OP(CompareOpEqual8)
 BYTECODE_OP(CompareOpEqual16)
 BYTECODE_OP(CompareOpEqual32)

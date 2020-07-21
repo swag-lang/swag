@@ -61,8 +61,6 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            emitInstruction(context, ByteCodeOp::CompareOpEqualBool, r0, r1, r2);
-            return true;
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::CompareOpEqual8, r0, r1, r2);
