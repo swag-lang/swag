@@ -1228,18 +1228,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::AffectOpAndEqS64:
             CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s64;");
             break;
-        case ByteCodeOp::AffectOpAndEqU8:
-            CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u8;");
-            break;
-        case ByteCodeOp::AffectOpAndEqU16:
-            CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u16;");
-            break;
-        case ByteCodeOp::AffectOpAndEqU32:
-            CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpAndEqU64:
-            CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].u64;");
-            break;
 
         case ByteCodeOp::AffectOpOrEqS8:
             CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s8;");
