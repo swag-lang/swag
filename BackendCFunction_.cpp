@@ -1397,28 +1397,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::BitmaskAndS32:
+        case ByteCodeOp::BinOpBitmaskAndS32:
             concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskAndS64:
+        case ByteCodeOp::BinOpBitmaskAndS64:
             concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskAndU32:
+        case ByteCodeOp::BinOpBitmaskAndU32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 & r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskAndU64:
+        case ByteCodeOp::BinOpBitmaskAndU64:
             concat.addStringFormat("r[%u].u64 = r[%u].u64 & r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskOrS32:
+        case ByteCodeOp::BinOpBitmaskOrS32:
             concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskOrS64:
+        case ByteCodeOp::BinOpBitmaskOrS64:
             concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskOrU32:
+        case ByteCodeOp::BinOpBitmaskOrU32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 | r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BitmaskOrU64:
+        case ByteCodeOp::BinOpBitmaskOrU64:
             concat.addStringFormat("r[%u].u64 = r[%u].u64 | r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 

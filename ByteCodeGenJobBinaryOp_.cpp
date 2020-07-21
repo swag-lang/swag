@@ -203,17 +203,17 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BitmaskAndS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BitmaskAndS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::BitmaskAndU32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BitmaskAndU64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndU64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitBitmaskAnd, type not supported");
@@ -230,17 +230,17 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BitmaskOrS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::BitmaskOrS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::BitmaskOrU32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::BitmaskOrU64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrU64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitBitmaskOr, type not supported");

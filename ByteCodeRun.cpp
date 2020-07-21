@@ -1057,42 +1057,42 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::BitmaskAndS32:
+    case ByteCodeOp::BinOpBitmaskAndS32:
     {
         registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 & registersRC[ip->b.u32].s32;
         break;
     }
-    case ByteCodeOp::BitmaskAndS64:
+    case ByteCodeOp::BinOpBitmaskAndS64:
     {
         registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 & registersRC[ip->b.u32].s64;
         break;
     }
-    case ByteCodeOp::BitmaskAndU32:
+    case ByteCodeOp::BinOpBitmaskAndU32:
     {
         registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 & registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::BitmaskAndU64:
+    case ByteCodeOp::BinOpBitmaskAndU64:
     {
         registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 & registersRC[ip->b.u32].u64;
         break;
     }
-    case ByteCodeOp::BitmaskOrS32:
+    case ByteCodeOp::BinOpBitmaskOrS32:
     {
         registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 | registersRC[ip->b.u32].s32;
         break;
     }
-    case ByteCodeOp::BitmaskOrS64:
+    case ByteCodeOp::BinOpBitmaskOrS64:
     {
         registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 | registersRC[ip->b.u32].s64;
         break;
     }
-    case ByteCodeOp::BitmaskOrU32:
+    case ByteCodeOp::BinOpBitmaskOrU32:
     {
         registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 | registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::BitmaskOrU64:
+    case ByteCodeOp::BinOpBitmaskOrU64:
     {
         registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 | registersRC[ip->b.u32].u64;
         break;
