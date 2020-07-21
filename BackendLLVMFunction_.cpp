@@ -586,17 +586,37 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::GetFromDataSeg8:
+        {
             //concat.addStringFormat("r[%u].u8 = *(swag_uint8_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32}));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::GetFromDataSeg16:
+        {
             //concat.addStringFormat("r[%u].u16 = *(swag_uint16_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32}));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::GetFromDataSeg32:
+        {
             //concat.addStringFormat("r[%u].u32 = *(swag_uint32_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32}));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::GetFromDataSeg64:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32}));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
 
         case ByteCodeOp::GetFromBssSeg8:
             //concat.addStringFormat("r[%u].u8 = *(swag_uint8_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
@@ -610,10 +630,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromBssSeg64:
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
             break;
+
         case ByteCodeOp::ClearXVar:
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
-
         case ByteCodeOp::SetZeroStack8:
             //CONCAT_STR_1(concat, "*(swag_uint8_t*)(stack + ", ip->a.u32, ") = 0;");
             break;

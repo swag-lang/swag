@@ -1,7 +1,7 @@
+var x: s8 = 4
+
 #[swag.printbc]
 #test
 {
-    x := -4
-    y := x >> 1
-    @print(cast(f64)y)
+    @print(cast(f64)x)
 }
