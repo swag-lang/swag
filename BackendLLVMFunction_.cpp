@@ -813,21 +813,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::BinOpPlusS64:
+        {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 + r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpPlusF32:
+        {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpPlusF64:
+        {
             //concat.addStringFormat("r[%u].f64= r[%u].f64 + r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::BinOpMinusS32:
+        {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 - r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpMinusS64:
+        {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 - r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpMinusU32:
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
