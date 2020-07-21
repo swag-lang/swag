@@ -1535,18 +1535,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::InvertS64:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
             break;
-        case ByteCodeOp::InvertU8:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u8 = ~r[", ip->a.u32, "].u8;");
-            break;
-        case ByteCodeOp::InvertU16:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u16 = ~r[", ip->a.u32, "].u16;");
-            break;
-        case ByteCodeOp::InvertU32:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 = ~r[", ip->a.u32, "].u32;");
-            break;
-        case ByteCodeOp::InvertU64:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = ~r[", ip->a.u32, "].u64;");
-            break;
 
         case ByteCodeOp::ClearMaskU32:
             concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);

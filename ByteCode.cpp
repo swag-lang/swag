@@ -209,10 +209,6 @@ void ByteCode::print()
         case ByteCodeOp::InvertS16:
         case ByteCodeOp::InvertS32:
         case ByteCodeOp::InvertS64:
-        case ByteCodeOp::InvertU8:
-        case ByteCodeOp::InvertU16:
-        case ByteCodeOp::InvertU32:
-        case ByteCodeOp::InvertU64:
         case ByteCodeOp::NegS32:
         case ByteCodeOp::NegS64:
         case ByteCodeOp::NegF32:

@@ -1166,26 +1166,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].s64 = ~registersRC[ip->a.u32].s64;
         break;
     }
-    case ByteCodeOp::InvertU8:
-    {
-        registersRC[ip->a.u32].u8 = ~registersRC[ip->a.u32].u8;
-        break;
-    }
-    case ByteCodeOp::InvertU16:
-    {
-        registersRC[ip->a.u32].u16 = ~registersRC[ip->a.u32].u16;
-        break;
-    }
-    case ByteCodeOp::InvertU32:
-    {
-        registersRC[ip->a.u32].u32 = ~registersRC[ip->a.u32].u32;
-        break;
-    }
-    case ByteCodeOp::InvertU64:
-    {
-        registersRC[ip->a.u32].u64 = ~registersRC[ip->a.u32].u64;
-        break;
-    }
 
     case ByteCodeOp::ClearMaskU32:
     {
