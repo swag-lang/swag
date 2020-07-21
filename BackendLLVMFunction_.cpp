@@ -1174,11 +1174,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
+        {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s32;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32); // *64
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpMinusEqS64:
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s64;");
             break;
+
         case ByteCodeOp::AffectOpMinusEqU8:
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].u8;");
             break;
@@ -1191,6 +1199,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU64:
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].u64;");
             break;
+
         case ByteCodeOp::AffectOpMinusEqF32:
             //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].f32;");
             break;

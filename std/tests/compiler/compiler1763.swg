@@ -1,7 +1,7 @@
-var x: [2] s32
-
 #[swag.printbc]
 #test
 {
-    @print(cast(s64)x[1])
+    x := 10
+    x -= 4
+    @print(cast(s64)x)
 }
