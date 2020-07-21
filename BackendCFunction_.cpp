@@ -1317,18 +1317,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::AffectOpXOrEqS64:
             CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s64;");
             break;
-        case ByteCodeOp::AffectOpXOrEqU8:
-            CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].u8;");
-            break;
-        case ByteCodeOp::AffectOpXOrEqU16:
-            CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].u16;");
-            break;
-        case ByteCodeOp::AffectOpXOrEqU32:
-            CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpXOrEqU64:
-            CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].u64;");
-            break;
 
         case ByteCodeOp::CompareOpGreaterS32:
             concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
