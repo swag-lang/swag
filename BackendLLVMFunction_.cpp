@@ -1829,17 +1829,45 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::CompareOpEqual8:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpEqual16:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpEqual32:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpEqual64:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpEqualPointer:
             //concat.addStringFormat("r[%u].b = r[%u].pointer == r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
