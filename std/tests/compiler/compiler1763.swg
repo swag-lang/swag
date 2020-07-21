@@ -1,7 +1,7 @@
 #[swag.printbc]
 #test
 {
-    x := 5's64
-    x |= 10
+    x := 8's64
+    x <<= 2
     @print(cast(s64)x)
 }
