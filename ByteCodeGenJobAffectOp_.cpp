@@ -185,7 +185,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
         return true;
     }
@@ -241,7 +241,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
         return true;
     }

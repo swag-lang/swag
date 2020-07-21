@@ -13,7 +13,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
@@ -52,7 +52,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     }
 
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
@@ -193,7 +193,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstantInt0())
         {
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
@@ -216,7 +216,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstantInt0())
         {
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
@@ -249,7 +249,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstantInt0())
         {
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
@@ -281,12 +281,12 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Get total number of pushed arguments
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
         // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
-        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32 = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, r0)->b.u32 = sizeof(Register);
         // r0[1] now points to the list of any
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0[0], r0[1]);
 
         // Now we point to the first 'any' of the argument list
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register);
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer32, r0[1], node->access->resultRegisterRC, r0[0]);
 
         // Deref the any
@@ -316,11 +316,11 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
-        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, r0)->b.u32         = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
 
         // Offset pointer to the parameter
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
+        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
         node->resultRegisterRC = node->array->resultRegisterRC;

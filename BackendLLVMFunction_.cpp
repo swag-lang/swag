@@ -605,7 +605,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].pointer = *(swag_uint8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32);
             break;
 
-        case ByteCodeOp::MulRAVB:
+        case ByteCodeOp::Mul64byVB32:
         {
             //concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);

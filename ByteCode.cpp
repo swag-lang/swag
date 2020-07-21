@@ -293,7 +293,7 @@ void ByteCode::print()
         case ByteCodeOp::GetFromBssSeg64:
         case ByteCodeOp::MakeDataSegPointer:
         case ByteCodeOp::MakeBssSegPointer:
-        case ByteCodeOp::MulRAVB:
+        case ByteCodeOp::Mul64byVB32:
         case ByteCodeOp::DivRAVB:
             wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
             break;

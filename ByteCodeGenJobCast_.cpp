@@ -638,7 +638,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     {
         auto fromTypeSlice     = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
         int  diff              = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
-        auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+        auto inst              = emitInstruction(context, ByteCodeOp::Mul64byVB32, exprNode->resultRegisterRC[1]);
         inst->b.u32            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
@@ -648,7 +648,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         {
             auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
             int  diff         = fromTypeList->childs.front()->sizeOf / toTypeSlice->pointedType->sizeOf;
-            auto inst         = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+            auto inst         = emitInstruction(context, ByteCodeOp::Mul64byVB32, exprNode->resultRegisterRC[1]);
             inst->b.u32       = diff;
         }
 

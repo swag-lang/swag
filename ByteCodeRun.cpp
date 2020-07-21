@@ -662,7 +662,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MulRAVB:
+    case ByteCodeOp::Mul64byVB32:
     {
         registersRC[ip->a.u32].s32 *= ip->b.u32;
         break;
