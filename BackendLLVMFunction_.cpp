@@ -828,7 +828,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetAtPointer8:
         {
-            //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].u8;");
+            //concat.addStringFormat("*(swag_uint8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I8(builder.CreateInBoundsGEP(r0, CST_RC32));
@@ -838,7 +838,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer16:
         {
-            //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].u16;");
+            //concat.addStringFormat("*(swag_uint16_t*)(r[%u].pointer + %u) = r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I16(builder.CreateInBoundsGEP(r0, CST_RC32));

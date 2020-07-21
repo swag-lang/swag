@@ -1,7 +1,7 @@
 #[swag.printbc]
 #test
 {
-    x := 5's64
-    y := x == 5
+    x := "toto"
+    y := x != null
     @print(cast(s64)y)
 }
