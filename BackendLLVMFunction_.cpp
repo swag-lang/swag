@@ -148,9 +148,10 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perThread[ct][precompileIndex].context;
-    auto& builder = *perThread[ct][precompileIndex].builder;
-    auto  modu    = perThread[ct][precompileIndex].module;
+    auto& pp      = perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.module;
 
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
@@ -207,7 +208,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto name = Ast::computeFullNameForeign(node, true);
 
     llvm::FunctionType* funcType = llvm::FunctionType::get(llvmReturnType, params, false);
-    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), *modu);
+    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), modu);
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
@@ -230,7 +231,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (returnByCopy)
     {
         // rr0 = result
-        auto rr0  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
+        auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.zero_i32);
         auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), llvm::Type::getInt64Ty(context));
         builder.CreateStore(cst0, rr0);
     }
@@ -359,13 +360,13 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         args.push_back(rr0);
     }
 
-    auto fcc = modu->getFunction(bc->callName().c_str());
+    auto fcc = modu.getFunction(bc->callName().c_str());
     builder.CreateCall(fcc, args);
 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
-        auto rr0        = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0));
+        auto rr0        = builder.CreateInBoundsGEP(allocRR, pp.zero_i32);
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
 
         if (returnType->kind == TypeInfoKind::Slice ||
@@ -512,6 +513,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 #define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
 #define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
 #define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
+#define R_TOPTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define R_TO32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context));
 
     // Generate bytecode
     int                    vaargsIdx = 0;
@@ -628,9 +631,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeConstantSegPointer:
         {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
-            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_s32, CST_RB32});
+            auto r0 = R_TOPTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
         }
@@ -671,8 +673,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyVBtoRA32:
         {
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
-            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt32PtrTy(context));
+            auto r0 = R_TO32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             builder.CreateStore(CST_RB32, r0);
             break;
         }
@@ -1330,10 +1331,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintString:
         {
             //swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
-            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
-            r1      = builder.CreatePointerCast(r1, llvm::Type::getInt32PtrTy(context));
+            auto r0 = R_TOPTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = R_TO32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
             break;
         }

@@ -11,30 +11,37 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     if (!dataSegment->totalCount)
         return true;
 
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    // Generate extern vars
-    if (precompileIndex)
-    {
-        return true;
-    }
-
-    // Generate content
-    auto  segSize = dataSegment->buckets.size();
-    auto& context = *perThread[ct][precompileIndex].context;
-    auto  modu    = perThread[ct][precompileIndex].module;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& modu            = *pp.module;
 
     llvm::Type*      type      = llvm::Type::getInt8Ty(context);
     llvm::ArrayType* arrayType = llvm::ArrayType::get(type, dataSegment->totalCount);
 
+    // Generate extern vars
+    if (precompileIndex)
+    {
+        if (dataSegment == &module->bssSegment)
+            pp.bssSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__bssseg");
+        else if (dataSegment == &module->mutableSegment)
+            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__mutableseg");
+        else
+            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__constantseg");
+        return true;
+    }
+
+    // Generate content
     if (dataSegment == &module->bssSegment)
     {
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
-        perThread[ct][precompileIndex].bssSeg   = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
+        pp.bssSeg                               = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
     }
     else
     {
+        auto segSize = dataSegment->buckets.size();
+
         // Collect datas
         // Would be faster if done by 32 or 64 bits !
         std::vector<llvm::Constant*> values;
@@ -53,9 +60,9 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
-            perThread[ct][precompileIndex].mutableSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
+            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
         else
-            perThread[ct][precompileIndex].constantSeg = new llvm::GlobalVariable(*modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
+            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
     }
 
     return true;

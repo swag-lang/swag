@@ -194,7 +194,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto size      = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), modu.getDataLayout().getTypeStoreSize(pp.processInfosTy));
         auto dest      = builder.CreatePointerCast(pp.processInfos, llvm::Type::getInt8PtrTy(context));
         auto src       = builder.CreatePointerCast(fct->getArg(0), llvm::Type::getInt8PtrTy(context));
-        builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), { dest, src, size});
+        builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {dest, src, size});
     }
 
     // Initialize data segments
@@ -208,7 +208,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         auto func = modu.getOrInsertFunction(bc->callName().c_str(), fctType);
-        builder.CreateCall(func);
+        builder.CreateCall(func, { fct->getArg(0) });
     }
 
     builder.CreateRetVoid();
