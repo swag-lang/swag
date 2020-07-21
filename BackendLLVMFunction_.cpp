@@ -1337,20 +1337,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-
-        case ByteCodeOp::AffectOpMulEqU8:
-            //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].u8;");
-            break;
-        case ByteCodeOp::AffectOpMulEqU16:
-            //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].u16;");
-            break;
-        case ByteCodeOp::AffectOpMulEqU32:
-            //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].u32;");
-            break;
-        case ByteCodeOp::AffectOpMulEqU64:
-            //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].u64;");
-            break;
-
         case ByteCodeOp::AffectOpMulEqF32:
         {
             //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f32;");
