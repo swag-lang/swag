@@ -1304,26 +1304,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(int64_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s64;
         break;
     }
-    case ByteCodeOp::AffectOpPlusEqU8:
-    {
-        *(uint8_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u8;
-        break;
-    }
-    case ByteCodeOp::AffectOpPlusEqU16:
-    {
-        *(uint16_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u16;
-        break;
-    }
-    case ByteCodeOp::AffectOpPlusEqU32:
-    {
-        *(uint32_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::AffectOpPlusEqU64:
-    {
-        *(uint64_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u64;
-        break;
-    }
     case ByteCodeOp::AffectOpPlusEqF32:
     {
         *(float*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f32;
