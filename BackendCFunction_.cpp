@@ -926,7 +926,14 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
             break;
         case ByteCodeOp::MakeConstantSegPointer:
-            concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
+            if (ip->b.u32)
+            {
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) (__constantseg + ", ip->b.u32, ");");
+            }
+            else
+            {
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) __constantseg;");
+            }
             break;
         case ByteCodeOp::MakeConstantSegPointerOC:
             concat.addStringFormat("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
