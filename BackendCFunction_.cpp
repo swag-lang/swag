@@ -937,7 +937,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CopyRBtoRA:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "] = r[", ip->b.u32, "];");
             break;
-        case ByteCodeOp::CopyRARBAddr:
+        case ByteCodeOp::CopyRBAddrToRA:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &r[", ip->b.u32, "];");
             break;
 
