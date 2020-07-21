@@ -946,7 +946,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpShiftLeftS32:
+        case ByteCodeOp::BinOpShiftLeft32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -956,7 +956,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::BinOpShiftLeftS64:
+        case ByteCodeOp::BinOpShiftLeft64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -967,7 +967,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::ShiftRightS32:
+        case ByteCodeOp::BinOpShiftRight32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -977,7 +977,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::ShiftRightS64:
+        case ByteCodeOp::BinOpShiftRight64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -987,7 +987,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::ShiftRightU64VB:
+        case ByteCodeOp::BinOpShiftRight64VB:
             //concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
             break;
 

@@ -1034,20 +1034,20 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64 = r[%u].s64 ^ r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::BinOpShiftLeftS32:
+        case ByteCodeOp::BinOpShiftLeft32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BinOpShiftLeftS64:
+        case ByteCodeOp::BinOpShiftLeft64:
             concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::ShiftRightS32:
+        case ByteCodeOp::BinOpShiftRight32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::ShiftRightS64:
+        case ByteCodeOp::BinOpShiftRight64:
             concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::ShiftRightU64VB:
+        case ByteCodeOp::BinOpShiftRight64VB:
             concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
             break;
 

@@ -265,7 +265,7 @@ void ByteCode::print()
         case ByteCodeOp::SetZeroAtPointer32:
         case ByteCodeOp::SetZeroAtPointer64:
         case ByteCodeOp::IncPointerVB32:
-        case ByteCodeOp::ShiftRightU64VB:
+        case ByteCodeOp::BinOpShiftRight64VB:
         case ByteCodeOp::AddVBtoRA32:
         case ByteCodeOp::MakeConstantSegPointer:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
