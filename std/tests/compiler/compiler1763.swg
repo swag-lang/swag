@@ -1,5 +1,6 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    @print(666'f64)
+    a := 666
+    @print(cast(s64) a)
 }
