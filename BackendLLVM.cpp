@@ -110,6 +110,15 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             };
             modu.getOrInsertFunction("swag_runtime_loadDynamicLibrary", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
         }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt64Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_memcpy", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
     }
 
     return true;
@@ -172,11 +181,13 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
 
 bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& modu            = *pp.module;
 
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
-    perThread[ct][precompileIndex].module->setTargetTriple(targetTriple);
+    modu.setTargetTriple(targetTriple);
 
     std::string Error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
@@ -187,7 +198,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     llvm::TargetOptions opt;
     auto                RM               = llvm::Optional<llvm::Reloc::Model>();
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
-    perThread[ct][precompileIndex].module->setDataLayout(theTargetMachine->createDataLayout());
+    modu.setDataLayout(theTargetMachine->createDataLayout());
 
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     auto path       = targetPath + "/" + perThread[ct][precompileIndex].filename;
@@ -198,29 +209,24 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     llvm::legacy::PassManager llvmPass;
 
-    //llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
-    //llvmPass.add(llvm::createInstructionCombiningPass());
-    //llvmPass.add(llvm::createReassociatePass());
-    //llvmPass.add(llvm::createGVNPass());
-    //llvmPass.add(llvm::createCFGSimplificationPass());
+    /*llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
+    llvmPass.add(llvm::createInstructionCombiningPass());
+    llvmPass.add(llvm::createReassociatePass());
+    llvmPass.add(llvm::createGVNPass());
+    llvmPass.add(llvm::createCFGSimplificationPass());
 
-    //llvm::PassManagerBuilder pmb;
-    //pmb.OptLevel           = 3;
-    //pmb.SizeLevel          = 2;
-    //pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
-    //pmb.DisableUnrollLoops = false;
-    //pmb.LoopVectorize      = true;
-    //pmb.SLPVectorize       = true;
-    //pmb.populateModulePassManager(llvmPass);
+    llvm::PassManagerBuilder pmb;
+    pmb.OptLevel           = 3;
+    pmb.SizeLevel          = 2;
+    pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+    pmb.DisableUnrollLoops = false;
+    pmb.LoopVectorize      = true;
+    pmb.SLPVectorize       = true;
+    pmb.populateModulePassManager(llvmPass);*/
 
-    if (theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile))
-    {
-        //errs() << "TheTargetMachine can't emit a file of this type";
-        SWAG_ASSERT(false);
-        return false;
-    }
+    theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
 
-    llvmPass.run(*perThread[ct][precompileIndex].module);
+    llvmPass.run(modu);
     dest.flush();
     dest.close();
 
@@ -229,7 +235,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
-        perThread[ct][precompileIndex].module->print(destFileIR, nullptr);
+        modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
     }

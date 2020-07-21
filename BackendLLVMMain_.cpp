@@ -175,7 +175,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& pp      = perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
-    auto  modu    = pp.module;
+    auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalInit", module->nameDown.c_str()).c_str(), modu);
@@ -186,12 +186,20 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        //builder.CreateStore(fct->getArg(0), pp.processInfos);
+        llvm::Value* indices0[] = {
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
+            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
+        auto size      = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), modu.getDataLayout().getTypeStoreSize(pp.processInfosTy));
+        auto dest      = builder.CreatePointerCast(pp.processInfos, llvm::Type::getInt8PtrTy(context));
+        auto src       = builder.CreatePointerCast(fct->getArg(0), llvm::Type::getInt8PtrTy(context));
+        builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), { dest, src, size});
     }
 
     // Initialize data segments
-    builder.CreateCall(modu->getFunction("initDataSeg"));
-    builder.CreateCall(modu->getFunction("initConstantSeg"));
+    builder.CreateCall(modu.getFunction("initDataSeg"));
+    builder.CreateCall(modu.getFunction("initConstantSeg"));
 
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
@@ -199,7 +207,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu->getOrInsertFunction(bc->callName().c_str(), fctType);
+        auto func = modu.getOrInsertFunction(bc->callName().c_str(), fctType);
         builder.CreateCall(func);
     }
 
