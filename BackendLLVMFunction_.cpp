@@ -1803,6 +1803,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpEqualString:
             //concat.addStringFormat("r[%u].b = swag_runtime_strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
             break;
+
         case ByteCodeOp::IsNullString:
             //concat.addStringFormat("r[%u].b = r[%u].pointer == 0;", ip->b.u32, ip->a.u32);
             break;
@@ -1826,6 +1827,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BitmaskAndU64:
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 & r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
+
         case ByteCodeOp::BitmaskOrS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
@@ -1941,18 +1943,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::NegBool:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].b ? 0 : 1;");
             break;
+
         case ByteCodeOp::NegF32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
+            auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::NegF64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = -r[", ip->a.u32, "].f64;");
+            auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::NegS32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = -r[", ip->a.u32, "].s32;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::NegS64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = -r[", ip->a.u32, "].s64;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::InvertS8:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = ~r[", ip->a.u32, "].s8;");

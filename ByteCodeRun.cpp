@@ -1032,7 +1032,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::NegS64:
     {
-        registersRC[ip->a.u32].s32 = -registersRC[ip->a.u32].s32;
+        registersRC[ip->a.u32].s64 = -registersRC[ip->a.u32].s64;
         break;
     }
     case ByteCodeOp::NegF32:
