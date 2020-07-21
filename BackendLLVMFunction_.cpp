@@ -1194,24 +1194,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::BinOpBitmaskAndU32:
-            //concat.addStringFormat("r[%u].u32 = r[%u].u32 & r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::BinOpBitmaskAndU64:
-            //concat.addStringFormat("r[%u].u64 = r[%u].u64 & r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
 
         case ByteCodeOp::BinOpBitmaskOrS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpBitmaskOrS64:
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::BinOpBitmaskOrU32:
-            //concat.addStringFormat("r[%u].u32 = r[%u].u32 | r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::BinOpBitmaskOrU64:
-            //concat.addStringFormat("r[%u].u64 = r[%u].u64 | r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::AffectOpMinusEqS8:
