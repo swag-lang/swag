@@ -197,7 +197,6 @@ void ByteCode::print()
         case ByteCodeOp::CastU64F32:
         case ByteCodeOp::CastU64F64:
         case ByteCodeOp::CastF32S32:
-        case ByteCodeOp::CastF32S64:
         case ByteCodeOp::CastF32F64:
         case ByteCodeOp::CastF64S64:
         case ByteCodeOp::CastF64F32:
