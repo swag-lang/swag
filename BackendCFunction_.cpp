@@ -1041,13 +1041,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::BinOpShiftRight32:
+        case ByteCodeOp::BinOpShiftRightU32:
             concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BinOpShiftRight64:
+        case ByteCodeOp::BinOpShiftRightU64:
             concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BinOpShiftRight64VB:
+        case ByteCodeOp::BinOpShiftRightU64VB:
             concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
             break;
 

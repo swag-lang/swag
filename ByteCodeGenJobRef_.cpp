@@ -279,7 +279,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         // Get total number of pushed arguments
-        emitInstruction(context, ByteCodeOp::BinOpShiftRight64VB, r0)->b.u32 = 32;
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
         // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32 = sizeof(Register);
         // r0[1] now points to the list of any
@@ -315,7 +315,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Offset from variadic named parameter to the first parameter on the stack
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
-        emitInstruction(context, ByteCodeOp::BinOpShiftRight64VB, r0)->b.u32 = 32;
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
 
