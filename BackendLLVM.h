@@ -59,5 +59,7 @@ struct BackendLLVM : public Backend
         llvm::FunctionType* allocatorTy    = nullptr;
         llvm::FunctionType* bytecodeRunTy  = nullptr;
 
+        llvm::Value* zero_s32 = nullptr;
+
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

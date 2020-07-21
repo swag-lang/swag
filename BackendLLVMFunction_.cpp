@@ -566,7 +566,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::DivRAVB:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             break;
 
@@ -622,8 +622,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
             break;
         case ByteCodeOp::MakeConstantSegPointer:
+        {
+            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
+            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
+            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_s32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)});
+            builder.CreateStore(r1, r0);
+
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
             break;
+        }
         case ByteCodeOp::MakeConstantSegPointerOC:
             //concat.addStringFormat("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             //concat.addStringFormat("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
@@ -659,8 +666,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::CopyVBtoRA32:
+        {
+            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
+            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt32PtrTy(context));
+            builder.CreateStore(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32), r0);
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
             break;
+        }
         case ByteCodeOp::CopyVBtoRA64:
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             break;
@@ -998,17 +1010,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::AffectOpDivEqU64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                //concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer) /= r[%u].u64;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                //concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                //concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32);
             break;
 
@@ -1312,8 +1324,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
             break;
         case ByteCodeOp::IntrinsicPrintString:
+        {
+            auto r0 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32));
+            r0      = builder.CreatePointerCast(r0, llvm::Type::getInt8PtrTy(context)->getPointerTo());
+            auto r1 = builder.CreateInBoundsGEP(allocR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32));
+            r1      = builder.CreatePointerCast(r1, llvm::Type::getInt32PtrTy(context));
+            builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
             //concat.addStringFormat("swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
+        }
 
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
@@ -1471,7 +1490,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
             break;
         case ByteCodeOp::CopyRCtoRRCall:
-           // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
             break;
         case ByteCodeOp::CopyRRtoRCCall:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
