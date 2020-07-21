@@ -1032,12 +1032,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::BinOpMulS64:
             concat.addStringFormat("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::BinOpMulU32:
-            concat.addStringFormat("r[%u].u32 = r[%u].u32 * r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::BinOpMulU64:
-            concat.addStringFormat("r[%u].u64 = r[%u].u64 * r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
         case ByteCodeOp::BinOpMulF32:
             concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
