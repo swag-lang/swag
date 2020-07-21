@@ -925,9 +925,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpXorS32:
+        case ByteCodeOp::BinOpXorU32:
         {
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 ^ r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            //concat.addStringFormat("r[%u].u32 = r[%u].u32 ^ r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -935,9 +935,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::BinOpXorS64:
+        case ByteCodeOp::BinOpXorU64:
         {
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 ^ r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            //concat.addStringFormat("r[%u].u64 = r[%u].u64 ^ r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
