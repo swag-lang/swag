@@ -151,7 +151,9 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     }
 
     // Cache things
-    pp.zero_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0);
+    pp.cst0_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0);
+    pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
+    pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
 
     return true;
 }

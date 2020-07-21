@@ -35,63 +35,39 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     //mainContext.allocator.itable = &defaultAllocTable
     {
-        llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
-        auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, indices0);
-
-        llvm::Value* indices1[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
-        auto toTable   = builder.CreateInBoundsGEP(toAllocator, indices1);
-        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
+        auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32});
+        auto toTable     = builder.CreateInBoundsGEP(toAllocator, {pp.cst0_i32, pp.cst1_i32});
+        auto fromTable   = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
         builder.CreateStore(fromTable, toTable);
     }
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
-        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
         auto call    = builder.CreateCall(modu.getFunction("swag_runtime_tlsAlloc"));
         builder.CreateStore(call, toTlsId);
     }
 
     // __process_infos.defaultContext = &mainContext
     {
-        llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2)};
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
     // swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext)
     {
-        llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1)};
-        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, indices0);
-
-        llvm::Value* indices1[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2)};
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices1);
+        auto toTlsId   = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-
-        auto param0 = builder.CreateLoad(toTlsId);
-        auto param1 = builder.CreateLoad(toContext);
+        auto param0    = builder.CreateLoad(toTlsId);
+        auto param1    = builder.CreateLoad(toContext);
         builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {param0, param1});
     }
 
     // Arguments
     {
         // swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, argv)
-        llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices0);
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32});
         toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
         builder.CreateCall(modu.getFunction("swag_runtime_convertArgcArgv"), {toContext, F->getArg(0), F->getArg(1)});
     }
@@ -187,8 +163,8 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     // __process_infos = *processInfos;
     {
         llvm::Value* indices0[] = {
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0),
-            llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0)};
+            pp.cst0_i32,
+            pp.cst0_i32};
         auto toContext = builder.CreateInBoundsGEP(pp.processInfos, indices0);
         toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
         auto size      = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), modu.getDataLayout().getTypeStoreSize(pp.processInfosTy));
@@ -208,7 +184,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         auto func = modu.getOrInsertFunction(bc->callName().c_str(), fctType);
-        builder.CreateCall(func, { fct->getArg(0) });
+        builder.CreateCall(func, {fct->getArg(0)});
     }
 
     builder.CreateRetVoid();

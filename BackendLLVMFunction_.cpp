@@ -231,7 +231,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (returnByCopy)
     {
         // rr0 = result
-        auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.zero_i32);
+        auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
         auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), llvm::Type::getInt64Ty(context));
         builder.CreateStore(cst0, rr0);
     }
@@ -366,7 +366,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
-        auto rr0        = builder.CreateInBoundsGEP(allocRR, pp.zero_i32);
+        auto rr0        = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
 
         if (returnType->kind == TypeInfoKind::Slice ||
@@ -380,8 +380,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             builder.CreateStore(loadInst, arg0);
 
             //*((void **) result + 1) = rr1.pointer
-            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
-            auto arg1 = builder.CreateInBoundsGEP(arg0, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1));
+            auto rr1  = builder.CreateInBoundsGEP(allocRR, pp.cst1_i32);
+            auto arg1 = builder.CreateInBoundsGEP(arg0, pp.cst1_i32);
             loadInst  = builder.CreateLoad(rr1);
             builder.CreateStore(loadInst, arg1);
 
@@ -640,7 +640,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.zero_i32, CST_RB32});
+            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.cst0_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
         }
@@ -1527,7 +1527,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].s32;");
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt64Ty(context), true);
-            r0 = TO_PTR_I64(r0);
+            r0      = TO_PTR_I64(r0);
             builder.CreateStore(v0, r0);
             break;
         }
