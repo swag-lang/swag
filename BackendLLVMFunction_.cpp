@@ -605,8 +605,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::DecPointer32:
+        {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r2 = builder.CreateNeg(builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32))));
+            auto r3 = builder.CreateInBoundsGEP(r1, r2);
+            builder.CreateStore(r3, r0);
             break;
+        }
+        break;
 
         case ByteCodeOp::DeRef8:
         {
