@@ -182,7 +182,6 @@ void ByteCode::print()
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecrementRA32:
         case ByteCodeOp::IncrementRA32:
-        case ByteCodeOp::IncrementRA64:
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::CastS8S16:
         case ByteCodeOp::CastS16S32:

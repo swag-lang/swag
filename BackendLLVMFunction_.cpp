@@ -943,9 +943,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::IncrementRA64:
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64++;");
-            break;
         case ByteCodeOp::AddVBtoRA32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             break;

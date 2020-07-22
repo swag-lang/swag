@@ -344,11 +344,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u32++;
         break;
     }
-    case ByteCodeOp::IncrementRA64:
-    {
-        registersRC[ip->a.u32].u64++;
-        break;
-    }
     case ByteCodeOp::AddVBtoRA32:
     {
         registersRC[ip->a.u32].u32 += ip->b.u32;
