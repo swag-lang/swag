@@ -1013,9 +1013,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetZeroAtPointerX:
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::SetPointerAtPointer:
-            //CONCAT_STR_2(concat, "*(void**)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].pointer;");
-            break;
 
         case ByteCodeOp::BinOpPlusS32:
         {

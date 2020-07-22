@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
-        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 
@@ -38,13 +38,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
-        emitInstruction(context, ByteCodeOp::SetPointerAtPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 

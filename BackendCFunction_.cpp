@@ -1061,9 +1061,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::SetZeroAtPointerX:
             concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::SetPointerAtPointer:
-            CONCAT_STR_2(concat, "*(void**)(r[", ip->a.u32, "].pointer) = r[", ip->b.u32, "].pointer;");
-            break;
 
         case ByteCodeOp::BinOpPlusS32:
             concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);

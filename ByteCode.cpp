@@ -216,9 +216,6 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::IntrinsicAssertCastAny:
-        case ByteCodeOp::SetAtPointer8:
-        case ByteCodeOp::SetAtPointer16:
-        case ByteCodeOp::SetPointerAtPointer:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::CopyRBtoRA:
@@ -232,6 +229,8 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::SetAtPointer8:
+        case ByteCodeOp::SetAtPointer16:
         case ByteCodeOp::SetAtPointer32:
         case ByteCodeOp::SetAtPointer64:
         case ByteCodeOp::DeRefPointer:

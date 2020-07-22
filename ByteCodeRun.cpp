@@ -871,15 +871,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             *(uint64_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u64;
         break;
     }
-    case ByteCodeOp::SetPointerAtPointer:
-    {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(void**) ptr = registersRC[ip->b.u32].pointer;
-        break;
-    }
 
     case ByteCodeOp::CompareOpEqual8:
     {
