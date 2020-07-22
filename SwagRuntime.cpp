@@ -83,22 +83,29 @@ SWAG_EXPORT void swag_runtime_exit(int32_t exitCode)
     exit(exitCode);
 }
 
-SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
-{   
-    if (!message)
-        message = "<null>";
-#ifdef _WIN32
-    WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
-#else
-#endif
-}
-
 SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
 {
     int32_t len = 0;
     while (*message++)
         len++;
     return len;
+}
+
+SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
+{
+    if (!str1 || !str2)
+        return str1 == str2;
+    return !memcmp((void*) str1, (void*) str2, num);
+}
+
+SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
+{
+    if (!message)
+        message = "<null>";
+#ifdef _WIN32
+    WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
+#else
+#endif
 }
 
 SWAG_EXPORT void swag_runtime_print(const char* message)
@@ -147,13 +154,6 @@ SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, cons
     RaiseException(0x666, 0, 0, 0);
 #endif
     exit(-1);
-}
-
-SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
-{
-    if (!str1 || !str2)
-        return str1 == str2;
-    return !memcmp((void*) str1, (void*) str2, num);
 }
 
 SWAG_EXPORT void* swag_runtime_loadDynamicLibrary(const char* name)

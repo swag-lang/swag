@@ -1,7 +1,9 @@
 #[swag.printbc]
 #test
 {
-	var x : string = "toto"
-    x = null
-    @print(x)
+    x := "toto1"
+    if x == "toto"
+        @print("true")
+    else
+        @print("false")
 }

@@ -2087,8 +2087,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].b = (((void **) r[%u].pointer)[0] == ((void **) r[%u].pointer)[0]) && (((void **) r[%u].pointer)[1] == ((void **) r[%u].pointer)[1]);", ip->c.u32, ip->a.u32, ip->b.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::CompareOpEqualString:
+        {
             //concat.addStringFormat("r[%u].b = swag_runtime_strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateLoad(r1);
+            auto rs = builder.CreateLoad(r2);
+            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_strcmp"), {r0, r1, rs}), TO_PTR_I8(r2));
             break;
+        }
 
         case ByteCodeOp::IsNullString:
             //concat.addStringFormat("r[%u].b = r[%u].pointer == 0;", ip->b.u32, ip->a.u32);
