@@ -1570,7 +1570,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::NegBool:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].b ? 0 : 1;");
+            CONCAT_STR_1(concat, "r[", ip->a.u32, "].b ^= 1;");
             break;
         case ByteCodeOp::NegF32:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
