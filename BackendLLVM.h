@@ -62,10 +62,13 @@ struct BackendLLVM : public Backend
         llvm::FunctionType* allocatorTy    = nullptr;
         llvm::FunctionType* bytecodeRunTy  = nullptr;
 
+        llvm::Value* cst0_i8  = nullptr;
+        llvm::Value* cst1_i8  = nullptr;
+        llvm::Value* cst0_i16 = nullptr;
         llvm::Value* cst0_i32 = nullptr;
         llvm::Value* cst1_i32 = nullptr;
         llvm::Value* cst2_i32 = nullptr;
-        llvm::Value* cst1_i8  = nullptr;
+        llvm::Value* cst0_i64 = nullptr;
 
         map<ByteCodeInstruction*, llvm::BasicBlock*> labels;
 

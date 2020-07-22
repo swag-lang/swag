@@ -124,6 +124,15 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type* params[] = {
                 llvm::Type::getInt8PtrTy(context),
                 llvm::Type::getInt32Ty(context),
+                llvm::Type::getInt64Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_memset", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt32Ty(context),
             };
             modu.getOrInsertFunction("swag_runtime_print_n", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
         }
@@ -151,10 +160,13 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     }
 
     // Cache things
+    pp.cst0_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 0);
+    pp.cst1_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 1);
+    pp.cst0_i16 = llvm::ConstantInt::get(llvm::Type::getInt16Ty(context), 0);
     pp.cst0_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0);
     pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
     pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
-    pp.cst1_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 1);
+    pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
 
     return true;
 }

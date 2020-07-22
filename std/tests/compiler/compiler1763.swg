@@ -1,7 +1,6 @@
 #[swag.printbc]
 #test
 {
-    x := 5'u8
-    y := cast(bool)x
-    @print(cast(s64)y)
+    var x: [10] s8
+    @print(cast(s64)x[0])
 }

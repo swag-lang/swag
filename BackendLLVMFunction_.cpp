@@ -579,6 +579,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::DecSP:
         case ByteCodeOp::IncSP:
         case ByteCodeOp::CopySPtoBP:
+        case ByteCodeOp::PushRR:
+        case ByteCodeOp::PopRR:
             break;
 
         case ByteCodeOp::BoundCheckString:
@@ -729,20 +731,40 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::SetZeroStack8:
+        {
             //CONCAT_STR_1(concat, "*(swag_uint8_t*)(stack + ", ip->a.u32, ") = 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+            builder.CreateStore(pp.cst0_i8, r0);
             break;
+        }
         case ByteCodeOp::SetZeroStack16:
+        {
             //CONCAT_STR_1(concat, "*(swag_uint16_t*)(stack + ", ip->a.u32, ") = 0;");
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            builder.CreateStore(pp.cst0_i16, r0);
             break;
+        }
         case ByteCodeOp::SetZeroStack32:
+        {
             //CONCAT_STR_1(concat, "*(swag_uint32_t*)(stack + ", ip->a.u32, ") = 0;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            builder.CreateStore(pp.cst0_i32, r0);
             break;
+        }
         case ByteCodeOp::SetZeroStack64:
+        {
             //CONCAT_STR_1(concat, "*(swag_uint64_t*)(stack + ", ip->a.u32, ") = 0;");
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            builder.CreateStore(pp.cst0_i64, r0);
             break;
+        }
         case ByteCodeOp::SetZeroStackX:
+        {
             //concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
+            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32) });
             break;
+        }
 
         case ByteCodeOp::MakeDataSegPointer:
         {
@@ -2437,9 +2459,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::MakePointerToStackParam:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
-            break;
-        case ByteCodeOp::PushRR:
-        case ByteCodeOp::PopRR:
             break;
 
         case ByteCodeOp::MinusToTrue:
