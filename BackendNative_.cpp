@@ -62,7 +62,10 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
 
     // Put the bootstrap in the first file
     if (precompileIndex == 0)
-        addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
+    {
+        SWAG_ASSERT(g_Workspace.bootstrapModule);
+        addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int)g_Workspace.bootstrapModule->byteCodeFunc.size());
+    }
 
     addFunctionsToJob(moduleToGen, job, start, end);
 

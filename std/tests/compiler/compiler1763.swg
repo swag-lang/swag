@@ -1,6 +1,9 @@
 #[swag.printbc]
 #test
 {
-    x := "TOTOTO"
-    @print(x)
+    x := 6
+    if x != 6
+        @print("true")
+    else
+        @print("false")
 }

@@ -23,7 +23,6 @@ struct CommandLine
 
     // Input
     bool   clean        = false;
-    bool   addBootstrap = true;
     string workspacePath;
     string cachePath;
     string fileFilter;

@@ -749,26 +749,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     VectorNative<uint32_t> pushRAParams;
 
     // To write the labels
-    uint32_t numJumps = bc->numJumps;
-    for (uint32_t i = 0; i < bc->numInstructions && numJumps; i++, ip++)
-    {
-        switch (ip->op)
-        {
-        case ByteCodeOp::Jump:
-            ip[ip->a.s32 + 1].flags |= BCI_JUMP_DEST;
-            numJumps--;
-            break;
-        case ByteCodeOp::JumpIfTrue:
-        case ByteCodeOp::JumpIfNotTrue:
-        case ByteCodeOp::JumpIfNotZero32:
-        case ByteCodeOp::JumpIfNotZero64:
-        case ByteCodeOp::JumpIfZero32:
-        case ByteCodeOp::JumpIfZero64:
-            ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
-            numJumps--;
-            break;
-        }
-    }
+    bc->markLabels();
 
     ip = bc->out;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)

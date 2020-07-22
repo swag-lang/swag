@@ -461,6 +461,41 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
+#define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
+#define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
+#define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
+#define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
+#define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
+#define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
+#define TO_PTR_PTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
+#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
+#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
+#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
+#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
+#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
+#define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
+
+llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, ByteCodeInstruction* ip)
+{
+    SWAG_ASSERT(ip->flags & BCI_JUMP_DEST);
+
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+
+    auto it = pp.labels.find(ip);
+    if (it == pp.labels.end())
+    {
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, "", func);
+        pp.labels[ip]           = label;
+        return label;
+    }
+
+    return it->second;
+}
+
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
@@ -494,8 +529,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), modu);
 
     // Content
-    llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
+    llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
+    bool              blockIsClosed = false;
     builder.SetInsertPoint(block);
+    pp.labels.clear();
+    bc->markLabels();
 
     // Reserve registers
     llvm::AllocaInst* allocR = nullptr;
@@ -510,20 +548,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(llvm::Type::getInt8Ty(context), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), typeFunc->stackSize));
 
-#define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
-#define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
-#define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
-#define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
-#define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
-#define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
-#define TO_PTR_PTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
-#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
-#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
-#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
-#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
-#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
-#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
-
     // Generate bytecode
     int                    vaargsIdx = 0;
     auto                   ip        = bc->out;
@@ -531,7 +555,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
+        {
+            SWAG_ASSERT(!(ip->flags & BCI_JUMP_DEST));
             continue;
+        }
+
+        // If we are the destination of a jump, be sure we have a block, and from now insert into that block
+        if (ip->flags & BCI_JUMP_DEST)
+        {
+            auto label = getOrCreateLabel(buildParameters, func, ip);
+            if (!blockIsClosed)
+                builder.CreateBr(label);
+            blockIsClosed = false;
+            builder.SetInsertPoint(label);
+        }
 
         switch (ip->op)
         {
@@ -1835,7 +1872,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1846,7 +1883,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1857,7 +1894,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1868,7 +1905,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1884,40 +1921,88 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::Jump:
+        {
             //CONCAT_FIXED_STR(concat, "goto _");
             //concat.addS32Str8(ip->a.s32 + i + 1);
-            //concat.addChar(';');
+            auto label = getOrCreateLabel(buildParameters, func, ip + ip->a.s32 + 1);
+            builder.CreateBr(label);
+            SWAG_ASSERT(ip[1].flags & BCI_JUMP_DEST);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfNotTrue:
+        {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfTrue:
+        {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfZero32:
+        {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfZero64:
+        {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfNotZero32:
+        {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            blockIsClosed = true;
             break;
+        }
         case ByteCodeOp::JumpIfNotZero64:
+        {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            //concat.addChar(';');
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            blockIsClosed = true;
             break;
+        }
+
         case ByteCodeOp::Ret:
             //return;
             builder.CreateRetVoid();

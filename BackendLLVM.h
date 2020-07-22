@@ -9,6 +9,7 @@ struct Job;
 struct DataSegment;
 struct ByteCode;
 struct TypeInfo;
+struct ByteCodeInstruction;
 
 struct BackendLLVM : public Backend
 {
@@ -37,6 +38,8 @@ struct BackendLLVM : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
+    llvm::BasicBlock* getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, ByteCodeInstruction* ip);
+
     struct
     {
         llvm::LLVMContext*    context;
@@ -62,6 +65,8 @@ struct BackendLLVM : public Backend
         llvm::Value* cst0_i32 = nullptr;
         llvm::Value* cst1_i32 = nullptr;
         llvm::Value* cst2_i32 = nullptr;
+
+        map<ByteCodeInstruction*, llvm::BasicBlock*> labels;
 
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

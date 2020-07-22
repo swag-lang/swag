@@ -151,6 +151,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.c.u64                = r2;
     ins.d.u64                = r3;
     ins.node                 = node;
+    ins.flags                = 0;
 
     if (g_CommandLine.stats)
         g_Stats.numInstructions++;

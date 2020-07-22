@@ -60,9 +60,6 @@ void Workspace::addRuntime()
 
 void Workspace::addBootstrap()
 {
-    if (!g_CommandLine.addBootstrap)
-        return;
-
     // Get bootstrap.swg file
     void*    ptr;
     uint32_t size;

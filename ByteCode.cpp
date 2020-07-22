@@ -375,3 +375,29 @@ void ByteCode::print()
     g_Log.setDefaultColor();
     g_Log.unlock();
 }
+
+void ByteCode::markLabels()
+{
+    uint32_t count = numJumps;
+    auto     ip    = out;
+    for (uint32_t i = 0; i < numInstructions && count; i++, ip++)
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::Jump:
+            ip[ip->a.s32 + 1].flags |= BCI_JUMP_DEST;
+            numJumps--;
+            break;
+        case ByteCodeOp::JumpIfTrue:
+        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfNotZero32:
+        case ByteCodeOp::JumpIfNotZero64:
+        case ByteCodeOp::JumpIfZero32:
+        case ByteCodeOp::JumpIfZero64:
+            ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
+            ip[1].flags |= BCI_JUMP_DEST;
+            count--;
+            break;
+        }
+    }
+}

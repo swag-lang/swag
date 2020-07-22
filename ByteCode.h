@@ -29,6 +29,7 @@ struct ByteCode
 {
     void enterByteCode(ByteCodeRunContext* context);
     void leaveByteCode();
+    void markLabels();
 
     void              print();
     Utf8              callName();
