@@ -2099,10 +2099,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IsNullString:
-            //concat.addStringFormat("r[%u].b = r[%u].pointer == 0;", ip->b.u32, ip->a.u32);
-            break;
-
         case ByteCodeOp::Jump:
         {
             //CONCAT_FIXED_STR(concat, "goto _");

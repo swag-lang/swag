@@ -2,7 +2,7 @@
 #test
 {
     x := "toto1"
-    if x == "toto"
+    if x == null
         @print("true")
     else
         @print("false")

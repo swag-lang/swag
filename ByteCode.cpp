@@ -219,7 +219,6 @@ void ByteCode::print()
         case ByteCodeOp::SetAtPointer8:
         case ByteCodeOp::SetAtPointer16:
         case ByteCodeOp::SetPointerAtPointer:
-        case ByteCodeOp::IsNullString:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::CopyRBtoRA:

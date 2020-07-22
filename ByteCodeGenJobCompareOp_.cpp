@@ -81,19 +81,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
-            if (right->typeInfo == g_TypeMgr.typeInfoNull)
-            {
-                emitInstruction(context, ByteCodeOp::IsNullString, r0, r2);
-            }
-            else
-            {
-                // First compare string sizes
-                emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0[1], r1[1], r2);
-                emitInstruction(context, ByteCodeOp::JumpIfNotTrue, r2)->b.s32 = 2;
-                // Then compare strings
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
-                emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
-            }
+            // First compare string sizes
+            emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0[1], r1[1], r2);
+            emitInstruction(context, ByteCodeOp::JumpIfNotTrue, r2)->b.s32 = 2;
+            // Then compare strings
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
+            emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");

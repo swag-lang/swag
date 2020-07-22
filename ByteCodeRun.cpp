@@ -918,11 +918,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
-    case ByteCodeOp::IsNullString:
-    {
-        registersRC[ip->b.u32].b = registersRC[ip->a.u32].pointer == nullptr;
-        break;
-    }
     case ByteCodeOp::CloneString:
     {
         char*    ptr                   = (char*) registersRC[ip->a.u32].pointer;
