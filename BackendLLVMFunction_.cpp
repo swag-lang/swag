@@ -1840,23 +1840,71 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::CompareOpGreaterS32:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpSGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterS64:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s64 > r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            auto v0 = builder.CreateICmpSGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterU32:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateICmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterU64:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].u64 > r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            auto v0 = builder.CreateICmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterF32:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].f32 > r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFCmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterF64:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].f64 > r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFCmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::CompareOpGreaterPointer:
             //concat.addStringFormat("r[%u].b = r[%u].pointer > r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
