@@ -968,11 +968,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 < registersRC[ip->b.u32].f64;
         break;
     }
-    case ByteCodeOp::CompareOpLowerPointer:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer < registersRC[ip->b.u32].pointer;
-        break;
-    }
 
     case ByteCodeOp::CompareOpGreaterS32:
     {
@@ -1002,11 +997,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::CompareOpGreaterF64:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 > registersRC[ip->b.u32].f64;
-        break;
-    }
-    case ByteCodeOp::CompareOpGreaterPointer:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer > registersRC[ip->b.u32].pointer;
         break;
     }
 

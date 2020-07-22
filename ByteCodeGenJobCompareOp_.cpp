@@ -179,7 +179,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        emitInstruction(context, ByteCodeOp::CompareOpLowerPointer, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
     }
     else
     {
@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterPointer, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
     }
     else
     {

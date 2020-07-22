@@ -1905,9 +1905,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CompareOpGreaterPointer:
-            //concat.addStringFormat("r[%u].b = r[%u].pointer > r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
 
         case ByteCodeOp::CompareOpLowerS32:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -1926,9 +1923,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CompareOpLowerF64:
             //concat.addStringFormat("r[%u].b = r[%u].f64 < r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::CompareOpLowerPointer:
-            //concat.addStringFormat("r[%u].b = r[%u].pointer < r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::CompareOpEqual8:
