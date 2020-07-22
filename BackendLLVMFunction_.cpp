@@ -2071,11 +2071,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b ^= 1;");
             auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r0), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 1));
+            auto v0 = builder.CreateXor(builder.CreateLoad(r0), pp.cst1_i8);
             builder.CreateStore(v0, r0);
             break;
         }
-
         case ByteCodeOp::NegF32:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
