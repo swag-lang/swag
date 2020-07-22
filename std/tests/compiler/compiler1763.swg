@@ -1,9 +1,9 @@
 #[swag.printbc]
 #test
 {
-    x := 6
-    if x != 6
-        @print("true")
-    else
-        @print("false")
+    x := true
+    x = !x
+    @print(cast(s64) x)
+    x = !x
+    @print(cast(s64) x)
 }
