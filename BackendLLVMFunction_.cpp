@@ -644,9 +644,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].pointer = *(swag_uint8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
             break;
         case ByteCodeOp::DeRefStringSlice:
+        {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (r[%u].pointer + 8); ", ip->b.u32, ip->a.u32);
             //concat.addStringFormat("r[%u].pointer = *(swag_uint8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32);
+            auto r0   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto ptr  = builder.CreateLoad(r0);
+            auto ptr8 = builder.CreateInBoundsGEP(ptr, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 8));
+            auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr));
+            auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
+            builder.CreateStore(v8, r1);
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::Mul64byVB32:
         {

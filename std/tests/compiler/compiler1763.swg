@@ -1,9 +1,7 @@
 #[swag.printbc]
 #test
 {
-    x := "toto1"
-    if x == null
-        @print("true")
-    else
-        @print("false")
+    var x: [..] s64 = [1, 2]
+    x[1] = 10
+    @print(x[1])
 }
