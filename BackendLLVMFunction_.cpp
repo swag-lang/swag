@@ -464,6 +464,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 #define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
 #define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
 #define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
+#define CST_RD32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->d.u32)
 #define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
 #define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
 #define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
@@ -856,7 +857,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemCpy:
         {
-            //concat.addStringFormat("swag_runtime_memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -868,7 +869,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemSet:
         {
-            //concat.addStringFormat("swag_runtime_memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
@@ -879,8 +880,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MemCmp:
-            //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+        {
+            //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r2 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r3 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RD32));
+            r1      = builder.CreateLoad(r1);
+            r2      = builder.CreateLoad(r2);
+            r3      = builder.CreateIntCast(builder.CreateLoad(r3), llvm::Type::getInt64Ty(context), false);
+            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_memcmp"), {r1, r2, r3}), r0);
             break;
+        }
 
         case ByteCodeOp::CopyVBtoRA32:
         {
