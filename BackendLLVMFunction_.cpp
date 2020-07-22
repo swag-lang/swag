@@ -921,8 +921,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::ClearRA:
+        {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64 = 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            builder.CreateStore(pp.cst0_i64, r0);
             break;
+        }
         case ByteCodeOp::DecrementRA32:
         {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
