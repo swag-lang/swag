@@ -867,8 +867,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MemSet:
+        {
             //concat.addStringFormat("swag_runtime_memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateIntCast(builder.CreateLoad(r1), llvm::Type::getInt32Ty(context), false);
+            r2      = builder.CreateIntCast(builder.CreateLoad(r2), llvm::Type::getInt64Ty(context), false);
+            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, r1, r2});
             break;
+        }
         case ByteCodeOp::MemCmp:
             //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
