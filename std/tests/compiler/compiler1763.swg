@@ -1,11 +1,7 @@
 #[swag.printbc]
 #test
 {
-    loop 5
-    {
-        switch @index
-        {
-            case 0: @print("0")
-        }
-    }
+    x := 0's64
+    x &= 1
+    @print(cast(s64)x)
 }

@@ -467,7 +467,10 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 #define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
 #define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
 #define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
-#define TO_PTR_PTR(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context)->getPointerTo())
 #define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
 #define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
 #define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
@@ -591,8 +594,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IncPointer32:
         {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
             auto r2 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
             auto r3 = builder.CreateInBoundsGEP(r1, r2);
             builder.CreateStore(r3, r0);
@@ -606,7 +609,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint8_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -614,7 +617,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint16_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -622,7 +625,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint32_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -630,7 +633,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -683,7 +686,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromDataSeg64:
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32}));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
@@ -716,7 +719,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromBssSeg64:
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.bssSeg, {pp.cst0_i32, CST_RB32}));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
@@ -744,7 +747,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeDataSegPointer:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __mutableseg + ", ip->b.u32, ";");
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = builder.CreateInBoundsGEP(pp.mutableSeg, {pp.cst0_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
@@ -752,7 +755,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeBssSegPointer:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __bssseg + ", ip->b.u32, ";");
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = builder.CreateInBoundsGEP(pp.bssSeg, {pp.cst0_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
@@ -760,7 +763,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeConstantSegPointer:
         {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, {pp.cst0_i32, CST_RB32});
             builder.CreateStore(r1, r0);
             break;
@@ -773,7 +776,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakePointerToStack:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = stack + ", ip->b.u32, ";");
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             builder.CreateStore(r1, r0);
             break;
@@ -805,7 +808,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromStack64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(swag_uint64_t*) (stack + ", ip->b.u32, ");");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
@@ -835,7 +838,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyVBtoRA64:
         {
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             builder.CreateStore(CST_RB64, r0);
             break;
         }
@@ -881,7 +884,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer8:
         {
             //concat.addStringFormat("*(swag_uint8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I8(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -891,7 +894,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer16:
         {
             //concat.addStringFormat("*(swag_uint16_t*)(r[%u].pointer + %u) = r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I16(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -901,7 +904,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer32:
         {
             //concat.addStringFormat("*(swag_uint32_t*)(r[%u].pointer + %u) = r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I32(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -911,7 +914,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer64:
         {
             //concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I64(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
@@ -951,9 +954,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpPlusS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 + r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -992,9 +995,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMinusS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 - r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1033,9 +1036,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMulS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1074,9 +1077,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpXorU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 ^ r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1095,9 +1098,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpShiftLeftU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1116,9 +1119,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpShiftRightS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1136,9 +1139,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpShiftRightU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1160,9 +1163,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpModuloS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 %% r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1180,9 +1183,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpModuloU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 %% r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1239,9 +1242,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpBitmaskAndS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1260,9 +1263,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpBitmaskOrS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r0);
             break;
@@ -1272,7 +1275,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1283,7 +1286,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1293,7 +1296,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1303,8 +1306,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1313,7 +1316,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].f32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1323,7 +1326,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].f64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1334,7 +1337,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1344,7 +1347,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1354,7 +1357,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1364,8 +1367,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1374,7 +1377,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].f32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1384,7 +1387,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float64_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].f64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1402,7 +1405,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1412,7 +1415,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1422,7 +1425,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1432,8 +1435,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1442,7 +1445,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1452,7 +1455,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_float64_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_F64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1514,7 +1517,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1524,7 +1527,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1534,7 +1537,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1544,8 +1547,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1555,7 +1558,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1565,7 +1568,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1575,7 +1578,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1585,8 +1588,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1596,7 +1599,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1606,7 +1609,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1616,7 +1619,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1626,8 +1629,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) <<= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1637,7 +1640,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1647,7 +1650,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1657,7 +1660,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1667,8 +1670,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1677,7 +1680,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1687,7 +1690,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1697,7 +1700,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1707,8 +1710,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1718,7 +1721,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1728,7 +1731,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1738,7 +1741,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1748,8 +1751,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1758,7 +1761,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1768,7 +1771,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1778,7 +1781,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1788,8 +1791,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1799,7 +1802,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1809,7 +1812,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1819,7 +1822,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR(r0)));
+            auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
@@ -1829,8 +1832,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR(r0)));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
             builder.CreateStore(v0, r1);
             break;
@@ -1916,9 +1919,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpEqual64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
             v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
@@ -1986,7 +1989,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
-            auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0         = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
@@ -2010,7 +2013,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
-            auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0         = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
@@ -2025,7 +2028,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintS64:
         {
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             builder.CreateCall(modu.getFunction("swag_runtime_print_i64"), {builder.CreateLoad(r0)});
             break;
         }
@@ -2039,7 +2042,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintString:
         {
             //swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
             break;
@@ -2116,7 +2119,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::NegS64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = -r[", ip->a.u32, "].s64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
             break;
@@ -2149,7 +2152,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::InvertS64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
             break;
@@ -2166,7 +2169,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::ClearMaskU64:
         {
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB64);
             builder.CreateStore(v0, r0);
             break;
@@ -2224,7 +2227,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS64F32:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
@@ -2233,7 +2236,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS64F64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].s64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
             r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
@@ -2251,7 +2254,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastU64F32:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
@@ -2260,7 +2263,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastU64F64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].u64;");
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
             r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
