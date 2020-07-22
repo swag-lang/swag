@@ -851,8 +851,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64 = 0;");
             break;
         case ByteCodeOp::DecrementRA32:
+        {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i32);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::IncrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32++;");
             break;
@@ -1934,11 +1939,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
-            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
@@ -1946,10 +1951,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -1958,8 +1963,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -1970,8 +1975,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -1982,11 +1987,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
-            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
@@ -1994,11 +1999,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
             auto r0         = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
-            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
