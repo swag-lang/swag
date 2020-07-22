@@ -3,7 +3,9 @@
 {
     loop 5
     {
-        @print("toto ")
-        break
+        switch @index
+        {
+            case 0: @print("0")
+        }
     }
 }

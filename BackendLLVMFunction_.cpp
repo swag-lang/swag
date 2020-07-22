@@ -841,8 +841,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::CopyRBtoRA:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
+        }
         case ByteCodeOp::CopyRBAddrToRA:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &r[", ip->b.u32, "];");
             break;
@@ -859,8 +864,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::IncrementRA32:
+        {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32++;");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), pp.cst1_i32);
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::IncrementRA64:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64++;");
             break;
@@ -1931,7 +1941,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addS32Str8(ip->a.s32 + i + 1);
             auto label = getOrCreateLabel(buildParameters, func, ip + ip->a.s32 + 1);
             builder.CreateBr(label);
-            SWAG_ASSERT(ip[1].flags & BCI_JUMP_DEST);
             blockIsClosed = true;
             break;
         }
