@@ -794,9 +794,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             //concat.addStringFormat("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
-            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r0     = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto offset = ip->c.u64 >> 32;
-            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, { pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), offset)});
+            auto r1     = builder.CreateInBoundsGEP(pp.constantSeg, {pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), offset)});
             builder.CreateStore(r1, r0);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             builder.CreateStore(llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), (ip->c.u64 & 0xFFFFFFFF)), r2);
@@ -855,8 +855,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MemCpy:
+        {
             //concat.addStringFormat("swag_runtime_memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateLoad(r1);
+            r2      = builder.CreateIntCast(builder.CreateLoad(r2), llvm::Type::getInt64Ty(context), false);
+            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, r2});
             break;
+        }
         case ByteCodeOp::MemSet:
             //concat.addStringFormat("swag_runtime_memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
