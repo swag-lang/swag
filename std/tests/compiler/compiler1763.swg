@@ -1,6 +1,12 @@
 #[swag.printbc]
 #test
 {
-    var x: [10] s8
-    @print(cast(s64)x[0])
+	x := [1, 2, 3]
+	/*ptr := &x
+	count := 3
+	init(ptr, count)
+	@assert(x[0] == 0)
+	@assert(x[1] == 0)
+	@assert(x[2] == 0)*/
+    @print(cast(s64)x[2])
 }

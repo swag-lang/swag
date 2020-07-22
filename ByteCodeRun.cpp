@@ -248,7 +248,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = ip->c.u32;
-        memcpy(dst, src, size);
+        swag_runtime_memcpy(dst, src, size);
         break;
     }
     case ByteCodeOp::MemCpy:

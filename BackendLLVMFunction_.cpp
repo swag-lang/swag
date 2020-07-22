@@ -762,7 +762,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32) });
+            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32)});
             break;
         }
 
@@ -791,9 +791,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MakeConstantSegPointerOC:
+        {
             //concat.addStringFormat("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             //concat.addStringFormat("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto offset = ip->c.u64 >> 32;
+            auto r1 = builder.CreateInBoundsGEP(pp.constantSeg, { pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), offset)});
+            builder.CreateStore(r1, r0);
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            builder.CreateStore(llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), (ip->c.u64 & 0xFFFFFFFF)), r2);
             break;
+        }
 
         case ByteCodeOp::MakePointerToStack:
         {
@@ -847,8 +855,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::CopyVC:
+        {
             //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            r0 = builder.CreateLoad(r0);
+            r1 = builder.CreateLoad(r1);
+            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u32)});
             break;
+        }
 
         case ByteCodeOp::CopyVBtoRA32:
         {
