@@ -508,7 +508,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
-        allocStack = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), typeFunc->stackSize));
+        allocStack = builder.CreateAlloca(llvm::Type::getInt8Ty(context), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), typeFunc->stackSize));
 
 #define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
 #define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)

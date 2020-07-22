@@ -83,10 +83,8 @@ SWAG_EXPORT void swag_runtime_exit(int32_t exitCode)
     exit(exitCode);
 }
 
-#include <stdio.h>
 SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 {   
-    printf("length: %x\n",len);
     if (!message)
         message = "<null>";
 #ifdef _WIN32
