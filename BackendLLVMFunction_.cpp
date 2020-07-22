@@ -2266,17 +2266,41 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::CastBool8:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I8(r0)));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
+        }
         case ByteCodeOp::CastBool16:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
+        }
         case ByteCodeOp::CastBool32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I32(r0)));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
+        }
         case ByteCodeOp::CastBool64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
+            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
+        }
 
         case ByteCodeOp::CastS8S16:
         {

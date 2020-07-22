@@ -1,9 +1,7 @@
 #[swag.printbc]
 #test
 {
-    x := 1'f64
-    if x < 2
-        @print("true")
-    else
-        @print("false")
+    x := 5'u8
+    y := cast(bool)x
+    @print(cast(s64)y)
 }
