@@ -243,7 +243,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->decSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::CopyVC:
+    case ByteCodeOp::MemCpyVC32:
     {
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;

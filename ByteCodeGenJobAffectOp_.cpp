@@ -32,7 +32,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeList)
     {
-        emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = typeInfo->sizeOf;
+        emitInstruction(context, ByteCodeOp::MemCpyVC32, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
     }
 
@@ -57,7 +57,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = 2 * sizeof(void*);
+            emitInstruction(context, ByteCodeOp::MemCpyVC32, r0, r1)->c.u32 = 2 * sizeof(void*);
         }
 
         return true;

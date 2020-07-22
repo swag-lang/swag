@@ -844,6 +844,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::MemCpyVC32:
+        {
+            //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateLoad(r1);
+            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u32)});
+            break;
+        }
         case ByteCodeOp::MemCpy:
             //concat.addStringFormat("swag_runtime_memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
@@ -853,17 +863,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MemCmp:
             //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
-
-        case ByteCodeOp::CopyVC:
-        {
-            //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
-            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
-            r0 = builder.CreateLoad(r0);
-            r1 = builder.CreateLoad(r1);
-            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u32)});
-            break;
-        }
 
         case ByteCodeOp::CopyVBtoRA32:
         {

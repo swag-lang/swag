@@ -970,19 +970,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64 = *(swag_uint64_t*) stack;");
             break;
 
-        case ByteCodeOp::MemCpy:
-            concat.addStringFormat("swag_runtime_memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
-        case ByteCodeOp::MemSet:
-            concat.addStringFormat("swag_runtime_memset((void*) r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
-        case ByteCodeOp::MemCmp:
-            concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
-            break;
-
-        case ByteCodeOp::CopyVC:
+        case ByteCodeOp::MemCpyVC32:
             concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
+        case ByteCodeOp::MemCpy:
+            concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::MemSet:
+            concat.addStringFormat("swag_runtime_memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::MemCmp:
+            concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+            break;
+
         case ByteCodeOp::CopyVBtoRA32:
             concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
             break;
