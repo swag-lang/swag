@@ -862,7 +862,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0 = TO_PTR_PTR(builder.CreateInBoundsGEP(allocR, CST_RA32));
             r0      = builder.CreateLoad(r0);
             r0      = TO_PTR_I64(builder.CreateInBoundsGEP(r0, CST_RC32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -1835,6 +1835,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1845,6 +1846,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1855,6 +1857,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1865,6 +1868,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            v0 = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
             builder.CreateStore(v0, r0);
             break;
         }
