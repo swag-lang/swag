@@ -2225,8 +2225,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::IntrinsicAssert:
+        {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+            auto r2 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->node->token.startLocation.line + 1);
+            auto r3 = builder.CreateGlobalString("");
+            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, r1, r2, r3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
             break;
+        }
         case ByteCodeOp::IntrinsicAssertCastAny:
             //CONCAT_FIXED_STR(concat, "{ ");
             //concat.addStringFormat("const char* typeTo = *(char**)r[%u].pointer; ", ip->b.u32);
@@ -2560,7 +2567,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::PushRAParam:
-            //pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->a.u32);
             break;
         case ByteCodeOp::CopySP:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, ip->c.u32);

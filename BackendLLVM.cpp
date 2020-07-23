@@ -175,6 +175,17 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             };
             modu.getOrInsertFunction("swag_runtime_print_f64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
         }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8Ty(context),
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt32Ty(context),
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt8Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
     }
 
     // Cache things
