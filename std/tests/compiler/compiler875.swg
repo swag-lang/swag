@@ -1,4 +1,4 @@
-func minMax(array: [..] s32) -> (min: s32, max: s32)
+func minMax(array: const [..] s32) -> (min: s32, max: s32)
 {
     var currentMin, currentMax = array[0]
     loop array
@@ -9,7 +9,7 @@ func minMax(array: [..] s32) -> (min: s32, max: s32)
         else if value > currentMax
             currentMax = value
     }
-	
+
     return {currentMin, currentMax}
 }
 

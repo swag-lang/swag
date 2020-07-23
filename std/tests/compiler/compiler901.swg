@@ -1,7 +1,5 @@
-
-
 //#[swag.printbc]
-func arithmeticMean(numbers: [..] string)
+func arithmeticMean(numbers: const [..] string)
 {
 	@assert(numbers[0] == "10")
 }

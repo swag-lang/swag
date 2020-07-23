@@ -454,6 +454,16 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto node      = context->node;
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
+
+    // Force const if necessary
+    // func([.., ...]) must be const
+    if (child->kind == AstNodeKind::ExpressionList)
+    {
+        auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
+        if(typeList->listKind == TypeInfoListKind::Bracket)
+            node->typeInfo->setConst();
+    }
+
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;

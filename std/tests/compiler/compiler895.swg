@@ -1,6 +1,4 @@
-
-
-func arithmeticMean(numbers: [..] f64) -> f64 {
+func arithmeticMean(numbers: const [..] f64) -> f64 {
     var total : f64 = 0
     loop numbers {
         total += numbers[@index]

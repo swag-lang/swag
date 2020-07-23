@@ -1,7 +1,5 @@
-;
-
 //#[swag.printbc]
-func test1(a: [3] s32)
+func test1(a: const [3] s32)
 {
 	@assert(a[0] == 1);
 	@assert(a[1] == 666);

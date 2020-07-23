@@ -1,7 +1,7 @@
 ;
 ;
 
-func test (arr: [2] s32)
+func test (arr: const [2] s32)
 {
 	@assert(arr[0] == 1);
 	@assert(arr[1] == 2);

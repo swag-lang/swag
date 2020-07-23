@@ -1,9 +1,8 @@
-func toto(x: [2] s32)
+func toto(x: const [2] s32)
 {
-    @print(cast(s64) x[1])
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     toto([1, 2])
