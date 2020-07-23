@@ -1937,7 +1937,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpModuloEqS8:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -1947,7 +1956,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqS16:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -1957,7 +1975,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqS32:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -1967,7 +1994,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqS64:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
@@ -1977,7 +2013,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqU8:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -1987,7 +2032,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqU16:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -1997,7 +2051,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqU32:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
@@ -2007,7 +2070,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpModuloEqU64:
         {
+            //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            //    MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "modulo operand is zero");
+            }
+
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
