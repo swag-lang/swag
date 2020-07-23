@@ -1,16 +1,7 @@
-struct A
-{
-    x: *s64
-}
-
 #[swag.printbc]
 #test
 {
-    var v: A
-    var c: s64 = 666
-
-    v.x = &c
-
-    ptr := v.x
-    @print(deref ptr)
+    var x: [] string = ["1", "2", "3", "4"]
+    init(&x[1])
+    @print(x[1])
 }

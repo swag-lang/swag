@@ -110,7 +110,10 @@ SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_
 SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 {
     if (!message)
+    {
         message = "<null>";
+        len = 6;
+    }
 #ifdef _WIN32
     WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
 #else
