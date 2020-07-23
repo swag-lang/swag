@@ -198,6 +198,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
     pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);
     pp.cst0_f64 = llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), 0);
+    pp.cst_null = llvm::ConstantPointerNull::get(llvm::Type::getInt64PtrTy(context));
 
     return true;
 }

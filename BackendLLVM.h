@@ -23,10 +23,12 @@ struct BackendLLVM : public Backend
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool createRuntime(const BuildParameters& buildParameters);
-    bool swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
-    void createAssert(const BuildParameters& buildParameters, llvm::Value* toTest, ByteCodeInstruction* ip, const char* msg);
-    bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    bool                createRuntime(const BuildParameters& buildParameters);
+    bool                swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
+    llvm::FunctionType* createFunctionType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC);
+    void                createAssert(const BuildParameters& buildParameters, llvm::Value* toTest, ByteCodeInstruction* ip, const char* msg);
+    bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    void                getCallParameters(const BuildParameters& buildParameters, vector<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& RAParams);
 
     bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
@@ -73,6 +75,7 @@ struct BackendLLVM : public Backend
         llvm::Value* cst0_i64 = nullptr;
         llvm::Value* cst0_f32 = nullptr;
         llvm::Value* cst0_f64 = nullptr;
+        llvm::Value* cst_null = nullptr;
 
         map<ByteCodeInstruction*, llvm::BasicBlock*> labels;
 

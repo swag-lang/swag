@@ -18,10 +18,9 @@ BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
 
 bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    auto& context = *perThread[ct][precompileIndex].context;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& context         = *perThread[ct][precompileIndex].context;
 
     typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     *llvmType = nullptr;
@@ -536,20 +535,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& modu     = *pp.module;
     auto  typeFunc = bc->callType();
 
-    // One int64 per register
-    vector<llvm::Type*> params;
-    for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
-        params.push_back(llvm::Type::getInt64PtrTy(context));
-    for (auto param : typeFunc->parameters)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        for (int i = 0; i < typeParam->numRegisters(); i++)
-            params.push_back(llvm::Type::getInt64PtrTy(context));
-    }
-
     // Function prototype
-    llvm::FunctionType* funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
-    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), modu);
+    llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
+    llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
+
+    //llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), modu);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -3090,14 +3080,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::LocalCall:
         {
-            //auto              funcBC     = (ByteCode*) ip->a.pointer;
-            //TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            //concat.addString(funcBC->callName());
-            //concat.addChar('(');
-            //addCallParameters(concat, typeFuncBC, pushRAParams);
-            //pushRAParams.clear();
-            //CONCAT_FIXED_STR(concat, ");");
-            TTT();
+            auto              funcBC     = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+
+            auto                 FT = createFunctionType(buildParameters, typeFuncBC);
+            vector<llvm::Value*> fctParams;
+            getCallParameters(buildParameters, fctParams, typeFuncBC, pushRAParams);
+            builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), fctParams);
+
+            pushRAParams.clear();
             break;
         }
 
@@ -3114,4 +3105,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
     builder.CreateRetVoid();
     return true;
+}
+
+void BackendLLVM::getCallParameters(const BuildParameters& buildParameters, vector<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& RAParams)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+
+    params.clear();
+    for (int i = 0; i < RAParams.size(); i++)
+        params.push_back(pp.cst_null);
+}
+
+llvm::FunctionType* BackendLLVM::createFunctionType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& context         = *perThread[ct][precompileIndex].context;
+
+    vector<llvm::Type*> params;
+
+    // Registers to get the result
+    for (int i = 0; i < typeFuncBC->numReturnRegisters(); i++)
+        params.push_back(llvm::Type::getInt64PtrTy(context));
+
+    // Registers for parameters
+    for (auto param : typeFuncBC->parameters)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        for (int i = 0; i < typeParam->numRegisters(); i++)
+            params.push_back(llvm::Type::getInt64PtrTy(context));
+    }
+
+    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
 }
