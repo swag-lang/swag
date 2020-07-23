@@ -571,7 +571,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
-#define TTT()                       \
+#define TTT()                                                      \
     if (bc->sourceFile->path.find("compiler1763") != string::npos) \
         g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int) ip->op]));
 
@@ -692,8 +692,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::DeRefPointer:
+        {
             //concat.addStringFormat("r[%u].pointer = *(swag_uint8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
+            auto r0   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto ptr  = builder.CreateLoad(r0);
+            auto ptr8 = builder.CreateInBoundsGEP(ptr, CST_RC32);
+            auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
+            builder.CreateStore(v8, r1);
             break;
+        }
         case ByteCodeOp::DeRefStringSlice:
         {
             //concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (r[%u].pointer + 8); ", ip->b.u32, ip->a.u32);

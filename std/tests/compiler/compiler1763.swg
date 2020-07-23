@@ -1,12 +1,16 @@
+struct A
+{
+    x: *s64
+}
+
 #[swag.printbc]
 #test
 {
-    var array: [10] u16
+    var v: A
+    var c: s64 = 666
 
-    let ptr  = &array[0]
-    let ptr1 = &array[1]
+    v.x = &c
 
-    let diff = ptr1 - ptr
-    @print(cast(s64) diff)
-    //@assert(ptr + diff == ptr1)
+    ptr := v.x
+    @print(deref ptr)
 }
