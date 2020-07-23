@@ -1037,9 +1037,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::CopyRBAddrToRA:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &r[", ip->b.u32, "];");
-            TTT();
+            auto r0 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            builder.CreateStore(r1, r0);
             break;
+        }
 
         case ByteCodeOp::ClearRA:
         {
