@@ -1681,10 +1681,24 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpDivEqS8:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s8, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            //concat.addStringFormat("*(swag_int8_t*)(r[%u].pointer) /= r[%u].s8;", ip->a.u32, ip->b.u32);
+            //    MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "division by zero");
+            //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s8;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpDivEqS16:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].s16, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
