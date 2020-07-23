@@ -1,11 +1,11 @@
-func toto()
+func toto(x: string, y: s64)
 {
-    @print("toto")
+    @print(x)
+    @print(y)
 }
 
 #[swag.printbc]
 #test
 {
-    toto()
-    toto()
+    toto("toto", 10's64)
 }

@@ -2971,9 +2971,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         case ByteCodeOp::GetFromStackParam64:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
-            TTT();
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32));
+            builder.CreateStore(r1, r0);
             break;
+        }
         case ByteCodeOp::MakePointerToStackParam:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
             TTT();
@@ -3085,7 +3089,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto                 FT = createFunctionType(buildParameters, typeFuncBC);
             vector<llvm::Value*> fctParams;
-            getCallParameters(buildParameters, fctParams, typeFuncBC, pushRAParams);
+            getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), fctParams);
 
             pushRAParams.clear();
@@ -3107,15 +3111,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return true;
 }
 
-void BackendLLVM::getCallParameters(const BuildParameters& buildParameters, vector<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& RAParams)
+void BackendLLVM::getCallParameters(const BuildParameters&  buildParameters,
+                                    llvm::AllocaInst*       allocR,
+                                    llvm::AllocaInst*       allocRT,
+                                    vector<llvm::Value*>&   params,
+                                    TypeInfoFuncAttr*       typeFuncBC,
+                                    VectorNative<uint32_t>& pushRAParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
 
     params.clear();
-    for (int i = 0; i < RAParams.size(); i++)
-        params.push_back(pp.cst_null);
+
+    for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+    {
+        auto r0 = builder.CreateInBoundsGEP(allocRT, builder.getInt32(j));
+        params.push_back(r0);
+    }
+
+    int popRAidx      = (int) pushRAParams.size() - 1;
+    int numCallParams = (int) typeFuncBC->parameters.size();
+    for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteReferenceType(typeParam);
+        for (int j = 0; j < typeParam->numRegisters(); j++)
+        {
+            auto index = pushRAParams[popRAidx--];
+            auto r0    = builder.CreateInBoundsGEP(allocR, builder.getInt32(index));
+            params.push_back(r0);
+        }
+    }
 }
 
 llvm::FunctionType* BackendLLVM::createFunctionType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
