@@ -40,10 +40,6 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
-    // If array comes from a function parameter, we need to dereference its address
-    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-        emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
-
     // Boundcheck
     if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
     {

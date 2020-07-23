@@ -82,7 +82,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if ((node->flags & AST_TAKE_ADDRESS) && typeInfo->kind != TypeInfoKind::Lambda)
+        if ((node->flags & AST_TAKE_ADDRESS) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakePointerToStackParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
