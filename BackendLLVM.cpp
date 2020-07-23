@@ -196,6 +196,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
     pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
+    pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);
+    pp.cst0_f64 = llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), 0);
 
     return true;
 }
@@ -206,20 +208,22 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     if (!mustCompile)
         return JobResult::ReleaseJob;
 
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-    if (perThread[ct][precompileIndex].pass == BackendPreCompilePass::Init)
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+
+    if (pp.pass == BackendPreCompilePass::Init)
     {
-        perThread[ct][precompileIndex].pass = BackendPreCompilePass::FunctionBodies;
+        pp.pass = BackendPreCompilePass::FunctionBodies;
 
         SWAG_ASSERT(!module->name.empty());
-        perThread[ct][precompileIndex].filename = format("%s%d", module->name.c_str(), precompileIndex);
-        perThread[ct][precompileIndex].filename += buildParameters.postFix;
-        perThread[ct][precompileIndex].filename += ".obj";
+        pp.filename = format("%s%d", module->name.c_str(), precompileIndex);
+        pp.filename += buildParameters.postFix;
+        pp.filename += ".obj";
 
-        perThread[ct][precompileIndex].context = new llvm::LLVMContext();
-        perThread[ct][precompileIndex].module  = new llvm::Module(perThread[ct][precompileIndex].filename.c_str(), *perThread[ct][precompileIndex].context);
-        perThread[ct][precompileIndex].builder = new llvm::IRBuilder<>(*perThread[ct][precompileIndex].context);
+        pp.context = new llvm::LLVMContext();
+        pp.module  = new llvm::Module(perThread[ct][precompileIndex].filename.c_str(), *perThread[ct][precompileIndex].context);
+        pp.builder = new llvm::IRBuilder<>(*perThread[ct][precompileIndex].context);
 
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', llvm backend, generating files", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
@@ -230,14 +234,14 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         emitDataSegment(buildParameters, &module->constantSegment);
     }
 
-    if (perThread[ct][precompileIndex].pass == BackendPreCompilePass::FunctionBodies)
+    if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
-        perThread[ct][precompileIndex].pass = BackendPreCompilePass::End;
+        pp.pass = BackendPreCompilePass::End;
         emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlivePending;
     }
 
-    if (perThread[ct][precompileIndex].pass == BackendPreCompilePass::End)
+    if (pp.pass == BackendPreCompilePass::End)
     {
         if (precompileIndex == 0)
         {

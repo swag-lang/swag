@@ -71,6 +71,8 @@ struct BackendLLVM : public Backend
         llvm::Value* cst1_i32 = nullptr;
         llvm::Value* cst2_i32 = nullptr;
         llvm::Value* cst0_i64 = nullptr;
+        llvm::Value* cst0_f32 = nullptr;
+        llvm::Value* cst0_f64 = nullptr;
 
         map<ByteCodeInstruction*, llvm::BasicBlock*> labels;
 
