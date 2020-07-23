@@ -69,7 +69,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         }
 
         // Type is constant if we take address of a readonly variable
-        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN)
+        if (child->resolvedSymbolOverload &&
+            (child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
+            (child->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Array))
             ptrType->setConst();
         if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->typeInfo->isNative(NativeTypeKind::String))
             ptrType->setConst();
@@ -152,7 +154,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
-        SWAG_VERIFY(!arrayType->isConst(), context->report({ arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str()) }));
+        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
     }
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
