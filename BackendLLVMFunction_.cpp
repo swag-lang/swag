@@ -500,6 +500,20 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildPara
     return it->second;
 }
 
+void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::LoadInst* toTest, ByteCodeInstruction* ip, const char* msg)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+
+    auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+    auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
+    auto r3 = builder.CreateGlobalString(msg);
+    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, r1, r2, r3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
+}
+
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
@@ -2228,10 +2242,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
-            auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
-            auto r2 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->node->token.startLocation.line + 1);
-            auto r3 = builder.CreateGlobalString("");
-            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, r1, r2, r3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
+            createAssert(buildParameters, r0, ip, "");
             break;
         }
         case ByteCodeOp::IntrinsicAssertCastAny:
