@@ -608,13 +608,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::BoundCheckString:
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            TTT();
+        {
+            //concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r1 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+            auto v0 = builder.CreateICmpULE(r0, r1);
+            auto t0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            createAssert(buildParameters, t0, ip, "index out of range");
             break;
+        }
         case ByteCodeOp::BoundCheck:
+        {
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            TTT();
+            auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r1 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+            auto v0 = builder.CreateICmpULT(r0, r1);
+            auto t0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            createAssert(buildParameters, t0, ip, "index out of range");
             break;
+        }
 
         case ByteCodeOp::IncPointerVB32:
         {

@@ -816,7 +816,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 #endif
 
         case ByteCodeOp::BoundCheckString:
-            MK_ASSERT(format("r[%u].u32 <= r[%u].u32 + 1", ip->a.u32, ip->b.u32).c_str(), "index out of range");
+            MK_ASSERT(format("r[%u].u32 <= r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");
             break;
         case ByteCodeOp::BoundCheck:
             MK_ASSERT(format("r[%u].u32 < r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");

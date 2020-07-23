@@ -1,6 +1,6 @@
 #[swag.printbc]
 #test
 {
-    var pt: [2] s32
+    pt := "to"
     x := pt[2]
 }
