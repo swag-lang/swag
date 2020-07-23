@@ -1,0 +1,14 @@
+//#[swag.printbc]
+func toto(x: [2] s32)
+{
+    x[0] = 66
+    @assert(cast(s64) x[0] == 66)
+}
+
+//#[swag.printbc]
+#test
+{
+    x := [1, 2]
+    toto(x)
+    @assert(x[0] == 66)
+}

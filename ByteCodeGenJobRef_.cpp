@@ -40,6 +40,13 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
+    // If array comes from a function parameter, need to dereference its address
+    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+    {
+        emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
+    }
+
+    // Boundcheck
     if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
@@ -51,6 +58,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         freeRegisterRC(context, r0);
     }
 
+    // Pointer increment
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
@@ -68,9 +76,11 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     node->array->resultRegisterRC += reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
 
+    // Boundcheck
     if (context->sourceFile->module->buildParameters.target.debugBoundCheck || g_CommandLine.debug)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
+    // Pointer increment
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
