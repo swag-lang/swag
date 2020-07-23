@@ -34,6 +34,7 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
     auto cachePath = BackendLinkerWin32::getCacheFolder(buildParameters);
     clArguments += "/Fo\"" + cachePath + "\" ";
 
+    // Optimization level
     int optimLevel = 0;
     if (g_CommandLine.optim)
         optimLevel = g_CommandLine.optim;

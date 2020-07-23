@@ -282,29 +282,30 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     modu.setDataLayout(theTargetMachine->createDataLayout());
 
     auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
-    auto path       = targetPath + "/" + perThread[ct][precompileIndex].filename;
+    auto path       = targetPath + "/" + pp.filename;
 
     auto                 filename = path;
     std::error_code      EC;
     llvm::raw_fd_ostream dest(filename, EC, llvm::sys::fs::OF_None);
 
     llvm::legacy::PassManager llvmPass;
+    llvm::PassManagerBuilder  pmb;
 
-    /*llvmPass.add(llvm::createPromoteMemoryToRegisterPass());
-    llvmPass.add(llvm::createInstructionCombiningPass());
-    llvmPass.add(llvm::createReassociatePass());
-    llvmPass.add(llvm::createGVNPass());
-    llvmPass.add(llvm::createCFGSimplificationPass());
+    // Optimize passes
+    int optimLevel = 0;
+    if (g_CommandLine.optim)
+        optimLevel = g_CommandLine.optim;
+    else if (!g_CommandLine.debug)
+        optimLevel = buildParameters.target.backendOptimizeLevel;
+    if (optimLevel)
+    {
+        pmb.OptLevel  = optimLevel;
+        pmb.SizeLevel = 0;
+        pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+        pmb.populateModulePassManager(llvmPass);
+    }
 
-    llvm::PassManagerBuilder pmb;
-    pmb.OptLevel           = 3;
-    pmb.SizeLevel          = 2;
-    pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
-    pmb.DisableUnrollLoops = false;
-    pmb.LoopVectorize      = true;
-    pmb.SLPVectorize       = true;
-    pmb.populateModulePassManager(llvmPass);*/
-
+    // Generate obj file pass
     theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
 
     llvmPass.run(modu);

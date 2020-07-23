@@ -1,13 +1,9 @@
 #include "pch.h"
 #include "BackendLLVM.h"
 #include "BackendLLVMFunctionBodyJob.h"
-#include "Job.h"
 #include "Module.h"
-#include "Workspace.h"
-#include "OS.h"
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
-#include "DataSegment.h"
 #include "TypeManager.h"
 #include "Ast.h"
 
@@ -540,8 +536,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
-
-    //llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, bc->callName().c_str(), modu);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -3149,7 +3143,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
     }
 
-    builder.CreateRetVoid();
     return ok;
 }
 

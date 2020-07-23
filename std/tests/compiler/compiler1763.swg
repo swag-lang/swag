@@ -1,9 +1,10 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    x := [1's8, 2's8, 3's8]
+    x := [1, 2, 3]
     ptr := &x[0]
     ptr += 3
     ptr -= 1
+    if false
     @print(cast(s64) deref ptr)
 }
