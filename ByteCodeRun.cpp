@@ -466,7 +466,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::SetZeroAtPointerX:
         memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
-    case ByteCodeOp::ClearXVar:
+    case ByteCodeOp::SetZeroAtPointerXRB:
         memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 

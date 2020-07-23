@@ -1,22 +1,11 @@
 //#[swag.printbc]
-func set(ptr: [..] u16, val: u16)
-{
-    //@print(cast(s64) @countof(ptr))
-    ptr[0] = val
-}
-
-//#[swag.printbc]
 #test
 {
-    var buffer: [64] u16
-
-    set(buffer, 555)
-    @print(cast(s64) buffer[0])
-
-/*    let a: [..] u16 = {&buffer[0], 64}
-    set(a, 666)
-    @assert(buffer[0] == 666)
-
-    set({&buffer[0], 64}, 777)
-    @assert(buffer[0] == 777)*/
+	x := [1, 2, 3]
+	ptr := &x
+	count := 3
+	init(ptr, count)
+	@print(cast(s64) x[0])
+	@print(cast(s64) x[1])
+	@print(cast(s64) x[2])
 }

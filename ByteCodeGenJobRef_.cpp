@@ -441,7 +441,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             else
             {
                 SWAG_ASSERT(node->count);
-                emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointerXRB, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
             }
         }
     }

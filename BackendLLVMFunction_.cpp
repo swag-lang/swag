@@ -800,10 +800,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::ClearXVar:
-            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
-            TTT();
-            break;
         case ByteCodeOp::SetZeroStack8:
         {
             //CONCAT_STR_1(concat, "*(swag_uint8_t*)(stack + ", ip->a.u32, ") = 0;");
@@ -878,6 +874,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = builder.CreateLoad(r0);
             builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r1, pp.cst0_i32, builder.getInt64(ip->b.u32)});
+            break;
+        }
+        case ByteCodeOp::SetZeroAtPointerXRB:
+        {
+            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            auto r2 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+            auto v0 = builder.CreateMul(r2, builder.getInt32(ip->c.u32));
+            v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
+            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, v0});
             break;
         }
 
@@ -2996,7 +3002,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MakePointerToStackParam:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");         
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
             auto r0 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1 = func->getArg(ip->c.u32 + typeFunc->numReturnRegisters());
             builder.CreateStore(r1, r0);

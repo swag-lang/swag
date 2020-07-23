@@ -235,7 +235,7 @@ void ByteCode::print()
         case ByteCodeOp::SetAtPointer64:
         case ByteCodeOp::DeRefPointer:
         case ByteCodeOp::MemCpyVC32:
-        case ByteCodeOp::ClearXVar:
+        case ByteCodeOp::SetZeroAtPointerXRB:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

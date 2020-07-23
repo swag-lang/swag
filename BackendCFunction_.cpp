@@ -887,9 +887,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::GetFromBssSeg64:
             concat.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (__bssseg + %u);", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::ClearXVar:
-            concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
 
         case ByteCodeOp::SetZeroStack8:
             if (ip->a.u32)
@@ -1066,6 +1063,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::SetZeroAtPointerX:
             concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::SetZeroAtPointerXRB:
+            concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::BinOpPlusS32:
