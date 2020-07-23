@@ -2,6 +2,6 @@
 #test
 {
     x := 10'f64
-    x = x / 0
+    x = x / 2
     @print(cast(s64) x);
 }

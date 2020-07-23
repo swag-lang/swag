@@ -810,9 +810,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             continue;
 
 #ifdef DEVMODE
-#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s, \"%s\", %d, \"%s\", 1);", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
+#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s, \"%s\", %d, \"%s\", 1); ", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
 #else
-#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s, \"%s\", %d, \"%s\", 0);", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
+#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s, \"%s\", %d, \"%s\", 0); ", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
 #endif
 
         case ByteCodeOp::BoundCheckString:
@@ -1138,15 +1138,23 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BinOpModuloS32:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s32 = r[%u].s32 %% r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloS64:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s64 = r[%u].s64 %% r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU32:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u32 = r[%u].u32 %% r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU64:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u64 = r[%u].u64 %% r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
