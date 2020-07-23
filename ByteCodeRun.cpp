@@ -662,7 +662,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].s32 *= ip->b.u32;
         break;
     }
-    case ByteCodeOp::DivRAVB:
+    case ByteCodeOp::Div64byVB32:
     {
         if (ip->b.u32 == 0)
             context->error("division by zero");

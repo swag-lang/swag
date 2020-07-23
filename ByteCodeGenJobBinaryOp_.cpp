@@ -62,7 +62,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
             emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             auto sizeOf = rightTypePointer->pointedType->sizeOf;
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::DivRAVB, r2)->b.u32 = sizeOf;
+                emitInstruction(context, ByteCodeOp::Div64byVB32, r2)->b.u32 = sizeOf;
             return true;
         }
     }

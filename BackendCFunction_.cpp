@@ -856,9 +856,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::Mul64byVB32:
             concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::DivRAVB:
+        case ByteCodeOp::Div64byVB32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), ": division by zero");
+                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             break;
 

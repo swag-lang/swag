@@ -717,12 +717,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
             break;
         }
-        case ByteCodeOp::DivRAVB:
+        case ByteCodeOp::Div64byVB32:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //  concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
-            TTT();
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u32);
+            builder.CreateStore(builder.CreateUDiv(builder.CreateLoad(r0), r1), r0);
             break;
+        }
 
         case ByteCodeOp::GetFromDataSeg8:
         {
