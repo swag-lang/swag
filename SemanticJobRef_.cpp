@@ -147,7 +147,13 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     auto arrayType = arrayNode->array->typeInfo;
-    SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
+
+    // When we are building a pointer, this is fine to be const, be cause in fact we do no generate an address to modify the content
+    // (or it will be done later on a pointer, and it will be const too)
+    if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
+    {
+        SWAG_VERIFY(!arrayType->isConst(), context->report({ arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str()) }));
+    }
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER))
