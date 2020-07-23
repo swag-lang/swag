@@ -49,7 +49,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
             typeInfoPointer->finalType->isNative(NativeTypeKind::String) ||
             typeInfoPointer->finalType->kind == TypeInfoKind::Reference)
         {
-            *llvmType = llvm::PointerType::getInt8PtrTy(context);
+            *llvmType = llvm::Type::getInt8PtrTy(context);
         }
         else if (typeInfoPointer->finalType->kind == TypeInfoKind::Native)
         {
@@ -58,20 +58,20 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
             case NativeTypeKind::Bool:
             case NativeTypeKind::S8:
             case NativeTypeKind::U8:
-                *llvmType = llvm::PointerType::getInt8PtrTy(context);
+                *llvmType = llvm::Type::getInt8PtrTy(context);
                 return true;
             case NativeTypeKind::S16:
             case NativeTypeKind::U16:
-                *llvmType = llvm::PointerType::getInt16PtrTy(context);
+                *llvmType = llvm::Type::getInt16PtrTy(context);
                 return true;
             case NativeTypeKind::S32:
             case NativeTypeKind::U32:
             case NativeTypeKind::Char:
-                *llvmType = llvm::PointerType::getInt32PtrTy(context);
+                *llvmType = llvm::Type::getInt32PtrTy(context);
                 return true;
             case NativeTypeKind::S64:
             case NativeTypeKind::U64:
-                *llvmType = llvm::PointerType::getInt64PtrTy(context);
+                *llvmType = llvm::Type::getInt64PtrTy(context);
                 return true;
             case NativeTypeKind::F32:
                 *llvmType = llvm::Type::getFloatPtrTy(context);
@@ -100,7 +100,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->kind == TypeInfoKind::Reference)
     {
-        *llvmType = llvm::PointerType::getInt8PtrTy(context);
+        *llvmType = llvm::Type::getInt8PtrTy(context);
         return true;
     }
 
@@ -109,24 +109,24 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            *llvmType = llvm::IntegerType::getInt8Ty(context);
+            *llvmType = llvm::Type::getInt8Ty(context);
             return true;
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            *llvmType = llvm::IntegerType::getInt8Ty(context);
+            *llvmType = llvm::Type::getInt8Ty(context);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            *llvmType = llvm::IntegerType::getInt16Ty(context);
+            *llvmType = llvm::Type::getInt16Ty(context);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            *llvmType = llvm::IntegerType::getInt32Ty(context);
+            *llvmType = llvm::Type::getInt32Ty(context);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            *llvmType = llvm::IntegerType::getInt64Ty(context);
+            *llvmType = llvm::Type::getInt64Ty(context);
             return true;
         case NativeTypeKind::F32:
             *llvmType = llvm::Type::getFloatTy(context);
@@ -135,7 +135,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
             *llvmType = llvm::Type::getDoubleTy(context);
             return true;
         case NativeTypeKind::Void:
-            *llvmType = llvm::IntegerType::getVoidTy(context);
+            *llvmType = llvm::Type::getVoidTy(context);
             return true;
         }
     }
@@ -178,7 +178,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             if (param->typeInfo->kind == TypeInfoKind::Variadic)
             {
                 params.push_back(llvm::Type::getInt8PtrTy(context));
-                params.push_back(llvm::Type::getInt32Ty(context));
+                params.push_back(builder.getInt32Ty());
                 numParams--;
             }
         }
@@ -192,7 +192,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             params.push_back(llvmType);
 
             if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
-                params.push_back(llvm::Type::getInt32Ty(context));
+                params.push_back(builder.getInt32Ty());
             else if (param->typeInfo->isNative(NativeTypeKind::Any))
                 params.push_back(llvm::Type::getInt8PtrTy(context));
         }
@@ -222,7 +222,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         n += typeParam->numRegisters();
     }
 
-    auto allocRR = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), n));
+    auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(n));
 
     // Affect registers
     int idx = typeFunc->numReturnRegisters();
@@ -232,7 +232,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     {
         // rr0 = result
         auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
-        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), llvm::Type::getInt64Ty(context));
+        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), builder.getInt64Ty());
         builder.CreateStore(cst0, rr0);
     }
 
@@ -246,11 +246,11 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto rr0  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), llvm::Type::getInt64Ty(context));
+            auto rr0  = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
 
-            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto rr1 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx + 1));
             rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
             builder.CreateStore(func->getArg(1), rr1);
 
@@ -264,33 +264,33 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     {
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        auto rr0       = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx));
+        auto rr0       = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx));
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
-            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1));
             rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String) || typeParam->isNative(NativeTypeKind::Any))
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
-            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx + 1), llvm::Type::getInt64Ty(context));
-            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), idx + 1));
+            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx + 1), builder.getInt64Ty());
+            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1));
             builder.CreateStore(cst1, rr1);
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Array ||
                  typeParam->kind == TypeInfoKind::Interface)
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), llvm::Type::getInt64Ty(context));
+            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
             break;
         }
@@ -356,7 +356,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     vector<llvm::Value*> args;
     for (int i = 0; i < n; i++)
     {
-        auto rr0 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), i));
+        auto rr0 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), i));
         args.push_back(rr0);
     }
 
@@ -461,13 +461,13 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
-#define CST_RA32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->a.u32)
-#define CST_RB32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->b.u32)
-#define CST_RC32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->c.u32)
-#define CST_RD32 llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), ip->d.u32)
-#define CST_RA64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->a.u64)
-#define CST_RB64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u64)
-#define CST_RC64 llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u64)
+#define CST_RA32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->a.u32)
+#define CST_RB32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->b.u32)
+#define CST_RC32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->c.u32)
+#define CST_RD32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->d.u32)
+#define CST_RA64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->a.u64)
+#define CST_RB64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u64)
+#define CST_RC64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->c.u64)
 #define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
 #define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context)->getPointerTo())
 #define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context)->getPointerTo())
@@ -556,15 +556,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Reserve registers
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
-        allocR = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), bc->maxReservedRegisterRC));
+        allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxReservedRegisterRC));
     llvm::AllocaInst* allocRT = nullptr;
     if (bc->maxCallResults)
-        allocRT = builder.CreateAlloca(llvm::Type::getInt64Ty(context), llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), bc->maxCallResults));
+        allocRT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxCallResults));
 
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
-        allocStack = builder.CreateAlloca(llvm::Type::getInt8Ty(context), llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), typeFunc->stackSize));
+        allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
     // Generate bytecode
     int                    vaargsIdx = 0;
@@ -672,7 +672,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r1   = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto ptr  = builder.CreateLoad(r0);
-            auto ptr8 = builder.CreateInBoundsGEP(ptr, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 8));
+            auto ptr8 = builder.CreateInBoundsGEP(ptr, builder.getInt32(8));
             auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr));
             auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
             builder.CreateStore(v8, r1);
@@ -684,7 +684,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32);
+            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u32);
             builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
             break;
         }
@@ -795,7 +795,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->b.u32)});
+            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, builder.getInt64(ip->b.u32)});
             break;
         }
 
@@ -828,11 +828,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             //concat.addStringFormat("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
             auto r0     = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto offset = ip->c.u64 >> 32;
-            auto r1     = builder.CreateInBoundsGEP(pp.constantSeg, {pp.cst0_i32, llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), offset)});
+            auto offset = (uint32_t)(ip->c.u64 >> 32);
+            auto r1     = builder.CreateInBoundsGEP(pp.constantSeg, {pp.cst0_i32, builder.getInt32(offset)});
             builder.CreateStore(r1, r0);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
-            builder.CreateStore(llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), (ip->c.u64 & 0xFFFFFFFF)), r2);
+            builder.CreateStore(llvm::ConstantInt::get(builder.getInt64Ty(), (ip->c.u64 & 0xFFFFFFFF)), r2);
             break;
         }
 
@@ -884,7 +884,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             r0      = builder.CreateLoad(r0);
             r1      = builder.CreateLoad(r1);
-            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), ip->c.u32)});
+            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, builder.getInt64(ip->c.u32)});
             break;
         }
         case ByteCodeOp::MemCpy:
@@ -895,7 +895,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
             r0      = builder.CreateLoad(r0);
             r1      = builder.CreateLoad(r1);
-            r2      = builder.CreateIntCast(builder.CreateLoad(r2), llvm::Type::getInt64Ty(context), false);
+            r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
             builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, r2});
             break;
         }
@@ -906,8 +906,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
             r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateIntCast(builder.CreateLoad(r1), llvm::Type::getInt32Ty(context), false);
-            r2      = builder.CreateIntCast(builder.CreateLoad(r2), llvm::Type::getInt64Ty(context), false);
+            r1      = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt32Ty(), false);
+            r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
             builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, r1, r2});
             break;
         }
@@ -920,7 +920,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r3 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RD32));
             r1      = builder.CreateLoad(r1);
             r2      = builder.CreateLoad(r2);
-            r3      = builder.CreateIntCast(builder.CreateLoad(r3), llvm::Type::getInt64Ty(context), false);
+            r3      = builder.CreateIntCast(builder.CreateLoad(r3), builder.getInt64Ty(), false);
             builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_memcmp"), {r1, r2, r3}), r0);
             break;
         }
@@ -1941,7 +1941,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpSGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1952,7 +1952,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpSGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1963,7 +1963,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1974,7 +1974,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1985,7 +1985,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFCmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1996,7 +1996,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFCmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2008,7 +2008,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpSLT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2019,7 +2019,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpSLT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2030,7 +2030,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2041,7 +2041,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2052,7 +2052,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFCmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2063,7 +2063,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateFCmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2075,7 +2075,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2086,7 +2086,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2097,7 +2097,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2108,7 +2108,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt32Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2374,7 +2374,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I8(r0)));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2383,7 +2383,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2392,7 +2392,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I32(r0)));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2401,7 +2401,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
-            v0      = builder.CreateIntCast(v0, llvm::Type::getInt8Ty(context), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2410,7 +2410,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (swag_int16_t) r[", ip->a.u32, "].s8;");
             auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt16Ty(context), true);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt16Ty(), true);
             r0      = TO_PTR_I16(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2419,7 +2419,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].s16;");
             auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt32Ty(context), true);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt32Ty(), true);
             r0      = TO_PTR_I32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2428,7 +2428,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].s32;");
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), llvm::Type::getInt64Ty(context), true);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
             r0      = TO_PTR_I64(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2437,7 +2437,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s32;");
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2446,7 +2446,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2455,7 +2455,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
             r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2464,7 +2464,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u32;");
             auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2473,7 +2473,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].u64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2482,7 +2482,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].u64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
             r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2491,7 +2491,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (swag_int32_t) r[", ip->a.u32, "].f32;");
             auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), llvm::Type::getInt32Ty(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), builder.getInt32Ty());
             r0      = TO_PTR_I32(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2500,7 +2500,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (swag_float64_t) r[", ip->a.u32, "].f32;");
             auto r0 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(r0), llvm::Type::getDoubleTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(r0), builder.getDoubleTy());
             r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2509,7 +2509,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (swag_int64_t) r[", ip->a.u32, "].f64;");
             auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), llvm::Type::getInt64Ty(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), builder.getInt64Ty());
             r0      = TO_PTR_I64(r0);
             builder.CreateStore(v0, r0);
             break;
@@ -2518,7 +2518,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (swag_float32_t) r[", ip->a.u32, "].f64;");
             auto r0 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RA32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(r0), llvm::Type::getFloatTy(context));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
             builder.CreateStore(v0, r0);
             break;

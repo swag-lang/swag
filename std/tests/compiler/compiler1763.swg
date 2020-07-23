@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    x := 1
-    x /= 0
-    @assert(false);
+    x := 10
+    x /= 2
+    @print(cast(s64) x);
 }
