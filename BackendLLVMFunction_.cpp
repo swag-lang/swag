@@ -2678,13 +2678,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::IntrinsicAssertCastAny:
-            //CONCAT_FIXED_STR(concat, "{ ");
-            //concat.addStringFormat("const char* typeTo = *(char**)r[%u].pointer; ", ip->b.u32);
-            //concat.addStringFormat("const char* typeFrom = *(char**)r[%u].pointer; ", ip->c.u32);
+        {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"invalid cast from 'any'\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            //CONCAT_FIXED_STR(concat, "}");
-            TTT();
+            auto r0 = builder.CreateLoad(TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32)));
+            createAssert(buildParameters, r0, ip, "invalid cast from 'any'");
             break;
+        }
         case ByteCodeOp::IntrinsicTarget:
             //concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
             TTT();
