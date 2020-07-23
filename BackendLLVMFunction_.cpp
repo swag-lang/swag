@@ -2955,21 +2955,29 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::CopyRCtoRR:
+        {
             //CONCAT_STR_2(concat, "*rr", ip->a.u32, " = r[", ip->b.u32, "];");
-            TTT();
+            auto r1 = builder.CreateLoad(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            builder.CreateStore(r1, func->getArg(ip->a.u32));
             break;
+        }
         case ByteCodeOp::CopyRRtoRC:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
             TTT();
             break;
         case ByteCodeOp::CopyRCtoRRCall:
+        {
             // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
-            TTT();
             break;
+        }
         case ByteCodeOp::CopyRRtoRCCall:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
-            TTT();
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(builder.CreateInBoundsGEP(allocRT, CST_RB32));
+            builder.CreateStore(r1, r0);
             break;
+        }
         case ByteCodeOp::GetFromStackParam64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
