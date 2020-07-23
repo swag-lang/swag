@@ -500,18 +500,21 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildPara
     return it->second;
 }
 
-void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::LoadInst* toTest, ByteCodeInstruction* ip, const char* msg)
+void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::Value* toTest, ByteCodeInstruction* ip, const char* msg)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
     auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+    auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
     auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
     auto r3 = builder.CreateGlobalString(msg);
-    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, r1, r2, r3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
+    auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
+    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
 }
 
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -690,7 +693,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::DivRAVB:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             break;
 
@@ -1287,33 +1290,47 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::BinOpDivS32:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpDivS64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 / r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 / r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
@@ -1559,52 +1576,52 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpDivEqS8:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s8, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_int8_t*)(r[%u].pointer) /= r[%u].s8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s16, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_int16_t*)(r[%u].pointer) /= r[%u].s16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_int32_t*)(r[%u].pointer) /= r[%u].s32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].s64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].s64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_int64_t*)(r[%u].pointer) /= r[%u].s64;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU8:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].u8, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].u8, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_uint8_t*)(r[%u].pointer) /= r[%u].u8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU16:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].u16, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].u16, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_uint16_t*)(r[%u].pointer) /= r[%u].u16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //    concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //    concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_uint32_t*)(r[%u].pointer) /= r[%u].u32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqU64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer) /= r[%u].u64;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF32:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            //concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32);
             break;
 

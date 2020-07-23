@@ -25,7 +25,7 @@ struct BackendLLVM : public Backend
 
     bool createRuntime(const BuildParameters& buildParameters);
     bool swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
-    void createAssert(const BuildParameters& buildParameters, llvm::LoadInst* toTest, ByteCodeInstruction* ip, const char* msg);
+    void createAssert(const BuildParameters& buildParameters, llvm::Value* toTest, ByteCodeInstruction* ip, const char* msg);
     bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);

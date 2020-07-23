@@ -32,6 +32,7 @@ static char* __itoa(char* result, int64_t value)
     return retVal;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 static void __ftoa(char* result, double value)
 {
     int64_t ipart  = (int64_t) value;
@@ -47,42 +48,48 @@ static void __ftoa(char* result, double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
 SWAG_EXPORT void* swag_runtime_malloc(uint64_t size)
 {
     return malloc(size);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_realloc(void* addr, uint64_t size)
 {
     return realloc(addr, size);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_free(void* addr)
 {
     free(addr);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_memcpy(void* mem1, const void* mem2, uint64_t size)
 {
     return memcpy(mem1, mem2, size);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_memset(void* mem, int32_t value, uint64_t size)
 {
     return memset(mem, value, size);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT int32_t swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size)
 {
     return memcmp(mem1, mem2, size);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_exit(int32_t exitCode)
 {
     exit(exitCode);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
 {
     int32_t len = 0;
@@ -91,6 +98,7 @@ SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
     return len;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
 {
     if (!str1 || !str2)
@@ -98,6 +106,7 @@ SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_
     return !memcmp((void*) str1, (void*) str2, num);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 {
     if (!message)
@@ -108,6 +117,7 @@ SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_print(const char* message)
 {
     if (!message)
@@ -115,6 +125,7 @@ SWAG_EXPORT void swag_runtime_print(const char* message)
     swag_runtime_print_n(message, swag_runtime_strlen(message));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
@@ -122,6 +133,7 @@ SWAG_EXPORT void swag_runtime_print_i64(int64_t value)
     swag_runtime_print(buf);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_print_f64(double value)
 {
     char buf[100];
@@ -129,6 +141,7 @@ SWAG_EXPORT void swag_runtime_print_f64(double value)
     swag_runtime_print(buf);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, bool devMode)
 {
     if (expr)
@@ -155,6 +168,7 @@ SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, cons
     exit(-1);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_loadDynamicLibrary(const char* name)
 {
 #ifdef _WIN32
@@ -162,6 +176,7 @@ SWAG_EXPORT void* swag_runtime_loadDynamicLibrary(const char* name)
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT uint32_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
@@ -169,6 +184,7 @@ SWAG_EXPORT uint32_t swag_runtime_tlsAlloc()
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_tlsSetValue(uint32_t id, void* value)
 {
 #ifdef _WIN32
@@ -176,6 +192,7 @@ SWAG_EXPORT void swag_runtime_tlsSetValue(uint32_t id, void* value)
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
 {
 #ifdef _WIN32
@@ -183,6 +200,7 @@ SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
 {
     uint64_t argumentsStr[64];
