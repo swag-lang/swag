@@ -443,29 +443,29 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS8, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS8, r0, r1);
         return true;
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU8, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS16, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS16, r0, r1);
         return true;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU16, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS32, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpModuloEqU64, r0, r1);
         return true;
     default:
         return internalError(context, "emitAffectPercentEqual, type not supported");

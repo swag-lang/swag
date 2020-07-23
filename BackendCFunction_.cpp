@@ -1368,28 +1368,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             break;
 
-        case ByteCodeOp::AffectOpPercentEqS8:
+        case ByteCodeOp::AffectOpModuloEqS8:
             CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
             break;
-        case ByteCodeOp::AffectOpPercentEqS16:
+        case ByteCodeOp::AffectOpModuloEqS16:
             CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
             break;
-        case ByteCodeOp::AffectOpPercentEqS32:
+        case ByteCodeOp::AffectOpModuloEqS32:
             CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
             break;
-        case ByteCodeOp::AffectOpPercentEqS64:
+        case ByteCodeOp::AffectOpModuloEqS64:
             CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
             break;
-        case ByteCodeOp::AffectOpPercentEqU8:
+        case ByteCodeOp::AffectOpModuloEqU8:
             CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
             break;
-        case ByteCodeOp::AffectOpPercentEqU16:
+        case ByteCodeOp::AffectOpModuloEqU16:
             CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
             break;
-        case ByteCodeOp::AffectOpPercentEqU32:
+        case ByteCodeOp::AffectOpModuloEqU32:
             CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
             break;
-        case ByteCodeOp::AffectOpPercentEqU64:
+        case ByteCodeOp::AffectOpModuloEqU64:
             CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
             break;
 

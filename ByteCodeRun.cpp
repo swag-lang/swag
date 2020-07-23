@@ -1564,42 +1564,42 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::AffectOpPercentEqS8:
+    case ByteCodeOp::AffectOpModuloEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s8;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqS16:
+    case ByteCodeOp::AffectOpModuloEqS16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s16;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqS32:
+    case ByteCodeOp::AffectOpModuloEqS32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s32;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqS64:
+    case ByteCodeOp::AffectOpModuloEqS64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s64;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqU8:
+    case ByteCodeOp::AffectOpModuloEqU8:
     {
         *(uint8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u8;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqU16:
+    case ByteCodeOp::AffectOpModuloEqU16:
     {
         *(uint16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u16;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqU32:
+    case ByteCodeOp::AffectOpModuloEqU32:
     {
         *(uint32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::AffectOpPercentEqU64:
+    case ByteCodeOp::AffectOpModuloEqU64:
     {
         *(uint64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u64;
         break;

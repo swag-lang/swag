@@ -1899,7 +1899,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpPercentEqS8:
+        case ByteCodeOp::AffectOpModuloEqS8:
         {
             //CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1909,7 +1909,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqS16:
+        case ByteCodeOp::AffectOpModuloEqS16:
         {
             //CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1919,7 +1919,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqS32:
+        case ByteCodeOp::AffectOpModuloEqS32:
         {
             //CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1929,7 +1929,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqS64:
+        case ByteCodeOp::AffectOpModuloEqS64:
         {
             //CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1939,7 +1939,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqU8:
+        case ByteCodeOp::AffectOpModuloEqU8:
         {
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1949,7 +1949,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqU16:
+        case ByteCodeOp::AffectOpModuloEqU16:
         {
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1959,7 +1959,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqU32:
+        case ByteCodeOp::AffectOpModuloEqU32:
         {
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
@@ -1969,7 +1969,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPercentEqU64:
+        case ByteCodeOp::AffectOpModuloEqU64:
         {
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
