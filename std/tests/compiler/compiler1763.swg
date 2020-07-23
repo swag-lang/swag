@@ -1,18 +1,22 @@
-struct A
+//#[swag.printbc]
+func set(ptr: [..] u16, val: u16)
 {
-    x: s64
-    y: s64
+    //@print(cast(s64) @countof(ptr))
+    ptr[0] = val
 }
 
-#[swag.printbc]
-func toto()->A
-{
-    return {10, 20}
-}
-
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    res := toto()
-    @print(res.x)
+    var buffer: [64] u16
+
+    set(buffer, 555)
+    @print(cast(s64) buffer[0])
+
+/*    let a: [..] u16 = {&buffer[0], 64}
+    set(a, 666)
+    @assert(buffer[0] == 666)
+
+    set({&buffer[0], 64}, 777)
+    @assert(buffer[0] == 777)*/
 }

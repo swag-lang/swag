@@ -534,6 +534,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& builder  = *pp.builder;
     auto& modu     = *pp.module;
     auto  typeFunc = bc->callType();
+    bool  ok       = true;
 
     // Function prototype
     llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
@@ -2989,14 +2990,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32) + typeFunc->numReturnRegisters());
+            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32 + typeFunc->numReturnRegisters()));
             builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::MakePointerToStackParam:
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
-            TTT();
+        {
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");         
+            auto r0 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = func->getArg(ip->c.u32 + typeFunc->numReturnRegisters());
+            builder.CreateStore(r1, r0);
             break;
+        }
 
         case ByteCodeOp::MinusToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
@@ -3023,7 +3028,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         }
-
         case ByteCodeOp::MakeLambdaForeign:
         {
             //auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
@@ -3117,13 +3121,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         default:
-            TTT();
+            ok = false;
+            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }
 
     builder.CreateRetVoid();
-    return true;
+    return ok;
 }
 
 void BackendLLVM::getCallParameters(const BuildParameters&  buildParameters,
