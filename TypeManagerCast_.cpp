@@ -2351,15 +2351,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST) && !(castFlags & CASTFLAG_EXPLICIT))
+    if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
-        if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
+        if (!toType->isConst() && fromType->isConst())
         {
-            if (toType->isNative(NativeTypeKind::U64) && fromType->kind == TypeInfoKind::Pointer)
-            {
-                // this is fine
-            }
-            else
+            if (!toType->isNative(NativeTypeKind::String) &&
+                (!toType->isNative(NativeTypeKind::U64) || fromType->kind != TypeInfoKind::Pointer))
             {
                 if (!(castFlags & CASTFLAG_UNCONST))
                     return castError(context, toType, fromType, fromNode, castFlags);

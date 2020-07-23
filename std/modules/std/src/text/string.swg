@@ -9,12 +9,12 @@ namespace std.text
     {
         buffer:     *u8
         length:     u32
-        capacity:   u32        
+        capacity:   u32
         allocator:  IAllocator
 
         internal padding: [SmallSizeInternal] u8
     }
-    
+
     impl String
     {
         func free(using self)
@@ -27,7 +27,7 @@ namespace std.text
             if allocator == null
                 allocator = @getcontext().allocator
             buffer = acast memory.realloc(&allocator, buffer, newCapacity)
-        }      
+        }
     }
 
     impl String
@@ -46,7 +46,7 @@ namespace std.text
             func opData(using self)->const *void
             {
                 return buffer
-            }            
+            }
 
             #[swag.nodoc]
             func(T) opCast(using self)->T
@@ -131,7 +131,7 @@ namespace std.text
                     scan := buffer
                     loop length
                     {
-                        #macro   
+                        #macro
                         {
                             #if ptr
                                 let @alias0 = `scan
@@ -144,7 +144,7 @@ namespace std.text
                         scan += 1
                     }
                 }
-            }            
+            }
 
             /// Visit the [String] unicode characters
             #[swag.macro, swag.noreturn]
@@ -153,7 +153,7 @@ namespace std.text
                 if length
                 {
                     idx := 0
-                    scan := buffer
+                    scan := cast(const *u8) buffer
                     while true
                     {
                         var (nextScan, c) = utf8.nextChar(scan)
@@ -170,10 +170,10 @@ namespace std.text
                         }
 
                         idx += cast(s32) (nextScan - scan)
-                        scan = cast(*u8) nextScan
+                        scan = cast(const *u8) nextScan
                     }
                 }
-            }             
+            }
         }
     }
 
@@ -266,10 +266,10 @@ namespace std.text
                     allocator = newAllocator
                 }
                 else
-                {                    
+                {
                     realloc(self, newCapacity)
                 }
-                
+
                 capacity = newCapacity
             }
 
@@ -277,7 +277,7 @@ namespace std.text
             func trimStart(using self)
             {
                 if !length
-                    return                
+                    return
 
                 ptr := cast(const *u8) buffer
                 while true
@@ -297,7 +297,7 @@ namespace std.text
             func trimEnd(using self)
             {
                 if !length
-                    return   
+                    return
 
                 ptr := cast(const *u8) buffer + length
                 while true
@@ -310,15 +310,15 @@ namespace std.text
                 }
 
                 buffer[length] = 0
-            }     
+            }
 
             /// Removes all leading and trailing white-space characters from the current [String]
             ///
-            /// The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing 
+            /// The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
             /// trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
             /// function returns "abc xyz".
             ///
-            /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters 
+            /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
             /// that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
             ///
             /// # Examples
@@ -331,7 +331,7 @@ namespace std.text
             /// # See also
             /// * [std.text.String.trimStart]
             /// * [std.text.String.trimEnd]
-            func trim(using self)       
+            func trim(using self)
             {
                 trimStart(self)
                 trimEnd(self)
@@ -361,7 +361,7 @@ namespace std.text
             func indexOf(using self, value: char)->s32
             {
                 if !length
-                    return -1 
+                    return -1
 
                 visit c, i: deref self
                 {
@@ -389,9 +389,9 @@ namespace std.text
             /// * [std.text.String.back]
             func front(using self)->char
             {
-                if !length 
+                if !length
                     return 0
-                if latin1.isAscii(buffer[0]) 
+                if latin1.isAscii(buffer[0])
                     return cast(char) buffer[0]
                 let (b, c) = utf8.nextChar(buffer)
                 return c
@@ -414,13 +414,13 @@ namespace std.text
             /// * [std.text.String.front]
             func back(using self)->char
             {
-                if !length 
+                if !length
                     return 0
-                if latin1.isAscii(buffer[length - 1]) 
+                if latin1.isAscii(buffer[length - 1])
                     return cast(char) buffer[length - 1]
                 let (b, c) = utf8.previousChar(buffer, buffer + length)
                 return c
-            }            
+            }
         }
     }
 }

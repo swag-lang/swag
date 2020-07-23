@@ -41,7 +41,7 @@ namespace std.text
         signed:         bool
     }
 
-    public 
+    public
     {
         /// Convert a value to an utf8 string, and put the result in a [ConcatBuffer]
         func convertAny(buf: *ConcatBuffer, value: any)
@@ -52,7 +52,7 @@ namespace std.text
             if type.kind == swag.TypeInfoKind.Pointer
             {
                 ptr := cast(*void) value
-                buf.addBytes({cast(*u8) &value, @sizeof(*void)})
+                buf.addBytes({cast(const *u8) &value, @sizeof(*void)})
                 return
             }
 
@@ -61,21 +61,21 @@ namespace std.text
                 case @typeof(bool):
                     convertBool(buf, cast(bool) value)
                 case @typeof(char):
-                    convertChar(buf, cast(char) value)                    
+                    convertChar(buf, cast(char) value)
                 case @typeof(s8):
-                    convertInt(buf, cast(s8) value)                
+                    convertInt(buf, cast(s8) value)
                 case @typeof(s16):
-                    convertInt(buf, cast(s16) value)                     
+                    convertInt(buf, cast(s16) value)
                 case @typeof(s32):
                     convertInt(buf, cast(s32) value)
                 case @typeof(s64):
-                    convertInt(buf, cast(s64) value) 
+                    convertInt(buf, cast(s64) value)
                 case @typeof(u8):
-                    convertInt(buf, cast(u8) value)                                        
+                    convertInt(buf, cast(u8) value)
                 case @typeof(u16):
-                    convertInt(buf, cast(u16) value)                     
+                    convertInt(buf, cast(u16) value)
                 case @typeof(u32):
-                    convertInt(buf, cast(u32) value)                    
+                    convertInt(buf, cast(u32) value)
                 case @typeof(u64):
                     convertInt(buf, cast(u64) value)
                 case @typeof(f32):
@@ -83,10 +83,10 @@ namespace std.text
                 case @typeof(f64):
                     convertFloat(buf, cast(f64) value)
                 case @typeof(string):
-                    buf.addBytes(cast(string) value)   
-                case @typeof(ConvertFormatInt):  
+                    buf.addBytes(cast(string) value)
+                case @typeof(ConvertFormatInt):
                     convertInt(buf, cast(ConvertFormatInt) value)
-                case @typeof(ConvertFormatFloat):  
+                case @typeof(ConvertFormatFloat):
                     convertFloat(buf, cast(ConvertFormatFloat) value)
             }
         }
@@ -139,7 +139,7 @@ namespace std.text
             fmt.value = value
             fmt.bits = 64
             convertFloat(buf, fmt)
-        }   
+        }
 
         /// Convert a `f32` to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertFloat(buf: *ConcatBuffer, value: f32)
@@ -148,7 +148,7 @@ namespace std.text
             fmt.value = cast(f64) value
             fmt.bits = 32
             convertFloat(buf, fmt)
-        }          
+        }
 
         /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
@@ -197,7 +197,7 @@ namespace std.text
             fmt.bits = 16
             fmt.signed = true
             convertInt(buf, fmt)
-        }        
+        }
 
         /// Convert a `s32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: s32)
@@ -217,7 +217,7 @@ namespace std.text
             fmt.bits = 64
             fmt.signed = true
             convertInt(buf, fmt)
-        }        
+        }
 
         /// Convert a `u8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u8)
@@ -227,7 +227,7 @@ namespace std.text
             fmt.signed = false
             fmt.bits = 8
             convertInt(buf, fmt)
-        }   
+        }
 
         /// Convert a `u16` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u16)
@@ -237,7 +237,7 @@ namespace std.text
             fmt.signed = false
             fmt.bits = 16
             convertInt(buf, fmt)
-        }           
+        }
 
         /// Convert a `u32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u32)
@@ -247,7 +247,7 @@ namespace std.text
             fmt.signed = false
             fmt.bits = 32
             convertInt(buf, fmt)
-        }   
+        }
 
         /// Convert a `u64` integer to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertInt(buf: *ConcatBuffer, value: u64)
@@ -257,7 +257,7 @@ namespace std.text
             fmt.signed = false
             fmt.bits = 64
             convertInt(buf, fmt)
-        }          
+        }
 
         /// Convert a `bool` to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertBool(buf: *ConcatBuffer, value: bool)
@@ -266,7 +266,7 @@ namespace std.text
                 buf.addBytes("true")
             else
                 buf.addBytes("false")
-        }         
+        }
 
         /// Convert a `char` to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertChar(buf: *ConcatBuffer, value: char)
@@ -274,11 +274,11 @@ namespace std.text
             if value <= 0xFF
                 buf.addByte(cast(u8) value)
             else if(value  <= 0xFFFF)
-                buf.addBytes({cast(*u8) &value, 2})
+                buf.addBytes({cast(const *u8) &value, 2})
             else if(value  <= 0xFFFFFF)
-                buf.addBytes({cast(*u8) &value, 3})
+                buf.addBytes({cast(const *u8) &value, 3})
             else
-                buf.addBytes({cast(*u8) &value, 4})
-        }         
+                buf.addBytes({cast(const *u8) &value, 4})
+        }
     }
 }
