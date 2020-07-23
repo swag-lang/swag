@@ -140,13 +140,13 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 RegisterList r0 = reserveRegisterRC(&cxt);
 
                 emitInstruction(&cxt, ByteCodeOp::CopyVBtoRA32, r0)->b.u32 = typeArray->totalCount;
-                auto seekJump                                            = cxt.bc->numInstructions;
+                auto seekJump                                              = cxt.bc->numInstructions;
 
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                 emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
 
                 emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
-                emitInstruction(&cxt, ByteCodeOp::AddVBtoRA32, 0)->b.u32        = typeInVarStruct->sizeOf;
+                emitInstruction(&cxt, ByteCodeOp::AddVBtoRA32, 0)->b.u32      = typeInVarStruct->sizeOf;
                 emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
                 freeRegisterRC(&cxt, r0);

@@ -571,6 +571,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
+#define TTT()                       \
+    if (bc->sourceFile->path.find("compiler1763") != string::npos) \
+        g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int) ip->op]));
+
     // Generate bytecode
     int                    vaargsIdx = 0;
     auto                   ip        = bc->out;
@@ -605,14 +609,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::BoundCheckString:
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            TTT();
             break;
         case ByteCodeOp::BoundCheck:
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
+            TTT();
             break;
 
         case ByteCodeOp::IncPointerVB32:
+        {
             //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
+            auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateLoad(r0);
+            auto r2 = builder.CreateInBoundsGEP(r1, CST_RB32);
+            builder.CreateStore(r2, r0);
             break;
+        }
         case ByteCodeOp::IncPointer32:
         {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -697,6 +709,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
+            TTT();
             break;
 
         case ByteCodeOp::GetFromDataSeg8:
@@ -767,6 +780,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ClearXVar:
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            TTT();
             break;
         case ByteCodeOp::SetZeroStack8:
         {
@@ -955,6 +969,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopyRBAddrToRA:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &r[", ip->b.u32, "];");
+            TTT();
             break;
 
         case ByteCodeOp::ClearRA:
@@ -981,8 +996,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AddVBtoRA32:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), CST_RB32);
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::SetAtPointer8:
         {
@@ -1027,18 +1047,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetZeroAtPointer8:
             //CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            TTT();
             break;
         case ByteCodeOp::SetZeroAtPointer16:
             //CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            TTT();
             break;
         case ByteCodeOp::SetZeroAtPointer32:
             //CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            TTT();
             break;
         case ByteCodeOp::SetZeroAtPointer64:
             //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            TTT();
             break;
         case ByteCodeOp::SetZeroAtPointerX:
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
+            TTT();
             break;
 
         case ByteCodeOp::BinOpPlusS32:
@@ -1248,6 +1273,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::BinOpShiftRightU64VB:
             //concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
+            TTT();
             break;
 
         case ByteCodeOp::BinOpModuloS32:
@@ -1630,9 +1656,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpPlusEqPointer:
             //CONCAT_STR_2(concat, "*(swag_uint8_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
+            TTT();
             break;
         case ByteCodeOp::AffectOpMinusEqPointer:
             //CONCAT_STR_2(concat, "*(swag_uint8_t**)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s32;");
+            TTT();
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
@@ -2465,6 +2493,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualInterface:
             //concat.addStringFormat("r[%u].b = (((void **) r[%u].pointer)[0] == ((void **) r[%u].pointer)[0]) && (((void **) r[%u].pointer)[1] == ((void **) r[%u].pointer)[1]);", ip->c.u32, ip->a.u32, ip->b.u32, ip->a.u32, ip->b.u32);
+            TTT();
             break;
         case ByteCodeOp::CompareOpEqualString:
         {
@@ -2602,31 +2631,40 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("const char* typeFrom = *(char**)r[%u].pointer; ", ip->c.u32);
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"invalid cast from 'any'\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //CONCAT_FIXED_STR(concat, "}");
+            TTT();
             break;
         case ByteCodeOp::IntrinsicTarget:
             //concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicAlloc:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicRealloc:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicFree:
             //concat.addStringFormat("swag_runtime_free(r[%u].pointer);", ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicGetContext:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicSetContext:
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicArguments:
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
             //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
+            TTT();
             break;
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
+            TTT();
             break;
 
         case ByteCodeOp::NegBool:
@@ -2877,34 +2915,44 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRCtoRR:
             //CONCAT_STR_2(concat, "*rr", ip->a.u32, " = r[", ip->b.u32, "];");
+            TTT();
             break;
         case ByteCodeOp::CopyRRtoRC:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
+            TTT();
             break;
         case ByteCodeOp::CopyRCtoRRCall:
             // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            TTT();
             break;
         case ByteCodeOp::CopyRRtoRCCall:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
+            TTT();
             break;
         case ByteCodeOp::GetFromStackParam64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
+            TTT();
             break;
         case ByteCodeOp::MakePointerToStackParam:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
+            TTT();
             break;
 
         case ByteCodeOp::MinusToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::MinusZeroToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::PlusToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            TTT();
             break;
         case ByteCodeOp::PlusZeroToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            TTT();
             break;
 
         case ByteCodeOp::MakeLambda:
@@ -2912,8 +2960,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //auto funcBC = (ByteCode*) ip->b.pointer;
             //SWAG_ASSERT(funcBC);
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
+            TTT();
+            break;
         }
-        break;
 
         case ByteCodeOp::MakeLambdaForeign:
         {
@@ -2925,6 +2974,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
             //SWAG_ASSERT(!foreignValue.text.empty());
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
+            TTT();
             break;
         }
 
@@ -2933,6 +2983,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CopySP:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, ip->c.u32);
+            TTT();
             break;
         case ByteCodeOp::CopySPVaargs:
         {
@@ -2948,6 +2999,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
             //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
             //vaargsIdx++;
+            TTT();
             break;
         }
 
@@ -2981,8 +3033,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //addCallParameters(concat, typeFuncBC, pushRAParams);
             //CONCAT_FIXED_STR(concat, "); }");
             //pushRAParams.clear();
+            TTT();
+            break;
         }
-        break;
 
         case ByteCodeOp::LocalCall:
         {
@@ -2993,15 +3046,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //addCallParameters(concat, typeFuncBC, pushRAParams);
             //pushRAParams.clear();
             //CONCAT_FIXED_STR(concat, ");");
+            TTT();
+            break;
         }
-        break;
 
         case ByteCodeOp::ForeignCall:
             //SWAG_CHECK(emitForeignCall(concat, moduleToGen, ip, pushRAParams));
+            TTT();
             break;
 
         default:
-            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+            TTT();
             break;
         }
     }

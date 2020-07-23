@@ -1,9 +1,6 @@
 #[swag.printbc]
 #test
 {
-    x := 10'f64
-    if(x == 1 || x == 78)
-        @print("true")
-    else
-        @print("false")
+    var pt: [2] s32
+    x := pt[2]
 }
