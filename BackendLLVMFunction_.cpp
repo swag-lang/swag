@@ -1816,20 +1816,62 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpDivEqU64:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            //concat.addStringFormat("*(swag_uint64_t*)(r[%u].pointer) /= r[%u].u64;", ip->a.u32, ip->b.u32);
+            //    MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "division by zero");
+            //CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u64;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(builder.CreateInBoundsGEP(allocR, CST_RB32));
+                auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
+            auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpDivEqF32:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            //concat.addStringFormat("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32);
+            //    MK_ASSERT(format("r[%u].f32 != 0", ip->b.u32).c_str(), "division by zero");
+            //CONCAT_STR_2(concat, "*(swag_float32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f32;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f32), builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_F32(r0));
+            auto r2 = TO_PTR_F32(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
         case ByteCodeOp::AffectOpDivEqF64:
+        {
             //if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
-            //concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            //concat.addStringFormat("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32);
+            //    MK_ASSERT(format("r[%u].f64 != 0", ip->b.u32).c_str(), "division by zero");
+            //CONCAT_STR_2(concat, "*(swag_float64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f64;");
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32)));
+                auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f64), builder.getInt8Ty(), false);
+                createAssert(buildParameters, t0, ip, "division by zero");
+            }
+
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0));
+            auto r2 = TO_PTR_F64(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r1);
             break;
+        }
 
         case ByteCodeOp::AffectOpAndEqS8:
         {
