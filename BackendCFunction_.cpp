@@ -1369,27 +1369,43 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpModuloEqS8:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_int8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpModuloEqS16:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_int16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpModuloEqS32:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_int32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpModuloEqS64:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_int64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpModuloEqU8:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_uint8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpModuloEqU16:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_uint16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpModuloEqU32:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_uint32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpModuloEqU64:
+            if (moduleToGen->buildParameters.target.debugDivZeroCheck || g_CommandLine.debug)
+                MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(swag_uint64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
             break;
 

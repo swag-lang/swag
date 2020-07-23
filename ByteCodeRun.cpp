@@ -121,7 +121,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) ffiGetFuncAddress(context, funcNode);
 
         // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
-        // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1). 
+        // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
         // So now its the highest bit.
         SWAG_ASSERT(!isByteCodeLambda(registersRC[ip->a.u32].pointer));
         break;
@@ -579,7 +579,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto val1 = registersRC[ip->a.u32].s32;
         auto val2 = registersRC[ip->b.u32].s32;
         if (val2 == 0)
-            context->error("modulo by zero");
+            context->error("modulo operand is zero");
         else
             registersRC[ip->c.u32].s32 = val1 % val2;
         break;
@@ -589,7 +589,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto val1 = registersRC[ip->a.u32].s64;
         auto val2 = registersRC[ip->b.u32].s64;
         if (val2 == 0)
-            context->error("modulo by zero");
+            context->error("modulo operand is zero");
         else
             registersRC[ip->c.u32].s64 = val1 % val2;
         break;
@@ -599,7 +599,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto val1 = registersRC[ip->a.u32].u32;
         auto val2 = registersRC[ip->b.u32].u32;
         if (val2 == 0)
-            context->error("modulo by zero");
+            context->error("modulo operand is zero");
         else
             registersRC[ip->c.u32].u32 = val1 % val2;
         break;
@@ -609,7 +609,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto val1 = registersRC[ip->a.u32].u64;
         auto val2 = registersRC[ip->b.u32].u64;
         if (val2 == 0)
-            context->error("modulo by zero");
+            context->error("modulo operand is zero");
         else
             registersRC[ip->c.u32].u64 = val1 % val2;
         break;
@@ -841,7 +841,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (ptr == nullptr)
             context->error("dereferencing a null pointer");
         else
-            *(uint8_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u8;
+            *(uint8_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u8;
         break;
     }
     case ByteCodeOp::SetAtPointer16:
@@ -850,7 +850,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (ptr == nullptr)
             context->error("dereferencing a null pointer");
         else
-            *(uint16_t*)(ptr + ip->c.u32) = registersRC[ip->b.u32].u16;
+            *(uint16_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u16;
         break;
     }
     case ByteCodeOp::SetAtPointer32:
@@ -1566,42 +1566,74 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpModuloEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s8;
+        auto val2 = registersRC[ip->b.u32].s8;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(int8_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s16;
+        auto val2 = registersRC[ip->b.u32].s16;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(int16_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s32;
+        auto val2 = registersRC[ip->b.u32].s32;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(int32_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s64;
+        auto val2 = registersRC[ip->b.u32].s64;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(int64_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU8:
     {
-        *(uint8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u8;
+        auto val2 = registersRC[ip->b.u32].u8;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(uint8_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU16:
     {
-        *(uint16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u16;
+        auto val2 = registersRC[ip->b.u32].u16;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(uint16_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU32:
     {
-        *(uint32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u32;
+        auto val2 = registersRC[ip->b.u32].u32;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(uint32_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU64:
     {
-        *(uint64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u64;
+        auto val2 = registersRC[ip->b.u32].u64;
+        if (val2 == 0)
+            context->error("modulo operand is zero");
+        else
+            *(uint64_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
 
