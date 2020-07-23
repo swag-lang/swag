@@ -1443,11 +1443,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::BinOpAnd:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].b && r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
         case ByteCodeOp::BinOpOr:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::BinOpBitmaskAndS32:
         {
@@ -2412,40 +2426,40 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CompareOpEqual16:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I16(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CompareOpEqual32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RC32));
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RA32));
             auto r2 = TO_PTR_I32(builder.CreateInBoundsGEP(allocR, CST_RB32));
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CompareOpEqual64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocR, CST_RC32));
             auto r1 = builder.CreateInBoundsGEP(allocR, CST_RA32);
             auto r2 = builder.CreateInBoundsGEP(allocR, CST_RB32);
             auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            v0      = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
