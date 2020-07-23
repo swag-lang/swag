@@ -1,10 +1,10 @@
+func toto(x: [2] s32)
+{
+    @print(cast(s64) x[1])
+}
+
 #[swag.printbc]
 #test
 {
-    x := [1, 2, 3]
-    ptr := &x[0]
-    ptr += 3
-    ptr -= 1
-    if false
-    @print(cast(s64) deref ptr)
+    toto([1, 2])
 }

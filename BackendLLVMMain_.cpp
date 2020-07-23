@@ -28,7 +28,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*)undoByteCodeLambda(((void**)g_defaultContext.allocator.itable)[0]);
+    auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->callName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
@@ -196,9 +196,10 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& context = *perThread[ct][precompileIndex].context;
-    auto& builder = *perThread[ct][precompileIndex].builder;
-    auto  modu    = perThread[ct][precompileIndex].module;
+    auto& pp      = perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& builder = *pp.builder;
+    auto  modu    = pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, format("%s_globalDrop", module->nameDown.c_str()).c_str(), modu);
