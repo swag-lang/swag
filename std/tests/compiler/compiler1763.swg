@@ -1,11 +1,18 @@
-#[swag.printbc]
-func toto()->string
+struct A
 {
-    return "toto"
+    x: s64
+    y: s64
+}
+
+#[swag.printbc]
+func toto()->A
+{
+    return {10, 20}
 }
 
 #[swag.printbc]
 #test
 {
-    @print(toto())
+    res := toto()
+    @print(res.x)
 }

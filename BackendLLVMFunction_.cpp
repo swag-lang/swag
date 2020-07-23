@@ -2962,12 +2962,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::CopyRRtoRC:
+        {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
-            TTT();
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto r1 = builder.CreateLoad(func->getArg(ip->b.u32));
+            builder.CreateStore(r1, r0);
             break;
+        }
         case ByteCodeOp::CopyRCtoRRCall:
         {
             // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            auto r0 = builder.CreateInBoundsGEP(allocRT, CST_RA32);
+            auto r1 = builder.CreateLoad(builder.CreateInBoundsGEP(allocR, CST_RB32));
+            builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::CopyRRtoRCCall:
@@ -2982,7 +2989,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
             auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
-            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32));
+            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32) + typeFunc->numReturnRegisters());
             builder.CreateStore(r1, r0);
             break;
         }
