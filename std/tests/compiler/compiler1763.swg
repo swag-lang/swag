@@ -1,11 +1,27 @@
-func toto(p: s64)
+interface A
 {
-    @print(p)
+    x: func(self)->void
+}
+
+struct X
+{
+
+}
+
+impl A for X
+{
+    func x(using self)
+    {
+
+    }
 }
 
 #[swag.printbc]
 #test
 {
-    ptr := &toto
-    ptr(666)
+    var v: X
+    var x: A = v
+
+    if x == null
+        @print("true")
 }
