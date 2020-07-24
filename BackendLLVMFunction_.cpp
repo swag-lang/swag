@@ -572,17 +572,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
         }
 
-        // If we are the destination of a jump, be sure we have a block, and from now insert into that block
-        if ((ip->flags & BCI_JUMP_DEST) || forceNewBlock)
-        {
-            forceNewBlock = false;
-            auto label    = getOrCreateLabel(buildParameters, func, ip);
-            if (!blockIsClosed)
-                builder.CreateBr(label);
-            blockIsClosed = false;
-            builder.SetInsertPoint(label);
-        }
-
         switch (ip->op)
         {
         case ByteCodeOp::End:
@@ -591,8 +580,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopySPtoBP:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
-            break;
+            continue;
+        }
 
+        // If we are the destination of a jump, be sure we have a block, and from now insert into that block
+        if ((ip->flags & BCI_JUMP_DEST) || forceNewBlock)
+        {
+            forceNewBlock = false;
+            auto label    = getOrCreateLabel(buildParameters, func, ip);
+            if (!blockIsClosed)
+                builder.CreateBr(label); // Make a jump from previous block to this one
+            else
+                blockIsClosed = false; // Each block must be closed by a valid terminator instruction
+            builder.SetInsertPoint(label);
+        }
+
+        switch (ip->op)
+        {
         case ByteCodeOp::BoundCheckString:
         {
             //concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
@@ -3177,44 +3181,50 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         }
+
         case ByteCodeOp::LambdaCall:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
-            //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
-            //if (typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters())
-            //    concat.addChar(',');
-            //addCallParameters(concat, typeFuncBC, pushRAParams);
-            //CONCAT_FIXED_STR(concat, ");");
-
-            //// Need to output the function prototype too
-            //CONCAT_FIXED_STR(concat, "} else { ((void(*)(");
-            //for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
-            //{
-            //    if (j)
-            //        concat.addChar(',');
-            //    CONCAT_FIXED_STR(concat, "swag_register_t*");
-            //}
-            //CONCAT_FIXED_STR(concat, "))");
-
-            //// Then the call
-            //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
-
-            //// Then the parameters
-            //concat.addChar('(');
-            //addCallParameters(concat, typeFuncBC, pushRAParams);
-            //CONCAT_FIXED_STR(concat, "); }");
+            llvm::BasicBlock* blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaNT = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
 
             vector<llvm::Value*> fctParams;
             getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
 
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto FT = createFunctionType(buildParameters, typeFuncBC);
-            auto PT = llvm::PointerType::getUnqual(FT);
-            auto r1 = builder.CreatePointerCast(r0, PT);
-            builder.CreateCall(r1, fctParams);
+            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
+            {
+                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_MARKER));
+                auto v2 = builder.CreateIsNull(v1);
+                builder.CreateCondBr(v2, blockLambdaNT, blockLambdaBC);
+            }
 
+            builder.SetInsertPoint(blockLambdaNT);
+            //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
+            {
+                auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                auto FT = createFunctionType(buildParameters, typeFuncBC);
+                auto PT = llvm::PointerType::getUnqual(FT);
+                auto r1 = builder.CreatePointerCast(r0, PT);
+                builder.CreateCall(r1, fctParams);
+                builder.CreateBr(blockNext);
+            }
+
+            builder.SetInsertPoint(blockLambdaBC);
+            //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
+            {
+                auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                fctParams.insert(fctParams.begin(), v0);
+                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
+                auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
+                auto r2 = builder.CreatePointerCast(r1, PT);
+                builder.CreateCall(r2, fctParams);
+                builder.CreateBr(blockNext);
+            }
+
+            builder.SetInsertPoint(blockNext);
             pushRAParams.clear();
             break;
         }
@@ -3245,6 +3255,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
     }
 
+    SWAG_ASSERT(blockIsClosed);
     return ok;
 }
 
@@ -3259,8 +3270,6 @@ void BackendLLVM::getCallParameters(const BuildParameters&  buildParameters,
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
-
-    params.clear();
 
     for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
     {

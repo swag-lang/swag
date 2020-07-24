@@ -1,15 +1,12 @@
 #[swag.printbc]
-func xx()->s32
-{
-    {
-        return 0
-    }
-
-    return 0
-}
-
-//#[swag.printbc]
 #test
 {
-    xx()
+    var req : swag.AllocatorRequest
+	req.size = 10
+
+	context := @getcontext()
+	context.allocator.alloc(&req)
+
+	/*init(cast(*T) req.address)
+	return acast req.address*/
 }

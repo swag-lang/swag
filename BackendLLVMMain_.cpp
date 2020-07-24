@@ -35,8 +35,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     //mainContext.allocator.itable = &defaultAllocTable
     {
-        auto toAllocator = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32});
-        auto toTable     = builder.CreateInBoundsGEP(toAllocator, {pp.cst0_i32, pp.cst1_i32});
+        auto toTable     = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
         auto fromTable   = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
         builder.CreateStore(fromTable, toTable);
     }

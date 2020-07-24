@@ -224,6 +224,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst0_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0);
     pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
     pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
+    pp.cst3_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 3);
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
     pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);
     pp.cst0_f64 = llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), 0);
@@ -336,6 +337,16 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     // Generate obj file pass
     theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
+
+    // Output IR code
+    if (buildParameters.target.backendLLVM.outputIR)
+    {
+        auto                 filenameIR = path;
+        llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
+        modu.print(destFileIR, nullptr);
+        destFileIR.flush();
+        destFileIR.close();
+    }
 
     llvmPass.run(modu);
     dest.flush();
