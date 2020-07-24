@@ -2746,9 +2746,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
+        {
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
-            TTT();
+            auto v0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            auto v1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), { v0, v1 });
             break;
+        }
         case ByteCodeOp::IntrinsicArguments:
         {
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);

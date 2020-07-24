@@ -4,6 +4,9 @@ using swag
 #test
 {
 	context := @getcontext()
+    newcxt := deref context
+    @setcontext(newcxt)
+    defer @setcontext(context)
 
 	var req: AllocatorRequest
 	req.size = 16
