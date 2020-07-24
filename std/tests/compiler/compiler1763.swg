@@ -1,9 +1,11 @@
-func toto(x: const [2] s32)
+func a(x: ...)
 {
+    @print(cast(s64) x[0])
+    @print(@kindof(x[1]).name)
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    toto([1, 2])
+    a(666's64, "toto")
 }

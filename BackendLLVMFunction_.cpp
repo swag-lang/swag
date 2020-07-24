@@ -562,8 +562,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int) ip->op]));
 
     // Generate bytecode
-    int                    vaargsIdx = 0;
-    auto                   ip        = bc->out;
+    auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
@@ -1319,9 +1318,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::BinOpShiftRightU64VB:
+        {
             //concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
-            TTT();
+            auto r0 = builder.CreateInBoundsGEP(allocR, CST_RA32);
+            auto vb = builder.CreateIntCast(CST_RB32, builder.getInt64Ty(), false);
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r0), vb);
+            builder.CreateStore(v0, r0);
             break;
+        }
 
         case ByteCodeOp::BinOpModuloS32:
         {
@@ -3036,6 +3040,51 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
 
+        case ByteCodeOp::PushRAParam:
+            pushRAParams.push_back(ip->a.u32);
+            break;
+
+        case ByteCodeOp::CopySP:
+        {
+            //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, ip->c.u32);
+            auto r0 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(allocR, CST_RC32);
+            builder.CreateStore(r1, r0);
+            break;
+        }
+        case ByteCodeOp::CopySPVaargs:
+        {
+            //concat.addStringFormat("swag_register_t vaargs%u[] = { 0, ", vaargsIdx);
+            //int idxParam = (int) pushRAParams.size() - 1;
+            //while (idxParam >= 0)
+            //{
+            //    concat.addStringFormat("r[%u], ", pushRAParams[idxParam]);
+            //    idxParam--;
+            //}
+            auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size() + 1));
+
+            int idx      = 1;
+            int idxParam = (int) pushRAParams.size() - 1;
+            while (idxParam >= 0)
+            {
+                auto r0 = builder.CreateInBoundsGEP(allocVA, builder.getInt32(idx));
+                auto r1 = builder.CreateInBoundsGEP(allocR, builder.getInt32(pushRAParams[idxParam]));
+                builder.CreateStore(builder.CreateLoad(r1), r0);
+                idx++;
+                idxParam--;
+            }
+
+            //concat.addStringFormat("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
+            auto r0 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocR, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst1_i32);
+            builder.CreateStore(r1, r0);
+
+            //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
+            auto r2 = TO_PTR_PTR_I64(allocVA);
+            builder.CreateStore(r1, r2);
+            break;
+        }
+
         case ByteCodeOp::MakeLambda:
         {
             //auto funcBC = (ByteCode*) ip->b.pointer;
@@ -3057,32 +3106,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         }
-
-        case ByteCodeOp::PushRAParam:
-            pushRAParams.push_back(ip->a.u32);
-            break;
-        case ByteCodeOp::CopySP:
-            //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, ip->c.u32);
-            TTT();
-            break;
-        case ByteCodeOp::CopySPVaargs:
-        {
-            //concat.addStringFormat("swag_register_t vaargs%u[] = { 0, ", vaargsIdx);
-            //int idxParam = (int) pushRAParams.size() - 1;
-            //while (idxParam >= 0)
-            //{
-            //    concat.addStringFormat("r[%u], ", pushRAParams[idxParam]);
-            //    idxParam--;
-            //}
-
-            //CONCAT_FIXED_STR(concat, "}; ");
-            //concat.addStringFormat("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
-            //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
-            //vaargsIdx++;
-            TTT();
-            break;
-        }
-
         case ByteCodeOp::LambdaCall:
         {
             //TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
