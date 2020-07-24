@@ -2737,9 +2737,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::IntrinsicGetContext:
+        {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
-            TTT();
+            auto v0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, { pp.cst0_i32, pp.cst1_i32 })));
+            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_tlsGetValue"), { v0 });
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(a0, r0);
             break;
+        }
         case ByteCodeOp::IntrinsicSetContext:
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             TTT();
