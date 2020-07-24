@@ -351,7 +351,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     vector<llvm::Value*> args;
     for (int i = 0; i < n; i++)
     {
-        auto rr0 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), i));
+        auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
         args.push_back(rr0);
     }
 
@@ -456,13 +456,14 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
-#define CST_RA32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->a.u32)
-#define CST_RB32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->b.u32)
-#define CST_RC32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->c.u32)
-#define CST_RD32 llvm::ConstantInt::get(builder.getInt32Ty(), ip->d.u32)
-#define CST_RA64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->a.u64)
-#define CST_RB64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u64)
-#define CST_RC64 llvm::ConstantInt::get(builder.getInt64Ty(), ip->c.u64)
+#define CST_RA32 builder.getInt32(ip->a.u32)
+#define CST_RB32 builder.getInt32(ip->b.u32)
+#define CST_RC32 builder.getInt32(ip->c.u32)
+#define CST_RD32 builder.getInt32(ip->d.u32)
+#define CST_RA64 builder.getInt64(ip->a.u64)
+#define CST_RB64 builder.getInt64(ip->b.u64)
+#define CST_RC64 builder.getInt64(ip->c.u64)
+#define GEP_I32(__data, __i32) (__i32 ? builder.CreateInBoundsGEP(__data, builder.getInt32(__i32)) : __data)
 #define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
 #define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context)->getPointerTo())
 #define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context)->getPointerTo())
