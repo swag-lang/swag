@@ -1634,16 +1634,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MinusToTrue:
+    case ByteCodeOp::LowerZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0 ? true : false;
         break;
-    case ByteCodeOp::MinusZeroToTrue:
+    case ByteCodeOp::LowerEqZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 <= 0 ? true : false;
         break;
-    case ByteCodeOp::PlusToTrue:
+    case ByteCodeOp::GreaterZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 > 0 ? true : false;
         break;
-    case ByteCodeOp::PlusZeroToTrue:
+    case ByteCodeOp::GreaterEqZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 >= 0 ? true : false;
         break;
 

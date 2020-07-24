@@ -120,7 +120,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     else if (name == "opCmp")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoS32, 0), context->report({returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoS32, 0), context->report({returnType, format("invalid return type for special function '%s' ('s32' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opBinary")
     {

@@ -1689,16 +1689,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (swag_uint8_t*) &rp", ip->c.u32, "->pointer;");
             break;
 
-        case ByteCodeOp::MinusToTrue:
+        case ByteCodeOp::LowerZeroToTrue:
             concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             break;
-        case ByteCodeOp::MinusZeroToTrue:
+        case ByteCodeOp::LowerEqZeroToTrue:
             concat.addStringFormat("r[%u].b = r[%u].s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             break;
-        case ByteCodeOp::PlusToTrue:
+        case ByteCodeOp::GreaterZeroToTrue:
             concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             break;
-        case ByteCodeOp::PlusZeroToTrue:
+        case ByteCodeOp::GreaterEqZeroToTrue:
             concat.addStringFormat("r[%u].b = r[%u].s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             break;
 

@@ -257,16 +257,16 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         switch (node->token.id)
         {
         case TokenId::SymLower:
-            emitInstruction(context, ByteCodeOp::MinusToTrue, r2);
+            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
             break;
         case TokenId::SymGreater:
-            emitInstruction(context, ByteCodeOp::PlusToTrue, r2);
+            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
             break;
         case TokenId::SymLowerEqual:
-            emitInstruction(context, ByteCodeOp::MinusZeroToTrue, r2);
+            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
             break;
         case TokenId::SymGreaterEqual:
-            emitInstruction(context, ByteCodeOp::PlusZeroToTrue, r2);
+            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
         case TokenId::SymExclamEqual:
             emitInstruction(context, ByteCodeOp::NegBool, r2);

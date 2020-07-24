@@ -2739,8 +2739,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicGetContext:
         {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, { pp.cst0_i32, pp.cst1_i32 })));
-            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_tlsGetValue"), { v0 });
+            auto v0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_tlsGetValue"), {v0});
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(a0, r0);
             break;
@@ -2750,7 +2750,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
             auto v1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), { v0, v1 });
+            builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {v0, v1});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:
@@ -3067,22 +3067,42 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MinusToTrue:
+        case ByteCodeOp::LowerZeroToTrue:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
-            TTT();
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
-        case ByteCodeOp::MinusZeroToTrue:
+        }
+        case ByteCodeOp::LowerEqZeroToTrue:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
-            TTT();
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSLE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
-        case ByteCodeOp::PlusToTrue:
+        }
+        case ByteCodeOp::GreaterZeroToTrue:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
-            TTT();
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
-        case ByteCodeOp::PlusZeroToTrue:
+        }
+        case ByteCodeOp::GreaterEqZeroToTrue:
+        {
             //concat.addStringFormat("r[%u].b = r[%u].s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
-            TTT();
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSGE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
+        }
 
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
