@@ -279,14 +279,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
-    case Intrinsic::IntrinsicTarget:
-    {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicTarget, node->resultRegisterRC);
-        break;
-    }
     case Intrinsic::IntrinsicIsByteCode:
     {
         node->resultRegisterRC                = reserveRegisterRC(context);

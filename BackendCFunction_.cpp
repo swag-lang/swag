@@ -1558,9 +1558,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), "invalid cast from 'any'");
             CONCAT_FIXED_STR(concat, "}");
             break;
-        case ByteCodeOp::IntrinsicTarget:
-            concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
-            break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             break;

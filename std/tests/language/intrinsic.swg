@@ -38,14 +38,6 @@
         @assert(@typeof(args) == @typeof([..] string))
     }
 
-    // @target()->*swag.CompilerTarget
-    //
-    // Get the compiling target, which is only defined during compile
-    // On native code, it will return null
-    {
-        tgt := @target()
-    }
-
     // @isbytecode()->bool
     //
     // Returns true during bytecode execution, false in native code

@@ -2708,10 +2708,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             createAssert(buildParameters, r0, ip, "invalid cast from 'any'");
             break;
         }
-        case ByteCodeOp::IntrinsicTarget:
-            //concat.addStringFormat("r[%u].pointer = (void*) 0;", ip->a.u32);
-            TTT();
-            break;
         case ByteCodeOp::IntrinsicAlloc:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             TTT();
