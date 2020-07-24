@@ -2729,10 +2729,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         case ByteCodeOp::IntrinsicArguments:
+        {
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
             //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
-            TTT();
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst0_i32 }));
+            auto v1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32 }));
+            builder.CreateStore(builder.CreateLoad(v0), r0);
+            builder.CreateStore(builder.CreateLoad(v1), r1);
             break;
+        }
         case ByteCodeOp::IntrinsicIsByteCode:
         {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
