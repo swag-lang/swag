@@ -1,12 +1,11 @@
-func toto(p: ...)
+func toto(p: s64)
 {
-    @print(cast(string) p[0])
+    @print(p)
 }
 
 #[swag.printbc]
 #test
 {
-    a := "toto"
-    b := a[0]
-    toto(a, b)
+    ptr := &toto
+    ptr(666)
 }

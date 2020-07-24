@@ -3088,10 +3088,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeLambda:
         {
-            //auto funcBC = (ByteCode*) ip->b.pointer;
-            //SWAG_ASSERT(funcBC);
+            auto funcBC = (ByteCode*) ip->b.pointer;
+            SWAG_ASSERT(funcBC);
+            auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
+
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
-            TTT();
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto T  = createFunctionType(buildParameters, typeFuncLambda);
+            auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
+            builder.CreateStore(TO_PTR_I8(F), r0);
             break;
         }
         case ByteCodeOp::MakeLambdaForeign:
@@ -3109,9 +3114,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::LambdaCall:
         {
-            //TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
+            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
             //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
             //if (typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters())
             //    concat.addChar(',');
@@ -3126,7 +3131,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //        concat.addChar(',');
             //    CONCAT_FIXED_STR(concat, "swag_register_t*");
             //}
-
             //CONCAT_FIXED_STR(concat, "))");
 
             //// Then the call
@@ -3136,8 +3140,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addChar('(');
             //addCallParameters(concat, typeFuncBC, pushRAParams);
             //CONCAT_FIXED_STR(concat, "); }");
-            //pushRAParams.clear();
-            TTT();
+
+            vector<llvm::Value*> fctParams;
+            getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
+
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto FT = createFunctionType(buildParameters, typeFuncBC);
+            auto PT = llvm::PointerType::getUnqual(FT);
+            auto r1 = builder.CreatePointerCast(r0, PT);
+            builder.CreateCall(r1, fctParams);
+
+            pushRAParams.clear();
             break;
         }
 
