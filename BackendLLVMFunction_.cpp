@@ -2709,17 +2709,33 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
+        {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
-            TTT();
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), false);
+            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_malloc"), {v0});
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(a0, r1);
             break;
+        }
         case ByteCodeOp::IntrinsicRealloc:
+        {
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
-            TTT();
+            auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_realloc"), {v0, v1});
+            auto r2 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(a0, r2);
             break;
+        }
         case ByteCodeOp::IntrinsicFree:
+        {
             //concat.addStringFormat("swag_runtime_free(r[%u].pointer);", ip->a.u32);
-            TTT();
+            auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateCall(modu.getFunction("swag_runtime_free"), {v0});
             break;
+        }
         case ByteCodeOp::IntrinsicGetContext:
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
             TTT();
@@ -2734,8 +2750,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst0_i32 }));
-            auto v1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32 }));
+            auto v0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst0_i32}));
+            auto v1 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32}));
             builder.CreateStore(builder.CreateLoad(v0), r0);
             builder.CreateStore(builder.CreateLoad(v1), r1);
             break;

@@ -113,6 +113,28 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
         {
             llvm::Type* params[] = {
+                llvm::Type::getInt64Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
+                llvm::Type::getInt8PtrTy(context),
+                llvm::Type::getInt64Ty(context),
+            };
+            modu.getOrInsertFunction("swag_runtime_realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+        }
+
+        {
+            llvm::Type* params[] = {
                 llvm::Type::getInt8PtrTy(context),
                 llvm::Type::getInt8PtrTy(context),
                 llvm::Type::getInt64Ty(context),

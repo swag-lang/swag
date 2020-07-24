@@ -50,13 +50,15 @@ static void __ftoa(char* result, double value)
 /////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_malloc(uint64_t size)
 {
-    return malloc(size);
+    auto result = malloc(size);
+    return result;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_realloc(void* addr, uint64_t size)
 {
-    return realloc(addr, size);
+    auto result = realloc(addr, size);
+    return result;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +114,7 @@ SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
     if (!message)
     {
         message = "<null>";
-        len = 6;
+        len     = 6;
     }
 #ifdef _WIN32
     WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
@@ -164,7 +166,7 @@ SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, cons
         swag_runtime_print(": native code assertion failed\n");
 
 #ifdef _WIN32
-    if(devMode)
+    if (devMode)
         MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
     RaiseException(0x666, 0, 0, 0);
 #endif
