@@ -616,16 +616,25 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->type->typeInfo);
 
+        auto leftConcreteType  = node->type->typeInfo;
+        auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
+
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
-        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->isInitializerList())
+        if (leftConcreteType->kind != TypeInfoKind::Struct || rightConcreteType->isInitializerList())
         {
+            // Cast from struct to interface : need to wait for all interfaces to be registered
+            if (leftConcreteType->kind == TypeInfoKind::Interface && rightConcreteType->kind == TypeInfoKind::Struct)
+            {
+                context->job->waitForAllStructInterfaces(rightConcreteType);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
+
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
         }
         else
         {
-            auto leftConcreteType  = node->type->typeInfo;
-            auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
             if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, ISSAME_CAST))
             {
                 if (!hasUserOp(context, "opAffect", node->type))

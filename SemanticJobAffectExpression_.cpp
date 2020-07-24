@@ -92,7 +92,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    // Cast from struct to interface
+    // Cast from struct to interface : need to wait for all interfaces to be registered
     if (tokenId == TokenId::SymEqual)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
