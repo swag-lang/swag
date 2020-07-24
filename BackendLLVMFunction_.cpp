@@ -2734,9 +2734,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TTT();
             break;
         case ByteCodeOp::IntrinsicIsByteCode:
+        {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
-            TTT();
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(pp.cst0_i8, r0);
             break;
+        }
 
         case ByteCodeOp::NegBool:
         {
