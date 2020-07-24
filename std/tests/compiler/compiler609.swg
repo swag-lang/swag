@@ -1,6 +1,3 @@
-
-
-
 struct Point
 {
 	x: s32
@@ -18,14 +15,14 @@ impl Point
 			pt.y = self.y + other.y
 			return pt
 		}
-		
+
 		#if op == "-"
 		{
 			pt.x = self.x - other.x
 			pt.y = self.y - other.y
 			return pt
-		}		
-		
+		}
+
 		return pt
 	}
 }

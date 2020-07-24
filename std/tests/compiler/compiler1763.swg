@@ -1,22 +1,15 @@
-struct A
+#[swag.printbc]
+func xx()->s32
 {
-
-}
-
-impl A
-{
-    func opCmp(using self, other: A)->s32
     {
         return 0
     }
+
+    return 0
 }
 
 //#[swag.printbc]
 #test
 {
-    var x, y: A
-    if x >= y
-        @print("true")
-    else
-        @print("false")
+    xx()
 }

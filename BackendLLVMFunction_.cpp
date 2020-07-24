@@ -481,8 +481,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
 llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, ByteCodeInstruction* ip)
 {
-    SWAG_ASSERT(ip->flags & BCI_JUMP_DEST);
-
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
@@ -527,12 +525,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp       = perThread[ct][precompileIndex];
-    auto& context  = *pp.context;
-    auto& builder  = *pp.builder;
-    auto& modu     = *pp.module;
-    auto  typeFunc = bc->callType();
-    bool  ok       = true;
+    auto& pp            = perThread[ct][precompileIndex];
+    auto& context       = *pp.context;
+    auto& builder       = *pp.builder;
+    auto& modu          = *pp.module;
+    auto  typeFunc      = bc->callType();
+    bool  ok            = true;
+    bool  forceNewBlock = false;
 
     // Function prototype
     llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
@@ -574,9 +573,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
-        if (ip->flags & BCI_JUMP_DEST)
+        if ((ip->flags & BCI_JUMP_DEST) || forceNewBlock)
         {
-            auto label = getOrCreateLabel(buildParameters, func, ip);
+            forceNewBlock = false;
+            auto label    = getOrCreateLabel(buildParameters, func, ip);
             if (!blockIsClosed)
                 builder.CreateBr(label);
             blockIsClosed = false;
@@ -2669,6 +2669,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::Ret:
             //return;
             builder.CreateRetVoid();
+            blockIsClosed = true;
+            forceNewBlock = true;
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
