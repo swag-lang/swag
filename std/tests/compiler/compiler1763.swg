@@ -5,7 +5,7 @@
 	req.size = 10
 
 	context := @getcontext()
-	context.allocator.alloc(&req)
+	//context.allocator.alloc(&req)
 
 	/*init(cast(*T) req.address)
 	return acast req.address*/

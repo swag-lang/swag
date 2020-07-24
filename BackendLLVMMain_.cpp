@@ -35,8 +35,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     //mainContext.allocator.itable = &defaultAllocTable
     {
-        auto toTable     = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
-        auto fromTable   = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
+        auto toTable   = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
+        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
         builder.CreateStore(fromTable, toTable);
     }
 
@@ -55,12 +55,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext)
     {
-        auto toTlsId   = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
-        toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context)->getPointerTo());
-        auto param0    = builder.CreateLoad(toTlsId);
-        auto param1    = builder.CreateLoad(toContext);
-        builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {param0, param1});
+        auto toTlsId = builder.CreateLoad(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
+        builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {toTlsId, pp.mainContext});
     }
 
     // Arguments
