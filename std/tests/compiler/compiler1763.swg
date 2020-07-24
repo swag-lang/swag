@@ -1,6 +1,6 @@
 #[swag.printbc]
 #test
 {
-    if @isbytecode()
-        @print("true")
+    x := @args()
+    @print(x[0])
 }

@@ -154,8 +154,9 @@ int main(int argc, const char* argv[])
 
     // User arguments
     pair<void*, void*> oneArg;
-    oneArg.first  = (void*) g_CommandLine.exePath.string().c_str();
-    oneArg.second = (void*) g_CommandLine.exePath.string().size();
+    g_CommandLine.exePathStr = g_CommandLine.exePath.string();
+    oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
+    oneArg.second            = (void*) g_CommandLine.exePathStr.size();
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     tokenizeBlanks(g_CommandLine.userArguments.c_str(), g_CommandLine.userArgumentsVec);

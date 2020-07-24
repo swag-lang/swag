@@ -22,7 +22,7 @@ struct CommandLine
     bool      rebuild   = false;
 
     // Input
-    bool   clean        = false;
+    bool   clean = false;
     string workspacePath;
     string cachePath;
     string fileFilter;
@@ -72,6 +72,7 @@ struct CommandLine
     int         optim              = 0;
 
     fs::path exePath;
+    string   exePathStr;
 };
 
 extern CommandLine g_CommandLine;
