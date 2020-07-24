@@ -1,11 +1,12 @@
-func a(x: ...)
+func toto(p: ...)
 {
-    @print(cast(s64) x[0])
-    @print(@kindof(x[1]).name)
+    @print(cast(string) p[0])
 }
 
 #[swag.printbc]
 #test
 {
-    a(666's64, "toto")
+    a := "toto"
+    b := a[0]
+    toto(a, b)
 }
