@@ -479,7 +479,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 #define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
 #define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
-llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, ByteCodeInstruction* ip)
+llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, int32_t ip)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -489,7 +489,7 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildPara
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, "", func);
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, format("%d", ip).c_str(), func);
         pp.labels[ip]           = label;
         return label;
     }
@@ -531,7 +531,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& modu          = *pp.module;
     auto  typeFunc      = bc->callType();
     bool  ok            = true;
-    bool  forceNewBlock = false;
 
     // Function prototype
     llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
@@ -576,10 +575,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
 
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
-        if ((ip->flags & BCI_JUMP_DEST) || forceNewBlock)
+        if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
         {
-            forceNewBlock = false;
-            auto label    = getOrCreateLabel(buildParameters, func, ip);
+            auto label    = getOrCreateLabel(buildParameters, func, i);
             if (!blockIsClosed)
                 builder.CreateBr(label); // Make a jump from previous block to this one
             else
@@ -2594,7 +2592,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_FIXED_STR(concat, "goto _");
             //concat.addS32Str8(ip->a.s32 + i + 1);
-            auto label = getOrCreateLabel(buildParameters, func, ip + ip->a.s32 + 1);
+            auto label = getOrCreateLabel(buildParameters, func, i + ip->a.s32 + 1);
             builder.CreateBr(label);
             blockIsClosed = true;
             break;
@@ -2603,8 +2601,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2615,8 +2613,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2627,8 +2625,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2639,8 +2637,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
             auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2651,8 +2649,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2663,8 +2661,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            auto labelTrue  = getOrCreateLabel(buildParameters, func, ip + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(buildParameters, func, ip + 1);
+            auto labelTrue  = getOrCreateLabel(buildParameters, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(buildParameters, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
             auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
@@ -2676,7 +2674,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //return;
             builder.CreateRetVoid();
             blockIsClosed = true;
-            forceNewBlock = true;
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:

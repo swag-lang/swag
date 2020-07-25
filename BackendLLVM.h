@@ -42,7 +42,7 @@ struct BackendLLVM : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    llvm::BasicBlock* getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, ByteCodeInstruction* ip);
+    llvm::BasicBlock* getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, int32_t ip);
 
     struct
     {
@@ -78,7 +78,7 @@ struct BackendLLVM : public Backend
         llvm::Value* cst0_f64 = nullptr;
         llvm::Value* cst_null = nullptr;
 
-        map<ByteCodeInstruction*, llvm::BasicBlock*> labels;
+        map<int32_t, llvm::BasicBlock*> labels;
 
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
