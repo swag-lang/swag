@@ -572,16 +572,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
         }
 
-        switch (ip->op)
-        {
-        case ByteCodeOp::End:
-        case ByteCodeOp::DecSP:
-        case ByteCodeOp::IncSP:
-        case ByteCodeOp::CopySPtoBP:
-        case ByteCodeOp::PushRR:
-        case ByteCodeOp::PopRR:
+        if(ip->op == ByteCodeOp::End)
             continue;
-        }
 
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || forceNewBlock)
@@ -593,6 +585,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
                 blockIsClosed = false; // Each block must be closed by a valid terminator instruction
             builder.SetInsertPoint(label);
+        }
+
+        switch (ip->op)
+        {
+        case ByteCodeOp::DecSP:
+        case ByteCodeOp::IncSP:
+        case ByteCodeOp::CopySPtoBP:
+        case ByteCodeOp::PushRR:
+        case ByteCodeOp::PopRR:
+            continue;
         }
 
         switch (ip->op)
@@ -3255,7 +3257,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
     }
 
-    SWAG_ASSERT(blockIsClosed);
+    if (!blockIsClosed)
+        builder.CreateRetVoid();
+    //SWAG_ASSERT(blockIsClosed);
     return ok;
 }
 
