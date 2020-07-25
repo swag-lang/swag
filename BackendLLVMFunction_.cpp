@@ -571,9 +571,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
         }
 
-        if(ip->op == ByteCodeOp::End)
-            continue;
-
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
         {
@@ -587,6 +584,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         switch (ip->op)
         {
+        case ByteCodeOp::End:
         case ByteCodeOp::DecSP:
         case ByteCodeOp::IncSP:
         case ByteCodeOp::CopySPtoBP:

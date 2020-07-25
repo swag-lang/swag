@@ -1,16 +1,11 @@
-
-
 //#[swag.constexpr]
-func fibonacci(num: s32) -> s32 
+//#[swag.printbc]
+func fibonacci(num: s32) -> s32
 {
-    if num < 2 
-	{
+    if num < 2
         return num
-    } 
-	else 
-	{
+	else
         return fibonacci(num - 1) + fibonacci(num - 2)
-    }
 }
 
 var fibonacciOfAge: s32 = #run fibonacci(16)
