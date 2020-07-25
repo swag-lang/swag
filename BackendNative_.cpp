@@ -30,13 +30,8 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
     }
 }
 
-bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
+void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    SWAG_ASSERT(moduleToGen);
-
-    // Batch functions between files
-    int start = 0;
-    int end   = 0;
     int size  = (int) moduleToGen->byteCodeFunc.size();
 
     int precompileIndex = buildParameters.precompileIndex;
@@ -53,6 +48,16 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
         if (precompileIndex == numPreCompileBuffers - 1)
             end = size;
     }
+}
+
+bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
+{
+    SWAG_ASSERT(moduleToGen);
+
+    // Batch functions between files
+    int start = 0;
+    int end   = 0;
+    getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
 
     BackendFunctionBodyJob* job = newFunctionJob();
     job->module                 = moduleToGen;
@@ -61,10 +66,11 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     job->backend                = this;
 
     // Put the bootstrap in the first file
+    int precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 0)
     {
         SWAG_ASSERT(g_Workspace.bootstrapModule);
-        addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int)g_Workspace.bootstrapModule->byteCodeFunc.size());
+        addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
     }
 
     addFunctionsToJob(moduleToGen, job, start, end);
