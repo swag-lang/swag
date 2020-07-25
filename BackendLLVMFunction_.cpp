@@ -278,12 +278,11 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto rr0  = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx));
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(0), builder.getInt64Ty());
+            auto rr0  = TO_PTR_PTR_I8(GEP_I32(allocRR, idx));
+            auto cst0 = TO_PTR_I8(func->getArg(0));
             builder.CreateStore(cst0, rr0);
 
-            auto rr1 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx + 1));
-            rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
+            auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
             builder.CreateStore(func->getArg(1), rr1);
 
             idx += 2;
@@ -299,15 +298,14 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         auto rr0       = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx));
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
-            builder.CreateStore(cst0, rr0);
+            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
             builder.CreateStore(cst0, rr0);
-            auto rr1 = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1));
-            rr1      = builder.CreatePointerCast(rr1, llvm::Type::getInt32PtrTy(context));
+            auto rr1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1)));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String) || typeParam->isNative(NativeTypeKind::Any))
