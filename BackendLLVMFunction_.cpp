@@ -7,6 +7,59 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
+#define CST_RA32 builder.getInt32(ip->a.u32)
+#define CST_RB32 builder.getInt32(ip->b.u32)
+#define CST_RC32 builder.getInt32(ip->c.u32)
+#define CST_RD32 builder.getInt32(ip->d.u32)
+#define CST_RA64 builder.getInt64(ip->a.u64)
+#define CST_RB64 builder.getInt64(ip->b.u64)
+#define CST_RC64 builder.getInt64(ip->c.u64)
+#define GEP_I32(__data, __i32) (__i32 ? builder.CreateInBoundsGEP(__data, builder.getInt32(__i32)) : __data)
+#define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context)->getPointerTo())
+#define TO_PTR_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo()->getPointerTo())
+#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
+#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
+#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
+#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
+#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
+#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
+#define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
+
+inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
+{
+    switch (k)
+    {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
+        return TO_PTR_I8(v);
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        return TO_PTR_I16(v);
+    case NativeTypeKind::S32:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        return TO_PTR_I32(v);
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U64:
+        return TO_PTR_I64(v);
+    case NativeTypeKind::F32:
+        return TO_PTR_F32(v);
+    case NativeTypeKind::F64:
+        return TO_PTR_F64(v);
+    }
+
+    SWAG_ASSERT(false);
+    return nullptr;
+}
+
+#define TO_PTR_NATIVE(__kind) toPtrNative(context, builder, __kind)
+
 BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
 {
     return g_Pool_backendLLVMFunctionBodyJob.alloc();
@@ -455,29 +508,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     return true;
 }
-
-#define CST_RA32 builder.getInt32(ip->a.u32)
-#define CST_RB32 builder.getInt32(ip->b.u32)
-#define CST_RC32 builder.getInt32(ip->c.u32)
-#define CST_RD32 builder.getInt32(ip->d.u32)
-#define CST_RA64 builder.getInt64(ip->a.u64)
-#define CST_RB64 builder.getInt64(ip->b.u64)
-#define CST_RC64 builder.getInt64(ip->c.u64)
-#define GEP_I32(__data, __i32) (__i32 ? builder.CreateInBoundsGEP(__data, builder.getInt32(__i32)) : __data)
-#define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context)->getPointerTo())
-#define TO_PTR_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context)->getPointerTo()->getPointerTo())
-#define TO_PTR_I64(__r) builder.CreatePointerCast(__r, llvm::Type::getInt64PtrTy(context))
-#define TO_PTR_I32(__r) builder.CreatePointerCast(__r, llvm::Type::getInt32PtrTy(context))
-#define TO_PTR_I16(__r) builder.CreatePointerCast(__r, llvm::Type::getInt16PtrTy(context))
-#define TO_PTR_I8(__r) builder.CreatePointerCast(__r, llvm::Type::getInt8PtrTy(context))
-#define TO_PTR_F64(__r) builder.CreatePointerCast(__r, llvm::Type::getDoublePtrTy(context))
-#define TO_PTR_F32(__r) builder.CreatePointerCast(__r, llvm::Type::getFloatPtrTy(context))
-#define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
 llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, int32_t ip)
 {
@@ -3321,7 +3351,6 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
     auto& builder         = *pp.builder;
 
     vector<llvm::Type*> params;
