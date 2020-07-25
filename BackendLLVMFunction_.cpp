@@ -525,15 +525,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp            = perThread[ct][precompileIndex];
-    auto& context       = *pp.context;
-    auto& builder       = *pp.builder;
-    auto& modu          = *pp.module;
-    auto  typeFunc      = bc->callType();
-    bool  ok            = true;
+    auto& pp       = perThread[ct][precompileIndex];
+    auto& context  = *pp.context;
+    auto& builder  = *pp.builder;
+    auto& modu     = *pp.module;
+    auto  typeFunc = bc->callType();
+    bool  ok       = true;
 
     // Function prototype
-    llvm::FunctionType* funcType = createFunctionType(buildParameters, typeFunc);
+    llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
 
     // Content
@@ -574,7 +574,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
         {
-            auto label    = getOrCreateLabel(buildParameters, func, i);
+            auto label = getOrCreateLabel(buildParameters, func, i);
             if (!blockIsClosed)
                 builder.CreateBr(label); // Make a jump from previous block to this one
             else
@@ -3163,7 +3163,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto T  = createFunctionType(buildParameters, typeFuncLambda);
+            auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
             auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
             builder.CreateStore(TO_PTR_I8(F), r0);
             break;
@@ -3205,7 +3205,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
             {
                 auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                auto FT = createFunctionType(buildParameters, typeFuncBC);
+                auto FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
                 auto PT = llvm::PointerType::getUnqual(FT);
                 auto r1 = builder.CreatePointerCast(r0, PT);
                 builder.CreateCall(r1, fctParams);
@@ -3234,7 +3234,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            auto                 FT = createFunctionType(buildParameters, typeFuncBC);
+            auto                 FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             vector<llvm::Value*> fctParams;
             getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), fctParams);
@@ -3244,8 +3244,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::ForeignCall:
-            //SWAG_CHECK(emitForeignCall(concat, moduleToGen, ip, pushRAParams));
-            TTT();
+            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
             break;
 
         default:
@@ -3294,7 +3293,7 @@ void BackendLLVM::getCallParameters(const BuildParameters&  buildParameters,
     }
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
+llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -3315,4 +3314,329 @@ llvm::FunctionType* BackendLLVM::createFunctionType(const BuildParameters& build
     }
 
     return llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
+}
+
+bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    vector<llvm::Type*> params;
+
+    llvm::Type* llvmRealReturnType = nullptr;
+    llvm::Type* returnType         = nullptr;
+    bool        returnByCopy       = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+
+    SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType, &llvmRealReturnType));
+    if (returnByCopy)
+        returnType = builder.getVoidTy();
+    else if (typeFunc->numReturnRegisters() <= 1)
+        returnType = llvmRealReturnType;
+    else
+        returnType = builder.getVoidTy();
+
+    if (typeFunc->parameters.size())
+    {
+        // Variadic parameters are always first
+        auto numParams = typeFunc->parameters.size();
+        if (numParams)
+        {
+            auto param = typeFunc->parameters.back();
+            if (param->typeInfo->kind == TypeInfoKind::Variadic)
+            {
+                params.push_back(builder.getInt8Ty()->getPointerTo());
+                params.push_back(builder.getInt32Ty());
+                numParams--;
+            }
+        }
+
+        llvm::Type* cType = nullptr;
+        for (int i = 0; i < numParams; i++)
+        {
+            auto param = typeFunc->parameters[i];
+
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param->typeInfo, &cType));
+            params.push_back(cType);
+
+            if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
+            {
+                params.push_back(builder.getInt32Ty());
+            }
+            else if (param->typeInfo->isNative(NativeTypeKind::Any))
+            {
+                params.push_back(builder.getInt8Ty()->getPointerTo());
+            }
+        }
+    }
+
+    // Return value
+    if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
+    {
+        params.push_back(llvmRealReturnType);
+    }
+
+    *result = llvm::FunctionType::get(returnType, params, false);
+    return true;
+}
+
+bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
+                                  llvm::AllocaInst*       allocR,
+                                  llvm::AllocaInst*       allocRT,
+                                  Module*                 moduleToGen,
+                                  ByteCodeInstruction*    ip,
+                                  VectorNative<uint32_t>& pushParams)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+
+    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+
+    // Get function name
+    ComputedValue foreignValue;
+    Utf8          funcName;
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        funcName = foreignValue.text;
+    else
+        funcName = nodeFunc->name;
+
+    int                  numCallParams = (int) typeFuncBC->parameters.size();
+    vector<llvm::Value*> params;
+
+    // Variadic are first
+    if (numCallParams)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            auto index = pushParams.back();
+            pushParams.pop_back();
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams.back();
+            pushParams.pop_back();
+            //CONCAT_STR_1(concat, ", r[", index, "].u32");
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+            numCallParams--;
+        }
+    }
+
+    // All parameters
+    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
+
+        auto index = pushParams.back();
+        pushParams.pop_back();
+
+        if (typeParam->kind == TypeInfoKind::Pointer)
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
+            if (typePtr->ptrCount != 1)
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer count");
+            if (typePtr->finalType->kind == TypeInfoKind::Native)
+            {
+                switch (typePtr->finalType->nativeType)
+                {
+                case NativeTypeKind::Void:
+                case NativeTypeKind::Bool:
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                {
+                    auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                {
+                    auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Char:
+                {
+                    auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                {
+                    auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                case NativeTypeKind::F32:
+                {
+                    auto r0 = TO_PTR_PTR_F32(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                case NativeTypeKind::F64:
+                {
+                    auto r0 = TO_PTR_PTR_F64(GEP_I32(allocR, index));
+                    params.push_back(builder.CreateLoad(r0));
+                    break;
+                }
+                default:
+                    return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer param type");
+                }
+            }
+            else
+            {
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer param type");
+            }
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct ||
+                 typeParam->kind == TypeInfoKind::Interface ||
+                 typeParam->kind == TypeInfoKind::Array)
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams.back();
+            pushParams.pop_back();
+            //CONCAT_STR_1(concat, ", r[", index, "].u32");
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams.back();
+            pushParams.pop_back();
+            //CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
+        {
+            //CONCAT_STR_1(concat, "r[", index, "]");
+            auto r0 = GEP_I32(allocR, index);
+            switch (typeParam->nativeType)
+            {
+            case NativeTypeKind::Bool:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                params.push_back(builder.CreateLoad(TO_PTR_I8(r0)));
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                params.push_back(builder.CreateLoad(TO_PTR_I16(r0)));
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Char:
+                params.push_back(builder.CreateLoad(TO_PTR_I32(r0)));
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                params.push_back(builder.CreateLoad(TO_PTR_I64(r0)));
+                break;
+            case NativeTypeKind::F32:
+                params.push_back(builder.CreateLoad(TO_PTR_F32(r0)));
+                break;
+            case NativeTypeKind::F64:
+                params.push_back(builder.CreateLoad(TO_PTR_F64(r0)));
+                break;
+            default:
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param native type");
+            }
+        }
+        else
+        {
+            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param type");
+        }
+    }
+
+    // Make the call
+    llvm::FunctionType* typeF;
+    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
+    auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), params);
+
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr.typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
+        {
+            //CONCAT_FIXED_STR(concat, "rt[0].pointer = (swag_uint8_t*) ");
+            builder.CreateStore(result, TO_PTR_PTR_I8(allocRT));
+        }
+        else if (returnType->kind == TypeInfoKind::Native)
+        {
+            switch (returnType->nativeType)
+            {
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+            case NativeTypeKind::Bool:
+                //CONCAT_FIXED_STR(concat, "rt[0].s8 = (swag_int8_t) ");
+                builder.CreateStore(result, TO_PTR_I8(allocRT));
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                //CONCAT_FIXED_STR(concat, "rt[0].s16 = (swag_int16_t) ");
+                builder.CreateStore(result, TO_PTR_I16(allocRT));
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Char:
+                //CONCAT_FIXED_STR(concat, "rt[0].s32 = (swag_int32_t) ");
+                builder.CreateStore(result, TO_PTR_I32(allocRT));
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                //CONCAT_FIXED_STR(concat, "rt[0].s64 = (swag_int64_t) ");
+                builder.CreateStore(result, allocRT);
+                break;
+            case NativeTypeKind::F32:
+                //CONCAT_FIXED_STR(concat, "rt[0].f32 = (float) ");
+                builder.CreateStore(result, TO_PTR_F32(allocRT));
+                break;
+            case NativeTypeKind::F64:
+                //CONCAT_FIXED_STR(concat, "rt[0].f64 = (double) ");
+                builder.CreateStore(result, TO_PTR_F64(allocRT));
+                break;
+            default:
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+            }
+        }
+        else
+        {
+            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+        }
+    }
+
+    return true;
 }
