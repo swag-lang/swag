@@ -3476,6 +3476,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer count");
             if (typePtr->finalType->kind == TypeInfoKind::Native)
             {
+                auto r0 = GEP_I32(allocR, index);
                 switch (typePtr->finalType->nativeType)
                 {
                 case NativeTypeKind::Void:
@@ -3483,42 +3484,42 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
                 case NativeTypeKind::S8:
                 case NativeTypeKind::U8:
                 {
-                    auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_I8(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 case NativeTypeKind::S16:
                 case NativeTypeKind::U16:
                 {
-                    auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_I16(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 case NativeTypeKind::S32:
                 case NativeTypeKind::U32:
                 case NativeTypeKind::Char:
                 {
-                    auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_I32(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 case NativeTypeKind::S64:
                 case NativeTypeKind::U64:
                 {
-                    auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_I64(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 case NativeTypeKind::F32:
                 {
-                    auto r0 = TO_PTR_PTR_F32(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_F32(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 case NativeTypeKind::F64:
                 {
-                    auto r0 = TO_PTR_PTR_F64(GEP_I32(allocR, index));
-                    params.push_back(builder.CreateLoad(r0));
+                    auto r = TO_PTR_PTR_F64(r0);
+                    params.push_back(builder.CreateLoad(r));
                     break;
                 }
                 default:
