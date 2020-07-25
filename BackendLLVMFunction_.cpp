@@ -328,52 +328,10 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            switch (typeParam->nativeType)
-            {
-            case NativeTypeKind::U8:
-            case NativeTypeKind::S8:
-            case NativeTypeKind::Bool:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            case NativeTypeKind::U16:
-            case NativeTypeKind::S16:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt16PtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            case NativeTypeKind::U32:
-            case NativeTypeKind::S32:
-            case NativeTypeKind::Char:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getInt32PtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            case NativeTypeKind::U64:
-            case NativeTypeKind::S64:
-            {
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            case NativeTypeKind::F32:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getFloatPtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            case NativeTypeKind::F64:
-            {
-                rr0 = builder.CreatePointerCast(rr0, llvm::Type::getDoublePtrTy(context));
-                builder.CreateStore(func->getArg(argIdx), rr0);
-                break;
-            }
-            default:
+            auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
+            if (!r)
                 return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
-            }
+            builder.CreateStore(func->getArg(argIdx), r);
         }
         else
         {
