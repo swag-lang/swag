@@ -263,8 +263,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (returnByCopy)
     {
         // rr0 = result
-        auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
-        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int) func->arg_size() - 1), builder.getInt64Ty());
+        auto rr0  = TO_PTR_PTR_I8(allocRR);
+        auto cst0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
         builder.CreateStore(cst0, rr0);
     }
 
@@ -295,7 +295,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     {
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        auto rr0       = builder.CreateInBoundsGEP(allocRR, builder.getInt32(idx));
+        auto rr0       = GEP_I32(allocRR, idx);
+
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
@@ -303,9 +304,9 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
-            builder.CreateStore(cst0, rr0);
-            auto rr1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1)));
+            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
+            auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String) || typeParam->isNative(NativeTypeKind::Any))
@@ -320,9 +321,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
                  typeParam->kind == TypeInfoKind::Array ||
                  typeParam->kind == TypeInfoKind::Interface)
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
-            builder.CreateStore(cst0, rr0);
-            break;
+            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
