@@ -43,7 +43,10 @@ JobResult ModuleOutputJob::execute()
     if (pass == ModuleOutputJobPass::PreCompile)
     {
         // Magic number : max number of functions per file
-        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 1024;
+        auto numDiv = (int)module->byteCodeFunc.size() / g_Stats.numWorkers;
+        numDiv = max(numDiv, 256);
+        numDiv = min(numDiv, 1024);
+        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
         module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
         module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
