@@ -278,32 +278,32 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
         case TokenId::CompilerFuncTest:
             funcNode->token.text = "#test";
-            funcNode->name       = "test" + to_string(id);
+            funcNode->name       = "__test" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
             break;
         case TokenId::CompilerFuncInit:
             funcNode->token.text = "#init";
-            funcNode->name       = "init" + to_string(id);
+            funcNode->name       = "__init" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
             funcNode->token.text = "#drop";
-            funcNode->name       = "drop" + to_string(id);
+            funcNode->name       = "__drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
             break;
         case TokenId::CompilerRun:
             funcNode->token.text = "#run";
-            funcNode->name       = "run" + to_string(id);
+            funcNode->name       = "__run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "#main";
-            funcNode->name       = "main" + to_string(id);
+            funcNode->name       = "__main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
-            funcNode->name       = "ast" + to_string(id);
+            funcNode->name       = "__ast" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER;
             break;
         }
