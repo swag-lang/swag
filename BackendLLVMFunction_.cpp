@@ -479,10 +479,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
-#define TTT()                                                      \
-    if (bc->sourceFile->path.find("compiler1763") != string::npos) \
-        g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int) ip->op]));
-
     // Generate bytecode
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -3101,7 +3097,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
             //SWAG_ASSERT(!foreignValue.text.empty());
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
-            TTT();
+            g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int)ip->op]));
             break;
         }
 
