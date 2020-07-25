@@ -3566,35 +3566,10 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
         {
             //CONCAT_STR_1(concat, "r[", index, "]");
             auto r0 = GEP_I32(allocR, index);
-            switch (typeParam->nativeType)
-            {
-            case NativeTypeKind::Bool:
-            case NativeTypeKind::S8:
-            case NativeTypeKind::U8:
-                params.push_back(builder.CreateLoad(TO_PTR_I8(r0)));
-                break;
-            case NativeTypeKind::S16:
-            case NativeTypeKind::U16:
-                params.push_back(builder.CreateLoad(TO_PTR_I16(r0)));
-                break;
-            case NativeTypeKind::S32:
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Char:
-                params.push_back(builder.CreateLoad(TO_PTR_I32(r0)));
-                break;
-            case NativeTypeKind::S64:
-            case NativeTypeKind::U64:
-                params.push_back(builder.CreateLoad(TO_PTR_I64(r0)));
-                break;
-            case NativeTypeKind::F32:
-                params.push_back(builder.CreateLoad(TO_PTR_F32(r0)));
-                break;
-            case NativeTypeKind::F64:
-                params.push_back(builder.CreateLoad(TO_PTR_F64(r0)));
-                break;
-            default:
+            auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
+            if (!r)
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param native type");
-            }
+            params.push_back(builder.CreateLoad(r));
         }
         else
         {
