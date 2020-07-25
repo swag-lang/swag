@@ -232,68 +232,20 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
-
-    // Real return type
-    llvm::Type* llvmReturnType;
-    llvm::Type* llvmRealReturnType;
-    SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType, &llvmRealReturnType));
-    if (returnByCopy)
-        llvmReturnType = llvm::Type::getVoidTy(context);
-    else if (typeFunc->numReturnRegisters() > 1)
-        llvmReturnType = llvm::Type::getVoidTy(context);
-    else
-        llvmReturnType = llvmRealReturnType;
-
-    // Real parameters
-    std::vector<llvm::Type*> params;
-    if (node->parameters)
-    {
-        // Variadic parameters are always first
-        auto numParams = node->parameters->childs.size();
-        if (numParams)
-        {
-            auto param = node->parameters->childs.back();
-            if (param->typeInfo->kind == TypeInfoKind::Variadic)
-            {
-                params.push_back(llvm::Type::getInt8PtrTy(context));
-                params.push_back(builder.getInt32Ty());
-                numParams--;
-            }
-        }
-
-        for (int i = 0; i < numParams; i++)
-        {
-            auto param = node->parameters->childs[i];
-
-            llvm::Type* llvmType;
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param->typeInfo, &llvmType));
-            params.push_back(llvmType);
-
-            if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
-                params.push_back(builder.getInt32Ty());
-            else if (param->typeInfo->isNative(NativeTypeKind::Any))
-                params.push_back(llvm::Type::getInt8PtrTy(context));
-        }
-    }
-
-    // Return value
-    if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
-    {
-        params.push_back(llvmRealReturnType);
-    }
+    // Function type
+    llvm::FunctionType* funcType = nullptr;
+    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &funcType));
 
     // Public foreign name
     auto name = Ast::computeFullNameForeign(node, true);
 
-    llvm::FunctionType* funcType = llvm::FunctionType::get(llvmReturnType, params, false);
-    llvm::Function*     func     = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), modu);
+    // Create function
+    llvm::Function* func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), modu);
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
-
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
     builder.SetInsertPoint(block);
 
-    // Result registers
+    // Total number of registers
     auto n = typeFunc->numReturnRegisters();
     for (auto param : typeFunc->parameters)
     {
@@ -307,11 +259,12 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     int idx = typeFunc->numReturnRegisters();
 
     // Return by copy
+    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         // rr0 = result
         auto rr0  = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
-        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int32_t) params.size() - 1), builder.getInt64Ty());
+        auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg((int) func->arg_size() - 1), builder.getInt64Ty());
         builder.CreateStore(cst0, rr0);
     }
 
@@ -455,7 +408,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         {
             //*((void **) result) = rr0.pointer
             auto loadInst = builder.CreateLoad(rr0);
-            auto arg0     = builder.CreatePointerCast(func->getArg((int) params.size() - 1), llvm::Type::getInt64PtrTy(context));
+            auto arg0     = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), llvm::Type::getInt64PtrTy(context));
             builder.CreateStore(loadInst, arg0);
 
             //*((void **) result + 1) = rr1.pointer
@@ -469,7 +422,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
             auto loadInst = builder.CreateLoad(rr0);
-            auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, llvmReturnType);
+            auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, funcType->getReturnType());
             builder.CreateRet(arg0);
         }
         else if (returnType->kind == TypeInfoKind::Native)
