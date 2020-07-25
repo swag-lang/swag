@@ -58,7 +58,7 @@ inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& b
     return nullptr;
 }
 
-#define TO_PTR_NATIVE(__kind) toPtrNative(context, builder, __kind)
+#define TO_PTR_NATIVE(__value, __kind) toPtrNative(context, builder, __value, __kind)
 
 BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
 {
@@ -3625,41 +3625,10 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
-            switch (returnType->nativeType)
-            {
-            case NativeTypeKind::S8:
-            case NativeTypeKind::U8:
-            case NativeTypeKind::Bool:
-                //CONCAT_FIXED_STR(concat, "rt[0].s8 = (swag_int8_t) ");
-                builder.CreateStore(result, TO_PTR_I8(allocRT));
-                break;
-            case NativeTypeKind::S16:
-            case NativeTypeKind::U16:
-                //CONCAT_FIXED_STR(concat, "rt[0].s16 = (swag_int16_t) ");
-                builder.CreateStore(result, TO_PTR_I16(allocRT));
-                break;
-            case NativeTypeKind::S32:
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Char:
-                //CONCAT_FIXED_STR(concat, "rt[0].s32 = (swag_int32_t) ");
-                builder.CreateStore(result, TO_PTR_I32(allocRT));
-                break;
-            case NativeTypeKind::S64:
-            case NativeTypeKind::U64:
-                //CONCAT_FIXED_STR(concat, "rt[0].s64 = (swag_int64_t) ");
-                builder.CreateStore(result, allocRT);
-                break;
-            case NativeTypeKind::F32:
-                //CONCAT_FIXED_STR(concat, "rt[0].f32 = (float) ");
-                builder.CreateStore(result, TO_PTR_F32(allocRT));
-                break;
-            case NativeTypeKind::F64:
-                //CONCAT_FIXED_STR(concat, "rt[0].f64 = (double) ");
-                builder.CreateStore(result, TO_PTR_F64(allocRT));
-                break;
-            default:
+            auto r = TO_PTR_NATIVE(allocRT, returnType->nativeType);
+            if (!r)
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
-            }
+            builder.CreateStore(result, r);
         }
         else
         {
