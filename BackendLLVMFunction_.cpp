@@ -385,58 +385,11 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
-            switch (returnType->nativeType)
-            {
-            case NativeTypeKind::U8:
-            case NativeTypeKind::S8:
-            case NativeTypeKind::Bool:
-            {
-                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt8PtrTy(context));
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            case NativeTypeKind::U16:
-            case NativeTypeKind::S16:
-            {
-                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt16PtrTy(context));
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            case NativeTypeKind::U32:
-            case NativeTypeKind::S32:
-            case NativeTypeKind::Char:
-            {
-                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getInt32PtrTy(context));
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            case NativeTypeKind::U64:
-            case NativeTypeKind::S64:
-            {
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            case NativeTypeKind::F32:
-            {
-                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getFloatPtrTy(context));
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            case NativeTypeKind::F64:
-            {
-                rr0           = builder.CreatePointerCast(rr0, llvm::Type::getDoublePtrTy(context));
-                auto loadInst = builder.CreateLoad(rr0);
-                builder.CreateRet(loadInst);
-                break;
-            }
-            default:
+            auto r = TO_PTR_NATIVE(rr0, returnType->nativeType);
+            if (!r)
                 return moduleToGen->internalError("emitFuncWrapperPublic, invalid return type");
-            }
+            auto loadInst = builder.CreateLoad(r);
+            builder.CreateRet(loadInst);
         }
         else
         {
