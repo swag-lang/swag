@@ -1297,8 +1297,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = GEP_I32(allocR, ip->c.u32);
             auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto vb = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
+            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), vb);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1317,8 +1318,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = GEP_I32(allocR, ip->c.u32);
             auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto vb = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), vb);
             builder.CreateStore(v0, r0);
             break;
         }
