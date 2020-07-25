@@ -197,18 +197,11 @@ SWAG_EXPORT void swag_runtime_tlsSetValue(uint32_t id, void* value)
 #endif
 }
 
-#include <stdio.h>
 /////////////////////////////////////////////////////////////////////////////////////////////
 SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
 {
 #ifdef _WIN32
-    void **result = (void**) TlsGetValue(id);
-    printf("XXXXXXXXXXXXXXXXXXX tls: %lld\n", (uint64_t)result[0]);
-    printf("XXXXXXXXXXXXXXXXXXX tls: %llx\n", (uint64_t)result[1]);
-
-    void** v = (void**)result[1];
-    printf("XXXXXXXXXXXXXXXXXXX tls: %llx\n", (uint64_t)v[0]);
-
+    auto result = TlsGetValue(id);
     return result;
 #endif
 }
