@@ -58,7 +58,37 @@ inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& b
     return nullptr;
 }
 
+inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
+{
+    switch (k)
+    {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::Void:
+        return TO_PTR_PTR_I8(v);
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        return TO_PTR_PTR_I16(v);
+    case NativeTypeKind::S32:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        return TO_PTR_PTR_I32(v);
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U64:
+        return TO_PTR_PTR_I64(v);
+    case NativeTypeKind::F32:
+        return TO_PTR_PTR_F32(v);
+    case NativeTypeKind::F64:
+        return TO_PTR_PTR_F64(v);
+    }
+
+    SWAG_ASSERT(false);
+    return nullptr;
+}
+
 #define TO_PTR_NATIVE(__value, __kind) toPtrNative(context, builder, __value, __kind)
+#define TO_PTR_PTR_NATIVE(__value, __kind) toPtrPtrNative(context, builder, __value, __kind)
 
 BackendFunctionBodyJob* BackendLLVM::newFunctionJob()
 {
@@ -84,24 +114,25 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto finalType       = TypeManager::concreteType(typeInfoPointer->finalType);
 
         uint32_t ptrCount = typeInfoPointer->ptrCount;
         if (ptrCount != 1)
             return moduleToGen->internalError(format("swagTypeToLLVMType, invalid pointer type '%s'", typeInfo->name.c_str()));
 
-        if (typeInfoPointer->finalType->kind == TypeInfoKind::Slice ||
-            typeInfoPointer->finalType->kind == TypeInfoKind::Array ||
-            typeInfoPointer->finalType->kind == TypeInfoKind::Struct ||
-            typeInfoPointer->finalType->kind == TypeInfoKind::Interface ||
-            typeInfoPointer->finalType->isNative(NativeTypeKind::Any) ||
-            typeInfoPointer->finalType->isNative(NativeTypeKind::String) ||
-            typeInfoPointer->finalType->kind == TypeInfoKind::Reference)
+        if (finalType->kind == TypeInfoKind::Slice ||
+            finalType->kind == TypeInfoKind::Array ||
+            finalType->kind == TypeInfoKind::Struct ||
+            finalType->kind == TypeInfoKind::Interface ||
+            finalType->isNative(NativeTypeKind::Any) ||
+            finalType->isNative(NativeTypeKind::String) ||
+            finalType->kind == TypeInfoKind::Reference)
         {
             *llvmType = llvm::Type::getInt8PtrTy(context);
         }
-        else if (typeInfoPointer->finalType->kind == TypeInfoKind::Native)
+        else if (finalType->kind == TypeInfoKind::Native)
         {
-            switch (typeInfoPointer->finalType->nativeType)
+            switch (finalType->nativeType)
             {
             case NativeTypeKind::Bool:
             case NativeTypeKind::S8:
@@ -134,7 +165,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         }
         else
         {
-            return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
+            return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", finalType->name.c_str()));
         }
 
         return true;
@@ -3474,57 +3505,21 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
             auto typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             if (typePtr->ptrCount != 1)
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer count");
-            if (typePtr->finalType->kind == TypeInfoKind::Native)
+            auto finalType = TypeManager::concreteType(typePtr->finalType);
+            if (finalType->kind == TypeInfoKind::Native)
             {
                 auto r0 = GEP_I32(allocR, index);
-                switch (typePtr->finalType->nativeType)
-                {
-                case NativeTypeKind::Void:
-                case NativeTypeKind::Bool:
-                case NativeTypeKind::S8:
-                case NativeTypeKind::U8:
-                {
-                    auto r = TO_PTR_PTR_I8(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                case NativeTypeKind::S16:
-                case NativeTypeKind::U16:
-                {
-                    auto r = TO_PTR_PTR_I16(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                case NativeTypeKind::S32:
-                case NativeTypeKind::U32:
-                case NativeTypeKind::Char:
-                {
-                    auto r = TO_PTR_PTR_I32(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                case NativeTypeKind::S64:
-                case NativeTypeKind::U64:
-                {
-                    auto r = TO_PTR_PTR_I64(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                case NativeTypeKind::F32:
-                {
-                    auto r = TO_PTR_PTR_F32(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                case NativeTypeKind::F64:
-                {
-                    auto r = TO_PTR_PTR_F64(r0);
-                    params.push_back(builder.CreateLoad(r));
-                    break;
-                }
-                default:
+                auto r  = TO_PTR_PTR_NATIVE(r0, finalType->nativeType);
+                if (!r)
                     return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer param type");
-                }
+                params.push_back(builder.CreateLoad(r));
+            }
+            else if (finalType->kind == TypeInfoKind::Struct ||
+                     finalType->kind == TypeInfoKind::Interface ||
+                     finalType->kind == TypeInfoKind::Array)
+            {
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+                params.push_back(builder.CreateLoad(r0));
             }
             else
             {
