@@ -10,21 +10,7 @@ thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
-    if (!module->backend->mustCompile)
-    {
-        if (buildParameters.compileType == BackendCompileType::Test)
-            g_Log.messageHeaderCentered("Skipping build test", module->name.c_str(), LogColor::Gray);
-        else
-            g_Log.messageHeaderCentered("Skipping build", module->name.c_str(), LogColor::Gray);
-    }
-    else
-    {
-        const char* header = (buildParameters.compileType == BackendCompileType::Test) ? "Building test" : "Building";
-        g_Log.messageHeaderCentered(header, module->name.c_str());
-
-        // Generate output file
-        module->backend->compile(buildParameters);
-    }
+    module->backend->compile(buildParameters);
 
     g_Stats.numGenModules++;
 

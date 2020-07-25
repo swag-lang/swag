@@ -261,3 +261,19 @@ bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
     return node->sourceFile->report({node, node->token, msg});
 }
+
+void Module::printUserMessage(const BuildParameters& bp)
+{
+    if (!backend->mustCompile)
+    {
+        if (bp.compileType == BackendCompileType::Test)
+            g_Log.messageHeaderCentered("Skipping build test", name.c_str(), LogColor::Gray);
+        else
+            g_Log.messageHeaderCentered("Skipping build", name.c_str(), LogColor::Gray);
+    }
+    else
+    {
+        const char* header = (bp.compileType == BackendCompileType::Test) ? "Building test" : "Building";
+        g_Log.messageHeaderCentered(header, name.c_str());
+    }
+}

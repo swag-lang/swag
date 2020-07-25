@@ -72,6 +72,8 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
 
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
+    module->printUserMessage(buildParameters);
+
     // Do we need to generate the file ?
     if (!mustCompile)
         return true;

@@ -241,13 +241,17 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
 JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
-    // Do we need to generate the file ?
-    if (!mustCompile)
-        return JobResult::ReleaseJob;
-
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
+
+    // Message
+    if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
+        module->printUserMessage(buildParameters);
+
+    // Do we need to generate the file ?
+    if (!mustCompile)
+        return JobResult::ReleaseJob;
 
     if (pp.pass == BackendPreCompilePass::Init)
     {
