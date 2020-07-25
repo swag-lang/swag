@@ -309,13 +309,13 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
-        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String) || typeParam->isNative(NativeTypeKind::Any))
+        else if (typeParam->isNative(NativeTypeKind::Any))
         {
-            auto cst0 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx), builder.getInt64Ty());
-            builder.CreateStore(cst0, rr0);
-            auto cst1 = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, func->getArg(argIdx + 1), builder.getInt64Ty());
-            auto rr1  = builder.CreateInBoundsGEP(allocRR, llvm::ConstantInt::get(builder.getInt32Ty(), idx + 1));
-            builder.CreateStore(cst1, rr1);
+            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
+            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
+            auto cst1 = TO_PTR_I8(func->getArg(argIdx + 1));
+            auto rr1  = GEP_I32(allocRR, idx + 1);
+            builder.CreateStore(cst1, TO_PTR_PTR_I8(rr1));
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Array ||
@@ -354,7 +354,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
-        auto rr0        = builder.CreateInBoundsGEP(allocRR, pp.cst0_i32);
+        auto rr0        = allocRR;
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
 
         if (returnType->kind == TypeInfoKind::Slice ||
@@ -364,7 +364,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         {
             //*((void **) result) = rr0.pointer
             auto loadInst = builder.CreateLoad(rr0);
-            auto arg0     = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), llvm::Type::getInt64PtrTy(context));
+            auto arg0     = TO_PTR_I64(func->getArg((int) func->arg_size() - 1));
             builder.CreateStore(loadInst, arg0);
 
             //*((void **) result + 1) = rr1.pointer

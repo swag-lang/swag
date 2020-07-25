@@ -163,6 +163,7 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
                 CONCAT_FIXED_STR(concat, "rt[0].s32 = (swag_int32_t) ");
                 break;
             case NativeTypeKind::U32:
+            case NativeTypeKind::Char:
                 CONCAT_FIXED_STR(concat, "rt[0].u32 = (swag_uint32_t) ");
                 break;
             case NativeTypeKind::S64:
