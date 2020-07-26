@@ -58,14 +58,39 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
 
 bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 {
+    bool firstMS = true;
+    bool firstCS = true;
+
     CONCAT_FIXED_STR(bufferC, "static void initDataSeg(){\n");
     for (auto& k : module->mutableSegment.initPtr)
     {
         auto kind = k.destSeg;
         if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-            bufferC.addStringFormat("*(void**)((__ui8_t*)__ms+%d)=(__ui8_t*)__ms+%d;\n", k.destOffset, k.srcOffset);
+        {
+            if (firstMS)
+            {
+                CONCAT_FIXED_STR(bufferC, "__ui8_t*__ms8=(__ui8_t*)__ms;\n");
+                firstMS = false;
+            }
+
+            bufferC.addStringFormat("*(void**)(__ms8+%d)=__ms8+%d;\n", k.destOffset, k.srcOffset);
+        }
         else
-            bufferC.addStringFormat("*(void**)((__ui8_t*)__ms+%d)=(__ui8_t*)__cs+%d;\n", k.destOffset, k.srcOffset);
+        {
+            if (firstMS)
+            {
+                CONCAT_FIXED_STR(bufferC, "__ui8_t*__ms8=(__ui8_t*)__ms;\n");
+                firstMS = false;
+            }
+
+            if (firstCS)
+            {
+                CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+                firstCS = false;
+            }
+
+            bufferC.addStringFormat("*(void**)(__ms8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
+        }
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -75,19 +100,34 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 
 bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 {
+    bool firstCS = true;
+
     CONCAT_FIXED_STR(bufferC, "static void initConstantSeg(){\n");
 
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-        bufferC.addStringFormat("*(void**)((__ui8_t*)__cs+%d)=(__ui8_t*)__cs+%d;\n", k.destOffset, k.srcOffset);
+        if (firstCS)
+        {
+            CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+            firstCS = false;
+        }
+
+        bufferC.addStringFormat("*(void**)(__cs8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
     }
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
         emitFuncSignatureInternalC(bufferC, k.second, false);
         CONCAT_FIXED_STR(bufferC, ";\n");
-        bufferC.addStringFormat("*(void**)((__ui8_t*)__cs+%d)=%s;\n", k.first, k.second->callName().c_str());
+
+        if (firstCS)
+        {
+            CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+            firstCS = false;
+        }
+
+        bufferC.addStringFormat("*(void**)(__cs8+%d)=%s;\n", k.first, k.second->callName().c_str());
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
