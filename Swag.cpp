@@ -13,6 +13,8 @@ void printStats()
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     g_Log.messageHeaderDot("total time", format("%.3fs", g_Stats.totalTime.count()));
+    g_Log.messageHeaderDot("precompile time", format("%.3fs", g_Stats.precompileTime.load()));
+    g_Log.messageHeaderDot("compile time", format("%.3fs", g_Stats.compileTime.load()));
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
     g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));

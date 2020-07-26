@@ -10,7 +10,13 @@ thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
+    auto timeBefore = chrono::high_resolution_clock::now();
+
     module->backend->compile(buildParameters);
+
+    auto                     timeAfter = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed   = timeAfter - timeBefore;
+    g_Stats.compileTime                = g_Stats.compileTime + elapsed.count();
 
     g_Stats.numGenModules++;
 

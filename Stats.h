@@ -14,6 +14,8 @@ struct Stats
     atomic<int>              totalConcreteTypes    = 0;
     int                      numWorkers            = 0;
     chrono::duration<double> totalTime;
+    atomic<double>           precompileTime = 0;
+    atomic<double>           compileTime    = 0;
 };
 
 extern Stats g_Stats;
