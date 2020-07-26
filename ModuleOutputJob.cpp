@@ -42,23 +42,27 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PreCompile)
     {
-        if (g_CommandLine.backendType != BackendType::LLVM)
+        // Compute the number of sub modules (i.e the number of output temporary files)
+        int minPerFile = 1024;
+        int maxPerFile = 1024;
+
+        if (g_CommandLine.backendType == BackendType::LLVM)
         {
-            // It's faster to generate only one file when compiling from C
-            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 4096;
-            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
-            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+            minPerFile = module->buildParameters.target.backendLLVM.minFunctionPerFile;
+            maxPerFile = module->buildParameters.target.backendLLVM.maxFunctionPerFile;
         }
         else
         {
-            // Magic number : max number of functions per file
-            auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
-            numDiv                                = max(numDiv, 256);
-            numDiv                                = min(numDiv, 1024);
-            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
-            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
-            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+            minPerFile = module->buildParameters.target.backendC.minFunctionPerFile;
+            maxPerFile = module->buildParameters.target.backendC.maxFunctionPerFile;
         }
+
+        auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
+        numDiv                                = max(numDiv, minPerFile);
+        numDiv                                = min(numDiv, maxPerFile);
+        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
+        module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+        module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)

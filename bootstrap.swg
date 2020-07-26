@@ -316,14 +316,18 @@ namespace swag
 
     struct CompilerParamsBackendC
     {
+        maxApplicationArguments: u32    = 64
+        minFunctionPerFile: u32         = 1024;
+        maxFunctionPerFile: u32         = 2048;
         writeSourceCode: bool           = false
         writeByteCodeInstruction: bool  = false
-        maxApplicationArguments: u32    = 64
     }
 
     struct CompilerParamsBackendLLVM
     {
-        outputIR: bool = false;
+        minFunctionPerFile: u32 = 256;
+        maxFunctionPerFile: u32 = 1024;
+        outputIR: bool          = false;
     }
 
     struct CompilerTarget

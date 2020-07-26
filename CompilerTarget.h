@@ -7,14 +7,18 @@
 
 struct CompilerParamsBackendC
 {
+    uint32_t maxApplicationArguments  = 64;
+    uint32_t minFunctionPerFile       = 1024;
+    uint32_t maxFunctionPerFile       = 2048;
     bool     writeSourceCode          = false;
     bool     writeByteCodeInstruction = false;
-    uint32_t maxApplicationArguments  = 64;
 };
 
 struct CompilerParamsBackendLLVM
 {
-    bool outputIR = false;  // Write a 'file.ir' text file just next to the output file
+    uint32_t minFunctionPerFile = 256;
+    uint32_t maxFunctionPerFile = 1024;
+    bool     outputIR           = false; // Write a 'file.ir' text file just next to the output file
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -37,6 +41,6 @@ struct CompilerTarget
     uint32_t backendOptimizeLevel     = 0;
 
     // Specific backend parameters
-    CompilerParamsBackendC      backendC;
-    CompilerParamsBackendLLVM   backendLLVM;
+    CompilerParamsBackendC    backendC;
+    CompilerParamsBackendLLVM backendLLVM;
 };
