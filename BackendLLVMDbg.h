@@ -2,17 +2,22 @@
 struct ByteCode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
+struct AstNode;
 
 struct BackendLLVMDbg
 {
     void setup(llvm::Module* module);
-    void addFunction(ByteCode* bc, llvm::Function* func);
+    void startFunction(ByteCode* bc, llvm::Function* func);
+    void endFunction();
     void finalize();
+    void setLocation(llvm::IRBuilder<>* builder, AstNode* node);
 
     llvm::DIFile*           getOrCreateFile(SourceFile* file);
     llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc);
 
-    llvm::DIBuilder*           dbgBuilder  = nullptr;
-    llvm::DICompileUnit*       compileUnit = nullptr;
+    llvm::DIBuilder*       dbgBuilder  = nullptr;
+    llvm::DICompileUnit*   compileUnit = nullptr;
+    vector<llvm::DIScope*> scopes;
+
     map<string, llvm::DIFile*> mapFiles;
 };

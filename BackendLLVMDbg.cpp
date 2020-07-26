@@ -34,22 +34,27 @@ llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typ
     return dbgBuilder->createSubroutineType(typeArray);
 }
 
-void BackendLLVMDbg::addFunction(ByteCode* bc, llvm::Function* func)
+void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
 {
     if (!dbgBuilder)
         return;
-    if (!bc->node)
-        return;
 
-    AstFuncDecl* decl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+    Utf8 name = bc->name;
+    int  line = 0;
+    if (bc->node)
+    {
+        AstFuncDecl* decl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+        name              = decl->name;
+        line              = decl->token.startLocation.line;
+    }
 
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
-    unsigned                lineNo      = decl->token.startLocation.line;
+    unsigned                lineNo      = line;
     llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(
         file,
-        decl->name.c_str(),
-        decl->name.c_str(),
+        name.c_str(),
+        name.c_str(),
         file,
         lineNo,
         dbgFuncType,
@@ -57,6 +62,15 @@ void BackendLLVMDbg::addFunction(ByteCode* bc, llvm::Function* func)
         llvm::DINode::FlagPrototyped,
         llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
+
+    scopes.push_back(SP);
+}
+
+void BackendLLVMDbg::endFunction()
+{
+    if (!dbgBuilder)
+        return;
+    scopes.pop_back();
 }
 
 void BackendLLVMDbg::finalize()
@@ -64,4 +78,13 @@ void BackendLLVMDbg::finalize()
     if (!dbgBuilder)
         return;
     dbgBuilder->finalize();
+}
+
+void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, AstNode* node)
+{
+    if (!dbgBuilder)
+        return;
+    if (!node)
+        return;
+    builder->SetCurrentDebugLocation(llvm::DebugLoc::get(node->token.startLocation.line, node->token.startLocation.column, scopes.back()));
 }

@@ -458,7 +458,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
-    pp.dbg.addFunction(bc, func);
+    pp.dbg.startFunction(bc, func);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -501,6 +501,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 blockIsClosed = false; // Each block must be closed by a valid terminator instruction
             builder.SetInsertPoint(label);
         }
+
+        pp.dbg.setLocation(pp.builder, ip->node);
 
         switch (ip->op)
         {
@@ -3182,7 +3184,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
     if (!blockIsClosed)
         builder.CreateRetVoid();
-    //SWAG_ASSERT(blockIsClosed);
+    pp.dbg.endFunction();
     return ok;
 }
 
