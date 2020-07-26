@@ -342,7 +342,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     // Declare registers
     if (n)
     {
-        CONCAT_FIXED_STR(concat, "\tswag_register_t ");
+        CONCAT_FIXED_STR(concat, "__r_t ");
         for (int i = 0; i < n; i++)
         {
             if (i)
@@ -643,9 +643,9 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool for
         if (i)
             concat.addChar(',');
         if (forDecl)
-            concat.addStringFormat("swag_register_t*rr%d", i);
+            concat.addStringFormat("__r_t*rr%d", i);
         else
-            concat.addStringFormat("swag_register_t*", i);
+            concat.addStringFormat("__r_t*", i);
     }
 
     // Parameters
@@ -658,9 +658,9 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool for
             if (index || i || typeFunc->numReturnRegisters())
                 concat.addChar(',');
             if (forDecl)
-                concat.addStringFormat("swag_register_t*rp%u", index++);
+                concat.addStringFormat("__r_t*rp%u", index++);
             else
-                concat.addStringFormat("swag_register_t*", index++);
+                concat.addStringFormat("__r_t*", index++);
         }
     }
 
@@ -684,13 +684,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     // Generate one local variable per used register
     if (bc->maxReservedRegisterRC)
     {
-        CONCAT_STR_1(concat, "swag_register_t r[", bc->maxReservedRegisterRC, "];\n");
+        CONCAT_STR_1(concat, "__r_t r[", bc->maxReservedRegisterRC, "];\n");
     }
 
     // For function call results
     if (bc->maxCallResults)
     {
-        CONCAT_STR_1(concat, "swag_register_t rt[", bc->maxCallResults, "];\n");
+        CONCAT_STR_1(concat, "__r_t rt[", bc->maxCallResults, "];\n");
     }
 
     // Local stack
@@ -1699,7 +1699,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::CopySPVaargs:
         {
-            concat.addStringFormat("swag_register_t vaargs%u[]={0,", vaargsIdx);
+            concat.addStringFormat("__r_t vaargs%u[]={0,", vaargsIdx);
             int idxParam = (int) pushRAParams.size() - 1;
             while (idxParam >= 0)
             {
@@ -1708,7 +1708,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             }
 
             CONCAT_FIXED_STR(concat, "};");
-            concat.addStringFormat("r[%u].p=sizeof(swag_register_t)+(swag_uint8_t*)&vaargs%u;", ip->a.u32, vaargsIdx);
+            concat.addStringFormat("r[%u].p=sizeof(__r_t)+(swag_uint8_t*)&vaargs%u;", ip->a.u32, vaargsIdx);
             concat.addStringFormat("vaargs%u[0].p=r[%u].p;", vaargsIdx, ip->a.u32);
             vaargsIdx++;
             break;
@@ -1731,7 +1731,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             {
                 if (j)
                     concat.addChar(',');
-                CONCAT_FIXED_STR(concat, "swag_register_t*");
+                CONCAT_FIXED_STR(concat, "__r_t*");
             }
 
             CONCAT_FIXED_STR(concat, "))");

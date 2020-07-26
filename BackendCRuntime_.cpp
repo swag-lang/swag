@@ -28,7 +28,7 @@ typedef double				swag_float64_t;
 typedef swag_uint32_t swag_tls_id_t;
 #endif
 
-typedef union swag_register_t {
+typedef union __r_t {
     swag_uint8_t*	p;
     swag_uint64_t	u64;
     swag_int64_t	s64;
@@ -42,7 +42,7 @@ typedef union swag_register_t {
     swag_uint8_t	u8;
     swag_int8_t		s8;
     swag_bool_t		b;
-} swag_register_t;
+} __r_t;
 
 typedef struct swag_interface_t
 {
@@ -50,7 +50,7 @@ typedef struct swag_interface_t
     void* itable;
 } swag_interface_t;
 
-typedef void(*swag_allocator_t)(swag_register_t*,swag_register_t*);
+typedef void(*swag_allocator_t)(__r_t*,__r_t*);
 typedef void(*swag_bytecoderun_t)(void*, ...);
 
 typedef struct swag_context_t {

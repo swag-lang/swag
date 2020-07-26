@@ -3043,7 +3043,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopySPVaargs:
         {
-            //concat.addStringFormat("swag_register_t vaargs%u[] = { 0, ", vaargsIdx);
+            //concat.addStringFormat("__r_t vaargs%u[] = { 0, ", vaargsIdx);
             //int idxParam = (int) pushRAParams.size() - 1;
             //while (idxParam >= 0)
             //{
@@ -3063,7 +3063,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 idxParam--;
             }
 
-            //concat.addStringFormat("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
+            //concat.addStringFormat("r[%u].pointer = sizeof(__r_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst1_i32);
             builder.CreateStore(r1, r0);
