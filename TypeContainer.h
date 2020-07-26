@@ -1,7 +1,7 @@
 #pragma once
 #include "TypeInfo.h"
 
-struct TypeList
+struct TypeContainer
 {
     TypeInfo* registerType(TypeInfo* typeInfo);
     void      registerInit();

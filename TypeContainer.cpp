@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "TypeInfo.h"
-#include "TypeList.h"
+#include "TypeContainer.h"
 #include "TypeManager.h"
 
-void TypeList::registerInit()
+void TypeContainer::registerInit()
 {
     registerType(g_TypeMgr.typeInfoS8);
     registerType(g_TypeMgr.typeInfoS16);
@@ -22,7 +22,7 @@ void TypeList::registerInit()
     registerType(g_TypeMgr.typeInfoString);
 }
 
-TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
+TypeInfo* TypeContainer::registerType(TypeInfo* newTypeInfo)
 {
     unique_lock lk(mutex);
 

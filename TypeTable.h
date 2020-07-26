@@ -1,5 +1,5 @@
 #pragma once
-#include "TypeList.h"
+#include "TypeContainer.h"
 #include "DependentJobs.h"
 struct TypeInfo;
 struct JobContext;
@@ -26,7 +26,7 @@ struct TypeTable
     void addTypeTableJob(Job* job);
     void typeTableJobDone();
 
-    TypeList concreteList;
+    TypeContainer concreteList;
 
     shared_mutex                              mutexTypes;
     shared_mutex                              mutexJobs;
