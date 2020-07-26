@@ -4,6 +4,7 @@
 #include "OS.h"
 #include "BackendSetupWin32.h"
 #include "BackendLinkerWin32.h"
+#include "BackendLLVMDbg.h"
 
 void BackendLLVM::setup()
 {
@@ -263,8 +264,11 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         pp.filename += ".obj";
 
         pp.context = new llvm::LLVMContext();
-        pp.module  = new llvm::Module(perThread[ct][precompileIndex].filename.c_str(), *perThread[ct][precompileIndex].context);
-        pp.builder = new llvm::IRBuilder<>(*perThread[ct][precompileIndex].context);
+        pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
+        pp.builder = new llvm::IRBuilder<>(*pp.context);
+
+        if (buildParameters.target.backendDebugInformations || g_CommandLine.debug)
+            pp.dbg.setup(pp.module);
 
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', llvm backend, generating files", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
@@ -307,27 +311,26 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& modu            = *pp.module;
 
+    // Debug infos
+    pp.dbg.finalize();
+
+    // Target machine
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
     modu.setTargetTriple(targetTriple);
-
-    std::string Error;
-    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
-
-    auto CPU      = "generic";
-    auto Features = "";
-
+    std::string         Error;
+    auto                target   = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
+    auto                CPU      = "generic";
+    auto                Features = "";
     llvm::TargetOptions opt;
     auto                RM               = llvm::Optional<llvm::Reloc::Model>();
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
     modu.setDataLayout(theTargetMachine->createDataLayout());
 
-    auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
-    auto path       = targetPath + "/" + pp.filename;
-
-    auto                 filename = path;
-    std::error_code      EC;
-    llvm::raw_fd_ostream dest(filename, EC, llvm::sys::fs::OF_None);
-
+    auto                      targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
+    auto                      path       = targetPath + "/" + pp.filename;
+    auto                      filename   = path;
+    std::error_code           EC;
+    llvm::raw_fd_ostream      dest(filename, EC, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
     llvm::PassManagerBuilder  pmb;
 

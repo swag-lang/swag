@@ -2,6 +2,7 @@
 #include "Backend.h"
 #include "BackendHelpers.h"
 #include "BuildParameters.h"
+#include "BackendLLVMDbg.h"
 
 struct Module;
 struct BuildParameters;
@@ -81,6 +82,9 @@ struct BackendLLVM : public Backend
         llvm::Value* cst_null = nullptr;
 
         map<int32_t, llvm::BasicBlock*> labels;
+
+        // Debug infos
+        BackendLLVMDbg dbg;
 
     } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

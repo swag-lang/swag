@@ -1,0 +1,67 @@
+#include "pch.h"
+#include "BackendLLVMDbg.h"
+#include "ByteCode.h"
+#include "SourceFile.h"
+#include "Ast.h"
+
+void BackendLLVMDbg::setup(llvm::Module* modu)
+{
+    dbgBuilder    = new llvm::DIBuilder(*modu);
+    auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
+    compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
+    modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+}
+
+llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
+{
+    auto it = mapFiles.find(file->path);
+    if (it != mapFiles.end())
+        return it->second;
+
+    fs::path      filePath = file->path;
+    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().string().c_str(), filePath.parent_path().string().c_str());
+    mapFiles[file->path]   = dbgfile;
+    return dbgfile;
+}
+
+llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc)
+{
+    vector<llvm::Metadata*> params;
+    auto                    dblTy = dbgBuilder->createBasicType("double", 64, llvm::dwarf::DW_ATE_float);
+    params.push_back(dblTy);
+
+    auto typeArray = dbgBuilder->getOrCreateTypeArray(params);
+    return dbgBuilder->createSubroutineType(typeArray);
+}
+
+void BackendLLVMDbg::addFunction(ByteCode* bc, llvm::Function* func)
+{
+    if (!dbgBuilder)
+        return;
+    if (!bc->node)
+        return;
+
+    AstFuncDecl* decl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+
+    llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
+    unsigned                lineNo      = decl->token.startLocation.line;
+    llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
+    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(
+        file,
+        decl->name.c_str(),
+        decl->name.c_str(),
+        file,
+        lineNo,
+        dbgFuncType,
+        lineNo,
+        llvm::DINode::FlagPrototyped,
+        llvm::DISubprogram::SPFlagDefinition);
+    func->setSubprogram(SP);
+}
+
+void BackendLLVMDbg::finalize()
+{
+    if (!dbgBuilder)
+        return;
+    dbgBuilder->finalize();
+}
