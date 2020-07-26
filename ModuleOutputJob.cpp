@@ -42,13 +42,23 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PreCompile)
     {
-        // Magic number : max number of functions per file
-        auto numDiv = (int)module->byteCodeFunc.size() / g_Stats.numWorkers;
-        numDiv = max(numDiv, 256);
-        numDiv = min(numDiv, 1024);
-        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
-        module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
-        module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        if (g_CommandLine.backendType != BackendType::LLVM)
+        {
+            // It's faster to generate only one file when compiling from C
+            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / 4096;
+            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        }
+        else
+        {
+            // Magic number : max number of functions per file
+            auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
+            numDiv                                = max(numDiv, 256);
+            numDiv                                = min(numDiv, 1024);
+            module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
+            module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
+            module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        }
 
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)

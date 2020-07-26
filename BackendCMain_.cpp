@@ -52,7 +52,8 @@ bool BackendC::emitMain(OutputFile& bufferC)
             auto node = bc->node;
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-            bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
+            if (numPreCompileBuffers > 1)
+                bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
             bufferC.addStringFormat("\t%s();\n", bc->callName().c_str());
         }
         CONCAT_FIXED_STR(bufferC, "#endif\n");
@@ -62,7 +63,8 @@ bool BackendC::emitMain(OutputFile& bufferC)
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        bufferC.addStringFormat("\textern void %s();\n", module->byteCodeMainFunc->callName().c_str());
+        if (numPreCompileBuffers > 1)
+            bufferC.addStringFormat("\textern void %s();\n", module->byteCodeMainFunc->callName().c_str());
         bufferC.addStringFormat("\t%s();\n", module->byteCodeMainFunc->callName().c_str());
         bufferC.addEol();
     }
@@ -107,7 +109,8 @@ bool BackendC::emitGlobalInit(OutputFile& bufferC)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
+        if (numPreCompileBuffers > 1)
+            bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
         bufferC.addStringFormat("\t%s();\n", bc->callName().c_str());
     }
 
@@ -128,7 +131,8 @@ bool BackendC::emitGlobalDrop(OutputFile& bufferC)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
+        if (numPreCompileBuffers > 1)
+            bufferC.addStringFormat("\textern void %s();\n", bc->callName().c_str());
         bufferC.addStringFormat("\t%s();\n", bc->callName().c_str());
     }
 
