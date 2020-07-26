@@ -30,9 +30,9 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     else
     {
         if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[] = {\n");
+            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[]={\n");
         else
-            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[] = {\n");
+            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[]={\n");
 
         for (int bucket = 0; bucket < segSize; bucket++)
         {
@@ -58,14 +58,14 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
 
 bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 {
-    CONCAT_FIXED_STR(bufferC, "static void initDataSeg() {\n");
+    CONCAT_FIXED_STR(bufferC, "static void initDataSeg(){\n");
     for (auto& k : module->mutableSegment.initPtr)
     {
         auto kind = k.destSeg;
         if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__mutableseg+%d)=__mutableseg+%d;\n", k.destOffset, k.srcOffset);
         else
-            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__mutableseg+%d)=__constantseg+%d;\n", k.destOffset, k.srcOffset);
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -75,18 +75,18 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 
 bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 {
-    CONCAT_FIXED_STR(bufferC, "static void initConstantSeg() {\n");
+    CONCAT_FIXED_STR(bufferC, "static void initConstantSeg(){\n");
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-        bufferC.addStringFormat("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.destOffset, k.srcOffset);
+        bufferC.addStringFormat("*(void**)(__constantseg+%d)=__constantseg+%d;\n", k.destOffset, k.srcOffset);
     }
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
         emitFuncSignatureInternalC(bufferC, k.second, false);
         CONCAT_FIXED_STR(bufferC, ";\n");
-        bufferC.addStringFormat("*(void**) (__constantseg + %d) = %s;\n", k.first, k.second->callName().c_str());
+        bufferC.addStringFormat("*(void**)(__constantseg+%d)=%s;\n", k.first, k.second->callName().c_str());
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
