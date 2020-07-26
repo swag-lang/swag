@@ -674,9 +674,6 @@
     <ClInclude Include="BackendLLVMFunctionBodyJob.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="LLVMHelpers.h">
-      <Filter>Backend\Native\LLVM</Filter>
-    </ClInclude>
     <ClInclude Include="LLVMSetup.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>

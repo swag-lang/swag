@@ -10,6 +10,10 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
     auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
     modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+#ifdef _WIN32
+    modu->addModuleFlag(llvm::Module::Warning, "CodeView", llvm::DEBUG_METADATA_VERSION);
+#endif
+    
 }
 
 llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
@@ -52,7 +56,7 @@ void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
     unsigned                lineNo      = line;
     llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(
-        file,
+        compileUnit->getFile(),
         name.c_str(),
         name.c_str(),
         file,

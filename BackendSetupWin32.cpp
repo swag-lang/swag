@@ -155,6 +155,8 @@ namespace BackendSetupWin32
             }
             linkerPath += "\\";
             linkerExe  = "lld-link.exe";
+            //linkerExe = "link.exe";
+            //linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
         }
 
