@@ -326,6 +326,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
     modu.setDataLayout(theTargetMachine->createDataLayout());
 
+    // Output file
     auto                      targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
     auto                      path       = targetPath + "/" + pp.filename;
     auto                      filename   = path;

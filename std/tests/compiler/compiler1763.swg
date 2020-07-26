@@ -1,5 +1,26 @@
 #test
 {
-    loop 100
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
     @print("toto")
 }
