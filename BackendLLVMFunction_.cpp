@@ -3089,15 +3089,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MakeLambdaForeign:
         {
-            //auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            //SWAG_ASSERT(funcNode);
-            //SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
-            //TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            //ComputedValue     foreignValue;
-            //typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
-            //SWAG_ASSERT(!foreignValue.text.empty());
+            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            SWAG_ASSERT(funcNode);
+            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
+            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            ComputedValue     foreignValue;
+            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+            SWAG_ASSERT(!foreignValue.text.empty());
+
+            llvm::FunctionType* T;
+            SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
+            auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
+
             //concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
-            g_Log.print(format("\nunknown instruction '%s' during backend generation\n", g_ByteCodeOpNames[(int)ip->op]));
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(TO_PTR_I8(F), r0);
             break;
         }
 
@@ -3431,13 +3437,27 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
         }
     }
 
+    // Return by parameter
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String))
+    {
+        //CONCAT_FIXED_STR(concat, "&rt[0]");
+        params.push_back(TO_PTR_I8(allocRT));
+    }
+    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        //CONCAT_FIXED_STR(concat, "rt[0].pointer");
+        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRT)));
+    }
+
     // Make the call
     llvm::FunctionType* typeF;
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
     auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), params);
 
     // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
