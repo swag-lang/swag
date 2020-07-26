@@ -805,7 +805,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             if (ip->c.u32)
                 concat.addStringFormat("r[%u].p=*(__ui8_t**)(r[%u].p+%u);", ip->b.u32, ip->a.u32, ip->c.u32);
             else
-                concat.addStringFormat("r[%u].p=*(__ui8_t**)(r[%u].p);", ip->b.u32, ip->a.u32);
+                concat.addStringFormat("r[%u].p=*(__ui8_t**)r[%u].p;", ip->b.u32, ip->a.u32);
             break;
         case ByteCodeOp::DeRefStringSlice:
             concat.addStringFormat("r[%u].u64=*(__ui64_t*)(r[%u].p+8);", ip->b.u32, ip->a.u32);
@@ -975,25 +975,25 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             if (ip->c.u32)
                 concat.addStringFormat("*(__ui8_t*)(r[%u].p+%u)=r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
             else
-                concat.addStringFormat("*(__ui8_t*)(r[%u].p)=r[%u].u8;", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("*(__ui8_t*)r[%u].p=r[%u].u8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer16:
             if (ip->c.u32)
                 concat.addStringFormat("*(__ui16_t*)(r[%u].p+%u)=r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
             else
-                concat.addStringFormat("*(__ui16_t*)(r[%u].p)=r[%u].u16;", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("*(__ui16_t*)r[%u].p=r[%u].u16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer32:
             if (ip->c.u32)
                 concat.addStringFormat("*(__ui32_t*)(r[%u].p+%u)=r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32);
             else
-                concat.addStringFormat("*(__ui32_t*)(r[%u].p)=r[%u].u32;", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("*(__ui32_t*)r[%u].p=r[%u].u32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer64:
             if (ip->c.u32)
                 concat.addStringFormat("*(__ui64_t*)(r[%u].p+%u)=r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
             else
-                concat.addStringFormat("*(__ui64_t*)(r[%u].p)=r[%u].u64;", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("*(__ui64_t*)r[%u].p=r[%u].u64;", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::SetZeroAtPointer8:
