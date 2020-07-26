@@ -9,11 +9,11 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     if (precompileIndex != 0)
     {
         if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __mutableseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __mutableseg[];\n");
         else if (dataSegment == &module->constantSegment)
-            CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __bssseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __bssseg[];\n");
         else
-            CONCAT_FIXED_STR(bufferC, "extern swag_uint8_t __constantseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __constantseg[];\n");
         return true;
     }
 
@@ -25,14 +25,14 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     auto segSize = dataSegment->buckets.size();
     if (dataSegment == &module->bssSegment)
     {
-        CONCAT_STR_1(bufferC, "swag_uint8_t __bssseg[", dataSegment->totalCount, "];\n");
+        CONCAT_STR_1(bufferC, "__ui8_t __bssseg[", dataSegment->totalCount, "];\n");
     }
     else
     {
         if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __mutableseg[]={\n");
+            CONCAT_FIXED_STR(bufferC, "__ui8_t __mutableseg[]={\n");
         else
-            CONCAT_FIXED_STR(bufferC, "swag_uint8_t __constantseg[]={\n");
+            CONCAT_FIXED_STR(bufferC, "__ui8_t __constantseg[]={\n");
 
         for (int bucket = 0; bucket < segSize; bucket++)
         {
