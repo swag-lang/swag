@@ -38,10 +38,8 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
         emitDataSegment(bufferC, &module->bssSegment, precompileIndex);
         emitDataSegment(bufferC, &module->mutableSegment, precompileIndex);
         emitDataSegment(bufferC, &module->constantSegment, precompileIndex);
-        emitAllFuncSignatureInternalC(bufferC);
         emitPublic(bufferC, g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(bufferC, module, module->scopeRoot);
-        emitSeparator(bufferC, "FUNCTIONS");
         bufferC.flush(false);
     }
 
@@ -56,7 +54,6 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     {
         if (precompileIndex == 0)
         {
-            emitSeparator(bufferC, "INIT");
             emitInitDataSeg(bufferC);
             emitInitConstantSeg(bufferC);
             emitGlobalInit(bufferC);

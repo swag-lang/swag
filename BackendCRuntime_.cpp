@@ -109,9 +109,7 @@ bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)
         CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
     }
 
-    emitSeparator(bufferC, "RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
-    emitSeparator(bufferC, "SWAG RUNTIME");
     CONCAT_FIXED_STR(bufferC, g_SwagRuntime);
 
     if (precompileIndex == 0)

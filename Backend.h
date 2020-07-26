@@ -36,7 +36,6 @@ struct Backend
     void getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end);
     bool emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
 
-    void emitSeparator(Concat& buffer, const char* title);
     bool generateExportFile();
     void setupExportFile();
     bool emitAttributes(AstNode* node);

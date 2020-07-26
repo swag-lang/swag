@@ -33,8 +33,6 @@ struct BackendC : public Backend
     bool emitInitDataSeg(OutputFile& bufferC);
     bool emitInitConstantSeg(OutputFile& bufferC);
     bool emitMain(OutputFile& bufferC);
-    bool emitAllFuncSignatureInternalC(OutputFile& bufferC);
-    bool emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen);
     bool emitGlobalInit(OutputFile& bufferC);
     bool emitGlobalDrop(OutputFile& bufferC);
 
@@ -42,8 +40,8 @@ struct BackendC : public Backend
     static void addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
     static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
     static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
-    static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
-    static void emitFuncSignatureInternalC(Concat& concat, ByteCode* bc);
+    static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forWrapper);
+    static void emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool forDecl);
     static bool emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc);
     static bool emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 

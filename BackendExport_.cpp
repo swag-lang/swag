@@ -6,27 +6,6 @@
 #include "TypeManager.h"
 #include "Os.h"
 
-void Backend::emitSeparator(Concat& buffer, const char* title)
-{
-    buffer.addEol();
-
-    int len = (int) strlen(title);
-    CONCAT_FIXED_STR(buffer, "/*");
-    int maxLen = 80;
-
-    int i = 0;
-    for (; i < 4; i++)
-        CONCAT_FIXED_STR(buffer, "#");
-    CONCAT_FIXED_STR(buffer, " ");
-    buffer.addString(title);
-    CONCAT_FIXED_STR(buffer, " ");
-    i += len + 2;
-
-    for (; i < maxLen; i++)
-        CONCAT_FIXED_STR(buffer, "#");
-    CONCAT_FIXED_STR(buffer, "*/\n");
-}
-
 bool Backend::emitAttributes(AstNode* node)
 {
     if (node->flags & AST_CONST_EXPR)

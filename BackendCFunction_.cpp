@@ -129,6 +129,9 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
+    emitForeignFuncSignature(concat, moduleToGen, typeFuncBC, nodeFunc, false);
+    CONCAT_FIXED_STR(concat, ";\n");
+
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
@@ -545,7 +548,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     return true;
 }
 
-bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport)
+bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forWrapper)
 {
     Utf8 returnType;
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -558,7 +561,7 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     else
         CONCAT_FIXED_STR(buffer, "void");
     buffer.addChar(' ');
-    auto name = Ast::computeFullNameForeign(node, forExport);
+    auto name = Ast::computeFullNameForeign(node, forWrapper);
     buffer.addString(name);
     buffer.addChar('(');
 
@@ -592,8 +595,11 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
 
             SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
             buffer.addString(cType);
-            buffer.addChar(' ');
-            buffer.addString(param->name);
+            if (forWrapper)
+            {
+                buffer.addChar(' ');
+                buffer.addString(param->name);
+            }
 
             if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
             {
@@ -623,7 +629,7 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     return true;
 }
 
-void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
+void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool forDecl)
 {
     auto typeFunc = bc->callType();
     auto name     = bc->callName();
@@ -637,7 +643,10 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
     {
         if (i)
             concat.addChar(',');
-        concat.addStringFormat("swag_register_t* rr%d", i);
+        if (forDecl)
+            concat.addStringFormat("swag_register_t* rr%d", i);
+        else
+            concat.addStringFormat("swag_register_t*", i);
     }
 
     // Parameters
@@ -649,66 +658,14 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc)
         {
             if (index || i || typeFunc->numReturnRegisters())
                 concat.addChar(',');
-            concat.addStringFormat("swag_register_t* rp%u", index++);
+            if (forDecl)
+                concat.addStringFormat("swag_register_t* rp%u", index++);
+            else
+                concat.addStringFormat("swag_register_t*", index++);
         }
     }
 
     CONCAT_FIXED_STR(concat, ")");
-}
-
-bool BackendC::emitAllFuncSignatureInternalC(OutputFile& bufferC, Module* moduleToGen)
-{
-    SWAG_ASSERT(moduleToGen);
-
-    for (auto one : moduleToGen->byteCodeFunc)
-    {
-        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
-        AstFuncDecl*      node     = nullptr;
-
-        if (one->node)
-        {
-            node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-
-            // Do we need to generate that function ?
-            if (node->attributeFlags & ATTRIBUTE_COMPILER)
-                continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
-                continue;
-            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-                continue;
-
-            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        }
-
-        emitFuncSignatureInternalC(bufferC, one);
-        CONCAT_FIXED_STR(bufferC, ";\n");
-    }
-
-    bufferC.addEol();
-    return true;
-}
-
-bool BackendC::emitAllFuncSignatureInternalC(OutputFile& bufferC)
-{
-    emitSeparator(bufferC, "PROTOTYPES");
-    if (!emitAllFuncSignatureInternalC(bufferC, g_Workspace.bootstrapModule))
-        return false;
-    if (!emitAllFuncSignatureInternalC(bufferC, module))
-        return false;
-
-    // Import functions
-    for (auto node : module->allForeign)
-    {
-        if (node->flags & AST_USED_FOREIGN)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
-            SWAG_CHECK(emitForeignFuncSignature(bufferC, module, typeFunc, node, false));
-            CONCAT_FIXED_STR(bufferC, ";\n");
-        }
-    }
-
-    return true;
 }
 
 bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc)
@@ -722,7 +679,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         CONCAT_FIXED_STR(concat, "#ifdef SWAG_HAS_TEST\n");
 
     // Signature
-    emitFuncSignatureInternalC(concat, bc);
+    emitFuncSignatureInternalC(concat, bc, true);
     CONCAT_FIXED_STR(concat, " {\n");
 
     // Generate one local variable per used register
@@ -1707,6 +1664,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         {
             auto funcBC = (ByteCode*) ip->b.pointer;
             SWAG_ASSERT(funcBC);
+
+            emitFuncSignatureInternalC(concat, funcBC, false);
+            CONCAT_FIXED_STR(concat, ";\n");
+
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
         }
         break;
@@ -1720,6 +1681,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             ComputedValue     foreignValue;
             typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
             SWAG_ASSERT(!foreignValue.text.empty());
+
+            emitForeignFuncSignature(concat, moduleToGen, typeFuncNode, funcNode, false);
+            CONCAT_FIXED_STR(concat, ";\n");
+
             concat.addStringFormat("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
             break;
         }
@@ -1782,7 +1747,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::LocalCall:
         {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
+            auto funcBC = (ByteCode*) ip->a.pointer;
+
+            emitFuncSignatureInternalC(concat, funcBC, false);
+            CONCAT_FIXED_STR(concat, ";\n");
+
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
             concat.addString(funcBC->callName());
             concat.addChar('(');
@@ -1793,8 +1762,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         break;
 
         case ByteCodeOp::ForeignCall:
+        {
             SWAG_CHECK(emitForeignCall(concat, moduleToGen, ip, pushRAParams));
             break;
+        }
 
         default:
             ok = false;

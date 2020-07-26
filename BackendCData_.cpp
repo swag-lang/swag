@@ -6,13 +6,6 @@
 
 bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int precompileIndex)
 {
-    if (dataSegment == &module->mutableSegment)
-        emitSeparator(bufferC, "MUTABLE SEGMENT");
-    else if (dataSegment == &module->constantSegment)
-        emitSeparator(bufferC, "CONSTANT SEGMENT");
-    else
-        emitSeparator(bufferC, "BSS SEGMENT");
-
     if (precompileIndex != 0)
     {
         if (dataSegment == &module->mutableSegment)
@@ -91,6 +84,8 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
+        emitFuncSignatureInternalC(bufferC, k.second, false);
+        CONCAT_FIXED_STR(bufferC, ";\n");
         bufferC.addStringFormat("*(void**) (__constantseg + %d) = %s;\n", k.first, k.second->callName().c_str());
     }
 
