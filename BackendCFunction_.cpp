@@ -822,29 +822,29 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::GetFromDataSeg8:
-            concat.addStringFormat("r[%u].u8=*(__ui8_t*)(__mutableseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u8=*(__ui8_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg16:
-            concat.addStringFormat("r[%u].u16=*(__ui16_t*)(__mutableseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u16=*(__ui16_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg32:
-            concat.addStringFormat("r[%u].u32=*(__ui32_t*)(__mutableseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u32=*(__ui32_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg64:
-            concat.addStringFormat("r[%u].u64=*(__ui64_t*)(__mutableseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64=*(__ui64_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::GetFromBssSeg8:
-            concat.addStringFormat("r[%u].u8=*(__ui8_t*)(__bssseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u8=*(__ui8_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromBssSeg16:
-            concat.addStringFormat("r[%u].u16=*(__ui16_t*)(__bssseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u16=*(__ui16_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromBssSeg32:
-            concat.addStringFormat("r[%u].u32=*(__ui32_t*)(__bssseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u32=*(__ui32_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromBssSeg64:
-            concat.addStringFormat("r[%u].u64=*(__ui64_t*)(__bssseg+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64=*(__ui64_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::SetZeroStack8:
@@ -880,24 +880,24 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::MakeDataSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=__mutableseg+", ip->b.u32, ";");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=__ms+", ip->b.u32, ";");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=__mutableseg;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=__ms;");
             break;
         case ByteCodeOp::MakeBssSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=__bssseg+", ip->b.u32, ";");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=__bs+", ip->b.u32, ";");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=__bssseg;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=__bs;");
             break;
         case ByteCodeOp::MakeConstantSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__ui8_t*)(__constantseg+", ip->b.u32, ");");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__ui8_t*)(__cs+", ip->b.u32, ");");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__ui8_t*)__constantseg;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__ui8_t*)__cs;");
             break;
         case ByteCodeOp::MakeConstantSegPointerOC:
-            concat.addStringFormat("r[%u].p=__constantseg+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
+            concat.addStringFormat("r[%u].p=__cs+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             concat.addStringFormat("r[%u].u64=%u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
             break;
 

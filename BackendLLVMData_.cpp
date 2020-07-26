@@ -24,11 +24,11 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     if (precompileIndex)
     {
         if (dataSegment == &module->bssSegment)
-            pp.bssSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__bssseg");
+            pp.bssSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__bs");
         else if (dataSegment == &module->mutableSegment)
-            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__mutableseg");
+            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ms");
         else
-            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__constantseg");
+            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__cs");
         return true;
     }
 
@@ -36,7 +36,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     if (dataSegment == &module->bssSegment)
     {
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
-        pp.bssSeg                               = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bssseg");
+        pp.bssSeg                               = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bs");
     }
     else
     {
@@ -60,9 +60,9 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
-            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__mutableseg");
+            pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ms");
         else
-            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__constantseg");
+            pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__cs");
     }
 
     return true;

@@ -9,11 +9,11 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     if (precompileIndex != 0)
     {
         if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __mutableseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __ms[];\n");
         else if (dataSegment == &module->constantSegment)
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __bssseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __bs[];\n");
         else
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __constantseg[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __cs[];\n");
         return true;
     }
 
@@ -23,35 +23,37 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
         return true;
 
     auto segSize = dataSegment->buckets.size();
+
+    // BSS, no init (0)
     if (dataSegment == &module->bssSegment)
     {
-        CONCAT_STR_1(bufferC, "__ui8_t __bssseg[", dataSegment->totalCount, "];\n");
+        CONCAT_STR_1(bufferC, "__ui8_t __bs[", dataSegment->totalCount, "];\n");
+        return true;
     }
+
+    // Constant & data
+    if (dataSegment == &module->mutableSegment)
+        CONCAT_FIXED_STR(bufferC, "__ui8_t __ms[]={\n");
     else
+        CONCAT_FIXED_STR(bufferC, "__ui8_t __cs[]={\n");
+
+    for (int bucket = 0; bucket < segSize; bucket++)
     {
-        if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "__ui8_t __mutableseg[]={\n");
-        else
-            CONCAT_FIXED_STR(bufferC, "__ui8_t __constantseg[]={\n");
-
-        for (int bucket = 0; bucket < segSize; bucket++)
+        int  count = (int) dataSegment->buckets[bucket].count;
+        auto pz    = dataSegment->buckets[bucket].buffer;
+        int  cpt   = 0;
+        while (count--)
         {
-            int  count = (int) dataSegment->buckets[bucket].count;
-            auto pz    = dataSegment->buckets[bucket].buffer;
-            int  cpt   = 0;
-            while (count--)
-            {
-                bufferC.addString(to_string(*pz));
-                bufferC.addChar(',');
-                pz++;
-                cpt = (cpt + 1) % 20;
-                if (cpt == 0)
-                    bufferC.addEol();
-            }
+            bufferC.addString(to_string(*pz));
+            bufferC.addChar(',');
+            pz++;
+            cpt = (cpt + 1) % 20;
+            if (cpt == 0)
+                bufferC.addEol();
         }
-
-        CONCAT_FIXED_STR(bufferC, "\n};\n");
     }
+
+    CONCAT_FIXED_STR(bufferC, "\n};\n");
 
     return true;
 }
@@ -63,9 +65,9 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
     {
         auto kind = k.destSeg;
         if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-            bufferC.addStringFormat("*(void**)(__mutableseg+%d)=__mutableseg+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ms+%d)=__ms+%d;\n", k.destOffset, k.srcOffset);
         else
-            bufferC.addStringFormat("*(void**)(__mutableseg+%d)=__constantseg+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ms+%d)=__cs+%d;\n", k.destOffset, k.srcOffset);
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -79,14 +81,14 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-        bufferC.addStringFormat("*(void**)(__constantseg+%d)=__constantseg+%d;\n", k.destOffset, k.srcOffset);
+        bufferC.addStringFormat("*(void**)(__cs+%d)=__cs+%d;\n", k.destOffset, k.srcOffset);
     }
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
         emitFuncSignatureInternalC(bufferC, k.second, false);
         CONCAT_FIXED_STR(bufferC, ";\n");
-        bufferC.addStringFormat("*(void**)(__constantseg+%d)=%s;\n", k.first, k.second->callName().c_str());
+        bufferC.addStringFormat("*(void**)(__cs+%d)=%s;\n", k.first, k.second->callName().c_str());
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
