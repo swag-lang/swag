@@ -191,7 +191,6 @@
     <ClInclude Include="Stats.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tokenizer.h" />
-    <ClInclude Include="TypeContainer.h" />
     <ClInclude Include="TypeManager.h" />
     <ClInclude Include="TypeTable.h" />
     <ClInclude Include="TypeTableJob.h" />
@@ -346,7 +345,6 @@
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="TypeInfoMatch_.cpp" />
     <ClCompile Include="TypeInfoSpecific_.cpp" />
-    <ClCompile Include="TypeContainer.cpp" />
     <ClCompile Include="TypeManager.cpp" />
     <ClCompile Include="TypeManagerCast_.cpp" />
     <ClCompile Include="types.c">

@@ -171,16 +171,17 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
-    if (typeInfo->kind != TypeInfoKind::Param)
-        typeInfo = concreteList.registerType(typeInfo);
-
     // Already computed
-    auto it = concreteTypes.find(typeInfo);
-    if (it != concreteTypes.end())
+    typeInfo->computeScopedName();
+    if (typeInfo->kind != TypeInfoKind::Param)
     {
-        *ptrTypeInfo = it->second.first;
-        *storage     = it->second.second;
-        return true;
+        auto it = concreteTypes.find(typeInfo->scopedName);
+        if (it != concreteTypes.end())
+        {
+            *ptrTypeInfo = it->second.first;
+            *storage     = it->second.second;
+            return true;
+        }
     }
 
     g_Stats.totalConcreteTypes++;
@@ -237,7 +238,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    typeInfo->computeScopedName();
     SWAG_ASSERT(!typeInfo->scopedName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->scopedName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
@@ -245,13 +245,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr            = g_Allocator.alloc<TypeInfoPointer>();
-    concreteTypes[typeInfo] = {typePtr, storageOffset};
+    auto typePtr                        = g_Allocator.alloc<TypeInfoPointer>();
+    concreteTypes[typeInfo->scopedName] = {typePtr, storageOffset};
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST | TYPEINFO_TYPEINFO_PTR;
     typePtr->ptrCount    = 1;
-    typePtr->finalType = typeStruct;
+    typePtr->finalType   = typeStruct;
     typePtr->pointedType = typePtr->finalType;
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);

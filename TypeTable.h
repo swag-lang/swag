@@ -1,7 +1,6 @@
 #pragma once
-#include "TypeContainer.h"
 #include "DependentJobs.h"
-struct TypeInfo;
+#include "TypeInfo.h"
 struct JobContext;
 struct AstNode;
 struct ConcreteTypeInfo;
@@ -9,6 +8,7 @@ struct SymbolAttributes;
 struct ConcreteStringSlice;
 struct ConcreteTypeInfoParam;
 struct TypeInfoParam;
+struct ComputedValue;
 
 struct TypeTable
 {
@@ -26,13 +26,11 @@ struct TypeTable
     void addTypeTableJob(Job* job);
     void typeTableJobDone();
 
-    TypeContainer concreteList;
-
-    shared_mutex                              mutexTypes;
-    shared_mutex                              mutexJobs;
-    DependentJobs                             dependentJobs;
-    map<TypeInfo*, pair<TypeInfo*, uint32_t>> concreteTypes;
-    int                                       pendingJobs = 0;
+    shared_mutex                            mutexTypes;
+    shared_mutex                            mutexJobs;
+    DependentJobs                           dependentJobs;
+    map<Utf8Crc, pair<TypeInfo*, uint32_t>> concreteTypes;
+    int                                     pendingJobs = 0;
 };
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
