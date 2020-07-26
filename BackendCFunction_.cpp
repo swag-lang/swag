@@ -543,7 +543,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
         }
     }
 
-    CONCAT_FIXED_STR(concat, "}\n\n");
+    CONCAT_FIXED_STR(concat, "}\n");
     return true;
 }
 
@@ -1690,7 +1690,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
-            break;
+            if (moduleToGen->buildParameters.target.backendC.writeByteCodeInstruction || g_CommandLine.debug)
+                concat.addEol();
+            continue;
+
         case ByteCodeOp::CopySP:
             concat.addStringFormat("r[%u].pointer=(swag_uint8_t*)&r[%u];", ip->a.u32, ip->c.u32);
             break;

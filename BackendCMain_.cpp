@@ -22,9 +22,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "swag_runtime_tlsSetValue(__process_infos.contextTlsId,__process_infos.defaultContext);\n");
 
     // Arguments
-    bufferC.addEol();
     CONCAT_FIXED_STR(bufferC, "swag_runtime_convertArgcArgv(&__process_infos.arguments,argc,argv);\n");
-    bufferC.addEol();
 
     // Call to global init of this module, and dependencies
     bufferC.addStringFormat("%s_globalInit(&__process_infos);\n", module->nameDown.c_str());
@@ -65,7 +63,6 @@ bool BackendC::emitMain(OutputFile& bufferC)
         if (numPreCompileBuffers > 1)
             bufferC.addStringFormat("extern void %s();\n", module->byteCodeMainFunc->callName().c_str());
         bufferC.addStringFormat("%s();\n", module->byteCodeMainFunc->callName().c_str());
-        bufferC.addEol();
     }
 
     // Call to global drop of this module
