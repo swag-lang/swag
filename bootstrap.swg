@@ -323,7 +323,7 @@ namespace swag
 
     struct CompilerParamsBackendLLVM
     {
-        outputIR: bool = true;
+        outputIR: bool = false;
     }
 
     struct CompilerTarget

@@ -103,12 +103,6 @@ SWAG_IMPORT void swag_runtime_convertArgcArgv(void*,int,char*[]);
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)
 {
-    if (g_CommandLine.devMode)
-    {
-        CONCAT_FIXED_STR(bufferC, "/* FILE GENERATED WITH --DEVMODE:true */\n");
-        CONCAT_FIXED_STR(bufferC, "#define SWAG_DEVMODE\n");
-    }
-
     CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     CONCAT_FIXED_STR(bufferC, g_SwagRuntime);
 

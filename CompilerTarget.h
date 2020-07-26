@@ -14,7 +14,7 @@ struct CompilerParamsBackendC
 
 struct CompilerParamsBackendLLVM
 {
-    bool outputIR = true;  // Write a 'file.ir' text file just next to the output file
+    bool outputIR = false;  // Write a 'file.ir' text file just next to the output file
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

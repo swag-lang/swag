@@ -766,11 +766,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 concat.addEol();
             continue;
 
-#ifdef DEVMODE
-#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s,\"%s\",%d,\"%s\",1);", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
-#else
-#define MK_ASSERT(__expr, __msg) concat.addStringFormat("swag_runtime_assert(%s,\"%s\",%d,\"%s\",0);", __expr, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, __msg);
-#endif
+#define MK_ASSERT(__expr, __msg)                                              \
+    concat.addStringFormat("swag_runtime_assert(%s,\"%s\",%d,\"%s\",%d);",    \
+                           __expr,                                            \
+                           normalizePath(ip->node->sourceFile->path).c_str(), \
+                           ip->node->token.startLocation.line + 1,            \
+                           __msg,                                             \
+                           g_CommandLine.devMode);
 
         case ByteCodeOp::BoundCheckString:
             MK_ASSERT(format("r[%u].u32<=r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");

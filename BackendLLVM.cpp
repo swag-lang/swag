@@ -348,22 +348,12 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // Generate obj file pass
     theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
 
-    // Output IR code
-    if (buildParameters.target.backendLLVM.outputIR)
-    {
-        auto                 filenameIR = path;
-        llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
-        modu.print(destFileIR, nullptr);
-        destFileIR.flush();
-        destFileIR.close();
-    }
-
     llvmPass.run(modu);
     dest.flush();
     dest.close();
 
     // Output IR code
-    if (buildParameters.target.backendLLVM.outputIR)
+    if (buildParameters.target.backendLLVM.outputIR || g_CommandLine.devMode)
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);
