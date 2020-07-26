@@ -53,4 +53,9 @@ struct DataSegment
     vector<DataSegmentRef>   initPtr;
     uint32_t                 totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
+
+    uint32_t seekRead   = 0;
+    uint32_t seekBucket = 0;
+    void     rewindRead();
+    bool     readU64(uint64_t& result);
 };

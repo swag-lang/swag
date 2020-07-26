@@ -822,16 +822,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::GetFromDataSeg8:
-            concat.addStringFormat("r[%u].u8=*(__ui8_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u8=*(__ui8_t*)((__ui8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg16:
-            concat.addStringFormat("r[%u].u16=*(__ui16_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u16=*(__ui16_t*)((__ui8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg32:
-            concat.addStringFormat("r[%u].u32=*(__ui32_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u32=*(__ui32_t*)((__ui8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromDataSeg64:
-            concat.addStringFormat("r[%u].u64=*(__ui64_t*)(__ms+%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].u64=*(__ui64_t*)((__ui8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::GetFromBssSeg8:
@@ -880,9 +880,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::MakeDataSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=__ms+", ip->b.u32, ";");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__ui8_t*)__ms+", ip->b.u32, ";");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=__ms;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__ui8_t*)__ms;");
             break;
         case ByteCodeOp::MakeBssSegPointer:
             if (ip->b.u32)
@@ -892,12 +892,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::MakeConstantSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__ui8_t*)(__cs+", ip->b.u32, ");");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__ui8_t*)((__ui8_t*)__cs+", ip->b.u32, ");");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__ui8_t*)__cs;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__ui8_t*)(__ui8_t*)__cs;");
             break;
         case ByteCodeOp::MakeConstantSegPointerOC:
-            concat.addStringFormat("r[%u].p=__cs+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
+            concat.addStringFormat("r[%u].p=(__ui8_t*)__cs+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             concat.addStringFormat("r[%u].u64=%u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
             break;
 

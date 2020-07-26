@@ -182,3 +182,53 @@ void DataSegment::addInitPtrFunc(uint32_t offset, ByteCode* bc)
     scoped_lock lk(mutexPtr);
     initFuncPtr[offset] = bc;
 }
+
+void DataSegment::rewindRead()
+{
+    seekRead   = 0;
+    seekBucket = 0;
+}
+
+bool DataSegment::readU64(uint64_t& result)
+{
+    if (seekBucket == buckets.size())
+        return false;
+
+    auto* curBucket = &buckets[seekBucket];
+    if (seekRead + 8 <= curBucket->count)
+    {
+        uint64_t* ptr = (uint64_t*) (curBucket->buffer + seekRead);
+        seekRead += 8;
+        result = *ptr;
+        return true;
+    }
+
+    int cpt        = 0;
+    result         = 0;
+    uint8_t* ptr   = curBucket->buffer + seekRead;
+    uint32_t shift = 0;
+    while (cpt != 8 && seekBucket != buckets.size())
+    {
+        while (cpt != 8 && (seekRead < curBucket->count))
+        {
+            result |= ((uint64_t) *ptr) << shift;
+            shift += 8;
+            cpt++;
+            ptr++;
+            seekRead++;
+        }
+
+        if (seekRead == curBucket->count)
+        {
+            seekBucket++;
+            if (seekBucket != buckets.size())
+            {
+                seekRead  = 0;
+                curBucket = &buckets[seekBucket];
+                ptr       = curBucket->buffer;
+            }
+        }
+    }
+
+    return true;
+}

@@ -22,8 +22,6 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     if (!dataSegment->totalCount)
         return true;
 
-    auto segSize = dataSegment->buckets.size();
-
     // BSS, no init (0)
     if (dataSegment == &module->bssSegment)
     {
@@ -33,28 +31,28 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
 
     // Constant & data
     if (dataSegment == &module->mutableSegment)
-        CONCAT_FIXED_STR(bufferC, "__ui8_t __ms[]={\n");
+        CONCAT_FIXED_STR(bufferC, "__ui64_t __ms[]={\n");
     else
-        CONCAT_FIXED_STR(bufferC, "__ui8_t __cs[]={\n");
+        CONCAT_FIXED_STR(bufferC, "__ui64_t __cs[]={\n");
 
-    for (int bucket = 0; bucket < segSize; bucket++)
+    dataSegment->rewindRead();
+    uint64_t value = 0;
+    int      cpt   = 0;
+    char     buf[50];
+    while (dataSegment->readU64(value))
     {
-        int  count = (int) dataSegment->buckets[bucket].count;
-        auto pz    = dataSegment->buckets[bucket].buffer;
-        int  cpt   = 0;
-        while (count--)
-        {
-            bufferC.addString(to_string(*pz));
-            bufferC.addChar(',');
-            pz++;
-            cpt = (cpt + 1) % 20;
-            if (cpt == 0)
-                bufferC.addEol();
-        }
+        if (value > 0xFFFF)
+            sprintf_s(buf, "0x%llX", value);
+        else
+            sprintf_s(buf, "%lld", value);
+        bufferC.addString(buf);
+        bufferC.addChar(',');
+        cpt = (cpt + 1) % 20;
+        if (cpt == 0)
+            bufferC.addEol();
     }
 
     CONCAT_FIXED_STR(bufferC, "\n};\n");
-
     return true;
 }
 
@@ -65,9 +63,9 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
     {
         auto kind = k.destSeg;
         if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-            bufferC.addStringFormat("*(void**)(__ms+%d)=__ms+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)((__ui8_t*)__ms+%d)=(__ui8_t*)__ms+%d;\n", k.destOffset, k.srcOffset);
         else
-            bufferC.addStringFormat("*(void**)(__ms+%d)=__cs+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)((__ui8_t*)__ms+%d)=(__ui8_t*)__cs+%d;\n", k.destOffset, k.srcOffset);
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -78,17 +76,18 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
 bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 {
     CONCAT_FIXED_STR(bufferC, "static void initConstantSeg(){\n");
+
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-        bufferC.addStringFormat("*(void**)(__cs+%d)=__cs+%d;\n", k.destOffset, k.srcOffset);
+        bufferC.addStringFormat("*(void**)((__ui8_t*)__cs+%d)=(__ui8_t*)__cs+%d;\n", k.destOffset, k.srcOffset);
     }
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
         emitFuncSignatureInternalC(bufferC, k.second, false);
         CONCAT_FIXED_STR(bufferC, ";\n");
-        bufferC.addStringFormat("*(void**)(__cs+%d)=%s;\n", k.first, k.second->callName().c_str());
+        bufferC.addStringFormat("*(void**)((__ui8_t*)__cs+%d)=%s;\n", k.first, k.second->callName().c_str());
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
