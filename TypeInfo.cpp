@@ -11,17 +11,20 @@ void TypeInfo::computeScopedNameNoLock()
     if (!scopedName.empty())
         return;
 
-    scopedName = preName;
+    Utf8 newName;
+    newName = preName;
 
     if (declNode && declNode->ownerScope)
     {
-        scopedName += declNode->ownerScope->fullname;
-        if (!scopedName.empty())
-            scopedName += ".";
+        newName += declNode->ownerScope->fullname;
+        if (!newName.empty())
+            newName += ".";
     }
 
     SWAG_ASSERT(!nakedName.empty());
-    scopedName += nakedName;
+    newName += nakedName;
+
+    scopedName = newName;
 }
 
 void TypeInfo::computeScopedName()

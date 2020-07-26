@@ -28,6 +28,7 @@ void printStats()
         g_Log.messageHeaderDot("test functions", format("%d", g_Stats.testFunctions.load()));
     if (g_Workspace.numErrors)
         g_Log.messageHeaderDot("errors", format("%d", g_Workspace.numErrors.load()), LogColor::Red);
+    g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));
     g_Log.setDefaultColor();
 }
 

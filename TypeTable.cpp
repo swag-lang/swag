@@ -9,9 +9,6 @@
 
 TypeTable::TypeTable()
 {
-    concreteList.hereFlag  = TYPEINFO_IN_CONCRETE_LIST;
-    concreteList.sameFlags = ISSAME_EXACT;
-    concreteList.registerInit();
 }
 
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
@@ -185,6 +182,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         *storage     = it->second.second;
         return true;
     }
+
+    g_Stats.totalConcreteTypes++;
 
     auto            node       = context->node;
     auto            sourceFile = context->sourceFile;

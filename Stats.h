@@ -11,6 +11,7 @@ struct Stats
     atomic<int>              numOpenFiles          = 0;
     atomic<int>              allocatorMemory       = 0;
     atomic<int>              wastedAllocatorMemory = 0;
+    atomic<int>              totalConcreteTypes    = 0;
     int                      numWorkers            = 0;
     chrono::duration<double> totalTime;
 };
