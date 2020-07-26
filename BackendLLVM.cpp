@@ -344,6 +344,13 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
         pmb.populateModulePassManager(llvmPass);
     }
+    else
+    {
+        //llvmPass.add(llvm::createInstructionCombiningPass());
+        //llvmPass.add(llvm::createReassociatePass());
+        //llvmPass.add(llvm::createGVNPass());
+        //llvmPass.add(llvm::createCFGSimplificationPass());
+    }
 
     // Generate obj file pass
     theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
