@@ -30,7 +30,6 @@ struct TypeTable
 
     shared_mutex                              mutexTypes;
     shared_mutex                              mutexJobs;
-    vector<TypeInfo*>                         allTypes;
     DependentJobs                             dependentJobs;
     map<TypeInfo*, pair<TypeInfo*, uint32_t>> concreteTypes;
     int                                       pendingJobs = 0;
