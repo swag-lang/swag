@@ -29,7 +29,7 @@ typedef swag_uint32_t swag_tls_id_t;
 #endif
 
 typedef union swag_register_t {
-    swag_uint8_t*	pointer;
+    swag_uint8_t*	p;
     swag_uint64_t	u64;
     swag_int64_t	s64;
     swag_float64_t	f64;
