@@ -22,9 +22,41 @@ enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
 {
-    ByteCode*       bc;
-    ByteCodeGenJob* job;
-    SourceLocation* forceLocation = nullptr;
+    ByteCode*                     bc;
+    ByteCodeGenJob*               job;
+    SourceLocation*               forceLocation = nullptr;
+    VectorNative<SourceLocation*> stackForceLocation;
+
+    void pushLocation(SourceLocation* loc)
+    {
+        stackForceLocation.push_back(loc);
+        forceLocation = loc;
+    }
+
+    void popLocation()
+    {
+        stackForceLocation.pop_back();
+        if (!stackForceLocation.empty())
+            forceLocation = stackForceLocation.back();
+        else
+            forceLocation = nullptr;
+    }
+};
+
+struct PushLocation
+{
+    PushLocation(ByteCodeGenContext* bc, SourceLocation* loc)
+    {
+        savedBc = bc;
+        bc->pushLocation(loc);
+    }
+
+    ~PushLocation()
+    {
+        savedBc->popLocation();
+    }
+
+    ByteCodeGenContext* savedBc;
 };
 
 static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;

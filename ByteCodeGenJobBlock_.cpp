@@ -237,7 +237,9 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    auto         node = context->node;
+    PushLocation pl(context, &node->parent->token.startLocation);
+
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
     if (context->result != ContextResult::Done)
         return true;
@@ -391,11 +393,11 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
         SWAG_ASSERT(fallNode->switchCase);
         SWAG_ASSERT(fallNode->switchCase->caseIndex < switchNode->cases.size() - 1);
 
-        auto nextCase = switchNode->cases[fallNode->switchCase->caseIndex + 1];
+        auto nextCase      = switchNode->cases[fallNode->switchCase->caseIndex + 1];
         auto nextCaseBlock = CastAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::Statement);
 
-        inst = context->bc->out + fallNode->jumpInstruction;
-        diff = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
+        inst        = context->bc->out + fallNode->jumpInstruction;
+        diff        = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
         inst->a.s32 = diff;
     }
 
