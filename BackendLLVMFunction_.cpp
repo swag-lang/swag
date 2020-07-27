@@ -3182,6 +3182,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::DebugPopScope:
             pp.dbg.popLexicalScope();
             break;
+        case ByteCodeOp::DebugDeclLocalVar:
+            pp.dbg.createLocalVar(pp.builder, allocStack, ip);
+            break;
 
         default:
             ok = false;

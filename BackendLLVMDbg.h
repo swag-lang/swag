@@ -3,6 +3,8 @@ struct ByteCode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
 struct AstNode;
+struct TypeInfo;
+struct ByteCodeInstruction;
 
 struct BackendLLVMDbg
 {
@@ -13,8 +15,10 @@ struct BackendLLVMDbg
     void setLocation(llvm::IRBuilder<>* builder, AstNode* node);
     void pushLexicalScope(AstNode* node);
     void popLexicalScope();
+    void createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip);
 
     llvm::DIFile*           getOrCreateFile(SourceFile* file);
+    llvm::DIType*           getType(TypeInfo* typeInfo);
     llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc);
 
     llvm::DIBuilder*       dbgBuilder  = nullptr;

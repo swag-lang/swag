@@ -27,6 +27,12 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     return dbgfile;
 }
 
+llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
+{
+    auto dblTy = dbgBuilder->createBasicType("s32", 32, llvm::dwarf::DW_ATE_signed);
+    return dblTy;
+}
+
 llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc)
 {
     vector<llvm::Metadata*> params;
@@ -54,19 +60,45 @@ void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
     llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
-    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(
-        compileUnit->getFile(),
-        name.c_str(),
-        name.c_str(),
-        file,
-        lineNo,
-        dbgFuncType,
-        lineNo,
-        llvm::DINode::FlagPrototyped,
-        llvm::DISubprogram::SPFlagDefinition);
+    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(),
+                                                        name.c_str(),
+                                                        name.c_str(),
+                                                        file,
+                                                        lineNo,
+                                                        dbgFuncType,
+                                                        lineNo,
+                                                        llvm::DINode::FlagPrototyped,
+                                                        llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
 
     scopes.push_back(SP);
+}
+
+void BackendLLVMDbg::createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip)
+{
+    if (!dbgBuilder)
+        return;
+
+    auto node = ip->node;
+    SWAG_ASSERT(node);
+    SymbolOverload* overload = node->resolvedSymbolOverload;
+    SWAG_ASSERT(overload);
+    auto typeInfo = overload->typeInfo;
+    SWAG_ASSERT(typeInfo);
+
+    llvm::DIType*          type = getType(typeInfo);
+    llvm::DILocalVariable* var  = dbgBuilder->createAutoVariable(scopes.back(),
+                                                                node->name.c_str(),
+                                                                scopes.back()->getFile(),
+                                                                node->token.startLocation.line,
+                                                                type);
+
+    auto v = builder->CreateInBoundsGEP(storage, builder->getInt32(overload->storageOffset));
+    dbgBuilder->insertDeclare(v,
+                              var,
+                              dbgBuilder->createExpression(),
+                              llvm::DebugLoc::get(node->token.startLocation.line + 1, node->token.startLocation.column, scopes.back()),
+                              builder->GetInsertBlock());
 }
 
 void BackendLLVMDbg::endFunction()

@@ -13,6 +13,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
 
+    // Debug
+    emitDbgInstruction(context, ByteCodeOp::DebugDeclLocalVar);
+
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

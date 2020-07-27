@@ -128,6 +128,11 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
+ByteCodeInstruction* ByteCodeGenJob::emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op)
+{
+    return emitInstruction(context, op);
+}
+
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
 {
     AstNode* node = context->node;
