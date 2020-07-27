@@ -13,7 +13,6 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
 #ifdef _WIN32
     modu->addModuleFlag(llvm::Module::Warning, "CodeView", llvm::DEBUG_METADATA_VERSION);
 #endif
-    
 }
 
 llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
@@ -53,7 +52,7 @@ void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
     }
 
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
-    unsigned                lineNo      = line;
+    unsigned                lineNo      = line + 1;
     llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(
         compileUnit->getFile(),
@@ -88,7 +87,9 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, AstNode* node)
 {
     if (!dbgBuilder)
         return;
+
     if (!node)
-        return;
-    builder->SetCurrentDebugLocation(llvm::DebugLoc::get(node->token.startLocation.line, node->token.startLocation.column, scopes.back()));
+        builder->SetCurrentDebugLocation(nullptr);
+    else
+        builder->SetCurrentDebugLocation(llvm::DebugLoc::get(node->token.startLocation.line + 1, 0 /*node->token.startLocation.column*/, scopes.back()));
 }

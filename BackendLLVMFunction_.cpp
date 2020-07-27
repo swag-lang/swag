@@ -468,6 +468,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     bc->markLabels();
 
     // Reserve registers
+    pp.dbg.setLocation(pp.builder, nullptr);
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
         allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxReservedRegisterRC));

@@ -1,24 +1,11 @@
+
+
+
+
+#[swag.printbc]
 #test
 {
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
+    a := 0
     @print("toto")
     @print("toto")
     @print("toto")
