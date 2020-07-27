@@ -156,8 +156,6 @@ namespace OS
             }
             Backend::linkerPath += "\\";
             Backend::linkerExe = "lld-link.exe";
-            //Backend::linkerExe = "link.exe";
-            //Backend::linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
         }
 
