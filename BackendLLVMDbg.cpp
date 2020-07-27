@@ -15,18 +15,34 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
     modu->addModuleFlag(llvm::Module::Warning, "CodeView", llvm::DEBUG_METADATA_VERSION);
 #endif
 
-    s8Ty   = dbgBuilder->createBasicType("s8", 8, llvm::dwarf::DW_ATE_signed);
-    s16Ty  = dbgBuilder->createBasicType("s16", 16, llvm::dwarf::DW_ATE_signed);
-    s32Ty  = dbgBuilder->createBasicType("s32", 32, llvm::dwarf::DW_ATE_signed);
-    s64Ty  = dbgBuilder->createBasicType("s64", 64, llvm::dwarf::DW_ATE_signed);
-    u8Ty   = dbgBuilder->createBasicType("u8", 8, llvm::dwarf::DW_ATE_unsigned);
-    u16Ty  = dbgBuilder->createBasicType("u16", 16, llvm::dwarf::DW_ATE_unsigned);
-    u32Ty  = dbgBuilder->createBasicType("u32", 32, llvm::dwarf::DW_ATE_unsigned);
-    u64Ty  = dbgBuilder->createBasicType("u64", 64, llvm::dwarf::DW_ATE_unsigned);
-    f32Ty  = dbgBuilder->createBasicType("f32", 32, llvm::dwarf::DW_ATE_float);
-    f64Ty  = dbgBuilder->createBasicType("f64", 64, llvm::dwarf::DW_ATE_float);
-    boolTy = dbgBuilder->createBasicType("bool", 8, llvm::dwarf::DW_ATE_unsigned);
-    charTy = dbgBuilder->createBasicType("char", 32, llvm::dwarf::DW_ATE_unsigned);
+    s8Ty    = dbgBuilder->createBasicType("s8", 8, llvm::dwarf::DW_ATE_signed);
+    s16Ty   = dbgBuilder->createBasicType("s16", 16, llvm::dwarf::DW_ATE_signed);
+    s32Ty   = dbgBuilder->createBasicType("s32", 32, llvm::dwarf::DW_ATE_signed);
+    s64Ty   = dbgBuilder->createBasicType("s64", 64, llvm::dwarf::DW_ATE_signed);
+    u8Ty    = dbgBuilder->createBasicType("u8", 8, llvm::dwarf::DW_ATE_unsigned);
+    u16Ty   = dbgBuilder->createBasicType("u16", 16, llvm::dwarf::DW_ATE_unsigned);
+    u32Ty   = dbgBuilder->createBasicType("u32", 32, llvm::dwarf::DW_ATE_unsigned);
+    u64Ty   = dbgBuilder->createBasicType("u64", 64, llvm::dwarf::DW_ATE_unsigned);
+    f32Ty   = dbgBuilder->createBasicType("f32", 32, llvm::dwarf::DW_ATE_float);
+    f64Ty   = dbgBuilder->createBasicType("f64", 64, llvm::dwarf::DW_ATE_float);
+    boolTy  = dbgBuilder->createBasicType("bool", 8, llvm::dwarf::DW_ATE_boolean);
+    charTy  = dbgBuilder->createBasicType("char", 32, llvm::dwarf::DW_ATE_UTF);
+    ptrU8Ty = dbgBuilder->createPointerType(u8Ty, 64);
+
+    {
+        auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "value", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "count", mainFile, 1, 32, 0, 32, llvm::DINode::DIFlags::FlagZero, u32Ty);
+        llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
+        stringTy                  = dbgBuilder->createStructType(mainFile->getScope(),
+                                                "string",
+                                                mainFile,
+                                                0,
+                                                2 * sizeof(void*),
+                                                0,
+                                                llvm::DINode::DIFlags::FlagZero,
+                                                nullptr,
+                                                content);
+    }
 }
 
 llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
@@ -71,6 +87,8 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
             return charTy;
         case NativeTypeKind::Bool:
             return boolTy;
+        case NativeTypeKind::String:
+            return stringTy;
         default:
             return s64Ty;
         }
