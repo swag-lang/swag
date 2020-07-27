@@ -7,7 +7,7 @@
 #include "BackendCCompilerClClangWin32.h"
 #endif
 
-void BackendC::setup()
+void BackendC::intialize()
 {
 #ifdef _WIN32
     compiler = new BackendCCompilerClClangWin32(this);

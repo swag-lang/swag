@@ -6,7 +6,7 @@
 #include "BackendLinkerWin32.h"
 #include "BackendLLVMDbg.h"
 
-void BackendLLVM::setup()
+void BackendLLVM::intialize()
 {
 }
 
@@ -326,7 +326,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     modu.setDataLayout(theTargetMachine->createDataLayout());
 
     // Output file
-    auto                      targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
+    auto                      targetPath = Backend::getCacheFolder(buildParameters);
     auto                      path       = targetPath + "/" + pp.filename;
     auto                      filename   = path;
     std::error_code           EC;
@@ -397,7 +397,7 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
     // Add all object files
-    auto targetPath = BackendLinkerWin32::getCacheFolder(buildParameters);
+    auto targetPath = Backend::getCacheFolder(buildParameters);
     for (auto i = 0; i < numPreCompileBuffers; i++)
     {
         SWAG_ASSERT(!perThread[ct][i].filename.empty());
@@ -407,8 +407,8 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
 
     bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
     uint32_t numErrors = 0;
-    auto     cmdLine   = "\"" + BackendSetupWin32::linkerPath + BackendSetupWin32::linkerExe + "\" " + linkArguments;
-    SWAG_CHECK(OS::doProcess(cmdLine, BackendSetupWin32::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+    auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
+    SWAG_CHECK(OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
     g_Workspace.numErrors += numErrors;
     module->numErrors += numErrors;

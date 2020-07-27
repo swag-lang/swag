@@ -9,7 +9,6 @@ namespace BackendLinkerWin32
 
     string getOutputFileName(const BuildParameters& buildParameters);
     void   getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments);
-    string getCacheFolder(const BuildParameters& buildParameters);
 } // namespace BackendLinkerWin32
 
 #endif

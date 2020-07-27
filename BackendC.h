@@ -22,7 +22,7 @@ struct BackendC : public Backend
     {
     }
 
-    void                    setup();
+    void                    intialize() override;
     JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;

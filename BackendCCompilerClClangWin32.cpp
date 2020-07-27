@@ -30,7 +30,7 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
     for (int i = 0; i < backend->numPreCompileBuffers; i++)
         clArguments += "/Tc\"" + backend->bufferCFiles[i].path + "\" ";
 
-    auto cachePath = BackendLinkerWin32::getCacheFolder(buildParameters);
+    auto cachePath = Backend::getCacheFolder(buildParameters);
     clArguments += "/Fo\"" + cachePath + "\" ";
 
     // Optimization level
@@ -61,10 +61,10 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
     {
     case BackendOutputType::StaticLib:
     {
-        auto cmdLineCL = "\"" + BackendSetupWin32::compilerPath + BackendSetupWin32::compilerExe + "\" " + clArguments + " /c";
+        auto cmdLineCL = "\"" + Backend::compilerPath + Backend::compilerExe + "\" " + clArguments + " /c";
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, Backend::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -81,10 +81,10 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
             libArguments += "\"" + nameObj.string() + "\" ";
         }
 
-        auto cmdLineLIB = "\"" + BackendSetupWin32::compilerPath + "lib.exe\" " + libArguments;
+        auto cmdLineLIB = "\"" + Backend::compilerPath + "lib.exe\" " + libArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, Backend::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
 
@@ -99,10 +99,10 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
         else
             clArguments += "/DSWAG_IS_BINARY ";
 
-        auto cmdLineCL = "\"" + BackendSetupWin32::compilerPath + BackendSetupWin32::compilerExe + "\" " + clArguments + "/link " + linkArguments;
+        auto cmdLineCL = "\"" + Backend::compilerPath + Backend::compilerExe + "\" " + clArguments + "/link " + linkArguments;
         if (verbose)
             g_Log.verbose("VS " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, BackendSetupWin32::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        SWAG_CHECK(OS::doProcess(cmdLineCL, Backend::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
         break;
     }
     }

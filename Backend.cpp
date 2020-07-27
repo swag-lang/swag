@@ -1,6 +1,50 @@
 #include "pch.h"
 #include "Backend.h"
 #include "Workspace.h"
+#include "BackendSetupWin32.h"
+
+string Backend::compilerExe;
+string Backend::compilerPath;
+string Backend::linkerExe;
+string Backend::linkerPath;
+
+void Backend::setup()
+{
+#ifdef _WIN32
+    BackendSetupWin32::setup();
+#endif
+
+    if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
+    {
+        auto fullPath = Backend::compilerPath + Backend::compilerExe;
+        if (!fs::exists(fullPath))
+        {
+            g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
+            exit(-1);
+        }
+
+        g_Log.verbose(format("compilerPath is '%s'\n", Backend::compilerPath.c_str()));
+    }
+    else
+    {
+        auto fullPath = Backend::linkerPath + Backend::linkerExe;
+        if (!fs::exists(fullPath))
+        {
+            g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
+            exit(-1);
+        }
+
+        g_Log.verbose(format("linkerPath is '%s'\n", Backend::compilerPath.c_str()));
+    }
+}
+
+string Backend::getCacheFolder(const BuildParameters& buildParameters)
+{
+    auto targetPath = g_Workspace.cachePath.string();
+    if (buildParameters.compileType == BackendCompileType::Test)
+        targetPath += "/test/";
+    return targetPath;
+}
 
 void Backend::setMustCompile()
 {

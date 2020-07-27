@@ -30,7 +30,7 @@ struct Backend
     {
     }
 
-    virtual void                    setup()                                                           = 0;
+    virtual void                    intialize()                                                       = 0;
     virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) = 0;
     virtual bool                    compile(const BuildParameters& backendParameters)                 = 0;
     virtual BackendFunctionBodyJob* newFunctionJob()                                                  = 0;
@@ -63,4 +63,11 @@ struct Backend
 
     bool mustCompile         = true;
     bool exportFileGenerated = false;
+
+    static string compilerExe;
+    static string compilerPath;
+    static string linkerExe;
+    static string linkerPath;
+    static void   setup();
+    static string getCacheFolder(const BuildParameters& buildParameters);
 };

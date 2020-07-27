@@ -1,15 +1,12 @@
 #include "pch.h"
 #include "Log.h"
 #include "LLVMSetup.h"
+#include "Backend.h"
 
 namespace BackendSetupWin32
 {
     string visualStudioPath;
     string winSdkPath, winSdkVersion;
-    string compilerPath;
-    string compilerExe;
-    string linkerExe;
-    string linkerPath;
 
     static string getStringRegKey(HKEY hKey, const string& strValueName)
     {
@@ -132,54 +129,34 @@ namespace BackendSetupWin32
         switch (g_CommandLine.backendType)
         {
         case BackendType::Cl:
-            compilerExe  = "cl.exe";
-            compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
+            Backend::compilerExe  = "cl.exe";
+            Backend::compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
 
         case BackendType::Clang:
-            compilerExe  = "clang-cl.exe";
-            if (!getLLVMBinFolder(compilerPath))
+            Backend::compilerExe = "clang-cl.exe";
+            if (!getLLVMBinFolder(Backend::compilerPath))
             {
                 g_Log.error("error: backend: cannot locate llvm binary folder");
                 exit(-1);
             }
-            compilerPath += "\\";
+            Backend::compilerPath += "\\";
             break;
 
         case BackendType::LLVM:
             LLVM::setup();
-            if (!getLLVMBinFolder(linkerPath))
+            if (!getLLVMBinFolder(Backend::linkerPath))
             {
                 g_Log.error("error: backend: cannot locate llvm binary folder");
                 exit(-1);
             }
-            linkerPath += "\\";
-            linkerExe  = "lld-link.exe";
-            //linkerExe = "link.exe";
-            //linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
+            Backend::linkerPath += "\\";
+            Backend::linkerExe = "lld-link.exe";
+            //Backend::linkerExe = "link.exe";
+            //Backend::linkerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
             break;
         }
 
-        if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
-        {
-            auto fullPath = compilerPath + compilerExe;
-            if (!fs::exists(fullPath))
-            {
-                g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
-                exit(-1);
-            }
-        }
-        else
-        {
-            auto fullPath = linkerPath + linkerExe;
-            if (!fs::exists(fullPath))
-            {
-                g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
-                exit(-1);
-            }
-        }
-
-        g_Log.verbose(format("VS compilerPath is '%s'\n", BackendSetupWin32::compilerPath.c_str()));
         g_Log.verbose(format("VS winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
         g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
     }
