@@ -104,7 +104,7 @@ void ByteCode::print()
         auto ip = out + i;
 
         // Print source code
-        if (ip->location && ip->location->line != lastLine)
+        if (ip->location && ip->location->line != lastLine && ip->op != ByteCodeOp::End)
         {
             lastLine = ip->location->line;
             auto s   = sourceFile->getLine(ip->location->seekStartLine[REPORT_NUM_CODE_LINES - 1]);

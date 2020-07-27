@@ -3,11 +3,9 @@
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
-#include "SourceFile.h"
 #include "ByteCodeOp.h"
 #include "Module.h"
 #include "Ast.h"
-#include "Stats.h"
 #include "TypeManager.h"
 #include "Context.h"
 #include "DiagnosticInfos.h"
@@ -128,11 +126,13 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op)
+void ByteCodeGenJob::emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op)
 {
-    auto inst = emitInstruction(context, op);
-    inst->flags |= BCI_DEBUG;
-    return inst;
+    if (context->job->module->buildParameters.target.backendDebugInformations || g_CommandLine.debug)
+    {
+        auto inst = emitInstruction(context, op);
+        inst->flags |= BCI_DEBUG;
+    }
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
