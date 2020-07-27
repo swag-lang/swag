@@ -6,8 +6,12 @@
 #test
 {
     a := 0
-    @print("toto")
-    @print("toto")
-    @print("toto")
-    @print("toto")
+    if a == 1
+    {
+        @print("toto")
+    }
+    else
+     {
+        @print("toto")
+     }
 }

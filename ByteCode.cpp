@@ -106,7 +106,7 @@ void ByteCode::print()
         // Print source code
         if (ip->node->token.startLocation.line != lastLine)
         {
-            if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
+            //if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
             {
                 lastLine = ip->node->token.startLocation.line;
                 auto s   = sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);

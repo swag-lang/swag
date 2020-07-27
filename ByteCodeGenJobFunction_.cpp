@@ -20,11 +20,12 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     SWAG_CHECK(emitLeaveScope(context, node->scope));
     if (context->result != ContextResult::Done)
         return true;
-
+   
+    context->node = node->content; // For source code location
     if (node->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
-
     emitInstruction(context, ByteCodeOp::Ret);
+
     return true;
 }
 
@@ -725,8 +726,8 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::DecSP);
-        inst->a.u32 = funcNode->stackSize;
+        context->node = funcNode; // For source code location
+        emitInstruction(context, ByteCodeOp::DecSP)->a.u32 = funcNode->stackSize;
         emitInstruction(context, ByteCodeOp::CopySPtoBP);
     }
 
