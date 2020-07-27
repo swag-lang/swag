@@ -11,27 +11,31 @@ string Backend::linkerPath;
 void Backend::setup()
 {
     OS::setupBackend();
-    if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
-    {
-        auto fullPath = Backend::compilerPath + Backend::compilerExe;
-        if (!fs::exists(fullPath))
-        {
-            g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
-            exit(-1);
-        }
 
-        g_Log.verbose(format("compilerPath is '%s'\n", Backend::compilerPath.c_str()));
-    }
-    else
+    if (g_CommandLine.backendOutput)
     {
-        auto fullPath = Backend::linkerPath + Backend::linkerExe;
-        if (!fs::exists(fullPath))
+        if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
         {
-            g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
-            exit(-1);
-        }
+            auto fullPath = Backend::compilerPath + Backend::compilerExe;
+            if (!fs::exists(fullPath))
+            {
+                g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
+                exit(-1);
+            }
 
-        g_Log.verbose(format("linkerPath is '%s'\n", Backend::compilerPath.c_str()));
+            g_Log.verbose(format("compilerPath is '%s'\n", Backend::compilerPath.c_str()));
+        }
+        else
+        {
+            auto fullPath = Backend::linkerPath + Backend::linkerExe;
+            if (!fs::exists(fullPath))
+            {
+                g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
+                exit(-1);
+            }
+
+            g_Log.verbose(format("linkerPath is '%s'\n", Backend::compilerPath.c_str()));
+        }
     }
 }
 
