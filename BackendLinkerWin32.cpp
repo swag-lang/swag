@@ -101,11 +101,11 @@ namespace BackendLinkerWin32
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         Utf8 linkArguments;
-        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+        getArguments(buildParameters, module, linkArguments);
 
         // Add all object files
         auto targetPath = Backend::getCacheFolder(buildParameters);
-        for(auto& file: objectFiles)
+        for (auto& file : objectFiles)
         {
             auto path = targetPath + "/" + file.c_str();
             linkArguments += path + " ";
