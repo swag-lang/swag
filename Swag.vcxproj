@@ -119,8 +119,6 @@
     <ClInclude Include="BackendCCompilerClClangWin32.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
     <ClInclude Include="BackendFunctionBodyJob.h" />
-    <ClInclude Include="BackendHelpers.h" />
-    <ClInclude Include="BackendLinker.h" />
     <ClInclude Include="BackendLLVMDbg.h" />
     <ClInclude Include="BackendLLVMFunctionBodyJob.h" />
     <ClInclude Include="BackendSetupWin32.h" />
