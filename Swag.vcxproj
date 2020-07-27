@@ -115,7 +115,6 @@
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="Backend.h" />
     <ClInclude Include="BackendC.h" />
-    <ClInclude Include="BackendCompilerWin32.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
     <ClInclude Include="BackendFunctionBodyJob.h" />
     <ClInclude Include="BackendLLVMDbg.h" />

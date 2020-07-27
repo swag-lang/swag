@@ -3,7 +3,7 @@ enum class LogColor;
 enum class BackendOutputType;
 #include "Log.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "OsWin32.h"
 #endif
 

@@ -665,9 +665,6 @@
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BackendCompilerWin32.h">
-      <Filter>Win32</Filter>
-    </ClInclude>
     <ClInclude Include="BackendLinkerWin32.h">
       <Filter>Win32</Filter>
     </ClInclude>

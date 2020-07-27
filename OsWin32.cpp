@@ -1,5 +1,5 @@
 #include "pch.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include "Os.h"
 #include "Global.h"
 #include "resource.h"

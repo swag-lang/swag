@@ -1,4 +1,5 @@
 #include "pch.h"
+#ifdef _WIN32
 #include "Log.h"
 #include "LLVMSetup.h"
 #include "Backend.h"
@@ -165,3 +166,4 @@ namespace OS
     }
 
 } // namespace OS
+#endif
