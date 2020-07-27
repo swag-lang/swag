@@ -12,15 +12,14 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
 {
     auto module = backend->module;
 
-    string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
-
     // CL arguments
     string clArguments = "";
     bool   debugMode   = buildParameters.target.backendDebugInformations || g_CommandLine.debug;
     if (debugMode)
     {
-        fs::path pdbPath = destFile + buildParameters.postFix + ".pdb";
-        clArguments += "/Fd\"" + pdbPath.string() + "\" ";
+        fs::path dest = BackendLinkerWin32::getOutputFileName(buildParameters);
+        dest.replace_extension(".pdb");
+        clArguments += "/Fd\"" + dest.string() + "\" ";
         clArguments += "/Zi ";
     }
 
@@ -74,7 +73,7 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
 
-        string resultFile = BackendLinkerWin32::getResultFile(buildParameters);
+        string resultFile = BackendLinkerWin32::getOutputFileName(buildParameters);
         libArguments += "/OUT:\"" + resultFile + "\" ";
 
         for (int i = 0; i < backend->numPreCompileBuffers; i++)

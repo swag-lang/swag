@@ -9,7 +9,7 @@ thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;
 JobResult ModuleTestJob::execute()
 {
     SWAG_ASSERT(module->hasBeenBuilt & BUILDRES_COMPILER);
-    fs::path path = g_Workspace.targetPath.string() + buildParameters.destFile + buildParameters.postFix;
+    fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
     path += OS::getOutputFileExtension(buildParameters.outputType);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;

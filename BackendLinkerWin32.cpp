@@ -5,6 +5,7 @@
 #include "CommandLine.h"
 #include "Workspace.h"
 #include "Module.h"
+#include "OS.h"
 
 #ifdef _WIN32
 
@@ -34,27 +35,12 @@ namespace BackendLinkerWin32
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
     }
 
-    string getResultFile(const BuildParameters& buildParameters)
+    string getOutputFileName(const BuildParameters& buildParameters)
     {
-        SWAG_ASSERT(!buildParameters.destFile.empty());
-        string destFile = g_Workspace.targetPath.string() + buildParameters.destFile;
-        string resultFile;
-        switch (buildParameters.outputType)
-        {
-        case BackendOutputType::StaticLib:
-            resultFile = destFile + buildParameters.postFix + ".lib";
-            break;
-
-        case BackendOutputType::DynamicLib:
-            resultFile = destFile + buildParameters.postFix + ".dll";
-            break;
-
-        case BackendOutputType::Binary:
-            resultFile = destFile + buildParameters.postFix + ".exe";
-            break;
-        }
-
-        return resultFile;
+        SWAG_ASSERT(!buildParameters.outputFileName.empty());
+        string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
+        destFile += OS::getOutputFileExtension(buildParameters.outputType);
+        return destFile;
     }
 
     void getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments)
@@ -97,7 +83,7 @@ namespace BackendLinkerWin32
         arguments += "user32.lib ";
 
         // Add swag.runtime
-        if(debugMode)
+        if (debugMode)
             arguments += "swag.runtime_d.lib ";
         else
             arguments += "swag.runtime.lib ";
@@ -116,7 +102,7 @@ namespace BackendLinkerWin32
         if (debugMode)
             arguments += "/DEBUG ";
 
-        auto resultFile = getResultFile(buildParameters);
+        auto resultFile = getOutputFileName(buildParameters);
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
         {
             arguments += "/DLL ";

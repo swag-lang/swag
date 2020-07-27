@@ -259,7 +259,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         SWAG_ASSERT(!module->name.empty());
-        pp.filename = format("%s%d", module->name.c_str(), precompileIndex);
+        pp.filename = format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += buildParameters.postFix;
         pp.filename += ".obj";
 

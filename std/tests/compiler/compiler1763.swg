@@ -1,10 +1,10 @@
-#[swag.printbc]
+//#[swag.printbc]
 func toto()
 {
     a := 0xBB
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     a := 0xAA

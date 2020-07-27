@@ -23,7 +23,7 @@ struct BuildParameters
     string             config;
     CompilerTarget     target;
     string             postFix;
-    string             destFile;
+    string             outputFileName;
     int                precompileIndex = 0;
     BackendCompileType compileType;
 };
