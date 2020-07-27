@@ -12,17 +12,18 @@ struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 
-static const uint32_t BCI_JUMP_DEST = 0x00000001;
+static const uint16_t BCI_JUMP_DEST = 0x0001;
 
 struct ByteCodeInstruction
 {
-    Register   a;
-    Register   b;
-    Register   c;
-    Register   d;
-    AstNode*   node;
-    ByteCodeOp op;
-    uint32_t   flags;
+    Register        a;
+    Register        b;
+    Register        c;
+    Register        d;
+    AstNode*        node;
+    SourceLocation* location;
+    ByteCodeOp      op;
+    uint16_t        flags;
 };
 
 struct ByteCode

@@ -259,6 +259,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc<AstFuncDecl>();
 
     newNode->copyFrom(context, this, false);
+    newNode->endToken    = endToken;
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
 

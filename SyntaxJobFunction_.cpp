@@ -427,14 +427,14 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode));
+            funcNode->endToken = token;
         }
 
         // Normal curly statement
         else
         {
             ScopedAccessFlags scopedAccess(this, 0);
-            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-            funcNode->content->token = token;
+            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content, &funcNode->endToken));
         }
 
         newScope->owner                     = funcNode->content;

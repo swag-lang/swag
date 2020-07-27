@@ -17,12 +17,14 @@ struct TypeInfoStruct;
 struct Scope;
 struct SymbolName;
 struct SymbolOverload;
+struct SourceLocation;
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
 {
     ByteCode*       bc;
     ByteCodeGenJob* job;
+    SourceLocation* forceLocation = nullptr;
 };
 
 static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;

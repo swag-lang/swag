@@ -153,7 +153,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result, Token* endToken)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
@@ -176,6 +176,8 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+    if (endToken)
+        *endToken = token;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }

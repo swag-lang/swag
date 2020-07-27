@@ -503,7 +503,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(label);
         }
 
-        pp.dbg.setLocation(pp.builder, ip->node);
+        pp.dbg.setLocation(pp.builder, ip);
 
         switch (ip->op)
         {

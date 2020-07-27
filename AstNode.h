@@ -363,6 +363,7 @@ struct AstFuncDecl : public AstNode
     SymbolAttributes collectAttributes;
     DependentJobs    dependentJobs;
 
+    Token          endToken;
     AstNode*       parameters        = nullptr;
     AstNode*       genericParameters = nullptr;
     AstNode*       returnType        = nullptr;

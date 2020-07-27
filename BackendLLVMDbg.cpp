@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "SourceFile.h"
 #include "Ast.h"
+#include "TypeInfo.h"
 
 void BackendLLVMDbg::setup(llvm::Module* modu)
 {
@@ -13,6 +14,19 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
 #ifdef _WIN32
     modu->addModuleFlag(llvm::Module::Warning, "CodeView", llvm::DEBUG_METADATA_VERSION);
 #endif
+
+    s8Ty   = dbgBuilder->createBasicType("s8", 8, llvm::dwarf::DW_ATE_signed);
+    s16Ty  = dbgBuilder->createBasicType("s16", 16, llvm::dwarf::DW_ATE_signed);
+    s32Ty  = dbgBuilder->createBasicType("s32", 32, llvm::dwarf::DW_ATE_signed);
+    s64Ty  = dbgBuilder->createBasicType("s64", 64, llvm::dwarf::DW_ATE_signed);
+    u8Ty   = dbgBuilder->createBasicType("u8", 8, llvm::dwarf::DW_ATE_unsigned);
+    u16Ty  = dbgBuilder->createBasicType("u16", 16, llvm::dwarf::DW_ATE_unsigned);
+    u32Ty  = dbgBuilder->createBasicType("u32", 32, llvm::dwarf::DW_ATE_unsigned);
+    u64Ty  = dbgBuilder->createBasicType("u64", 64, llvm::dwarf::DW_ATE_unsigned);
+    f32Ty  = dbgBuilder->createBasicType("f32", 32, llvm::dwarf::DW_ATE_float);
+    f64Ty  = dbgBuilder->createBasicType("f64", 64, llvm::dwarf::DW_ATE_float);
+    boolTy = dbgBuilder->createBasicType("bool", 8, llvm::dwarf::DW_ATE_unsigned);
+    charTy = dbgBuilder->createBasicType("char", 32, llvm::dwarf::DW_ATE_unsigned);
 }
 
 llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
@@ -29,8 +43,40 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
 
 llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
 {
-    auto dblTy = dbgBuilder->createBasicType("s32", 32, llvm::dwarf::DW_ATE_signed);
-    return dblTy;
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            return s8Ty;
+        case NativeTypeKind::S16:
+            return s16Ty;
+        case NativeTypeKind::S32:
+            return s32Ty;
+        case NativeTypeKind::S64:
+            return s64Ty;
+        case NativeTypeKind::U8:
+            return u8Ty;
+        case NativeTypeKind::U16:
+            return u16Ty;
+        case NativeTypeKind::U32:
+            return u32Ty;
+        case NativeTypeKind::U64:
+            return u64Ty;
+        case NativeTypeKind::F32:
+            return f32Ty;
+        case NativeTypeKind::F64:
+            return f64Ty;
+        case NativeTypeKind::Char:
+            return charTy;
+        case NativeTypeKind::Bool:
+            return boolTy;
+        default:
+            return s64Ty;
+        }
+    }
+
+    return s64Ty;
 }
 
 llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc)
@@ -115,15 +161,15 @@ void BackendLLVMDbg::finalize()
     dbgBuilder->finalize();
 }
 
-void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, AstNode* node)
+void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip)
 {
     if (!dbgBuilder)
         return;
 
-    if (!node)
+    if (!ip || !ip->location)
         builder->SetCurrentDebugLocation(nullptr);
     else
-        builder->SetCurrentDebugLocation(llvm::DebugLoc::get(node->token.startLocation.line + 1, 0 /*node->token.startLocation.column*/, scopes.back()));
+        builder->SetCurrentDebugLocation(llvm::DebugLoc::get(ip->location->line + 1, 0 /*ip->location->column*/, scopes.back()));
 }
 
 void BackendLLVMDbg::pushLexicalScope(AstNode* node)

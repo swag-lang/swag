@@ -9,22 +9,23 @@
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
     // No need to do the scope leave stuff if the function does return something, because
     // it has been covered by the mandatory return
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
         return true;
 
-    SWAG_CHECK(emitLeaveScope(context, node->scope));
+    SWAG_CHECK(emitLeaveScope(context, funcDecl->scope));
     if (context->result != ContextResult::Done)
         return true;
-   
-    context->node = node->content; // For source code location
-    if (node->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
+
+    context->forceLocation = &funcDecl->endToken.startLocation;
+    if (funcDecl->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcDecl->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
+    context->forceLocation = nullptr;
 
     return true;
 }
@@ -726,7 +727,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
-        context->node = funcNode; // For source code location
+        context->node                                      = funcNode; // For source code location
         emitInstruction(context, ByteCodeOp::DecSP)->a.u32 = funcNode->stackSize;
         emitInstruction(context, ByteCodeOp::CopySPtoBP);
     }

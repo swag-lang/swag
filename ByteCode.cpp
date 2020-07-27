@@ -104,19 +104,16 @@ void ByteCode::print()
         auto ip = out + i;
 
         // Print source code
-        if (ip->node->token.startLocation.line != lastLine)
+        if (ip->location && ip->location->line != lastLine)
         {
-            //if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
-            {
-                lastLine = ip->node->token.startLocation.line;
-                auto s   = sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
-                s.trimLeft();
-                g_Log.setColor(LogColor::DarkYellow);
-                for (int idx = 0; idx < 9; idx++)
-                    g_Log.print(" ");
-                g_Log.print(s);
-                g_Log.print("\n");
-            }
+            lastLine = ip->location->line;
+            auto s   = sourceFile->getLine(ip->location->seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+            s.trimLeft();
+            g_Log.setColor(LogColor::DarkYellow);
+            for (int idx = 0; idx < 9; idx++)
+                g_Log.print(" ");
+            g_Log.print(s);
+            g_Log.print("\n");
         }
 
         // Instruction rank
