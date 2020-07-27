@@ -395,13 +395,13 @@
     <ClCompile Include="BackendLLVMDbg.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCCompilerClClangWin32.cpp">
-      <Filter>Backend\Native\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="BackendLinkerWin32.cpp">
       <Filter>Backend\Native\Win32</Filter>
     </ClCompile>
     <ClCompile Include="BackendSetupWin32.cpp">
+      <Filter>Backend\Native\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCompilerWin32.cpp">
       <Filter>Backend\Native\Win32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -665,9 +665,6 @@
     <ClInclude Include="BackendLLVMDbg.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="BackendCCompilerClClangWin32.h">
-      <Filter>Backend\Native\Win32</Filter>
-    </ClInclude>
     <ClInclude Include="BackendLinkerWin32.h">
       <Filter>Backend\Native\Win32</Filter>
     </ClInclude>
@@ -676,6 +673,9 @@
     </ClInclude>
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendCompilerWin32.h">
+      <Filter>Backend\Native\Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

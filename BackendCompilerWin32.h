@@ -1,6 +1,6 @@
 #pragma once
 
-namespace BackendCCompilerClClangWin32
+namespace BackendCompilerWin32
 {
     bool compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
 }

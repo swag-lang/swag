@@ -4,7 +4,7 @@
 #include "Job.h"
 #include "OutputFile.h"
 #ifdef _WIN32
-#include "BackendCCompilerClClangWin32.h"
+#include "BackendCompilerWin32.h"
 #endif
 
 JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
@@ -73,6 +73,6 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     for (int i = 0; i < numPreCompileBuffers; i++)
         files.push_back(bufferCFiles[i].path);
 #ifdef _WIN32
-    return BackendCCompilerClClangWin32::compile(buildParameters, module, files);
+    return BackendCompilerWin32::compile(buildParameters, module, files);
 #endif
 }

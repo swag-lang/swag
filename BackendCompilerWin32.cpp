@@ -3,12 +3,12 @@
 #include "Os.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerClClangWin32.h"
+#include "BackendCompilerWin32.h"
 #include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
 
-namespace BackendCCompilerClClangWin32
+namespace BackendCompilerWin32
 {
     bool compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles)
     {
