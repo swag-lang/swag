@@ -6,9 +6,7 @@ struct BuildParameters;
 namespace BackendLinkerWin32
 {
     void getLibPaths(vector<Utf8>& libPath);
-
-    string getOutputFileName(const BuildParameters& buildParameters);
-    void   getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments);
+    void getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments);
 } // namespace BackendLinkerWin32
 
 #endif

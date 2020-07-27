@@ -2,6 +2,7 @@
 #include "Backend.h"
 #include "Workspace.h"
 #include "BackendSetupWin32.h"
+#include "OS.h"
 
 string Backend::compilerExe;
 string Backend::compilerPath;
@@ -44,6 +45,14 @@ string Backend::getCacheFolder(const BuildParameters& buildParameters)
     if (buildParameters.compileType == BackendCompileType::Test)
         targetPath += "/test/";
     return targetPath;
+}
+
+string Backend::getOutputFileName(const BuildParameters& buildParameters)
+{
+    SWAG_ASSERT(!buildParameters.outputFileName.empty());
+    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
+    destFile += OS::getOutputFileExtension(buildParameters.outputType);
+    return destFile;
 }
 
 void Backend::setMustCompile()

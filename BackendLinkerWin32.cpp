@@ -5,6 +5,7 @@
 #include "CommandLine.h"
 #include "Workspace.h"
 #include "Module.h"
+#include "Backend.h"
 #include "OS.h"
 
 #ifdef _WIN32
@@ -25,14 +26,6 @@ namespace BackendLinkerWin32
 
         // Runtime
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
-    }
-
-    string getOutputFileName(const BuildParameters& buildParameters)
-    {
-        SWAG_ASSERT(!buildParameters.outputFileName.empty());
-        string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
-        destFile += OS::getOutputFileExtension(buildParameters.outputType);
-        return destFile;
     }
 
     void getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments)
@@ -94,7 +87,7 @@ namespace BackendLinkerWin32
         if (debugMode)
             arguments += "/DEBUG ";
 
-        auto resultFile = getOutputFileName(buildParameters);
+        auto resultFile = Backend::getOutputFileName(buildParameters);
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
         {
             arguments += "/DLL ";

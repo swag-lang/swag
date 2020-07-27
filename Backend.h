@@ -70,4 +70,5 @@ struct Backend
     static string linkerPath;
     static void   setup();
     static string getCacheFolder(const BuildParameters& buildParameters);
+    static string getOutputFileName(const BuildParameters& buildParameters);
 };
