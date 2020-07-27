@@ -13,6 +13,7 @@ struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 
 static const uint16_t BCI_JUMP_DEST = 0x0001;
+static const uint16_t BCI_DEBUG     = 0x0002;
 
 struct ByteCodeInstruction
 {

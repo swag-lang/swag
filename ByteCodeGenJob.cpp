@@ -130,7 +130,9 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 
 ByteCodeInstruction* ByteCodeGenJob::emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op)
 {
-    return emitInstruction(context, op);
+    auto inst = emitInstruction(context, op);
+    inst->flags |= BCI_DEBUG;
+    return inst;
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
