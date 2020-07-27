@@ -686,6 +686,9 @@
     <ClInclude Include="BackendLLVMDbg.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
+    <ClInclude Include="BackendLinker.h">
+      <Filter>Backend\Native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

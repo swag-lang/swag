@@ -57,8 +57,6 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
     uint32_t numErrors = 0;
-    Utf8     linkArguments;
-
     switch (buildParameters.outputType)
     {
     case BackendOutputType::StaticLib:
@@ -93,6 +91,7 @@ bool BackendCCompilerClClangWin32::compile(const BuildParameters& buildParameter
     case BackendOutputType::DynamicLib:
     case BackendOutputType::Binary:
     {
+        Utf8 linkArguments;
         BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
         if (buildParameters.outputType == BackendOutputType::DynamicLib)

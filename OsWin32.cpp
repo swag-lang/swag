@@ -9,7 +9,6 @@
 #include <io.h>
 #include "BuildParameters.h"
 #include "Workspace.h"
-#include "BackendSetupWin32.h"
 
 namespace OS
 {
