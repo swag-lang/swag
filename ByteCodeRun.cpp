@@ -18,6 +18,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
+    case ByteCodeOp::DebugPushScope:
+    case ByteCodeOp::DebugPopScope:
+        break;
     case ByteCodeOp::JumpIfZero32:
     {
         if (!registersRC[ip->a.u32].u32)

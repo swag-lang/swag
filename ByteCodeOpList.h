@@ -285,4 +285,7 @@ BYTECODE_OP(AffectOpModuloEqU16)
 BYTECODE_OP(AffectOpModuloEqU32)
 BYTECODE_OP(AffectOpModuloEqU64)
 
+BYTECODE_OP(DebugPushScope)
+BYTECODE_OP(DebugPopScope)
+
 BYTECODE_OP(End)

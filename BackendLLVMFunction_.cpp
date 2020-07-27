@@ -3176,6 +3176,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
             break;
 
+        case ByteCodeOp::DebugPushScope:
+            pp.dbg.pushLexicalScope(ip->node);
+            break;
+        case ByteCodeOp::DebugPopScope:
+            pp.dbg.popLexicalScope();
+            break;
+
         default:
             ok = false;
             moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));

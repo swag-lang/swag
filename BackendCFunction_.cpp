@@ -756,6 +756,8 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         switch (ip->op)
         {
+        case ByteCodeOp::DebugPushScope:
+        case ByteCodeOp::DebugPopScope:
         case ByteCodeOp::End:
         case ByteCodeOp::DecSP:
         case ByteCodeOp::IncSP:

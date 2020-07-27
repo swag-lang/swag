@@ -333,7 +333,6 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     std::error_code           EC;
     llvm::raw_fd_ostream      dest(filename, EC, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
-    llvm::PassManagerBuilder  pmb;
 
     // Optimize passes
     int optimLevel = 0;
@@ -341,19 +340,30 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         optimLevel = g_CommandLine.optim;
     else if (!g_CommandLine.debug)
         optimLevel = buildParameters.target.backendOptimizeLevel;
+
+    switch (optimLevel)
+    {
+    case 0:
+        theTargetMachine->setOptLevel(llvm::CodeGenOpt::None);
+        break;
+    case 1:
+        theTargetMachine->setOptLevel(llvm::CodeGenOpt::Less);
+        break;
+    case 2:
+        theTargetMachine->setOptLevel(llvm::CodeGenOpt::Default);
+        break;
+    default:
+        theTargetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+        break;
+    }
+
     if (optimLevel)
     {
+        llvm::PassManagerBuilder pmb;
         pmb.OptLevel  = optimLevel;
         pmb.SizeLevel = 0;
         pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
         pmb.populateModulePassManager(llvmPass);
-    }
-    else
-    {
-        //llvmPass.add(llvm::createInstructionCombiningPass());
-        //llvmPass.add(llvm::createReassociatePass());
-        //llvmPass.add(llvm::createGVNPass());
-        //llvmPass.add(llvm::createCFGSimplificationPass());
     }
 
     // Generate obj file pass

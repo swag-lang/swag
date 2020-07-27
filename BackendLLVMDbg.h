@@ -11,6 +11,8 @@ struct BackendLLVMDbg
     void endFunction();
     void finalize();
     void setLocation(llvm::IRBuilder<>* builder, AstNode* node);
+    void pushLexicalScope(AstNode* node);
+    void popLexicalScope();
 
     llvm::DIFile*           getOrCreateFile(SourceFile* file);
     llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc);

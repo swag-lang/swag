@@ -93,3 +93,16 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, AstNode* node)
     else
         builder->SetCurrentDebugLocation(llvm::DebugLoc::get(node->token.startLocation.line + 1, 0 /*node->token.startLocation.column*/, scopes.back()));
 }
+
+void BackendLLVMDbg::pushLexicalScope(AstNode* node)
+{
+    if (!dbgBuilder)
+        return;
+    auto scope = dbgBuilder->createLexicalBlock(scopes.back(), scopes.back()->getFile(), node->token.startLocation.line + 1, 0 /*node->token.startLocation.column*/);
+    scopes.push_back(scope);
+}
+
+void BackendLLVMDbg::popLexicalScope()
+{
+    scopes.pop_back();
+}
