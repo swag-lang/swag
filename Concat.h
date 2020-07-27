@@ -1,7 +1,13 @@
 #pragma once
 #include "Pool.h"
-#include "ConcatBucket.h"
 #include "Global.h"
+
+struct ConcatBucket
+{
+    uint8_t*      datas      = nullptr;
+    ConcatBucket* nextBucket = nullptr;
+    int           count      = 0;
+};
 
 struct Concat
 {

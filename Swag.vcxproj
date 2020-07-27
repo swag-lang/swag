@@ -137,7 +137,6 @@
     <ClInclude Include="CommandLine.h" />
     <ClInclude Include="CommandLineParser.h" />
     <ClInclude Include="Concat.h" />
-    <ClInclude Include="ConcatBucket.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="DependentJobs.h" />

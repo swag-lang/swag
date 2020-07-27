@@ -497,9 +497,6 @@
     <ClInclude Include="Concat.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="ConcatBucket.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
