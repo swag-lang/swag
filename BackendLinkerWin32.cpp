@@ -99,6 +99,29 @@ namespace BackendLinkerWin32
         }
     }
 
+    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    {
+        Utf8 linkArguments;
+        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+
+        // Add all object files
+        auto targetPath = Backend::getCacheFolder(buildParameters);
+        for(auto& file: objectFiles)
+        {
+            auto path = targetPath + "/" + file.c_str();
+            linkArguments += path + " ";
+        }
+
+        bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
+        uint32_t numErrors = 0;
+        auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
+        SWAG_CHECK(OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+
+        g_Workspace.numErrors += numErrors;
+        module->numErrors += numErrors;
+        return numErrors == 0;
+    }
+
 } // namespace BackendLinkerWin32
 
 #endif

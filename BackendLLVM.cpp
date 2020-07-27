@@ -391,26 +391,15 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    int ct = buildParameters.compileType;
-
-    Utf8 linkArguments;
-    BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
-
-    // Add all object files
-    auto targetPath = Backend::getCacheFolder(buildParameters);
+    vector<string> files;
+    files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
-    {
-        SWAG_ASSERT(!perThread[ct][i].filename.empty());
-        auto path = targetPath + "/" + perThread[ct][i].filename.c_str();
-        linkArguments += path + " ";
-    }
+        files.push_back(perThread[buildParameters.compileType][i].filename);
 
-    bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
-    uint32_t numErrors = 0;
-    auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
-    SWAG_CHECK(OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+#ifdef _WIN32
+    return BackendLinkerWin32::link(buildParameters, module, files);
+#endif
 
-    g_Workspace.numErrors += numErrors;
-    module->numErrors += numErrors;
-    return numErrors == 0;
+    SWAG_ASSERT(false);
+    return false;
 }
