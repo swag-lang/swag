@@ -1,11 +1,7 @@
 #include "pch.h"
 #include "BackendC.h"
 #include "Workspace.h"
-#include "Job.h"
-#include "OutputFile.h"
-#ifdef _WIN32
-#include "BackendCompilerWin32.h"
-#endif
+#include "OS.h"
 
 JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
@@ -72,7 +68,6 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     files.reserve(numPreCompileBuffers);
     for (int i = 0; i < numPreCompileBuffers; i++)
         files.push_back(bufferCFiles[i].path);
-#ifdef _WIN32
-    return BackendCompilerWin32::compile(buildParameters, module, files);
-#endif
+
+    return OS::compile(buildParameters, module, files);
 }

@@ -7,7 +7,10 @@ namespace BackendSetupWin32
 {
     string visualStudioPath;
     string winSdkPath, winSdkVersion;
+} // namespace BackendSetupWin32
 
+namespace OS
+{
     static string getStringRegKey(HKEY hKey, const string& strValueName)
     {
         string strValue;
@@ -104,7 +107,7 @@ namespace BackendSetupWin32
         return !libPath.empty() && !libVersion.empty();
     }
 
-    void setup()
+    void setupBackend()
     {
         if (!g_CommandLine.backendOutput)
             return;
@@ -112,14 +115,14 @@ namespace BackendSetupWin32
         // Visual studio folder
         // For vcruntime & msvcrt (mandatory under windows, even with clang...)
         // For clang-cl, it seems that it can find the folder itself
-        if (!getVSFolder(visualStudioPath))
+        if (!getVSFolder(BackendSetupWin32::visualStudioPath))
         {
             g_Log.error("error: backend: cannot locate visual studio folder");
             exit(-1);
         }
 
         // Windows sdk folders and version
-        if (!getWinSdkFolder(winSdkPath, winSdkVersion))
+        if (!getWinSdkFolder(BackendSetupWin32::winSdkPath, BackendSetupWin32::winSdkVersion))
         {
             g_Log.error("error: backend: cannot locate windows sdk folder");
             exit(-1);
@@ -161,4 +164,4 @@ namespace BackendSetupWin32
         g_Log.verbose(format("VS winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
     }
 
-} // namespace BackendSetupWin32
+} // namespace OS

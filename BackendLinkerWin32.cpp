@@ -1,13 +1,9 @@
 #include "pch.h"
 #ifdef _WIN32
-#include "Utf8.h"
-#include "BackendSetupWin32.h"
-#include "Global.h"
-#include "CommandLine.h"
 #include "Workspace.h"
-#include "Module.h"
 #include "Backend.h"
 #include "OS.h"
+#include "BackendSetupWin32.h"
 
 namespace BackendLinkerWin32
 {
@@ -97,11 +93,14 @@ namespace BackendLinkerWin32
             arguments += "/OUT:\"" + resultFile + "\" ";
         }
     }
+} // namespace BackendLinkerWin32
 
+namespace OS
+{
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         Utf8 linkArguments;
-        getArguments(buildParameters, module, linkArguments);
+        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 
         // Add all object files
         auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -121,6 +120,6 @@ namespace BackendLinkerWin32
         return numErrors == 0;
     }
 
-} // namespace BackendLinkerWin32
+} // namespace OS
 
 #endif

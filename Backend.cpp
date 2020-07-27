@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend.h"
 #include "Workspace.h"
-#include "BackendSetupWin32.h"
 #include "OS.h"
 
 string Backend::compilerExe;
@@ -11,10 +10,7 @@ string Backend::linkerPath;
 
 void Backend::setup()
 {
-#ifdef _WIN32
-    BackendSetupWin32::setup();
-#endif
-
+    OS::setupBackend();
     if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
     {
         auto fullPath = Backend::compilerPath + Backend::compilerExe;

@@ -7,6 +7,9 @@ enum class BackendOutputType;
 #include "OsWin32.h"
 #endif
 
+struct BuildParameters;
+struct Module;
+
 namespace OS
 {
     extern void          setup();
@@ -32,6 +35,9 @@ namespace OS
     extern bool          touchFile(const fs::path& path);
     extern bool          watch(function<void(const string&)> cb);
     extern string        getTemporaryFolder();
+    extern void          setupBackend();
+    extern bool          compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
+    extern bool          link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles);
 
     enum class ResourceFile
     {

@@ -2,9 +2,6 @@
 #include "BackendLLVM.h"
 #include "Workspace.h"
 #include "OS.h"
-#include "BackendSetupWin32.h"
-#include "BackendLinkerWin32.h"
-#include "BackendLLVMDbg.h"
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
@@ -391,11 +388,5 @@ bool BackendLLVM::compile(const BuildParameters& buildParameters)
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i].filename);
-
-#ifdef _WIN32
-    return BackendLinkerWin32::link(buildParameters, module, files);
-#endif
-
-    SWAG_ASSERT(false);
-    return false;
+    return OS::link(buildParameters, module, files);
 }

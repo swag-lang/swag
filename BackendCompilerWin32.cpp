@@ -1,14 +1,12 @@
 #include "pch.h"
 #ifdef _WIN32
 #include "Os.h"
-#include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCompilerWin32.h"
 #include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
 
-namespace BackendCompilerWin32
+namespace OS
 {
     bool compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles)
     {
@@ -27,7 +25,7 @@ namespace BackendCompilerWin32
         clArguments += "/GS- ";
         clArguments += "/MD ";
 
-        for (const auto& file: cFiles)
+        for (const auto& file : cFiles)
             clArguments += "/Tc\"" + file + "\" ";
 
         auto cachePath = Backend::getCacheFolder(buildParameters);
@@ -113,6 +111,6 @@ namespace BackendCompilerWin32
         module->numErrors += numErrors;
         return true;
     }
-} // namespace BackendCCompilerClClangWin32
+} // namespace OS
 
 #endif
