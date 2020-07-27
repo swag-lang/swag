@@ -299,9 +299,6 @@
     <ClCompile Include="ByteCodeRunFFI_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="OsWin32.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Backend.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -395,14 +392,17 @@
     <ClCompile Include="BackendLLVMDbg.cpp">
       <Filter>Backend\Native\LLVM</Filter>
     </ClCompile>
+    <ClCompile Include="BackendCompilerWin32.cpp">
+      <Filter>Win32</Filter>
+    </ClCompile>
     <ClCompile Include="BackendLinkerWin32.cpp">
-      <Filter>Backend\Native\Win32</Filter>
+      <Filter>Win32</Filter>
     </ClCompile>
     <ClCompile Include="BackendSetupWin32.cpp">
-      <Filter>Backend\Native\Win32</Filter>
+      <Filter>Win32</Filter>
     </ClCompile>
-    <ClCompile Include="BackendCompilerWin32.cpp">
-      <Filter>Backend\Native\Win32</Filter>
+    <ClCompile Include="OsWin32.cpp">
+      <Filter>Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -617,9 +617,6 @@
     <ClInclude Include="DocNodeJob.h">
       <Filter>Doc</Filter>
     </ClInclude>
-    <ClInclude Include="OsWin32.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -665,17 +662,20 @@
     <ClInclude Include="BackendLLVMDbg.h">
       <Filter>Backend\Native\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="BackendLinkerWin32.h">
-      <Filter>Backend\Native\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="BackendSetupWin32.h">
-      <Filter>Backend\Native\Win32</Filter>
-    </ClInclude>
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="BackendCompilerWin32.h">
-      <Filter>Backend\Native\Win32</Filter>
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendLinkerWin32.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendSetupWin32.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="OsWin32.h">
+      <Filter>Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -715,8 +715,8 @@
     <Filter Include="Backend\Native\C">
       <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Backend\Native\Win32">
-      <UniqueIdentifier>{905692a3-7745-4f2b-ba23-6bff2ef815f0}</UniqueIdentifier>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
