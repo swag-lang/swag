@@ -6,10 +6,6 @@
 #include "BackendLinkerWin32.h"
 #include "BackendLLVMDbg.h"
 
-void BackendLLVM::intialize()
-{
-}
-
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;

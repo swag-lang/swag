@@ -18,7 +18,6 @@ struct BackendLLVM : public Backend
     {
     }
 
-    void                    intialize() override;
     JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;

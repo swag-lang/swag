@@ -43,7 +43,6 @@ bool Module::setup(const Utf8& moduleName)
         break;
     }
 
-    backend->intialize();
     return true;
 }
 

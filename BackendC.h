@@ -13,7 +13,6 @@ struct ByteCodeInstruction;
 struct DataSegment;
 struct Utf8;
 struct Job;
-struct BackendCCompiler;
 
 struct BackendC : public Backend
 {
@@ -22,7 +21,6 @@ struct BackendC : public Backend
     {
     }
 
-    void                    intialize() override;
     JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
@@ -47,5 +45,4 @@ struct BackendC : public Backend
     OutputFile            bufferCFiles[MAX_PRECOMPILE_BUFFERS];
     BackendPreCompilePass pass[MAX_PRECOMPILE_BUFFERS] = {BackendPreCompilePass::Init};
     mutex                 lock;
-    BackendCCompiler*     compiler = nullptr;
 };

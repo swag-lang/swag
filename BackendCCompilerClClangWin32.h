@@ -1,12 +1,6 @@
 #pragma once
-#include "BackendCCompiler.h"
 
-struct BackendCCompilerClClangWin32 : public BackendCCompiler
+namespace BackendCCompilerClClangWin32
 {
-    BackendCCompilerClClangWin32(BackendC* bk)
-        : BackendCCompiler{bk}
-    {
-    }
-
-    bool compile(const BuildParameters& buildParameters) override;
-};
+    bool compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
+}

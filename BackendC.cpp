@@ -7,13 +7,6 @@
 #include "BackendCCompilerClClangWin32.h"
 #endif
 
-void BackendC::intialize()
-{
-#ifdef _WIN32
-    compiler = new BackendCCompilerClClangWin32(this);
-#endif
-}
-
 JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Do we need to generate the file ?
@@ -75,6 +68,11 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    SWAG_ASSERT(compiler);
-    return compiler->compile(buildParameters);
+    vector<string> files;
+    files.reserve(numPreCompileBuffers);
+    for (int i = 0; i < numPreCompileBuffers; i++)
+        files.push_back(bufferCFiles[i].path);
+#ifdef _WIN32
+    return BackendCCompilerClClangWin32::compile(buildParameters, module, files);
+#endif
 }

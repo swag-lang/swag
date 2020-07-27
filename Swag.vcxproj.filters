@@ -530,9 +530,6 @@
     <ClInclude Include="ByteCodeOpList.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
-    <ClInclude Include="BackendCCompiler.h">
-      <Filter>Backend\Native\C</Filter>
-    </ClInclude>
     <ClInclude Include="BuildPass.h">
       <Filter>Main</Filter>
     </ClInclude>

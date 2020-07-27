@@ -30,7 +30,6 @@ struct Backend
     {
     }
 
-    virtual void                    intialize()                                                       = 0;
     virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) = 0;
     virtual bool                    compile(const BuildParameters& backendParameters)                 = 0;
     virtual BackendFunctionBodyJob* newFunctionJob()                                                  = 0;

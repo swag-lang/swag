@@ -1,4 +1,5 @@
 #include "pch.h"
+#ifdef _WIN32
 #include "Utf8.h"
 #include "BackendSetupWin32.h"
 #include "Global.h"
@@ -7,8 +8,6 @@
 #include "Module.h"
 #include "Backend.h"
 #include "OS.h"
-
-#ifdef _WIN32
 
 namespace BackendLinkerWin32
 {
