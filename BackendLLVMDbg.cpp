@@ -64,6 +64,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
     if (!typeInfo)
         return s32Ty;
 
+    auto it = mapTypes.find(typeInfo);
+    if (it != mapTypes.end())
+        return it->second;
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Array:
@@ -72,17 +76,23 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
         vector<llvm::Metadata*> subscripts;
         subscripts.push_back(dbgBuilder->getOrCreateSubrange(0, typeInfoPtr->count));
         llvm::DINodeArray subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
-        return dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType), subscriptArray);
+        auto              result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType), subscriptArray);
+        mapTypes[typeInfo]               = result;
+        return result;
     }
     case TypeInfoKind::Pointer:
     {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        auto typeInfoPtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        mapTypes[typeInfo] = result;
+        return result;
     }
     case TypeInfoKind::Reference:
     {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        auto typeInfoPtr   = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        mapTypes[typeInfo] = result;
+        return result;
     }
     case TypeInfoKind::Native:
     {
@@ -193,7 +203,7 @@ void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::Function* func, llv
     llvm::DIType*          type = getType(typeInfo);
     llvm::DILocalVariable* var  = dbgBuilder->createAutoVariable(scopes.back(), node->name.c_str(), scopes.back()->getFile(), node->token.startLocation.line, type);
 
-    auto&             loc     = node->token.startLocation;
+    auto&             loc = node->token.startLocation;
     llvm::IRBuilder<> builder(&func->getEntryBlock(), func->getEntryBlock().begin());
     auto              v = GEP_I32(storage, overload->storageOffset);
     dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), builder.GetInsertBlock());

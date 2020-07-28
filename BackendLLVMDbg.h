@@ -26,7 +26,8 @@ struct BackendLLVMDbg
     llvm::DICompileUnit*   compileUnit = nullptr;
     vector<llvm::DIScope*> scopes;
 
-    map<string, llvm::DIFile*> mapFiles;
+    map<string, llvm::DIFile*>    mapFiles;
+    map<TypeInfo*, llvm::DIType*> mapTypes;
 
     llvm::DIType*          s8Ty;
     llvm::DIType*          s16Ty;
