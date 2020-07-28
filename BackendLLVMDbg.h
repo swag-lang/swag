@@ -20,6 +20,7 @@ struct BackendLLVMDbg
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
 
+    llvm::DIType*           getSliceType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getStructType(TypeInfo* typeInfo, llvm::DIFile* file);
@@ -30,9 +31,10 @@ struct BackendLLVMDbg
     llvm::DICompileUnit*   compileUnit = nullptr;
     vector<llvm::DIScope*> scopes;
 
-    map<string, llvm::DIFile*>    mapFiles;
-    map<TypeInfo*, llvm::DIType*> mapTypes;
-    map<TypeInfo*, llvm::DIType*> mapPtrTypes;
+    map<string, llvm::DIFile*>              mapFiles;
+    map<TypeInfo*, llvm::DIType*>           mapTypes;
+    map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
+    map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
 
     llvm::DIType*          s8Ty;
     llvm::DIType*          s16Ty;

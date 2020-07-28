@@ -126,6 +126,25 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     return result;
 }
 
+llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, llvm::DIFile* file)
+{
+    auto it = mapTypes.find(typeInfo);
+    if (it != mapTypes.end())
+        return it->second;
+
+    auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    auto fileScope   = file->getScope();
+    auto noFlag      = llvm::DINode::DIFlags::FlagZero;
+    auto realType    = getPointerToType(typeInfoPtr->pointedType, file);
+    auto v1          = dbgBuilder->createMemberType(fileScope, "data", file, 0, 64, 0, 0, noFlag, realType);
+    auto v2          = dbgBuilder->createMemberType(fileScope, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
+    auto content     = dbgBuilder->getOrCreateArray({v1, v2});
+    auto result      = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, content);
+
+    mapTypes[typeInfo] = result;
+    return result;
+}
+
 llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
@@ -167,17 +186,8 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         return result;
     }
     case TypeInfoKind::Slice:
-    {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto fileScope   = file->getScope();
-        auto noFlag      = llvm::DINode::DIFlags::FlagZero;
-        auto realType    = getPointerToType(typeInfoPtr->pointedType, file);
-        auto v1          = dbgBuilder->createMemberType(fileScope, "data", file, 0, 64, 0, 0, noFlag, realType);
-        auto v2          = dbgBuilder->createMemberType(fileScope, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
-        auto content     = dbgBuilder->getOrCreateArray({v1, v2});
-        auto result      = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, content);
-        return result;
-    }
+        return getSliceType(typeInfo, file);
+
     case TypeInfoKind::Native:
     {
         switch (typeInfo->nativeType)
@@ -219,6 +229,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
 llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
 {
+    auto it = mapFuncTypes.find(typeFunc);
+    if (it != mapFuncTypes.end())
+        return it->second;
+
     vector<llvm::Metadata*> params;
 
     params.push_back(getType(typeFunc->returnType, file));
@@ -226,7 +240,10 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
         params.push_back(getType(one->typeInfo, file));
 
     auto typeArray = dbgBuilder->getOrCreateTypeArray(params);
-    return dbgBuilder->createSubroutineType(typeArray);
+    auto result    = dbgBuilder->createSubroutineType(typeArray);
+
+    mapFuncTypes[typeFunc] = result;
+    return result;
 }
 
 void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func)
