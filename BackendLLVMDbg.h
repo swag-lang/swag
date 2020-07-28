@@ -20,10 +20,11 @@ struct BackendLLVMDbg
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
 
-    llvm::DIType*           createEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DIType*           getStructType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getType(TypeInfo* typeInfo, llvm::DIFile* file);
-    llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
+    llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
     llvm::DIBuilder*       dbgBuilder  = nullptr;
     llvm::DICompileUnit*   compileUnit = nullptr;

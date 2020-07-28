@@ -1,7 +1,7 @@
-enum TITI: f32
+enum TITI: string
 {
-    AA = 1.0
-    BB = 1.5
+    AA = "value1"
+    BB = "value2"
 }
 
 #[swag.printbc]

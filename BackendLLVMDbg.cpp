@@ -52,23 +52,34 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     return dbgfile;
 }
 
-llvm::DIType* BackendLLVMDbg::createEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
-    auto                    typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-    auto                    fileScope    = file->getScope();
-    vector<llvm::Metadata*> subscripts;
-    for (auto& value : typeInfoEnum->values)
+    auto it = mapTypes.find(typeInfo);
+    if (it != mapTypes.end())
+        return it->second;
+
+    // Normal c enum, integer only
+    auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    if (typeInfoEnum->rawType->flags & TYPEINFO_INTEGER)
     {
-        auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value.reg.u64, true);
-        subscripts.push_back(typeField);
+        auto                    fileScope = file->getScope();
+        vector<llvm::Metadata*> subscripts;
+        bool                    isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
+        for (auto& value : typeInfoEnum->values)
+        {
+            auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value.reg.u64, isUnsigned);
+            subscripts.push_back(typeField);
+        }
+
+        auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
+        auto rawType       = getType(typeInfoEnum->rawType, file);
+        auto content       = dbgBuilder->getOrCreateArray(subscripts);
+        auto result        = dbgBuilder->createEnumerationType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
+        mapTypes[typeInfo] = result;
+        return result;
     }
 
-    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
-    auto rawType       = getType(typeInfoEnum->rawType, file);
-    auto content       = dbgBuilder->getOrCreateArray(subscripts);
-    auto result        = dbgBuilder->createEnumerationType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
-    mapTypes[typeInfo] = result;
-    return result;
+    return getType(typeInfoEnum->rawType, file);
 }
 
 llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
@@ -78,6 +89,31 @@ llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile*
         return it->second;
     auto result           = dbgBuilder->createPointerType(getType(typeInfo, file), 64);
     mapPtrTypes[typeInfo] = result;
+    return result;
+}
+
+llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
+{
+    auto it = mapTypes.find(typeInfo);
+    if (it != mapTypes.end())
+        return it->second;
+
+    vector<llvm::Metadata*> subscripts;
+    auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    auto                    fileScope  = file->getScope();
+    auto                    noFlag     = llvm::DINode::DIFlags::FlagZero;
+    for (auto& field : typeStruct->fields)
+    {
+        auto lineNo    = field->node->token.startLocation.line + 1;
+        auto fieldType = getType(field->typeInfo, file);
+        auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, lineNo, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
+        subscripts.push_back(typeField);
+    }
+
+    auto content       = dbgBuilder->getOrCreateArray(subscripts);
+    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
+    auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
+    mapTypes[typeInfo] = result;
     return result;
 }
 
@@ -93,29 +129,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Enum:
-    {
-        return createEnumType(typeInfo, file);
-    }
+        return getEnumType(typeInfo, file);
     case TypeInfoKind::Struct:
-    {
-        vector<llvm::Metadata*> subscripts;
-        auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto                    fileScope  = file->getScope();
-        auto                    noFlag     = llvm::DINode::DIFlags::FlagZero;
-        for (auto& field : typeStruct->fields)
-        {
-            auto lineNo    = field->node->token.startLocation.line + 1;
-            auto fieldType = getType(field->typeInfo, file);
-            auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, lineNo, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
-            subscripts.push_back(typeField);
-        }
+        return getStructType(typeInfo, file);
 
-        auto content       = dbgBuilder->getOrCreateArray(subscripts);
-        auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
-        auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
-        mapTypes[typeInfo] = result;
-        return result;
-    }
     case TypeInfoKind::Array:
     {
         auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
@@ -129,14 +146,14 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     case TypeInfoKind::Pointer:
     {
         auto typeInfoPtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
+        auto result        = getPointerToType(typeInfoPtr->pointedType, file);
         mapTypes[typeInfo] = result;
         return result;
     }
     case TypeInfoKind::Reference:
     {
         auto typeInfoPtr   = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
+        auto result        = getPointerToType(typeInfoPtr->pointedType, file);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -145,7 +162,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto fileScope   = file->getScope();
         auto noFlag      = llvm::DINode::DIFlags::FlagZero;
-        auto realType    = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
+        auto realType    = getPointerToType(typeInfoPtr->pointedType, file);
         auto v1          = dbgBuilder->createMemberType(fileScope, "data", file, 0, 64, 0, 0, noFlag, realType);
         auto v2          = dbgBuilder->createMemberType(fileScope, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
         auto content     = dbgBuilder->getOrCreateArray({v1, v2});
@@ -191,7 +208,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     return s64Ty;
 }
 
-llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
+llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
 {
     vector<llvm::Metadata*> params;
 
@@ -223,7 +240,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     // Register function
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
-    llvm::DISubroutineType* dbgFuncType = createFunctionType(typeFunc, file);
+    llvm::DISubroutineType* dbgFuncType = getFunctionType(typeFunc, file);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(), name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
     scopes.push_back(SP);
