@@ -5,11 +5,12 @@ struct TypeInfoFuncAttr;
 struct AstNode;
 struct TypeInfo;
 struct ByteCodeInstruction;
+struct LLVMPerThread;
 
 struct BackendLLVMDbg
 {
     void setup(llvm::Module* module);
-    void startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llvm::Function* func);
+    void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func);
     void endFunction();
     void finalize();
     void setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip);

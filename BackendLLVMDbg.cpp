@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Ast.h"
 #include "TypeInfo.h"
+#include "BackendLLVM.h"
 
 void BackendLLVMDbg::setup(llvm::Module* modu)
 {
@@ -31,7 +32,7 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
 
     {
         auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "value", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
-        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "count", mainFile, 1, 32, 0, 32, llvm::DINode::DIFlags::FlagZero, u32Ty);
+        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "count", mainFile, 1, 32, 0, 64, llvm::DINode::DIFlags::FlagZero, u32Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
         stringTy                  = dbgBuilder->createStructType(mainFile->getScope(),
                                                 "string",
@@ -111,10 +112,9 @@ llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typ
     return dbgBuilder->createSubroutineType(typeArray);
 }
 
-void BackendLLVMDbg::startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llvm::Function* func)
+void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func)
 {
-    if (!dbgBuilder)
-        return;
+    SWAG_ASSERT(dbgBuilder);
 
     Utf8         name = bc->name;
     AstFuncDecl* decl = nullptr;
@@ -145,8 +145,10 @@ void BackendLLVMDbg::startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llv
     func->setSubprogram(SP);
     scopes.push_back(SP);
 
+    // Parameters
     if (decl && decl->parameters)
     {
+        auto idxParam = typeFunc->numReturnRegisters();
         for (int i = 0; i < decl->parameters->childs.size(); i++)
         {
             auto                   child = decl->parameters->childs[i];
@@ -158,19 +160,35 @@ void BackendLLVMDbg::startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llv
                                                                              child->token.startLocation.line + 1,
                                                                              type);
 
-            dbgBuilder->insertDeclare(func->getArg(i + typeFunc->numReturnRegisters()),
-                                      var,
-                                      dbgBuilder->createExpression(),
-                                      llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
-                                      &func->getEntryBlock());
+            //if (child->typeInfo->numRegisters() == 1)
+            {
+                dbgBuilder->insertDeclare(func->getArg(idxParam),
+                                          var,
+                                          dbgBuilder->createExpression(),
+                                          llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
+                                          &func->getEntryBlock());
+            }
+            /*else
+            {
+                llvm::IRBuilder<> tmpB(&func->getEntryBlock(), func->getEntryBlock().begin());
+                auto              allocA = tmpB.CreateAlloca(pp.builder->getInt64Ty(), pp.cst2_i32);
+                tmpB.CreateStore(tmpB.CreateLoad(func->getArg(idxParam)), allocA);
+                tmpB.CreateStore(tmpB.CreateLoad(func->getArg(idxParam + 1)), tmpB.CreateInBoundsGEP(allocA, pp.cst1_i32));
+                dbgBuilder->insertDeclare(allocA,
+                                          var,
+                                          dbgBuilder->createExpression(),
+                                          llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
+                                          &func->getEntryBlock());
+            }*/
+
+            idxParam += child->typeInfo->numRegisters();
         }
     }
 }
 
 void BackendLLVMDbg::createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip)
 {
-    if (!dbgBuilder)
-        return;
+    SWAG_ASSERT(dbgBuilder);
 
     auto node = ip->node;
     SWAG_ASSERT(node);
@@ -196,23 +214,19 @@ void BackendLLVMDbg::createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* sto
 
 void BackendLLVMDbg::endFunction()
 {
-    if (!dbgBuilder)
-        return;
+    SWAG_ASSERT(dbgBuilder);
     scopes.pop_back();
 }
 
 void BackendLLVMDbg::finalize()
 {
-    if (!dbgBuilder)
-        return;
+    SWAG_ASSERT(dbgBuilder);
     dbgBuilder->finalize();
 }
 
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip)
 {
-    if (!dbgBuilder)
-        return;
-
+    SWAG_ASSERT(dbgBuilder);
     if (!ip || !ip->location)
         builder->SetCurrentDebugLocation(nullptr);
     else
@@ -221,8 +235,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction
 
 void BackendLLVMDbg::pushLexicalScope(AstNode* node)
 {
-    if (!dbgBuilder)
-        return;
+    SWAG_ASSERT(dbgBuilder);
     auto scope = dbgBuilder->createLexicalBlock(scopes.back(), scopes.back()->getFile(), node->token.startLocation.line + 1, 0 /*node->token.startLocation.column*/);
     scopes.push_back(scope);
 }

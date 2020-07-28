@@ -1,7 +1,6 @@
 #pragma once
 #include "Backend.h"
 #include "BuildParameters.h"
-#include "BackendLLVMDbg.h"
 
 struct Module;
 struct BuildParameters;
@@ -10,6 +9,47 @@ struct DataSegment;
 struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
+struct BackendLLVMDbg;
+
+struct LLVMPerThread
+{
+    llvm::LLVMContext*    context;
+    llvm::IRBuilder<>*    builder;
+    llvm::Module*         module;
+    string                filename;
+    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
+
+    llvm::GlobalVariable* bssSeg            = nullptr;
+    llvm::GlobalVariable* mutableSeg        = nullptr;
+    llvm::GlobalVariable* constantSeg       = nullptr;
+    llvm::GlobalVariable* mainContext       = nullptr;
+    llvm::GlobalVariable* defaultAllocTable = nullptr;
+    llvm::GlobalVariable* processInfos      = nullptr;
+
+    llvm::Type*         interfaceTy    = nullptr;
+    llvm::Type*         contextTy      = nullptr;
+    llvm::Type*         sliceTy        = nullptr;
+    llvm::Type*         processInfosTy = nullptr;
+    llvm::FunctionType* allocatorTy    = nullptr;
+    llvm::FunctionType* bytecodeRunTy  = nullptr;
+
+    llvm::Value* cst0_i8  = nullptr;
+    llvm::Value* cst1_i8  = nullptr;
+    llvm::Value* cst0_i16 = nullptr;
+    llvm::Value* cst0_i32 = nullptr;
+    llvm::Value* cst1_i32 = nullptr;
+    llvm::Value* cst2_i32 = nullptr;
+    llvm::Value* cst3_i32 = nullptr;
+    llvm::Value* cst0_i64 = nullptr;
+    llvm::Value* cst0_f32 = nullptr;
+    llvm::Value* cst0_f64 = nullptr;
+    llvm::Value* cst_null = nullptr;
+
+    map<int32_t, llvm::BasicBlock*> labels;
+
+    // Debug infos
+    BackendLLVMDbg* dbg;
+};
 
 struct BackendLLVM : public Backend
 {
@@ -45,44 +85,5 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, int32_t ip);
 
-    struct
-    {
-        llvm::LLVMContext*    context;
-        llvm::IRBuilder<>*    builder;
-        llvm::Module*         module;
-        string                filename;
-        BackendPreCompilePass pass = {BackendPreCompilePass::Init};
-
-        llvm::GlobalVariable* bssSeg            = nullptr;
-        llvm::GlobalVariable* mutableSeg        = nullptr;
-        llvm::GlobalVariable* constantSeg       = nullptr;
-        llvm::GlobalVariable* mainContext       = nullptr;
-        llvm::GlobalVariable* defaultAllocTable = nullptr;
-        llvm::GlobalVariable* processInfos      = nullptr;
-
-        llvm::Type*         interfaceTy    = nullptr;
-        llvm::Type*         contextTy      = nullptr;
-        llvm::Type*         sliceTy        = nullptr;
-        llvm::Type*         processInfosTy = nullptr;
-        llvm::FunctionType* allocatorTy    = nullptr;
-        llvm::FunctionType* bytecodeRunTy  = nullptr;
-
-        llvm::Value* cst0_i8  = nullptr;
-        llvm::Value* cst1_i8  = nullptr;
-        llvm::Value* cst0_i16 = nullptr;
-        llvm::Value* cst0_i32 = nullptr;
-        llvm::Value* cst1_i32 = nullptr;
-        llvm::Value* cst2_i32 = nullptr;
-        llvm::Value* cst3_i32 = nullptr;
-        llvm::Value* cst0_i64 = nullptr;
-        llvm::Value* cst0_f32 = nullptr;
-        llvm::Value* cst0_f64 = nullptr;
-        llvm::Value* cst_null = nullptr;
-
-        map<int32_t, llvm::BasicBlock*> labels;
-
-        // Debug infos
-        BackendLLVMDbg dbg;
-
-    } perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    LLVMPerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

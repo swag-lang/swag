@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendLLVM.h"
+#include "BackendLLVMDbg.h"
 #include "BackendLLVMFunctionBodyJob.h"
 #include "Module.h"
 #include "ByteCode.h"
@@ -466,10 +467,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     pp.labels.clear();
     bc->markLabels();
 
-    pp.dbg.startFunction(pp.builder, bc, func);
+    if (pp.dbg)
+    {
+        pp.dbg->startFunction(pp, bc, func);
+        pp.dbg->setLocation(pp.builder, nullptr);
+    }
 
     // Reserve registers
-    pp.dbg.setLocation(pp.builder, nullptr);
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
         allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxReservedRegisterRC));
@@ -504,7 +508,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(label);
         }
 
-        pp.dbg.setLocation(pp.builder, ip);
+        if (pp.dbg)
+            pp.dbg->setLocation(pp.builder, ip);
 
         switch (ip->op)
         {
@@ -3178,13 +3183,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::DebugPushScope:
-            pp.dbg.pushLexicalScope(ip->node);
+            if (pp.dbg)
+                pp.dbg->pushLexicalScope(ip->node);
             break;
         case ByteCodeOp::DebugPopScope:
-            pp.dbg.popLexicalScope();
+            if (pp.dbg)
+                pp.dbg->popLexicalScope();
             break;
         case ByteCodeOp::DebugDeclLocalVar:
-            pp.dbg.createLocalVar(pp.builder, allocStack, ip);
+            if (pp.dbg)
+                pp.dbg->createLocalVar(pp.builder, allocStack, ip);
             break;
 
         default:
@@ -3196,7 +3204,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
     if (!blockIsClosed)
         builder.CreateRetVoid();
-    pp.dbg.endFunction();
+    if (pp.dbg)
+        pp.dbg->endFunction();
     return ok;
 }
 

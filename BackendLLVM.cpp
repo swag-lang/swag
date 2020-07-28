@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendLLVM.h"
+#include "BackendLLVMDbg.h"
 #include "Workspace.h"
 #include "OS.h"
 
@@ -260,7 +261,10 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         pp.builder = new llvm::IRBuilder<>(*pp.context);
 
         if (buildParameters.target.backendDebugInformations || g_CommandLine.debug)
-            pp.dbg.setup(pp.module);
+        {
+            pp.dbg = new BackendLLVMDbg;
+            pp.dbg->setup(pp.module);
+        }
 
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("   module '%s', llvm backend, generating files", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
@@ -304,7 +308,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto& modu            = *pp.module;
 
     // Debug infos
-    pp.dbg.finalize();
+    pp.dbg->finalize();
 
     // Target machine
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
