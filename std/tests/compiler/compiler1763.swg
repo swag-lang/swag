@@ -4,7 +4,7 @@ enum TITI: string
     BB = "value2"
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
      pt0 := TITI.AA

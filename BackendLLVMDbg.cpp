@@ -98,6 +98,9 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     if (it != mapTypes.end())
         return it->second;
 
+    // If a field is a pointer to the struct itself, this will avoid a recursive call
+    mapTypes[typeInfo] = ptrU8Ty;
+
     vector<llvm::Metadata*> subscripts;
     auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     auto                    fileScope  = file->getScope();
