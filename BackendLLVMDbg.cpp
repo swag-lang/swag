@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
 #include "ByteCode.h"
 #include "SourceFile.h"
@@ -31,8 +32,8 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
     ptrU8Ty = dbgBuilder->createPointerType(u8Ty, 64);
 
     {
-        auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "value", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
-        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "count", mainFile, 1, 32, 0, 64, llvm::DINode::DIFlags::FlagZero, u32Ty);
+        auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "sizeof", mainFile, 1, 32, 0, 64, llvm::DINode::DIFlags::FlagZero, u32Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
         stringTy                  = dbgBuilder->createStructType(mainFile->getScope(),
                                                 "string",
@@ -67,12 +68,20 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
     {
     case TypeInfoKind::Array:
     {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        vector<llvm::Metadata*> subscripts;
+        subscripts.push_back(dbgBuilder->getOrCreateSubrange(0, typeInfoPtr->count));
+        llvm::DINodeArray subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
+        return dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType), subscriptArray);
     }
     case TypeInfoKind::Pointer:
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+    }
+    case TypeInfoKind::Reference:
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
         return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
     }
     case TypeInfoKind::Native:
@@ -147,15 +156,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
     llvm::DISubroutineType* dbgFuncType = createFunctionType(typeFunc);
-    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(),
-                                                        name.c_str(),
-                                                        name.c_str(),
-                                                        file,
-                                                        lineNo,
-                                                        dbgFuncType,
-                                                        lineNo,
-                                                        llvm::DINode::FlagPrototyped,
-                                                        llvm::DISubprogram::SPFlagDefinition);
+    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(), name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
     scopes.push_back(SP);
 
@@ -165,40 +166,37 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         auto idxParam = typeFunc->numReturnRegisters();
         for (int i = 0; i < decl->parameters->childs.size(); i++)
         {
-            auto                   child = decl->parameters->childs[i];
-            const auto&            loc   = child->token.startLocation;
-            llvm::DIType*          type  = dbgFuncType->getTypeArray()[i + 1];
-            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
+            auto          child = decl->parameters->childs[i];
+            const auto&   loc   = child->token.startLocation;
+            llvm::DIType* type  = dbgFuncType->getTypeArray()[i + 1];
+
+            // Transform an array to a pointer in case of a function parameter
+            if (typeFunc->parameters[i]->typeInfo->kind == TypeInfoKind::Array)
+                type = dbgBuilder->createPointerType(type, 60);
+
+            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
             dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), &func->getEntryBlock());
             idxParam += child->typeInfo->numRegisters();
         }
     }
 }
 
-void BackendLLVMDbg::createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip)
+void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
+    SWAG_ASSERT(ip->node);
 
-    auto node = ip->node;
-    SWAG_ASSERT(node);
+    auto            node     = ip->node;
     SymbolOverload* overload = node->resolvedSymbolOverload;
-    SWAG_ASSERT(overload);
-    auto typeInfo = overload->typeInfo;
-    SWAG_ASSERT(typeInfo);
+    auto            typeInfo = overload->typeInfo;
 
     llvm::DIType*          type = getType(typeInfo);
-    llvm::DILocalVariable* var  = dbgBuilder->createAutoVariable(scopes.back(),
-                                                                node->name.c_str(),
-                                                                scopes.back()->getFile(),
-                                                                node->token.startLocation.line,
-                                                                type);
+    llvm::DILocalVariable* var  = dbgBuilder->createAutoVariable(scopes.back(), node->name.c_str(), scopes.back()->getFile(), node->token.startLocation.line, type);
 
-    auto v = builder->CreateInBoundsGEP(storage, builder->getInt32(overload->storageOffset));
-    dbgBuilder->insertDeclare(v,
-                              var,
-                              dbgBuilder->createExpression(),
-                              llvm::DebugLoc::get(node->token.startLocation.line + 1, node->token.startLocation.column, scopes.back()),
-                              builder->GetInsertBlock());
+    auto&             loc     = node->token.startLocation;
+    llvm::IRBuilder<> builder(&func->getEntryBlock(), func->getEntryBlock().begin());
+    auto              v = GEP_I32(storage, overload->storageOffset);
+    dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), builder.GetInsertBlock());
 }
 
 void BackendLLVMDbg::endFunction()

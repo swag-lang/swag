@@ -308,7 +308,8 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto& modu            = *pp.module;
 
     // Debug infos
-    pp.dbg->finalize();
+    if(pp.dbg)
+        pp.dbg->finalize();
 
     // Target machine
     auto targetTriple = llvm::sys::getDefaultTargetTriple();

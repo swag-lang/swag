@@ -16,7 +16,7 @@ struct BackendLLVMDbg
     void setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip);
     void pushLexicalScope(AstNode* node);
     void popLexicalScope();
-    void createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip);
+    void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
 
     llvm::DIFile*           getOrCreateFile(SourceFile* file);
     llvm::DIType*           getType(TypeInfo* typeInfo);
