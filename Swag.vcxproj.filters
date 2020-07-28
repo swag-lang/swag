@@ -93,7 +93,7 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="BackendC.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeRun.cpp">
       <Filter>Backend\ByteCode</Filter>
@@ -222,13 +222,13 @@
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="BackendCData_.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="BackendCMain_.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="BackendCRuntime_.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCompileJob.cpp">
       <Filter>Backend</Filter>
@@ -318,7 +318,7 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="BackendCFunctionBodyJob.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="DocModuleJob.cpp">
       <Filter>Doc</Filter>
@@ -360,22 +360,22 @@
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVM.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVMMain_.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVMData_.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendCFunction_.cpp">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVMFunction_.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVMFunctionBodyJob.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendExport_.cpp">
       <Filter>Backend</Filter>
@@ -384,13 +384,13 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="LLVMSetup.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="ModulePrecompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="BackendLLVMDbg.cpp">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="BackendCompilerWin32.cpp">
       <Filter>Win32</Filter>
@@ -501,7 +501,7 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="BackendC.h">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClInclude>
     <ClInclude Include="ByteCodeRun.h">
       <Filter>Backend\ByteCode</Filter>
@@ -603,7 +603,7 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="BackendCFunctionBodyJob.h">
-      <Filter>Backend\Native\C</Filter>
+      <Filter>Backend\C</Filter>
     </ClInclude>
     <ClInclude Include="DocModuleJob.h">
       <Filter>Doc</Filter>
@@ -648,19 +648,19 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="BackendLLVM.h">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="BackendLLVMFunctionBodyJob.h">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="LLVMSetup.h">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="ModulePrecompileJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="BackendLLVMDbg.h">
-      <Filter>Backend\Native\LLVM</Filter>
+      <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
@@ -703,17 +703,14 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{db70f2f6-b909-4fab-a3c3-a23454ba5a37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Backend\Native">
-      <UniqueIdentifier>{beb6ab6a-775c-42ba-944c-4406d22422b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\Native\LLVM">
-      <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\Native\C">
-      <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\LLVM">
+      <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\C">
+      <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

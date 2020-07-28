@@ -64,7 +64,7 @@ struct CommandLine
     BackendArchi arch   = BackendArchi::Win64;
 
     // Backend
-    BackendType backendType        = BackendType::Cl;
+    BackendType backendType        = BackendType::LLVM;
     bool        backendOutput      = true;
     bool        backendOutputTest  = true;
     bool        backendOutputLegit = true;

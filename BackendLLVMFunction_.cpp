@@ -458,7 +458,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
-    pp.dbg.startFunction(bc, func);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -466,6 +465,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     builder.SetInsertPoint(block);
     pp.labels.clear();
     bc->markLabels();
+
+    pp.dbg.startFunction(pp.builder, bc, func);
 
     // Reserve registers
     pp.dbg.setLocation(pp.builder, nullptr);

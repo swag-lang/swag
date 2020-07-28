@@ -59,6 +59,8 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
 
 llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
 {
+    if (!typeInfo)
+        return s32Ty;
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -100,30 +102,37 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
 llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc)
 {
     vector<llvm::Metadata*> params;
-    auto                    dblTy = dbgBuilder->createBasicType("double", 64, llvm::dwarf::DW_ATE_float);
-    params.push_back(dblTy);
+
+    params.push_back(getType(typeFunc->returnType));
+    for (auto one : typeFunc->parameters)
+        params.push_back(getType(one->typeInfo));
 
     auto typeArray = dbgBuilder->getOrCreateTypeArray(params);
     return dbgBuilder->createSubroutineType(typeArray);
 }
 
-void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
+void BackendLLVMDbg::startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llvm::Function* func)
 {
     if (!dbgBuilder)
         return;
 
-    Utf8 name = bc->name;
-    int  line = 0;
+    Utf8         name = bc->name;
+    AstFuncDecl* decl = nullptr;
+
+    int               line     = 0;
+    TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
     if (bc->node)
     {
-        AstFuncDecl* decl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-        name              = decl->name;
-        line              = decl->token.startLocation.line;
+        decl     = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+        name     = decl->name;
+        line     = decl->token.startLocation.line;
+        typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
 
+    // Register function
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
-    llvm::DISubroutineType* dbgFuncType = createFunctionType(bc->typeInfoFunc);
+    llvm::DISubroutineType* dbgFuncType = createFunctionType(typeFunc);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(),
                                                         name.c_str(),
                                                         name.c_str(),
@@ -134,8 +143,28 @@ void BackendLLVMDbg::startFunction(ByteCode* bc, llvm::Function* func)
                                                         llvm::DINode::FlagPrototyped,
                                                         llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
-
     scopes.push_back(SP);
+
+    if (decl && decl->parameters)
+    {
+        for (int i = 0; i < decl->parameters->childs.size(); i++)
+        {
+            auto                   child = decl->parameters->childs[i];
+            llvm::DIType*          type  = getType(child->typeInfo);
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP,
+                                                                             child->name.c_str(),
+                                                                             i + 1,
+                                                                             file,
+                                                                             child->token.startLocation.line + 1,
+                                                                             type);
+
+            dbgBuilder->insertDeclare(func->getArg(i + typeFunc->numReturnRegisters()),
+                                      var,
+                                      dbgBuilder->createExpression(),
+                                      llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
+                                      &func->getEntryBlock());
+        }
+    }
 }
 
 void BackendLLVMDbg::createLocalVar(llvm::IRBuilder<>* builder, llvm::Value* storage, ByteCodeInstruction* ip)

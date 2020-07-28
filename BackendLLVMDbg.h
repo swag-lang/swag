@@ -9,7 +9,7 @@ struct ByteCodeInstruction;
 struct BackendLLVMDbg
 {
     void setup(llvm::Module* module);
-    void startFunction(ByteCode* bc, llvm::Function* func);
+    void startFunction(llvm::IRBuilder<>* builder, ByteCode* bc, llvm::Function* func);
     void endFunction();
     void finalize();
     void setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip);

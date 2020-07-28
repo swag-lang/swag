@@ -1,9 +1,14 @@
+func toto(x: s64, y: string)
+{
+    loop 2
+    {
+        @print(x)
+        @print(y)
+    }
+}
+
 //#[swag.printbc]
 #test
 {
-    a := 0'u32
-    loop 10
-    {
-        a += @index
-    }
+    toto(10, "myString")
 }
