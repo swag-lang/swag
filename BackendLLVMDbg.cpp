@@ -62,7 +62,20 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return s32Ty;
-    if (typeInfo->kind == TypeInfoKind::Native)
+
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Array:
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+    }
+    case TypeInfoKind::Pointer:
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+    }
+    case TypeInfoKind::Native:
     {
         switch (typeInfo->nativeType)
         {
@@ -96,10 +109,6 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
             return s64Ty;
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
-    {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
     }
 
     return s64Ty;
@@ -157,19 +166,10 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         for (int i = 0; i < decl->parameters->childs.size(); i++)
         {
             auto                   child = decl->parameters->childs[i];
-            llvm::DIType*          type  = getType(child->typeInfo);
-            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP,
-                                                                             child->name.c_str(),
-                                                                             i + 1,
-                                                                             file,
-                                                                             child->token.startLocation.line + 1,
-                                                                             type);
-
-            dbgBuilder->insertDeclare(func->getArg(idxParam),
-                                      var,
-                                      dbgBuilder->createExpression(),
-                                      llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
-                                      &func->getEntryBlock());
+            const auto&            loc   = child->token.startLocation;
+            llvm::DIType*          type  = dbgFuncType->getTypeArray()[i + 1];
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
+            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), &func->getEntryBlock());
             idxParam += child->typeInfo->numRegisters();
         }
     }
