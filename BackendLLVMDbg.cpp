@@ -96,6 +96,11 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
             return s64Ty;
         }
     }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        return dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+    }
 
     return s64Ty;
 }
@@ -160,27 +165,11 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
                                                                              child->token.startLocation.line + 1,
                                                                              type);
 
-            //if (child->typeInfo->numRegisters() == 1)
-            {
-                dbgBuilder->insertDeclare(func->getArg(idxParam),
-                                          var,
-                                          dbgBuilder->createExpression(),
-                                          llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
-                                          &func->getEntryBlock());
-            }
-            /*else
-            {
-                llvm::IRBuilder<> tmpB(&func->getEntryBlock(), func->getEntryBlock().begin());
-                auto              allocA = tmpB.CreateAlloca(pp.builder->getInt64Ty(), pp.cst2_i32);
-                tmpB.CreateStore(tmpB.CreateLoad(func->getArg(idxParam)), allocA);
-                tmpB.CreateStore(tmpB.CreateLoad(func->getArg(idxParam + 1)), tmpB.CreateInBoundsGEP(allocA, pp.cst1_i32));
-                dbgBuilder->insertDeclare(allocA,
-                                          var,
-                                          dbgBuilder->createExpression(),
-                                          llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
-                                          &func->getEntryBlock());
-            }*/
-
+            dbgBuilder->insertDeclare(func->getArg(idxParam),
+                                      var,
+                                      dbgBuilder->createExpression(),
+                                      llvm::DebugLoc::get(child->token.startLocation.line + 1, child->token.startLocation.column, scopes.back()),
+                                      &func->getEntryBlock());
             idxParam += child->typeInfo->numRegisters();
         }
     }

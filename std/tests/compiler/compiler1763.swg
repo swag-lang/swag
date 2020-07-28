@@ -1,12 +1,12 @@
 #[swag.printbc]
-func toto(x: s64, y: string)
+func toto(x: s64, y: string, z: const [4] s64)
 {
-    z := "this is a string"
     @print(x)
     @print(y)
+    @print(z[0])
 }
 
 #test
 {
-    toto(10, "myString")
+    toto(10, "myString", [10, 20, 30, 40])
 }
