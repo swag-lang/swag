@@ -67,14 +67,19 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     {
         vector<llvm::Metadata*> subscripts;
         auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        auto                    fileScope  = file->getScope();
+        auto                    noFlag     = llvm::DINode::DIFlags::FlagZero;
         for (auto& field : typeStruct->fields)
         {
-            auto typeField = dbgBuilder->createMemberType(file->getScope(), field->namedParam.c_str(), file, 0, field->sizeOf, 0, field->offset, llvm::DINode::DIFlags::FlagZero, getType(field->typeInfo, file));
+            auto lineNo    = field->node->token.startLocation.line + 1;
+            auto fieldType = getType(field->typeInfo, file);
+            auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, lineNo, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
             subscripts.push_back(typeField);
         }
 
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray(subscripts);
-        auto              result  = dbgBuilder->createStructType(file->getScope(), typeInfo->name.c_str(), file, 0, typeInfo->sizeOf, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        auto              lineNo  = typeInfo->declNode->token.startLocation.line + 1;
+        auto              result  = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
         mapTypes[typeInfo]        = result;
         return result;
     }
