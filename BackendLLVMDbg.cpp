@@ -132,16 +132,18 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, llvm::DIFile* fil
     if (it != mapTypes.end())
         return it->second;
 
-    auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-    auto fileScope   = file->getScope();
-    auto noFlag      = llvm::DINode::DIFlags::FlagZero;
-    auto realType    = getPointerToType(typeInfoPtr->pointedType, file);
-    auto v1          = dbgBuilder->createMemberType(fileScope, "data", file, 0, 64, 0, 0, noFlag, realType);
-    auto v2          = dbgBuilder->createMemberType(fileScope, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
-    auto content     = dbgBuilder->getOrCreateArray({v1, v2});
-    auto result      = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, content);
-
+    auto typeInfoPtr   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    auto fileScope     = file->getScope();
+    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
+    auto result        = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, llvm::DINodeArray());
     mapTypes[typeInfo] = result;
+
+    auto realType = getPointerToType(typeInfoPtr->pointedType, file);
+    auto v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
+    auto v2       = dbgBuilder->createMemberType(result, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
+    auto content  = dbgBuilder->getOrCreateArray({v1, v2});
+    dbgBuilder->replaceArrays(result, content);
+
     return result;
 }
 
@@ -267,7 +269,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
     llvm::DISubroutineType* dbgFuncType = getFunctionType(typeFunc, file);
-    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(), name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
+    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(file, name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
     scopes.push_back(SP);
 
@@ -277,17 +279,19 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         auto idxParam = typeFunc->numReturnRegisters();
         for (int i = 0; i < decl->parameters->childs.size(); i++)
         {
-            auto          child = decl->parameters->childs[i];
-            const auto&   loc   = child->token.startLocation;
-            llvm::DIType* type  = dbgFuncType->getTypeArray()[i + 1];
+            auto        child     = decl->parameters->childs[i];
+            const auto& loc       = child->token.startLocation;
+            auto        typeParam = typeFunc->parameters[i]->typeInfo;
 
             // Transform to a pointer in case of a function parameter
-            auto typeParam = typeFunc->parameters[i]->typeInfo;
+            llvm::DIType* type = nullptr;
             if (typeParam->kind == TypeInfoKind::Array)
-                type = dbgBuilder->createPointerType(type, 64);
+                type = getPointerToType(typeParam, file);
+            else
+                type = dbgFuncType->getTypeArray()[i + 1];
 
             llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
-            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), &func->getEntryBlock());
+            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), pp.builder->GetInsertBlock());
             idxParam += child->typeInfo->numRegisters();
         }
     }

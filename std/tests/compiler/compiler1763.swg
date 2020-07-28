@@ -9,18 +9,14 @@ enum TITI
     BB
 }
 
+    func toto(xx: s32, yy: [..] s32)
+    {
+        @print(cast(s64)yy[0])
+    }
+
 //#[swag.printbc]
 #test
 {
-    func toto()
-    {
-        @print("xxxx")
-    }
-
-    var pt: S
-    pt.x = 41
-    toto()
-
-    x := TITI.AA
-    x = TITI.BB
+    x := [10, 20, 30]
+    toto(666, x)
 }
