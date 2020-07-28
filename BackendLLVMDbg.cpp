@@ -62,7 +62,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
     auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     if (typeInfoEnum->rawType->flags & TYPEINFO_INTEGER)
     {
-        auto                    fileScope = file->getScope();
+        auto                    fileScope = scopes.empty() ? file->getScope() : scopes.back();
         vector<llvm::Metadata*> subscripts;
         bool                    isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
         for (auto& value : typeInfoEnum->values)
@@ -101,10 +101,10 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     // If a field is a pointer to the struct itself, this will avoid a recursive call
     //mapTypes[typeInfo] = ptrU8Ty;
 
-    auto fileScope     = file->getScope();
-    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
-    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
-    auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+    auto fileScope = scopes.empty() ? file->getScope() : scopes.back();
+    auto noFlag    = llvm::DINode::DIFlags::FlagZero;
+    auto lineNo    = typeInfo->declNode->token.startLocation.line + 1;
+    auto result    = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     // This way, even it a struct references itself, this will work
     mapTypes[typeInfo] = result;
@@ -114,9 +114,9 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     for (auto& field : typeStruct->fields)
     {
-        auto fieldLine    = field->node->token.startLocation.line + 1;
+        auto fieldLine = field->node->token.startLocation.line + 1;
         auto fieldType = getType(field->typeInfo, file);
-        auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, fieldLine, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
+        auto typeField = dbgBuilder->createMemberType(result, field->namedParam.c_str(), file, fieldLine, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
         subscripts.push_back(typeField);
     }
 
