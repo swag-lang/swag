@@ -1484,8 +1484,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     for (int i = 0; i < fromSize; i++)
     {
-        auto child = fromNode ? fromNode->childs[i] : nullptr;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList ? toTypeList->childs[i] : toType, fromTypeList->childs[i], nullptr, child, castFlags));
+        auto child     = fromNode ? fromNode->childs[i] : nullptr;
+        auto convertTo = toTypeList ? toTypeList->childs[i] : toType;
+        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->childs[i], nullptr, child, castFlags));
         if (child)
         {
             newSizeof += child->typeInfo->sizeOf;

@@ -496,6 +496,7 @@ bool SemanticJob::deduceTypeFromTypeList(AstVarDecl* node, bool isCompilerConsta
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
         else
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
+        node->typeInfo->sizeOf = node->assignment->typeInfo->sizeOf;
     }
     else
         return internalError(context, "resolveVarDecl, invalid typelist kind");

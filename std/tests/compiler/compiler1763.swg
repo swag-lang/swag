@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 func toto(x: s64, y: string, z: const *s64)
 {
     @print(x)
