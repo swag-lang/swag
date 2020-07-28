@@ -31,19 +31,12 @@ void BackendLLVMDbg::setup(llvm::Module* modu)
     charTy  = dbgBuilder->createBasicType("char", 32, llvm::dwarf::DW_ATE_UTF);
     ptrU8Ty = dbgBuilder->createPointerType(u8Ty, 64);
 
+    // string
     {
         auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "sizeof", mainFile, 1, 32, 0, 64, llvm::DINode::DIFlags::FlagZero, u32Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        stringTy                  = dbgBuilder->createStructType(mainFile->getScope(),
-                                                "string",
-                                                mainFile,
-                                                0,
-                                                2 * sizeof(void*),
-                                                0,
-                                                llvm::DINode::DIFlags::FlagZero,
-                                                nullptr,
-                                                content);
+        stringTy                  = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*), 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 }
 
@@ -59,7 +52,7 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     return dbgfile;
 }
 
-llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
+llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
         return s32Ty;
@@ -70,27 +63,42 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
 
     switch (typeInfo->kind)
     {
+    case TypeInfoKind::Struct:
+    {
+        vector<llvm::Metadata*> subscripts;
+        auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        for (auto& field : typeStruct->fields)
+        {
+            auto typeField = dbgBuilder->createMemberType(file->getScope(), field->namedParam.c_str(), file, 0, field->sizeOf, 0, field->offset, llvm::DINode::DIFlags::FlagZero, getType(field->typeInfo, file));
+            subscripts.push_back(typeField);
+        }
+
+        llvm::DINodeArray content = dbgBuilder->getOrCreateArray(subscripts);
+        auto              result  = dbgBuilder->createStructType(file->getScope(), typeInfo->name.c_str(), file, 0, typeInfo->sizeOf, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        mapTypes[typeInfo]        = result;
+        return result;
+    }
     case TypeInfoKind::Array:
     {
         auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         vector<llvm::Metadata*> subscripts;
         subscripts.push_back(dbgBuilder->getOrCreateSubrange(0, typeInfoPtr->count));
         llvm::DINodeArray subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
-        auto              result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType), subscriptArray);
+        auto              result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
         mapTypes[typeInfo]               = result;
         return result;
     }
     case TypeInfoKind::Pointer:
     {
         auto typeInfoPtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
         mapTypes[typeInfo] = result;
         return result;
     }
     case TypeInfoKind::Reference:
     {
         auto typeInfoPtr   = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType), 64);
+        auto result        = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -133,13 +141,13 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo)
     return s64Ty;
 }
 
-llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc)
+llvm::DISubroutineType* BackendLLVMDbg::createFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
 {
     vector<llvm::Metadata*> params;
 
-    params.push_back(getType(typeFunc->returnType));
+    params.push_back(getType(typeFunc->returnType, file));
     for (auto one : typeFunc->parameters)
-        params.push_back(getType(one->typeInfo));
+        params.push_back(getType(one->typeInfo, file));
 
     auto typeArray = dbgBuilder->getOrCreateTypeArray(params);
     return dbgBuilder->createSubroutineType(typeArray);
@@ -165,7 +173,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     // Register function
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
-    llvm::DISubroutineType* dbgFuncType = createFunctionType(typeFunc);
+    llvm::DISubroutineType* dbgFuncType = createFunctionType(typeFunc, file);
     llvm::DISubprogram*     SP          = dbgBuilder->createFunction(compileUnit->getFile(), name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
     func->setSubprogram(SP);
     scopes.push_back(SP);
@@ -180,9 +188,10 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
             const auto&   loc   = child->token.startLocation;
             llvm::DIType* type  = dbgFuncType->getTypeArray()[i + 1];
 
-            // Transform an array to a pointer in case of a function parameter
-            if (typeFunc->parameters[i]->typeInfo->kind == TypeInfoKind::Array)
-                type = dbgBuilder->createPointerType(type, 60);
+            // Transform to a pointer in case of a function parameter
+            auto typeParam = typeFunc->parameters[i]->typeInfo;
+            if (typeParam->kind == TypeInfoKind::Array)
+                type = dbgBuilder->createPointerType(type, 64);
 
             llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
             dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scopes.back()), &func->getEntryBlock());
@@ -200,7 +209,7 @@ void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::Function* func, llv
     SymbolOverload* overload = node->resolvedSymbolOverload;
     auto            typeInfo = overload->typeInfo;
 
-    llvm::DIType*          type = getType(typeInfo);
+    llvm::DIType*          type = getType(typeInfo, scopes.back()->getFile());
     llvm::DILocalVariable* var  = dbgBuilder->createAutoVariable(scopes.back(), node->name.c_str(), scopes.back()->getFile(), node->token.startLocation.line, type);
 
     auto&             loc = node->token.startLocation;

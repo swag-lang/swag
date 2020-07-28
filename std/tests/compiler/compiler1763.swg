@@ -1,18 +1,19 @@
-//#[swag.printbc]
-func toto(x: s64, z: const [4] s64)
+struct S
 {
-    cpt := 0
-    while cpt < x
-    {
-        @print(z[cpt])
-        cpt += 1
-    }
+    x, y: f64
+}
+
+func toto(x: S)
+{
+    @print(x.x)
 }
 
 #[swag.printbc]
 #test
 {
-    z := "toto"
-    x := [10's64, 20, 30, 40]
-    toto(4, x)
+     var pt: S
+     pt.x, pt.y = 10
+     @assert(pt.x == 10)
+     @assert(pt.y == 10)
+     toto(pt)
 }

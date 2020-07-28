@@ -19,8 +19,8 @@ struct BackendLLVMDbg
     void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
 
     llvm::DIFile*           getOrCreateFile(SourceFile* file);
-    llvm::DIType*           getType(TypeInfo* typeInfo);
-    llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc);
+    llvm::DIType*           getType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
     llvm::DIBuilder*       dbgBuilder  = nullptr;
     llvm::DICompileUnit*   compileUnit = nullptr;
