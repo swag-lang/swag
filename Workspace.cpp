@@ -116,7 +116,7 @@ void Workspace::createNew()
         exit(-1);
     }
 
-    // Create folders
+    // Create workspace folders
     error_code errorCode;
     if (!fs::create_directories(workspacePath, errorCode))
     {
@@ -141,6 +141,34 @@ void Workspace::createNew()
         g_Log.error(format("fatal error: cannot create directory '%s'", dependenciesPath.string().c_str()));
         exit(-1);
     }
+
+    // Create one module folder
+    auto modulePath = modulesPath;
+    modulePath.append(workspacePath.filename());
+    if (!fs::create_directories(modulePath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", modulePath.string().c_str()));
+        exit(-1);
+    }
+
+    modulePath.append("src");
+    if (!fs::create_directories(modulePath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", modulePath.string().c_str()));
+        exit(-1);
+    }
+
+    // Create an empty file
+    modulePath.append("main.swg");
+    ofstream file(modulePath);
+    if (!file.is_open())
+    {
+        g_Log.error(format("fatal error: cannot create file '%s'", modulePath.string().c_str()));
+        exit(-1);
+    }
+
+    const char* oneMain = "#main\n{\n\t@print(\"Hello world!\\n\")\n}";
+    file << oneMain;
 
     g_Log.message(format("workspace '%s' has been created", workspacePath.string().c_str()));
     exit(0);

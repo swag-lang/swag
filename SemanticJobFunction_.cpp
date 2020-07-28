@@ -131,7 +131,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         scoped_lock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
-            Diagnostic diag({node, node->token, "#main directive already defined one"});
+            Diagnostic diag({node, node->token, "#main directive already defined"});
             Diagnostic note{module->mainIsDefined, sourceFile->module->mainIsDefined->token, "this is the other definition", DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
