@@ -99,24 +99,30 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
         return it->second;
 
     // If a field is a pointer to the struct itself, this will avoid a recursive call
-    mapTypes[typeInfo] = ptrU8Ty;
+    //mapTypes[typeInfo] = ptrU8Ty;
 
+    auto fileScope     = file->getScope();
+    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
+    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
+    auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+
+    // This way, even it a struct references itself, this will work
+    mapTypes[typeInfo] = result;
+
+    // Deal with the struct content now that the struct is registered
     vector<llvm::Metadata*> subscripts;
     auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    auto                    fileScope  = file->getScope();
-    auto                    noFlag     = llvm::DINode::DIFlags::FlagZero;
     for (auto& field : typeStruct->fields)
     {
-        auto lineNo    = field->node->token.startLocation.line + 1;
+        auto fieldLine    = field->node->token.startLocation.line + 1;
         auto fieldType = getType(field->typeInfo, file);
-        auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, lineNo, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
+        auto typeField = dbgBuilder->createMemberType(fileScope, field->namedParam.c_str(), file, fieldLine, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
         subscripts.push_back(typeField);
     }
 
-    auto content       = dbgBuilder->getOrCreateArray(subscripts);
-    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
-    auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
-    mapTypes[typeInfo] = result;
+    auto content = dbgBuilder->getOrCreateArray(subscripts);
+    dbgBuilder->replaceArrays(result, content);
+
     return result;
 }
 

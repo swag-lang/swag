@@ -1,12 +1,11 @@
-enum TITI: string
+struct S
 {
-    AA = "value1"
-    BB = "value2"
+    x, y: f64 = 50
 }
 
 //#[swag.printbc]
 #test
 {
-     pt0 := TITI.AA
-     pt1 := TITI.BB
+    var pt: S
+    pt.x = 41
 }
