@@ -18,7 +18,10 @@ struct BackendLLVMDbg
     void popLexicalScope();
     void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
 
-    llvm::DIFile*           getOrCreateFile(SourceFile* file);
+    llvm::DIFile* getOrCreateFile(SourceFile* file);
+
+    llvm::DIType*           createEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DISubroutineType* createFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
@@ -28,6 +31,7 @@ struct BackendLLVMDbg
 
     map<string, llvm::DIFile*>    mapFiles;
     map<TypeInfo*, llvm::DIType*> mapTypes;
+    map<TypeInfo*, llvm::DIType*> mapPtrTypes;
 
     llvm::DIType*          s8Ty;
     llvm::DIType*          s16Ty;

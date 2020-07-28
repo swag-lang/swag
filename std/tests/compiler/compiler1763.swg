@@ -1,11 +1,12 @@
-func toto(x: [..] f64)
+enum TITI: f32
 {
-    @print(x[0])
+    AA = 1.0
+    BB = 1.5
 }
 
 #[swag.printbc]
 #test
 {
-     pt := [10'f64, 20, 30]
-     toto(pt)
+     pt0 := TITI.AA
+     pt1 := TITI.BB
 }

@@ -52,6 +52,35 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     return dbgfile;
 }
 
+llvm::DIType* BackendLLVMDbg::createEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
+{
+    auto                    typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    auto                    fileScope    = file->getScope();
+    vector<llvm::Metadata*> subscripts;
+    for (auto& value : typeInfoEnum->values)
+    {
+        auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value.reg.u64, true);
+        subscripts.push_back(typeField);
+    }
+
+    auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
+    auto rawType       = getType(typeInfoEnum->rawType, file);
+    auto content       = dbgBuilder->getOrCreateArray(subscripts);
+    auto result        = dbgBuilder->createEnumerationType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
+    mapTypes[typeInfo] = result;
+    return result;
+}
+
+llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
+{
+    auto it = mapPtrTypes.find(typeInfo);
+    if (it != mapPtrTypes.end())
+        return it->second;
+    auto result           = dbgBuilder->createPointerType(getType(typeInfo, file), 64);
+    mapPtrTypes[typeInfo] = result;
+    return result;
+}
+
 llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
@@ -63,6 +92,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     switch (typeInfo->kind)
     {
+    case TypeInfoKind::Enum:
+    {
+        return createEnumType(typeInfo, file);
+    }
     case TypeInfoKind::Struct:
     {
         vector<llvm::Metadata*> subscripts;
@@ -77,10 +110,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
             subscripts.push_back(typeField);
         }
 
-        llvm::DINodeArray content = dbgBuilder->getOrCreateArray(subscripts);
-        auto              lineNo  = typeInfo->declNode->token.startLocation.line + 1;
-        auto              result  = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
-        mapTypes[typeInfo]        = result;
+        auto content       = dbgBuilder->getOrCreateArray(subscripts);
+        auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
+        auto result        = dbgBuilder->createStructType(fileScope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, content);
+        mapTypes[typeInfo] = result;
         return result;
     }
     case TypeInfoKind::Array:
@@ -88,9 +121,9 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         vector<llvm::Metadata*> subscripts;
         subscripts.push_back(dbgBuilder->getOrCreateSubrange(0, typeInfoPtr->count));
-        llvm::DINodeArray subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
-        auto              result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
-        mapTypes[typeInfo]               = result;
+        auto subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
+        auto result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
+        mapTypes[typeInfo]  = result;
         return result;
     }
     case TypeInfoKind::Pointer:
