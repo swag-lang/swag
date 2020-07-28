@@ -107,6 +107,18 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         mapTypes[typeInfo] = result;
         return result;
     }
+    case TypeInfoKind::Slice:
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto fileScope   = file->getScope();
+        auto noFlag      = llvm::DINode::DIFlags::FlagZero;
+        auto realType    = dbgBuilder->createPointerType(getType(typeInfoPtr->pointedType, file), 64);
+        auto v1          = dbgBuilder->createMemberType(fileScope, "data", file, 0, 64, 0, 0, noFlag, realType);
+        auto v2          = dbgBuilder->createMemberType(fileScope, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
+        auto content     = dbgBuilder->getOrCreateArray({v1, v2});
+        auto result      = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, content);
+        return result;
+    }
     case TypeInfoKind::Native:
     {
         switch (typeInfo->nativeType)
