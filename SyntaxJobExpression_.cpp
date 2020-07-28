@@ -860,6 +860,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (result)
                 *result = parentNode;
 
+            ScopedLocation lk(this, &token);
+
             // Generate an expression of the form "var firstVar = assignment", and "secondvar = firstvar" for the rest
             bool firstDone  = false;
             auto savedtoken = token;

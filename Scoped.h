@@ -164,3 +164,24 @@ struct ScopedNodeExpansion
 
     JobContext* savedContext;
 };
+
+struct ScopedLocation
+{
+    ScopedLocation(SyntaxJob* job, Token* token)
+    {
+        savedJob                  = job;
+        savedToken                = job->currentTokenLocation;
+        myToken.startLocation     = token->startLocation;
+        myToken.endLocation       = token->endLocation;
+        job->currentTokenLocation = &myToken;
+    }
+
+    ~ScopedLocation()
+    {
+        savedJob->currentTokenLocation = savedToken;
+    }
+
+    SyntaxJob* savedJob;
+    Token      myToken;
+    Token*     savedToken;
+};

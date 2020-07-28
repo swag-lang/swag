@@ -327,7 +327,7 @@ namespace Ast
     {
         AstIdentifierRef* node = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
         node->name             = name;
-        if (syntaxJob)
+        if (syntaxJob && !syntaxJob->currentTokenLocation)
             node->inheritTokenLocation(syntaxJob->token);
 
         vector<Utf8> subNames;
@@ -338,7 +338,7 @@ namespace Ast
             id->semanticFct = SemanticJob::resolveIdentifier;
             id->name        = subNames[i];
             id->token.id    = TokenId::Identifier;
-            if (syntaxJob)
+            if (syntaxJob && !syntaxJob->currentTokenLocation)
                 id->inheritTokenLocation(syntaxJob->token);
             id->identifierRef = node;
             id->inheritOwners(node);

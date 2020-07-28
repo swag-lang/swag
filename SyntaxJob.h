@@ -147,6 +147,7 @@ struct SyntaxJob : public Job
     AstBreakable*       currentBreakable       = nullptr;
     Scope*              currentStructScope     = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
+    Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
     uint64_t            currentFlags           = 0;
     uint32_t            currentAccessFlags     = 0;
@@ -164,6 +165,7 @@ struct SyntaxJob : public Job
         currentStructScope     = nullptr;
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;
+        currentTokenLocation   = nullptr;
         currentFlags           = 0;
         currentAccessFlags     = 0;
         canChangeModule        = true;
