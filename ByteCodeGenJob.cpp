@@ -183,16 +183,37 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
-void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, RegisterList& r, const char* message)
+void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
+{
+    auto r0 = reserveRegisterRC(context);
+    if (bits == 8)
+        emitInstruction(context, ByteCodeOp::TestNotZero8, r0, r);
+    else if (bits == 16)
+        emitInstruction(context, ByteCodeOp::TestNotZero16, r0, r);
+    else if (bits == 32)
+        emitInstruction(context, ByteCodeOp::TestNotZero32, r0, r);
+    else if (bits == 64)
+        emitInstruction(context, ByteCodeOp::TestNotZero64, r0, r);
+    else
+        SWAG_ASSERT(false);
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0)->d.pointer = (uint8_t*) message;
+    freeRegisterRC(context, r0);
+}
+
+void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message)
 {
     auto safety = context->sourceFile->module->mustEmitSafety(context->node);
     if (!safety)
         return;
+    emitSafetyNotZero(context, r, 64, message);
+}
 
-    auto r0 = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::TestNotZero64, r0, r);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0)->d.pointer = (uint8_t*) message;
-    freeRegisterRC(context, r0);
+void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+    emitSafetyNotZero(context, r, bits, "division by zero");
 }
 
 void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)

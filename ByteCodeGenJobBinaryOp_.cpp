@@ -142,22 +142,28 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpDivU64, r0, r1, r2);
         return true;
     case NativeTypeKind::F32:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::BinOpDivF32, r0, r1, r2);
         return true;
     case NativeTypeKind::F64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpDivF64, r0, r1, r2);
         return true;
     default:

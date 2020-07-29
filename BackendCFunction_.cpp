@@ -1124,33 +1124,21 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BinOpDivS32:
-            if (safety)
-                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s32=r[%u].s32/r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivS64:
-            if (safety)
-                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s64=r[%u].s64/r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU32:
-            if (safety)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].u32=r[%u].u32/r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU64:
-            if (safety)
-                MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].u64=r[%u].u64/r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF32:
-            if (safety)
-                MK_ASSERT(format("r[%u].f32!=0", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].f32=r[%u].f32/r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF64:
-            if (safety)
-                MK_ASSERT(format("r[%u].f64!=0", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].f64=r[%u].f64/r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
@@ -1219,53 +1207,33 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpDivEqS8:
-            if (safety)
-                MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__s8_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpDivEqS16:
-            if (safety)
-                MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__s16_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpDivEqS32:
-            if (safety)
-                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__s32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpDivEqS64:
-            if (safety)
-                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__s64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpDivEqU8:
-            if (safety)
-                MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__u8_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpDivEqU16:
-            if (safety)
-                MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__u16_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpDivEqU32:
-            if (safety)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__u32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpDivEqU64:
-            if (safety)
-                MK_ASSERT(format("r[%u].u8", ip->b.u64).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__u64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u64;");
             break;
         case ByteCodeOp::AffectOpDivEqF32:
-            if (safety)
-                MK_ASSERT(format("r[%u].f32 != 0", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__f32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].f32;");
             break;
         case ByteCodeOp::AffectOpDivEqF64:
-            if (safety)
-                MK_ASSERT(format("r[%u].f64 != 0", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__f64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].f64;");
             break;
 
@@ -1464,6 +1432,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64=r[%u].s64|r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::TestNotZero8:
+            concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b);
+            break;
+        case ByteCodeOp::TestNotZero16:
+            concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b);
+            break;
         case ByteCodeOp::TestNotZero32:
             concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b);
             break;

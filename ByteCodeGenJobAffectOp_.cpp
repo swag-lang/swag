@@ -482,34 +482,44 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
+        emitSafetyDivZero(context, r1, 8);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
+        emitSafetyDivZero(context, r1, 16);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS16, r0, r1);
         return true;
     case NativeTypeKind::S32:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS64, r0, r1);
         return true;
     case NativeTypeKind::U8:
+        emitSafetyDivZero(context, r1, 8);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU8, r0, r1);
         return true;
     case NativeTypeKind::U16:
+        emitSafetyDivZero(context, r1, 16);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU16, r0, r1);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU32, r0, r1);
         return true;
     case NativeTypeKind::U64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU64, r0, r1);
         return true;
     case NativeTypeKind::F32:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqF32, r0, r1);
         return true;
     case NativeTypeKind::F64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqF64, r0, r1);
         return true;
     default:
