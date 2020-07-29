@@ -183,16 +183,6 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
-bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
-{
-    bool safety = context->sourceFile->module->buildParameters.buildCfg->safetyGuards;
-    if (context->node->attributeFlags & ATTRIBUTE_SAFETY_ON)
-        safety = true;
-    else if (context->node->attributeFlags & ATTRIBUTE_SAFETY_OFF)
-        safety = false;
-    return safety;
-}
-
 void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
 {
     inst->node = node;

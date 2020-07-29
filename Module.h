@@ -41,6 +41,7 @@ struct Module
     void error(const Utf8& msg);
     bool internalError(const Utf8& msg);
     bool internalError(AstNode* node, Token& token, const Utf8& msg);
+    bool mustEmitSafety(AstNode* node);
 
     string                    path;
     fs::path                  documentPath;

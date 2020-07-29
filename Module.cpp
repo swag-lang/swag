@@ -305,3 +305,13 @@ void Module::addGlobalVar(AstNode* node, bool bss)
     else
         globalVarsMutable.push_back(node);
 }
+
+bool Module::mustEmitSafety(AstNode* node)
+{
+    bool safety = buildCfg.safetyGuards;
+    if (node->attributeFlags & ATTRIBUTE_SAFETY_ON)
+        safety = true;
+    else if (node->attributeFlags & ATTRIBUTE_SAFETY_OFF)
+        safety = false;
+    return safety;
+}

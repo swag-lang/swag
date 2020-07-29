@@ -679,7 +679,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     typeInfo     = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
     fromTypeInfo = TypeManager::concreteReference(fromTypeInfo);
-    bool safety  = mustEmitSafety(context);
+    bool safety  = context->sourceFile->module->mustEmitSafety(context->node);
 
     // opCast
     if (exprNode->flags & AST_USER_CAST)

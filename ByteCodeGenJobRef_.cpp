@@ -25,7 +25,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
-    bool safety = mustEmitSafety(context);
+    bool safety = context->sourceFile->module->mustEmitSafety(context->node);
 
     if (safety)
         emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
@@ -40,7 +40,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
-    bool safety = mustEmitSafety(context);
+    bool safety = context->sourceFile->module->mustEmitSafety(context->node);
 
     // Boundcheck
     if (safety)
@@ -68,7 +68,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
-    bool safety = mustEmitSafety(context);
+    bool safety = context->sourceFile->module->mustEmitSafety(context->node);
 
     node->array->resultRegisterRC += reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
@@ -175,7 +175,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node      = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeArray = TypeManager::concreteType(node->array->typeInfo);
-    bool safety    = mustEmitSafety(context);
+    bool safety    = context->sourceFile->module->mustEmitSafety(context->node);
 
     // Dereference of a string constant
     if (typeArray->isNative(NativeTypeKind::String))
