@@ -3,11 +3,11 @@
 #include "BuildParameters.h"
 struct Module;
 
-struct ModuleTestJob : public Job
+struct ModuleRunJob : public Job
 {
     JobResult execute() override;
 
     BuildParameters buildParameters;
 };
 
-extern thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;
+extern thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;

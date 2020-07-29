@@ -20,6 +20,7 @@ struct CommandLine
     int       numCores  = 0;
     BuildPass buildPass = BuildPass::Full;
     bool      rebuild   = false;
+    bool      run       = false;
 
     // Input
     bool   clean = false;

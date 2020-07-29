@@ -305,9 +305,6 @@
     <ClCompile Include="AstOutput.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTestJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="EnumerateModuleJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -403,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="OsWin32.cpp">
       <Filter>Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRunJob.cpp">
+      <Filter>Backend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -590,9 +590,6 @@
     <ClInclude Include="CompilerTarget.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTestJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="EnumerateModuleJob.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -673,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="OsWin32.h">
       <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRunJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

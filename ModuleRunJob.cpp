@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ModuleTestJob.h"
+#include "ModuleRunJob.h"
 #include "Workspace.h"
 #include "Os.h"
 #include "DiagnosticInfos.h"
 
-thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;
+thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
-JobResult ModuleTestJob::execute()
+JobResult ModuleRunJob::execute()
 {
     SWAG_ASSERT(module->hasBeenBuilt & BUILDRES_COMPILER);
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
@@ -22,7 +22,10 @@ JobResult ModuleTestJob::execute()
     }
 #endif
 
-    g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
+    if(buildParameters.compileType == BackendCompileType::Test)
+        g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
+    else
+        g_Log.messageHeaderCentered("Running backend", module->name.c_str());
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
         g_Log.verbose("   running " + path.string());
 

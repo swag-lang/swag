@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ModuleCompileJob.h"
-#include "ModuleTestJob.h"
+#include "ModuleRunJob.h"
 #include "Backend.h"
 #include "Stats.h"
 #include "Workspace.h"
@@ -33,15 +33,13 @@ JobResult ModuleCompileJob::execute()
     // Test job
     // Do not set job->dependentJob, because nobody is dependent on that execution
     // Test can be run "on the void"
-    if (g_CommandLine.runBackendTests)
+    if ((g_CommandLine.runBackendTests && buildParameters.compileType == BackendCompileType::Test) ||
+        (g_CommandLine.run && buildParameters.outputType == BackendOutputType::Binary))
     {
-        if (buildParameters.compileType == BackendCompileType::Test)
-        {
-            auto job             = g_Pool_moduleTestJob.alloc();
-            job->module          = module;
-            job->buildParameters = buildParameters;
-            g_ThreadMgr.addJob(job);
-        }
+        auto job             = g_Pool_moduleRunJob.alloc();
+        job->module          = module;
+        job->buildParameters = buildParameters;
+        g_ThreadMgr.addJob(job);
     }
 
     return JobResult::ReleaseJob;
