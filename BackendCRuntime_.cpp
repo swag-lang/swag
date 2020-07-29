@@ -10,36 +10,36 @@
 // Should match runtime in Context.h
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 static constexpr const char* g_RuntimeC = R"(
-typedef signed char __i8_t;
-typedef short __i16_t;
-typedef int __i32_t;
-typedef long long __i64_t;
-typedef unsigned char __ui8_t;
+typedef signed char __s8_t;
+typedef short __s16_t;
+typedef int __s32_t;
+typedef long long __s64_t;
+typedef unsigned char __u8_t;
 typedef _Bool __b_t;
-typedef unsigned short __ui16_t;
-typedef unsigned int __ui32_t;
+typedef unsigned short __u16_t;
+typedef unsigned int __u32_t;
 typedef unsigned int __ch_t;
-typedef unsigned long long __ui64_t;
+typedef unsigned long long __u64_t;
 typedef float __f32_t;
 typedef double __f64_t;
 
 #ifdef _WIN32
-typedef __ui32_t swag_tls_id_t;
+typedef __u32_t swag_tls_id_t;
 #endif
 
 typedef union __r_t {
-__ui8_t* p;
-__ui64_t u64;
-__i64_t	s64;
+__u8_t* p;
+__u64_t u64;
+__s64_t	s64;
 __f64_t	f64;
 __f32_t	f32;
 __ch_t ch;
-__ui32_t u32;
-__i32_t	s32;
-__ui16_t u16;
-__i16_t	s16;
-__ui8_t	u8;
-__i8_t s8;
+__u32_t u32;
+__s32_t	s32;
+__u16_t u16;
+__s16_t	s16;
+__u8_t	u8;
+__s8_t s8;
 __b_t b;
 } __r_t;
 
@@ -58,7 +58,7 @@ swag_interface_t allocator;
 
 typedef struct swag_slice_t {
 void* addr;
-__ui64_t count;
+__u64_t count;
 } swag_slice_t;
 
 typedef struct swag_process_infos_t {
@@ -80,23 +80,23 @@ static constexpr const char* g_SwagRuntime = R"(
 #endif
 
 SWAG_IMPORT void* swag_runtime_loadDynamicLibrary(const char*);
-SWAG_IMPORT __ui32_t swag_runtime_tlsAlloc();
-SWAG_IMPORT void swag_runtime_tlsSetValue(__ui32_t,void*);
-SWAG_IMPORT void*swag_runtime_tlsGetValue(__ui32_t);
-SWAG_IMPORT void*swag_runtime_malloc(__ui64_t);
-SWAG_IMPORT void*swag_runtime_realloc(void*,__ui64_t);
+SWAG_IMPORT __u32_t swag_runtime_tlsAlloc();
+SWAG_IMPORT void swag_runtime_tlsSetValue(__u32_t,void*);
+SWAG_IMPORT void*swag_runtime_tlsGetValue(__u32_t);
+SWAG_IMPORT void*swag_runtime_malloc(__u64_t);
+SWAG_IMPORT void*swag_runtime_realloc(void*,__u64_t);
 SWAG_IMPORT void swag_runtime_free(void*);
-SWAG_IMPORT void*swag_runtime_memcpy(void*,const void*,__ui64_t);
-SWAG_IMPORT void*swag_runtime_memset(void*,__i32_t,__ui64_t);
-SWAG_IMPORT __i32_t swag_runtime_memcmp(const void*,const void*,__ui64_t);
-SWAG_IMPORT void swag_runtime_exit(__i32_t);
+SWAG_IMPORT void*swag_runtime_memcpy(void*,const void*,__u64_t);
+SWAG_IMPORT void*swag_runtime_memset(void*,__s32_t,__u64_t);
+SWAG_IMPORT __s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
+SWAG_IMPORT void swag_runtime_exit(__s32_t);
 SWAG_IMPORT void swag_runtime_print_n(const char*,int);
 SWAG_IMPORT void swag_runtime_print(const char*);
-SWAG_IMPORT void swag_runtime_print_i64(__i64_t);
+SWAG_IMPORT void swag_runtime_print_i64(__s64_t);
 SWAG_IMPORT void swag_runtime_print_f64(__f64_t);
-SWAG_IMPORT void swag_runtime_assert(__b_t,const char*,int,const char*,__ui32_t);
-SWAG_IMPORT __b_t swag_runtime_strcmp(const char*,const char*,__ui32_t);
-SWAG_IMPORT __i32_t swag_runtime_strlen(const char*);
+SWAG_IMPORT void swag_runtime_assert(__b_t,const char*,int,const char*,__u32_t);
+SWAG_IMPORT __b_t swag_runtime_strcmp(const char*,const char*,__u32_t);
+SWAG_IMPORT __s32_t swag_runtime_strlen(const char*);
 SWAG_IMPORT void swag_runtime_convertArgcArgv(void*,int,char*[]);
 )";
 

@@ -9,11 +9,11 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     if (precompileIndex != 0)
     {
         if (dataSegment == &module->mutableSegment)
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __ms[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __u8_t __ms[];\n");
         else if (dataSegment == &module->constantSegment)
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __bs[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __u8_t __bs[];\n");
         else
-            CONCAT_FIXED_STR(bufferC, "extern __ui8_t __cs[];\n");
+            CONCAT_FIXED_STR(bufferC, "extern __u8_t __cs[];\n");
         return true;
     }
 
@@ -25,15 +25,15 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     // BSS, no init (0)
     if (dataSegment == &module->bssSegment)
     {
-        CONCAT_STR_1(bufferC, "__ui8_t __bs[", dataSegment->totalCount, "];\n");
+        CONCAT_STR_1(bufferC, "__u8_t __bs[", dataSegment->totalCount, "];\n");
         return true;
     }
 
     // Constant & data
     if (dataSegment == &module->mutableSegment)
-        CONCAT_FIXED_STR(bufferC, "__ui64_t __ms[]={\n");
+        CONCAT_FIXED_STR(bufferC, "__u64_t __ms[]={\n");
     else
-        CONCAT_FIXED_STR(bufferC, "__ui64_t __cs[]={\n");
+        CONCAT_FIXED_STR(bufferC, "__u64_t __cs[]={\n");
 
     dataSegment->rewindRead();
     uint64_t value = 0;
@@ -69,7 +69,7 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
         {
             if (firstMS)
             {
-                CONCAT_FIXED_STR(bufferC, "__ui8_t*__ms8=(__ui8_t*)__ms;\n");
+                CONCAT_FIXED_STR(bufferC, "__u8_t*__ms8=(__u8_t*)__ms;\n");
                 firstMS = false;
             }
 
@@ -79,13 +79,13 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
         {
             if (firstMS)
             {
-                CONCAT_FIXED_STR(bufferC, "__ui8_t*__ms8=(__ui8_t*)__ms;\n");
+                CONCAT_FIXED_STR(bufferC, "__u8_t*__ms8=(__u8_t*)__ms;\n");
                 firstMS = false;
             }
 
             if (firstCS)
             {
-                CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+                CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
                 firstCS = false;
             }
 
@@ -109,7 +109,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
         if (firstCS)
         {
-            CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+            CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
             firstCS = false;
         }
 
@@ -123,7 +123,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 
         if (firstCS)
         {
-            CONCAT_FIXED_STR(bufferC, "__ui8_t*__cs8=(__ui8_t*)__cs;\n");
+            CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
             firstCS = false;
         }
 
