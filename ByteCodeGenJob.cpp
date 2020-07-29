@@ -183,6 +183,18 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
+void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, RegisterList& r, const char* message)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+
+    auto r0 = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::TestNotZero64, r0, r);
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0)->d.pointer = (uint8_t*) message;
+    freeRegisterRC(context, r0);
+}
+
 void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
 {
     inst->node = node;

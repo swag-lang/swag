@@ -1464,6 +1464,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64=r[%u].s64|r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::TestNotZero32:
+            concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b);
+            break;
+        case ByteCodeOp::TestNotZero64:
+            concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b);
+            break;
+
         case ByteCodeOp::Jump:
             CONCAT_FIXED_STR(concat, "goto _");
             concat.addS32Str8(ip->a.s32 + i + 1);

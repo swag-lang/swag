@@ -26,7 +26,7 @@ SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
             return nullptr;
         return bc->out[locationBC].location;
     }
-    
+
     return location;
 }
 

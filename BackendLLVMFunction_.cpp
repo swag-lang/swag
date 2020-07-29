@@ -2497,6 +2497,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::TestNotZero32:
+        {
+            //concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b);
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            break;
+        }
+        case ByteCodeOp::TestNotZero64:
+        {
+            //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b);
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I64(GEP_I32(allocR, ip->b.u32));
+            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            break;
+        }
+
         case ByteCodeOp::Jump:
         {
             //CONCAT_FIXED_STR(concat, "goto _");
@@ -2612,7 +2631,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            createAssert(buildParameters, r0, ip, "");
+            createAssert(buildParameters, r0, ip, (const char*) ip->d.pointer);
             break;
         }
         case ByteCodeOp::IntrinsicAssertCastAny:

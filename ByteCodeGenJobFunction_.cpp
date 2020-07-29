@@ -150,16 +150,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, RegisterList& r, const char* message)
-{
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
-        return;
-
-    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32     = 1;
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r)->d.pointer = (uint8_t*) message;
-}
-
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);

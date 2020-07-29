@@ -23,6 +23,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::DebugDeclLocalVar:
         break;
 
+    case ByteCodeOp::TestNotZero32:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u32 != 0;
+        break;
+    }
+    case ByteCodeOp::TestNotZero64:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u64 != 0;
+        break;
+    }
+
     case ByteCodeOp::JumpIfZero32:
     {
         if (!registersRC[ip->a.u32].u32)
