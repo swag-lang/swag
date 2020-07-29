@@ -714,6 +714,8 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         if (ip->node->flags & AST_NO_BACKEND)
             continue;
 
+        bool safety = moduleToGen->mustEmitSafety(ip->node);
+
         // Print source code
         if (!bc->compilerGenerated)
         {
@@ -819,7 +821,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64*=%u;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::Div64byVB32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s64/=%u;", ip->a.u32, ip->b.u32);
             break;
@@ -1100,53 +1102,53 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BinOpModuloS32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s32=r[%u].s32%%r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s64=r[%u].s64%%r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u32=r[%u].u32%%r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u64=r[%u].u64%%r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::BinOpDivS32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s32=r[%u].s32/r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivS64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s64=r[%u].s64/r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].u32=r[%u].u32/r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivU64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].u64=r[%u].u64/r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].f32!=0", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].f32=r[%u].f32/r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].f64!=0", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].f64=r[%u].f64/r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
@@ -1216,52 +1218,52 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpDivEqS8:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__i8_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpDivEqS16:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__i16_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpDivEqS32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__i32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpDivEqS64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__i64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpDivEqU8:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__ui8_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpDivEqU16:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__ui16_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpDivEqU32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__ui32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpDivEqU64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u8", ip->b.u64).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__ui64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].u64;");
             break;
         case ByteCodeOp::AffectOpDivEqF32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].f32 != 0", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__f32_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].f32;");
             break;
         case ByteCodeOp::AffectOpDivEqF64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].f64 != 0", ip->b.u32).c_str(), "division by zero");
             CONCAT_STR_2(concat, "*(__f64_t*)r[", ip->a.u32, "].p/=r[", ip->b.u32, "].f64;");
             break;
@@ -1331,42 +1333,42 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpModuloEqS8:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__i8_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpModuloEqS16:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__i16_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpModuloEqS32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__i32_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpModuloEqS64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__i64_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpModuloEqU8:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__ui8_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpModuloEqU16:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__ui16_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpModuloEqU32:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__ui32_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpModuloEqU64:
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
                 MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__ui64_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u64;");
             break;

@@ -474,6 +474,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
         }
 
+        bool safety = moduleToGen->mustEmitSafety(ip->node);
+
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
         {
@@ -624,7 +626,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //  concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1244,7 +1246,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 %% r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1263,7 +1265,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 %% r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1282,7 +1284,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 %% r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1301,7 +1303,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 %% r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1321,7 +1323,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].s32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1340,7 +1342,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].s64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 / r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1359,7 +1361,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].u32, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1378,7 +1380,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].u64, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 / r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1397,7 +1399,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].f32 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f32), builder.getInt8Ty(), false);
@@ -1416,7 +1418,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    concat.addStringFormat("swag_runtime_assert(r[%u].f64 != 0, \"%s\", %d, \"division by zero\");", ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f64), builder.getInt8Ty(), false);
@@ -1704,7 +1706,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__i8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s8;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1723,7 +1725,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__i16_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s16;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1742,7 +1744,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__i32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s32;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1761,7 +1763,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__i64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s64;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1780,7 +1782,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__ui8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u8;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1799,7 +1801,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__ui16_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u16;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1818,7 +1820,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__ui32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u32;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1837,7 +1839,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__ui64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u64;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -1856,7 +1858,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].f32 != 0", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f32;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f32), builder.getInt8Ty(), false);
@@ -1875,7 +1877,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].f64 != 0", ip->b.u32).c_str(), "division by zero");
             //CONCAT_STR_2(concat, "*(__f64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f64;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(builder.CreateFCmpUNE(r0, pp.cst0_f64), builder.getInt8Ty(), false);
@@ -2099,7 +2101,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__i8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s8;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2118,7 +2120,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__i16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s16;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2137,7 +2139,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__i32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s32;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2156,7 +2158,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__i64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].s64;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2175,7 +2177,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__ui8_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u8;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2194,7 +2196,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__ui16_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u16;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2213,7 +2215,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__ui32_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u32;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
@@ -2232,7 +2234,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //if (moduleToGen->buildParameters.target->debugDivZeroCheck)
             //    MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             //CONCAT_STR_2(concat, "*(__ui64_t*)(r[", ip->a.u32, "].pointer) %= r[", ip->b.u32, "].u64;");
-            if (moduleToGen->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto r0 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
                 auto t0 = builder.CreateIntCast(r0, builder.getInt8Ty(), false);
