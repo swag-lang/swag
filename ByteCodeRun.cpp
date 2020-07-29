@@ -569,42 +569,30 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpModuloS32:
     {
-        auto val1 = registersRC[ip->a.u32].s32;
-        auto val2 = registersRC[ip->b.u32].s32;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            registersRC[ip->c.u32].s32 = val1 % val2;
+        auto val1                  = registersRC[ip->a.u32].s32;
+        auto val2                  = registersRC[ip->b.u32].s32;
+        registersRC[ip->c.u32].s32 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloS64:
     {
-        auto val1 = registersRC[ip->a.u32].s64;
-        auto val2 = registersRC[ip->b.u32].s64;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            registersRC[ip->c.u32].s64 = val1 % val2;
+        auto val1                  = registersRC[ip->a.u32].s64;
+        auto val2                  = registersRC[ip->b.u32].s64;
+        registersRC[ip->c.u32].s64 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloU32:
     {
-        auto val1 = registersRC[ip->a.u32].u32;
-        auto val2 = registersRC[ip->b.u32].u32;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            registersRC[ip->c.u32].u32 = val1 % val2;
+        auto val1                  = registersRC[ip->a.u32].u32;
+        auto val2                  = registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].u32 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloU64:
     {
-        auto val1 = registersRC[ip->a.u32].u64;
-        auto val2 = registersRC[ip->b.u32].u64;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            registersRC[ip->c.u32].u64 = val1 % val2;
+        auto val1                  = registersRC[ip->a.u32].u64;
+        auto val2                  = registersRC[ip->b.u32].u64;
+        registersRC[ip->c.u32].u64 = val1 % val2;
         break;
     }
 
@@ -657,10 +645,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::Div64byVB32:
     {
-        if (ip->b.u32 == 0)
-            context->error("division by zero");
-        else
-            registersRC[ip->a.u32].s64 /= ip->b.u32;
+        registersRC[ip->a.u32].s64 /= ip->b.u32;
         break;
     }
 
@@ -1509,73 +1494,49 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::AffectOpModuloEqS8:
     {
         auto val2 = registersRC[ip->b.u32].s8;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(int8_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int8_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS16:
     {
         auto val2 = registersRC[ip->b.u32].s16;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(int16_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int16_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS32:
     {
         auto val2 = registersRC[ip->b.u32].s32;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(int32_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int32_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS64:
     {
         auto val2 = registersRC[ip->b.u32].s64;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(int64_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int64_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU8:
     {
         auto val2 = registersRC[ip->b.u32].u8;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(uint8_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint8_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU16:
     {
         auto val2 = registersRC[ip->b.u32].u16;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(uint16_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint16_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU32:
     {
         auto val2 = registersRC[ip->b.u32].u32;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(uint32_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint32_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU64:
     {
         auto val2 = registersRC[ip->b.u32].u64;
-        if (val2 == 0)
-            context->error("modulo operand is zero");
-        else
-            *(uint64_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint64_t*) registersRC[ip->a.u32].pointer %= val2;
         break;
     }
 

@@ -822,8 +822,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64*=%u;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::Div64byVB32:
-            if (safety)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "division by zero");
             concat.addStringFormat("r[%u].s64/=%u;", ip->a.u32, ip->b.u32);
             break;
 
@@ -1103,23 +1101,15 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::BinOpModuloS32:
-            if (safety)
-                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s32=r[%u].s32%%r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            if (safety)
-                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].s64=r[%u].s64%%r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            if (safety)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u32=r[%u].u32%%r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            if (safety)
-                MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             concat.addStringFormat("r[%u].u64=r[%u].u64%%r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
@@ -1302,43 +1292,27 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::AffectOpModuloEqS8:
-            if (safety)
-                MK_ASSERT(format("r[%u].s8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__s8_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s8;");
             break;
         case ByteCodeOp::AffectOpModuloEqS16:
-            if (safety)
-                MK_ASSERT(format("r[%u].s16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__s16_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s16;");
             break;
         case ByteCodeOp::AffectOpModuloEqS32:
-            if (safety)
-                MK_ASSERT(format("r[%u].s32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__s32_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s32;");
             break;
         case ByteCodeOp::AffectOpModuloEqS64:
-            if (safety)
-                MK_ASSERT(format("r[%u].s64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__s64_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].s64;");
             break;
         case ByteCodeOp::AffectOpModuloEqU8:
-            if (safety)
-                MK_ASSERT(format("r[%u].u8", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__u8_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u8;");
             break;
         case ByteCodeOp::AffectOpModuloEqU16:
-            if (safety)
-                MK_ASSERT(format("r[%u].u16", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__u16_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u16;");
             break;
         case ByteCodeOp::AffectOpModuloEqU32:
-            if (safety)
-                MK_ASSERT(format("r[%u].u32", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__u32_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u32;");
             break;
         case ByteCodeOp::AffectOpModuloEqU64:
-            if (safety)
-                MK_ASSERT(format("r[%u].u64", ip->b.u32).c_str(), "modulo operand is zero");
             CONCAT_STR_2(concat, "*(__u64_t*)r[", ip->a.u32, "].p%=r[", ip->b.u32, "].u64;");
             break;
 

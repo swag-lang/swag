@@ -181,16 +181,20 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::BinOpModuloS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
+        emitSafetyDivZero(context, r1, 32);
         emitInstruction(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
+        emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpModuloU64, r0, r1, r2);
         return true;
     default:
