@@ -282,7 +282,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                     case NativeTypeKind::S32:
                     {
                         auto idx = arrayAccess->computedValue.reg.s32;
-                        if (idx < 0 || idx >= text.length())
+                        if (idx < 0)
+                            return context->report({arrayNode->access, format("index is a negative value ('%d')", idx)});
+                        else if (idx >= text.length())
                             return context->report({arrayNode->access, format("index out of range (index is '%d', maximum index is '%u')", idx, text.length() - 1)});
                         arrayNode->computedValue.reg.u8 = text[idx];
                         break;
@@ -337,6 +339,30 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         // Try to dereference as a constant if we can
         if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
+            // Check access at compile time
+            switch (arrayAccess->typeInfo->nativeType)
+            {
+            case NativeTypeKind::S32:
+            {
+                auto idx = arrayAccess->computedValue.reg.s32;
+                if (idx < 0)
+                    return context->report({arrayNode->access, format("index is a negative value ('%d')", idx)});
+                else if (idx >= (int32_t) typePtr->count)
+                    return context->report({arrayNode->access, format("index out of range (index is '%d', maximum index is '%u')", idx, typePtr->count - 1)});
+                break;
+            }
+            case NativeTypeKind::U32:
+            {
+                auto idx = arrayAccess->computedValue.reg.u32;
+                if (idx >= typePtr->count)
+                    return context->report({arrayNode->access, format("index out of range (index is '%u', maximum index is '%u')", idx, typePtr->count - 1)});
+                break;
+            }
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
