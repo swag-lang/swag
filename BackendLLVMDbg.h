@@ -6,10 +6,12 @@ struct AstNode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 struct LLVMPerThread;
+struct BackendLLVM;
+struct BuildParameters;
 
 struct BackendLLVMDbg
 {
-    void setup(Module* m, llvm::Module* module);
+    void setup(BackendLLVM* m, llvm::Module* module);
     void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func);
     void endFunction();
     void finalize();
@@ -17,18 +19,19 @@ struct BackendLLVMDbg
     void pushLexicalScope(AstNode* node);
     void popLexicalScope();
     void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
-    void createGlobalVariablesForSegment(LLVMPerThread& pp, llvm::Type* type, llvm::GlobalVariable* var);
+    void createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
 
     llvm::DIType*           getSliceType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DIType*           getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getStructType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
-    Module*                module      = nullptr;
+    BackendLLVM*           llvm        = nullptr;
     llvm::DIBuilder*       dbgBuilder  = nullptr;
     llvm::DICompileUnit*   compileUnit = nullptr;
     vector<llvm::DIScope*> scopes;
@@ -36,6 +39,7 @@ struct BackendLLVMDbg
     map<string, llvm::DIFile*>              mapFiles;
     map<TypeInfo*, llvm::DIType*>           mapTypes;
     map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
+    map<TypeInfo*, llvm::DIType*>           mapRefTypes;
     map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
 
     llvm::DIType*          s8Ty;

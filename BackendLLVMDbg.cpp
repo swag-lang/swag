@@ -8,10 +8,11 @@
 #include "Module.h"
 #include "BackendLLVM.h"
 #include "SymTable.h"
+#include "BuildParameters.h"
 
-void BackendLLVMDbg::setup(Module* m, llvm::Module* modu)
+void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
-    module        = m;
+    llvm          = m;
     dbgBuilder    = new llvm::DIBuilder(*modu);
     auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
@@ -92,6 +93,16 @@ llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile*
         return it->second;
     auto result           = dbgBuilder->createPointerType(getType(typeInfo, file), 64);
     mapPtrTypes[typeInfo] = result;
+    return result;
+}
+
+llvm::DIType* BackendLLVMDbg::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file)
+{
+    auto it = mapRefTypes.find(typeInfo);
+    if (it != mapRefTypes.end())
+        return it->second;
+    auto result           = dbgBuilder->createReferenceType(llvm::dwarf::DW_TAG_reference_type, getType(typeInfo, file));
+    mapRefTypes[typeInfo] = result;
     return result;
 }
 
@@ -351,42 +362,39 @@ void BackendLLVMDbg::popLexicalScope()
     scopes.pop_back();
 }
 
-void BackendLLVMDbg::createGlobalVariablesForSegment(LLVMPerThread& pp, llvm::Type* type, llvm::GlobalVariable* var)
+void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
 {
-    auto& context = *pp.context;
-    auto& modu    = *pp.module;
-    auto& builder = *pp.builder;
-    auto& all     = var == pp.bssSeg ? module->globalVarsBss : module->globalVarsMutable;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = llvm->perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+    auto  module          = llvm->module;
 
+    auto& all = var == pp.bssSeg ? module->globalVarsBss : module->globalVarsMutable;
     for (auto node : all)
     {
-        auto resolved  = node->resolvedSymbolOverload;
-        auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, builder.getInt32(resolved->storageOffset));
-
-        // Cast to the correct type
-        llvm::Type*   varType = nullptr;
-        llvm::DIType* dbgType = nullptr;
-        if (resolved->typeInfo->kind == TypeInfoKind::Native)
-        {
-            switch (resolved->typeInfo->nativeType)
-            {
-            case NativeTypeKind::S32:
-            case NativeTypeKind::U32:
-                varType = llvm::Type::getInt32Ty(context);
-                dbgType = s32Ty;
-                break;
-            default:
-                continue;
-            }
-        }
-        else
+        auto resolved = node->resolvedSymbolOverload;
+        auto typeInfo = node->typeInfo;
+        auto file     = compileUnit->getFile();
+        auto dbgType  = getType(typeInfo, file);
+        if (!dbgType)
             continue;
 
-        varType   = varType->getPointerTo();
-        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, varType);
-        auto name = node->name.c_str();
-        auto g    = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
-        auto gve  = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, compileUnit->getFile(), 0, dbgBuilder->createReferenceType(llvm::dwarf::DW_TAG_reference_type, dbgType), dbgType, true);
+        vector<llvm::Value*> offset    = {builder.getInt32(0), builder.getInt32(resolved->storageOffset)};
+        auto                 constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, offset);
+
+        // Cast to the correct type
+        llvm::Type* varType = nullptr;
+        if (!llvm->swagTypeToLLVMType(buildParameters, module, typeInfo, &varType))
+            continue;
+
+        varType         = varType->getPointerTo();
+        constExpr       = llvm::ConstantExpr::getPointerCast(constExpr, varType);
+        auto name       = node->name.c_str();
+        auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
+        auto dbgRefType = getReferenceToType(typeInfo, file);
+        auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, file, 0, dbgRefType, dbgType, true);
         g->addDebugInfo(gve);
     }
 }

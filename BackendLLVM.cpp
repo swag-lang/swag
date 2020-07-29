@@ -263,7 +263,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         if (buildParameters.target.backendDebugInformations || g_CommandLine.debug)
         {
             pp.dbg = new BackendLLVMDbg;
-            pp.dbg->setup(module, pp.module);
+            pp.dbg->setup(this, pp.module);
         }
 
         if (g_CommandLine.verboseBuildPass)

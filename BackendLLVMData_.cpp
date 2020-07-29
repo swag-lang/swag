@@ -39,7 +39,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
         pp.bssSeg                               = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bs");
         if (pp.dbg)
-            pp.dbg->createGlobalVariablesForSegment(pp, arrayType, pp.bssSeg);
+            pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.bssSeg);
     }
     else
     {
@@ -66,7 +66,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         {
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ms");
             if (pp.dbg)
-                pp.dbg->createGlobalVariablesForSegment(pp, arrayType, pp.mutableSeg);
+                pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.mutableSeg);
         }
         else
         {
