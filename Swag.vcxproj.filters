@@ -671,7 +671,7 @@
     <ClInclude Include="ModuleRunJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BuildMode.h">
+    <ClInclude Include="BuildCfg.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

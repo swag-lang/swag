@@ -260,7 +260,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
         pp.builder = new llvm::IRBuilder<>(*pp.context);
 
-        if (buildParameters.buildMode->backendDebugInformations || g_CommandLine.debug)
+        if (buildParameters.buildCfg->backendDebugInformations || g_CommandLine.debug)
         {
             pp.dbg = new BackendLLVMDbg;
             pp.dbg->setup(this, pp.module);
@@ -336,7 +336,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     if (g_CommandLine.optim)
         optimLevel = g_CommandLine.optim;
     else if (!g_CommandLine.debug)
-        optimLevel = buildParameters.buildMode->backendOptimizeLevel;
+        optimLevel = buildParameters.buildCfg->backendOptimizeLevel;
 
     switch (optimLevel)
     {
@@ -371,7 +371,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     dest.close();
 
     // Output IR code
-    if (buildParameters.buildMode->backendLLVM.outputIR || g_CommandLine.devMode)
+    if (buildParameters.buildCfg->backendLLVM.outputIR || g_CommandLine.devMode)
     {
         auto                 filenameIR = path;
         llvm::raw_fd_ostream destFileIR(filename + ".ir", EC, llvm::sys::fs::OF_None);

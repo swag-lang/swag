@@ -50,7 +50,7 @@ struct ByteCodeRunContext: public JobContext
         if (sp - sizeof(T) < stack)
         {
             hasError = true;
-            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", sourceFile->module->buildParameters.buildMode->byteCodeStackSize);
+            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", sourceFile->module->buildParameters.buildCfg->byteCodeStackSize);
             return;
         }
 

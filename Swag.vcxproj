@@ -159,7 +159,7 @@
     <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleRunJob.h" />
     <ClInclude Include="Os.h" />
-    <ClInclude Include="BuildMode.h" />
+    <ClInclude Include="BuildCfg.h" />
     <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />

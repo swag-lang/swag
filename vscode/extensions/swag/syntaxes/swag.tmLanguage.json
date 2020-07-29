@@ -128,7 +128,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(ast|skip|module|unittest|assert|print|run|file|line|config|arch|function|callerfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
+          "match": "(#)\\b(ast|skip|module|unittest|assert|print|run|file|line|buildcfg|target|function|callerfile|callerline|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
         }
       ]
     },

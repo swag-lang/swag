@@ -48,13 +48,13 @@ JobResult ModuleOutputJob::execute()
 
         if (g_CommandLine.backendType == BackendType::LLVM)
         {
-            minPerFile = module->buildParameters.buildMode->backendLLVM.minFunctionPerFile;
-            maxPerFile = module->buildParameters.buildMode->backendLLVM.maxFunctionPerFile;
+            minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
+            maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;
         }
         else
         {
-            minPerFile = module->buildParameters.buildMode->backendC.minFunctionPerFile;
-            maxPerFile = module->buildParameters.buildMode->backendC.maxFunctionPerFile;
+            minPerFile = module->buildParameters.buildCfg->backendC.minFunctionPerFile;
+            maxPerFile = module->buildParameters.buildCfg->backendC.maxFunctionPerFile;
         }
 
         auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;

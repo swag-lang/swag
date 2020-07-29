@@ -16,7 +16,7 @@ struct Scope;
 struct ByteCode;
 struct Job;
 struct Backend;
-struct BuildMode;
+struct BuildCfg;
 struct SourceLocation;
 struct AstFuncDecl;
 struct Token;
@@ -50,7 +50,7 @@ struct Module
     atomic<int>               numErrors = 0;
     shared_mutex              mutexFile;
     VectorNative<SourceFile*> files;
-    BuildMode            buildMode;
+    BuildCfg            buildMode;
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;
     Scope*                    scopeRoot            = nullptr;

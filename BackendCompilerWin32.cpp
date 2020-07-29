@@ -12,7 +12,7 @@ namespace OS
     {
         // CL arguments
         string clArguments = "";
-        bool   debugMode   = buildParameters.buildMode->backendDebugInformations || g_CommandLine.debug;
+        bool   debugMode   = buildParameters.buildCfg->backendDebugInformations || g_CommandLine.debug;
         if (debugMode)
         {
             fs::path dest = Backend::getOutputFileName(buildParameters);
@@ -36,7 +36,7 @@ namespace OS
         if (g_CommandLine.optim)
             optimLevel = g_CommandLine.optim;
         else if (!g_CommandLine.debug)
-            optimLevel = buildParameters.buildMode->backendOptimizeLevel;
+            optimLevel = buildParameters.buildCfg->backendOptimizeLevel;
         switch (optimLevel)
         {
         case 0:

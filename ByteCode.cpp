@@ -61,10 +61,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 #endif
 
     auto module = context->sourceFile->module;
-    if (curRC == (int) module->buildParameters.buildMode->byteCodeMaxRecurse)
+    if (curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", module->buildParameters.buildMode->byteCodeMaxRecurse);
+        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", module->buildParameters.buildCfg->byteCodeMaxRecurse);
         return;
     }
 
