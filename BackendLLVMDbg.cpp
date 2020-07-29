@@ -341,13 +341,17 @@ void BackendLLVMDbg::finalize()
     dbgBuilder->finalize();
 }
 
-void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip)
+void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
     if (!ip)
         builder->SetCurrentDebugLocation(nullptr);
-    else if(ip->location)
-        builder->SetCurrentDebugLocation(llvm::DebugLoc::get(ip->location->line + 1, 0 /*ip->location->column*/, scopes.back()));
+    else
+    {
+        auto location = ip->getLocation(bc);
+        if (location)
+            builder->SetCurrentDebugLocation(llvm::DebugLoc::get(location->line + 1, 0 /*location->column*/, scopes.back()));
+    }
 }
 
 void BackendLLVMDbg::pushLexicalScope(AstNode* node)

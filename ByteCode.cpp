@@ -18,6 +18,18 @@ int g_ByteCodeOpNamesLen[] = {
 #include "ByteCodeOpList.h"
 };
 
+SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
+{
+    if (flags & BCI_LOCATION_IS_BC)
+    {
+        if (locationBC >= bc->numInstructions)
+            return nullptr;
+        return bc->out[locationBC].location;
+    }
+    
+    return location;
+}
+
 Utf8 ByteCode::callName()
 {
     Utf8 callName;
@@ -104,10 +116,11 @@ void ByteCode::print()
         auto ip = out + i;
 
         // Print source code
-        if (ip->location && ip->location->line != lastLine && ip->op != ByteCodeOp::End)
+        auto location = ip->getLocation(this);
+        if (location && location->line != lastLine && ip->op != ByteCodeOp::End)
         {
-            lastLine = ip->location->line;
-            auto s   = sourceFile->getLine(ip->location->seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+            lastLine = location->line;
+            auto s   = sourceFile->getLine(location->seekStartLine[REPORT_NUM_CODE_LINES - 1]);
             s.trimLeft();
             g_Log.setColor(LogColor::DarkYellow);
             for (int idx = 0; idx < 9; idx++)

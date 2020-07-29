@@ -447,7 +447,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (pp.dbg)
     {
         pp.dbg->startFunction(pp, bc, func);
-        pp.dbg->setLocation(pp.builder, nullptr);
+        pp.dbg->setLocation(pp.builder, bc, nullptr);
     }
 
     // Reserve registers
@@ -486,7 +486,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         if (pp.dbg)
-            pp.dbg->setLocation(pp.builder, ip);
+            pp.dbg->setLocation(pp.builder, bc, ip);
 
         switch (ip->op)
         {

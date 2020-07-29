@@ -379,6 +379,10 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     auto diff   = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
     inst->a.s32 = diff;
 
+    // Set location to be the same as the next instructions
+    inst->flags |= BCI_LOCATION_IS_BC;
+    inst->locationBC = context->bc->numInstructions;
+
     // Resolve all break instructions
     for (auto breakNode : switchNode->breakList)
     {
@@ -415,7 +419,6 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     // Jump to exit the switch
     switchNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
-
     return true;
 }
 

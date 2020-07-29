@@ -11,20 +11,30 @@ struct AstNode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
+struct ByteCode;
 
-static const uint16_t BCI_JUMP_DEST = 0x0001;
-static const uint16_t BCI_DEBUG     = 0x0002;
+static const uint16_t BCI_JUMP_DEST      = 0x0001;
+static const uint16_t BCI_DEBUG          = 0x0002;
+static const uint16_t BCI_LOCATION_IS_BC = 0x0004;
 
 struct ByteCodeInstruction
 {
-    Register        a;
-    Register        b;
-    Register        c;
-    Register        d;
-    AstNode*        node;
-    SourceLocation* location;
-    ByteCodeOp      op;
-    uint16_t        flags;
+    Register a;
+    Register b;
+    Register c;
+    Register d;
+    AstNode* node;
+
+    union
+    {
+        SourceLocation* location;
+        uint32_t        locationBC;
+    };
+
+    ByteCodeOp op;
+    uint16_t   flags;
+
+    SourceLocation* getLocation(ByteCode* bc);
 };
 
 struct ByteCode
