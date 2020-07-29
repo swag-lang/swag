@@ -28,9 +28,7 @@ struct BuildCfgBackendLLVM
 struct BuildCfg
 {
     // Debug
-    bool guardBoundCheck = true;
-    bool guardAnyCast    = true;
-    bool guardDivZero    = true;
+    bool safetyGuards = true;
 
     // Bytecode
     uint32_t byteCodeMaxRecurse = 1024;

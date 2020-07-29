@@ -29,25 +29,19 @@ bool Module::setup(const Utf8& moduleName)
     // Setup build configuration
     if (g_CommandLine.buildCfg == "debug")
     {
-        buildCfg.guardAnyCast        = true;
-        buildCfg.guardBoundCheck          = true;
-        buildCfg.guardDivZero        = true;
+        buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeLevel     = 0;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "release")
     {
-        buildCfg.guardAnyCast        = true;
-        buildCfg.guardBoundCheck          = true;
-        buildCfg.guardDivZero        = true;
+        buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeLevel     = 3;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "final")
     {
-        buildCfg.guardAnyCast        = false;
-        buildCfg.guardBoundCheck          = false;
-        buildCfg.guardDivZero        = false;
+        buildCfg.safetyGuards             = false;
         buildCfg.backendOptimizeLevel     = 3;
         buildCfg.backendDebugInformations = false;
     }

@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+    if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
         emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -41,7 +41,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     int  sizeOf = node->typeInfo->sizeOf;
 
     // Boundcheck
-    if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+    if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         auto r0       = reserveRegisterRC(context);
@@ -71,7 +71,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
 
     // Boundcheck
-    if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+    if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     // Pointer increment
@@ -176,7 +176,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (typeArray->isNative(NativeTypeKind::String))
     {
-        if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+        if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
@@ -190,7 +190,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoSlice>(typeArray, TypeInfoKind::Slice);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+        if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         // Increment pointer (if increment is not 0)
@@ -239,7 +239,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+        if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
         {
             auto r0                                                     = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r0)->b.u32 = typeInfo->count;
@@ -272,7 +272,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
 
-        if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+        if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
         {
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
@@ -306,7 +306,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto r0 = reserveRegisterRC(context);
 
-        if (context->sourceFile->module->buildParameters.buildCfg->guardBoundCheck)
+        if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
         {
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);

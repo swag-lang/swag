@@ -699,7 +699,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         // Check that the type is correct
         if (isExplicit)
         {
-            if (context->sourceFile->module->buildParameters.buildCfg->guardAnyCast)
+            if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
             {
                 auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0);
                 SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);

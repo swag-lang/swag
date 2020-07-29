@@ -332,13 +332,11 @@ namespace swag
     struct BuildCfg
     {
         // Add guard code
-        guardBoundCheck: bool   = true
-        guardgAnyCast: bool     = true
-        guardDivZero: bool      = true
+        safetyGuards: bool  = true
 
         // Bytecode
-        byteCodeMaxRecurse: u32     = 1024
-        byteCodeStackSize: u32      = 16 * 1024
+        byteCodeMaxRecurse: u32 = 1024
+        byteCodeStackSize: u32  = 16 * 1024
 
         // Backend common
         backendDebugInformations: bool  = false
