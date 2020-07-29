@@ -16,7 +16,6 @@ func @memcmp(dst, src: const *void, size: u32)->s32;
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
-func @target()->*swag.CompilerTarget;
 func @isbytecode()->bool;
 
 namespace swag
@@ -314,7 +313,7 @@ namespace swag
     // Compiler
     // #########################################################
 
-    struct CompilerParamsBackendC
+    struct BuildModeBackendC
     {
         maxApplicationArguments: u32    = 64
         minFunctionPerFile: u32         = 1024;
@@ -323,14 +322,14 @@ namespace swag
         writeByteCodeInstruction: bool  = false
     }
 
-    struct CompilerParamsBackendLLVM
+    struct BuildModeBackendLLVM
     {
         minFunctionPerFile: u32 = 256;
         maxFunctionPerFile: u32 = 1024;
         outputIR: bool          = false;
     }
 
-    struct CompilerTarget
+    struct BuildMode
     {
         // Debug
         debugBoundCheck: bool    = true
@@ -346,8 +345,8 @@ namespace swag
         backendOptimizeLevel: u32       = 0
 
         // Specific backend parameters
-        backendC:       CompilerParamsBackendC
-        backendLLVM:    CompilerParamsBackendLLVM
+        backendC:       BuildModeBackendC
+        backendLLVM:    BuildModeBackendLLVM
     }
 
     // #########################################################

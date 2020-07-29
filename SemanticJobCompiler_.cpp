@@ -310,7 +310,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerConfiguration:
-        node->computedValue.text = context->sourceFile->module->buildParameters.config;
+        node->computedValue.text = context->sourceFile->module->buildParameters.buildModeName;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;

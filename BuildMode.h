@@ -5,7 +5,7 @@
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct CompilerParamsBackendC
+struct BuildModeBackendC
 {
     uint32_t maxApplicationArguments  = 64;
     uint32_t minFunctionPerFile       = 1024;
@@ -14,7 +14,7 @@ struct CompilerParamsBackendC
     bool     writeByteCodeInstruction = false;
 };
 
-struct CompilerParamsBackendLLVM
+struct BuildModeBackendLLVM
 {
     uint32_t minFunctionPerFile = 256;
     uint32_t maxFunctionPerFile = 1024;
@@ -25,7 +25,7 @@ struct CompilerParamsBackendLLVM
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct CompilerTarget
+struct BuildMode
 {
     // Debug
     bool debugBoundCheck   = true;
@@ -41,6 +41,6 @@ struct CompilerTarget
     uint32_t backendOptimizeLevel     = 0;
 
     // Specific backend parameters
-    CompilerParamsBackendC    backendC;
-    CompilerParamsBackendLLVM backendLLVM;
+    BuildModeBackendC    backendC;
+    BuildModeBackendLLVM backendLLVM;
 };

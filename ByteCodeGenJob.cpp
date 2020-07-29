@@ -128,7 +128,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 
 void ByteCodeGenJob::emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op)
 {
-    if (context->job->module->buildParameters.target->backendDebugInformations || g_CommandLine.debug)
+    if (context->job->module->buildParameters.buildMode->backendDebugInformations || g_CommandLine.debug)
     {
         auto inst = emitInstruction(context, op);
         inst->flags |= BCI_DEBUG;

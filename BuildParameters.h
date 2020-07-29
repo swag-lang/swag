@@ -1,5 +1,5 @@
 #pragma once
-#include "CompilerTarget.h"
+#include "BuildMode.h"
 #include "Utf8.h"
 
 enum class BackendOutputType
@@ -20,8 +20,8 @@ struct BuildParameters
 {
     BackendOutputType  outputType = BackendOutputType::Binary;
     set<Utf8>          foreignLibs;
-    string             config;
-    CompilerTarget*    target = nullptr;
+    string             buildModeName;
+    BuildMode*         buildMode = nullptr;
     string             postFix;
     string             outputFileName;
     int                precompileIndex = 0;

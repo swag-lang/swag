@@ -62,8 +62,8 @@ struct CommandLine
     bool generateDoc = false;
 
     // Output
-    string       config = "debug";
-    BackendArchi arch   = BackendArchi::Win64;
+    string       buildMode = "debug";
+    BackendArchi target   = BackendArchi::Win64;
 
     // Backend
     BackendType backendType        = BackendType::LLVM;

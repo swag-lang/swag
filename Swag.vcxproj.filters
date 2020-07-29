@@ -587,9 +587,6 @@
     <ClInclude Include="Scoped.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="CompilerTarget.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="EnumerateModuleJob.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -673,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="ModuleRunJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildMode.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

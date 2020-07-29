@@ -23,8 +23,8 @@ bool Module::setup(const Utf8& moduleName)
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);
     scopeRoot->owner               = astRoot;
     buildPass                      = g_CommandLine.buildPass;
-    buildParameters.config         = g_CommandLine.config;
-    buildParameters.target         = &target;
+    buildParameters.buildModeName  = g_CommandLine.buildMode;
+    buildParameters.buildMode      = &buildMode;
     buildParameters.outputFileName = name.c_str();
 
     // Allocate backend, even if we do not want to output, because the backend can be used
@@ -117,7 +117,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
     // Global setup
     {
         scoped_lock lkRR(mutexRegisterRR);
-        runContext->setup(sourceFile, node, maxReservedRegisterRR, buildParameters.target->byteCodeStackSize);
+        runContext->setup(sourceFile, node, maxReservedRegisterRR, buildParameters.buildMode->byteCodeStackSize);
         node->bc->enterByteCode(runContext);
     }
 
