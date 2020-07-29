@@ -48,7 +48,7 @@ struct LLVMPerThread
     map<int32_t, llvm::BasicBlock*> labels;
 
     // Debug infos
-    BackendLLVMDbg* dbg;
+    BackendLLVMDbg* dbg = nullptr;
 };
 
 #define CST_RA32 builder.getInt32(ip->a.u32)
