@@ -715,33 +715,20 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::IntrinsicArguments:
+    {
         registersRC[ip->a.u32].pointer = (uint8_t*) g_CommandLine.userArgumentsSlice.first;
         registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine.userArgumentsSlice.second;
         break;
-
+    }
     case ByteCodeOp::IntrinsicIsByteCode:
+    {
         registersRC[ip->a.u32].b = true;
         break;
-
+    }
     case ByteCodeOp::IntrinsicAssert:
-        if (!registersRC[ip->a.u32].b)
-            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
-        break;
-    case ByteCodeOp::IntrinsicAssertCastAny:
     {
         if (!registersRC[ip->a.u32].b)
-        {
-            // Get the names from the 2 typeinfos.
-            // Name must be the first pointer of the TypeInfo struct for that to work !
-            Utf8 msg;
-            SWAG_ASSERT(registersRC[ip->b.u32].pointer);
-            SWAG_ASSERT(registersRC[ip->c.u32].pointer);
-            const char* msg1 = *(char**) registersRC[ip->b.u32].pointer;
-            const char* msg2 = *(char**) registersRC[ip->c.u32].pointer;
-            SWAG_ASSERT(msg1);
-            SWAG_ASSERT(msg2);
-            context->error(format("type '%s' does not match the 'any' type name '%s'", msg1, msg2));
-        }
+            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:
@@ -769,7 +756,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         swag_runtime_tlsSetValue(g_tlsContextId, registersRC[ip->a.u32].pointer);
         break;
     }
-
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();

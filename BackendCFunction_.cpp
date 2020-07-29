@@ -715,8 +715,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         if (ip->node->flags & AST_NO_BACKEND)
             continue;
 
-        bool safety = moduleToGen->mustEmitSafety(ip->node);
-
         // Print source code
         if (!bc->compilerGenerated)
         {
@@ -1470,13 +1468,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::IntrinsicAssert:
             MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), ip->d.pointer);
-            break;
-        case ByteCodeOp::IntrinsicAssertCastAny:
-            CONCAT_FIXED_STR(concat, "{");
-            concat.addStringFormat("const char*typeTo=*(char**)r[%u].p;", ip->b.u32);
-            concat.addStringFormat("const char*typeFrom=*(char**)r[%u].p;", ip->c.u32);
-            MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), "invalid cast from 'any'");
-            CONCAT_FIXED_STR(concat, "}");
             break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);

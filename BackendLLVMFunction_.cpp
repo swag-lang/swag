@@ -474,8 +474,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
         }
 
-        bool safety = moduleToGen->mustEmitSafety(ip->node);
-
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
         {
@@ -2389,13 +2387,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             createAssert(buildParameters, r0, ip, (const char*) ip->d.pointer);
-            break;
-        }
-        case ByteCodeOp::IntrinsicAssertCastAny:
-        {
-            //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"invalid cast from 'any'\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            createAssert(buildParameters, r0, ip, "invalid cast from 'any'");
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:

@@ -232,7 +232,6 @@ void ByteCode::print()
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
-        case ByteCodeOp::IntrinsicAssertCastAny:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::CopyRBtoRA:
@@ -243,6 +242,10 @@ void ByteCode::print()
         case ByteCodeOp::CopyRCtoRRCall:
         case ByteCodeOp::IntrinsicPrintString:
         case ByteCodeOp::DeRefStringSlice:
+        case ByteCodeOp::TestNotZero8:
+        case ByteCodeOp::TestNotZero16:
+        case ByteCodeOp::TestNotZero32:
+        case ByteCodeOp::TestNotZero64:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
