@@ -431,8 +431,11 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     VectorNative<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
+        context->setNoLocation();
+
         RegisterList r0;
         reserveRegisterRC(context, r0, 1);
+
         for (auto expr : caseNode->expressions)
         {
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
@@ -456,6 +459,8 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
             jump->b.s32               = context->bc->numInstructions - jump->b.u32;
         }
+
+        context->restoreNoLocation();
     }
 
     return true;

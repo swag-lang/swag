@@ -344,9 +344,9 @@ void BackendLLVMDbg::finalize()
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
-    if (!ip || !ip->location)
+    if (!ip)
         builder->SetCurrentDebugLocation(nullptr);
-    else
+    else if(ip->location)
         builder->SetCurrentDebugLocation(llvm::DebugLoc::get(ip->location->line + 1, 0 /*ip->location->column*/, scopes.back()));
 }
 

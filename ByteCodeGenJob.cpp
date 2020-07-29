@@ -159,7 +159,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.d.u64                = r3;
     ins.node                 = node;
     ins.flags                = 0;
-    ins.location             = context->forceLocation ? context->forceLocation : &node->token.startLocation;
+    if (context->noLocation)
+        ins.location = nullptr;
+    else
+        ins.location = context->forceLocation ? context->forceLocation : &node->token.startLocation;
 
     if (g_CommandLine.stats)
         g_Stats.numInstructions++;

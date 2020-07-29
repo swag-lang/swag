@@ -26,6 +26,17 @@ struct ByteCodeGenContext : public JobContext
     ByteCodeGenJob*               job;
     SourceLocation*               forceLocation = nullptr;
     VectorNative<SourceLocation*> stackForceLocation;
+    bool                          noLocation = false;
+
+    void setNoLocation()
+    {
+        noLocation = true;
+    }
+
+    void restoreNoLocation()
+    {
+        noLocation = false;
+    }
 
     void pushLocation(SourceLocation* loc)
     {
