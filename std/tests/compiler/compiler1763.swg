@@ -1,4 +1,5 @@
 #[swag.printbc]
+#[swag.safety(true)]
 #test
 {
 /*    x := 255'u8
