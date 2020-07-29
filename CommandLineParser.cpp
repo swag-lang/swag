@@ -33,7 +33,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
     addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "developer mode");
 
-    addArg("--buildmode", nullptr, CommandLineType::String, &cmdLine->buildMode, nullptr, "set the build configuration");
+    addArg("--buildcfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration");
     addArg("--target", nullptr, CommandLineType::Enum, &cmdLine->target, "win64", "set the build architecture");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 

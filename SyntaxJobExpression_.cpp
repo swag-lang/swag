@@ -67,8 +67,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerCallerLine:
     case TokenId::CompilerCallerFile:
     case TokenId::CompilerCallerFunction:
-    case TokenId::CompilerConfiguration:
-    case TokenId::CompilerPlatform:
+    case TokenId::CompilerBuildCfg:
+    case TokenId::CompilerTarget:
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
         if (result)

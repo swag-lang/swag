@@ -354,23 +354,23 @@ namespace swag
     // #########################################################
 
     // Platform setup
-    #if #arch == "win64"
+    #if #target == "win64"
     {
         const WINDOWS = true
         const BIG_ENDIAN = false
     }
     #else
     {
-        #assert(false, "invalid platform:" ~ #arch)
+        #assert(false, "invalid target:" ~ #target)
     }
 
     // Configuration setup
-    #if #config == "debug"
+    #if #buildcfg == "debug"
     {
         const DEBUG = true
         const ASSERT = true
     }
-    #elif #config == "release"
+    #elif #buildcfg == "release"
     {
         const DEBUG = false
         const ASSERT = false

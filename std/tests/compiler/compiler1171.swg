@@ -1,4 +1,4 @@
-#if #config == "frffrrf"
+#if #buildcfg == "frffrrf"
 {
 #assert(false)
 }

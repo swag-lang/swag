@@ -23,7 +23,7 @@ bool Module::setup(const Utf8& moduleName)
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);
     scopeRoot->owner               = astRoot;
     buildPass                      = g_CommandLine.buildPass;
-    buildParameters.buildModeName  = g_CommandLine.buildMode;
+    buildParameters.buildModeName  = g_CommandLine.buildCfg;
     buildParameters.buildMode      = &buildMode;
     buildParameters.outputFileName = name.c_str();
 

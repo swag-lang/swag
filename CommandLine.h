@@ -2,7 +2,7 @@
 #include "BuildPass.h"
 #include "Utf8.h"
 
-enum class BackendArchi
+enum class BackendTarget
 {
     Win64,
 };
@@ -62,8 +62,8 @@ struct CommandLine
     bool generateDoc = false;
 
     // Output
-    string       buildMode = "debug";
-    BackendArchi target   = BackendArchi::Win64;
+    string        buildCfg = "debug";
+    BackendTarget target   = BackendTarget::Win64;
 
     // Backend
     BackendType backendType        = BackendType::LLVM;

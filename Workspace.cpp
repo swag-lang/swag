@@ -236,7 +236,7 @@ Utf8 Workspace::GetArchName()
 {
     switch (g_CommandLine.target)
     {
-    case BackendArchi::Win64:
+    case BackendTarget::Win64:
         return "win64";
     default:
         return "?";
@@ -247,7 +247,7 @@ void Workspace::setupTarget()
 {
     targetPath = workspacePath;
     targetPath.append("output/");
-    targetPath.append(g_CommandLine.buildMode + "-" + GetArchName().c_str());
+    targetPath.append(g_CommandLine.buildCfg + "-" + GetArchName().c_str());
 
     if (g_CommandLine.verboseBuildPass)
     {
@@ -293,7 +293,7 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.buildMode + "-" + g_Workspace.GetArchName().c_str());
+    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.buildCfg + "-" + g_Workspace.GetArchName().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
@@ -424,7 +424,7 @@ bool Workspace::build()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
 
-    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildMode.c_str(), g_Workspace.GetArchName().c_str()));
+    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetArchName().c_str()));
     addBootstrap();
     setupTarget();
     addRuntime();
