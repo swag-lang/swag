@@ -3,7 +3,6 @@
 #include "swagScope.h"
 struct Module;
 struct Scope;
-struct CompilerTarget;
 
 struct Workspace
 {
@@ -24,7 +23,6 @@ struct Workspace
 
     bool watch();
 
-    CompilerTarget     target;
     fs::path           workspacePath;
     fs::path           targetPath;
     fs::path           cachePath;

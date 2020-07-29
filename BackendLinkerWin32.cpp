@@ -56,7 +56,7 @@ namespace BackendLinkerWin32
             }
         }
 
-        bool debugMode = buildParameters.target.backendDebugInformations || g_CommandLine.debug;
+        bool debugMode = buildParameters.target->backendDebugInformations || g_CommandLine.debug;
 
         // This is mandatory under windows
         arguments += "kernel32.lib ";
