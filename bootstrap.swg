@@ -331,10 +331,10 @@ namespace swag
 
     struct BuildCfg
     {
-        // Debug
-        debugBoundCheck: bool    = true
-        debugAnyCastCheck: bool  = true
-        debugDivZeroCheck: bool  = true
+        // Add guard code
+        guardBoundCheck: bool   = true
+        guardgAnyCast: bool     = true
+        guardDivZero: bool      = true
 
         // Bytecode
         byteCodeMaxRecurse: u32     = 1024
