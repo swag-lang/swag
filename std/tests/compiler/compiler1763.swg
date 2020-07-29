@@ -4,7 +4,7 @@
     x := 10
     switch x
     {
-    case 0:
+    case 0, 2:
         @print("0")
     case 1:
         @print("1")
