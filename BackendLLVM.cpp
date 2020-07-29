@@ -260,7 +260,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
         pp.builder = new llvm::IRBuilder<>(*pp.context);
 
-        if (buildParameters.buildCfg->backendDebugInformations || g_CommandLine.debug)
+        if (buildParameters.buildCfg->backendDebugInformations)
         {
             pp.dbg = new BackendLLVMDbg;
             pp.dbg->setup(this, pp.module);
@@ -308,7 +308,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto& modu            = *pp.module;
 
     // Debug infos
-    if(pp.dbg)
+    if (pp.dbg)
         pp.dbg->finalize();
 
     // Target machine
@@ -332,13 +332,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     llvm::legacy::PassManager llvmPass;
 
     // Optimize passes
-    int optimLevel = 0;
-    if (g_CommandLine.optim)
-        optimLevel = g_CommandLine.optim;
-    else if (!g_CommandLine.debug)
-        optimLevel = buildParameters.buildCfg->backendOptimizeLevel;
-
-    switch (optimLevel)
+    switch (buildParameters.buildCfg->backendOptimizeLevel)
     {
     case 0:
         theTargetMachine->setOptLevel(llvm::CodeGenOpt::None);
@@ -354,10 +348,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    if (optimLevel)
+    if (buildParameters.buildCfg->backendOptimizeLevel)
     {
         llvm::PassManagerBuilder pmb;
-        pmb.OptLevel  = optimLevel;
+        pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeLevel;
         pmb.SizeLevel = 0;
         pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
         pmb.populateModulePassManager(llvmPass);

@@ -27,6 +27,30 @@ bool Module::setup(const Utf8& moduleName)
     buildParameters.outputFileName = name.c_str();
 
     // Setup build configuration
+    if (g_CommandLine.buildCfg == "debug")
+    {
+        buildCfg.debugAnyCastCheck        = true;
+        buildCfg.debugBoundCheck          = true;
+        buildCfg.debugDivZeroCheck        = true;
+        buildCfg.backendOptimizeLevel     = 0;
+        buildCfg.backendDebugInformations = true;
+    }
+    else if (g_CommandLine.buildCfg == "release")
+    {
+        buildCfg.debugAnyCastCheck        = true;
+        buildCfg.debugBoundCheck          = true;
+        buildCfg.debugDivZeroCheck        = true;
+        buildCfg.backendOptimizeLevel     = 3;
+        buildCfg.backendDebugInformations = true;
+    }
+    else if (g_CommandLine.buildCfg == "final")
+    {
+        buildCfg.debugAnyCastCheck        = false;
+        buildCfg.debugBoundCheck          = false;
+        buildCfg.debugDivZeroCheck        = false;
+        buildCfg.backendOptimizeLevel     = 3;
+        buildCfg.backendDebugInformations = false;
+    }
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary

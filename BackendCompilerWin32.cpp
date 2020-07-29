@@ -12,7 +12,7 @@ namespace OS
     {
         // CL arguments
         string clArguments = "";
-        bool   debugMode   = buildParameters.buildCfg->backendDebugInformations || g_CommandLine.debug;
+        bool   debugMode   = buildParameters.buildCfg->backendDebugInformations;
         if (debugMode)
         {
             fs::path dest = Backend::getOutputFileName(buildParameters);
@@ -32,12 +32,7 @@ namespace OS
         clArguments += "/Fo\"" + cachePath + "\" ";
 
         // Optimization level
-        int optimLevel = 0;
-        if (g_CommandLine.optim)
-            optimLevel = g_CommandLine.optim;
-        else if (!g_CommandLine.debug)
-            optimLevel = buildParameters.buildCfg->backendOptimizeLevel;
-        switch (optimLevel)
+        switch (buildParameters.buildCfg->backendOptimizeLevel)
         {
         case 0:
             break;

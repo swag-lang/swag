@@ -56,14 +56,12 @@ namespace BackendLinkerWin32
             }
         }
 
-        bool debugMode = buildParameters.buildCfg->backendDebugInformations || g_CommandLine.debug;
-
         // This is mandatory under windows
         arguments += "kernel32.lib ";
         arguments += "user32.lib ";
 
         // Add swag.runtime
-        if (debugMode)
+        if (buildParameters.buildCfg->backendDebugInformations)
             arguments += "swag.runtime_d.lib ";
         else
             arguments += "swag.runtime.lib ";
@@ -79,7 +77,7 @@ namespace BackendLinkerWin32
 
         arguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
 
-        if (debugMode)
+        if (buildParameters.buildCfg->backendDebugInformations)
             arguments += "/DEBUG ";
 
         auto resultFile = Backend::getOutputFileName(buildParameters);
