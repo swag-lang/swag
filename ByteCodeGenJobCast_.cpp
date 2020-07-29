@@ -679,6 +679,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     typeInfo     = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
     fromTypeInfo = TypeManager::concreteReference(fromTypeInfo);
+    bool safety  = mustEmitSafety(context);
 
     // opCast
     if (exprNode->flags & AST_USER_CAST)
@@ -699,7 +700,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         // Check that the type is correct
         if (isExplicit)
         {
-            if (context->sourceFile->module->buildParameters.buildCfg->safetyGuards)
+            if (safety)
             {
                 auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0);
                 SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);

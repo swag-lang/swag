@@ -11,6 +11,7 @@ struct TT
 //#[swag.printbc]
 func C(x: any)
 {
+    #[swag.safety(true)]
     ptr := cast(s32) x
 }
 

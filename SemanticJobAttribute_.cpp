@@ -27,14 +27,13 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 {
     if (kind == AstNodeKind::Statement)
         return true;
-
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-    {
-        return context->report({ oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->name.c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo)) });
-    }
+        return context->report({oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->name.c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
+    if (typeInfo->attributeUsage == AttributeUsage::All)
+        return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
     {
@@ -118,7 +117,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         for (auto child : curAttr->childs)
         {
             // Check that the attribute matches the following declaration
-            SWAG_CHECK(checkAttribute(context, child, forNode, kind));
+            if(kind != AstNodeKind::AttrUse)
+                SWAG_CHECK(checkAttribute(context, child, forNode, kind));
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->attributes.hasAttribute("swag.attributeMulti"))
@@ -181,6 +181,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_NODOC;
             else if (child->name == "noreturn")
                 flags |= ATTRIBUTE_NORETURN;
+            else if (child->name == "safety")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.safety", "value", attrValue);
+                flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
+            }
         }
 
         // Merge the result
@@ -312,6 +318,9 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     {
         nextStatement->parentAttributes = node;
     }
+
+    SymbolAttributes attributes;
+    SWAG_CHECK(collectAttributes(context, attributes, node, node, AstNodeKind::AttrUse, node->attributeFlags));
 
     return true;
 }

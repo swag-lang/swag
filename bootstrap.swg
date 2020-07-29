@@ -90,6 +90,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.GlobalVariable)]
     attr nobss();
 
+    #[attributeUsage(AttributeUsage.All)]
+    attr safety(value: bool);
+
     // #########################################################
     // Constants
     // #########################################################

@@ -86,6 +86,7 @@ struct ByteCodeGenJob : public Job
     static void                 askForByteCode(Job* dependentJob, Job* job, AstNode* node, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
+    static bool                 mustEmitSafety(ByteCodeGenContext* context);
 
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);

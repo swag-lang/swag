@@ -107,7 +107,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
     {
         Scoped            scoped(this, newScope);
-        ScopedAccessFlags scopedAttributes(this, attr);
+        ScopedAttributeFlags scopedAttributes(this, attr);
         SWAG_CHECK(doTopLevelInstruction(parent, &topStmt));
         if (result)
             *result = topStmt;
