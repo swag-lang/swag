@@ -36,7 +36,7 @@ struct BuildCfg
 
     // Backend common
     bool     backendDebugInformations = false;
-    uint32_t backendOptimizeLevel     = 0;
+    uint32_t backendOptimizeLevel     = 0; // 0 => disabled, 1 => favor size, 2 => favor speed
 
     // Specific backend parameters
     BuildCfgBackendC    backendC;

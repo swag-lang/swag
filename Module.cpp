@@ -36,13 +36,13 @@ bool Module::setup(const Utf8& moduleName)
     else if (g_CommandLine.buildCfg == "release")
     {
         buildCfg.safetyGuards             = true;
-        buildCfg.backendOptimizeLevel     = 3;
+        buildCfg.backendOptimizeLevel     = 2;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "final")
     {
         buildCfg.safetyGuards             = false;
-        buildCfg.backendOptimizeLevel     = 3;
+        buildCfg.backendOptimizeLevel     = 2;
         buildCfg.backendDebugInformations = false;
     }
 
