@@ -365,12 +365,12 @@ namespace swag
     }
 
     // Configuration setup
-    #if #buildcfg == "debug"
+    #if #cfg == "debug"
     {
         const DEBUG = true
         const ASSERT = true
     }
-    #elif #buildcfg == "release"
+    #elif #cfg == "release"
     {
         const DEBUG = false
         const ASSERT = false

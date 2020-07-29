@@ -15,7 +15,7 @@ void LanguageSpec::setup()
     keywords["#ast"]            = TokenId::CompilerAst;
     keywords["#file"]           = TokenId::CompilerFile;
     keywords["#line"]           = TokenId::CompilerLine;
-    keywords["#buildcfg"]       = TokenId::CompilerBuildCfg;
+    keywords["#cfg"]            = TokenId::CompilerBuildCfg;
     keywords["#target"]         = TokenId::CompilerTarget;
     keywords["#function"]       = TokenId::CompilerFunction;
     keywords["#callerfile"]     = TokenId::CompilerCallerFile;
