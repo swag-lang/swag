@@ -277,3 +277,12 @@ void Module::printUserMessage(const BuildParameters& bp)
         g_Log.messageHeaderCentered(header, name.c_str());
     }
 }
+
+void Module::addGlobalVar(AstNode* node, bool bss)
+{
+    shared_lock lk(mutexGlobalVars);
+    if(bss)
+        globalVarsBss.push_back(node);
+    else
+        globalVarsMutable.push_back(node);
+}

@@ -9,7 +9,7 @@ struct LLVMPerThread;
 
 struct BackendLLVMDbg
 {
-    void setup(llvm::Module* module);
+    void setup(Module* m, llvm::Module* module);
     void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func);
     void endFunction();
     void finalize();
@@ -17,6 +17,7 @@ struct BackendLLVMDbg
     void pushLexicalScope(AstNode* node);
     void popLexicalScope();
     void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
+    void createGlobalVariablesForSegment(LLVMPerThread& pp, llvm::Type* type, llvm::GlobalVariable* var);
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
 
@@ -27,6 +28,7 @@ struct BackendLLVMDbg
     llvm::DIType*           getType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
+    Module*                module      = nullptr;
     llvm::DIBuilder*       dbgBuilder  = nullptr;
     llvm::DICompileUnit*   compileUnit = nullptr;
     vector<llvm::DIScope*> scopes;

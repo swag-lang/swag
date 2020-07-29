@@ -5,10 +5,13 @@
 #include "SourceFile.h"
 #include "Ast.h"
 #include "TypeInfo.h"
+#include "Module.h"
 #include "BackendLLVM.h"
+#include "SymTable.h"
 
-void BackendLLVMDbg::setup(llvm::Module* modu)
+void BackendLLVMDbg::setup(Module* m, llvm::Module* modu)
 {
+    module        = m;
     dbgBuilder    = new llvm::DIBuilder(*modu);
     auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
@@ -346,4 +349,44 @@ void BackendLLVMDbg::pushLexicalScope(AstNode* node)
 void BackendLLVMDbg::popLexicalScope()
 {
     scopes.pop_back();
+}
+
+void BackendLLVMDbg::createGlobalVariablesForSegment(LLVMPerThread& pp, llvm::Type* type, llvm::GlobalVariable* var)
+{
+    auto& context = *pp.context;
+    auto& modu    = *pp.module;
+    auto& builder = *pp.builder;
+    auto& all     = var == pp.bssSeg ? module->globalVarsBss : module->globalVarsMutable;
+
+    for (auto node : all)
+    {
+        auto resolved  = node->resolvedSymbolOverload;
+        auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, builder.getInt32(resolved->storageOffset));
+
+        // Cast to the correct type
+        llvm::Type*   varType = nullptr;
+        llvm::DIType* dbgType = nullptr;
+        if (resolved->typeInfo->kind == TypeInfoKind::Native)
+        {
+            switch (resolved->typeInfo->nativeType)
+            {
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+                varType = llvm::Type::getInt32Ty(context);
+                dbgType = s32Ty;
+                break;
+            default:
+                continue;
+            }
+        }
+        else
+            continue;
+
+        varType   = varType->getPointerTo();
+        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, varType);
+        auto name = node->name.c_str();
+        auto g    = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
+        auto gve  = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, compileUnit->getFile(), 0, dbgBuilder->createReferenceType(llvm::dwarf::DW_TAG_reference_type, dbgType), dbgType, true);
+        g->addDebugInfo(gve);
+    }
 }

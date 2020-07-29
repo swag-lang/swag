@@ -1,13 +1,11 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "SymTable.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "TypeInfo.h"
 #include "TypeManager.h"
 
-bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 {
     auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;

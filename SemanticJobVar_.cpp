@@ -808,6 +808,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
+
+        module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS);
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
@@ -832,7 +834,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-        node->byteCodeFct         = ByteCodeGenJob::emitVarDecl;
+        node->byteCodeFct         = ByteCodeGenJob::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)

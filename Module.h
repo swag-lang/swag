@@ -101,4 +101,9 @@ struct Module
     uint32_t                    hasBeenBuilt = BUILDRES_NONE;
 
     TypeTable typeTable;
+
+    shared_mutex     mutexGlobalVars;
+    vector<AstNode*> globalVarsBss;
+    vector<AstNode*> globalVarsMutable;
+    void             addGlobalVar(AstNode* node, bool bss);
 };

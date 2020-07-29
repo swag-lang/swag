@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendLLVM.h"
+#include "BackendLLVMDbg.h"
 #include "DataSegment.h"
 #include "Module.h"
 #include "ByteCode.h"
@@ -37,6 +38,8 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     {
         llvm::ConstantAggregateZero* constArray = llvm::ConstantAggregateZero::get(arrayType);
         pp.bssSeg                               = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__bs");
+        if (pp.dbg)
+            pp.dbg->createGlobalVariablesForSegment(pp, arrayType, pp.bssSeg);
     }
     else
     {
@@ -60,9 +63,15 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         // Create global variables
         llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
         if (dataSegment == &module->mutableSegment)
+        {
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ms");
+            if (pp.dbg)
+                pp.dbg->createGlobalVariablesForSegment(pp, arrayType, pp.mutableSeg);
+        }
         else
+        {
             pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__cs");
+        }
     }
 
     return true;
