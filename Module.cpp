@@ -23,9 +23,10 @@ bool Module::setup(const Utf8& moduleName)
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);
     scopeRoot->owner               = astRoot;
     buildPass                      = g_CommandLine.buildPass;
-    buildParameters.buildModeName  = g_CommandLine.buildCfg;
-    buildParameters.buildCfg      = &buildMode;
+    buildParameters.buildCfg       = &buildCfg;
     buildParameters.outputFileName = name.c_str();
+
+    // Setup build configuration
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary

@@ -20,7 +20,6 @@ struct BuildParameters
 {
     BackendOutputType  outputType = BackendOutputType::Binary;
     set<Utf8>          foreignLibs;
-    string             buildModeName;
     BuildCfg*          buildCfg = nullptr;
     string             postFix;
     string             outputFileName;

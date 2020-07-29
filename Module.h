@@ -50,7 +50,7 @@ struct Module
     atomic<int>               numErrors = 0;
     shared_mutex              mutexFile;
     VectorNative<SourceFile*> files;
-    BuildCfg            buildMode;
+    BuildCfg            buildCfg;
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;
     Scope*                    scopeRoot            = nullptr;
