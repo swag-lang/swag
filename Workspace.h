@@ -35,6 +35,7 @@ struct Workspace
     atomic<int>        numErrors = 0;
     vector<Module*>    modules;
     map<Utf8, Module*> mapModulesNames;
+    Module*            filteredModule = nullptr;
     ByteCodeRunContext runContext;
     Module*            bootstrapModule;
     SwagScope          swagScope;

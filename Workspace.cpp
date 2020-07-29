@@ -37,6 +37,10 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName)
         module->setup(moduleName);
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
+
+        // Is this the module we want to build ?
+        if (g_CommandLine.moduleFilter == moduleName)
+            filteredModule = module;
     }
 
     if (g_CommandLine.stats)
@@ -361,9 +365,41 @@ bool Workspace::buildTarget()
         }
     }
 
+    vector<Module*>  toBuild;
+    vector<Module*>* modulesToBuild = &modules;
+
+    // Filter modules to build
+    //////////////////////////////////////////////////
+    if (!g_CommandLine.moduleFilter.empty())
+    {
+        if (!filteredModule)
+        {
+            g_Log.error(format("module '%s' cannot be found in that workspace", g_CommandLine.moduleFilter.c_str()));
+            return false;
+        }
+
+        modulesToBuild = &toBuild;
+        toBuild.push_back(filteredModule);
+        filteredModule->addedToBuild = true;
+        for (int i = 0; i < toBuild.size(); i++)
+        {
+            for (auto& dep : toBuild[i]->moduleDependencies)
+            {
+                auto it = g_Workspace.mapModulesNames.find(dep.first);
+                SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+
+                auto depModule = it->second;
+                if (depModule->addedToBuild)
+                    continue;
+                toBuild.push_back(depModule);
+                depModule->addedToBuild = true;
+            }
+        }
+    }
+
     // Build modules
     //////////////////////////////////////////////////
-    for (auto module : modules)
+    for (auto module : *modulesToBuild)
     {
         if (module == bootstrapModule)
             continue;

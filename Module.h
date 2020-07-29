@@ -57,6 +57,7 @@ struct Module
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTests            = false;
+    bool                      addedToBuild         = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

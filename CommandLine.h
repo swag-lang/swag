@@ -25,6 +25,7 @@ struct CommandLine
     bool   clean = false;
     string workspacePath;
     string cachePath;
+    string moduleFilter;
     string fileFilter;
     string testFilter;
 
