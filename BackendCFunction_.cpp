@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
+#include "SwagRuntime.h"
 
 BackendFunctionBodyJob* BackendC::newFunctionJob()
 {
@@ -777,7 +778,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                            normalizePath(ip->node->sourceFile->path).c_str(), \
                            ip->node->token.startLocation.line + 1,            \
                            __msg,                                             \
-                           g_CommandLine.devMode);
+                           g_CommandLine.devMode ? SWAG_ASSERT_DEVMODE : 0);
 
         case ByteCodeOp::BoundCheckString:
             MK_ASSERT(format("r[%u].u32<=r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");
@@ -1513,7 +1514,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), "");
+            MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), ip->d.pointer);
             break;
         case ByteCodeOp::IntrinsicAssertCastAny:
             CONCAT_FIXED_STR(concat, "{");

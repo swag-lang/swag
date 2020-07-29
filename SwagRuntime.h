@@ -1,7 +1,9 @@
 #pragma once
 
 #ifdef _MSC_VER
+#ifndef SWAG_IMPORT
 #define SWAG_IMPORT extern "C" __declspec(dllimport)
+#endif
 #endif
 
 SWAG_IMPORT void*    swag_runtime_malloc(uint64_t size);
@@ -16,10 +18,14 @@ SWAG_IMPORT int32_t  swag_runtime_strlen(const char* message);
 SWAG_IMPORT void     swag_runtime_print(const char* message);
 SWAG_IMPORT void     swag_runtime_print_i64(int64_t value);
 SWAG_IMPORT void     swag_runtime_print_f64(double value);
-SWAG_IMPORT void     swag_runtime_assert(bool expr, const char* file, int line, const char* msg);
 SWAG_IMPORT bool     swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num);
 SWAG_IMPORT void*    swag_runtime_loadDynamicLibrary(const char* name);
 SWAG_IMPORT uint32_t swag_runtime_tlsAlloc();
 SWAG_IMPORT void     swag_runtime_tlsSetValue(uint32_t id, void* value);
 SWAG_IMPORT void*    swag_runtime_tlsGetValue(uint32_t id);
 SWAG_IMPORT void     swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[]);
+
+static uint32_t SWAG_ASSERT_DEVMODE = 0x00000001;
+static uint32_t SWAG_ASSERT_RETURN  = 0x00000002;
+
+SWAG_IMPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags);

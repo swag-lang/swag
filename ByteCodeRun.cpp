@@ -261,19 +261,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = registersRC[ip->c.u32].u32;
-
-        if (!dst)
-        {
-            context->error("destination pointer of @memcpy is null");
-            break;
-        }
-
-        if (!src)
-        {
-            context->error("source pointer of @memcpy is null");
-            break;
-        }
-
         swag_runtime_memcpy(dst, src, size);
         break;
     }
@@ -282,34 +269,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst   = registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;
         uint32_t size  = registersRC[ip->c.u32].u32;
-
-        if (!dst)
-        {
-            context->error("destination pointer of @memset is null");
-            break;
-        }
-
         swag_runtime_memset(dst, value, size);
         break;
     }
     case ByteCodeOp::MemCmp:
     {
-        void*    dst  = registersRC[ip->b.u32].pointer;
-        void*    src  = registersRC[ip->c.u32].pointer;
-        uint32_t size = registersRC[ip->d.u32].u32;
-
-        if (!dst)
-        {
-            context->error("destination pointer of @memcmp is null");
-            break;
-        }
-
-        if (!dst)
-        {
-            context->error("source pointer of @memcmp is null");
-            break;
-        }
-
+        void*    dst               = registersRC[ip->b.u32].pointer;
+        void*    src               = registersRC[ip->c.u32].pointer;
+        uint32_t size              = registersRC[ip->d.u32].u32;
         registersRC[ip->a.u32].s32 = swag_runtime_memcmp(dst, src, size);
         break;
     }
@@ -770,7 +737,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicAssert:
         if (!registersRC[ip->a.u32].b)
-            context->error("assertion failed");
+            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         break;
     case ByteCodeOp::IntrinsicAssertCastAny:
     {

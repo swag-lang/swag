@@ -412,7 +412,7 @@ void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::Val
     auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
     auto r3 = builder.CreateGlobalString(msg);
     auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
-    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i8 : pp.cst0_i8});
+    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i32 : pp.cst0_i8});
 }
 
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)

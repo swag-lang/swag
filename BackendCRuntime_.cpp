@@ -94,7 +94,7 @@ SWAG_IMPORT void swag_runtime_print_n(const char*,int);
 SWAG_IMPORT void swag_runtime_print(const char*);
 SWAG_IMPORT void swag_runtime_print_i64(__i64_t);
 SWAG_IMPORT void swag_runtime_print_f64(__f64_t);
-SWAG_IMPORT void swag_runtime_assert(__b_t,const char*,int,const char*,__b_t);
+SWAG_IMPORT void swag_runtime_assert(__b_t,const char*,int,const char*,__ui32_t);
 SWAG_IMPORT __b_t swag_runtime_strcmp(const char*,const char*,__ui32_t);
 SWAG_IMPORT __i32_t swag_runtime_strlen(const char*);
 SWAG_IMPORT void swag_runtime_convertArgcArgv(void*,int,char*[]);

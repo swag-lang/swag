@@ -1,10 +1,14 @@
 #include <stdint.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #ifdef _MSC_VER
-#define SWAG_IMPORT __declspec(dllimport)
+#define SWAG_IMPORT extern "C" __declspec(dllexport)
 #define SWAG_EXPORT extern "C" __declspec(dllexport)
 #endif
+
+#include "SwagRuntime.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 static char* __itoa(char* result, int64_t value)
@@ -147,12 +151,12 @@ SWAG_EXPORT void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, bool devMode)
+SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags)
 {
     if (expr)
         return;
 
-    swag_runtime_print("error: [backend] ");
+    swag_runtime_print("error: ");
     swag_runtime_print(file);
     swag_runtime_print(":");
     swag_runtime_print_i64(line);
@@ -163,11 +167,13 @@ SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, cons
         swag_runtime_print("\n");
     }
     else
-        swag_runtime_print(": native code assertion failed\n");
+        swag_runtime_print(": assertion failed\n");
 
 #ifdef _WIN32
-    if (devMode)
+    if (flags & SWAG_ASSERT_DEVMODE)
         MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+    if (flags & SWAG_ASSERT_RETURN)
+        return;
     RaiseException(0x666, 0, 0, 0);
 #endif
     exit(-1);

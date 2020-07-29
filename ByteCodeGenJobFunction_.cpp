@@ -150,6 +150,16 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
+void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, RegisterList& r, const char* message)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+
+    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32     = 1;
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r)->d.pointer = (uint8_t*) message;
+}
+
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
@@ -229,6 +239,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memcpy' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memcpy' is null");
         emitInstruction(context, ByteCodeOp::MemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -240,6 +252,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memset' is null");
         emitInstruction(context, ByteCodeOp::MemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
@@ -248,13 +261,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case Intrinsic::IntrinsicMemCmp:
     {
-        auto childDest         = callParams->childs[0];
-        auto childValue        = callParams->childs[1];
-        auto childSize         = callParams->childs[2];
+        auto childDest = callParams->childs[0];
+        auto childSrc  = callParams->childs[1];
+        auto childSize = callParams->childs[2];
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "first pointer of '@memcmp' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "second pointer of '@memcmp' is null");
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::MemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::MemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childValue);
+        freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
         break;
     }

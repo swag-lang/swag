@@ -108,6 +108,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams = true);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
+    static void emitSafetyNullPointer(ByteCodeGenContext* context, RegisterList& r, const char* message);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
