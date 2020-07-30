@@ -232,8 +232,6 @@ void ByteCode::print()
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
-        case ByteCodeOp::BoundCheck:
-        case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::CopyRBtoRA:
         case ByteCodeOp::CopyRBAddrToRA:
         case ByteCodeOp::CopyRRtoRC:

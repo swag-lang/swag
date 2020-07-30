@@ -412,7 +412,7 @@ void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::Val
     auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
     auto r3 = builder.CreateGlobalString(msg);
     auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
-    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i32 : pp.cst0_i8});
+    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i32 : pp.cst0_i32});
 }
 
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -501,27 +501,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         switch (ip->op)
         {
-        case ByteCodeOp::BoundCheckString:
-        {
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u32 <= r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            auto v0 = builder.CreateICmpULE(r0, r1);
-            auto t0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            createAssert(buildParameters, t0, ip, "index out of range");
-            break;
-        }
-        case ByteCodeOp::BoundCheck:
-        {
-            //concat.addStringFormat("swag_runtime_assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": index out of range\");", ip->a.u32, ip->b.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
-            auto r0 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            auto v0 = builder.CreateICmpULT(r0, r1);
-            auto t0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            createAssert(buildParameters, t0, ip, "index out of range");
-            break;
-        }
-
         case ByteCodeOp::IncPointerVB32:
         {
             //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);

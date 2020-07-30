@@ -778,12 +778,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                            __msg,                                             \
                            g_CommandLine.devMode ? SWAG_ASSERT_DEVMODE : 0);
 
-        case ByteCodeOp::BoundCheckString:
-            MK_ASSERT(format("r[%u].u32<=r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");
-            break;
-        case ByteCodeOp::BoundCheck:
-            MK_ASSERT(format("r[%u].u32<r[%u].u32", ip->a.u32, ip->b.u32).c_str(), "index out of range");
-            break;
         case ByteCodeOp::IncPointerVB32:
             concat.addStringFormat("r[%u].p+=%d;", ip->a.u32, ip->b.s32);
             break;

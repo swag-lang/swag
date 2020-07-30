@@ -36,8 +36,6 @@ BYTECODE_OP(DeRefPointer)
 BYTECODE_OP(DeRefStringSlice)
 BYTECODE_OP(Mul64byVB32)
 BYTECODE_OP(Div64byVB32)
-BYTECODE_OP(BoundCheck)
-BYTECODE_OP(BoundCheckString)
 BYTECODE_OP(MakeLambda)
 BYTECODE_OP(MakeLambdaForeign)
 

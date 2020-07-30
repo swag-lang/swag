@@ -18,6 +18,7 @@ struct Scope;
 struct SymbolName;
 struct SymbolOverload;
 struct SourceLocation;
+struct TypeInfoArray;
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
@@ -111,6 +112,11 @@ struct ByteCodeGenJob : public Job
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
     static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message);
     static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
+    static void emitSafetyBoundCheck(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo);
+    static void emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);

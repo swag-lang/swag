@@ -216,6 +216,70 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     emitSafetyNotZero(context, r, bits, "division by zero");
 }
 
+void ByteCodeGenJob::emitSafetyBoundCheck(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    auto re = reserveRegisterRC(context);
+
+    emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
+
+    freeRegisterRC(context, re);
+}
+
+void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+
+    auto r2 = reserveRegisterRC(context);
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+    emitInstruction(context, ByteCodeOp::IncrementRA32, r2);
+    emitSafetyBoundCheck(context, r0, r2);
+
+    freeRegisterRC(context, r2);
+}
+
+void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+    emitSafetyBoundCheck(context, r0, r1);
+}
+
+void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+
+    auto r1 = reserveRegisterRC(context);
+
+    auto inst   = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r1);
+    inst->b.u32 = typeInfo->count;
+    emitSafetyBoundCheck(context, r0, r1);
+
+    freeRegisterRC(context, r1);
+}
+
+void ByteCodeGenJob::emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
+    if (!safety)
+        return;
+
+    auto r2 = reserveRegisterRC(context);
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+    emitInstruction(context, ByteCodeOp::DeRef64, r2);
+    emitInstruction(context, ByteCodeOp::ClearMaskU64, r2)->b.u64 = 0x00000000'FFFFFFFF;
+    emitSafetyBoundCheck(context, r0, r2);
+
+    freeRegisterRC(context, r2);
+}
+
 void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
 {
     inst->node = node;
