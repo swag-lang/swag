@@ -3,11 +3,6 @@
 #include <windows.h>
 #endif
 
-#ifdef _MSC_VER
-#define SWAG_IMPORT extern "C" __declspec(dllexport)
-#define SWAG_EXPORT extern "C" __declspec(dllexport)
-#endif
-
 #include "SwagRuntime.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,51 +47,51 @@ static void __ftoa(char* result, double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_malloc(uint64_t size)
+void* swag_runtime_malloc(uint64_t size)
 {
     auto result = malloc(size);
     return result;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_realloc(void* addr, uint64_t size)
+void* swag_runtime_realloc(void* addr, uint64_t size)
 {
     auto result = realloc(addr, size);
     return result;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_free(void* addr)
+void swag_runtime_free(void* addr)
 {
     free(addr);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_memcpy(void* mem1, const void* mem2, uint64_t size)
+void* swag_runtime_memcpy(void* mem1, const void* mem2, uint64_t size)
 {
     return memcpy(mem1, mem2, size);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_memset(void* mem, int32_t value, uint64_t size)
+void* swag_runtime_memset(void* mem, int32_t value, uint64_t size)
 {
     return memset(mem, value, size);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT int32_t swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size)
+int32_t swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size)
 {
     return memcmp(mem1, mem2, size);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_exit(int32_t exitCode)
+void swag_runtime_exit(int32_t exitCode)
 {
     exit(exitCode);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
+int32_t swag_runtime_strlen(const char* message)
 {
     int32_t len = 0;
     while (*message++)
@@ -105,7 +100,7 @@ SWAG_EXPORT int32_t swag_runtime_strlen(const char* message)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
+bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
 {
     if (!str1 || !str2)
         return str1 == str2;
@@ -113,7 +108,7 @@ SWAG_EXPORT bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
+void swag_runtime_print_n(const char* message, int len)
 {
     if (!message)
     {
@@ -127,7 +122,7 @@ SWAG_EXPORT void swag_runtime_print_n(const char* message, int len)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_print(const char* message)
+void swag_runtime_print(const char* message)
 {
     if (!message)
         message = "<null>";
@@ -135,7 +130,7 @@ SWAG_EXPORT void swag_runtime_print(const char* message)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_print_i64(int64_t value)
+void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
     __itoa(buf, value);
@@ -143,7 +138,7 @@ SWAG_EXPORT void swag_runtime_print_i64(int64_t value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_print_f64(double value)
+void swag_runtime_print_f64(double value)
 {
     char buf[100];
     __ftoa(buf, value);
@@ -151,7 +146,7 @@ SWAG_EXPORT void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags)
+void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags)
 {
     if (expr)
         return;
@@ -180,7 +175,7 @@ SWAG_EXPORT void swag_runtime_assert(bool expr, const char* file, int line, cons
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_loadDynamicLibrary(const char* name)
+void* swag_runtime_loadDynamicLibrary(const char* name)
 {
 #ifdef _WIN32
     return LoadLibraryA(name);
@@ -188,7 +183,7 @@ SWAG_EXPORT void* swag_runtime_loadDynamicLibrary(const char* name)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT uint32_t swag_runtime_tlsAlloc()
+uint32_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
     return TlsAlloc();
@@ -196,7 +191,7 @@ SWAG_EXPORT uint32_t swag_runtime_tlsAlloc()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_tlsSetValue(uint32_t id, void* value)
+void swag_runtime_tlsSetValue(uint32_t id, void* value)
 {
 #ifdef _WIN32
     TlsSetValue(id, value);
@@ -204,7 +199,7 @@ SWAG_EXPORT void swag_runtime_tlsSetValue(uint32_t id, void* value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
+void* swag_runtime_tlsGetValue(uint32_t id)
 {
 #ifdef _WIN32
     auto result = TlsGetValue(id);
@@ -213,7 +208,7 @@ SWAG_EXPORT void* swag_runtime_tlsGetValue(uint32_t id)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-SWAG_EXPORT void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
+void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
 {
     uint64_t argumentsStr[64];
     swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments", 0);

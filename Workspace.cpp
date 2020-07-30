@@ -49,19 +49,6 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName)
     return module;
 }
 
-void Workspace::addRuntime()
-{
-    auto job        = g_Pool_copyFileJob.alloc();
-    job->sourcePath = g_CommandLine.exePath.parent_path().string() + "/swag.runtime.dll";
-    job->destPath   = g_Workspace.targetPath.string() + "/swag.runtime.dll";
-    g_ThreadMgr.addJob(job);
-
-    job             = g_Pool_copyFileJob.alloc();
-    job->sourcePath = g_CommandLine.exePath.parent_path().string() + "/swag.runtime_d.dll";
-    job->destPath   = g_Workspace.targetPath.string() + "/swag.runtime_d.dll";
-    g_ThreadMgr.addJob(job);
-}
-
 void Workspace::addBootstrap()
 {
     // Get bootstrap.swg file
@@ -427,7 +414,6 @@ bool Workspace::build()
     g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetArchName().c_str()));
     addBootstrap();
     setupTarget();
-    addRuntime();
     SWAG_CHECK(buildTarget());
 
     auto                     timeAfter = chrono::high_resolution_clock::now();
