@@ -364,18 +364,4 @@ namespace swag
     {
         #assert(false, "invalid target:" ~ #target)
     }
-
-    // Configuration setup
-    #if #cfg == "debug"
-    {
-        const DEBUG = true
-    }
-    #elif #cfg == "release"
-    {
-        const DEBUG = false
-    }
-    #else
-    {
-        const DEBUG = false
-    }
 }
