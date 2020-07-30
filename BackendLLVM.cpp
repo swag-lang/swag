@@ -314,13 +314,13 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // Target machine
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
     modu.setTargetTriple(targetTriple);
-    std::string         Error;
-    auto                target   = llvm::TargetRegistry::lookupTarget(targetTriple, Error);
-    auto                CPU      = "generic";
-    auto                Features = "";
+    std::string         error;
+    auto                target   = llvm::TargetRegistry::lookupTarget(targetTriple, error);
+    auto                cpu      = "generic";
+    auto                features = "";
     llvm::TargetOptions opt;
-    auto                RM               = llvm::Optional<llvm::Reloc::Model>();
-    auto                theTargetMachine = target->createTargetMachine(targetTriple, CPU, Features, opt, RM);
+    auto                rm               = llvm::Optional<llvm::Reloc::Model>();
+    auto                theTargetMachine = target->createTargetMachine(targetTriple, cpu, features, opt, rm);
     modu.setDataLayout(theTargetMachine->createDataLayout());
 
     // Output file
