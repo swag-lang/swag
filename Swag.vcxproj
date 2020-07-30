@@ -194,6 +194,7 @@
     <ClInclude Include="Utf8Crc.h" />
     <ClInclude Include="VectorNative.h" />
     <ClInclude Include="Version.h" />
+    <ClInclude Include="ComWin32.hpp" />
     <ClInclude Include="Workspace.h" />
     <ClInclude Include="OsWin32.h" />
   </ItemGroup>

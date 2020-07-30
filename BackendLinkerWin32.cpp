@@ -7,14 +7,24 @@
 
 namespace BackendLinkerWin32
 {
+#if defined(_M_ARM) || defined(__arm_)
+    static const char* target = "arm";
+#endif
+#if defined(_M_IX86) || defined(__i386__)
+    static const char* target = "x86";
+#endif
+#if defined(_M_X64) || defined(__x86_64__)
+    static const char* target = "x64";
+#endif
+
     void getLibPaths(vector<Utf8>& libPath)
     {
         // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-        libPath.push_back(format(R"(%s\lib\x64)", BackendSetupWin32::visualStudioPath.c_str()));
+        libPath.push_back(format(R"(%s\lib\%s)", BackendSetupWin32::visualStudioPath.c_str(), target));
 
         // Windows sdk library paths
-        libPath.push_back(format(R"(%s\lib\%s\um\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
-        libPath.push_back(format(R"(%s\lib\%s\ucrt\x64)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str()));
+        libPath.push_back(format(R"(%s\lib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
+        libPath.push_back(format(R"(%s\lib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
 
         // Modules
         libPath.push_back(g_Workspace.targetPath.string());
@@ -67,7 +77,6 @@ namespace BackendLinkerWin32
             arguments += "swag.runtime.lib ";
 
         // Default libraries
-        arguments += "/NODEFAULTLIB ";
         arguments += "ucrt.lib ";
         arguments += "vcruntime.lib ";
         arguments += "msvcrt.lib ";
@@ -75,7 +84,11 @@ namespace BackendLinkerWin32
         for (const auto& oneLibPath : libPath)
             arguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
-        arguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
+        arguments += "/INCREMENTAL:NO ";
+        arguments += "/NOLOGO ";
+        arguments += "/SUBSYSTEM:CONSOLE ";
+        arguments += "/NODEFAULTLIB ";
+        arguments += format("/MACHINE:%s ", target);
 
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments += "/DEBUG ";

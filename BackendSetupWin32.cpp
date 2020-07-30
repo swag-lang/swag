@@ -1,8 +1,11 @@
 #include "pch.h"
 #ifdef _WIN32
+#include <comdef.h>
+#include <windows.h>
 #include "Log.h"
 #include "LLVMSetup.h"
 #include "Backend.h"
+#include "ComWin32.hpp"
 
 namespace BackendSetupWin32
 {
@@ -24,11 +27,8 @@ namespace OS
         return strValue;
     }
 
-    static bool getLLVMBinFolder(string& folder)
+    static bool searchOnePath(vector<string>& toTest, string& folder)
     {
-        vector<string> toTest;
-        toTest.push_back(R"(C:\Program Files\LLVM\bin)");
-        toTest.push_back(R"(D:\Program Files\LLVM\bin)");
         for (auto& one : toTest)
         {
             if (fs::exists(one))
@@ -41,8 +41,83 @@ namespace OS
         return false;
     }
 
+    static string toString(const wstring& wstr)
+    {
+        int         size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
+        std::string strTo(size_needed, 0);
+        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &strTo[0], size_needed, NULL, NULL);
+        return strTo;
+    }
+
+    static bool getLLVMBinFolder(string& folder)
+    {
+        vector<string> toTest;
+        toTest.push_back(R"(C:\Program Files\LLVM\bin)");
+        toTest.push_back(R"(D:\Program Files\LLVM\bin)");
+        return searchOnePath(toTest, folder);
+    }
+
+    static bool getVSFolderByCom(string& vsTarget)
+    {
+        HRESULT rc = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+        if (rc != S_OK && rc != S_FALSE)
+            return false;
+
+        ISetupConfigurationPtr cfgCom;
+        rc = cfgCom.CreateInstance(__uuidof(SetupConfiguration));
+        if (rc != S_OK)
+            return false;
+
+        IEnumSetupInstancesPtr instances;
+        rc = cfgCom->EnumInstances(&instances);
+        if (rc != S_OK)
+            return false;
+
+        wstring         newestVersion;
+        ISetupInstance* instance;
+        ULONG           foundOne;
+        while (instances->Next(1, &instance, &foundOne) == S_OK)
+        {
+            BSTR instPath;
+            rc = instance->GetInstallationPath(&instPath);
+            if (rc != S_OK)
+                return false;
+
+            BSTR instVersion;
+            rc = instance->GetInstallationVersion(&instVersion);
+            if (rc != S_OK)
+                return false;
+
+            wstring wVersion = instVersion;
+            if (wVersion > newestVersion)
+            {
+                auto tryPath = toString(instPath);
+
+                auto     versionFile = tryPath + "\\VC\\Auxiliary\\Build\\Microsoft.VCToolsVersion.default.txt";
+                ifstream stream(versionFile);
+                if (!stream.is_open())
+                    continue;
+                string version;
+                if (getline(stream, version))
+                {
+                    tryPath += "/VC/Tools/MSVC/" + version;
+                    if (fs::exists(tryPath))
+                    {
+                        newestVersion = wVersion;
+                        vsTarget      = tryPath;
+                    }
+                }
+            }
+        }
+
+        return !vsTarget.empty();
+    }
+
     static bool getVSFolder(string& vsTarget)
     {
+        if (getVSFolderByCom(vsTarget))
+            return true;
+
         vector<string> toTest;
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
@@ -52,16 +127,7 @@ namespace OS
         toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
         toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
         toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
-        for (auto& one : toTest)
-        {
-            if (fs::exists(one))
-            {
-                vsTarget = one;
-                break;
-            }
-        }
-
-        if (vsTarget.empty())
+        if (!searchOnePath(toTest, vsTarget))
             return false;
 
         for (auto& p : fs::directory_iterator(vsTarget))
@@ -72,9 +138,8 @@ namespace OS
 
     static bool getWinSdkFolder(string& libPath, string& libVersion)
     {
+        // Try in register first
         HKEY hKey;
-
-        // Folder, try in register first
         LONG lRes = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Microsoft SDKs\\Windows\\v10.0\\", 0, KEY_READ, &hKey);
         if (lRes == ERROR_SUCCESS)
         {
@@ -88,8 +153,10 @@ namespace OS
         // Folder, fallback to direct folder
         if (libPath.empty())
         {
-            libPath = R"(C:\Program Files (x86)\Windows Kits\10)";
-            if (!fs::exists(libPath))
+            vector<string> toTest;
+            toTest.push_back(R"(C:\Program Files (x86)\Windows Kits\10)");
+            toTest.push_back(R"(D:\Program Files (x86)\Windows Kits\10)");
+            if (!searchOnePath(toTest, libPath))
                 return false;
         }
 

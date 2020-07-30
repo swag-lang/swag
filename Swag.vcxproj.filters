@@ -674,6 +674,9 @@
     <ClInclude Include="BuildCfg.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="ComWin32.hpp">
+      <Filter>Win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
