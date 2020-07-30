@@ -69,13 +69,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>llvm/include;llvm/build/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>false</Profile>
-      <AdditionalLibraryDirectories>llvm/build/debug/lib;$(SolutionDir)\.out\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>llvm/llvm/build/debug/lib;$(SolutionDir)\.out\</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);swag.runtime_d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -94,7 +94,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>llvm/include;llvm/build/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,7 +102,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>false</Profile>
-      <AdditionalLibraryDirectories>llvm/build/release/lib;$(SolutionDir)\.out\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>llvm/llvm/build/release/lib;$(SolutionDir)\.out\</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);swag.runtime.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

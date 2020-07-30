@@ -12,7 +12,6 @@
 #pragma comment(lib, "LLVMX86Desc.lib")
 #pragma comment(lib, "LLVMX86Disassembler.lib")
 #pragma comment(lib, "LLVMX86Info.lib")
-#pragma comment(lib, "LLVMX86Utils.lib")
 #pragma comment(lib, "LLVM-C.lib")
 #pragma comment(lib, "LLVMAArch64AsmParser.lib")
 #pragma comment(lib, "LLVMAArch64CodeGen.lib")

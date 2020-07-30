@@ -2868,7 +2868,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
                 auto PT = llvm::PointerType::getUnqual(FT);
                 auto r1 = builder.CreatePointerCast(r0, PT);
-                builder.CreateCall(r1, fctParams);
+                builder.CreateCall(FT, r1, fctParams);
                 builder.CreateBr(blockNext);
             }
 
@@ -2880,7 +2880,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                builder.CreateCall(r2, fctParams);
+                builder.CreateCall(pp.bytecodeRunTy, r2, fctParams);
                 builder.CreateBr(blockNext);
             }
 
