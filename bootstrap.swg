@@ -369,16 +369,13 @@ namespace swag
     #if #cfg == "debug"
     {
         const DEBUG = true
-        const ASSERT = true
     }
     #elif #cfg == "release"
     {
         const DEBUG = false
-        const ASSERT = false
     }
     #else
     {
         const DEBUG = false
-        const ASSERT = false
     }
 }
