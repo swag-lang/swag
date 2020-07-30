@@ -49,14 +49,6 @@ namespace OS
         return strTo;
     }
 
-    static bool getLLVMBinFolder(string& folder)
-    {
-        vector<string> toTest;
-        toTest.push_back(R"(C:\Program Files\LLVM\bin)");
-        toTest.push_back(R"(D:\Program Files\LLVM\bin)");
-        return searchOnePath(toTest, folder);
-    }
-
     static bool getVSFolderByCom(string& vsTarget)
     {
         HRESULT rc = CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -205,22 +197,14 @@ namespace OS
             break;
 
         case BackendType::Clang:
-            Backend::compilerExe = "clang-cl.exe";
-            if (!getLLVMBinFolder(Backend::compilerPath))
-            {
-                g_Log.error("error: backend: cannot locate llvm binary folder");
-                exit(-1);
-            }
+            Backend::compilerExe  = "clang-cl.exe";
+            Backend::compilerPath = g_CommandLine.exePath.parent_path().string();
             Backend::compilerPath += "\\";
             break;
 
         case BackendType::LLVM:
             LLVM::setup();
-            if (!getLLVMBinFolder(Backend::linkerPath))
-            {
-                g_Log.error("error: backend: cannot locate llvm binary folder");
-                exit(-1);
-            }
+            Backend::linkerPath = g_CommandLine.exePath.parent_path().string();
             Backend::linkerPath += "\\";
             Backend::linkerExe = "lld-link.exe";
             break;

@@ -66,20 +66,18 @@ namespace BackendLinkerWin32
             }
         }
 
-        // This is mandatory under windows
+        // External libraries
         arguments += "kernel32.lib ";
         arguments += "user32.lib ";
+        arguments += "ucrt.lib ";
+        arguments += "vcruntime.lib ";
+        arguments += "msvcrt.lib ";
 
         // Add swag.runtime
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments += "swag.runtime_d.lib ";
         else
             arguments += "swag.runtime.lib ";
-
-        // Default libraries
-        arguments += "ucrt.lib ";
-        arguments += "vcruntime.lib ";
-        arguments += "msvcrt.lib ";
 
         for (const auto& oneLibPath : libPath)
             arguments += "/LIBPATH:\"" + oneLibPath + "\" ";
