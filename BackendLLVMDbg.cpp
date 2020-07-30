@@ -14,6 +14,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm          = m;
     dbgBuilder    = new llvm::DIBuilder(*modu);
+    llvmContext   = &modu->getContext();
     auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
     modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
@@ -181,7 +182,10 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     {
         auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         vector<llvm::Metadata*> subscripts;
-        subscripts.push_back(dbgBuilder->getOrCreateSubrange(0, typeInfoPtr->count));
+
+        auto* countNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::getSigned(llvm::Type::getInt64Ty(*llvmContext), typeInfoPtr->count));
+        subscripts.push_back(dbgBuilder->getOrCreateSubrange(countNode, nullptr, nullptr, nullptr));
+
         auto subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
         auto result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
         mapTypes[typeInfo]  = result;

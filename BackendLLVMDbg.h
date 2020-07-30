@@ -32,6 +32,7 @@ struct BackendLLVMDbg
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
 
     BackendLLVM*           llvm        = nullptr;
+    llvm::LLVMContext*     llvmContext = nullptr;
     llvm::DIBuilder*       dbgBuilder  = nullptr;
     llvm::DICompileUnit*   compileUnit = nullptr;
     vector<llvm::DIScope*> scopes;
