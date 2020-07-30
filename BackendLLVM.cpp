@@ -319,9 +319,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto                cpu      = "generic";
     auto                features = "";
     llvm::TargetOptions opt;
-    auto                rm               = llvm::Optional<llvm::Reloc::Model>();
-    auto                theTargetMachine = target->createTargetMachine(targetTriple, cpu, features, opt, rm);
-    modu.setDataLayout(theTargetMachine->createDataLayout());
+    auto                rm            = llvm::Optional<llvm::Reloc::Model>();
+    auto                targetMachine = target->createTargetMachine(targetTriple, cpu, features, opt, rm);
+    modu.setDataLayout(targetMachine->createDataLayout());
 
     // Output file
     auto                      targetPath = Backend::getCacheFolder(buildParameters);
@@ -333,9 +333,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     // Optimize passes
     if (buildParameters.buildCfg->backendOptimizeLevel)
-        theTargetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+        targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
     else
-        theTargetMachine->setOptLevel(llvm::CodeGenOpt::None);
+        targetMachine->setOptLevel(llvm::CodeGenOpt::None);
+    targetMachine->setO0WantsFastISel(true);
 
     if (buildParameters.buildCfg->backendOptimizeLevel)
     {
@@ -347,7 +348,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     // Generate obj file pass
-    theTargetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
+    targetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
 
     llvmPass.run(modu);
     dest.flush();
