@@ -85,13 +85,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\.out\</OutDir>
-    <IntDir>$(SolutionDir)\.out\swag.runtime\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\.tmp\swag.runtime\$(Configuration)\</IntDir>
     <TargetName>swag.runtime_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\.out\</OutDir>
-    <IntDir>$(SolutionDir)\.out\swag.runtime\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\.tmp\swag.runtime\$(Configuration)\</IntDir>
     <TargetName>swag.runtime</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -136,6 +136,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

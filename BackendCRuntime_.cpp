@@ -79,25 +79,25 @@ static constexpr const char* g_SwagRuntime = R"(
 #define SWAG_EXPORT
 #endif
 
-SWAG_IMPORT void* swag_runtime_loadDynamicLibrary(const char*);
-SWAG_IMPORT __u32_t swag_runtime_tlsAlloc();
-SWAG_IMPORT void swag_runtime_tlsSetValue(__u32_t,void*);
-SWAG_IMPORT void*swag_runtime_tlsGetValue(__u32_t);
-SWAG_IMPORT void*swag_runtime_malloc(__u64_t);
-SWAG_IMPORT void*swag_runtime_realloc(void*,__u64_t);
-SWAG_IMPORT void swag_runtime_free(void*);
-SWAG_IMPORT void*swag_runtime_memcpy(void*,const void*,__u64_t);
-SWAG_IMPORT void*swag_runtime_memset(void*,__s32_t,__u64_t);
-SWAG_IMPORT __s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
-SWAG_IMPORT void swag_runtime_exit(__s32_t);
-SWAG_IMPORT void swag_runtime_print_n(const char*,int);
-SWAG_IMPORT void swag_runtime_print(const char*);
-SWAG_IMPORT void swag_runtime_print_i64(__s64_t);
-SWAG_IMPORT void swag_runtime_print_f64(__f64_t);
-SWAG_IMPORT void swag_runtime_assert(__b_t,const char*,int,const char*,__u32_t);
-SWAG_IMPORT __b_t swag_runtime_strcmp(const char*,const char*,__u32_t);
-SWAG_IMPORT __s32_t swag_runtime_strlen(const char*);
-SWAG_IMPORT void swag_runtime_convertArgcArgv(void*,int,char*[]);
+void* swag_runtime_loadDynamicLibrary(const char*);
+__u32_t swag_runtime_tlsAlloc();
+void swag_runtime_tlsSetValue(__u32_t,void*);
+void*swag_runtime_tlsGetValue(__u32_t);
+void*swag_runtime_malloc(__u64_t);
+void*swag_runtime_realloc(void*,__u64_t);
+void swag_runtime_free(void*);
+void*swag_runtime_memcpy(void*,const void*,__u64_t);
+void*swag_runtime_memset(void*,__s32_t,__u64_t);
+__s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
+void swag_runtime_exit(__s32_t);
+void swag_runtime_print_n(const char*,int);
+void swag_runtime_print(const char*);
+void swag_runtime_print_i64(__s64_t);
+void swag_runtime_print_f64(__f64_t);
+void swag_runtime_assert(__b_t,const char*,int,const char*,__u32_t);
+__b_t swag_runtime_strcmp(const char*,const char*,__u32_t);
+__s32_t swag_runtime_strlen(const char*);
+void swag_runtime_convertArgcArgv(void*,int,char*[]);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)
