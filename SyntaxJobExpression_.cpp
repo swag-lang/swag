@@ -319,7 +319,10 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
 {
     // Is this a type ?
-    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare || token.id == TokenId::SymAsterisk)
+    if (token.id == TokenId::KwdConst || 
+        token.id == TokenId::SymLeftSquare || 
+        token.id == TokenId::SymAsterisk || 
+        token.id == TokenId::KwdFunc)
     {
         SWAG_CHECK(doTypeExpression(parent, result));
         return true;
