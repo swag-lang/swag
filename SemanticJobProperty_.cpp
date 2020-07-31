@@ -87,7 +87,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     {
         if (node->flags & AST_VALUE_COMPUTED)
         {
-            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
             node->computedValue.reg.u64 = node->computedValue.text.length();
             node->typeInfo              = g_TypeMgr.typeInfoU32;
         }
@@ -98,7 +98,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
         auto typeArray              = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue.reg.u64 = typeArray->count;
         node->typeInfo              = g_TypeMgr.typeInfoU32;
@@ -110,7 +110,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::TypeList)
     {
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
         node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
         node->typeInfo              = g_TypeMgr.typeInfoU32;
     }
@@ -214,7 +214,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::SizeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 

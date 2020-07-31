@@ -8,7 +8,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node         = context->node;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
-    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
+    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE | AST_R_VALUE;
     node->typeInfo           = node->token.literalType;
     node->computedValue.reg  = node->token.literalValue;
     node->computedValue.text = node->token.text;

@@ -63,7 +63,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     node->typeInfo = leftTypeInfo;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -198,7 +198,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     node->typeInfo = leftTypeInfo;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -295,7 +295,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -392,7 +392,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -465,7 +465,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -544,7 +544,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -599,7 +599,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -663,7 +663,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -719,7 +719,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -753,7 +753,7 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue.text, right->computedValue.reg);
     node->computedValue.text  = left->computedValue.text + right->computedValue.text.c_str();
     node->typeInfo            = g_TypeMgr.typeInfoString;
-    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
     return true;
 }
 
@@ -783,7 +783,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
 
         switch (leftTypeInfo->nativeType)
         {
@@ -1000,12 +1000,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
-    node->inheritAndFlag1(AST_PURE);
-    node->inheritAndFlag1(AST_R_VALUE);
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
         switch (node->token.id)
         {
         case TokenId::SymAmpersandAmpersand:
