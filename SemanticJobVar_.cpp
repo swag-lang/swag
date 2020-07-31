@@ -792,17 +792,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->flags |= AST_R_VALUE;
 
-        if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
+        if (node->attributeFlags & ATTRIBUTE_NOBSS)
         {
-            if (node->attributeFlags & ATTRIBUTE_NOBSS)
-            {
-                SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
-            }
-            else
-            {
-                symbolFlags |= OVERLOAD_VAR_BSS;
-                SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
-            }
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+        }
+        else if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
+        {
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+        }
+        else if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstantInt0())
+        {
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
         }
         else
         {

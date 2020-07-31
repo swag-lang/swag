@@ -5,4 +5,4 @@
     @assert(G == 1)
 }
 
-var G = 0
+var G: s8 = 0
