@@ -133,7 +133,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
-            inst->c.u32 = resolved->typeInfo->sizeOf;
+            if (node->flags & AST_TAKE_ADDRESS)
+                inst->c.u32 = resolved->typeInfo->sizeOf;
         }
         else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
@@ -161,7 +162,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
         {
-            emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            ByteCodeInstruction* inst;
+            inst        = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = 0; // This is a read, so do not store size
+
             if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
             {
                 if (node->flags & AST_FROM_UFCS)

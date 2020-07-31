@@ -1,8 +1,8 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     G += 1
     @assert(G == 1)
 }
 
-var G: s8 = 0
+var G: s32 = 0

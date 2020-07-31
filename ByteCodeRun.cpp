@@ -518,7 +518,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (!ip->d.pointer)
         {
             ip->d.pointer = module->mutableSegment.address(ip->b.u32);
-            if (module->runningTests)
+            if (module->runningTests && ip->c.u32)
                 module->mutableSegment.saveValue(ip->d.pointer, ip->c.u32);
         }
 
