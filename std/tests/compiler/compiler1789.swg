@@ -11,6 +11,5 @@
     @assert(G2 == 1)
 }
 
-//#[swag.nobss]
 var G1 = 0
 var G2 = 1

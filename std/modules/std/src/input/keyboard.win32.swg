@@ -4,10 +4,8 @@
 
 	private
 	{
-        #[nobss]
-		var g_mapKeyToVKey: [256] u8
-        #[nobss]
-		var g_mapVKeyToKey: [256] u8
+		var g_mapKeyToVKey: [256] u8 = ?
+		var g_mapVKeyToKey: [256] u8 = ?
 
 		#[compiler]
 		func setupArray(key: std.input.Key, vkey: u8)
@@ -211,20 +209,20 @@
 	}
 
 	namespace std.input
-	{        
-        public 
+	{
+        public
         {
             func keyToVirtualKey(key: Key)-> VirtualKey
             {
                 return acast g_mapKeyToVKey[cast(u8) key]
             }
-            
+
             func virtualKeyToKey(vkey: VirtualKey)-> Key
             {
                 if(vkey > 255) return Key.None
                 return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
-            }            
-            
+            }
+
             func isKeyPressed(key: Key)-> bool
             {
                 vkey := g_mapKeyToVKey[cast(u8) key]

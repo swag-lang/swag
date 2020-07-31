@@ -86,10 +86,7 @@ namespace swag
 
     #[attributeUsage(AttributeUsage.Enum)]
     attr flags();
-
-    #[attributeUsage(AttributeUsage.GlobalVariable)]
-    attr nobss();
-
+        
     #[attributeUsage(AttributeUsage.All)]
     attr safety(value: bool);
 

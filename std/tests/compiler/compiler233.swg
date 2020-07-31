@@ -1,18 +1,16 @@
-;
-;
-using swag;
+using swag
 
-var ga: u32 = 0;
+var ga: u32 = 0
 
 func main (off: u32)
 {
-	ga += off;
+	ga += off
 }
 
-#run
+#test
 {
-	main(1'u32);
-	main(1'u32);
-	main(4'u32);
-	@assert(ga == 6);
+	main(1'u32)
+	main(1'u32)
+	main(4'u32)
+	@assert(ga == 6)
 }

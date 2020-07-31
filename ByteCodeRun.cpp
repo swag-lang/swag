@@ -541,9 +541,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
                     module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf);
                 }
-                else if (module->bssToMutable)
+                else if (module->bssCannotChange)
                 {
-                    module = module;
+                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    context->error(format("variable '%s' is in the bss segment (content is zero) and cannot be changed at compile time. Initialize it with '?' if this is intended", over->node->name.c_str()));
                 }
             }
         }

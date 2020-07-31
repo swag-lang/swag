@@ -1,3 +1,6 @@
+#module compiler1790
+#unittest error
+
 //#[swag.printbc]
 #run
 {
@@ -10,4 +13,4 @@
     @assert(G == 1)
 }
 
-var G: s64 = ?
+var G: s64

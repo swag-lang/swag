@@ -231,8 +231,8 @@ JobResult ModuleBuildJob::execute()
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
-                    // If a #run pass changes a bss value, then this is not a bss value anymore, as this is persistant
-                    module->bssToMutable = true;
+                    // A #run pass cannot modify a bss variable
+                    module->bssCannotChange = true;
 
                     for (auto func : module->byteCodeRunFunc)
                     {
@@ -240,7 +240,7 @@ JobResult ModuleBuildJob::execute()
                         module->executeNode(func->node->sourceFile, func->node);
                     }
 
-                    module->bssToMutable = false;
+                    module->bssCannotChange = false;
                 }
             }
 

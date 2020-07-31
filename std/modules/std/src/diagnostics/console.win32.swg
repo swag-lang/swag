@@ -3,10 +3,9 @@
     using win32
 
 	namespace std.console
-	{	
-		#[swag.nobss]
-		var g_colorToWin: [@countof(Color)] u16
-		
+	{
+		var g_colorToWin: [@countof(Color)] u16 = ?
+
 		#[swag.compiler]
 		func colorToWin()
 		{
@@ -27,26 +26,26 @@
 			g_colorToWin[cast(u32) DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
 			g_colorToWin[cast(u32) DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
 		}
-		
+
 		var g_stdOutputHandle: HANDLE
 		var g_stdOutputInitAttr: u16
 		var g_stdOutputCurAttr: u16
-		
-		#run 
-		{ 
+
+		#run
+		{
 			colorToWin()
 		}
-		
+
 		#init
 		{
 			g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
-		
+
 			var csbi: CONSOLE_SCREEN_BUFFER_INFO
-			GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)		
+			GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
 			g_stdOutputInitAttr = csbi.wAttributes
 			g_stdOutputCurAttr = g_stdOutputInitAttr
 		}
-		
+
 		#drop
 		{
 			resetColor()
@@ -60,13 +59,13 @@
 			g_stdOutputCurAttr |= attributes
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
-		
+
         /// Set the console background color
 		public func setBackColor(color: Color)
 		{
 			attributes := cast(u16) (g_colorToWin[cast(u32) color] << 4)
 			g_stdOutputCurAttr &= FOREGROUND_MASK
-			g_stdOutputCurAttr |= attributes		
+			g_stdOutputCurAttr |= attributes
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
 
@@ -75,7 +74,7 @@
 		{
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 		}
-		
+
         /// Write a message to the console
 		public func write(message: string, params: ...)
 		{
@@ -94,6 +93,6 @@
             {
 			    WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
             }
-		}	
+		}
 	}
 }

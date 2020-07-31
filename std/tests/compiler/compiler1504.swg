@@ -1,5 +1,4 @@
-#[swag.nobss]
-var X: u32
+var X: u32 = ?
 
 #[swag.compiler]
 func set()

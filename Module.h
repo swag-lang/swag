@@ -63,7 +63,7 @@ struct Module
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
-    bool                      bssToMutable         = false;
+    bool                      bssCannotChange         = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

@@ -3,8 +3,7 @@
 	@assert(G == 100)
 }
 
-#[swag.nobss]
-var G: s32
+var G: s32 = ?
 
 #run
 {

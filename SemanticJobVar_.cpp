@@ -792,7 +792,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->flags |= AST_R_VALUE;
 
-        if (node->attributeFlags & ATTRIBUTE_NOBSS)
+        if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
+        {
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
+        }
+        else if (node->attributeFlags & ATTRIBUTE_NOBSS)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
