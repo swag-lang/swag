@@ -283,7 +283,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
-        funcNode->flags |= AST_CONST_EXPR;
+        funcNode->flags |= AST_CONST_EXPR | AST_PURE;
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {

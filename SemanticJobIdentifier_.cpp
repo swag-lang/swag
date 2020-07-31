@@ -19,8 +19,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
-    node->flags |= AST_CONST_EXPR;
-    node->flags |= AST_PURE;
+    node->flags |= AST_CONST_EXPR | AST_PURE;
     for (auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
