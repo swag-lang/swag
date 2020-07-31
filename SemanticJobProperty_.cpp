@@ -195,7 +195,8 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
         typeTable.waitForTypeTableJobs(context->job);
         if (context->result != ContextResult::Done)
             return true;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
+        node->setFlagsValueIsComputed();
+        node->flags |= AST_VALUE_IS_TYPEINFO;
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
     }
 
@@ -241,7 +242,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
             node->computedValue.reg.u32 = (uint32_t) typeEnum->values.size();
-            node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+            node->setFlagsValueIsComputed();
             node->typeInfo = g_TypeMgr.typeInfoU32;
             break;
         }

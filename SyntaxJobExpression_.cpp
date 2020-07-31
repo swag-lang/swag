@@ -166,7 +166,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
         literal->computedValue.reg.u64 = 0;
         literal->token.literalType     = g_TypeMgr.typeInfoS32;
-        literal->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        literal->setFlagsValueIsComputed();
         literal->semanticFct = SemanticJob::resolveLiteral;
         arrayNode->access    = literal;
 
@@ -319,9 +319,9 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
 {
     // Is this a type ?
-    if (token.id == TokenId::KwdConst || 
-        token.id == TokenId::SymLeftSquare || 
-        token.id == TokenId::SymAsterisk || 
+    if (token.id == TokenId::KwdConst ||
+        token.id == TokenId::SymLeftSquare ||
+        token.id == TokenId::SymAsterisk ||
         token.id == TokenId::KwdFunc)
     {
         SWAG_CHECK(doTypeExpression(parent, result));

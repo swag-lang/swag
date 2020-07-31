@@ -415,17 +415,17 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
     else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
     {
         node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoF32;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        node->setFlagsValueIsComputed();
     }
     else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
     {
         node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoS32;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        node->setFlagsValueIsComputed();
     }
     else
     {
         node->computedValue.reg.b = leftTypeInfo->isSame(rightTypeInfo, ISSAME_EXACT);
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        node->setFlagsValueIsComputed();
     }
 
     return true;

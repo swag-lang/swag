@@ -303,7 +303,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::EnumValue:
-        identifier->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
+        identifier->setFlagsValueIsComputed();
+        identifier->flags |= AST_R_VALUE;
         identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
         break;
 
