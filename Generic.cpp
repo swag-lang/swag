@@ -65,7 +65,8 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
         auto nodeParam           = nodeGenericParameters[i];
         nodeParam->kind          = AstNodeKind::ConstDecl;
         nodeParam->computedValue = param->value;
-        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_FROM_GENERIC;
+        nodeParam->setFlagsValueIsComputed();
+        nodeParam->flags |= AST_FROM_GENERIC;
     }
 
     return true;
@@ -259,7 +260,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
-    newType->declNode  = structNode;
+    newType->declNode    = structNode;
     newType->fromGeneric = oldType;
     structNode->typeInfo = newType;
 
@@ -283,7 +284,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             if (specFunc != oldType->opUserDropFct &&
                 specFunc != oldType->opUserPostCopyFct &&
-                specFunc != oldType->opUserPostMoveFct && 
+                specFunc != oldType->opUserPostMoveFct &&
                 !specFunc->genericParameters)
             {
                 instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);

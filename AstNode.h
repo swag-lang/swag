@@ -237,6 +237,11 @@ struct AstNode
         }
     }
 
+    void setFlagsValueIsComputed()
+    {
+        flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE;
+    }
+
     void inheritComputedValue(AstNode* from)
     {
         if (!from)

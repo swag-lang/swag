@@ -13,12 +13,12 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+        node->setFlagsValueIsComputed();
         node->computedValue.reg.b = left->typeInfo == right->typeInfo;
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+        node->setFlagsValueIsComputed();
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
@@ -71,7 +71,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+        node->setFlagsValueIsComputed();
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
@@ -129,7 +129,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+        node->setFlagsValueIsComputed();
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:

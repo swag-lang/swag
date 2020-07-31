@@ -274,8 +274,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->access->flags & AST_VALUE_COMPUTED)
             {
                 if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-                {                    
-                    arrayNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+                {
+                    arrayNode->setFlagsValueIsComputed();
                     auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
                     switch (arrayAccess->typeInfo->nativeType)
                     {
@@ -369,7 +369,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u32 * typePtr->finalType->sizeOf;
                 if (derefToValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
-                    arrayNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+                    arrayNode->setFlagsValueIsComputed();
             }
         }
 
@@ -609,6 +609,6 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     if (!derefToValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
         return internalError(context, "derefTypeInfo, invalid type", node);
 
-    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_PURE;
+    node->setFlagsValueIsComputed();
     return true;
 }

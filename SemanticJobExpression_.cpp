@@ -8,7 +8,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node         = context->node;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
-    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE | AST_R_VALUE;
+    node->setFlagsValueIsComputed();
+    node->flags |= AST_R_VALUE;
     node->typeInfo           = node->token.literalType;
     node->computedValue.reg  = node->token.literalValue;
     node->computedValue.text = node->token.text;
@@ -179,7 +180,7 @@ bool SemanticJob::resolveNullCondtionalOp(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
 
-    node->typeInfo = expression->typeInfo;
+    node->typeInfo    = expression->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     return true;
 }

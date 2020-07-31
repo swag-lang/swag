@@ -306,19 +306,19 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
         node->computedValue.text = node->ownerFct->name;
         node->typeInfo           = g_TypeMgr.typeInfoString;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE;
+        node->setFlagsValueIsComputed();
         return true;
 
     case TokenId::CompilerBuildCfg:
         node->computedValue.text = g_CommandLine.buildCfg;
         node->typeInfo           = g_TypeMgr.typeInfoString;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE;
+        node->setFlagsValueIsComputed();
         return true;
     case TokenId::CompilerTarget:
     {
         node->computedValue.text = g_Workspace.GetArchName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE;
+        node->setFlagsValueIsComputed();
         return true;
     }
 
