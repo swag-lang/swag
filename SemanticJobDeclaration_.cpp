@@ -52,6 +52,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
 
 bool SemanticJob::resolveUsingAlias(SemanticContext* context)
 {
+    auto job  = context->job;
     auto node = context->node;
 
     node->flags |= AST_NO_BYTECODE;
@@ -59,7 +60,20 @@ bool SemanticJob::resolveUsingAlias(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::UsingAlias));
     if (context->result == ContextResult::Pending)
         return true;
-    auto overload = node->childs.back()->resolvedSymbolOverload;
+
+    auto overload     = node->childs.back()->resolvedSymbolOverload;
+    auto typeResolved = overload->typeInfo;
+    switch (typeResolved->kind)
+    {
+    case TypeInfoKind::Namespace:
+    case TypeInfoKind::Enum:
+    case TypeInfoKind::Struct:
+    case TypeInfoKind::FuncAttr:
+        break;
+    default:
+        return job->error(context, format("'using' as an alias cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
+    }
+
     SWAG_ASSERT(overload);
     node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
     return true;
