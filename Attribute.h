@@ -29,6 +29,7 @@ static const uint32_t ATTRIBUTE_NORETURN      = 0x00800000;
 static const uint32_t ATTRIBUTE_INTERNAL      = 0x01000000;
 static const uint32_t ATTRIBUTE_SAFETY_ON     = 0x02000000;
 static const uint32_t ATTRIBUTE_SAFETY_OFF    = 0x04000000;
+static const uint32_t ATTRIBUTE_GLOBAL        = 0x08000000;
 
 struct TypeInfoFuncAttr;
 struct AstNode;

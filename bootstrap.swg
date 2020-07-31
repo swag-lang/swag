@@ -27,10 +27,11 @@ namespace swag
         EnumValue       = 0x00000002
         Field           = 0x00000004
         GlobalVariable  = 0x00000008
-        Struct          = 0x00000010
-        Function        = 0x00000020
-        Attribute       = 0x00000040
-        Switch          = 0x00000080
+        LocalVariable   = 0x00000010
+        Struct          = 0x00000020
+        Function        = 0x00000040
+        Attribute       = 0x00000080
+        Switch          = 0x00000100
         All             = 0x0FFFFFFF
     }
 
@@ -71,6 +72,9 @@ namespace swag
 
     #[attributeUsage(AttributeUsage.Function | AttributeUsage.Field)]
     attr nodoc();
+
+    #[attributeUsage(AttributeUsage.LocalVariable)]
+    attr global();
 
     #[attributeUsage(AttributeUsage.Function)]
     attr noreturn();

@@ -14,10 +14,11 @@ enum AttributeUsage
     EnumValue      = 0x00000002,
     Field          = 0x00000004,
     GlobalVariable = 0x00000008,
-    Struct         = 0x00000010,
-    Function       = 0x00000020,
-    Attribute      = 0x00000040,
-    Switch         = 0x00000080,
+    LocalVariable  = 0x00000010,
+    Struct         = 0x00000020,
+    Function       = 0x00000040,
+    Attribute      = 0x00000080,
+    Switch         = 0x00000100,
     All            = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,
@@ -77,6 +78,12 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
+    if ((typeInfo->attributeUsage & AttributeUsage::LocalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    {
+        if (!checkNode->ownerScope->isGlobal())
+            return true;
+    }
+
     auto nakedName = AstNode::getKindName(checkNode);
     if (nakedName == "<node>")
     {
@@ -117,7 +124,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         for (auto child : curAttr->childs)
         {
             // Check that the attribute matches the following declaration
-            if(kind != AstNodeKind::AttrUse)
+            if (kind != AstNodeKind::AttrUse)
                 SWAG_CHECK(checkAttribute(context, child, forNode, kind));
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
@@ -181,6 +188,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_NODOC;
             else if (child->name == "noreturn")
                 flags |= ATTRIBUTE_NORETURN;
+            else if (child->name == "global")
+                flags |= ATTRIBUTE_GLOBAL;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;
