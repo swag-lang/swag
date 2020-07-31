@@ -194,53 +194,36 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         checkPendingJobs();
-        if ((g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty()) || !module->byteCodeRunFunc.empty())
+
+        bool runByteCode = false;
+        // If we have some #test functions, and we are in test mode
+        if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty())
+            runByteCode = true;
+        // If we have #run functions
+        else if (!module->byteCodeRunFunc.empty())
+            runByteCode = true;
+        // If the module is a bytecode module
+        else if (module->byteCodeOnly)
+            runByteCode = true;
+
+        if (runByteCode)
         {
-            // INIT
-            if (!module->byteCodeInitFunc.empty())
+            // #init functions are only executed in a bytecode module
+            if (!module->byteCodeInitFunc.empty() && module->byteCodeOnly)
             {
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
-                    module->saveSegmentValues = true;
-
                     for (auto func : module->byteCodeInitFunc)
                     {
                         module->executeNode(func->node->sourceFile, func->node);
                     }
-
-                    module->mutableSegment.restoreAllValues();
-                    module->saveSegmentValues = false;
                 }
             }
 
-            // #TEST
-            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-            {
-                if (!module->byteCodeTestFunc.empty())
-                {
-                    if (!module->numErrors)
-                    {
-                        if (g_CommandLine.verboseBuildPass)
-                            g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-                        module->saveSegmentValues = true;
-
-                        for (auto func : module->byteCodeTestFunc)
-                        {
-                            g_Stats.testFunctions++;
-                            module->executeNode(func->node->sourceFile, func->node);
-                        }
-
-                        module->mutableSegment.restoreAllValues();
-                        module->saveSegmentValues = false;
-                    }
-                }
-            }
-
-            // #RUN
+            // #run functions are always executed
             if (!module->byteCodeRunFunc.empty())
             {
                 if (!module->numErrors)
@@ -256,23 +239,44 @@ JobResult ModuleBuildJob::execute()
                 }
             }
 
-            // DROP
-            if (!module->byteCodeDropFunc.empty())
+            // #TEST
+            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+            {
+                if (!module->byteCodeTestFunc.empty())
+                {
+                    if (!module->numErrors)
+                    {
+                        if (g_CommandLine.verboseBuildPass)
+                            g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+                        // Modified global variables during test will be restored after
+                        module->saveSegmentValues = true;
+
+                        for (auto func : module->byteCodeTestFunc)
+                        {
+                            g_Stats.testFunctions++;
+                            module->executeNode(func->node->sourceFile, func->node);
+                        }
+
+                        module->bssSegment.restoreAllValues();
+                        module->mutableSegment.restoreAllValues();
+                        module->saveSegmentValues = false;
+                    }
+                }
+            }
+
+            // #drop functions are only executed in a bytecode module
+            if (!module->byteCodeDropFunc.empty() && module->byteCodeOnly)
             {
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
-                    module->saveSegmentValues = true;
-
                     for (auto func : module->byteCodeDropFunc)
                     {
                         module->executeNode(func->node->sourceFile, func->node);
                     }
-
-                    module->mutableSegment.restoreAllValues();
-                    module->saveSegmentValues = false;
                 }
             }
         }

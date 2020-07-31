@@ -1,18 +1,17 @@
-
-
 #test
 {
 	@assert(G == 100)
 }
 
+#[swag.nobss]
 var G: s32
 
-#init
+#run
 {
 	G = 100
 }
 
 #drop
 {
-	G = 0
+    @assert(G == 100)
 }
