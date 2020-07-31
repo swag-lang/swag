@@ -231,11 +231,16 @@ JobResult ModuleBuildJob::execute()
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
+                    // If a #run pass changes a bss value, then this is not a bss value anymore, as this is persistant
+                    module->bssToMutable = true;
+
                     for (auto func : module->byteCodeRunFunc)
                     {
                         g_Stats.runFunctions++;
                         module->executeNode(func->node->sourceFile, func->node);
                     }
+
+                    module->bssToMutable = false;
                 }
             }
 
@@ -250,7 +255,8 @@ JobResult ModuleBuildJob::execute()
                             g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                         // Modified global variables during test will be restored after
-                        module->saveSegmentValues = true;
+                        module->saveBssValues     = true;
+                        module->saveMutableValues = true;
 
                         for (auto func : module->byteCodeTestFunc)
                         {
@@ -260,7 +266,8 @@ JobResult ModuleBuildJob::execute()
 
                         module->bssSegment.restoreAllValues();
                         module->mutableSegment.restoreAllValues();
-                        module->saveSegmentValues = false;
+                        module->saveBssValues     = false;
+                        module->saveMutableValues = false;
                     }
                 }
             }

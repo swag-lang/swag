@@ -518,8 +518,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (!ip->d.pointer)
         {
             ip->d.pointer = module->mutableSegment.address(ip->b.u32);
-            if (module->saveSegmentValues && ip->c.u32)
-                module->mutableSegment.saveValue(ip->d.pointer, ip->c.u32);
+            if (module->saveMutableValues && ip->c.pointer)
+            {
+                SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf);
+            }
         }
 
         registersRC[ip->a.u32].pointer = ip->d.pointer;
@@ -531,8 +534,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (!ip->d.pointer)
         {
             ip->d.pointer = module->bssSegment.address(ip->b.u32);
-            if (module->saveSegmentValues && ip->c.u32)
-                module->bssSegment.saveValue(ip->d.pointer, ip->c.u32);
+            if (ip->c.pointer)
+            {
+                if (module->saveBssValues)
+                {
+                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf);
+                }
+                else if (module->bssToMutable)
+                {
+                    module = module;
+                }
+            }
         }
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;

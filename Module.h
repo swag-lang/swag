@@ -61,7 +61,9 @@ struct Module
     bool                      fromTests            = false;
     bool                      byteCodeOnly         = false;
     bool                      addedToBuild         = false;
-    bool                      saveSegmentValues    = false;
+    bool                      saveBssValues        = false;
+    bool                      saveMutableValues    = false;
+    bool                      bssToMutable         = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

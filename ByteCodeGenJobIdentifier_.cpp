@@ -134,7 +134,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             if (node->flags & AST_TAKE_ADDRESS)
-                inst->c.u32 = resolved->typeInfo->sizeOf;
+                inst->c.pointer = (uint8_t*) resolved;
         }
         else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
@@ -143,8 +143,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
-            inst->c.u32 = resolved->typeInfo->sizeOf;
+            inst->b.u32     = resolved->storageOffset;
+            inst->c.pointer = (uint8_t*) resolved;
         }
         else if (typeInfo->numRegisters() == 2)
         {
