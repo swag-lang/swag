@@ -516,7 +516,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
+        {
             ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+            if (module->runningTests)
+                module->mutableSegment.saveValue(ip->d.pointer, ip->c.u32);
+        }
+
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }

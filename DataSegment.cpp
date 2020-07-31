@@ -232,3 +232,59 @@ bool DataSegment::readU64(uint64_t& result)
 
     return true;
 }
+
+void DataSegment::saveValue(void* address, uint32_t size)
+{
+    auto it = savedValues.find(address);
+    if (it != savedValues.end())
+        return;
+
+    switch (size)
+    {
+    case 1:
+        savedValues[address] = {(void*) (size_t) * (uint8_t*) address, size};
+        break;
+    case 2:
+        savedValues[address] = {(void*) (size_t) * (uint16_t*) address, size};
+        break;
+    case 4:
+        savedValues[address] = {(void*) (size_t) * (uint32_t*) address, size};
+        break;
+    case 8:
+        savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
+        break;
+    default:
+        auto buf = malloc(size);
+        memcpy(buf, address, size);
+        savedValues[address] = {buf, size};
+        break;
+    }
+}
+
+void DataSegment::restoreAllValues()
+{
+    for (auto& one : savedValues)
+    {
+        switch (one.second.second)
+        {
+        case 1:
+            *(uint8_t*) one.first = (uint8_t) * (uint8_t*) &one.second.first;
+            break;
+        case 2:
+            *(uint16_t*) one.first = (uint16_t) * (uint16_t*) &one.second.first;
+            break;
+        case 4:
+            *(uint32_t*) one.first = (uint32_t) * (uint32_t*) &one.second.first;
+            break;
+        case 8:
+            *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.first;
+            break;
+        default:
+            memcpy(one.first, one.second.first, one.second.second);
+            free(one.second.first);
+            break;
+        }
+    }
+
+    savedValues.clear();
+}

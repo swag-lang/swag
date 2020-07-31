@@ -58,4 +58,9 @@ struct DataSegment
     uint32_t seekBucket = 0;
     void     rewindRead();
     bool     readU64(uint64_t& result);
+
+    map<void*, pair<void*, uint32_t>> savedValues;
+
+    void saveValue(void* address, uint32_t size);
+    void restoreAllValues();
 };

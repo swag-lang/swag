@@ -51,7 +51,7 @@ struct Module
     atomic<int>               numErrors = 0;
     shared_mutex              mutexFile;
     VectorNative<SourceFile*> files;
-    BuildCfg            buildCfg;
+    BuildCfg                  buildCfg;
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;
     Scope*                    scopeRoot            = nullptr;
@@ -60,6 +60,7 @@ struct Module
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTests            = false;
     bool                      addedToBuild         = false;
+    bool                      runningTests         = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

@@ -127,17 +127,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             typeInfo->kind == TypeInfoKind::TypeList ||
             typeInfo->kind == TypeInfoKind::Struct)
         {
+            ByteCodeInstruction* inst;
             if (resolved->flags & OVERLOAD_VAR_BSS)
-                emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+                inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
-                emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+                inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = resolved->typeInfo->sizeOf;
         }
         else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
+            ByteCodeInstruction* inst;
             if (resolved->flags & OVERLOAD_VAR_BSS)
-                emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+                inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
-                emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+                inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = resolved->typeInfo->sizeOf;
         }
         else if (typeInfo->numRegisters() == 2)
         {

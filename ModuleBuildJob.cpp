@@ -221,11 +221,18 @@ JobResult ModuleBuildJob::execute()
                         if (g_CommandLine.verboseBuildPass)
                             g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
+                        // Used to store all changed global values during tests
+                        module->runningTests = true;
+
                         for (auto func : module->byteCodeTestFunc)
                         {
                             g_Stats.testFunctions++;
                             module->executeNode(func->node->sourceFile, func->node);
                         }
+
+                        // Restore all changed global values
+                        module->mutableSegment.restoreAllValues();
+                        module->runningTests = false;
                     }
                 }
             }

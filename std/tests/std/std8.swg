@@ -5,8 +5,8 @@ using std
 #test
 {
 	using console
-	console.setTextColor(Color.Red)
-	console.setBackColor(Color.Black)
+	//console.setTextColor(Color.Red)
+	//console.setBackColor(Color.Black)
 	//console.write("toto la fripouille")
-	console.resetColor()
+	//console.resetColor()
 }

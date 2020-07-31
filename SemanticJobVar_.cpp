@@ -513,6 +513,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Collect all attributes for the variable
+    SymbolAttributes attributes;
+    if (node->parentAttributes)
+        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::VarDecl, node->attributeFlags));
+
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 
@@ -767,11 +772,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     auto     typeInfo      = TypeManager::concreteType(node->typeInfo);
     uint32_t storageOffset = UINT32_MAX;
-
-    // Collect all attributes for the variable
-    SymbolAttributes attributes;
-    if (node->parentAttributes)
-        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::VarDecl, node->attributeFlags));
 
     if (isCompilerConstant)
     {
