@@ -33,6 +33,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             node->kind = AstNodeKind::UsingAlias;
             SWAG_CHECK(doIdentifierRef(node));
 
+            node->semanticFct        = SemanticJob::resolveUsingAlias;
             node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::UsingAlias);
         }
         else

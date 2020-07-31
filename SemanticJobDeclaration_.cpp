@@ -50,6 +50,21 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     return true;
 }
 
+bool SemanticJob::resolveUsingAlias(SemanticContext* context)
+{
+    auto node = context->node;
+
+    node->flags |= AST_NO_BYTECODE;
+
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::UsingAlias));
+    if (context->result == ContextResult::Pending)
+        return true;
+    auto overload = node->childs.back()->resolvedSymbolOverload;
+    SWAG_ASSERT(overload);
+    node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
+    return true;
+}
+
 bool SemanticJob::resolveUsing(SemanticContext* context)
 {
     auto job   = context->job;
@@ -57,18 +72,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
 
     node->flags |= AST_NO_BYTECODE;
-
-    // This is an alias. Just register the symbol
-    if (node->kind == AstNodeKind::UsingAlias)
-    {
-        SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::UsingAlias));
-        if (context->result == ContextResult::Pending)
-            return true;
-        auto overload = node->childs.back()->resolvedSymbolOverload;
-        SWAG_ASSERT(overload);
-        node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
-        return true;
-    }
 
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
