@@ -6,8 +6,7 @@
 
 #init
 {
-    if !@isbytecode()
-        @assert(G == 1)
+    @assert(G == 1)
 }
 
 #[swag.nobss]

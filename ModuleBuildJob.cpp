@@ -239,7 +239,7 @@ JobResult ModuleBuildJob::execute()
                 }
             }
 
-            // #TEST
+            // #test functions are only executed in test mode
             if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
             {
                 if (!module->byteCodeTestFunc.empty())
