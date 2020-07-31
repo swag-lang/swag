@@ -20,10 +20,13 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR;
+    node->flags |= AST_PURE;
     for (auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
+        if (!(child->flags & AST_PURE))
+            node->flags &= ~AST_PURE;
         if (child->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
         if (child->flags & AST_IS_CONST)
@@ -533,9 +536,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
         {
             if (identifier->callParameters)
-                identifier->inheritAndFlag(identifier->callParameters, AST_CONST_EXPR);
+                identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
             else
                 identifier->flags |= AST_CONST_EXPR;
+        }
+
+        // The function call is pure if the function is, and all parameters are
+        if (identifier->resolvedSymbolOverload->node->flags & AST_PURE)
+        {
+            if (identifier->callParameters)
+                identifier->inheritAndFlag1(identifier->callParameters, AST_PURE);
+            else
+                identifier->flags |= AST_PURE;
         }
 
         if (identifier->token.id == TokenId::Intrinsic)
@@ -1589,6 +1601,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             SWAG_ASSERT(symbol->overloads.size() == 1);
             node->typeInfo = overload->typeInfo;
+
+            // Function parameters are pure
+            if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                node->flags |= AST_PURE;
+
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0], nullptr, dependentVar));
             return true;
         }

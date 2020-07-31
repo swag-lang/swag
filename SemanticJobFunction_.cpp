@@ -445,7 +445,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-    node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag2(AST_CONST_EXPR, AST_PURE);
     return true;
 }
 
@@ -465,7 +465,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_PURE);
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
@@ -547,6 +547,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 context->result = ContextResult::NewChilds;
                 return true;
             }
+
+            // Pure function automatic detection just in case of short lambdas, because we need to parse the full content
+            // of the function to know if it's pure or not. In case of normal function, we emit its type before parsing
+            // the content
+            funcNode->content->inheritAndFlag1(AST_PURE);
+            if (funcNode->content->flags & AST_PURE)
+                funcNode->flags |= AST_CONST_EXPR | AST_PURE;
 
             typeInfoFunc->computeName();
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;

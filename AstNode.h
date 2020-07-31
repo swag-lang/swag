@@ -176,12 +176,22 @@ struct AstNode
         flags |= op->flags & flag;
     }
 
-    void inheritAndFlag(uint64_t flag)
+    void inheritAndFlag1(uint64_t flag)
     {
-        inheritAndFlag(this, flag);
+        inheritAndFlag1(this, flag);
     }
 
-    void inheritAndFlag(AstNode* who, uint64_t flag)
+    void inheritAndFlag2(uint64_t flag1, uint64_t flag2)
+    {
+        inheritAndFlag2(this, flag1, flag2);
+    }
+
+    void inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3)
+    {
+        inheritAndFlag3(this, flag1, flag2, flag3);
+    }
+
+    void inheritAndFlag1(AstNode* who, uint64_t flag)
     {
         for (auto child : who->childs)
         {
@@ -192,6 +202,41 @@ struct AstNode
         flags |= flag;
     }
 
+    void inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2)
+    {
+        flags |= flag1;
+        flags |= flag2;
+
+        for (auto child : who->childs)
+        {
+            if (!(child->flags & flag1))
+                flags &= ~flag1;
+            if (!(child->flags & flag2))
+                flags &= ~flag2;
+            if (!(flags & (flag1 | flag2)))
+                return;
+        }
+    }
+
+    void inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3)
+    {
+        flags |= flag1;
+        flags |= flag2;
+        flags |= flag3;
+
+        for (auto child : who->childs)
+        {
+            if (!(child->flags & flag1))
+                flags &= ~flag1;
+            if (!(child->flags & flag2))
+                flags &= ~flag2;
+            if (!(child->flags & flag3))
+                flags &= ~flag3;
+            if (!(flags & (flag1 | flag2 | flag3)))
+                return;
+        }
+    }
+
     void inheritComputedValue(AstNode* from)
     {
         if (!from)
@@ -199,7 +244,7 @@ struct AstNode
         inheritOrFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
         {
-            flags |= AST_CONST_EXPR;
+            flags |= AST_CONST_EXPR | AST_PURE;
             computedValue = move(from->computedValue);
         }
     }

@@ -92,9 +92,7 @@ bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
     // Do not generate bytecode for childs in case of a constant expression, because
     // the full content of the expression is in the constant segment
     if (node->flags & AST_CONST_EXPR)
-    {
         node->flags |= AST_NO_BYTECODE_CHILDS;
-    }
 
     return true;
 }

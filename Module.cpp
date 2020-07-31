@@ -164,7 +164,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
             node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
         }
 
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE;
     }
 
     // Free auto allocated memory
