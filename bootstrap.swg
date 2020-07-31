@@ -40,59 +40,59 @@ namespace swag
     // #########################################################
 
     // Hardcoded usage
-    attr attributeUsage(usage: AttributeUsage);
-    attr attributeMulti();
+    attr attributeUsage(usage: AttributeUsage)
+    attr attributeMulti()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr constexpr();
+    attr constexpr()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr printbc();
+    attr printbc()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr compiler();
+    attr compiler()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr inline();
+    attr inline()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr macro();
+    attr macro()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr mixin();
+    attr mixin()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr test();
+    attr test()
 
     #[attributeUsage(AttributeUsage.Function | AttributeUsage.Switch)]
-    attr complete();
+    attr complete()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr property();
+    attr property()
 
     #[attributeUsage(AttributeUsage.Function | AttributeUsage.Field)]
-    attr nodoc();
+    attr nodoc()
 
     #[attributeUsage(AttributeUsage.LocalVariable)]
-    attr global();
+    attr global()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr noreturn();
+    attr noreturn()
 
     #[attributeUsage(AttributeUsage.Function)]
     attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
-    attr pack();
+    attr pack()
 
     #[attributeUsage(AttributeUsage.Field)]
-    attr offset(name: string);
+    attr offset(name: string)
 
     #[attributeUsage(AttributeUsage.Enum)]
-    attr flags();
+    attr flags()
         
     #[attributeUsage(AttributeUsage.All)]
-    attr safety(value: bool);
+    attr safety(value: bool)
 
     // #########################################################
     // Constants
