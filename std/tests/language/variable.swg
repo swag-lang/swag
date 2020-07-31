@@ -108,4 +108,18 @@
         let b: @typeof(a) = 1
         @assert(@typeof(a) == @typeof(b))
     }
+
+    // A local variable declared with the #[swag.global] attribute will global
+    {
+        func toto()->s32
+        {
+            #[swag.global] var x = 1
+            x += 1
+            return x
+        }
+
+        @assert(toto() == 2)
+        @assert(toto() == 3)
+        @assert(toto() == 4)
+    }
 }
