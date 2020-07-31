@@ -6,6 +6,7 @@ struct Stats
     atomic<int>              numModules            = 0;
     atomic<int>              numGenModules         = 0;
     atomic<int>              testFunctions         = 0;
+    atomic<int>              runFunctions          = 0;
     atomic<int>              numInstructions       = 0;
     atomic<int>              maxOpenFiles          = 0;
     atomic<int>              numOpenFiles          = 0;

@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     @assert(G[0] == 0)

@@ -27,7 +27,8 @@ void printStats()
     if (g_CommandLine.backendOutput)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)
-        g_Log.messageHeaderDot("test functions", format("%d", g_Stats.testFunctions.load()));
+        g_Log.messageHeaderDot("executed #test", format("%d", g_Stats.testFunctions.load()));
+    g_Log.messageHeaderDot("executed #run", format("%d", g_Stats.runFunctions.load()));
     if (g_Workspace.numErrors)
         g_Log.messageHeaderDot("errors", format("%d", g_Workspace.numErrors.load()), LogColor::Red);
     g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));

@@ -204,10 +204,15 @@ JobResult ModuleBuildJob::execute()
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
+                    module->saveSegmentValues = true;
+
                     for (auto func : module->byteCodeInitFunc)
                     {
                         module->executeNode(func->node->sourceFile, func->node);
                     }
+
+                    module->mutableSegment.restoreAllValues();
+                    module->saveSegmentValues = false;
                 }
             }
 
@@ -221,8 +226,7 @@ JobResult ModuleBuildJob::execute()
                         if (g_CommandLine.verboseBuildPass)
                             g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-                        // Used to store all changed global values during tests
-                        module->runningTests = true;
+                        module->saveSegmentValues = true;
 
                         for (auto func : module->byteCodeTestFunc)
                         {
@@ -230,9 +234,8 @@ JobResult ModuleBuildJob::execute()
                             module->executeNode(func->node->sourceFile, func->node);
                         }
 
-                        // Restore all changed global values
                         module->mutableSegment.restoreAllValues();
-                        module->runningTests = false;
+                        module->saveSegmentValues = false;
                     }
                 }
             }
@@ -247,7 +250,7 @@ JobResult ModuleBuildJob::execute()
 
                     for (auto func : module->byteCodeRunFunc)
                     {
-                        g_Stats.testFunctions++;
+                        g_Stats.runFunctions++;
                         module->executeNode(func->node->sourceFile, func->node);
                     }
                 }
@@ -261,10 +264,15 @@ JobResult ModuleBuildJob::execute()
                     if (g_CommandLine.verboseBuildPass)
                         g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
+                    module->saveSegmentValues = true;
+
                     for (auto func : module->byteCodeDropFunc)
                     {
                         module->executeNode(func->node->sourceFile, func->node);
                     }
+
+                    module->mutableSegment.restoreAllValues();
+                    module->saveSegmentValues = false;
                 }
             }
         }
