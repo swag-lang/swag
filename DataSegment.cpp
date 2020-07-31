@@ -254,7 +254,7 @@ void DataSegment::saveValue(void* address, uint32_t size)
         savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
         break;
     default:
-        auto buf = malloc(size);
+        auto buf = g_Allocator.alloc(size);
         memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
@@ -281,7 +281,6 @@ void DataSegment::restoreAllValues()
             break;
         default:
             memcpy(one.first, one.second.first, one.second.second);
-            free(one.second.first);
             break;
         }
     }
