@@ -38,17 +38,17 @@
         @assert(pt.y == 2)
     }
 
-    /*{
+    {
         struct Point { x: s32; y: s32; }
 
-        func setOne(using pt: Point)
+        func setOne(using point: *Point)
         {
             x, y = 1
         }
 
         var pt: Point
-        setOne(pt)
+        setOne(&pt)
         @assert(pt.x == 1)
         @assert(pt.y == 1)
-    }*/
+    }
 }

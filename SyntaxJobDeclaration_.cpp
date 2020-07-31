@@ -214,6 +214,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
     {
         Scoped scoped(this, newScope);
         SWAG_CHECK(doCurlyStatement(parent, &statement));
+        newScope->owner = statement;
         statement->flags |= AST_NEED_SCOPE;
         statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
