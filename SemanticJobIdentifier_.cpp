@@ -652,14 +652,26 @@ anotherTry:
                 SWAG_ASSERT(false);
             }
 
-            // We need () for a function call !
-            if (!callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
+            // For a function, sometime, we do not want call parameters
+            bool forcedFine = false;
+            if (node && node->parent && node->parent->parent)
             {
                 auto grandParent = node->parent->parent;
-                if (grandParent->kind != AstNodeKind::MakePointer)
+                if (grandParent->kind == AstNodeKind::MakePointer ||
+                    grandParent->kind == AstNodeKind::UsingAlias ||
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->prop == Property::TypeOf))
                 {
-                    job->symMatch.result = MatchResult::MissingParameters;
+                    if (callParameters)
+                        return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
+                    job->symMatch.result = MatchResult::Ok;
+                    forcedFine = true;
                 }
+            }
+
+            // We need () for a function call !
+            if (!forcedFine && !callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
+            {
+                job->symMatch.result = MatchResult::MissingParameters;
             }
 
             // Function type without call parameters
@@ -667,17 +679,6 @@ anotherTry:
             {
                 if (symbol->kind == SymbolKind::Variable)
                     job->symMatch.result = MatchResult::Ok;
-                else if (symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
-                {
-                    // We can make @typeof(function), without adding the 'function' parameters
-                    auto grandParent = node->parent->parent;
-                    if (grandParent->kind == AstNodeKind::IntrinsicProp)
-                    {
-                        auto prop = CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp);
-                        if (prop->prop == Property::TypeOf)
-                            job->symMatch.result = MatchResult::Ok;
-                    }
-                }
             }
 
             // Remember the signature with the longest match (for error reporting)
@@ -1470,16 +1471,25 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  callParameters    = node->callParameters;
     auto& symMatch          = job->symMatch;
 
+    auto symbolKind = symbol->kind;
+
+    // Alias
+    if (symbolKind == SymbolKind::UsingAlias)
+    {
+        symbol     = symbol->overloads[0]->symbol;
+        symbolKind = symbol->kind;
+    }
+
     if (callParameters)
     {
-        if (symbol->kind != SymbolKind::Attribute &&
-            symbol->kind != SymbolKind::Function &&
-            symbol->kind != SymbolKind::Struct &&
-            symbol->kind != SymbolKind::Interface &&
-            symbol->kind != SymbolKind::TypeAlias &&
+        if (symbolKind != SymbolKind::Attribute &&
+            symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
+            symbolKind != SymbolKind::TypeAlias &&
             TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
-            if (symbol->kind == SymbolKind::Variable)
+            if (symbolKind == SymbolKind::Variable)
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
                 Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
@@ -1525,10 +1535,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (genericParameters)
     {
         node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
-        if (symbol->kind != SymbolKind::Function &&
-            symbol->kind != SymbolKind::Struct &&
-            symbol->kind != SymbolKind::Interface &&
-            symbol->kind != SymbolKind::TypeAlias)
+        if (symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
+            symbolKind != SymbolKind::TypeAlias)
         {
             Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
@@ -1571,10 +1581,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
     {
         // For everything except functions/attributes/structs (which have overloads), this is a match
-        if (symbol->kind != SymbolKind::Attribute &&
-            symbol->kind != SymbolKind::Function &&
-            symbol->kind != SymbolKind::Struct &&
-            symbol->kind != SymbolKind::Interface &&
+        if (symbolKind != SymbolKind::Attribute &&
+            symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
             overload->typeInfo->kind != TypeInfoKind::Lambda)
         {
             SWAG_ASSERT(symbol->overloads.size() == 1);
@@ -1588,8 +1598,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto& match    = job->cacheMatches[0];
+    auto& match = job->cacheMatches[0];
+
+    // Alias
+    if (match.symbolName->kind == SymbolKind::UsingAlias)
+        match.symbolName = match.symbolOverload->symbol;
+
     node->typeInfo = match.symbolOverload->typeInfo;
+
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, match.symbolName, match.symbolOverload, &match, dependentVar));
     return true;
 }

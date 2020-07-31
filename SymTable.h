@@ -17,6 +17,7 @@ struct ByteCodeGenJob;
 struct AstNode;
 struct SymTable;
 struct JobContext;
+struct SymbolName;
 
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
@@ -37,10 +38,10 @@ struct SymbolOverload
     RegisterList  registers;
     TypeInfo*     typeInfo       = nullptr;
     AstNode*      node           = nullptr;
+    SymbolName*   symbol         = nullptr;
     uint32_t      flags          = 0;
     uint32_t      storageOffset  = UINT32_MAX;
     uint32_t      storageIndex   = 0;
-    uint32_t      overloadIndex  = 0;
     uint32_t      attributeFlags = 0;
 };
 
@@ -49,6 +50,7 @@ enum class SymbolKind
     Invalid,
     Variable,
     TypeAlias,
+    UsingAlias,
     Namespace,
     Enum,
     EnumValue,
@@ -118,6 +120,7 @@ struct SymTable
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
+    void            registerAliasOverload(SymbolName* symbol, SymbolOverload* overload);
 
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);

@@ -9,13 +9,13 @@ func toto(x: s32)
 #test
 {
 	using swag
-	
-	t := @typeof(toto(0))
-	
+
+	t := @typeof(toto)
+
 	ptr := cast(const *TypeInfoFunc) t
 	@assert(@countof(ptr.parameters) == 1)
 	@assert(ptr.parameters[0].name == "x")
-	
+
 	/*@print(ptr.base.name)
 	@print(" ")
 	@print(ptr.returnType.name)*/

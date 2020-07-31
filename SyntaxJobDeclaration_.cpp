@@ -15,24 +15,47 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
         if (result)
             *result = node;
 
-        SWAG_CHECK(doIdentifierRef(node));
+        AstNode* leftNode;
+        SWAG_CHECK(doIdentifierRef(node, &leftNode));
 
-        // We must ensure that no job can be run before the using
-        if (!node->ownerFct)
+        // This is an alias
+        if (token.id == TokenId::SymEqual)
         {
-            for (auto child : parent->childs)
-            {
-                switch (child->kind)
-                {
-                case AstNodeKind::CompilerImport:
-                case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerForeignLib:
-                case AstNodeKind::Using:
-                case AstNodeKind::IdentifierRef:
-                    break;
+            Ast::removeFromParent(leftNode);
+            SWAG_CHECK(checkIsSingleIdentifier(leftNode));
+            auto identifier = leftNode->childs.back();
+            SWAG_CHECK(isValidVarName(identifier));
+            SWAG_CHECK(eatToken());
 
-                default:
-                    return error(node->token, "global 'using' must be defined at the top of the file");
+            node->name = identifier->name;
+            node->inheritTokenLocation(identifier->token);
+
+            node->kind = AstNodeKind::UsingAlias;
+            SWAG_CHECK(doIdentifierRef(node));
+
+            node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::UsingAlias);
+        }
+        else
+        {
+            Ast::addChildBack(node, leftNode);
+
+            // We must ensure that no job can be run before the using
+            if (!node->ownerFct)
+            {
+                for (auto child : parent->childs)
+                {
+                    switch (child->kind)
+                    {
+                    case AstNodeKind::CompilerImport:
+                    case AstNodeKind::CompilerAssert:
+                    case AstNodeKind::CompilerForeignLib:
+                    case AstNodeKind::Using:
+                    case AstNodeKind::IdentifierRef:
+                        break;
+
+                    default:
+                        return error(node->token, "global 'using' must be defined at the top of the file");
+                    }
                 }
             }
         }

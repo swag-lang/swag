@@ -10,5 +10,5 @@ func fprint(x: string)
 
 #test
 {
-    one("toto", &fprint())
+    one("toto", &fprint)
 }

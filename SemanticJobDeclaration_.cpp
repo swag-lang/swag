@@ -57,40 +57,59 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
 
     node->flags |= AST_NO_BYTECODE;
-    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
+
+    // This is an alias. Just register the symbol
+    if (node->kind == AstNodeKind::UsingAlias)
+    {
+        SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::UsingAlias));
+        if (context->result == ContextResult::Pending)
+            return true;
+        auto overload = node->childs.back()->resolvedSymbolOverload;
+        SWAG_ASSERT(overload);
+        node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
+    }
+    else if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
 
-    Scope* scope = nullptr;
-    switch (idref->resolvedSymbolOverload->typeInfo->kind)
+    Scope* scope        = nullptr;
+    auto   typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    switch (typeResolved->kind)
     {
     case TypeInfoKind::Namespace:
     {
-        auto typeInfo = static_cast<TypeInfoNamespace*>(idref->resolvedSymbolOverload->typeInfo);
+        auto typeInfo = static_cast<TypeInfoNamespace*>(typeResolved);
         scope         = typeInfo->scope;
+        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
+        node->parent->alternativeScopes.push_back(scope);
         break;
     }
     case TypeInfoKind::Enum:
     {
-        auto typeInfo = static_cast<TypeInfoEnum*>(idref->resolvedSymbolOverload->typeInfo);
+        auto typeInfo = static_cast<TypeInfoEnum*>(typeResolved);
         scope         = typeInfo->scope;
+        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
+        node->parent->alternativeScopes.push_back(scope);
         break;
     }
     case TypeInfoKind::Struct:
     {
-        auto typeInfo = static_cast<TypeInfoStruct*>(idref->resolvedSymbolOverload->typeInfo);
+        auto typeInfo = static_cast<TypeInfoStruct*>(typeResolved);
         scope         = typeInfo->scope;
+        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
+        node->parent->alternativeScopes.push_back(scope);
+        break;
+    }
+    case TypeInfoKind::FuncAttr:
+    {
+        if (node->kind != AstNodeKind::UsingAlias)
+            return job->error(context, format("'using' cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
         break;
     }
     default:
-        return job->error(context, "invalid 'using' reference");
-    }
-
-    {
-        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
-        node->parent->alternativeScopes.push_back(scope);
+        return job->error(context, format("'using' cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
     }
 
     return true;

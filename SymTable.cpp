@@ -255,9 +255,16 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
         overload->flags |= OVERLOAD_COMPUTED_VALUE;
     }
 
-    overload->overloadIndex = (uint32_t) overloads.size() - 1;
+    overload->symbol = this;
     overloads.push_back(overload);
     return overload;
+}
+
+void SymTable::registerAliasOverload(SymbolName* symbol, SymbolOverload* overload)
+{
+    shared_lock lk(mutex);
+    symbol->overloads.push_back(overload);
+    decreaseOverloadNoLock(symbol);
 }
 
 const char* SymTable::getArticleKindName(SymbolKind kind)
@@ -276,6 +283,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a namespace";
     case SymbolKind::TypeAlias:
         return "a type alias";
+    case SymbolKind::UsingAlias:
+        return "a name alias";
     case SymbolKind::Variable:
         return "a variable";
     case SymbolKind::Struct:
@@ -305,6 +314,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "namespace";
     case SymbolKind::TypeAlias:
         return "type alias";
+    case SymbolKind::UsingAlias:
+        return "name alias";
     case SymbolKind::Variable:
         return "variable";
     case SymbolKind::Struct:

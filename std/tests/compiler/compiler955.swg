@@ -1,10 +1,9 @@
 #module compiler955
-using swag
+#unittest error
 
 func toto()->s32 => 666
 
-//#[swag.printbc]
-#unittest error
+#[swag.printbc]
 #test
 {
 	ptr := toto
