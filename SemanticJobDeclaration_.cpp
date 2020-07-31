@@ -67,8 +67,10 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         auto overload = node->childs.back()->resolvedSymbolOverload;
         SWAG_ASSERT(overload);
         node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
+        return true;
     }
-    else if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
+
+    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
@@ -100,12 +102,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         scope         = typeInfo->scope;
         SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
-        break;
-    }
-    case TypeInfoKind::FuncAttr:
-    {
-        if (node->kind != AstNodeKind::UsingAlias)
-            return job->error(context, format("'using' cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
         break;
     }
     default:
