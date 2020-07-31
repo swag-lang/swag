@@ -120,7 +120,7 @@ struct SymTable
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
-    void            registerAliasOverload(SymbolName* symbol, SymbolOverload* overload);
+    bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);

@@ -260,11 +260,34 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     return overload;
 }
 
-void SymTable::registerAliasOverload(SymbolName* symbol, SymbolOverload* overload)
+bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
     shared_lock lk(mutex);
+
+    if (!symbol->overloads.empty())
+    {
+        if (symbol->kind != SymbolKind::UsingAlias)
+        {
+            auto       firstOverload = symbol->overloads[0];
+            Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+            Diagnostic diag{node, node->token, msg};
+            Utf8       note = "this is the other definition";
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+            context->report(diag, &diagNote);
+        }
+        else
+        {
+            Utf8       msg           = format("symbol '%s' already defined as a name alias in an accessible scope", symbol->name.c_str());
+            Diagnostic diag{node, node->token, msg};
+            context->report(diag);
+        }
+
+        return false;
+    }
+
     symbol->overloads.push_back(overload);
     decreaseOverloadNoLock(symbol);
+    return true;
 }
 
 const char* SymTable::getArticleKindName(SymbolKind kind)

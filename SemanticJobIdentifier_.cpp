@@ -664,7 +664,7 @@ anotherTry:
                     if (callParameters)
                         return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
                     job->symMatch.result = MatchResult::Ok;
-                    forcedFine = true;
+                    forcedFine           = true;
                 }
             }
 
@@ -1791,6 +1791,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
     // Search in embedded function scopes
     if (kind == SymbolKind::TypeAlias ||
+        kind == SymbolKind::UsingAlias ||
         kind == SymbolKind::Function ||
         kind == SymbolKind::Struct ||
         kind == SymbolKind::Enum ||

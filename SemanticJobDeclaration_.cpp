@@ -75,8 +75,7 @@ bool SemanticJob::resolveUsingAlias(SemanticContext* context)
     }
 
     SWAG_ASSERT(overload);
-    node->ownerScope->symTable.registerAliasOverload(node->resolvedSymbolName, overload);
-    return true;
+    return node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, overload);
 }
 
 bool SemanticJob::resolveUsing(SemanticContext* context)
