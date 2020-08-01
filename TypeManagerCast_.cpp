@@ -1479,8 +1479,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         fromNode->flags |= AST_CONST_EXPR;
 
     TypeInfoList* toTypeList = nullptr;
-    if (toType->kind == TypeInfoKind::TypeList)
-        toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeList);
+    if (toType->kind == TypeInfoKind::TypeListTuple || toType->kind == TypeInfoKind::TypeListArray)
+        toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     for (int i = 0; i < fromSize; i++)
     {
@@ -1825,28 +1825,25 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
-    if (fromType->kind == TypeInfoKind::TypeList)
+    if (fromType->kind == TypeInfoKind::TypeListArray)
     {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (fromTypeList->listKind == TypeInfoListKind::Bracket)
+        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
+        auto          fromSize     = fromTypeList->childs.size();
+        if (toTypeArray->count != fromSize)
         {
-            auto fromSize = fromTypeList->childs.size();
-            if (toTypeArray->count != fromSize)
+            if (!(castFlags & CASTFLAG_NO_ERROR))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                {
-                    if (toTypeArray->count > fromTypeList->childs.size())
-                        context->report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
-                    else
-                        context->report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
-                }
-
-                return false;
+                if (toTypeArray->count > fromTypeList->childs.size())
+                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                else
+                    context->report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
             }
 
-            SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeArray->pointedType, fromNode, castFlags));
-            return true;
+            return false;
         }
+
+        SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeArray->pointedType, fromNode, castFlags));
+        return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
@@ -1886,14 +1883,10 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
 bool TypeManager::castSliceFromTypeList(SemanticContext* context, bool sliceIsConst, TypeInfo* pointedType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    if (fromType->kind != TypeInfoKind::TypeList)
+    if (fromType->kind != TypeInfoKind::TypeListTuple)
         return false;
 
-    TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-
-    // Can only cast array to slice
-    if (fromTypeList->listKind != TypeInfoListKind::Curly)
-        return false;
+    TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListTuple);
 
     // Special case when typelist is one pointer and one int
     if (fromTypeList->childs.size() != 2)
@@ -1943,15 +1936,13 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
-    // [pointer, count]
+    // {pointer, count}
     if (castSliceFromTypeList(context, toTypeSlice->isConst(), toTypeSlice->pointedType, fromType, fromNode, castFlags))
         return true;
 
-    if (fromType->kind == TypeInfoKind::TypeList)
+    if (fromType->kind == TypeInfoKind::TypeListArray)
     {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (fromTypeList->listKind != TypeInfoListKind::Bracket)
-            return castError(context, toType, fromType, fromNode, castFlags);
+        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
         SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, fromNode, castFlags));
         return true;
     }
@@ -2238,14 +2229,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
     auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
-    if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
+    if (fromType->kind == TypeInfoKind::TypeListTuple && toType->kind == TypeInfoKind::Struct)
     {
-        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (typeList->listKind == TypeInfoListKind::Curly)
-        {
-            SWAG_CHECK(convertExpressionListToVarDecl(context, toType, fromNode));
-            return true;
-        }
+        SWAG_CHECK(convertExpressionListToVarDecl(context, toType, fromNode));
+        return true;
     }
 
     SWAG_CHECK(makeCompatibles(context, toType, fromNode->typeInfo, toNode, fromNode, castFlags));
@@ -2262,11 +2249,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     }
 
     // Store constant expression in the constant segment
-    if (!(castFlags & CASTFLAG_NO_COLLECT))
+    if (!(castFlags & CASTFLAG_NO_COLLECT) && !(fromNode->flags & AST_SLICE_INIT_EXPRESSION))
     {
-        if (fromNode->typeInfo->kind == TypeInfoKind::TypeList && !(fromNode->flags & AST_SLICE_INIT_EXPRESSION))
+        if (fromNode->typeInfo->kind == TypeInfoKind::TypeListTuple || fromNode->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
-            TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeList);
+            TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
             auto          fromSize = typeList->childs.size();
 
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
@@ -2294,20 +2281,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
     auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     SWAG_ASSERT(realFromType && realToType);
-    if (realFromType->kind == TypeInfoKind::TypeList)
+    if (realFromType->kind == TypeInfoKind::TypeListTuple)
     {
-        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
-        if (typeList->listKind == TypeInfoListKind::Curly)
-        {
-            if (realToType->kind == TypeInfoKind::Struct)
-                return true;
+        if (realToType->kind == TypeInfoKind::Struct)
+            return true;
 
-            if (realToType->kind == TypeInfoKind::Reference && realToType->isConst())
-            {
-                auto ptrRef = CastTypeInfo<TypeInfoReference>(realToType, TypeInfoKind::Reference);
-                if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
-                    return true;
-            }
+        if (realToType->kind == TypeInfoKind::Reference && realToType->isConst())
+        {
+            auto ptrRef = CastTypeInfo<TypeInfoReference>(realToType, TypeInfoKind::Reference);
+            if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
+                return true;
         }
     }
 

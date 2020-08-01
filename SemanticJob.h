@@ -116,7 +116,7 @@ struct SemanticJob : public Job
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
     static bool resolveVarDeclAfterAssign(SemanticContext* context);
-    static bool deduceTypeFromTypeList(AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, SemanticContext* context);
+    static bool convertTypeListToArray(AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
@@ -129,7 +129,7 @@ struct SemanticJob : public Job
     static bool resolveFallThrough(SemanticContext* context);
     static bool resolveContinue(SemanticContext* context);
     static bool resolveLabel(SemanticContext* context);
-    static bool resolveExpressionListCurly(SemanticContext* context);
+    static bool resolveExpressionListTuple(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveExplicitNoInit(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);

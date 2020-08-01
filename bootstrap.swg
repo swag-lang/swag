@@ -184,7 +184,8 @@ namespace swag
         Reference
         Array
         Slice
-        TypeList
+        TypeListTuple
+        TypeListArray
         Variadic
         TypedVariadic
         Struct

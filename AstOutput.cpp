@@ -14,7 +14,7 @@ namespace Ast
             return true;
         }
 
-        if (typeInfo->kind == TypeInfoKind::TypeList)
+        if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
         {
             SWAG_CHECK(Ast::output(concat, node));
             return true;
@@ -103,9 +103,9 @@ namespace Ast
         case AstNodeKind::ExpressionList:
         {
             auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-            if (exprNode->listKind == TypeInfoListKind::Curly)
+            if (exprNode->forTuple)
                 concat.addChar('{');
-            else if (exprNode->listKind == TypeInfoListKind::Bracket)
+            else
                 concat.addChar('[');
 
             int idx = 0;
@@ -116,9 +116,9 @@ namespace Ast
                 SWAG_CHECK(output(concat, child, indent));
             }
 
-            if (exprNode->listKind == TypeInfoListKind::Curly)
+            if (exprNode->forTuple)
                 concat.addChar('}');
-            else if (exprNode->listKind == TypeInfoListKind::Bracket)
+            else
                 concat.addChar(']');
             break;
         }

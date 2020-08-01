@@ -78,7 +78,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             if (typeVar->kind == TypeInfoKind::Array)
             {
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
-                auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
+                auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
                 auto inst = emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointerOC, 1, 2);
                 SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);

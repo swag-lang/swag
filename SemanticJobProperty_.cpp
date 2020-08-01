@@ -107,9 +107,9 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     {
         node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
     }
-    else if (typeInfo->kind == TypeInfoKind::TypeList)
+    else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
+        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
         node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
         node->typeInfo              = g_TypeMgr.typeInfoU32;

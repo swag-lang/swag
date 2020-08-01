@@ -16,13 +16,22 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
+bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
+{
+    auto node = context->node;
+    node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+    node->flags |= AST_CONST_EXPR;
+    node->typeInfo = g_TypeMgr.typeInfoVoid;
+    return true;
+}
+
+bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo      = g_Allocator.alloc<TypeInfoList>();
-    typeInfo->listKind = node->listKind;
-    typeInfo->name     = "{";
+    auto typeInfo       = g_Allocator.alloc<TypeInfoList>();
+    typeInfo->kind      = TypeInfoKind::TypeListTuple;
+    typeInfo->nakedName = "{";
 
     int idx = 0;
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
@@ -31,18 +40,18 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, child));
 
         if (!typeInfo->childs.empty())
-            typeInfo->name += ", ";
+            typeInfo->nakedName += ", ";
         typeInfo->childs.push_back(child->typeInfo);
 
         // Value has been named
         if (!child->name.empty() && (child->flags & AST_IS_NAMED))
         {
-            typeInfo->name += child->name;
-            typeInfo->name += ": ";
+            typeInfo->nakedName += child->name;
+            typeInfo->nakedName += ": ";
             typeInfo->names.push_back(child->name);
         }
 
-        typeInfo->name += child->typeInfo->name;
+        typeInfo->nakedName += child->typeInfo->name;
 
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
@@ -53,7 +62,9 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
         idx++;
     }
 
-    typeInfo->name += "}";
+    typeInfo->nakedName += "}";
+    typeInfo->name = typeInfo->nakedName;
+
     node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeInfo;
@@ -69,23 +80,15 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
-{
-    auto node = context->node;
-    node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
-    node->flags |= AST_CONST_EXPR;
-    node->typeInfo = g_TypeMgr.typeInfoVoid;
-    return true;
-}
-
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo      = g_Allocator.alloc<TypeInfoList>();
-    typeInfo->listKind = node->listKind;
+    auto typeInfo  = g_Allocator.alloc<TypeInfoList>();
+    typeInfo->kind = TypeInfoKind::TypeListArray;
     SWAG_ASSERT(node->childs.size());
-    typeInfo->name = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
+    typeInfo->nakedName = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
+    typeInfo->name      = typeInfo->nakedName;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
@@ -116,7 +119,10 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 
 bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node)
 {
-    if ((node->flags & AST_CONST_EXPR) && node->typeInfo->kind != TypeInfoKind::TypeList && node->typeInfo->kind != TypeInfoKind::Slice)
+    if ((node->flags & AST_CONST_EXPR) &&
+        node->typeInfo->kind != TypeInfoKind::TypeListArray &&
+        node->typeInfo->kind != TypeInfoKind::TypeListTuple &&
+        node->typeInfo->kind != TypeInfoKind::Slice)
     {
         SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(executeNode(context, node, true));

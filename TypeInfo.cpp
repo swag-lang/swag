@@ -53,9 +53,9 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a function";
     case TypeInfoKind::Lambda:
         return "a lambda";
-    case TypeInfoKind::TypeList:
-        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Curly)
-            return "a tuple";
+    case TypeInfoKind::TypeListTuple:
+        return "a tuple";
+    case TypeInfoKind::TypeListArray:
         return "an array";
     case TypeInfoKind::Variadic:
     case TypeInfoKind::TypedVariadic:
@@ -95,9 +95,9 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "function";
     case TypeInfoKind::Lambda:
         return "lambda";
-    case TypeInfoKind::TypeList:
-        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Curly)
-            return "tuple";
+    case TypeInfoKind::TypeListTuple:
+        return "tuple";
+    case TypeInfoKind::TypeListArray:
         return "array";
     case TypeInfoKind::Variadic:
     case TypeInfoKind::TypedVariadic:
@@ -131,7 +131,7 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
 
 bool TypeInfo::isInitializerList()
 {
-    if (kind != TypeInfoKind::TypeList)
+    if (kind != TypeInfoKind::TypeListTuple)
         return false;
-    return ((TypeInfoList*) this)->listKind == TypeInfoListKind::Curly;
+    return true;
 }

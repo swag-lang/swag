@@ -136,7 +136,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     }
 
     auto job      = context->job;
-    auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
+    auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     reserveRegisterRC(context, node->resultRegisterRC, 2);
 

@@ -538,7 +538,7 @@ AstNode* AstExpressionList::clone(CloneContext& context)
 
     newNode->storageOffset        = storageOffset;
     newNode->storageOffsetSegment = storageOffsetSegment;
-    newNode->listKind             = listKind;
+    newNode->forTuple             = forTuple;
 
     return newNode;
 }

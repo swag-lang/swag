@@ -645,9 +645,9 @@ struct AstExpressionList : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    uint32_t         storageOffset        = 0;
-    uint32_t         storageOffsetSegment = UINT32_MAX;
-    TypeInfoListKind listKind;
+    uint32_t storageOffset        = 0;
+    uint32_t storageOffsetSegment = UINT32_MAX;
+    bool     forTuple             = false;
 };
 
 struct AstStruct : public AstNode

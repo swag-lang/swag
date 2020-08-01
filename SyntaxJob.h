@@ -89,7 +89,7 @@ struct SyntaxJob : public Job
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doExpressionListCurly(AstNode* parent, AstNode** result = nullptr);
+    bool doExpressionListTuple(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionListArray(AstNode* parent, AstNode** result = nullptr);
     bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);

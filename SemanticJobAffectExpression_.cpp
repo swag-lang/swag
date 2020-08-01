@@ -112,7 +112,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Reference &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
-            leftTypeInfo->kind != TypeInfoKind::TypeList &&
+            leftTypeInfo->kind != TypeInfoKind::TypeListTuple &&
+            leftTypeInfo->kind != TypeInfoKind::TypeListArray &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
             leftTypeInfo->kind != TypeInfoKind::Interface &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
@@ -125,7 +126,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::Interface &&
-            rightTypeInfo->kind != TypeInfoKind::TypeList)
+            rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
+            rightTypeInfo->kind != TypeInfoKind::TypeListArray)
             return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)

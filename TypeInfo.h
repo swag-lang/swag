@@ -32,7 +32,8 @@ enum class TypeInfoKind
     Reference,
     Array,
     Slice,
-    TypeList,
+    TypeListTuple,
+    TypeListArray,
     Variadic,
     TypedVariadic,
     Struct,
@@ -476,18 +477,10 @@ struct TypeInfoSlice : public TypeInfo
     TypeInfo* pointedType = nullptr;
 };
 
-enum class TypeInfoListKind
-{
-    Invalid,
-    Bracket,
-    Curly,
-};
-
 struct TypeInfoList : public TypeInfo
 {
     TypeInfoList()
     {
-        kind = TypeInfoKind::TypeList;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -503,8 +496,6 @@ struct TypeInfoList : public TypeInfo
     vector<Utf8>            names;
 
     Scope* scope = nullptr;
-
-    TypeInfoListKind listKind = TypeInfoListKind::Bracket;
 };
 
 struct TypeInfoVariadic : public TypeInfo

@@ -360,7 +360,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Be sure this is a valid return type
     if (typeInfo->returnType->kind != TypeInfoKind::Native &&
-        typeInfo->returnType->kind != TypeInfoKind::TypeList &&
+        typeInfo->returnType->kind != TypeInfoKind::TypeListTuple &&
+        typeInfo->returnType->kind != TypeInfoKind::TypeListArray &&
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
@@ -459,8 +460,8 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     // func([.., ...]) must be const
     if (child->kind == AstNodeKind::ExpressionList)
     {
-        auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-        if(typeList->listKind == TypeInfoListKind::Bracket)
+        auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        if(typeList->kind == TypeInfoKind::TypeListArray)
             node->typeInfo->setConst();
     }
 
@@ -538,7 +539,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo);
-            if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
+            if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeListTuple)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;

@@ -376,11 +376,10 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType      = g_Allocator.alloc<TypeInfoList>();
-    newType->childs   = childs;
-    newType->names    = names;
-    newType->scope    = scope;
-    newType->listKind = listKind;
+    auto newType    = g_Allocator.alloc<TypeInfoList>();
+    newType->childs = childs;
+    newType->names  = names;
+    newType->scope  = scope;
     newType->copyFrom(this);
     return newType;
 }
@@ -390,11 +389,11 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-    // Can cast from typelist curly to struct
+    // Can cast from typelist tuple to struct
     // The real check will be done later
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Struct && listKind == TypeInfoListKind::Curly)
+        if (to->kind == TypeInfoKind::Struct && kind == TypeInfoKind::TypeListTuple)
             return true;
     }
 
@@ -402,8 +401,6 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     auto other = static_cast<TypeInfoList*>(to);
     if (childs.size() != other->childs.size())
-        return false;
-    if (listKind != other->listKind)
         return false;
 
     for (int i = 0; i < childs.size(); i++)

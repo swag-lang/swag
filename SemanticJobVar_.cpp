@@ -229,7 +229,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
     structNode->content            = contentNode;
 
-    auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeList);
+    auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 structName = "__" + sourceFile->scopePrivate->name + "_tuple_";
     Utf8 varName;
     int  numChilds = (int) typeList->childs.size();
@@ -290,7 +290,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
             break;
         }
-        case TypeInfoKind::TypeList:
+        case TypeInfoKind::TypeListTuple:
         {
             AstStruct* inStructNode;
             SWAG_CHECK(convertAssignementToStruct(context, assignment->childs[idx], &inStructNode));
@@ -396,7 +396,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
-    if (exprList->listKind != TypeInfoListKind::Curly)
+    if (!exprList->forTuple)
         return true;
 
     if (!varDecl->type)
@@ -455,51 +455,47 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::deduceTypeFromTypeList(AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, SemanticContext* context)
+bool SemanticJob::convertTypeListToArray(AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, SemanticContext* context)
 {
-    auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-    if (typeList->listKind == TypeInfoListKind::Bracket)
+    auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
+    auto typeArray = g_Allocator.alloc<TypeInfoArray>();
+    node->typeInfo = typeArray;
+    auto finalType = node->typeInfo;
+
+    while (true)
     {
-        auto typeArray = g_Allocator.alloc<TypeInfoArray>();
-        node->typeInfo = typeArray;
-        auto finalType = node->typeInfo;
-
-        while (true)
-        {
-            typeArray->pointedType = typeList->childs.front();
-            finalType              = typeArray->pointedType;
-            typeArray->sizeOf      = typeList->sizeOf;
-            typeArray->count       = (uint32_t) typeList->childs.size();
-            typeArray->totalCount  = typeArray->count;
-            if (isCompilerConstant)
-                typeArray->flags |= TYPEINFO_CONST;
-            if (typeArray->pointedType->kind != TypeInfoKind::TypeList)
-                break;
-            typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeList);
-            typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
-            typeArray              = (TypeInfoArray*) typeArray->pointedType;
-        }
-
-        // Compute all the type names
-        typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-        while (typeArray)
-        {
-            typeArray->finalType = finalType;
-            typeArray->computeName();
-            if (typeArray->pointedType->kind != TypeInfoKind::Array)
-                break;
-            typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
-        }
-
-        // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
-        if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
-        else
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
-        node->typeInfo->sizeOf = node->assignment->typeInfo->sizeOf;
+        typeArray->pointedType = typeList->childs.front();
+        finalType              = typeArray->pointedType;
+        typeArray->sizeOf      = typeList->sizeOf;
+        typeArray->count       = (uint32_t) typeList->childs.size();
+        typeArray->totalCount  = typeArray->count;
+        if (isCompilerConstant)
+            typeArray->flags |= TYPEINFO_CONST;
+        if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
+            break;
+        typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
+        typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
+        typeArray              = (TypeInfoArray*) typeArray->pointedType;
     }
+
+    // Compute all the type names
+    typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+    while (typeArray)
+    {
+        typeArray->finalType = finalType;
+        typeArray->computeName();
+        if (typeArray->pointedType->kind != TypeInfoKind::Array)
+            break;
+        typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+    }
+
+    // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
+    if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
     else
-        return internalError(context, "resolveVarDecl, invalid typelist kind");
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
+    node->typeInfo->sizeOf = node->assignment->typeInfo->sizeOf;
+
     return true;
 }
 
@@ -670,10 +666,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->typeInfo = g_TypeMgr.typeInfoF32;
 
         // Convert from initialization list to array
-        if (node->typeInfo->kind == TypeInfoKind::TypeList)
-        {
-            SWAG_CHECK(deduceTypeFromTypeList(node, isCompilerConstant, symbolFlags, context));
-        }
+        if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
+            SWAG_CHECK(convertTypeListToArray(node, isCompilerConstant, symbolFlags, context));
     }
     else if (node->type)
     {
