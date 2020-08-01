@@ -8,7 +8,6 @@ thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
 JobResult ModuleRunJob::execute()
 {
-    SWAG_ASSERT(module->hasBeenBuilt & BUILDRES_COMPILER);
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
     path += OS::getOutputFileExtension(BackendOutputType::Binary);
     if (!fs::exists(path))
