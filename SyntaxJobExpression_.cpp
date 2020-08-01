@@ -89,9 +89,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
-    case TokenId::SymLeftSquare:
-        SWAG_CHECK(doExpressionListArray(parent, result));
-        break;
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
@@ -125,6 +122,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
         SWAG_CHECK(doTypeExpression(parent, result));
+        break;
+
+    case TokenId::SymLeftSquare:
+        SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
     case TokenId::KwdFunc:

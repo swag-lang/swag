@@ -41,9 +41,9 @@
         typealias callback: func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
-        @assert(toDo(4, func(x: s32) => x * x) == 16)
-        @assert(toDo(4, func(x: s32) => x + x) == 8)
-        @assert(toDo(4, func(x: s32)->s32 { return x - x; }) == 0)
+        @assert(toDo(4, @(x: s32) => x * x) == 16)
+        @assert(toDo(4, @(x: s32) => x + x) == 8)
+        @assert(toDo(4, @(x: s32)->s32 { return x - x; }) == 0)
     }
 
     // Types of parameters can be deduced
