@@ -272,16 +272,19 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct = g_Allocator.alloc<TypeInfoStruct>();
+    auto typeStruct       = g_Allocator.alloc<TypeInfoStruct>();
+    typeStruct->nakedName = typeList->computeTupleName(context);
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
-    for (auto& one : typeList->subTypes)
+    for (int idx = 0; idx < typeList->subTypes.size(); idx++)
     {
+        auto one = typeList->subTypes[idx];
+        if (one->namedParam.empty())
+            one->namedParam = format("item%d", idx);
         typeStruct->fields.push_back((TypeInfoParam*) one->clone());
     }
 
-    typeStruct->nakedName = typeList->computeTupleName(context);
-    typeStruct->name      = typeStruct->nakedName;
+    typeStruct->name = typeStruct->nakedName;
 
     return typeStruct;
 }
