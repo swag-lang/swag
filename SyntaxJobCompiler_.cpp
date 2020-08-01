@@ -245,7 +245,7 @@ bool SyntaxJob::doCompilerModule()
     moduleSpecified = true;
 
     auto newModule       = g_Workspace.createOrUseModule(token.text);
-    newModule->fromTests = sourceFile->module->fromTests;
+    newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
     currentScope = sourceFile->scopeRoot;

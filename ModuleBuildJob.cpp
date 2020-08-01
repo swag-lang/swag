@@ -153,7 +153,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Publish)
     {
         pass = ModuleBuildPass::Semantic;
-        if (g_CommandLine.backendOutput && !module->path.empty() && !module->fromTests)
+        if (g_CommandLine.backendOutput && !module->path.empty() && !module->fromTestsFolder)
         {
             // Everything in a /publih folder will be copied "as is" in the output directory
             string publishPath = module->path + "/publish";

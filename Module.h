@@ -58,7 +58,7 @@ struct Module
     SourceFile*               buildFile            = nullptr;
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
-    bool                      fromTests            = false;
+    bool                      fromTestsFolder            = false;
     bool                      byteCodeOnly         = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;

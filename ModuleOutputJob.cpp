@@ -18,7 +18,7 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::PreCompile;
 
         // No need to generate something for a module from tests/ folder, if we do not want test backend
-        if (module->fromTests && !g_CommandLine.backendOutputTest)
+        if (module->fromTestsFolder && !g_CommandLine.backendOutputTest)
             return JobResult::ReleaseJob;
 
         if (g_CommandLine.verboseBuildPass)
@@ -31,7 +31,7 @@ JobResult ModuleOutputJob::execute()
         jobsToAdd.push_back(exportJob);
 
         // Generate documentation for module
-        if (g_CommandLine.generateDoc && !module->fromTests)
+        if (g_CommandLine.generateDoc && !module->fromTestsFolder)
         {
             auto docJob    = g_Pool_docModuleJob.alloc();
             docJob->module = module;
@@ -72,7 +72,7 @@ JobResult ModuleOutputJob::execute()
             // No need for C backend, because the C backend will generate only one .C file compatible will all cases
             if (g_CommandLine.backendType == BackendType::LLVM)
             {
-                if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
+                if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
                 {
                     // Do not generate test on dependencies if we want to compile only one specific module
                     if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
@@ -83,14 +83,14 @@ JobResult ModuleOutputJob::execute()
                         preCompileJob->buildParameters                 = module->buildParameters;
                         preCompileJob->buildParameters.precompileIndex = i;
                         preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
-                        if (!module->fromTests)
+                        if (!module->fromTestsFolder)
                             preCompileJob->buildParameters.postFix = ".test";
                         jobsToAdd.push_back(preCompileJob);
                     }
                 }
 
                 // Precompile the normal version
-                if (!module->fromTests && g_CommandLine.backendOutputLegit)
+                if (!module->fromTestsFolder && g_CommandLine.backendOutputLegit)
                 {
                     auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
                     preCompileJob->module                          = module;
@@ -123,7 +123,7 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::Run;
 
         // Compile a specific version, to test it
-        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
+        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
         {
             // Do not generate test on dependencies if we want to compile only one specific module
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
@@ -135,15 +135,15 @@ JobResult ModuleOutputJob::execute()
                 compileJob->buildParameters.outputFileName = module->name;
                 compileJob->buildParameters.outputType     = BackendOutputType::Binary;
                 compileJob->buildParameters.compileType    = BackendCompileType::Test;
-                if (!module->fromTests)
+                if (!module->fromTestsFolder)
                     compileJob->buildParameters.postFix = ".test";
-                g_ThreadMgr.addJob(compileJob);
+                jobsToAdd.push_back(compileJob);
             }
         }
 
         // Compile the official normal version, except if it comes from the test folder (because
         // there's no official version for the test folder, only a test executable)
-        if (!module->fromTests && g_CommandLine.backendOutputLegit)
+        if (!module->fromTestsFolder && g_CommandLine.backendOutputLegit)
         {
             auto compileJob                         = g_Pool_moduleCompileJob.alloc();
             compileJob->module                      = module;
@@ -157,7 +157,7 @@ JobResult ModuleOutputJob::execute()
             module->buildParameters.outputType = compileJob->buildParameters.outputType;
 
             compileJob->buildParameters.outputFileName = module->name;
-            g_ThreadMgr.addJob(compileJob);
+            jobsToAdd.push_back(compileJob);
         }
 
         return JobResult::KeepJobAlivePending;
@@ -165,10 +165,8 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::Run)
     {
-        // Test job
-        // Do not set job->dependentJob, because nobody is dependent on that execution
-        // Test can be run "on the void"
-        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
+        // Run test executable
+        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
         {
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
             {
@@ -177,10 +175,20 @@ JobResult ModuleOutputJob::execute()
                 job->buildParameters                = module->buildParameters;
                 job->buildParameters.outputFileName = module->name;
                 job->buildParameters.compileType    = BackendCompileType::Test;
-                if (!module->fromTests)
+                if (!module->fromTestsFolder)
                     job->buildParameters.postFix = ".test";
                 g_ThreadMgr.addJob(job);
             }
+        }
+
+        // Run command
+        if (g_CommandLine.run && !module->fromTestsFolder && g_CommandLine.backendOutputLegit)
+        {
+            auto job                         = g_Pool_moduleRunJob.alloc();
+            job->module                      = module;
+            job->buildParameters             = module->buildParameters;
+            job->buildParameters.compileType = BackendCompileType::Normal;
+            g_ThreadMgr.addJob(job);
         }
     }
 

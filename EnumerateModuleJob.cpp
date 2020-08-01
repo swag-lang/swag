@@ -35,12 +35,12 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                 {
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        if (!theModule->fromTests || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
+                        if (!theModule->fromTestsFolder || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
                         {
                             auto job        = g_Pool_syntaxJob.alloc();
                             auto file       = g_Allocator.alloc<SourceFile>();
                             job->sourceFile = file;
-                            file->fromTests = theModule->fromTests;
+                            file->fromTests = theModule->fromTestsFolder;
                             file->path      = tmp + "\\" + cFileName;
                             file->writeTime = writeTime;
                             theModule->addFile(file);
@@ -66,7 +66,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
 
     // Create theModule
     auto theModule       = g_Workspace.createOrUseModule(moduleName);
-    theModule->fromTests = parent == "tests";
+    theModule->fromTestsFolder = parent == "tests";
     theModule->scopeRoot->flags |= SCOPE_FLAG_MODULE_FROM_TEST;
 
     // Add the build.swg file if it exists
@@ -77,7 +77,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
         auto job             = g_Pool_syntaxJob.alloc();
         auto file            = g_Allocator.alloc<SourceFile>();
         job->sourceFile      = file;
-        file->fromTests      = theModule->fromTests;
+        file->fromTests      = theModule->fromTestsFolder;
         file->path           = tmp;
         theModule->buildFile = file;
         theModule->addFile(file);
@@ -88,7 +88,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // is at the root folder
     tmp             = path.string();
     theModule->path = tmp;
-    if (!theModule->fromTests)
+    if (!theModule->fromTestsFolder)
         tmp += "/src";
     enumerateFilesInModule(tmp, theModule);
     return theModule;
