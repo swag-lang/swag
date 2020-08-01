@@ -233,7 +233,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     return typeInfo;
 }
 
-TypeInfoArray* TypeManager::convertTypeListToArray(SemanticContext* context, TypeInfoList* typeList, bool isCompilerConstant)
+TypeInfoArray* TypeManager::convertTypeListToArray(TypeInfoList* typeList, bool isCompilerConstant)
 {
     auto      typeArray    = g_Allocator.alloc<TypeInfoArray>();
     auto      orgTypeArray = typeArray;

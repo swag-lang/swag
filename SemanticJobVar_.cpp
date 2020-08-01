@@ -459,7 +459,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags)
 {
     auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
-    auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
+    auto typeArray = TypeManager::convertTypeListToArray(typeList, isCompilerConstant);
     node->typeInfo = typeArray;
 
     // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
