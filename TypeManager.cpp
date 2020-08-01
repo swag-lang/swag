@@ -233,7 +233,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     return typeInfo;
 }
 
-TypeInfoArray* TypeManager::convertTypeListToArray(TypeInfoList* typeList, bool isCompilerConstant)
+TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
     auto      typeArray    = g_Allocator.alloc<TypeInfoArray>();
     auto      orgTypeArray = typeArray;
@@ -268,4 +268,20 @@ TypeInfoArray* TypeManager::convertTypeListToArray(TypeInfoList* typeList, bool 
 
     orgTypeArray->sizeOf = orgTypeArray->finalType->sizeOf * orgTypeArray->totalCount;
     return orgTypeArray;
+}
+
+TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
+{
+    auto typeStruct = g_Allocator.alloc<TypeInfoStruct>();
+
+    typeStruct->fields.reserve((int) typeList->subTypes.size());
+    for (auto& one : typeList->subTypes)
+    {
+        typeStruct->fields.push_back((TypeInfoParam*) one->clone());
+    }
+
+    typeStruct->nakedName = typeList->computeTupleName(context);
+    typeStruct->name      = typeStruct->nakedName;
+
+    return typeStruct;
 }

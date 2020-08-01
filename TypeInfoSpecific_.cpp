@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "TypeManager.h"
 #include "Allocator.h"
+#include "SourceFile.h"
 #include "AstNode.h"
+#include "Ast.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -372,6 +374,29 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     auto castedFrom = static_cast<TypeInfoSlice*>(to);
     return pointedType->isSame(castedFrom->pointedType, isSameFlags);
+}
+
+Utf8 TypeInfoList::computeTupleName(JobContext* context)
+{
+    Utf8 structName = "__" + context->sourceFile->scopePrivate->name + "_tuple_";
+
+    int numChilds = (int) subTypes.size();
+    for (int idx = 0; idx < numChilds; idx++)
+    {
+        auto typeParam = subTypes[idx];
+        auto childType = typeParam->typeInfo;
+
+        if (!typeParam->namedParam.empty())
+        {
+            structName += typeParam->namedParam;
+            structName += "_";
+        }
+
+        structName += childType->name;
+    }
+
+    Ast::normalizeIdentifierName(structName);
+    return structName;
 }
 
 TypeInfo* TypeInfoList::clone()

@@ -229,8 +229,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
     structNode->content            = contentNode;
 
-    auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
-    Utf8 structName = "__" + sourceFile->scopePrivate->name + "_tuple_";
+    auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 varName;
     int  numChilds = (int) typeList->subTypes.size();
     for (int idx = 0; idx < numChilds; idx++)
@@ -240,18 +239,12 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
 
         bool autoName = false;
         if (!typeParam->namedParam.empty())
-        {
             varName = typeParam->namedParam;
-            structName += varName;
-            structName += "_";
-        }
         else
         {
-            varName  = format("item%u", idx);
             autoName = true;
+            varName = format("item%u", idx);
         }
-
-        structName += childType->name;
 
         auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
         if (autoName)
@@ -304,8 +297,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     }
 
     // Compute structure name
-    Ast::normalizeIdentifierName(structName);
-    structNode->name = move(structName);
+    structNode->name = move(typeList->computeTupleName(context));
 
     // Add struct type and scope
     auto        rootScope = sourceFile->scopeRoot;
@@ -459,7 +451,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags)
 {
     auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
-    auto typeArray = TypeManager::convertTypeListToArray(typeList, isCompilerConstant);
+    auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
     node->typeInfo = typeArray;
 
     // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment

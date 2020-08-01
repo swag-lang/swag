@@ -170,6 +170,15 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::TypeListArray:
+        typeInfo = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeInfo, true);
+        break;
+    case TypeInfoKind::TypeListTuple:
+        typeInfo = TypeManager::convertTypeListToStruct(context, (TypeInfoList*) typeInfo, true);
+        break;
+    }
 
     // Already computed
     typeInfo->computeScopedName();
@@ -204,13 +213,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         break;
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
-        typeStruct = swagScope.regTypeInfoStruct;
-        break;
-    case TypeInfoKind::TypeListArray:
-        typeStruct = swagScope.regTypeInfoArray;
-        typeInfo   = TypeManager::convertTypeListToArray((TypeInfoList*) typeInfo, true);
-        break;
-    case TypeInfoKind::TypeListTuple:
         typeStruct = swagScope.regTypeInfoStruct;
         break;
     case TypeInfoKind::Param:

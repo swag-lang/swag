@@ -14,6 +14,7 @@ struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
 struct AstFuncDecl;
+struct JobContext;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
@@ -491,6 +492,7 @@ struct TypeInfoList : public TypeInfo
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+    Utf8      computeTupleName(JobContext* context);
 
     VectorNative<TypeInfoParam*> subTypes;
 
