@@ -492,8 +492,7 @@ struct TypeInfoList : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    VectorNative<TypeInfo*> childs;
-    vector<Utf8>            names;
+    VectorNative<TypeInfoParam*> subTypes;
 
     Scope* scope = nullptr;
 };

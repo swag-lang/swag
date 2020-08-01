@@ -1466,7 +1466,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint32_t castFlags)
 {
-    auto fromSize = fromTypeList->childs.size();
+    auto fromSize = fromTypeList->subTypes.size();
     while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
         fromNode = fromNode->childs.front();
     SWAG_ASSERT(!fromNode || fromSize == fromNode->childs.size());
@@ -1485,8 +1485,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     for (int i = 0; i < fromSize; i++)
     {
         auto child     = fromNode ? fromNode->childs[i] : nullptr;
-        auto convertTo = toTypeList ? toTypeList->childs[i] : toType;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->childs[i], nullptr, child, castFlags));
+        auto convertTo = toTypeList ? toTypeList->subTypes[i]->typeInfo : toType;
+        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags));
         if (child)
         {
             newSizeof += child->typeInfo->sizeOf;
@@ -1828,15 +1828,15 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     if (fromType->kind == TypeInfoKind::TypeListArray)
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
-        auto          fromSize     = fromTypeList->childs.size();
+        auto          fromSize     = fromTypeList->subTypes.size();
         if (toTypeArray->count != fromSize)
         {
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
-                if (toTypeArray->count > fromTypeList->childs.size())
-                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                if (toTypeArray->count > fromTypeList->subTypes.size())
+                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->subTypes.size(), toTypeArray->count)});
                 else
-                    context->report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                    context->report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->subTypes.size(), toTypeArray->count)});
             }
 
             return false;
@@ -1889,13 +1889,14 @@ bool TypeManager::castSliceFromTypeList(SemanticContext* context, bool sliceIsCo
     TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListTuple);
 
     // Special case when typelist is one pointer and one int
-    if (fromTypeList->childs.size() != 2)
+    if (fromTypeList->subTypes.size() != 2)
         return false;
 
     bool castCanBeDone = true;
 
     // Must start with a pointer of the same type as the slice
-    auto childFront = fromTypeList->childs.front();
+    auto typeParamFront = fromTypeList->subTypes.front();
+    auto childFront     = typeParamFront->typeInfo;
     if (childFront->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = static_cast<TypeInfoPointer*>(childFront);
@@ -1918,7 +1919,7 @@ bool TypeManager::castSliceFromTypeList(SemanticContext* context, bool sliceIsCo
     // Must end with an U32, which is the slice count
     if (castCanBeDone)
     {
-        if (!TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+        if (!TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->subTypes.back()->typeInfo, nullptr, fromNode ? fromNode->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             castCanBeDone = false;
     }
 
@@ -2254,7 +2255,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         if (fromNode->typeInfo->kind == TypeInfoKind::TypeListTuple || fromNode->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
             TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-            auto          fromSize = typeList->childs.size();
+            auto          fromSize = typeList->subTypes.size();
 
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
                 fromNode = fromNode->childs.empty() ? nullptr : fromNode->childs.front();

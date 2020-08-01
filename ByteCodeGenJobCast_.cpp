@@ -564,9 +564,9 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     if (fromTypeInfo->kind == TypeInfoKind::TypeListTuple)
     {
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
-        SWAG_ASSERT(typeList->childs.size() == 2);
-        SWAG_ASSERT(typeList->childs[0]->kind == TypeInfoKind::Pointer || typeList->childs[0]->kind == TypeInfoKind::Array);
-        SWAG_ASSERT(typeList->childs[1]->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeList->subTypes.size() == 2);
+        SWAG_ASSERT(typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Pointer || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
+        SWAG_ASSERT(typeList->subTypes[1]->typeInfo->kind == TypeInfoKind::Native);
 
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
@@ -647,7 +647,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         if (!(exprNode->flags & AST_SLICE_INIT_EXPRESSION))
         {
             auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
-            int  diff         = fromTypeList->childs.front()->sizeOf / toTypeSlice->pointedType->sizeOf;
+            int  diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
             auto inst         = emitInstruction(context, ByteCodeOp::Mul64byVB32, exprNode->resultRegisterRC[1]);
             inst->b.u32       = diff;
         }
@@ -709,7 +709,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
                 RegisterList result = reserveRegisterRC(context);
                 SWAG_CHECK(emitCompareTypeInfos(context, r0, exprNode->resultRegisterRC[1], result));
 
-                inst = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
+                inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
                 inst->d.pointer = (uint8_t*) "invalid cast from any";
                 inherhitLocation(inst, exprNode);
                 freeRegisterRC(context, result);

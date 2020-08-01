@@ -232,15 +232,16 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 structName = "__" + sourceFile->scopePrivate->name + "_tuple_";
     Utf8 varName;
-    int  numChilds = (int) typeList->childs.size();
+    int  numChilds = (int) typeList->subTypes.size();
     for (int idx = 0; idx < numChilds; idx++)
     {
-        auto childType = typeList->childs[idx];
+        auto typeParam = typeList->subTypes[idx];
+        auto childType = typeParam->typeInfo;
 
         bool autoName = false;
-        if (idx < typeList->names.size())
+        if (!typeParam->namedParam.empty())
         {
-            varName = typeList->names[idx];
+            varName = typeParam->namedParam;
             structName += varName;
             structName += "_";
         }
@@ -464,10 +465,10 @@ bool SemanticJob::convertTypeListToArray(AstVarDecl* node, bool isCompilerConsta
 
     while (true)
     {
-        typeArray->pointedType = typeList->childs.front();
+        typeArray->pointedType = typeList->subTypes.front()->typeInfo;
         finalType              = typeArray->pointedType;
         typeArray->sizeOf      = typeList->sizeOf;
-        typeArray->count       = (uint32_t) typeList->childs.size();
+        typeArray->count       = (uint32_t) typeList->subTypes.size();
         typeArray->totalCount  = typeArray->count;
         if (isCompilerConstant)
             typeArray->flags |= TYPEINFO_CONST;

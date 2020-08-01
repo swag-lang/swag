@@ -376,10 +376,18 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType    = g_Allocator.alloc<TypeInfoList>();
-    newType->childs = childs;
-    newType->names  = names;
-    newType->scope  = scope;
+    auto newType = g_Allocator.alloc<TypeInfoList>();
+
+    int size = (int) subTypes.size();
+    newType->subTypes.reserve(size);
+    for (int i = 0; i < size; i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(subTypes[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
+        newType->subTypes.push_back(param);
+    }
+
+    newType->scope = scope;
     newType->copyFrom(this);
     return newType;
 }
@@ -400,20 +408,12 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
     auto other = static_cast<TypeInfoList*>(to);
-    if (childs.size() != other->childs.size())
+    if (subTypes.size() != other->subTypes.size())
         return false;
 
-    for (int i = 0; i < childs.size(); i++)
+    for (int i = 0; i < subTypes.size(); i++)
     {
-        if (!childs[i]->isSame(other->childs[i], isSameFlags))
-            return false;
-    }
-
-    if (names.size() != other->names.size())
-        return false;
-    for (int i = 0; i < names.size(); i++)
-    {
-        if (names[i] != other->names[i])
+        if (!subTypes[i]->isSame(other->subTypes[i], isSameFlags))
             return false;
     }
 

@@ -39,16 +39,19 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     {
         SWAG_CHECK(checkIsConcrete(context, child));
 
-        if (!typeInfo->childs.empty())
+        if (!typeInfo->subTypes.empty())
             typeInfo->nakedName += ", ";
-        typeInfo->childs.push_back(child->typeInfo);
+
+        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        typeParam->typeInfo = child->typeInfo;
+        typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
         if (!child->name.empty() && (child->flags & AST_IS_NAMED))
         {
             typeInfo->nakedName += child->name;
             typeInfo->nakedName += ": ";
-            typeInfo->names.push_back(child->name);
+            typeParam->namedParam = child->name;
         }
 
         typeInfo->nakedName += child->typeInfo->name;
@@ -94,7 +97,9 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcrete(context, child));
-        typeInfo->childs.push_back(child->typeInfo);
+        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        typeParam->typeInfo = child->typeInfo;
+        typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;

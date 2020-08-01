@@ -111,7 +111,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     {
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
-        node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
+        node->computedValue.reg.u64 = (uint32_t) typeList->subTypes.size();
         node->typeInfo              = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)

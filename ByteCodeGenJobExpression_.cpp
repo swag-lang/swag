@@ -150,7 +150,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Emit one affectation per child
         int      offsetIdx = listNode->storageOffset;
-        uint32_t oneOffset = typeList->childs.front()->sizeOf;
+        uint32_t oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
             emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC)->b.u32 = offsetIdx;
@@ -168,7 +168,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         // Emit a reference to the buffer
         auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointerOC, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
-        inst->c.u64 = ((uint64_t) node->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
+        inst->c.u64 = ((uint64_t) node->storageOffsetSegment << 32) | (uint32_t) typeList->subTypes.size();
     }
 
     return true;

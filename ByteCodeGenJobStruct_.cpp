@@ -82,7 +82,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
                 auto inst = emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointerOC, 1, 2);
                 SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
-                inst->c.u64 = ((uint64_t) exprList->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
+                inst->c.u64 = ((uint64_t) exprList->storageOffsetSegment << 32) | (uint32_t) typeList->subTypes.size();
 
                 emitInstruction(&cxt, ByteCodeOp::MemCpyVC32, 0, 1)->c.u32 = typeVar->sizeOf;
             }
