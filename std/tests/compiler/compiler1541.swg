@@ -7,16 +7,16 @@ impl X
 {
     func toto()->X
     {
-        return {x: 666}
+        return @{x: 666}
     }
 
     #if false
     {
         func titi()->X
         {
-            return {x: 666}
+            return @{x: 666}
         }
-    }    
+    }
 }
 
 #test

@@ -19,14 +19,14 @@ func F(param: [3] s32, b: (*s32))
 	var data = @dataof(param)
 	loop(param)
 	{
-		b(data + @index)	
+		b(data + @index)
 	}
 }*/
 
 //#[swag.printbc]
 #test
 {
-	var array = [1,2,3]
+	var array = @[1,2,3]
 	F(cast([..]s32) array)
 }
 

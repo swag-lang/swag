@@ -27,11 +27,11 @@
 
     // Size can be deduced from initialisation
     {
-        var array: [] s32 = [1, 2]
+        var array: [] s32 = @[1, 2]
         @assert(array[0] == 1)
         @assert(array[1] == 2)
 
-        array1 := ["10", "20", "30"]
+        array1 := @["10", "20", "30"]
         @assert(array1[0] == "10")
         @assert(array1[1] == "20")
         @assert(array1[2] == "30")
@@ -60,13 +60,13 @@
 
     // Sizes can be deduced from initialization too
     {
-        array := [1, 2, 3, 4]
-        array1 := [[1, 2], [3, 4]]
+        array := @[1, 2, 3, 4]
+        array1 := @[[1, 2], [3, 4]]
     }
 
     // An array can be stored as a constant
     {
-        const array = [1, 2, 3, 4]
+        const array = @[1, 2, 3, 4]
         #assert(array[0] == 1)
         #assert(array[3] == 4)
     }

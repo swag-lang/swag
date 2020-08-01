@@ -9,9 +9,9 @@ func(T) toto(x: const [..] T)
 	@assert(x[2] == 3)
 	@assert(x[3] == 4)
 }
-	
+
 #test
 {
-	var cpt: const [..] s32 = [1,2,3,4]
+	var cpt: const [..] s32 = @[1,2,3,4]
 	toto(cpt)
 }

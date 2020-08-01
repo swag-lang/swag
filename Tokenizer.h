@@ -62,6 +62,9 @@ enum class TokenId
     SymAttrStart,
     SymBackTick,
     SymQuote,
+    SymLiteralBracket,
+    SymLiteralCurly,
+    SymLiteralParen,
 
     CompilerSkip,
     CompilerModule,

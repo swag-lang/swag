@@ -3,33 +3,33 @@ func getChar(buffer: const *u8)->(const *u8, char)
 	ptr := buffer
 	c := deref ptr
 	if c == 0
-		return {ptr, acast 0}
-		
-	ptr += 1		
+		return @{ptr, acast 0}
+
+	ptr += 1
 	if ((c & 0x80) == 0)
 	{
-		return {ptr, acast c}
+		return @{ptr, acast c}
 	}
-		
+
 	var wc: char = ?
 	if ((c & 0xE0) == 0xC0)
 	{
 		wc = (c & 0x1F) << 6;
 		c = deref ptr
-		ptr += 1		
+		ptr += 1
 		wc |= (c & 0x3F);
-		return {ptr, wc}
+		return @{ptr, wc}
 	}
-	
+
 	if ((c & 0xF0) == 0xE0)
 	{
 		wc = (c & 0xF) << 12;
 		wc |= (ptr[0] & 0x3F) << 6;
 		wc |= (ptr[1] & 0x3F);
 		ptr += 2;
-		return {ptr, wc}
+		return @{ptr, wc}
 	}
-	
+
 	if ((c & 0xF8) == 0xF0)
 	{
 		wc = (c & 0x7) << 18;
@@ -37,9 +37,9 @@ func getChar(buffer: const *u8)->(const *u8, char)
 		wc |= (ptr[1] & 0x3F) << 6;
 		wc |= (ptr[2] & 0x3F);
 		ptr += 3;
-		return {ptr, wc}
+		return @{ptr, wc}
 	}
-	
+
 	if ((c & 0xFC) == 0xF8)
 	{
 		wc = (c & 0x3) << 24;
@@ -47,9 +47,9 @@ func getChar(buffer: const *u8)->(const *u8, char)
 		wc |= (c & 0x3F) << 12;
 		wc |= (c & 0x3F) << 6;
 		wc |= (c & 0x3F);
-		return {ptr, wc}
+		return @{ptr, wc}
 	}
-	
+
 	if ((c & 0xFE) == 0xFC)
 	{
 		wc = (c & 0x1) << 30;
@@ -58,16 +58,16 @@ func getChar(buffer: const *u8)->(const *u8, char)
 		wc |= (c & 0x3F) << 12;
 		wc |= (c & 0x3F) << 6;
 		wc |= (c & 0x3F);
-		return {ptr, wc}
+		return @{ptr, wc}
 	}
-	
-	return {ptr, acast 0}
+
+	return @{ptr, acast 0}
 }
 
 #test
 {
 	const str = "⺁⺆⻇"
-	
+
 	var c: char
 	var ptr: const *u8 = @dataof(str)
 	cpt := 0
@@ -78,7 +78,7 @@ func getChar(buffer: const *u8)->(const *u8, char)
 			break
 		cpt += 1
 	}
-	
+
 	@assert(@sizeof(str) != 3)
 	@assert(cpt == 3)
 }

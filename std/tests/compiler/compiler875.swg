@@ -10,13 +10,13 @@ func minMax(array: const [..] s32) -> (min: s32, max: s32)
             currentMax = value
     }
 
-    return {currentMin, currentMax}
+    return @{currentMin, currentMax}
 }
 
 //#[swag.printbc]
 #test
 {
-	let bounds = minMax(array: [8, -6, 2, 109, 3, 71])
+	let bounds = minMax(array: @[8, -6, 2, 109, 3, 71])
 	@assert(bounds.min == -6)
 	@assert(bounds.max == 109)
 }

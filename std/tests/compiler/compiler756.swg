@@ -8,8 +8,8 @@ func toto(x: const [..] s32)
 
 //#[swag.printbc]
 #test
-{	
-	array := [1 , 2]
+{
+	array := @[1 , 2]
 	toto(array)
-	toto([4, 5])
+	toto(@[4, 5])
 }

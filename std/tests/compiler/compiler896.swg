@@ -10,6 +10,6 @@ func arithmeticMean(numbers: const [..] f64) -> f64 {
 {
 	let x = 1.0'f64
 	let y = 2.0'f64
-	let result = arithmeticMean([x, y])
+	let result = arithmeticMean(@[x, y])
 	@assert(result == 1.5)
 }

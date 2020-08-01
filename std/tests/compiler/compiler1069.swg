@@ -9,7 +9,7 @@ impl titi
 {
 	func toString(using self) -> const [..] u8
 	{
-		return {&buf[0], 4}
+		return @{&buf[0], 4}
 	}
 }
 
@@ -21,7 +21,7 @@ impl titi
 	t.buf[1] = 2
 	t.buf[2] = 3
 	t.buf[3] = 4
-	
+
 	var x = t.toString()
 	@assert(x[0] == 1)
 	@assert(x[1] == 2)

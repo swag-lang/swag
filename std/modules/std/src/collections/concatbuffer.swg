@@ -206,7 +206,7 @@ namespace std.collections
                 {
                     offset := math.min(totalCpt, sizeBucket)
                     ptrData := bucketToDatas(self, ptr)
-                    result.append(cast(string) {ptrData, offset})
+                    result.append(cast(string) @{ptrData, offset})
 
                     totalCpt -= offset
                     ptr = bucketToNext(self,  ptr)

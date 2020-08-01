@@ -13,5 +13,5 @@
 //#[swag.printbc]
 func T()-> (bool,s32,bool)
 {
-	return {true,2,false}
+	return @{true,2,false}
 }

@@ -11,6 +11,7 @@
     { "include": "#intrinsics" },
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
+    { "include": "#intrinsics-literal" },
     { "include": "#compiler-function" },
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
@@ -21,7 +22,7 @@
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#constant" },
-    { "include": "#function-call"},
+    { "include": "#function-call" },
     { "include": "#struct-name" },
     { "include": "#literal-binary" },
     { "include": "#literal-hexa" },
@@ -51,7 +52,7 @@
           "end": "\\*/"
         }
       ]
-    },    
+    },
     "attributes": {
       "patterns": [
         {
@@ -108,11 +109,19 @@
         }
       ]
     },
+    "intrinsics-literal": {
+      "patterns": [
+        {
+          "name": "entity.name.function",
+          "match": "@"
+        }
+      ]
+    },
     "intrinsics-invalid": {
       "patterns": [
         {
           "name": "invalid",
-          "match": "@\\w*"
+          "match": "@\\w+"
         }
       ]
     },
@@ -165,7 +174,7 @@
         {
           "name": "entity.name.function.op",
           "match": "\\b(opVisit\\w+)\\b"
-        }  
+        }
       ]
     },
     "op-invalid": {
@@ -219,7 +228,7 @@
           "match": "0b[01][01_]*"
         }
       ]
-    },    
+    },
     "literal-hexa": {
       "patterns": [
         {
@@ -237,7 +246,7 @@
         {
           "name": "constant.numeric.float",
           "match": "(\\d[\\d_]*)([eE][-+]?\\g<1>)"
-        }        
+        }
       ]
     },
     "literal-integer": {

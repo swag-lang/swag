@@ -1,8 +1,8 @@
 namespace std.text.latin1
 {
 	using std.text
-    public const charCategory: [] unicode.UnicodeCategory = 
-    [
+    public const charCategory: [] unicode.UnicodeCategory =
+    @[
         unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control,    // 0000 - 0007
         unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control,    // 0008 - 000F
         unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control, unicode.UnicodeCategory.Control,    // 0010 - 0017
@@ -37,7 +37,7 @@ namespace std.text.latin1
         unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter, unicode.UnicodeCategory.LowercaseLetter,    // 00F8 - 00FF
     ]
 
-	#[swag.inline, swag.constexpr]        
+	#[swag.inline, swag.constexpr]
     public
     {
         func isAscii(c: u8)         => c <= 0x7F
@@ -45,27 +45,27 @@ namespace std.text.latin1
         func isUpper(c: u8)         => charCategory[c] == unicode.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode.UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
-        
+
         func isLetter(c: u8)->bool
         {
-            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) || 
-                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) || 
+            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) ||
+                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) ||
                     (c >= 0x80 && unicode.isLetter(charCategory[c]))
         }
-        
+
         func isLetterOrDigit(c: u8)->bool
         {
-            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) || 
-                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) || 
-                    (c >= cast(u8) "0"'char && c <= cast(u8) "9"'char) || 
+            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) ||
+                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) ||
+                    (c >= cast(u8) "0"'char && c <= cast(u8) "9"'char) ||
                     (c >= 0x80 && unicode.isLetterOrDigit(charCategory[c]))
-        }        
-        
+        }
+
 		func isWhiteSpace(c: u8)->bool
         {
-            return  c == cast(u8) " "'char || 
-                    (c >= cast(u8) "\x09"'char && c <= cast(u8) "\x0d"'char) || 
-                    c == cast(u8) "\xa0"'char || 
+            return  c == cast(u8) " "'char ||
+                    (c >= cast(u8) "\x09"'char && c <= cast(u8) "\x0d"'char) ||
+                    c == cast(u8) "\xa0"'char ||
                     c == cast(u8) "\x85"'char
         }
 
@@ -73,14 +73,14 @@ namespace std.text.latin1
         {
             if c >= cast(u8) "a"'char && c <= cast(u8) "z"'char
                 return cast(u8) (c & ~0x20)
-            return c;                
-        }        
+            return c;
+        }
 
         func toLower(c: u8)->u8
         {
             if c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char
                 return cast(u8) (c | 0x20)
-            return c;                
-        }          
+            return c;
+        }
     }
 }

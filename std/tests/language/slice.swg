@@ -8,7 +8,7 @@
 
     // You can initialize a slice like an array
     {
-        var a: [..] u32 = [10, 20, 30, 40, 50]
+        var a: [..] u32 = @[10, 20, 30, 40, 50]
         @assert(@countof(a) == 5)
         @assert(a[0] == 10)
         @assert(a[4] == 50)
@@ -16,7 +16,7 @@
 
     // You can create a slice with your own pointer and count using a tuple
     {
-        var array: [4] u32 = [10, 20, 30, 40]
+        var array: [4] u32 = @[10, 20, 30, 40]
         var slice: [..] u32 = {&array[0] + 2, 2}
         @assert(@countof(slice) == 2)
         @assert(slice[0] == 30)

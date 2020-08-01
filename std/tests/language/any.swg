@@ -27,7 +27,7 @@
 
     // You can declare an array with multiple types, with 'any'
     {
-        let array: [] any = [true, 2, 3.0, "4"]
+        let array: [] any = @[true, 2, 3.0, "4"]
         @assert(@kindof(array[0]) == @typeof(bool))
         @assert(@kindof(array[1]) == @typeof(s32))
         @assert(@kindof(array[2]) == @typeof(f32))

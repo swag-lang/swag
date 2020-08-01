@@ -42,7 +42,7 @@ using std.collections
 {
     var b: ConcatBuffer
     b.setBucketSize(4)
-    b.addBytes([1,2,3,4,5,6,7,8])
+    b.addBytes(@[1,2,3,4,5,6,7,8])
 
     @assert(b.usedBuckets == 2)
     @assert(b.firstBucket != b.curBucket)
@@ -57,5 +57,5 @@ using std.collections
     @assert(ptr1[0] == 5)
     @assert(ptr1[1] == 6)
     @assert(ptr1[2] == 7)
-    @assert(ptr1[3] == 8)    
+    @assert(ptr1[3] == 8)
 }

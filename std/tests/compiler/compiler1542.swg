@@ -9,12 +9,12 @@ struct X
     {
         func toto()->X
         {
-            return {x: 666}
+            return @{x: 666}
         }
 
         func titi()->X
         {
-            return {x: 666}
+            return @{x: 666}
         }
     }
 }

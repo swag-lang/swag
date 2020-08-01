@@ -28,11 +28,11 @@
         @assert(toDo(4, &square) == 16)
     }
 
-    // You can also create anonymous functions
+    // You can also create anonymous functions (functions as literals)
     {
-        cb := func(x: s32)->s32 => x * x
+        cb := @(x: s32)->s32 => x * x
         @assert(cb(4) == 16)
-        cb = func(x: s32)->s32 => x * x * x
+        cb = @(x: s32)->s32 => x * x * x
         @assert(cb(4) == 64)
     }
 
@@ -41,9 +41,9 @@
         typealias callback: func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
-        @assert(toDo(4, func(x: s32) => x * x) == 16)
-        @assert(toDo(4, func(x: s32) => x + x) == 8)
-        @assert(toDo(4, func(x: s32)->s32 { return x - x; }) == 0)
+        @assert(toDo(4, @(x: s32) => x * x) == 16)
+        @assert(toDo(4, @(x: s32) => x + x) == 8)
+        @assert(toDo(4, @(x: s32)->s32 { return x - x; }) == 0)
     }
 
     // Types of parameters can be deduced
@@ -51,8 +51,8 @@
         typealias callback: func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
-        @assert(toDo(4, func(x) => x * x) == 16)
-        @assert(toDo(4, func(x) => x + x) == 8)
-        @assert(toDo(4, func(x)->s32 { return x - x; }) == 0)
+        @assert(toDo(4, @(x) => x * x) == 16)
+        @assert(toDo(4, @(x) => x + x) == 8)
+        @assert(toDo(4, @(x)->s32 { return x - x; }) == 0)
     }
 }

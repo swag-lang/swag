@@ -52,7 +52,7 @@ namespace std.text
             if type.kind == swag.TypeInfoKind.Pointer
             {
                 ptr := cast(*void) value
-                buf.addBytes({cast(const *u8) &value, @sizeof(*void)})
+                buf.addBytes(@{cast(const *u8) &value, @sizeof(*void)})
                 return
             }
 
@@ -176,7 +176,7 @@ namespace std.text
                 cpt -= 1
             }
 
-            buf.addBytes(cast([..] u8) {&tmp[cpt + 1], 63 - cpt});
+            buf.addBytes(cast([..] u8) @{&tmp[cpt + 1], 63 - cpt});
         }
 
         /// Convert a `s8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
@@ -274,11 +274,11 @@ namespace std.text
             if value <= 0xFF
                 buf.addByte(cast(u8) value)
             else if(value  <= 0xFFFF)
-                buf.addBytes({cast(const *u8) &value, 2})
+                buf.addBytes(@{cast(const *u8) &value, 2})
             else if(value  <= 0xFFFFFF)
-                buf.addBytes({cast(const *u8) &value, 3})
+                buf.addBytes(@{cast(const *u8) &value, 3})
             else
-                buf.addBytes({cast(const *u8) &value, 4})
+                buf.addBytes(@{cast(const *u8) &value, 4})
         }
     }
 }

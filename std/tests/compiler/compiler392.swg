@@ -11,5 +11,5 @@ func test(arr: const [..] s32)
 //#[swag.printbc]
 #test
 {
-	test([1, 2]);
+	test(@[1, 2]);
 }

@@ -14,7 +14,7 @@ impl A
 //#[swag.printbc]
 #test
 {
-    var x: A = [true]
-    //var y: A 
+    var x: A = @[true]
+    //var y: A
     //y = [true]
 }

@@ -86,10 +86,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
         break;
 
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doExpressionListTuple(parent, result));
-        break;
-
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
     case TokenId::LiteralString:
@@ -121,14 +117,22 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::KwdCode:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
+    case TokenId::KwdFunc:
+    case TokenId::SymLeftSquare:
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
-    case TokenId::SymLeftSquare:
+    case TokenId::SymLiteralCurly:
+        SWAG_CHECK(eatToken(TokenId::SymLiteralCurly));
+        SWAG_CHECK(doExpressionListTuple(parent, result));
+        break;
+
+    case TokenId::SymLiteralBracket:
+        SWAG_CHECK(eatToken(TokenId::SymLiteralBracket));
         SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
-    case TokenId::KwdFunc:
+    case TokenId::SymLiteralParen:
         SWAG_CHECK(doLambdaExpression(parent, result));
         break;
 

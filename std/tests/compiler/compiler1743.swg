@@ -7,7 +7,7 @@
         @assert(@typeof(x) == @typeof(y))
         @assert(@typeof(y).name == "s32")
 
-        var aa = [1, 2]
+        var aa = @[1, 2]
         ptr := @dataof(aa)
         @assert(@typeof(ptr).name == "*s32")
         @assert(@typeof(ptr) == @typeof(*s32))

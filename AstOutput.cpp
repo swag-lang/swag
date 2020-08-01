@@ -104,9 +104,9 @@ namespace Ast
         {
             auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
             if (exprNode->forTuple)
-                concat.addChar('{');
+                concat.addString("@{");
             else
-                concat.addChar('[');
+                concat.addString("@[");
 
             int idx = 0;
             for (auto child : exprNode->childs)

@@ -1,6 +1,6 @@
 #module compiler1047
 
-func new() => {1}
+func new() => @{1}
 
 #unittest error
 //#[swag.printbc]

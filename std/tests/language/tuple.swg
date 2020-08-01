@@ -2,13 +2,13 @@
 {
     // A tuple is an unnamed structure
     {
-        tuple1 := {2, 2}
-        tuple2 := {"string", 2, true}
+        tuple1 := @{2, 2}
+        tuple2 := @{"string", 2, true}
     }
 
     // Tuple values have default names to access them
     {
-        tuple := {"string", 2, true}
+        tuple := @{"string", 2, true}
         @assert(tuple.item0 == "string")
         @assert(tuple.item1 == 2)
         @assert(tuple.item2 == true)
@@ -16,7 +16,7 @@
 
     // You can specify your own names
     {
-        tuple := {x: 1.0, y: 2.0}
+        tuple := @{x: 1.0, y: 2.0}
         @assert(tuple.x == 1.0)
         @assert(tuple.item0 == 1.0)
         @assert(tuple.y == 2.0)
@@ -34,12 +34,12 @@
 
     // You can dereference a tuple field by field
     {
-        tuple1 := {x: 1.0, y: 2.0}
+        tuple1 := @{x: 1.0, y: 2.0}
         var (value0, value1) = tuple1
         @assert(value0 == 1.0)
         @assert(value1 == 2.0)
 
-        tuple2 := {"name", true}
+        tuple2 := @{"name", true}
         var (name, value) = tuple2
         @assert(name == "name")
         @assert(value == true)
@@ -49,7 +49,7 @@
     {
         func myFunction()->(f32, f32)
         {
-            return {1.0, 2.0}
+            return @{1.0, 2.0}
         }
 
         result := myFunction()
@@ -69,7 +69,7 @@
     {
         func myFunction()->(x: f32, y: bool)
         {
-            return {x: 1.0, y: true}
+            return @{x: 1.0, y: true}
         }
 
         result := myFunction()

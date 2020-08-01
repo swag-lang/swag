@@ -232,7 +232,7 @@ bool Tokenizer::getToken(Token& token)
                     token.text += "//";
                     while (nc && nc != '\n')
                     {
-                        if(nc != '\r')
+                        if (nc != '\r')
                             token.text += nc;
                         nc = getChar();
                     }
@@ -284,6 +284,24 @@ bool Tokenizer::getToken(Token& token)
                 treatChar(nc, offset);
                 token.text.clear();
                 SWAG_CHECK(doStringLiteral(token, true));
+                return true;
+            }
+
+            if (c == '@' && nc == '[')
+            {
+                token.id = TokenId::SymLiteralBracket;
+                return true;
+            }
+
+            if (c == '@' && nc == '{')
+            {
+                token.id = TokenId::SymLiteralCurly;
+                return true;
+            }
+
+            if (c == '@' && nc == '(')
+            {
+                token.id = TokenId::SymLiteralParen;
                 return true;
             }
 

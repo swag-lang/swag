@@ -1,6 +1,6 @@
 
 
-func new()->Point => {1, 2}
+func new()->Point => @{1, 2}
 
 struct Point
 {
@@ -13,12 +13,12 @@ struct Point
 	/*pt := new()
 	@assert(pt.x == 1)
 	@assert(pt.y == 2)*/
-	
+
 	a := new().x
 	@assert(a == 1)
 	b := new().y
 	@assert(b == 2)
-	
+
 	@assert(new().x == 1)
 	@assert(new().y == 2)
 }

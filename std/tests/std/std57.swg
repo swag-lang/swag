@@ -4,8 +4,8 @@ using std.collections
 //#[swag.printbc]
 #test
 {
-    var x: BitArray = [true, false, true, false]
-    
+    var x: BitArray = @[true, false, true, false]
+
     var y: BitArray
     y.reserve(4, false)
 

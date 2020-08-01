@@ -5,5 +5,5 @@
         return x(4)*4
     }
 
-    @assert(toto(func(x)->s32 { return x*x; }) == 64)
+    @assert(toto(@(x)->s32 { return x*x; }) == 64)
 }

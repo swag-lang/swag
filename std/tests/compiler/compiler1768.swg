@@ -9,7 +9,7 @@ func toto(x: [2] s32)
 //#[swag.printbc]
 #test
 {
-    x := [1, 2]
+    x := @[1, 2]
     toto(x)
     @assert(x[0] == 66)
 }

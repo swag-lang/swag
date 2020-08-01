@@ -1,6 +1,6 @@
 
 
-func new() => {1, 2}
+func new() => @{1, 2}
 
 //#[swag.printbc]
 #test
@@ -8,7 +8,7 @@ func new() => {1, 2}
 	a := new()
 	@assert(a.item0 == 1)
 	@assert(a.item1 == 2)
-	
+
 	@assert(new().item0 == 1)
 	@assert(new().item1 == 2)
 }

@@ -21,13 +21,13 @@ namespace std.text
                 }
 
                 return 0
-            }    
+            }
 
             /// Get the address of the previous utf8 character, and the corresponding unicode character
             public func previousChar(start, buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null || buffer == start
-                    return {buffer, acast 0}
+                    return @{buffer, acast 0}
 
                 ptr := buffer - 1
                 while true
@@ -36,30 +36,30 @@ namespace std.text
                     if c >> 6 != 2
                         break
                     if ptr == start
-                        return {start, acast 0}
+                        return @{start, acast 0}
                     ptr -= 1
                 }
 
                 result := nextChar(ptr)
-                return {ptr, result.item1}
+                return @{ptr, result.item1}
             }
 
             /// Get the unicode character pointed by `buffer`, and the address of the next utf8 character
             public func nextChar(buffer: const *u8)->(const *u8, char)
             {
                 if buffer == null
-                    return {null, acast 0}
+                    return @{null, acast 0}
 
                 ptr := buffer
                 c := deref ptr
                 if c == 0
-                    return {ptr, acast 0}
+                    return @{ptr, acast 0}
                 ptr += 1
 
                 // Ascii
                 if ((c & 0x80) == 0)
                 {
-                    return {ptr, acast c}
+                    return @{ptr, acast c}
                 }
 
                 // Utf8
@@ -70,7 +70,7 @@ namespace std.text
                     c = deref ptr
                     ptr += 1
                     wc |= (c & 0x3F);
-                    return {ptr, wc}
+                    return @{ptr, wc}
                 }
 
                 if ((c & 0xF0) == 0xE0)
@@ -79,7 +79,7 @@ namespace std.text
                     wc |= (ptr[0] & 0x3F) << 6;
                     wc |= (ptr[1] & 0x3F);
                     ptr += 2;
-                    return {ptr, wc}
+                    return @{ptr, wc}
                 }
 
                 if ((c & 0xF8) == 0xF0)
@@ -89,7 +89,7 @@ namespace std.text
                     wc |= (ptr[1] & 0x3F) << 6;
                     wc |= (ptr[2] & 0x3F);
                     ptr += 3;
-                    return {ptr, wc}
+                    return @{ptr, wc}
                 }
 
                 if ((c & 0xFC) == 0xF8)
@@ -99,7 +99,7 @@ namespace std.text
                     wc |= (c & 0x3F) << 12;
                     wc |= (c & 0x3F) << 6;
                     wc |= (c & 0x3F);
-                    return {ptr, wc}
+                    return @{ptr, wc}
                 }
 
                 if ((c & 0xFE) == 0xFC)
@@ -110,11 +110,11 @@ namespace std.text
                     wc |= (c & 0x3F) << 12;
                     wc |= (c & 0x3F) << 6;
                     wc |= (c & 0x3F);
-                    return {ptr, wc}
+                    return @{ptr, wc}
                 }
 
-                return {ptr, acast c}
-            }            
+                return @{ptr, acast c}
+            }
         }
     }
 }
