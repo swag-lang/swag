@@ -12,6 +12,7 @@ struct SwagScope
     TypeInfoStruct* regTypeInfoPointer   = nullptr;
     TypeInfoStruct* regTypeInfoReference = nullptr;
     TypeInfoStruct* regTypeInfoStruct    = nullptr;
+    TypeInfoStruct* regTypeInfoList      = nullptr;
     TypeInfoStruct* regTypeInfoParam     = nullptr;
     TypeInfoStruct* regTypeInfoFunc      = nullptr;
     TypeInfoStruct* regTypeInfoEnum      = nullptr;

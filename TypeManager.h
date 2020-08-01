@@ -56,7 +56,8 @@ struct TypeManager
     static bool castSliceFromTypeList(SemanticContext* context, bool sliceIsConst, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 
-    static bool convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* fromNode);
+    static bool           convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* fromNode);
+    static TypeInfoArray* convertTypeListToArray(SemanticContext* context, TypeInfoList* typeList, bool isCompilerConstant);
 
     static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);

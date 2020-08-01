@@ -107,6 +107,12 @@ struct ConcreteTypeInfoStruct
     ConcreteStringSlice attributes;
 };
 
+struct ConcreteTypeInfoList
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice types;
+};
+
 struct ConcreteTypeInfoFunc
 {
     ConcreteTypeInfo    base;

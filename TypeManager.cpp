@@ -232,3 +232,40 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 
     return typeInfo;
 }
+
+TypeInfoArray* TypeManager::convertTypeListToArray(SemanticContext* context, TypeInfoList* typeList, bool isCompilerConstant)
+{
+    auto      typeArray    = g_Allocator.alloc<TypeInfoArray>();
+    auto      orgTypeArray = typeArray;
+    TypeInfo* finalType    = nullptr;
+
+    while (true)
+    {
+        typeArray->pointedType = typeList->subTypes.front()->typeInfo;
+        finalType              = typeArray->pointedType;
+        typeArray->sizeOf      = typeList->sizeOf;
+        typeArray->count       = (uint32_t) typeList->subTypes.size();
+        typeArray->totalCount  = typeArray->count;
+        if (isCompilerConstant)
+            typeArray->flags |= TYPEINFO_CONST;
+        if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
+            break;
+        typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
+        typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
+        typeArray              = (TypeInfoArray*) typeArray->pointedType;
+    }
+
+    // Compute all the type names
+    typeArray = orgTypeArray;
+    while (typeArray)
+    {
+        typeArray->finalType = finalType;
+        typeArray->computeName();
+        if (typeArray->pointedType->kind != TypeInfoKind::Array)
+            break;
+        typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+    }
+
+    orgTypeArray->sizeOf = orgTypeArray->finalType->sizeOf * orgTypeArray->totalCount;
+    return orgTypeArray;
+}

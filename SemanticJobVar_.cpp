@@ -456,39 +456,11 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::convertTypeListToArray(AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, SemanticContext* context)
+bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags)
 {
     auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
-    auto typeArray = g_Allocator.alloc<TypeInfoArray>();
+    auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
     node->typeInfo = typeArray;
-    auto finalType = node->typeInfo;
-
-    while (true)
-    {
-        typeArray->pointedType = typeList->subTypes.front()->typeInfo;
-        finalType              = typeArray->pointedType;
-        typeArray->sizeOf      = typeList->sizeOf;
-        typeArray->count       = (uint32_t) typeList->subTypes.size();
-        typeArray->totalCount  = typeArray->count;
-        if (isCompilerConstant)
-            typeArray->flags |= TYPEINFO_CONST;
-        if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
-            break;
-        typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
-        typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
-        typeArray              = (TypeInfoArray*) typeArray->pointedType;
-    }
-
-    // Compute all the type names
-    typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-    while (typeArray)
-    {
-        typeArray->finalType = finalType;
-        typeArray->computeName();
-        if (typeArray->pointedType->kind != TypeInfoKind::Array)
-            break;
-        typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
-    }
 
     // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
@@ -668,7 +640,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
-            SWAG_CHECK(convertTypeListToArray(node, isCompilerConstant, symbolFlags, context));
+            SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
     }
     else if (node->type)
     {

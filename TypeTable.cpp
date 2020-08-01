@@ -206,6 +206,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Interface:
         typeStruct = swagScope.regTypeInfoStruct;
         break;
+    case TypeInfoKind::TypeListArray:
+        typeStruct = swagScope.regTypeInfoArray;
+        break;
+    case TypeInfoKind::TypeListTuple:
+        typeStruct = swagScope.regTypeInfoStruct;
+        break;
     case TypeInfoKind::Param:
         typeStruct = swagScope.regTypeInfoParam;
         break;
@@ -300,6 +306,16 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         job->storageOffset         = storageOffset;
         job->nodes.push_back(context->node);
         addTypeTableJob(job);
+        break;
+    }
+
+    case TypeInfoKind::TypeListArray:
+    {
+        break;
+    }
+
+    case TypeInfoKind::TypeListTuple:
+    {
         break;
     }
 
