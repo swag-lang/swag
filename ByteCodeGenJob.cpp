@@ -333,15 +333,16 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
         }
     }
 
+    // Register the node dependency
+    if (flags & ASKBC_ADD_DEP_NODE)
+    {
+        SWAG_ASSERT(job);
+        job->dependentNodes.push_back(node);
+    }
+
     // Need to generate bytecode, if not already done or running
     if (!(node->flags & AST_BYTECODE_GENERATED))
     {
-        if (flags & ASKBC_ADD_DEP_NODE)
-        {
-            SWAG_ASSERT(job);
-            job->dependentNodes.push_back(node);
-        }
-
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
@@ -413,7 +414,7 @@ JobResult ByteCodeGenJob::execute()
     context.bc         = originalNode->bc;
     context.node       = originalNode;
 
-    if (!syncToDependentNodes)
+    if (pass == Pass::Generate)
     {
         // Register SystemAllocator interface to the default bytecode context
         if (sourceFile->swagFile && (originalNode->name == "SystemAllocator"))
@@ -519,29 +520,112 @@ JobResult ByteCodeGenJob::execute()
         // Print resulting bytecode
         if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
             context.bc->print();
-    }
 
-    // Inform dependencies that this node has bytecode
-    {
-        unique_lock lk(originalNode->mutex);
-        originalNode->flags |= AST_BYTECODE_GENERATED;
-        dependentJobs.setRunning();
+        // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
+        {
+            unique_lock lk(originalNode->mutex);
+            originalNode->flags |= AST_BYTECODE_GENERATED;
+            dependentJobs.setRunning();
+        }
+
+        pass              = Pass::WaitForDependenciesGenerated;
+        dependentNodesTmp = dependentNodes;
     }
 
     // Wait for other dependent nodes to be generated
-    syncToDependentNodes = true;
-    while (!dependentNodes.empty())
+    // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed 
+    // for the new pass
+    if (pass == Pass::WaitForDependenciesGenerated)
     {
-        auto        node = dependentNodes.back();
-        unique_lock lk(node->mutex);
-        if (node->flags & AST_BYTECODE_GENERATED)
+        while (!dependentNodesTmp.empty())
         {
-            dependentNodes.pop_back();
-            continue;
+            auto        node = dependentNodesTmp.back();
+            unique_lock lk(node->mutex);
+            if (node->flags & AST_BYTECODE_GENERATED)
+            {
+                dependentNodesTmp.pop_back();
+                continue;
+            }
+
+            node->byteCodeJob->dependentJobs.add(this);
+            return JobResult::KeepJobAlive;
         }
 
-        node->byteCodeJob->dependentJobs.add(this);
-        return JobResult::KeepJobAlive;
+        pass = Pass::ComputeDependenciesResolved;
+    }
+
+    // Determine if we have a loop (a dependent node depends on this job too)
+    // If this is the case, then we eliminate that dependency
+    if (pass == Pass::ComputeDependenciesResolved)
+    {
+        dependentNodesTmp.clear();
+        for (int i = 0; i < dependentNodes.size(); i++)
+        {
+            auto node = dependentNodes[i];
+
+            // If the node is already solved, remove it from the list
+            {
+                unique_lock lk(node->mutex);
+                if (node->flags & AST_BYTECODE_RESOLVED)
+                    continue;
+            }
+
+            // Compute the full dependency list
+            bool mustWait = true;
+
+            set<AstNode*>          done;
+            VectorNative<AstNode*> tmp;
+            tmp.push_back(node);
+            for (int toScan = 0; toScan < tmp.size(); toScan++)
+            {
+                auto dep = tmp[toScan];
+
+                unique_lock lkDep(dep->mutex);
+                if (!dep->byteCodeJob)
+                {
+                    continue;
+                }
+
+                if (dep->byteCodeJob == this)
+                {
+                    mustWait = false;
+                    break;
+                }
+
+                for (auto newDep : dep->byteCodeJob->dependentNodes)
+                {
+                    auto it = done.find(newDep);
+                    if (it != done.end())
+                        continue;
+                    done.insert(newDep);
+                    tmp.push_back(newDep);
+                }
+            }
+
+            if (mustWait)
+                dependentNodesTmp.push_back(node);
+        }
+
+        pass = Pass::WaitForDependenciesResolved;
+    }
+
+    // Wait for other dependent nodes to be resolved
+    if (pass == Pass::WaitForDependenciesResolved)
+    {
+        while (!dependentNodesTmp.empty())
+        {
+            auto node = dependentNodesTmp.back();
+
+            unique_lock lk(node->mutex);
+            if (node->flags & AST_BYTECODE_RESOLVED)
+            {
+                dependentNodesTmp.pop_back();
+                continue;
+            }
+
+            node->byteCodeJob->dependentJobs.add(this);
+            return JobResult::KeepJobAlive;
+        }
     }
 
     // Inform dependencies that everything is done

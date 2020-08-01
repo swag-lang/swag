@@ -233,7 +233,17 @@ struct ByteCodeGenJob : public Job
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;
     VectorNative<Scope*>   collectScopes;
-    bool                   syncToDependentNodes = false;
+
+    enum class Pass
+    {
+        Generate,
+        WaitForDependenciesGenerated,
+        ComputeDependenciesResolved,
+        WaitForDependenciesResolved,
+    };
+
+    Pass                   pass = Pass::Generate;
+    VectorNative<AstNode*> dependentNodesTmp;
 };
 
 extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
