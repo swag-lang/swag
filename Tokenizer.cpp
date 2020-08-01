@@ -11,7 +11,8 @@ void Tokenizer::setFile(SourceFile* file)
     location.column = 0;
     location.line   = 0;
     endReached      = false;
-    cacheChar       = 0;
+    cacheChar[0]    = 0;
+    cacheChar[1]    = 0;
     sourceFile      = file;
     for (int i = 0; i < REPORT_NUM_CODE_LINES - 1; i++)
         location.seekStartLine[i] = -1;
@@ -23,7 +24,14 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     if (!c)
         return;
 
-    cacheChar = 0;
+    if (cacheChar[0])
+    {
+        cacheChar[0]       = cacheChar[1];
+        cacheCharOffset[0] = cacheCharOffset[1];
+        cacheChar[1]       = 0;
+        cacheCharOffset[1] = 0;
+    }
+
     seek += offset;
     location.column++;
 
@@ -51,7 +59,7 @@ inline char32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return getChar(offset, false);
 }
 
-inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove)
+inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove, bool useCache)
 {
     if (endReached)
         return 0;
@@ -59,11 +67,10 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove)
     // One character is already there, no need to read
     char32_t c = 0;
     offset     = 1;
-    if (cacheChar)
+    if (useCache && cacheChar[0])
     {
-        c         = cacheChar;
-        offset    = cacheCharOffset;
-        cacheChar = 0;
+        c      = cacheChar[0];
+        offset = cacheCharOffset[0];
     }
     else
     {
@@ -83,11 +90,22 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove)
     }
 
     if (seekMove)
+    {
         treatChar(c, offset);
+    }
+    else if (useCache || !cacheChar[0])
+    {
+        cacheChar[0]       = c;
+        cacheCharOffset[0] = offset;
+    }
+    else if (!cacheChar[1])
+    {
+        cacheChar[1]       = c;
+        cacheCharOffset[1] = offset;
+    }
     else
     {
-        cacheChar       = c;
-        cacheCharOffset = offset;
+        SWAG_ASSERT(false);
     }
 
     return c;

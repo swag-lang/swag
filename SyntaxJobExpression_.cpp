@@ -21,19 +21,47 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
-    while (true)
-    {
-        auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
-        arrayNode->token       = token;
-        arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
 
-        Ast::addChildBack(arrayNode, *exprNode);
-        arrayNode->array = *exprNode;
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
-        *exprNode = arrayNode;
-        if (token.id != TokenId::SymComma)
-            break;
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+    AstNode* firstExpr = nullptr;
+    SWAG_CHECK(doExpression(nullptr, &firstExpr));
+
+    // Slicing
+    if (token.id == TokenId::SymDotDot)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymDotDot));
+        auto arrayNode   = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerSlicing, sourceFile);
+        arrayNode->token = firstExpr->token;
+        Ast::addChildBack(arrayNode, firstExpr);
+        SWAG_CHECK(doExpression(arrayNode));
+    }
+
+    // Deref by index
+    else
+    {
+        while (true)
+        {
+            auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
+            arrayNode->token       = firstExpr ? firstExpr->token : token;
+            arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
+
+            Ast::addChildBack(arrayNode, *exprNode);
+            arrayNode->array = *exprNode;
+            if (firstExpr)
+            {
+                arrayNode->access = firstExpr;
+                Ast::addChildBack(arrayNode, firstExpr);
+                firstExpr = nullptr;
+            }
+            else
+            {
+                SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+            }
+
+            *exprNode = arrayNode;
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+        }
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));

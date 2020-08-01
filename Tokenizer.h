@@ -187,7 +187,7 @@ struct Tokenizer
 
     char32_t getChar();
     char32_t getCharNoSeek(unsigned& offset);
-    char32_t getChar(unsigned& offset, bool seek);
+    char32_t getChar(unsigned& offset, bool seek, bool useCache = true);
     bool     eatCComment(Token& token);
     void     getIdentifier(Token& token, char32_t c, unsigned offset);
     void     treatChar(char32_t c, unsigned offset);
@@ -208,11 +208,11 @@ struct Tokenizer
     bool     doCharLiteral(Token& token);
     void     doDocComment(Token& token);
 
-    SourceFile*    sourceFile      = nullptr;
-    char32_t       cacheChar       = 0;
-    unsigned       cacheCharOffset = 0;
-    int            seek            = 0;
-    uint32_t       parseFlags      = 0;
+    SourceFile*    sourceFile         = nullptr;
+    char32_t       cacheChar[2]       = {0};
+    unsigned       cacheCharOffset[2] = {0};
+    int            seek               = 0;
+    uint32_t       parseFlags         = 0;
     SourceLocation location;
     bool           endReached          = false;
     bool           forceLastTokenIsEOL = false;

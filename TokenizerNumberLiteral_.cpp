@@ -429,10 +429,21 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
 
     // Integer part
     SWAG_CHECK(doIntLiteral(c, token));
-    c = getCharNoSeek(offset);
+
+    c           = getCharNoSeek(offset);
+
+    // Do this because of the slicing operator number..number. We do not want the '..' to be eaten
+    bool hasDot = false;
+    if (c == '.')
+    {
+        unsigned offset1;
+        auto     c1 = getChar(offset1, false, false);
+        if (c == '.' && c1 != '.')
+            hasDot = true;
+    }
 
     // If there's a dot, then this is a floating point number
-    if (c == '.')
+    if (hasDot)
     {
         token.literalType = g_TypeMgr.typeInfoF32;
         token.text += c;
