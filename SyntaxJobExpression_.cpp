@@ -29,10 +29,15 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     if (token.id == TokenId::SymDotDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDotDot));
-        auto arrayNode   = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerSlicing, sourceFile);
-        arrayNode->token = firstExpr->token;
+        auto arrayNode         = Ast::newNode<AstArrayPointerSlicing>(this, AstNodeKind::ArrayPointerSlicing, sourceFile);
+        arrayNode->token       = firstExpr->token;
+        arrayNode->semanticFct = SemanticJob::resolveArrayPointerSlicing;
+        arrayNode->array       = *exprNode;
+        Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
-        SWAG_CHECK(doExpression(arrayNode));
+        arrayNode->startBound = firstExpr;
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->endBound));
+        *exprNode = arrayNode;
     }
 
     // Deref by index
@@ -40,7 +45,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     {
         while (true)
         {
-            auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
+            auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile);
             arrayNode->token       = firstExpr ? firstExpr->token : token;
             arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
 
@@ -198,7 +203,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
-        auto arrayNode         = Ast::newNode<AstPointerDeRef>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef);
+        auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef);
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
         SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
 
@@ -612,7 +617,7 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
         forceTakeAddress(node->childs.back());
         break;
     case AstNodeKind::ArrayPointerIndex:
-        forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);
+        forceTakeAddress(static_cast<AstArrayPointerIndex*>(node)->array);
         break;
     }
 }

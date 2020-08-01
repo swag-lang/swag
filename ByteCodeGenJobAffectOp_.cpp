@@ -558,7 +558,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     {
         if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
         {
-            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
+            auto    arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             AstNode allParams;
             allParams.childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));

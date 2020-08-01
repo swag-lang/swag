@@ -508,9 +508,20 @@ AstNode* AstTypeLambda::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstPointerDeRef::clone(CloneContext& context)
+AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstPointerDeRef>();
+    auto newNode = g_Allocator.alloc<AstArrayPointerSlicing>();
+    newNode->copyFrom(context, this);
+
+    newNode->array      = findChildRef(array, newNode);
+    newNode->startBound = findChildRef(startBound, newNode);
+    newNode->endBound   = findChildRef(endBound, newNode);
+    return newNode;
+}
+
+AstNode* AstArrayPointerIndex::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc<AstArrayPointerIndex>();
     newNode->copyFrom(context, this);
 
     newNode->array  = findChildRef(array, newNode);

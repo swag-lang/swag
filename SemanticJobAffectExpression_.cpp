@@ -69,10 +69,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     }
 
     // Is this an array like affectation ?
-    AstPointerDeRef* arrayNode = nullptr;
+    AstArrayPointerIndex* arrayNode = nullptr;
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
     {
-        arrayNode = CastAst<AstPointerDeRef>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+        arrayNode = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
 
         // Add self and value in list of parameters
         if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))

@@ -188,6 +188,7 @@ struct ByteCodeGenJob : public Job
     static bool emitFallThrough(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
+    static bool emitMakeSlice(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
     static bool emitPointerDeRef(ByteCodeGenContext* context);

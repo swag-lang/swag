@@ -92,7 +92,7 @@ namespace Ast
 
         case AstNodeKind::ArrayPointerIndex:
         {
-            auto arrayNode = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);
+            auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
             SWAG_CHECK(output(concat, arrayNode->array, indent));
             concat.addChar('[');
             SWAG_CHECK(output(concat, arrayNode->access, indent));

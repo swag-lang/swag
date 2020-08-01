@@ -82,9 +82,36 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
+{
+    auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+
+    if (node->array->typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeInfoArray    = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+
+        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+        ptrSlice->pointedType = typeInfoArray->finalType;
+        ptrSlice->sizeOf      = 2 * sizeof(void*);
+        if (typeInfoArray->isConst())
+            ptrSlice->flags |= TYPEINFO_CONST;
+        ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
+        ptrSlice->computeName();
+        node->typeInfo = ptrSlice;
+
+        node->byteCodeFct = ByteCodeGenJob::emitMakeSlice;
+    }
+    else
+    {
+        return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
-    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (node->flags & AST_TAKE_ADDRESS)
     {
@@ -139,7 +166,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 {
-    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto arrayNode                    = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     arrayNode->inheritOrFlag(arrayNode->array, AST_L_VALUE);
@@ -229,7 +256,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             AstNode* child = arrayNode->array;
             while (child->kind == AstNodeKind::ArrayPointerIndex)
             {
-                auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
+                auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_front(arrayChild->access);
                 child = arrayChild->array;
             }
@@ -247,7 +274,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
-    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayAccess       = arrayNode->access;
     auto arrayType         = TypeManager::concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerDeRef;
@@ -410,7 +437,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             AstNode* child = arrayNode->array;
             while (child->kind == AstNodeKind::ArrayPointerIndex)
             {
-                auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
+                auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_front(arrayChild->access);
                 child = arrayChild->array;
             }

@@ -621,7 +621,7 @@ struct AstTypeLambda : public AstNode
     AstNode* returnType = nullptr;
 };
 
-struct AstPointerDeRef : public AstNode
+struct AstArrayPointerIndex : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
@@ -629,6 +629,17 @@ struct AstPointerDeRef : public AstNode
 
     AstNode* array  = nullptr;
     AstNode* access = nullptr;
+};
+
+struct AstArrayPointerSlicing : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    VectorNative<AstNode*> structFlatParams;
+
+    AstNode* array      = nullptr;
+    AstNode* startBound = nullptr;
+    AstNode* endBound   = nullptr;
 };
 
 struct AstProperty : public AstNode

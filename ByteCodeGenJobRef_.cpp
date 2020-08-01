@@ -8,7 +8,7 @@
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
@@ -24,7 +24,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf   = node->typeInfo->sizeOf;
     auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
 
@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
     node->array->resultRegisterRC += reserveRegisterRC(context);
@@ -158,7 +158,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeInfo = TypeManager::concreteType(node->array->typeInfo);
 
     // Dereference of a string constant
@@ -352,6 +352,48 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+
+    RegisterList r0;
+    reserveLinearRegisterRC(context, r0, 2);
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
+
+    // Compute size of slice
+    if (node->startBound)
+        emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->endBound->resultRegisterRC, node->startBound->resultRegisterRC, node->endBound->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::AddVBtoRA32, node->endBound->resultRegisterRC)->b.u32 = 1;
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->endBound->resultRegisterRC);
+
+    // Increment pointer
+    if (node->startBound)
+    {
+        int  sizeOf  = 1;
+        auto typeVar = node->array->typeInfo;
+        switch (typeVar->kind)
+        {
+        case TypeInfoKind::Array:
+            sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
+            break;
+        default:
+            return internalError(context, "emitMakeSlice, type not supported");
+        }
+
+        if (sizeOf > 1)
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->startBound->resultRegisterRC)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::IncPointer32, r0[0], node->startBound->resultRegisterRC, r0[0]);
+    }
+
+    freeRegisterRC(context, node->array);
+    freeRegisterRC(context, node->startBound);
+    freeRegisterRC(context, node->endBound);
+    node->resultRegisterRC = r0;
+
     return true;
 }
 
