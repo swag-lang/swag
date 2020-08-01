@@ -12,7 +12,8 @@ JobResult ModuleCompileJob::execute()
 {
     auto timeBefore = chrono::high_resolution_clock::now();
 
-    module->backend->compile(buildParameters);
+    // Compile
+    auto result = module->backend->compile(buildParameters);
 
     auto                     timeAfter = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed   = timeAfter - timeBefore;
@@ -30,15 +31,15 @@ JobResult ModuleCompileJob::execute()
     // The module is built, so notify (we notify before the test)
     module->setHasBeenBuilt(BUILDRES_COMPILER);
 
-    // Test job
-    // Do not set job->dependentJob, because nobody is dependent on that execution
-    // Test can be run "on the void"
-    if ((g_CommandLine.runBackendTests && buildParameters.compileType == BackendCompileType::Test) ||
-        (g_CommandLine.run && buildParameters.outputType == BackendOutputType::Binary))
+    // Run executable
+    if (result && g_CommandLine.run &&
+        buildParameters.outputType == BackendOutputType::Binary &&
+        buildParameters.compileType == BackendCompileType::Normal)
     {
-        auto job             = g_Pool_moduleRunJob.alloc();
-        job->module          = module;
-        job->buildParameters = buildParameters;
+        auto job                         = g_Pool_moduleRunJob.alloc();
+        job->module                      = module;
+        job->buildParameters             = buildParameters;
+        job->buildParameters.compileType = BackendCompileType::Normal;
         g_ThreadMgr.addJob(job);
     }
 

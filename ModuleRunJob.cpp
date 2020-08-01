@@ -10,7 +10,7 @@ JobResult ModuleRunJob::execute()
 {
     SWAG_ASSERT(module->hasBeenBuilt & BUILDRES_COMPILER);
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
-    path += OS::getOutputFileExtension(buildParameters.outputType);
+    path += OS::getOutputFileExtension(BackendOutputType::Binary);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
 

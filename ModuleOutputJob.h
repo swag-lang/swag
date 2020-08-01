@@ -7,6 +7,7 @@ enum class ModuleOutputJobPass
     Init,
     PreCompile,
     Compile,
+    Run,
 };
 
 struct ModuleOutputJob : public Job

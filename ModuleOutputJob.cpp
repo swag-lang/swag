@@ -7,6 +7,7 @@
 #include "Backend.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
+#include "ModuleRunJob.h"
 
 thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
@@ -119,6 +120,8 @@ JobResult ModuleOutputJob::execute()
         if (module->buildPass < BuildPass::Full)
             return JobResult::ReleaseJob;
 
+        pass = ModuleOutputJobPass::Run;
+
         // Compile a specific version, to test it
         if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
         {
@@ -127,7 +130,7 @@ JobResult ModuleOutputJob::execute()
             {
                 auto compileJob                            = g_Pool_moduleCompileJob.alloc();
                 compileJob->module                         = module;
-                compileJob->dependentJob                   = dependentJob;
+                compileJob->dependentJob                   = this;
                 compileJob->buildParameters                = module->buildParameters;
                 compileJob->buildParameters.outputFileName = module->name;
                 compileJob->buildParameters.outputType     = BackendOutputType::Binary;
@@ -144,7 +147,7 @@ JobResult ModuleOutputJob::execute()
         {
             auto compileJob                         = g_Pool_moduleCompileJob.alloc();
             compileJob->module                      = module;
-            compileJob->dependentJob                = dependentJob;
+            compileJob->dependentJob                = this;
             compileJob->buildParameters             = module->buildParameters;
             compileJob->buildParameters.compileType = BackendCompileType::Normal;
             if (module->byteCodeMainFunc)
@@ -155,6 +158,29 @@ JobResult ModuleOutputJob::execute()
 
             compileJob->buildParameters.outputFileName = module->name;
             g_ThreadMgr.addJob(compileJob);
+        }
+
+        return JobResult::KeepJobAlivePending;
+    }
+
+    if (pass == ModuleOutputJobPass::Run)
+    {
+        // Test job
+        // Do not set job->dependentJob, because nobody is dependent on that execution
+        // Test can be run "on the void"
+        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTests || module->byteCodeTestFunc.size() > 0))
+        {
+            if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
+            {
+                auto job                            = g_Pool_moduleRunJob.alloc();
+                job->module                         = module;
+                job->buildParameters                = module->buildParameters;
+                job->buildParameters.outputFileName = module->name;
+                job->buildParameters.compileType    = BackendCompileType::Test;
+                if (!module->fromTests)
+                    job->buildParameters.postFix = ".test";
+                g_ThreadMgr.addJob(job);
+            }
         }
     }
 
