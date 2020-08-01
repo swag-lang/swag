@@ -1,5 +1,4 @@
 #test
 {
-    //ptr := @typeof([2, 2])
-    //@print(ptr.name)
+    //value := @typeof({1, 2})
 }
