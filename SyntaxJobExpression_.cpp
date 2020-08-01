@@ -54,7 +54,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
-    SWAG_CHECK(doTopExpression(node, &node->expression));
+    SWAG_CHECK(doExpression(node, &node->expression));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
@@ -115,6 +115,12 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
+    case TokenId::CompilerType:
+        SWAG_CHECK(eatToken(TokenId::CompilerType));
+        SWAG_CHECK(doTypeExpression(parent, result));
+        break;
+
+    case TokenId::KwdConst:
     case TokenId::KwdCode:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
@@ -369,22 +375,6 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
         parent = exprNode;
         result = nullptr;
         SWAG_CHECK(eatToken());
-    }
-
-    SWAG_CHECK(doExpression(parent, result));
-    return true;
-}
-
-bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
-{
-    // Is this a type ?
-    if (token.id == TokenId::KwdConst ||
-        token.id == TokenId::SymLeftSquare ||
-        token.id == TokenId::SymAsterisk ||
-        token.id == TokenId::KwdFunc)
-    {
-        SWAG_CHECK(doTypeExpression(parent, result));
-        return true;
     }
 
     SWAG_CHECK(doExpression(parent, result));

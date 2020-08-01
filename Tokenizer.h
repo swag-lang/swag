@@ -90,6 +90,7 @@ enum class TokenId
     CompilerElse,
     CompilerElseIf,
     CompilerCode,
+    CompilerType,
     CompilerMixin,
     CompilerInline,
     CompilerMacro,

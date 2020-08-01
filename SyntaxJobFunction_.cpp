@@ -6,13 +6,13 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, bool forGeneric)
 {
     auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
-    if (token.id != TokenId::SymLeftParen)
+    if (forGeneric && token.id != TokenId::SymLeftParen)
     {
         auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
         param->semanticFct = SemanticJob::resolveFuncCallParam;
@@ -30,12 +30,9 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         case TokenId::LiteralString:
             SWAG_CHECK(doLiteral(param));
             break;
-        case TokenId::NativeType:
-        case TokenId::SymAsterisk:
+        default:
             SWAG_CHECK(doTypeExpression(param));
             break;
-        default:
-            return sourceFile->report({param, format("invalid generic argument '%s'", token.text.c_str())});
         }
     }
     else

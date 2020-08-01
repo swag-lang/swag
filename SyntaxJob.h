@@ -51,7 +51,7 @@ struct SyntaxJob : public Job
     void moveAttributes(AstNode* from, AstNode* to);
 
     bool doLabel(AstNode* parent, AstNode** result = nullptr);
-    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr, bool forGeneric = false);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result = nullptr);
@@ -101,7 +101,6 @@ struct SyntaxJob : public Job
     bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doTopExpression(AstNode* parent, AstNode** result = nullptr);
     bool doRawMoveExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
