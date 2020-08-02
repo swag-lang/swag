@@ -35,6 +35,7 @@ namespace OS
         switch (buildParameters.buildCfg->backendOptimizeLevel)
         {
         case 0:
+            clArguments += "/Od ";
             break;
         case 1:
             clArguments += "/O1 ";
