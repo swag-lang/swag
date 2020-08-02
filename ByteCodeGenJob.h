@@ -19,6 +19,7 @@ struct SymbolName;
 struct SymbolOverload;
 struct SourceLocation;
 struct TypeInfoArray;
+struct AstNode;
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
@@ -27,6 +28,8 @@ struct ByteCodeGenContext : public JobContext
     ByteCodeGenJob*               job;
     SourceLocation*               forceLocation = nullptr;
     VectorNative<SourceLocation*> stackForceLocation;
+    AstNode*                      forceNode = nullptr;
+    VectorNative<AstNode*>        stackForceNode;
     bool                          noLocation = false;
 
     void setNoLocation()
@@ -53,6 +56,21 @@ struct ByteCodeGenContext : public JobContext
         else
             forceLocation = nullptr;
     }
+
+    void pushNode(AstNode* pnode)
+    {
+        stackForceNode.push_back(pnode);
+        forceNode = pnode;
+    }
+
+    void popNode()
+    {
+        stackForceNode.pop_back();
+        if (!stackForceNode.empty())
+            forceNode = stackForceNode.back();
+        else
+            forceNode = nullptr;
+    }
 };
 
 struct PushLocation
@@ -66,6 +84,22 @@ struct PushLocation
     ~PushLocation()
     {
         savedBc->popLocation();
+    }
+
+    ByteCodeGenContext* savedBc;
+};
+
+struct PushNode
+{
+    PushNode(ByteCodeGenContext* bc, AstNode* pnode)
+    {
+        savedBc = bc;
+        bc->pushNode(pnode);
+    }
+
+    ~PushNode()
+    {
+        savedBc->popNode();
     }
 
     ByteCodeGenContext* savedBc;

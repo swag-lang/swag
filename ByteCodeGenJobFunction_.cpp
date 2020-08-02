@@ -11,6 +11,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto         funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     PushLocation pl(context, &funcDecl->endToken.startLocation);
+    PushNode     pn(context, funcDecl->content);
 
     // No need to do the scope leave stuff if the function does return something, because
     // it has been covered by the mandatory return
@@ -731,7 +732,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
-        context->node                                      = funcNode; // For source code location
+        PushNode pn(context, funcNode->content);
         emitInstruction(context, ByteCodeOp::DecSP)->a.u32 = funcNode->stackSize;
         emitInstruction(context, ByteCodeOp::CopySPtoBP);
     }

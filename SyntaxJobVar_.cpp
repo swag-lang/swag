@@ -29,6 +29,10 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     AstNode* leftNode;
+
+    auto           saveToken = token;
+    ScopedLocation sl(this, &saveToken);
+
     while (true)
     {
         SWAG_CHECK(doLeftExpression(&leftNode));

@@ -157,8 +157,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.b.u64                = r1;
     ins.c.u64                = r2;
     ins.d.u64                = r3;
-    ins.node                 = node;
     ins.flags                = 0;
+    ins.node                 = context->forceNode ? context->forceNode : node;
+
     if (context->noLocation)
         ins.location = nullptr;
     else
@@ -536,7 +537,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Wait for other dependent nodes to be generated
-    // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed 
+    // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed
     // for the new pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {

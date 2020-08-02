@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendLLVM.h"
+#include "BackendLLVMDbg.h"
 #include "Module.h"
 #include "AstNode.h"
 #include "ByteCode.h"
@@ -25,6 +26,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Start of block
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
+
+    if (pp.dbg)
+        pp.dbg->setLocation(pp.builder, nullptr, nullptr);
 
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
