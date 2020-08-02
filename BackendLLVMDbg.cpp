@@ -9,18 +9,31 @@
 #include "BackendLLVM.h"
 #include "SymTable.h"
 #include "BuildParameters.h"
+#include "Version.h"
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
-    llvm          = m;
-    dbgBuilder    = new llvm::DIBuilder(*modu);
-    llvmModule    = modu;
-    llvmContext   = &modu->getContext();
-    auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
-    compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C, mainFile, "Swag Compiler", 0, "", 0);
+    llvm             = m;
+    dbgBuilder       = new llvm::DIBuilder(*modu);
+    llvmModule       = modu;
+    llvmContext      = &modu->getContext();
+    auto mainFile    = dbgBuilder->createFile("module.pdb", "f:/");
+    bool isOptimized = m->module->buildParameters.buildCfg->backendOptimizeLevel != 0;
+    Utf8 compiler    = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C,
+                                                mainFile,
+                                                compiler.c_str(),
+                                                isOptimized,
+                                                "",
+                                                0,
+                                                "",
+                                                llvm::DICompileUnit::DebugEmissionKind::FullDebug,
+                                                0,
+                                                true);
+
     modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 #ifdef _WIN32
-    modu->addModuleFlag(llvm::Module::Warning, "CodeView", llvm::DEBUG_METADATA_VERSION);
+    modu->addModuleFlag(llvm::Module::Warning, "CodeView", 1);
 #endif
 
     s8Ty    = dbgBuilder->createBasicType("s8", 8, llvm::dwarf::DW_ATE_signed);
