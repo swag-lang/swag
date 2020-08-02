@@ -1349,6 +1349,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CompareOpLowerU32:
             concat.addStringFormat("r[%u].b=r[%u].u32<r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
+        case ByteCodeOp::CompareOpLowerEqU32:
+            concat.addStringFormat("r[%u].b=r[%u].u32<=r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            break;
         case ByteCodeOp::CompareOpLowerU64:
             concat.addStringFormat("r[%u].b=r[%u].u64<r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
