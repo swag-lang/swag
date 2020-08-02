@@ -319,7 +319,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     }
 
     // Make the call
-    vector<llvm::Value*> args;
+    VectorNative<llvm::Value*> args;
     for (int i = 0; i < n; i++)
     {
         auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
@@ -327,7 +327,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     }
 
     auto fcc = modu.getFunction(bc->callName().c_str());
-    builder.CreateCall(fcc, args);
+    builder.CreateCall(fcc, {args.begin(), args.end()});
 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
@@ -2862,7 +2862,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::BasicBlock* blockLambdaNT = llvm::BasicBlock::Create(context, "", func);
             llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
 
-            vector<llvm::Value*> fctParams;
+            VectorNative<llvm::Value*> fctParams;
             getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
 
             //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
@@ -2880,7 +2880,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
                 auto PT = llvm::PointerType::getUnqual(FT);
                 auto r1 = builder.CreatePointerCast(r0, PT);
-                builder.CreateCall(FT, r1, fctParams);
+                builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
 
@@ -2888,11 +2888,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
             {
                 auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                fctParams.insert(fctParams.begin(), v0);
+                fctParams.push_front(v0);
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                builder.CreateCall(pp.bytecodeRunTy, r2, fctParams);
+                builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
 
@@ -2906,10 +2906,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            auto                 FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
-            vector<llvm::Value*> fctParams;
+            auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
+            VectorNative<llvm::Value*> fctParams;
             getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
-            builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), fctParams);
+            builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
 
             pushRAParams.clear();
             break;
@@ -2931,12 +2931,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-void BackendLLVM::getCallParameters(const BuildParameters&  buildParameters,
-                                    llvm::AllocaInst*       allocR,
-                                    llvm::AllocaInst*       allocRT,
-                                    vector<llvm::Value*>&   params,
-                                    TypeInfoFuncAttr*       typeFuncBC,
-                                    VectorNative<uint32_t>& pushRAParams)
+void BackendLLVM::getCallParameters(const BuildParameters&      buildParameters,
+                                    llvm::AllocaInst*           allocR,
+                                    llvm::AllocaInst*           allocRT,
+                                    VectorNative<llvm::Value*>& params,
+                                    TypeInfoFuncAttr*           typeFuncBC,
+                                    VectorNative<uint32_t>&     pushRAParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -2970,7 +2970,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     int   precompileIndex = buildParameters.precompileIndex;
     auto& context         = *perThread[ct][precompileIndex].context;
 
-    vector<llvm::Type*> params;
+    VectorNative<llvm::Type*> params;
 
     // Registers to get the result
     for (int i = 0; i < typeFuncBC->numReturnRegisters(); i++)
@@ -2984,7 +2984,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
             params.push_back(llvm::Type::getInt64PtrTy(context));
     }
 
-    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
+    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
 }
 
 bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result)
@@ -2994,7 +2994,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     auto& pp              = perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
-    vector<llvm::Type*> params;
+    VectorNative<llvm::Type*> params;
 
     llvm::Type* llvmRealReturnType = nullptr;
     llvm::Type* returnType         = nullptr;
@@ -3048,7 +3048,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
         params.push_back(llvmRealReturnType);
     }
 
-    *result = llvm::FunctionType::get(returnType, params, false);
+    *result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
     return true;
 }
 
@@ -3077,8 +3077,8 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
     else
         funcName = nodeFunc->name;
 
-    int                  numCallParams = (int) typeFuncBC->parameters.size();
-    vector<llvm::Value*> params;
+    int                        numCallParams = (int) typeFuncBC->parameters.size();
+    VectorNative<llvm::Value*> params;
 
     // Variadic are first
     if (numCallParams)
@@ -3201,7 +3201,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
     // Make the call
     llvm::FunctionType* typeF;
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
-    auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), params);
+    auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), {params.begin(), params.end()});
 
     // Store result to rt0
     if (returnType != g_TypeMgr.typeInfoVoid)

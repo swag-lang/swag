@@ -47,7 +47,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
 
         // Collect datas
         // Would be faster if done by 32 or 64 bits !
-        std::vector<llvm::Constant*> values;
+        VectorNative<llvm::Constant*> values;
         values.reserve(dataSegment->totalCount);
         for (int bucket = 0; bucket < segSize; bucket++)
         {
@@ -61,7 +61,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         }
 
         // Create global variables
-        llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, values);
+        llvm::Constant* constArray = llvm::ConstantArray::get(arrayType, {values.begin(), values.end()});
         if (dataSegment == &module->mutableSegment)
         {
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ms");

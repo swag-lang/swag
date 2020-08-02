@@ -68,9 +68,9 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
     auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     if (typeInfoEnum->rawType->flags & TYPEINFO_INTEGER)
     {
-        auto                    scope = file->getScope();
-        vector<llvm::Metadata*> subscripts;
-        bool                    isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
+        auto                          scope = file->getScope();
+        VectorNative<llvm::Metadata*> subscripts;
+        bool                          isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
         for (auto& value : typeInfoEnum->values)
         {
             auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value.reg.u64, isUnsigned);
@@ -79,7 +79,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
 
         auto lineNo        = typeInfo->declNode->token.startLocation.line + 1;
         auto rawType       = getType(typeInfoEnum->rawType, file);
-        auto content       = dbgBuilder->getOrCreateArray(subscripts);
+        auto content       = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
         auto result        = dbgBuilder->createEnumerationType(scope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, content, rawType);
         mapTypes[typeInfo] = result;
         return result;
@@ -126,8 +126,8 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     mapTypes[typeInfo] = result;
 
     // Deal with the struct content now that the struct is registered
-    vector<llvm::Metadata*> subscripts;
-    auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    VectorNative<llvm::Metadata*> subscripts;
+    auto                          typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     for (auto& field : typeStruct->fields)
     {
         auto fieldLine = field->node->token.startLocation.line + 1;
@@ -136,7 +136,7 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
         subscripts.push_back(typeField);
     }
 
-    auto content = dbgBuilder->getOrCreateArray(subscripts);
+    auto content = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
     dbgBuilder->replaceArrays(result, content);
 
     return result;
@@ -181,13 +181,13 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     case TypeInfoKind::Array:
     {
-        auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        vector<llvm::Metadata*> subscripts;
+        auto                          typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        VectorNative<llvm::Metadata*> subscripts;
 
         auto* countNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::getSigned(llvm::Type::getInt64Ty(*llvmContext), typeInfoPtr->count));
         subscripts.push_back(dbgBuilder->getOrCreateSubrange(countNode, nullptr, nullptr, nullptr));
 
-        auto subscriptArray = dbgBuilder->getOrCreateArray(subscripts);
+        auto subscriptArray = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
         auto result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
         mapTypes[typeInfo]  = result;
         return result;
@@ -254,13 +254,13 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     if (it != mapFuncTypes.end())
         return it->second;
 
-    vector<llvm::Metadata*> params;
+    VectorNative<llvm::Metadata*> params;
 
     params.push_back(getType(typeFunc->returnType, file));
     for (auto one : typeFunc->parameters)
         params.push_back(getType(one->typeInfo, file));
 
-    auto typeArray = dbgBuilder->getOrCreateTypeArray(params);
+    auto typeArray = dbgBuilder->getOrCreateTypeArray({params.begin(), params.end()});
     auto result    = dbgBuilder->createSubroutineType(typeArray);
 
     mapFuncTypes[typeFunc] = result;
@@ -333,7 +333,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
 {
     SWAG_ASSERT(dbgBuilder);
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
-        builder->SetCurrentDebugLocation(nullptr);
+        builder->SetCurrentDebugLocation(llvm::DebugLoc());
     else
     {
         auto location = ip->getLocation(bc);
@@ -423,8 +423,11 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         if (!dbgType)
             continue;
 
-        vector<llvm::Value*> offset    = {builder.getInt32(0), builder.getInt32(resolved->storageOffset)};
-        auto                 constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, offset);
+        VectorNative<llvm::Value*> offset;
+        offset.reserve(2);
+        offset.push_back(builder.getInt32(0));
+        offset.push_back(builder.getInt32(resolved->storageOffset));
+        auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
 
         // Cast to the correct type
         llvm::Type* varType = nullptr;

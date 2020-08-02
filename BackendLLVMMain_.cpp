@@ -17,18 +17,15 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto& modu    = *pp.module;
 
     // Prototype
-    vector<llvm::Type*> params;
+    VectorNative<llvm::Type*> params;
     params.push_back(llvm::Type::getInt32Ty(context));
     params.push_back(llvm::Type::getInt8PtrTy(context)->getPointerTo());
-    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), params, false);
+    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
     llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", modu);
 
     // Start of block
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
-
-    if (pp.dbg)
-        pp.dbg->setLocation(pp.builder, nullptr, nullptr);
 
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
