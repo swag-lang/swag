@@ -457,7 +457,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
-    if (pp.dbg)
+    if (pp.dbg && bc->node)
     {
         pp.dbg->startFunction(pp, bc, func, allocStack);
         pp.dbg->setLocation(pp.builder, bc, nullptr);
@@ -485,7 +485,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(label);
         }
 
-        if (pp.dbg)
+        if (pp.dbg && bc->node)
             pp.dbg->setLocation(pp.builder, bc, ip);
 
         switch (ip->op)
@@ -2928,8 +2928,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
     if (!blockIsClosed)
         builder.CreateRetVoid();
-    if (pp.dbg)
-        pp.dbg->endFunction();
     return ok;
 }
 

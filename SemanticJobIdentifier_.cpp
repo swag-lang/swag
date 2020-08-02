@@ -1142,6 +1142,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
     fctCallParam->token       = rightAffect->token;
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritComputedValue(rightAffect);
+    fctCallParam->inheritOwners(node->callParameters);
     Ast::removeFromParent(rightAffect);
     Ast::addChildBack(fctCallParam, rightAffect);
 
@@ -1164,6 +1165,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token       = identifierRef->previousResolvedNode->token;
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+    fctCallParam->inheritOwners(node->callParameters);
 
     auto prevIdRef = CastAst<AstIdentifierRef>(identifierRef->previousResolvedNode->parent, AstNodeKind::IdentifierRef);
     auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);

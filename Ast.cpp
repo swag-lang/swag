@@ -145,6 +145,8 @@ namespace Ast
         {
             scoped_lock lk(parent->mutex);
             parent->childs.push_front(child);
+            if (!child->ownerScope)
+                child->inheritOwners(parent);
         }
 
         child->parent = parent;
@@ -160,6 +162,8 @@ namespace Ast
             scoped_lock lk(parent->mutex);
             child->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(child);
+            if (!child->ownerScope)
+                child->inheritOwners(parent);
         }
 
         child->parent = parent;
