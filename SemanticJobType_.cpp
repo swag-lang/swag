@@ -192,7 +192,6 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     {
         auto ptrRef         = g_Allocator.alloc<TypeInfoReference>();
         ptrRef->pointedType = typeNode->typeInfo;
-        ptrRef->sizeOf      = sizeof(void*);
         SWAG_VERIFY(typeNode->isConst, context->report({typeNode, "a reference must be declared as 'const'"}));
         if (typeNode->isConst)
             ptrRef->flags |= TYPEINFO_CONST;
@@ -334,7 +333,6 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
         typeRef->flags       = typeNode->typeInfo->flags | TYPEINFO_CONST;
         typeRef->pointedType = typeNode->typeInfo;
         typeRef->computeName();
-        typeRef->sizeOf    = sizeof(void*);
         typeNode->typeInfo = typeRef;
     }
 

@@ -429,7 +429,8 @@ struct TypeInfoReference : public TypeInfo
 {
     TypeInfoReference()
     {
-        kind = TypeInfoKind::Reference;
+        kind   = TypeInfoKind::Reference;
+        sizeOf = sizeof(void*);
     }
 
     void      computeName() override;
