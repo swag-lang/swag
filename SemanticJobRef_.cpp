@@ -88,6 +88,12 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     auto     typeVar  = node->array->typeInfo;
     uint32_t maxBound = 0;
 
+    if (node->startBound)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->startBound));
+    if (node->endBound)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->endBound));
+
+    // Slicing of an array
     if (typeVar->kind == TypeInfoKind::Array)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
@@ -103,12 +109,16 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         node->typeInfo = ptrSlice;
         maxBound       = typeInfoArray->count - 1;
     }
+
+    // Slicing of a string
     else if (typeVar->isNative(NativeTypeKind::String))
     {
         node->typeInfo = typeVar;
         if (node->array->flags & AST_VALUE_COMPUTED)
             maxBound = node->array->computedValue.text.length();
     }
+
+    // Slicing of a pointer
     else if (typeVar->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
@@ -120,6 +130,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         ptrSlice->computeName();
         node->typeInfo = ptrSlice;
     }
+
+    // Slicing of a... slice
     else if (typeVar->kind == TypeInfoKind::Slice)
     {
         // This is fine to slice a slice
