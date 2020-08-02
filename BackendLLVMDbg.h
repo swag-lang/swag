@@ -12,13 +12,13 @@ struct BuildParameters;
 struct BackendLLVMDbg
 {
     void setup(BackendLLVM* m, llvm::Module* module);
-    void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func);
+    void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void endFunction();
     void finalize();
     void setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip);
     void pushLexicalScope(AstNode* node);
     void popLexicalScope();
-    void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip);
+    void createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, AstNode* node);
     void createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);

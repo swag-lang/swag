@@ -444,12 +444,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     pp.labels.clear();
     bc->markLabels();
 
-    if (pp.dbg)
-    {
-        pp.dbg->startFunction(pp, bc, func);
-        pp.dbg->setLocation(pp.builder, bc, nullptr);
-    }
-
     // Reserve registers
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
@@ -462,6 +456,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
+
+    if (pp.dbg)
+    {
+        pp.dbg->startFunction(pp, bc, func, allocStack);
+        pp.dbg->setLocation(pp.builder, bc, nullptr);
+    }
 
     // Generate bytecode
     auto                   ip = bc->out;
@@ -2917,19 +2917,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ForeignCall:
             SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
-            break;
-
-        case ByteCodeOp::DebugPushScope:
-            if (pp.dbg)
-                pp.dbg->pushLexicalScope(ip->node);
-            break;
-        case ByteCodeOp::DebugPopScope:
-            if (pp.dbg)
-                pp.dbg->popLexicalScope();
-            break;
-        case ByteCodeOp::DebugDeclLocalVar:
-            if (pp.dbg)
-                pp.dbg->createLocalVar(pp, func, allocStack, ip);
             break;
 
         default:

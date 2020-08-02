@@ -68,6 +68,8 @@ struct ByteCode
     int32_t  curRC                 = -1;
     uint32_t numJumps              = 0;
 
+    VectorNative<AstNode*> localVars;
+
     bool compilerGenerated = false;
     bool addedToList       = false;
 };

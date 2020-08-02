@@ -1,10 +1,12 @@
 //#[swag.printbc]
 #test
 {
-    a := "toto"
+    {
+        a := 666
+    }
 
-    start := 1'u32
-    end := 2'u32
-    c := a[start..end]
-    @assert(c == "ot")
+    {
+        b := 555
+        a := 777
+    }
 }

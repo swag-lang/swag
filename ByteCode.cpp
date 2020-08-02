@@ -146,15 +146,6 @@ void ByteCode::print()
         g_Log.setColor(LogColor::Gray);
         switch (ip->op)
         {
-        case ByteCodeOp::DebugPushScope:
-        case ByteCodeOp::DebugPopScope:
-            break;
-        case ByteCodeOp::DebugDeclLocalVar:
-        {
-            g_Log.print(format("%s %s %d", ip->node->name.c_str(), ip->node->typeInfo->name.c_str(), ip->node->resolvedSymbolOverload->storageOffset));
-            break;
-        }
-
         case ByteCodeOp::Ret:
         case ByteCodeOp::End:
         case ByteCodeOp::PushBP:

@@ -18,11 +18,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
-    case ByteCodeOp::DebugPushScope:
-    case ByteCodeOp::DebugPopScope:
-    case ByteCodeOp::DebugDeclLocalVar:
-        break;
-
     case ByteCodeOp::TestNotZero8:
     {
         registersRC[ip->a.u32].b = registersRC[ip->b.u32].u8 != 0;

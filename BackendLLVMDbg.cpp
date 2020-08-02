@@ -266,7 +266,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     return result;
 }
 
-void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func)
+void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst*stack)
 {
     SWAG_ASSERT(dbgBuilder);
 
@@ -313,14 +313,16 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
             idxParam += child->typeInfo->numRegisters();
         }
     }
+
+    // Local variables
+    for (auto var : bc->localVars)
+    {
+        createLocalVar(pp, func, stack, var);
+    }
 }
 
-void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, ByteCodeInstruction* ip)
+void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::Function* func, llvm::Value* storage, AstNode* node)
 {
-    SWAG_ASSERT(dbgBuilder);
-    SWAG_ASSERT(ip->node);
-
-    auto            node     = ip->node;
     SymbolOverload* overload = node->resolvedSymbolOverload;
     auto            typeInfo = overload->typeInfo;
 
