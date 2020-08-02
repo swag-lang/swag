@@ -332,7 +332,7 @@ void BackendLLVMDbg::finalize()
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
-    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->ownerScope->isGlobal())
+    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
         builder->SetCurrentDebugLocation(nullptr);
     else
     {
