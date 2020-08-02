@@ -375,12 +375,16 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     {
         int  sizeOf  = 1;
         auto typeVar = node->array->typeInfo;
-        switch (typeVar->kind)
+        if (typeVar->kind == TypeInfoKind::Array)
         {
-        case TypeInfoKind::Array:
             sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
-            break;
-        default:
+        }
+        else if (typeVar->isNative(NativeTypeKind::String))
+        {
+            sizeOf = 1;
+        }
+        else
+        {
             return internalError(context, "emitMakeSlice, type not supported");
         }
 

@@ -84,11 +84,14 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
-    auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto node      = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto typeArray = node->array->typeInfo;
 
-    if (node->array->typeInfo->kind == TypeInfoKind::Array)
+    if (typeArray->kind == TypeInfoKind::Array)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+        if (typeInfoArray->totalCount != typeInfoArray->count)
+            return context->report({node->array, format("slicing operator cannot be applied on an array with multiple dimensions", node->array->typeInfo->name.c_str())});
 
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
@@ -97,14 +100,17 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->computeName();
         node->typeInfo = ptrSlice;
-
-        node->byteCodeFct = ByteCodeGenJob::emitMakeSlice;
+    }
+    else if (typeArray->isNative(NativeTypeKind::String))
+    {
+        node->typeInfo = typeArray;
     }
     else
     {
         return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});
     }
 
+    node->byteCodeFct = ByteCodeGenJob::emitMakeSlice;
     return true;
 }
 
