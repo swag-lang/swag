@@ -33,7 +33,6 @@ void LanguageSpec::setup()
     keywords["#else"]           = TokenId::CompilerElse;
     keywords["#elif"]           = TokenId::CompilerElseIf;
     keywords["#code"]           = TokenId::CompilerCode;
-    keywords["#type"]           = TokenId::CompilerType;
     keywords["#mixin"]          = TokenId::CompilerMixin;
     keywords["#inline"]         = TokenId::CompilerInline;
     keywords["#macro"]          = TokenId::CompilerMacro;

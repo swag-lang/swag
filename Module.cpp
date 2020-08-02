@@ -32,7 +32,6 @@ bool Module::setup(const Utf8& moduleName)
         buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeLevel     = 0;
         buildCfg.backendDebugInformations = true;
-        buildCfg.backendDebugInformations = false;
     }
     else if (g_CommandLine.buildCfg == "release")
     {

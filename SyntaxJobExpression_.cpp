@@ -141,11 +141,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
-    case TokenId::CompilerType:
-        SWAG_CHECK(eatToken(TokenId::CompilerType));
-        SWAG_CHECK(doTypeExpression(parent, result));
-        break;
-
     case TokenId::KwdConst:
     case TokenId::KwdCode:
     case TokenId::NativeType:

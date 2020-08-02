@@ -35,7 +35,7 @@
     // When compiling, user arguments can be specified with the --user-args option.
     {
         args := @args()
-        @assert(@typeof(args) == @typeof(#type [..] string))
+        @assert(@typeof(args) == @typeof([..] string))
     }
 
     // @isbytecode()->bool
