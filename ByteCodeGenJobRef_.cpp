@@ -399,7 +399,6 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     if (safety)
     {
         // Lower bound <= upper bound
-        if (node->lowerBound && node->upperBound)
         {
             auto re = reserveRegisterRC(context);
             context->pushLocation(&node->lowerBound->token.startLocation);
@@ -409,19 +408,8 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
             freeRegisterRC(context, re);
         }
 
-        // Lower bound < maxBound
-        if (maxBound != UINT32_MAX && node->lowerBound && !node->upperBound)
-        {
-            auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->lowerBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->lowerBound->resultRegisterRC, maxBound, re);
-            emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is out of range";
-            context->popLocation();
-            freeRegisterRC(context, re);
-        }
-
         // Upper bound < maxBound
-        if (maxBound != UINT32_MAX && node->upperBound)
+        if (maxBound != UINT32_MAX)
         {
             auto re = reserveRegisterRC(context);
             context->pushLocation(&node->upperBound->token.startLocation);

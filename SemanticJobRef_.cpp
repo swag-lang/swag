@@ -88,10 +88,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     auto     typeVar  = node->array->typeInfo;
     uint32_t maxBound = 0;
 
-    if (node->lowerBound)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->lowerBound));
-    if (node->upperBound)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->upperBound));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->lowerBound));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->upperBound));
 
     // Slicing of an array
     if (typeVar->kind == TypeInfoKind::Array)
@@ -142,7 +140,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // startBound <= endBound
-    if (node->lowerBound && node->upperBound && (node->lowerBound->flags & AST_VALUE_COMPUTED) && (node->upperBound->flags & AST_VALUE_COMPUTED))
+    if ((node->lowerBound->flags & AST_VALUE_COMPUTED) && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
         if (node->lowerBound->computedValue.reg.u32 > node->upperBound->computedValue.reg.u32)
         {
@@ -150,17 +148,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         }
     }
 
-    // startBound < maxBound
-    if (maxBound && node->lowerBound && (node->lowerBound->flags & AST_VALUE_COMPUTED))
-    {
-        if (node->lowerBound->computedValue.reg.u32 > maxBound)
-        {
-            return context->report({node->lowerBound, format("bad slicing, lower bound '%d' is out of range", node->lowerBound->computedValue.reg.u32)});
-        }
-    }
-
     // endBound < maxBound
-    if (maxBound && node->upperBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
+    if (maxBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
         if (node->upperBound->computedValue.reg.u32 > maxBound)
         {
