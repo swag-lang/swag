@@ -671,11 +671,11 @@
     <ClInclude Include="ModuleRunJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BuildCfg.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="ComWin32.hpp">
       <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildCfg.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
