@@ -362,8 +362,6 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     RegisterList r0;
     reserveLinearRegisterRC(context, r0, 2);
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
-
     // Compute size of slice
     if (node->startBound)
         emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->endBound->resultRegisterRC, node->startBound->resultRegisterRC, node->endBound->resultRegisterRC);
@@ -371,6 +369,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->endBound->resultRegisterRC);
 
     // Increment start pointer
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
     if (node->startBound)
     {
         int  sizeOf  = 1;
@@ -389,7 +388,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
         }
         else if (typeVar->kind == TypeInfoKind::Slice)
         {
-            sizeOf = ((TypeInfoSlice*)typeVar)->pointedType->sizeOf;
+            sizeOf = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
         }
         else
         {
