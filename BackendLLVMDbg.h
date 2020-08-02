@@ -16,7 +16,6 @@ struct BackendLLVMDbg
     void startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void finalize();
     void setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip);
-    void createLocalVar(LLVMPerThread& pp, llvm::DIFile* file, llvm::Function* func, llvm::Value* storage, AstNode* node);
     void createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
@@ -35,6 +34,7 @@ struct BackendLLVMDbg
     llvm::Module*        llvmModule  = nullptr;
     llvm::DIBuilder*     dbgBuilder  = nullptr;
     llvm::DICompileUnit* compileUnit = nullptr;
+    bool                 isOptimized = false;
 
     unordered_map<string, llvm::DIFile*>              mapFiles;
     unordered_map<TypeInfo*, llvm::DIType*>           mapTypes;

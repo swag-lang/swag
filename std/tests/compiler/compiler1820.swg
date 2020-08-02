@@ -4,14 +4,18 @@ struct titi
 }
 
 //#[swag.printbc]
-func toto(xx: titi, x: s64)
+impl titi
 {
-    @assert(x == 666)
+    func toto(xx: titi, x: s64)
+    {
+        @assert(x == 666)
+    }
 }
 
 //#[swag.printbc]
 #test
 {
+    arr := @[10, 20, 320]
 	var t: titi
-	toto(t, 666)
+	titi.toto(t, 666)
 }

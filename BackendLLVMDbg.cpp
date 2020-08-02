@@ -13,14 +13,14 @@
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
-    llvm             = m;
-    dbgBuilder       = new llvm::DIBuilder(*modu);
-    llvmModule       = modu;
-    llvmContext      = &modu->getContext();
-    auto mainFile    = dbgBuilder->createFile("module.pdb", "f:/");
-    bool isOptimized = m->module->buildParameters.buildCfg->backendOptimizeLevel != 0;
-    Utf8 compiler    = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C,
+    llvm          = m;
+    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeLevel != 0;
+    dbgBuilder    = new llvm::DIBuilder(*modu, true);
+    llvmModule    = modu;
+    llvmContext   = &modu->getContext();
+    auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
+    Utf8 compiler = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
                                                 compiler.c_str(),
                                                 isOptimized,
@@ -297,11 +297,22 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
 
-    // Register function
+    // Type
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
     unsigned                lineNo      = line + 1;
     llvm::DISubroutineType* dbgFuncType = getFunctionType(typeFunc, file);
-    llvm::DISubprogram*     SP          = dbgBuilder->createFunction(file, name.c_str(), name.c_str(), file, lineNo, dbgFuncType, lineNo, llvm::DINode::FlagPrototyped, llvm::DISubprogram::SPFlagDefinition);
+
+    // Flags
+    llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
+    if (isOptimized)
+        spFlags |= llvm::DISubprogram::SPFlagOptimized;
+    if (!decl || !(decl->attributeFlags & ATTRIBUTE_PUBLIC))
+        spFlags |= llvm::DISubprogram::SPFlagLocalToUnit;
+
+    llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
+
+    // Register function
+    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
     func->setSubprogram(SP);
     if (decl)
         mapScopes[decl->content->ownerScope] = SP;
@@ -323,16 +334,27 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
             else
                 type = dbgFuncType->getTypeArray()[i + 1];
 
-            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type);
-            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, SP), pp.builder->GetInsertBlock());
+            llvm::DILocalVariable* var      = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type, !isOptimized);
+            auto                   location = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
+            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
             idxParam += child->typeInfo->numRegisters();
         }
     }
 
     // Local variables
-    for (auto var : bc->localVars)
+    for (auto localVar : bc->localVars)
     {
-        createLocalVar(pp, file, func, stack, var);
+        SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        auto            typeInfo = overload->typeInfo;
+
+        llvm::DIType*          type  = getType(typeInfo, file);
+        auto                   scope = getOrCreateScope(file, localVar->ownerScope);
+        llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->name.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+
+        auto&             loc = localVar->token.startLocation;
+        llvm::IRBuilder<> builder(&func->getEntryBlock(), func->getEntryBlock().begin());
+        auto              v = GEP_I32(stack, overload->storageOffset);
+        dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), builder.GetInsertBlock());
     }
 }
 
@@ -400,21 +422,6 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
     }
 
     return parent;
-}
-
-void BackendLLVMDbg::createLocalVar(LLVMPerThread& pp, llvm::DIFile* file, llvm::Function* func, llvm::Value* storage, AstNode* node)
-{
-    SymbolOverload* overload = node->resolvedSymbolOverload;
-    auto            typeInfo = overload->typeInfo;
-
-    llvm::DIType*          type  = getType(typeInfo, file);
-    auto                   scope = getOrCreateScope(file, node->ownerScope);
-    llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, node->name.c_str(), file, node->token.startLocation.line, type);
-
-    auto&             loc = node->token.startLocation;
-    llvm::IRBuilder<> builder(&func->getEntryBlock(), func->getEntryBlock().begin());
-    auto              v = GEP_I32(storage, overload->storageOffset);
-    dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), builder.GetInsertBlock());
 }
 
 void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
