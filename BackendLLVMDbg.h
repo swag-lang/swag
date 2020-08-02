@@ -36,12 +36,12 @@ struct BackendLLVMDbg
     llvm::DIBuilder*     dbgBuilder  = nullptr;
     llvm::DICompileUnit* compileUnit = nullptr;
 
-    map<string, llvm::DIFile*>              mapFiles;
-    map<TypeInfo*, llvm::DIType*>           mapTypes;
-    map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
-    map<TypeInfo*, llvm::DIType*>           mapRefTypes;
-    map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
-    map<Scope*, llvm::DIScope*>             mapScopes;
+    unordered_map<string, llvm::DIFile*>              mapFiles;
+    unordered_map<TypeInfo*, llvm::DIType*>           mapTypes;
+    unordered_map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
+    unordered_map<TypeInfo*, llvm::DIType*>           mapRefTypes;
+    unordered_map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
+    unordered_map<Scope*, llvm::DIScope*>             mapScopes;
 
     llvm::DIType*          s8Ty;
     llvm::DIType*          s16Ty;
