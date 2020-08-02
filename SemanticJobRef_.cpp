@@ -116,6 +116,11 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         ptrSlice->computeName();
         node->typeInfo = ptrSlice;
     }
+    else if (typeVar->kind == TypeInfoKind::Slice)
+    {
+        // This is fine to slice a slice
+        node->typeInfo = typeVar;
+    }
     else
     {
         return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});

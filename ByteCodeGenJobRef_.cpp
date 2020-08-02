@@ -370,7 +370,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::AddVBtoRA32, node->endBound->resultRegisterRC)->b.u32 = 1;
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->endBound->resultRegisterRC);
 
-    // Increment pointer
+    // Increment start pointer
     if (node->startBound)
     {
         int  sizeOf  = 1;
@@ -385,7 +385,11 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
         }
         else if (typeVar->kind == TypeInfoKind::Pointer)
         {
-            sizeOf = ((TypeInfoPointer*)typeVar)->pointedType->sizeOf;
+            sizeOf = ((TypeInfoPointer*) typeVar)->pointedType->sizeOf;
+        }
+        else if (typeVar->kind == TypeInfoKind::Slice)
+        {
+            sizeOf = ((TypeInfoSlice*)typeVar)->pointedType->sizeOf;
         }
         else
         {
