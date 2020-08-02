@@ -134,7 +134,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a... slice
     else if (typeVar->kind == TypeInfoKind::Slice)
     {
-        // This is fine to slice a slice
         node->typeInfo = typeVar;
     }
     else
