@@ -84,8 +84,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
-    auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeVar = node->array->typeInfo;
+    auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto     typeVar  = node->array->typeInfo;
+    uint32_t maxBound = 0;
 
     if (typeVar->kind == TypeInfoKind::Array)
     {
@@ -100,10 +101,13 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->computeName();
         node->typeInfo = ptrSlice;
+        maxBound       = typeInfoArray->count - 1;
     }
     else if (typeVar->isNative(NativeTypeKind::String))
     {
         node->typeInfo = typeVar;
+        if (node->array->flags & AST_VALUE_COMPUTED)
+            maxBound = node->array->computedValue.text.length();
     }
     else if (typeVar->kind == TypeInfoKind::Pointer)
     {
@@ -124,6 +128,33 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     else
     {
         return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});
+    }
+
+    // startBound <= endBound
+    if (node->startBound && node->endBound && (node->startBound->flags & AST_VALUE_COMPUTED) && (node->endBound->flags & AST_VALUE_COMPUTED))
+    {
+        if (node->startBound->computedValue.reg.u32 > node->endBound->computedValue.reg.u32)
+        {
+            return context->report({node->startBound, format("bad slicing, lower bound '%d' is greater than upper bound '%d'", node->startBound->computedValue.reg.u32, node->endBound->computedValue.reg.u32)});
+        }
+    }
+
+    // startBound < maxBound
+    if (maxBound && node->startBound && (node->startBound->flags & AST_VALUE_COMPUTED))
+    {
+        if (node->startBound->computedValue.reg.u32 > maxBound)
+        {
+            return context->report({node->startBound, format("bad slicing, lower bound '%d' is out of range", node->startBound->computedValue.reg.u32)});
+        }
+    }
+
+    // endBound < maxBound
+    if (maxBound && node->endBound && (node->endBound->flags & AST_VALUE_COMPUTED))
+    {
+        if (node->endBound->computedValue.reg.u32 > maxBound)
+        {
+            return context->report({node->endBound, format("bad slicing, upper bound '%d' is out of range", node->endBound->computedValue.reg.u32)});
+        }
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitMakeSlice;

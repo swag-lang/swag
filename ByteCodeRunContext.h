@@ -17,7 +17,7 @@ struct StackValue
     void*    addr;
 };
 
-struct ByteCodeRunContext: public JobContext
+struct ByteCodeRunContext : public JobContext
 {
     Register* registersRR    = nullptr;
     uint32_t  numRegistersRR = 0;
@@ -29,9 +29,9 @@ struct ByteCodeRunContext: public JobContext
     uint32_t             stackSize = 0;
     ByteCodeInstruction* ip        = nullptr;
 
-    AstNode*    node       = nullptr;
-    bool        hasError   = false;
-    Utf8        errorMsg;
+    AstNode* node     = nullptr;
+    bool     hasError = false;
+    Utf8     errorMsg;
 
     void setup(SourceFile* sf, AstNode* node, uint32_t numRR, uint32_t stackS);
     void error(const Utf8& msg);

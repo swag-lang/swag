@@ -1577,9 +1577,20 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
-            Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
-            diag.criticalError = true;
-            context->report(diag);
+            auto location = ip->getLocation(context->bc);
+            if (location)
+            {
+                Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                diag.criticalError = true;
+                context->report(diag);
+            }
+            else
+            {
+                Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
+                diag.criticalError = true;
+                context->report(diag);
+            }
+
             return false;
         }
     }
