@@ -41,6 +41,18 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+
+    // Do not evaluate while if it's constant and false
+    if (node->boolExpression->flags & AST_VALUE_COMPUTED)
+    {
+        if (!node->boolExpression->computedValue.reg.b)
+        {
+            node->boolExpression->flags |= AST_NO_BYTECODE;
+            node->block->flags |= AST_NO_BYTECODE;
+            return true;
+        }
+    }
+
     node->byteCodeFct                       = ByteCodeGenJob::emitLoop;
     node->boolExpression->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
