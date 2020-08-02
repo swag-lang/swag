@@ -34,4 +34,43 @@
         @assert(strSlice[0] == "s"'u8)
         @assert(strSlice[1] == "t"'u8)
     }
+
+    // You can slice a string with the '..' operator
+    {
+        var str = "string"
+        var slice = str[1..3]
+        @assert(slice == "tri")
+    }
+
+    // You can slice an array
+    {
+        arr := @[10, 20, 30, 40]
+        slice := arr[2..3]
+        @assert(slice[0] == 30)
+        @assert(slice[1] == 40)
+        @assert(@countof(slice) == 2)
+    }
+
+    // You can slice a pointer
+    {
+        arr := @[10, 20, 30, 40]
+        ptr := &arr[2]
+        slice := ptr[0..1]
+        @assert(slice[0] == 30)
+        @assert(slice[1] == 40)
+        @assert(@countof(slice) == 2)
+    }
+
+    // You can slice another slice
+    {
+        arr := @[10, 20, 30, 40]
+        slice1 := arr[1..3]
+        @assert(slice1[0] == 20)
+        @assert(slice1[1] == 30)
+        @assert(slice1[2] == 40)
+
+        slice2 := slice1[1..2]
+        @assert(slice2[0] == 30)
+        @assert(slice2[1] == 40)
+    }
 }

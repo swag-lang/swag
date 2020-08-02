@@ -112,7 +112,7 @@
     "intrinsics-literal": {
       "patterns": [
         {
-          "name": "entity.name.function",
+          "name": "keyword.declaration",
           "match": "@"
         }
       ]

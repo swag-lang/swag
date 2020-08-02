@@ -1,0 +1,1 @@
+xcopy "*.*" "C:\Users\chris_000\.vscode\extensions\" /Y /E
