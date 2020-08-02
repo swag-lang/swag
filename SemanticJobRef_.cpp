@@ -84,10 +84,10 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
-    auto node      = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeArray = node->array->typeInfo;
+    auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto typeVar = node->array->typeInfo;
 
-    if (typeArray->kind == TypeInfoKind::Array)
+    if (typeVar->kind == TypeInfoKind::Array)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
@@ -101,9 +101,20 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         ptrSlice->computeName();
         node->typeInfo = ptrSlice;
     }
-    else if (typeArray->isNative(NativeTypeKind::String))
+    else if (typeVar->isNative(NativeTypeKind::String))
     {
-        node->typeInfo = typeArray;
+        node->typeInfo = typeVar;
+    }
+    else if (typeVar->kind == TypeInfoKind::Pointer)
+    {
+        auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
+        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+        ptrSlice->pointedType = typeInfoPointer->pointedType;
+        ptrSlice->sizeOf      = 2 * sizeof(void*);
+        if (typeInfoPointer->isConst())
+            ptrSlice->flags |= TYPEINFO_CONST;
+        ptrSlice->computeName();
+        node->typeInfo = ptrSlice;
     }
     else
     {

@@ -383,6 +383,10 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
         {
             sizeOf = 1;
         }
+        else if (typeVar->kind == TypeInfoKind::Pointer)
+        {
+            sizeOf = ((TypeInfoPointer*)typeVar)->pointedType->sizeOf;
+        }
         else
         {
             return internalError(context, "emitMakeSlice, type not supported");
