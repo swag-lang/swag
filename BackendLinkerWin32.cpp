@@ -122,11 +122,12 @@ namespace OS
         bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
         uint32_t numErrors = 0;
         auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
-        SWAG_CHECK(OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
+        auto     result    = OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
 
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;
-        return numErrors == 0;
+
+        return result;
     }
 
 } // namespace OS

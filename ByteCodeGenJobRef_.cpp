@@ -359,6 +359,30 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
 
+    // Check type, and safety check
+    int  sizeOf  = 1;
+    auto typeVar = node->array->typeInfo;
+    if (typeVar->kind == TypeInfoKind::Array)
+    {
+        sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
+    }
+    else if (typeVar->isNative(NativeTypeKind::String))
+    {
+        sizeOf = 1;
+    }
+    else if (typeVar->kind == TypeInfoKind::Pointer)
+    {
+        sizeOf = ((TypeInfoPointer*) typeVar)->pointedType->sizeOf;
+    }
+    else if (typeVar->kind == TypeInfoKind::Slice)
+    {
+        sizeOf = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
+    }
+    else
+    {
+        return internalError(context, "emitMakeSlice, type not supported");
+    }
+
     RegisterList r0;
     reserveLinearRegisterRC(context, r0, 2);
 
@@ -372,29 +396,6 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
     if (node->startBound)
     {
-        int  sizeOf  = 1;
-        auto typeVar = node->array->typeInfo;
-        if (typeVar->kind == TypeInfoKind::Array)
-        {
-            sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
-        }
-        else if (typeVar->isNative(NativeTypeKind::String))
-        {
-            sizeOf = 1;
-        }
-        else if (typeVar->kind == TypeInfoKind::Pointer)
-        {
-            sizeOf = ((TypeInfoPointer*) typeVar)->pointedType->sizeOf;
-        }
-        else if (typeVar->kind == TypeInfoKind::Slice)
-        {
-            sizeOf = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
-        }
-        else
-        {
-            return internalError(context, "emitMakeSlice, type not supported");
-        }
-
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB32, node->startBound->resultRegisterRC)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer32, r0[0], node->startBound->resultRegisterRC, r0[0]);
