@@ -638,8 +638,8 @@ struct AstArrayPointerSlicing : public AstNode
     VectorNative<AstNode*> structFlatParams;
 
     AstNode* array      = nullptr;
-    AstNode* startBound = nullptr;
-    AstNode* endBound   = nullptr;
+    AstNode* lowerBound = nullptr;
+    AstNode* upperBound = nullptr;
 };
 
 struct AstProperty : public AstNode

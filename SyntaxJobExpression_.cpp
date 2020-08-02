@@ -35,8 +35,8 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         arrayNode->array       = *exprNode;
         Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
-        arrayNode->startBound = firstExpr;
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->endBound));
+        arrayNode->lowerBound = firstExpr;
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->upperBound));
         *exprNode = arrayNode;
     }
 

@@ -399,33 +399,33 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     if (safety)
     {
         // Lower bound <= upper bound
-        if (node->startBound && node->endBound)
+        if (node->lowerBound && node->upperBound)
         {
             auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->startBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, node->startBound->resultRegisterRC, node->endBound->resultRegisterRC, re);
+            context->pushLocation(&node->lowerBound->token.startLocation);
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
             emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is greater than upper bound";
             context->popLocation();
             freeRegisterRC(context, re);
         }
 
         // Lower bound < maxBound
-        if (maxBound != UINT32_MAX && node->startBound && !node->endBound)
+        if (maxBound != UINT32_MAX && node->lowerBound && !node->upperBound)
         {
             auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->startBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->startBound->resultRegisterRC, maxBound, re);
+            context->pushLocation(&node->lowerBound->token.startLocation);
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->lowerBound->resultRegisterRC, maxBound, re);
             emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is out of range";
             context->popLocation();
             freeRegisterRC(context, re);
         }
 
         // Upper bound < maxBound
-        if (maxBound != UINT32_MAX && node->endBound)
+        if (maxBound != UINT32_MAX && node->upperBound)
         {
             auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->endBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->endBound->resultRegisterRC, maxBound, re);
+            context->pushLocation(&node->upperBound->token.startLocation);
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->upperBound->resultRegisterRC, maxBound, re);
             emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, upper bound is out of range";
             context->popLocation();
             freeRegisterRC(context, re);
@@ -439,23 +439,23 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     reserveLinearRegisterRC(context, r0, 2);
 
     // Compute size of slice
-    if (node->startBound)
-        emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->endBound->resultRegisterRC, node->startBound->resultRegisterRC, node->endBound->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::AddVBtoRA32, node->endBound->resultRegisterRC)->b.u32 = 1;
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->endBound->resultRegisterRC);
+    if (node->lowerBound)
+        emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::AddVBtoRA32, node->upperBound->resultRegisterRC)->b.u32 = 1;
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->upperBound->resultRegisterRC);
 
     // Increment start pointer
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
-    if (node->startBound)
+    if (node->lowerBound)
     {
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->startBound->resultRegisterRC)->b.u32 = sizeOf;
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0[0], node->startBound->resultRegisterRC, r0[0]);
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->lowerBound->resultRegisterRC)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::IncPointer32, r0[0], node->lowerBound->resultRegisterRC, r0[0]);
     }
 
     freeRegisterRC(context, node->array);
-    freeRegisterRC(context, node->startBound);
-    freeRegisterRC(context, node->endBound);
+    freeRegisterRC(context, node->lowerBound);
+    freeRegisterRC(context, node->upperBound);
     node->resultRegisterRC = r0;
 
     return true;

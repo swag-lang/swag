@@ -88,10 +88,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     auto     typeVar  = node->array->typeInfo;
     uint32_t maxBound = 0;
 
-    if (node->startBound)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->startBound));
-    if (node->endBound)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->endBound));
+    if (node->lowerBound)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->lowerBound));
+    if (node->upperBound)
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->upperBound));
 
     // Slicing of an array
     if (typeVar->kind == TypeInfoKind::Array)
@@ -143,29 +143,29 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // startBound <= endBound
-    if (node->startBound && node->endBound && (node->startBound->flags & AST_VALUE_COMPUTED) && (node->endBound->flags & AST_VALUE_COMPUTED))
+    if (node->lowerBound && node->upperBound && (node->lowerBound->flags & AST_VALUE_COMPUTED) && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
-        if (node->startBound->computedValue.reg.u32 > node->endBound->computedValue.reg.u32)
+        if (node->lowerBound->computedValue.reg.u32 > node->upperBound->computedValue.reg.u32)
         {
-            return context->report({node->startBound, format("bad slicing, lower bound '%d' is greater than upper bound '%d'", node->startBound->computedValue.reg.u32, node->endBound->computedValue.reg.u32)});
+            return context->report({node->lowerBound, format("bad slicing, lower bound '%d' is greater than upper bound '%d'", node->lowerBound->computedValue.reg.u32, node->upperBound->computedValue.reg.u32)});
         }
     }
 
     // startBound < maxBound
-    if (maxBound && node->startBound && (node->startBound->flags & AST_VALUE_COMPUTED))
+    if (maxBound && node->lowerBound && (node->lowerBound->flags & AST_VALUE_COMPUTED))
     {
-        if (node->startBound->computedValue.reg.u32 > maxBound)
+        if (node->lowerBound->computedValue.reg.u32 > maxBound)
         {
-            return context->report({node->startBound, format("bad slicing, lower bound '%d' is out of range", node->startBound->computedValue.reg.u32)});
+            return context->report({node->lowerBound, format("bad slicing, lower bound '%d' is out of range", node->lowerBound->computedValue.reg.u32)});
         }
     }
 
     // endBound < maxBound
-    if (maxBound && node->endBound && (node->endBound->flags & AST_VALUE_COMPUTED))
+    if (maxBound && node->upperBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
-        if (node->endBound->computedValue.reg.u32 > maxBound)
+        if (node->upperBound->computedValue.reg.u32 > maxBound)
         {
-            return context->report({node->endBound, format("bad slicing, upper bound '%d' is out of range", node->endBound->computedValue.reg.u32)});
+            return context->report({node->upperBound, format("bad slicing, upper bound '%d' is out of range", node->upperBound->computedValue.reg.u32)});
         }
     }
 

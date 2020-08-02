@@ -514,8 +514,8 @@ AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->array      = findChildRef(array, newNode);
-    newNode->startBound = findChildRef(startBound, newNode);
-    newNode->endBound   = findChildRef(endBound, newNode);
+    newNode->lowerBound = findChildRef(lowerBound, newNode);
+    newNode->upperBound = findChildRef(upperBound, newNode);
     return newNode;
 }
 
