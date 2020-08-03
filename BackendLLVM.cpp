@@ -346,14 +346,26 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         targetMachine->setOptLevel(llvm::CodeGenOpt::None);
     targetMachine->setO0WantsFastISel(true);
 
-    if (buildParameters.buildCfg->backendOptimizeSpeed || buildParameters.buildCfg->backendOptimizeSize)
-    {
-        llvm::PassManagerBuilder pmb;
-        pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
-        pmb.SizeLevel = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
-        pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
-        pmb.populateModulePassManager(llvmPass);
-    }
+    bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+
+    llvm::PassManagerBuilder pmb;
+    pmb.OptLevel           = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
+    pmb.SizeLevel          = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
+    pmb.VerifyInput        = g_CommandLine.devMode;
+    pmb.VerifyOutput       = g_CommandLine.devMode;
+    pmb.DisableTailCalls   = isDebug;
+    pmb.DisableUnrollLoops = isDebug;
+    pmb.DisableGVNLoadPRE  = isDebug;
+    pmb.SLPVectorize       = !isDebug;
+    pmb.LoopVectorize      = !isDebug;
+    pmb.RerollLoops        = !isDebug;
+    pmb.NewGVN             = !isDebug;
+    pmb.MergeFunctions     = !isDebug;
+    pmb.PrepareForLTO      = false;
+    pmb.PrepareForThinLTO  = false;
+    pmb.PerformThinLTO     = false;
+    pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+    pmb.populateModulePassManager(llvmPass);
 
     // Generate obj file pass
     targetMachine->addPassesToEmitFile(llvmPass, dest, nullptr, llvm::CGFT_ObjectFile);
