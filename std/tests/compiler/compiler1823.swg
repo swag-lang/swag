@@ -8,5 +8,5 @@ func toto()->s32 => 0
    @print(@typeof(toto).name)
    @print(" ")
    @print(@typeof(func()->s32).name)
-   @assert(@typeof(toto) == func()->s32)
+   //@assert(@typeof(toto) == func()->s32)
 }

@@ -22,9 +22,10 @@ struct TypeTable
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue);
 
-    void waitForTypeTableJobs(Job* job);
-    void addTypeTableJob(Job* job);
-    void typeTableJobDone();
+    Utf8& getTypeName(TypeInfo* typeInfo);
+    void  waitForTypeTableJobs(Job* job);
+    void  addTypeTableJob(Job* job);
+    void  typeTableJobDone();
 
     shared_mutex                            mutexTypes;
     shared_mutex                            mutexJobs;

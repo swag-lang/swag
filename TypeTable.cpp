@@ -166,6 +166,15 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
     return true;
 }
 
+Utf8& TypeTable::getTypeName(TypeInfo* typeInfo)
+{
+    if (!typeInfo->declNode)
+        return typeInfo->scopedName;
+    if (typeInfo->declNode->kind == AstNodeKind::TypeExpression || typeInfo->declNode->kind == AstNodeKind::TypeLambda)
+        return typeInfo->name;
+    return typeInfo->scopedName;
+}
+
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -183,7 +192,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     typeInfo->computeScopedName();
     if (typeInfo->kind != TypeInfoKind::Param)
     {
-        auto it = concreteTypes.find(typeInfo->scopedName);
+        auto it = concreteTypes.find(getTypeName(typeInfo));
         if (it != concreteTypes.end())
         {
             *ptrTypeInfo = it->second.first;
@@ -246,15 +255,16 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    SWAG_ASSERT(!typeInfo->scopedName.empty());
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->scopedName, OFFSETOF(concreteTypeInfoValue->name)));
+    auto& typeName = getTypeName(typeInfo);
+    SWAG_ASSERT(!typeName.empty());
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr                        = g_Allocator.alloc<TypeInfoPointer>();
-    concreteTypes[typeInfo->scopedName] = {typePtr, storageOffset};
+    auto typePtr            = g_Allocator.alloc<TypeInfoPointer>();
+    concreteTypes[typeName] = {typePtr, storageOffset};
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST | TYPEINFO_TYPEINFO_PTR;
