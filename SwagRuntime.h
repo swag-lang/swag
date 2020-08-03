@@ -83,7 +83,7 @@ enum class NativeTypeKind
 // Should match bootstrap.swg
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct ConcreteStringSlice
+struct ConcreteSlice
 {
     void*    buffer;
     uint64_t count;
@@ -91,9 +91,9 @@ struct ConcreteStringSlice
 
 struct ConcreteTypeInfo
 {
-    ConcreteStringSlice name;
-    TypeInfoKind        kind;
-    uint32_t            sizeOf;
+    ConcreteSlice name;
+    TypeInfoKind  kind;
+    uint32_t      sizeOf;
 };
 
 struct ConcreteAny
@@ -104,14 +104,14 @@ struct ConcreteAny
 
 struct ConcreteAttributeParameter
 {
-    ConcreteStringSlice name;
-    ConcreteAny         value;
+    ConcreteSlice name;
+    ConcreteAny   value;
 };
 
 struct ConcreteAttribute
 {
-    ConcreteStringSlice name;
-    ConcreteStringSlice params;
+    ConcreteSlice name;
+    ConcreteSlice params;
 };
 
 struct ConcreteTypeInfoNative
@@ -136,43 +136,43 @@ struct ConcreteTypeInfoReference
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteStringSlice name;
-    ConcreteTypeInfo*   pointedType;
-    void*               value;
-    ConcreteStringSlice attributes;
-    uint32_t            offsetOf;
-    uint32_t            padding;
+    ConcreteSlice     name;
+    ConcreteTypeInfo* pointedType;
+    void*             value;
+    ConcreteSlice     attributes;
+    uint32_t          offsetOf;
+    uint32_t          padding;
 };
 
 struct ConcreteTypeInfoStruct
 {
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice fields;
-    ConcreteStringSlice methods;
-    ConcreteStringSlice interfaces;
-    ConcreteStringSlice attributes;
+    ConcreteTypeInfo base;
+    ConcreteSlice    fields;
+    ConcreteSlice    methods;
+    ConcreteSlice    interfaces;
+    ConcreteSlice    attributes;
 };
 
 struct ConcreteTypeInfoList
 {
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice types;
+    ConcreteTypeInfo base;
+    ConcreteSlice    types;
 };
 
 struct ConcreteTypeInfoFunc
 {
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice parameters;
-    ConcreteTypeInfo*   returnType;
-    ConcreteStringSlice attributes;
+    ConcreteTypeInfo  base;
+    ConcreteSlice     parameters;
+    ConcreteTypeInfo* returnType;
+    ConcreteSlice     attributes;
 };
 
 struct ConcreteTypeInfoEnum
 {
-    ConcreteTypeInfo    base;
-    ConcreteStringSlice values;
-    ConcreteTypeInfo*   rawType;
-    ConcreteStringSlice attributes;
+    ConcreteTypeInfo  base;
+    ConcreteSlice     values;
+    ConcreteTypeInfo* rawType;
+    ConcreteSlice     attributes;
 };
 
 struct ConcreteTypeInfoArray

@@ -73,7 +73,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
+bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteSlice* result, uint32_t offset)
 {
     if (attributes.empty())
         return true;
@@ -92,13 +92,13 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
     for (auto& one : attributes.attributes)
     {
         // Name of the attribute
-        auto ptrString = (ConcreteStringSlice*) ptrStorageAttributes;
+        auto ptrString = (ConcreteSlice*) ptrStorageAttributes;
         SWAG_CHECK(makeConcreteString(context, ptrString, one.name, curOffsetAttributes));
-        curOffsetAttributes += sizeof(ConcreteStringSlice);
-        ptrStorageAttributes += sizeof(ConcreteStringSlice);
+        curOffsetAttributes += sizeof(ConcreteSlice);
+        ptrStorageAttributes += sizeof(ConcreteSlice);
 
         // Slice to all parameters
-        auto ptrParamsAttribute    = (ConcreteStringSlice*) ptrStorageAttributes;
+        auto ptrParamsAttribute    = (ConcreteSlice*) ptrStorageAttributes;
         ptrParamsAttribute->buffer = nullptr;
         ptrParamsAttribute->count  = (uint32_t) one.parameters.size();
 
@@ -115,10 +115,10 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
             for (auto& oneParam : one.parameters)
             {
                 // Name of the parameter
-                ptrString = (ConcreteStringSlice*) ptrStorageAllParams;
+                ptrString = (ConcreteSlice*) ptrStorageAllParams;
                 SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.name, curOffsetParams));
-                curOffsetParams += sizeof(ConcreteStringSlice);
-                ptrStorageAllParams += sizeof(ConcreteStringSlice);
+                curOffsetParams += sizeof(ConcreteSlice);
+                ptrStorageAllParams += sizeof(ConcreteSlice);
 
                 // Value of the parameter
                 makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, curOffsetParams, oneParam.value, oneParam.typeInfo);
@@ -129,14 +129,14 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         }
 
         // Next attribute (zap slice of all parameters
-        curOffsetAttributes += sizeof(ConcreteStringSlice);
-        ptrStorageAttributes += sizeof(ConcreteStringSlice);
+        curOffsetAttributes += sizeof(ConcreteSlice);
+        ptrStorageAttributes += sizeof(ConcreteSlice);
     }
 
     return true;
 }
 
-bool TypeTable::makeConcreteString(JobContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
+bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, const Utf8& str, uint32_t offsetInBuffer)
 {
     if (str.empty())
     {
