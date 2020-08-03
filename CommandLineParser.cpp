@@ -34,10 +34,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "developer mode");
 
     addArg("--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|release|final are predefined)");
-    addArg("--target", nullptr, CommandLineType::Enum, &cmdLine->target, "win64", "set the build architecture");
+    addArg("--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "force the build configuration to (not) have debug informations");
+    addArg("--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "force the build configuration to (not) have safety guards");
+    addArg("--cfg-optim", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptim, "true|false|default", "force the build configuration to be (not) optimized");
+    addArg("--target", nullptr, CommandLineType::EnumInt, &cmdLine->target, "win64", "set the build architecture");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
-    addArg("--backend", nullptr, CommandLineType::Enum, &cmdLine->backendType, "cl|clang|llvm", "the type of backend to use");
+    addArg("--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "cl|clang|llvm", "the type of backend to use");
 }
 
 void CommandLineParser::logArguments()
@@ -46,8 +49,8 @@ void CommandLineParser::logArguments()
 
     static const int COL_SHORT_NAME = 20;
     static const int COL_VALUE      = 35;
-    static const int COL_DEFAULT    = 50;
-    static const int COL_HELP       = 60;
+    static const int COL_DEFAULT    = 60;
+    static const int COL_HELP       = 75;
 
     line0 = "argument";
     line1 = "--------";
@@ -108,11 +111,21 @@ void CommandLineParser::logArguments()
                 line0 += " ";
             line0 += *(string*) oneArg->buffer;
             break;
-        case CommandLineType::Enum:
+        case CommandLineType::EnumInt:
+        {
             line0 += oneArg->param;
             while (line0.length() < COL_DEFAULT)
                 line0 += " ";
-            line0 += to_string(*(int*) oneArg->buffer);
+            vector<Utf8> tokens;
+            tokenize(oneArg->param, '|', tokens);
+            line0 += tokens[*(int*) oneArg->buffer];
+            break;
+        }
+        case CommandLineType::EnumString:
+            line0 += oneArg->param;
+            while (line0.length() < COL_DEFAULT)
+                line0 += " ";
+            line0 += *(string*) oneArg->buffer;
             break;
         }
 
@@ -175,7 +188,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
         auto arg = it->second;
         switch (arg->type)
         {
-        case CommandLineType::Enum:
+        case CommandLineType::EnumInt:
         {
             vector<Utf8> tokens;
             tokenize(arg->param, '|', tokens);
@@ -186,6 +199,32 @@ bool CommandLineParser::process(int argc, const char* argv[])
                 if (one == argument)
                 {
                     *(int*) arg->buffer = index;
+                    break;
+                }
+
+                index++;
+            }
+
+            if (index == tokens.size())
+            {
+                g_Log.error(format("command line error: argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
+                result = false;
+                continue;
+            }
+        }
+        break;
+
+        case CommandLineType::EnumString:
+        {
+            vector<Utf8> tokens;
+            tokenize(arg->param, '|', tokens);
+
+            int index = 0;
+            for (auto one : tokens)
+            {
+                if (one == argument)
+                {
+                    *(string*) arg->buffer = one;
                     break;
                 }
 
@@ -285,7 +324,7 @@ string CommandLineParser::buildString(bool full)
                 result += " ";
             }
             break;
-        case CommandLineType::Enum:
+        case CommandLineType::EnumInt:
             if (full || *(int*) oneArg->buffer != *(int*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
@@ -294,6 +333,14 @@ string CommandLineParser::buildString(bool full)
                 tokenize(oneArg->param, '|', tokens);
                 int idx = *(int*) oneArg->buffer;
                 result += tokens[idx];
+                result += " ";
+            }
+            break;
+        case CommandLineType::EnumString:
+            if (full || *(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                result += *(string*) oneArg->buffer;
                 result += " ";
             }
             break;

@@ -46,6 +46,14 @@ bool Module::setup(const Utf8& moduleName)
         buildCfg.backendDebugInformations = false;
     }
 
+    // Overwrite with command line
+    if (g_CommandLine.buildCfgDebug != "default")
+        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptim != "default")
+        buildCfg.backendOptimizeLevel = g_CommandLine.buildCfgDebug == "true" ? 2 : 0;
+    if (g_CommandLine.buildCfgSafety != "default")
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
+
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
     switch (g_CommandLine.backendType)

@@ -4,7 +4,8 @@ enum CommandLineType
 {
     Bool,
     Int,
-    Enum,
+    EnumInt,
+    EnumString,
     String,
 };
 
