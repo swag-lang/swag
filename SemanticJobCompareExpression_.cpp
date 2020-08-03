@@ -11,10 +11,23 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
 
+    // Compile time compare of two types
+    // We need to use swag_runtime_comparetype to be coherent with runtime !
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
-        node->computedValue.reg.b = swag_runtime_comparetype(left->typeInfo, right->typeInfo);
+
+        SWAG_ASSERT(left->computedValue.reg.u32 != UINT32_MAX);
+        SWAG_ASSERT(right->computedValue.reg.u32 != UINT32_MAX);
+        if (left->computedValue.reg.u32 == right->computedValue.reg.u32)
+            node->computedValue.reg.b = true;
+        else
+        {
+            auto module               = context->sourceFile->module;
+            auto ptr1                 = module->constantSegment.address(left->computedValue.reg.u32);
+            auto ptr2                 = module->constantSegment.address(right->computedValue.reg.u32);
+            node->computedValue.reg.b = swag_runtime_comparetype(ptr1, ptr2);
+        }
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {

@@ -469,6 +469,6 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();
-    node->flags |= AST_VALUE_IS_TYPEINFO;
+    node->flags |= AST_VALUE_IS_TYPEINFO;    
     return true;
 }

@@ -13,11 +13,12 @@
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
-    auto typeInfo = TypeManager::concreteType(left->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
         case NativeTypeKind::S8:
@@ -51,32 +52,27 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             return internalError(context, "emitCompareOpEqual, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
-        typeInfo->computeScopedName();
-        if (typeInfo->flags & TYPEINFO_TYPEINFO_PTR)
-        {
+        if (leftTypeInfo->flags & TYPEINFO_TYPEINFO_PTR || rightTypeInfo->flags & TYPEINFO_TYPEINFO_PTR)
             emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, r1, r2);
-        }
 
         // Simple pointer compare
         else
-        {
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
-        }
     }
-    else if (typeInfo->kind == TypeInfoKind::Lambda)
+    else if (leftTypeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
-    else if (typeInfo->kind == TypeInfoKind::Interface)
+    else if (leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqualInterface, r0, r1, r2);
     }
-    else if (typeInfo->kind == TypeInfoKind::Slice)
+    else if (leftTypeInfo->kind == TypeInfoKind::Slice)
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
