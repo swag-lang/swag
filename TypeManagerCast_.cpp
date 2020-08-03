@@ -1660,7 +1660,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
                     fromNode->castOffset     = field->offset;
                     fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
+                    fromNode->typeInfo = toType;
                 }
 
                 done = field;

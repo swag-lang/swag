@@ -29,9 +29,12 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
     {
-        SWAG_CHECK(resolveTypeAsExpression(context, node, &node->typeInfo));
+        TypeInfo* result = nullptr;
+        SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->typeInfo = result;
         node->flags &= ~AST_NO_BYTECODE;
-
         return true;
     }
 
