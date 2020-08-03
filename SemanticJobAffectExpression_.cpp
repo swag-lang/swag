@@ -28,7 +28,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto tokenId = node->token.id;
 
     SWAG_CHECK(checkIsConcrete(context, left));
-    SWAG_CHECK(checkIsConcrete(context, right));
+    SWAG_CHECK(checkIsConcreteOrType(context, right));
+    if (context->result != ContextResult::Done)
+        return true;
 
     SWAG_VERIFY(left->resolvedSymbolName, context->report({left, "affect operation not allowed"}));
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, "affect operation not allowed"}));
