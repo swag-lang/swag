@@ -14,7 +14,7 @@
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm          = m;
-    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeLevel != 0;
+    isOptimized = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
     dbgBuilder    = new llvm::DIBuilder(*modu, true);
     llvmModule    = modu;
     llvmContext   = &modu->getContext();

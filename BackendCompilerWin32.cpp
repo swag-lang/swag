@@ -32,18 +32,12 @@ namespace OS
         clArguments += "/Fo\"" + cachePath + "\" ";
 
         // Optimization level
-        switch (buildParameters.buildCfg->backendOptimizeLevel)
-        {
-        case 0:
-            clArguments += "/Od ";
-            break;
-        case 1:
+        if (buildParameters.buildCfg->backendOptimizeSize)
             clArguments += "/O1 ";
-            break;
-        default:
+        else if (buildParameters.buildCfg->backendOptimizeSpeed)
             clArguments += "/O2 ";
-            break;
-        }
+        else
+            clArguments += "/Od ";
 
         if (buildParameters.compileType == BackendCompileType::Test)
             clArguments += "/DSWAG_HAS_TEST ";

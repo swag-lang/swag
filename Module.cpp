@@ -30,27 +30,32 @@ bool Module::setup(const Utf8& moduleName)
     if (g_CommandLine.buildCfg == "debug")
     {
         buildCfg.safetyGuards             = true;
-        buildCfg.backendOptimizeLevel     = 0;
+        buildCfg.backendOptimizeSpeed     = false;
+        buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "release")
     {
         buildCfg.safetyGuards             = true;
-        buildCfg.backendOptimizeLevel     = 2;
+        buildCfg.backendOptimizeSpeed     = true;
+        buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
     else if (g_CommandLine.buildCfg == "final")
     {
         buildCfg.safetyGuards             = false;
-        buildCfg.backendOptimizeLevel     = 2;
+        buildCfg.backendOptimizeSpeed     = true;
+        buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = false;
     }
 
     // Overwrite with command line
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptim != "default")
-        buildCfg.backendOptimizeLevel = g_CommandLine.buildCfgDebug == "true" ? 2 : 0;
+    if (g_CommandLine.buildCfgOptimSpeed != "default")
+        buildCfg.backendOptimizeSpeed = g_CommandLine.buildCfgOptimSpeed == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimSize != "default")
+        buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
 

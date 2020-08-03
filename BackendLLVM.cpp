@@ -340,17 +340,17 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     llvm::legacy::PassManager llvmPass;
 
     // Optimize passes
-    if (buildParameters.buildCfg->backendOptimizeLevel)
+    if (buildParameters.buildCfg->backendOptimizeSpeed)
         targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
     else
         targetMachine->setOptLevel(llvm::CodeGenOpt::None);
     targetMachine->setO0WantsFastISel(true);
 
-    if (buildParameters.buildCfg->backendOptimizeLevel)
+    if (buildParameters.buildCfg->backendOptimizeSpeed || buildParameters.buildCfg->backendOptimizeSize)
     {
         llvm::PassManagerBuilder pmb;
-        pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeLevel ? 3 : 0;
-        pmb.SizeLevel = buildParameters.buildCfg->backendOptimizeLevel == 1 ? 2 : 0;
+        pmb.OptLevel  = buildParameters.buildCfg->backendOptimizeSpeed ? 3 : 0;
+        pmb.SizeLevel = buildParameters.buildCfg->backendOptimizeSize ? 2 : 0;
         pmb.Inliner   = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
         pmb.populateModulePassManager(llvmPass);
     }

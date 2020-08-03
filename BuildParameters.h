@@ -1,6 +1,6 @@
 #pragma once
-#include "BuildCfg.h"
 #include "Utf8.h"
+struct BuildCfg;
 
 enum class BackendOutputType
 {

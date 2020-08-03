@@ -31,12 +31,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
-    addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "developer mode");
+    addArg("--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
 
     addArg("--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|release|final are predefined)");
     addArg("--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "force the build configuration to (not) have debug informations");
     addArg("--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "force the build configuration to (not) have safety guards");
-    addArg("--cfg-optim", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptim, "true|false|default", "force the build configuration to be (not) optimized");
+    addArg("--cfg-optim-speed", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSpeed, "true|false|default", "force the build configuration to (not) be optimized for speed");
+    addArg("--cfg-optim-size", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSize, "true|false|default", "force the build configuration to (not) be optimized for size");
     addArg("--target", nullptr, CommandLineType::EnumInt, &cmdLine->target, "win64", "set the build architecture");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 

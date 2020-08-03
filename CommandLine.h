@@ -62,11 +62,12 @@ struct CommandLine
     bool generateDoc = false;
 
     // Output
-    string        buildCfg       = "debug";
-    string        buildCfgDebug  = "default";
-    string        buildCfgSafety = "default";
-    string        buildCfgOptim  = "default";
-    BackendTarget target         = BackendTarget::Win64;
+    string        buildCfg           = "debug";
+    string        buildCfgDebug      = "default";
+    string        buildCfgSafety     = "default";
+    string        buildCfgOptimSpeed = "default";
+    string        buildCfgOptimSize  = "default";
+    BackendTarget target             = BackendTarget::Win64;
 
     // Backend
     BackendType backendType        = BackendType::LLVM;

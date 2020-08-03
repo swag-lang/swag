@@ -346,7 +346,8 @@ namespace swag
 
         // Backend common
         backendDebugInformations: bool  = false
-        backendOptimizeLevel: u32       = 0 // 0 => disabled, 1 => favor size, 2 => favor speed
+        backendOptimizeSpeed: bool      = false
+        backendOptimizeSize: bool       = false
 
         // Specific backend parameters
         backendC:       BuildCfgBackendC
