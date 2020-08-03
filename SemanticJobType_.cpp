@@ -286,6 +286,19 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (!(typeNode->flags & AST_HAS_STRUCT_PARAMETERS))
         typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
+    // Is this a const pointer to a typeinfo ?
+    auto typeInfo = typeNode->typeInfo;
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        if (typePtr->ptrCount == 1 && typePtr->isConst())
+        {
+            typePtr->computeScopedName();
+            if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
+                typePtr->flags |= TYPEINFO_TYPEINFO_PTR;
+        }
+    }
+
     return true;
 }
 
@@ -472,6 +485,6 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();
-    node->flags |= AST_VALUE_IS_TYPEINFO;    
+    node->flags |= AST_VALUE_IS_TYPEINFO;
     return true;
 }
