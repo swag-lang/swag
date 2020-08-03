@@ -287,15 +287,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
         typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     // Is this a const pointer to a typeinfo ?
+    // We need to detect that special kind of pointer to set TYPEINFO_TYPEINFO_PTR.
+    // TYPEINFO_TYPEINFO_PTR is used to do specific testing between pointers (when we compare two typeinfo pointers,
+    // we do not just compare the pointers, but call swag_runtime_comparetype instead)
     auto typeInfo = typeNode->typeInfo;
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if (typePtr->ptrCount == 1 && typePtr->isConst())
+        if (typePtr->finalType->flags & TYPEINFO_STRUCT_TYPEINFO)
         {
-            typePtr->computeScopedName();
-            if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
-                typePtr->flags |= TYPEINFO_TYPEINFO_PTR;
+            SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, "pointer to 'swag.TypeInfo' must be const"}));
+            typePtr->flags |= TYPEINFO_TYPEINFO_PTR;
         }
     }
 

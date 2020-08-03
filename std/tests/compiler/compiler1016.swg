@@ -3,7 +3,7 @@ using swag
 //#[swag.printbc]
 #test
 {
-	ptr := @typeof(*TypeInfo)
+	ptr := @typeof(const *TypeInfo)
     //@print(ptr.name)
-	@assert(ptr.name == "*swag.TypeInfo")
+	@assert(ptr.name == "const *swag.TypeInfo")
 }
