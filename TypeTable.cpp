@@ -10,7 +10,7 @@ TypeTable::TypeTable()
 {
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, bool forceNoScope)
 {
     if (!typeInfo)
     {
@@ -23,7 +23,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, &tmpStorageOffset));
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, &tmpStorageOffset, forceNoScope));
     *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
@@ -166,8 +166,10 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
     return true;
 }
 
-Utf8& TypeTable::getTypeName(TypeInfo* typeInfo)
+Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
 {
+    if(forceNoScope)
+        return typeInfo->name;
     if (!typeInfo->declNode)
         return typeInfo->scopedName;
     if (typeInfo->declNode->kind == AstNodeKind::TypeExpression || typeInfo->declNode->kind == AstNodeKind::TypeLambda)
@@ -175,7 +177,7 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo)
     return typeInfo->scopedName;
 }
 
-bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage)
+bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool forceNoScope)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     switch (typeInfo->kind)
@@ -189,10 +191,11 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     // Already computed
-    typeInfo->computeScopedName();
+    if (!forceNoScope)
+        typeInfo->computeScopedName();
     if (typeInfo->kind != TypeInfoKind::Param)
     {
-        auto it = concreteTypes.find(getTypeName(typeInfo));
+        auto it = concreteTypes.find(getTypeName(typeInfo, forceNoScope));
         if (it != concreteTypes.end())
         {
             *ptrTypeInfo = it->second.first;
@@ -255,7 +258,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    auto& typeName = getTypeName(typeInfo);
+    auto& typeName = getTypeName(typeInfo, forceNoScope);
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
@@ -344,6 +347,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             }
         }
 
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType, true));
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
         break;
     }

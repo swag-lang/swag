@@ -276,6 +276,7 @@ namespace swag
     {
         using base: 	TypeInfo
         parameters:		const [..] TypeInfoParam
+        rawType:		const *TypeInfo
         returnType:		const *TypeInfo
         attributes:	    const [..] TypeInfoAttribute
     }

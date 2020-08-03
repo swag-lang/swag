@@ -163,6 +163,7 @@ struct ConcreteTypeInfoFunc
 {
     ConcreteTypeInfo  base;
     ConcreteSlice     parameters;
+    ConcreteTypeInfo* rawType;
     ConcreteTypeInfo* returnType;
     ConcreteSlice     attributes;
 };
