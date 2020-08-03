@@ -101,6 +101,27 @@ void LanguageSpec::setup()
     keywords["any"]    = TokenId::NativeType;
     keywords["void"]   = TokenId::NativeType;
 
+    keywords["@sizeof"]  = TokenId::IntrinsicSizeOf;
+    keywords["@typeof"]  = TokenId::IntrinsicTypeOf;
+    keywords["@kindof"]  = TokenId::IntrinsicKindOf;
+    keywords["@countof"] = TokenId::IntrinsicCountOf;
+    keywords["@dataof"]  = TokenId::IntrinsicDataOf;
+    keywords["@sliceof"] = TokenId::IntrinsicSliceOf;
+
+    keywords["@index"]      = TokenId::IntrinsicIndex;
+    keywords["@print"]      = TokenId::IntrinsicPrint;
+    keywords["@assert"]     = TokenId::IntrinsicAssert;
+    keywords["@alloc"]      = TokenId::IntrinsicAlloc;
+    keywords["@realloc"]    = TokenId::IntrinsicRealloc;
+    keywords["@free"]       = TokenId::IntrinsicFree;
+    keywords["@memcpy"]     = TokenId::IntrinsicMemCpy;
+    keywords["@memset"]     = TokenId::IntrinsicMemSet;
+    keywords["@memcmp"]     = TokenId::IntrinsicMemCmp;
+    keywords["@getcontext"] = TokenId::IntrinsicGetContext;
+    keywords["@setcontext"] = TokenId::IntrinsicSetContext;
+    keywords["@args"]       = TokenId::IntrinsicArguments;
+    keywords["@isbytecode"] = TokenId::IntrinsicIsByteCode;
+
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
     nativeTypes["u16"]    = g_TypeMgr.typeInfoU16;
@@ -116,31 +137,6 @@ void LanguageSpec::setup()
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
     nativeTypes["any"]    = g_TypeMgr.typeInfoAny;
     nativeTypes["void"]   = g_TypeMgr.typeInfoVoid;
-
-    properties["@sizeof"]  = Property::SizeOf;
-    properties["@typeof"]  = Property::TypeOf;
-    properties["@kindof"]  = Property::KindOf;
-    properties["@countof"] = Property::CountOf;
-    properties["@dataof"]  = Property::DataOf;
-
-    intrinsics["@sizeof"]  = Intrinsic::IntrinsicProp;
-    intrinsics["@countof"] = Intrinsic::IntrinsicProp;
-    intrinsics["@dataof"]  = Intrinsic::IntrinsicProp;
-    intrinsics["@typeof"]  = Intrinsic::IntrinsicProp;
-    intrinsics["@kindof"]  = Intrinsic::IntrinsicProp;
-
-    intrinsics["@print"]      = Intrinsic::IntrinsicPrint;
-    intrinsics["@assert"]     = Intrinsic::IntrinsicAssert;
-    intrinsics["@alloc"]      = Intrinsic::IntrinsicAlloc;
-    intrinsics["@realloc"]    = Intrinsic::IntrinsicRealloc;
-    intrinsics["@free"]       = Intrinsic::IntrinsicFree;
-    intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
-    intrinsics["@memset"]     = Intrinsic::IntrinsicMemSet;
-    intrinsics["@memcmp"]     = Intrinsic::IntrinsicMemCmp;
-    intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
-    intrinsics["@setcontext"] = Intrinsic::IntrinsicSetContext;
-    intrinsics["@args"]       = Intrinsic::IntrinsicArguments;
-    intrinsics["@isbytecode"] = Intrinsic::IntrinsicIsByteCode;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

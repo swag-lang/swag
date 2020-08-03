@@ -315,7 +315,15 @@ namespace Ast
             auto propertyNode = CastAst<AstProperty>(node, AstNodeKind::IntrinsicProp);
             concat.addString(propertyNode->name);
             concat.addChar('(');
-            SWAG_CHECK(output(concat, propertyNode->expression));
+            int idx = 0;
+            for (auto child : node->childs)
+            {
+                if (idx)
+                    CONCAT_FIXED_STR(concat, ",");
+                SWAG_CHECK(output(concat, child));
+                idx++;
+            }
+
             concat.addChar(')');
             break;
         }

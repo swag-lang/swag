@@ -534,8 +534,6 @@ AstNode* AstProperty::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc<AstProperty>();
     newNode->copyFrom(context, this);
 
-    newNode->expression    = findChildRef(expression, newNode);
-    newNode->prop          = prop;
     newNode->typeOfAsType  = typeOfAsType;
     newNode->typeOfAsConst = typeOfAsConst;
 

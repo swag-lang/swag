@@ -142,17 +142,6 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     return false;
 }
 
-bool SyntaxJob::checkIsName(Token& tkn)
-{
-    if (tkn.id != TokenId::Identifier &&
-        tkn.id != TokenId::Intrinsic &&
-        tkn.id != TokenId::KwdInit &&
-        tkn.id != TokenId::KwdDrop &&
-        tkn.id != TokenId::KwdBreak)
-        return syntaxError(tkn, format("missing name instead of '%s'", tkn.text.c_str()));
-    return true;
-}
-
 bool SyntaxJob::eatToken()
 {
     SWAG_CHECK(tokenizer.getToken(token));

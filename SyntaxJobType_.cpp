@@ -226,18 +226,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     node->isRef    = false;
 
     // This is a @typeof
-    if (token.id == TokenId::Intrinsic)
+    if (token.id == TokenId::IntrinsicTypeOf)
     {
-        if (token.text == "@typeof")
-        {
-            AstNode* typeOfNode = nullptr;
-            SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
-            node->isTypeOf = true;
-            auto typeNode  = CastAst<AstProperty>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
-            typeNode->typeOfAsType = true;
-            typeNode->typeOfAsConst = isConst;
-            return true;
-        }
+        AstNode* typeOfNode = nullptr;
+        SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
+        node->isTypeOf          = true;
+        auto typeNode           = CastAst<AstProperty>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
+        typeNode->typeOfAsType  = true;
+        typeNode->typeOfAsConst = isConst;
+        return true;
     }
 
     // Array

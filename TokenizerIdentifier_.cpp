@@ -14,21 +14,11 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         c = getCharNoSeek(offset);
     }
 
-    if (token.text[0] == '@')
-    {
-        if (token.text == "@index")
-            token.id = TokenId::IntrinsicIndex;
-        else
-            token.id = TokenId::Intrinsic;
-    }
+    auto it = g_LangSpec.keywords.find(token.text);
+    if (it != g_LangSpec.keywords.end())
+        token.id = it->second;
     else
-    {
-        auto it = g_LangSpec.keywords.find(token.text);
-        if (it != g_LangSpec.keywords.end())
-            token.id = it->second;
-        else
-            token.id = TokenId::Identifier;
-    }
+        token.id = TokenId::Identifier;
 
     // Special keywords, replace with literal, except in 'docMode'
     switch (token.id)

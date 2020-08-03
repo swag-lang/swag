@@ -1,0 +1,6 @@
+@kindof sur enum functions etc... renvoie le rawtype
+----------------------
+@interfaceof(any)
+@interfaceof(pointer, typeinfo)
+----------------------
+test exhaustif sur 'is' (doit utiliser runtime comparetype())

@@ -14,7 +14,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
-        node->computedValue.reg.b = left->typeInfo == right->typeInfo;
+        node->computedValue.reg.b = swag_runtime_comparetype(left->typeInfo, right->typeInfo);
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {

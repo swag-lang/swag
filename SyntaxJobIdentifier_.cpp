@@ -70,16 +70,20 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     if (result)
         *result = identifierRef;
 
-    if (token.text[0] == '@')
+    switch (token.id)
     {
-        auto it = g_LangSpec.intrinsics.find(token.text);
-        if (it == g_LangSpec.intrinsics.end() || it->second != Intrinsic::IntrinsicProp)
-            SWAG_CHECK(doIdentifier(identifierRef));
-        else
-            SWAG_CHECK(doIntrinsicProp(identifierRef));
-    }
-    else
+    case TokenId::IntrinsicSizeOf:
+    case TokenId::IntrinsicTypeOf:
+    case TokenId::IntrinsicKindOf:
+    case TokenId::IntrinsicCountOf:
+    case TokenId::IntrinsicDataOf:
+    case TokenId::IntrinsicSliceOf:
+        SWAG_CHECK(doIntrinsicProp(identifierRef));
+        break;
+    default:
         SWAG_CHECK(doIdentifier(identifierRef));
+        break;
+    }
 
     while (token.id == TokenId::SymDot)
     {

@@ -31,7 +31,6 @@ struct AstBreakable;
 struct AstInline;
 struct AstStruct;
 struct TypeInfoStruct;
-enum class Property;
 enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -645,9 +644,6 @@ struct AstArrayPointerSlicing : public AstNode
 struct AstProperty : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-
-    AstNode* expression = nullptr;
-    Property prop;
 
     bool typeOfAsType  = false;
     bool typeOfAsConst = false;

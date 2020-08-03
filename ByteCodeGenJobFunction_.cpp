@@ -156,13 +156,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
     auto callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
-    SWAG_ASSERT(!node->name.empty());
-    SWAG_ASSERT(g_LangSpec.intrinsics.find(node->name) != g_LangSpec.intrinsics.end());
-
-    auto intrinsic = g_LangSpec.intrinsics[node->name];
-    switch (intrinsic)
+    switch (node->token.id)
     {
-    case Intrinsic::IntrinsicPrint:
+    case TokenId::IntrinsicPrint:
     {
         auto child0   = callParams->childs[0];
         auto typeInfo = TypeManager::concreteReferenceType(child0->typeInfo);
@@ -195,7 +191,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         break;
     }
-    case Intrinsic::IntrinsicAssert:
+    case TokenId::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
         if (!child0->isConstantTrue())
@@ -203,21 +199,21 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         break;
     }
-    case Intrinsic::IntrinsicAlloc:
+    case TokenId::IntrinsicAlloc:
     {
         auto child0            = callParams->childs.front();
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
         break;
     }
-    case Intrinsic::IntrinsicFree:
+    case TokenId::IntrinsicFree:
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
         freeRegisterRC(context, child0);
         break;
     }
-    case Intrinsic::IntrinsicRealloc:
+    case TokenId::IntrinsicRealloc:
     {
         auto child0            = callParams->childs.front();
         auto child1            = callParams->childs.back();
@@ -225,7 +221,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         break;
     }
-    case Intrinsic::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemCpy:
     {
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
@@ -238,7 +234,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
-    case Intrinsic::IntrinsicMemSet:
+    case TokenId::IntrinsicMemSet:
     {
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
@@ -250,7 +246,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
-    case Intrinsic::IntrinsicMemCmp:
+    case TokenId::IntrinsicMemCmp:
     {
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
@@ -264,7 +260,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
-    case Intrinsic::IntrinsicGetContext:
+    case TokenId::IntrinsicGetContext:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         SWAG_ASSERT(node->identifierRef == node->parent);
@@ -273,20 +269,20 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
-    case Intrinsic::IntrinsicSetContext:
+    case TokenId::IntrinsicSetContext:
     {
         auto childDest = callParams->childs[0];
         emitInstruction(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
         freeRegisterRC(context, childDest);
     }
-    case Intrinsic::IntrinsicArguments:
+    case TokenId::IntrinsicArguments:
     {
         reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
         node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
-    case Intrinsic::IntrinsicIsByteCode:
+    case TokenId::IntrinsicIsByteCode:
     {
         node->resultRegisterRC                = reserveRegisterRC(context);
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;

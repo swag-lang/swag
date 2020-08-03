@@ -311,11 +311,19 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymLeftParen)
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
 
-        SWAG_CHECK(checkIsName(token));
-        SWAG_VERIFY(token.id != TokenId::Intrinsic || sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
-        SWAG_VERIFY(token.text != "drop", syntaxError(token, "a function cannot be named 'drop' (reserved by the compiler)"));
+        isIntrinsic = token.text[0] == '@';
+        if (isIntrinsic)
+            SWAG_VERIFY(sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
+        else
+        {
+            if (token.id != TokenId::Identifier &&
+                token.id != TokenId::KwdInit &&
+                token.id != TokenId::KwdDrop &&
+                token.id != TokenId::KwdBreak)
+                return syntaxError(token, format("missing name instead of '%s'", token.text.c_str()));
+            SWAG_VERIFY(token.text != "drop", syntaxError(token, "a function cannot be named 'drop' (reserved by the compiler)"));
+        }
 
-        isIntrinsic = token.id == TokenId::Intrinsic;
         funcNode->inheritTokenName(token);
     }
 

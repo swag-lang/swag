@@ -477,7 +477,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Be sure the call is valid
-        if ((identifier->token.id != TokenId::Intrinsic) && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+        if ((identifier->name[0] != '@') && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
@@ -548,7 +548,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_PURE;
         }
 
-        if (identifier->token.id == TokenId::Intrinsic)
+        if (identifier->name[0] == '@')
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
@@ -669,7 +669,7 @@ anotherTry:
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
                     grandParent->kind == AstNodeKind::UsingAlias ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->prop == Property::TypeOf))
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf))
                 {
                     if (callParameters)
                         return context->report({callParameters, "invalid function call (you should remove parenthesis)"});

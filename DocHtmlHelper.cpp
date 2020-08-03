@@ -87,8 +87,25 @@ namespace DocHtmlHelper
                 result += token.text;
                 result += "</span>";
                 break;
-            case TokenId::Intrinsic:
+            case TokenId::IntrinsicSizeOf:
+            case TokenId::IntrinsicTypeOf:
+            case TokenId::IntrinsicKindOf:
+            case TokenId::IntrinsicCountOf:
+            case TokenId::IntrinsicDataOf:
+            case TokenId::IntrinsicSliceOf:
             case TokenId::IntrinsicIndex:
+            case TokenId::IntrinsicPrint:
+            case TokenId::IntrinsicAssert:
+            case TokenId::IntrinsicAlloc:
+            case TokenId::IntrinsicRealloc:
+            case TokenId::IntrinsicFree:
+            case TokenId::IntrinsicMemCpy:
+            case TokenId::IntrinsicMemSet:
+            case TokenId::IntrinsicMemCmp:
+            case TokenId::IntrinsicGetContext:
+            case TokenId::IntrinsicSetContext:
+            case TokenId::IntrinsicArguments:
+            case TokenId::IntrinsicIsByteCode:
                 result += "<span class=\"intrinsic\">";
                 result += token.text;
                 result += "</span>";

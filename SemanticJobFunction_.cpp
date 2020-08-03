@@ -221,7 +221,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = true;
     if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (node->token.id == TokenId::Intrinsic)
+    if (node->name[0] == '@')
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
@@ -460,7 +460,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (child->kind == AstNodeKind::ExpressionList)
     {
         auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-        if(typeList->kind == TypeInfoKind::TypeListArray)
+        if (typeList->kind == TypeInfoKind::TypeListArray)
             node->typeInfo->setConst();
     }
 

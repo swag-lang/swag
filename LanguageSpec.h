@@ -5,42 +5,6 @@
 #include "Utf8.h"
 struct TypeInfoNative;
 
-enum class Intrisic
-{
-    None = 0,
-    Print,
-    Assert,
-    Prop,
-};
-
-enum class Property
-{
-    Invalid,
-    SizeOf,
-    TypeOf,
-    CountOf,
-    DataOf,
-    KindOf,
-};
-
-enum class Intrinsic
-{
-    IntrinsicPrint,
-    IntrinsicAssert,
-    IntrinsicProp,
-    IntrinsicAlloc,
-    IntrinsicRealloc,
-    IntrinsicFree,
-    IntrinsicMemCpy,
-    IntrinsicMemSet,
-    IntrinsicMemCmp,
-    IntrinsicGetContext,
-    IntrinsicSetContext,
-    IntrinsicArguments,
-    IntrinsicTarget,
-    IntrinsicIsByteCode,
-};
-
 struct LanguageSpec
 {
     void   setup();
@@ -48,8 +12,6 @@ struct LanguageSpec
 
     unordered_map<Utf8Crc, TokenId, Utf8CrcKeyHash, Utf8CrcKeyEqual>         keywords;
     unordered_map<Utf8Crc, TypeInfoNative*, Utf8CrcKeyHash, Utf8CrcKeyEqual> nativeTypes;
-    unordered_map<Utf8Crc, Property, Utf8CrcKeyHash, Utf8CrcKeyEqual>        properties;
-    unordered_map<Utf8Crc, Intrinsic, Utf8CrcKeyHash, Utf8CrcKeyEqual>       intrinsics;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

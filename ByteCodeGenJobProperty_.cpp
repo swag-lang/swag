@@ -7,7 +7,7 @@
 bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 {
     auto node                      = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    node->resultRegisterRC         = node->expression->resultRegisterRC[1];
+    node->resultRegisterRC         = node->childs.front()->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
     return true;
 }
@@ -43,7 +43,7 @@ bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
+    auto typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
 
     if (node->resolvedUserOpSymbolName)
     {
@@ -56,7 +56,7 @@ bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Array)
     {
-        node->resultRegisterRC         = node->expression->resultRegisterRC[0];
+        node->resultRegisterRC         = node->childs.front()->resultRegisterRC[0];
         node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }

@@ -8,6 +8,11 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
+bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    return false;
+}
+
 bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::String))
@@ -169,7 +174,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
 bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
 {
     auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr = node->expression;
+    auto expr = node->childs.front();
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
     expr->flags |= AST_NO_BYTECODE;
@@ -206,22 +211,22 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
-    auto  expr       = node->expression;
+    auto  expr       = node->childs.front();
 
-    switch (node->prop)
+    switch (node->token.id)
     {
-    case Property::SizeOf:
+    case TokenId::IntrinsicSizeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->setFlagsValueIsComputed();
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
-    case Property::TypeOf:
+    case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(resolveTypeOfProperty(context));
         return true;
 
-    case Property::KindOf:
+    case TokenId::IntrinsicKindOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
         SWAG_VERIFY(!(expr->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({expr, "'@kindof' cannot be used on a tuple type"}));
         SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->report({expr, format("'@kindof' can only be used with type 'any' ('%s' provided)", expr->typeInfo->name.c_str())}));
@@ -235,7 +240,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
 
-    case Property::CountOf:
+    case TokenId::IntrinsicCountOf:
         if (expr->typeInfo->kind == TypeInfoKind::Enum)
         {
             auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
@@ -250,9 +255,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(resolveCountOfProperty(context, node, expr->typeInfo));
         break;
 
-    case Property::DataOf:
+    case TokenId::IntrinsicDataOf:
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveDataOfProperty(context, node, expr->typeInfo));
+        break;
+
+    case TokenId::IntrinsicSliceOf:
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(resolveSliceOfProperty(context, node, expr->typeInfo));
         break;
     }
 

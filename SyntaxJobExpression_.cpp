@@ -80,14 +80,24 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     auto node         = Ast::newNode<AstProperty>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIntrinsicProperty;
     node->inheritTokenName(token);
-    node->prop = g_LangSpec.properties[node->name];
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
-    SWAG_CHECK(doExpression(node, &node->expression));
+
+    if (node->token.id == TokenId::IntrinsicSliceOf)
+    {
+        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doExpression(node));
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(node));
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
@@ -137,7 +147,18 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIndex(parent, result));
         break;
 
-    case TokenId::Intrinsic:
+    case TokenId::IntrinsicSizeOf:
+    case TokenId::IntrinsicTypeOf:
+    case TokenId::IntrinsicKindOf:
+    case TokenId::IntrinsicCountOf:
+    case TokenId::IntrinsicDataOf:
+    case TokenId::IntrinsicSliceOf:
+    case TokenId::IntrinsicAlloc:
+    case TokenId::IntrinsicRealloc:
+    case TokenId::IntrinsicMemCmp:
+    case TokenId::IntrinsicGetContext:
+    case TokenId::IntrinsicArguments:
+    case TokenId::IntrinsicIsByteCode:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -640,10 +661,15 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::Intrinsic:
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicFree:
+    case TokenId::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemSet:
+    case TokenId::IntrinsicSetContext:
+    case TokenId::IntrinsicGetContext:
         SWAG_CHECK(doIdentifierRef(nullptr, result));
         return true;
-
     case TokenId::SymLeftParen:
     {
         auto multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);

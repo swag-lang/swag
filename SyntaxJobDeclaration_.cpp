@@ -335,7 +335,13 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::SymBackTick:
     case TokenId::Identifier:
-    case TokenId::Intrinsic:
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicFree:
+    case TokenId::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemSet:
+    case TokenId::IntrinsicSetContext:
+    case TokenId::IntrinsicGetContext:
     case TokenId::SymLeftParen:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;

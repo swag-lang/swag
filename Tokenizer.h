@@ -98,8 +98,6 @@ enum class TokenId
     CompilerMacro,
     CompilerForeignLib,
 
-    Intrinsic,
-    IntrinsicIndex,
     DocComment,
 
     KwdVar,
@@ -148,6 +146,27 @@ enum class TokenId
     KwdDeRef,
     KwdCode,
     KwdLabel,
+
+    IntrinsicSizeOf,
+    IntrinsicTypeOf,
+    IntrinsicKindOf,
+    IntrinsicCountOf,
+    IntrinsicDataOf,
+    IntrinsicSliceOf,
+    IntrinsicIndex,
+
+    IntrinsicPrint,
+    IntrinsicAssert,
+    IntrinsicAlloc,
+    IntrinsicRealloc,
+    IntrinsicFree,
+    IntrinsicMemCpy,
+    IntrinsicMemSet,
+    IntrinsicMemCmp,
+    IntrinsicGetContext,
+    IntrinsicSetContext,
+    IntrinsicArguments,
+    IntrinsicIsByteCode,
 
     Identifier,
     LiteralNumber,
