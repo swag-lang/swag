@@ -44,6 +44,24 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     return bucket.totalCountBefore;
 }
 
+uint32_t DataSegment::offset(uint8_t* location)
+{
+    scoped_lock lock(mutex);
+    for (int i = 0; i < buckets.size(); i++)
+    {
+        auto bucket = &buckets[i];
+        if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
+        {
+            auto offset = (uint32_t) (location - bucket->buffer);
+            offset += bucket->totalCountBefore;
+            return offset;
+        }
+    }
+
+    SWAG_ASSERT(false);
+    return 0;
+}
+
 uint8_t* DataSegment::address(uint32_t location)
 {
     scoped_lock lock(mutex);

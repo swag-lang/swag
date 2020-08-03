@@ -6,6 +6,7 @@
 #include "SymTable.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Workspace.h"
 
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
@@ -685,8 +686,16 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     ptr += overload->storageOffset;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
+    if (concreteType->kind == TypeInfoKind::Pointer)
+    {
+        node->typeInfo              = overload->typeInfo;
+        node->computedValue.reg.u32 = sourceFile->module->constantSegment.offset(*(uint8_t**) ptr);
+        node->flags |= AST_VALUE_IS_TYPEINFO;
+    }
+    else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
+    {
         return false;
+    }
 
     node->setFlagsValueIsComputed();
     return true;

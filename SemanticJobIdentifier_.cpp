@@ -189,7 +189,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         symbol->kind == SymbolKind::Variable)
     {
         if (derefTypeInfo(context, parent, overload))
+        {
+            parent->previousResolvedNode = context->node;
             return true;
+        }
+
         identifier->flags |= AST_R_VALUE;
     }
 
