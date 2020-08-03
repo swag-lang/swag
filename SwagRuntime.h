@@ -23,3 +23,168 @@ static uint32_t SWAG_ASSERT_DEVMODE = 0x00000001;
 static uint32_t SWAG_ASSERT_RETURN  = 0x00000002;
 
 extern "C" void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags);
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+enum class TypeInfoKind
+{
+    Invalid,
+    Native,
+    Namespace,
+    Enum,
+    FuncAttr,
+    Param,
+    Lambda,
+    Pointer,
+    Reference,
+    Array,
+    Slice,
+    TypeListTuple,
+    TypeListArray,
+    Variadic,
+    TypedVariadic,
+    Struct,
+    Generic,
+    Alias,
+    Code,
+    Interface,
+    Count,
+};
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+enum class NativeTypeKind
+{
+    Void,
+    S8,
+    S16,
+    S32,
+    S64,
+    U8,
+    U16,
+    U32,
+    U64,
+    F32,
+    F64,
+    Bool,
+    Char,
+    String,
+    Any,
+    Undefined,
+    Count,
+};
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match bootstrap.swg
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+struct ConcreteStringSlice
+{
+    void*    buffer;
+    uint64_t count;
+};
+
+struct ConcreteTypeInfo
+{
+    ConcreteStringSlice name;
+    TypeInfoKind        kind;
+    uint32_t            sizeOf;
+};
+
+struct ConcreteAny
+{
+    void*             value;
+    ConcreteTypeInfo* type;
+};
+
+struct ConcreteAttributeParameter
+{
+    ConcreteStringSlice name;
+    ConcreteAny         value;
+};
+
+struct ConcreteAttribute
+{
+    ConcreteStringSlice name;
+    ConcreteStringSlice params;
+};
+
+struct ConcreteTypeInfoNative
+{
+    ConcreteTypeInfo base;
+    NativeTypeKind   nativeKind;
+};
+
+struct ConcreteTypeInfoPointer
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* finalType;
+    ConcreteTypeInfo* pointedType;
+    uint32_t          ptrCount;
+};
+
+struct ConcreteTypeInfoReference
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+};
+
+struct ConcreteTypeInfoParam
+{
+    ConcreteStringSlice name;
+    ConcreteTypeInfo*   pointedType;
+    void*               value;
+    ConcreteStringSlice attributes;
+    uint32_t            offsetOf;
+    uint32_t            padding;
+};
+
+struct ConcreteTypeInfoStruct
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice fields;
+    ConcreteStringSlice methods;
+    ConcreteStringSlice interfaces;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoList
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice types;
+};
+
+struct ConcreteTypeInfoFunc
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice parameters;
+    ConcreteTypeInfo*   returnType;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoEnum
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice values;
+    ConcreteTypeInfo*   rawType;
+    ConcreteStringSlice attributes;
+};
+
+struct ConcreteTypeInfoArray
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo* finalType;
+    uint32_t          count;
+    uint32_t          totalCount;
+};
+
+struct ConcreteTypeInfoSlice
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+};

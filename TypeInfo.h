@@ -5,6 +5,8 @@
 #include "Register.h"
 #include "Attribute.h"
 #include "VectorNative.h"
+#include "SwagRuntime.h"
+
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
@@ -15,60 +17,6 @@ struct ByteCode;
 struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-enum class TypeInfoKind
-{
-    Invalid,
-    Native,
-    Namespace,
-    Enum,
-    FuncAttr,
-    Param,
-    Lambda,
-    Pointer,
-    Reference,
-    Array,
-    Slice,
-    TypeListTuple,
-    TypeListArray,
-    Variadic,
-    TypedVariadic,
-    Struct,
-    Generic,
-    Alias,
-    Code,
-    Interface,
-    Count,
-};
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-enum class NativeTypeKind
-{
-    Void,
-    S8,
-    S16,
-    S32,
-    S64,
-    U8,
-    U16,
-    U32,
-    U64,
-    F32,
-    F64,
-    Bool,
-    Char,
-    String,
-    Any,
-    Undefined,
-    Count,
-};
 
 template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
