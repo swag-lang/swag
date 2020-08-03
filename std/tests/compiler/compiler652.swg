@@ -1,6 +1,4 @@
-#module compiler652
-
-
+/*#module compiler652
 
 //#[swag.printbc]
 #unittest error
@@ -8,3 +6,4 @@
 {
 	pair := s32
 }
+*/

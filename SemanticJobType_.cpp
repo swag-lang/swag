@@ -1,20 +1,16 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
-#include "SymTable.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Workspace.h"
-#include "Diagnostic.h"
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     if (node->flags & AST_R_VALUE)
         return true;
 
-    if (node->kind == AstNodeKind::TypeExpression)
+    if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
         return context->report({node, "cannot reference a type expression"});
     if (node->resolvedSymbolName)
         return context->report({node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});

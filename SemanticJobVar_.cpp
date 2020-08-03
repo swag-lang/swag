@@ -529,7 +529,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             genericType = true;
         else if (!(node->flags & AST_FROM_GENERIC))
         {
-            SWAG_CHECK(checkIsConcrete(context, node->assignment));
+            SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
+            if (context->result == ContextResult::Pending)
+                return true;
             if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
