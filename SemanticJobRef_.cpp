@@ -447,7 +447,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u32 * typePtr->finalType->sizeOf;
-                if (derefToValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
+                if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
         }
@@ -592,7 +592,7 @@ bool SemanticJob::resolveDrop(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::derefToValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr)
+bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr)
 {
     if (kind == TypeInfoKind::Native)
     {
@@ -658,7 +658,7 @@ bool SemanticJob::derefToValue(SemanticContext* context, AstNode* node, TypeInfo
             if (anyTypeInfo->kind == TypeInfoKind::Native)
             {
                 ConcreteTypeInfoNative* anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
-                return derefToValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
+                return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
             }
 
             return false;
@@ -685,8 +685,8 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     ptr += overload->storageOffset;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (!derefToValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
-        return internalError(context, "derefTypeInfo, invalid type", node);
+    if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
+        return false;
 
     node->setFlagsValueIsComputed();
     return true;

@@ -76,7 +76,7 @@ struct SemanticJob : public Job
     static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
     static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, vector<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    static bool derefToValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
+    static bool derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
