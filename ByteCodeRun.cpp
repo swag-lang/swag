@@ -774,7 +774,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicPrintString:
     {
         g_Log.lock();
-        swag_runtime_print_n((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+        swag_runtime_print_n(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
         g_Log.unlock();
         break;
     }
@@ -844,13 +844,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqualString:
     {
-        if (!registersRC[ip->a.u32].pointer || !registersRC[ip->b.u32].pointer)
-            registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer == registersRC[ip->b.u32].pointer;
-        else
-        {
-            auto length              = registersRC[ip->c.u32].u32;
-            registersRC[ip->c.u32].b = !strncmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer, length);
-        }
+        registersRC[ip->c.u32].b = swag_runtime_strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        break;
+    }
+    case ByteCodeOp::CompareOpEqualTypeInfo:
+    {
+        registersRC[ip->c.u32].b = swag_runtime_comparetype(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
         break;
     }
     case ByteCodeOp::CloneString:

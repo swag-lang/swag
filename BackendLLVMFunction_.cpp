@@ -2214,7 +2214,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualString:
         {
-            //concat.addStringFormat("r[%u].b = swag_runtime_strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("r[%u].b = swag_runtime_strcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
@@ -2222,6 +2222,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             r1      = builder.CreateLoad(r1);
             auto rs = builder.CreateLoad(r2);
             builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_strcmp"), {r0, r1, rs}), TO_PTR_I8(r2));
+            break;
+        }
+        case ByteCodeOp::CompareOpEqualTypeInfo:
+        {
+            //concat.addStringFormat("r[%u].b = swag_runtime_comparetype(r[%u].pointer, r[%u].pointer);", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateLoad(r1);
+            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_comparetype"), {r0, r1}), r2);
             break;
         }
 
@@ -2366,7 +2377,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicPrintString:
         {
-            //swag_runtime_print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
+            //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});

@@ -79,7 +79,7 @@ static constexpr const char* g_SwagRuntime = R"(
 #define SWAG_EXPORT
 #endif
 
-void* swag_runtime_loadDynamicLibrary(const char*);
+void* swag_runtime_loadDynamicLibrary(const void*);
 __u32_t swag_runtime_tlsAlloc();
 void swag_runtime_tlsSetValue(__u32_t,void*);
 void*swag_runtime_tlsGetValue(__u32_t);
@@ -90,14 +90,15 @@ void*swag_runtime_memcpy(void*,const void*,__u64_t);
 void*swag_runtime_memset(void*,__s32_t,__u64_t);
 __s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
 void swag_runtime_exit(__s32_t);
-void swag_runtime_print_n(const char*,int);
-void swag_runtime_print(const char*);
+void swag_runtime_print_n(const void*,int);
+void swag_runtime_print(const void*);
 void swag_runtime_print_i64(__s64_t);
 void swag_runtime_print_f64(__f64_t);
-void swag_runtime_assert(__b_t,const char*,int,const char*,__u32_t);
-__b_t swag_runtime_strcmp(const char*,const char*,__u32_t);
-__s32_t swag_runtime_strlen(const char*);
-void swag_runtime_convertArgcArgv(void*,int,char*[]);
+void swag_runtime_assert(__b_t,const void*,int,const void*,__u32_t);
+__b_t swag_runtime_strcmp(const void*,const void*,__u32_t);
+__s32_t swag_runtime_strlen(const void*);
+void swag_runtime_convertArgcArgv(void*,int,void*[]);
+__b_t swag_runtime_comparetype(const void*,const void*);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)

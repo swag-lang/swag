@@ -91,16 +91,17 @@ extern "C" void swag_runtime_exit(int32_t exitCode)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" int32_t swag_runtime_strlen(const char* message)
+extern "C" int32_t swag_runtime_strlen(const void* message)
 {
-    int32_t len = 0;
-    while (*message++)
+    const char* msg = (const char*) message;
+    int32_t     len = 0;
+    while (*msg++)
         len++;
     return len;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t num)
+extern "C" bool swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num)
 {
     if (!str1 || !str2)
         return str1 == str2;
@@ -108,7 +109,7 @@ extern "C" bool swag_runtime_strcmp(const char* str1, const char* str2, uint32_t
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print_n(const char* message, int len)
+extern "C" void swag_runtime_print_n(const void* message, int len)
 {
     if (!message)
     {
@@ -122,7 +123,7 @@ extern "C" void swag_runtime_print_n(const char* message, int len)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print(const char* message)
+extern "C" void swag_runtime_print(const void* message)
 {
     if (!message)
         message = "<null>";
@@ -146,11 +147,12 @@ extern "C" void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_assert(bool expr, const char* file, int line, const char* msg, uint32_t flags)
+extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* message, uint32_t flags)
 {
     if (expr)
         return;
 
+    const char* msg = (const char*) message;
     swag_runtime_print("error: ");
     swag_runtime_print(file);
     swag_runtime_print(":");
@@ -175,10 +177,10 @@ extern "C" void swag_runtime_assert(bool expr, const char* file, int line, const
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void* swag_runtime_loadDynamicLibrary(const char* name)
+extern "C" void* swag_runtime_loadDynamicLibrary(const void* name)
 {
 #ifdef _WIN32
-    return LoadLibraryA(name);
+    return LoadLibraryA((const char*) name);
 #endif
 }
 
@@ -208,7 +210,7 @@ extern "C" void* swag_runtime_tlsGetValue(uint32_t id)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
+extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {
     uint64_t argumentsStr[64];
     swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments", 0);
@@ -222,4 +224,22 @@ extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, char* argv[])
     void** p = (void**) dest;
     p[0]     = &argumentsStr[0];
     p[1]     = (void*) (uint64_t) argc;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
+{
+    if (type1 == type2)
+        return true;
+    if (!type1 && !type2)
+        return true;
+    if (!type1 || !type2)
+        return false;
+
+    auto ctype1 = (ConcreteTypeInfo*) type1;
+    auto ctype2 = (ConcreteTypeInfo*) type2;
+    if (ctype1->name.count != ctype2->name.count)
+        return false;
+
+    return swag_runtime_strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
 }

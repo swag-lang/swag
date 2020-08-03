@@ -22,7 +22,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "swag_runtime_tlsSetValue(__process_infos.contextTlsId,__process_infos.defaultContext);\n");
 
     // Arguments
-    CONCAT_FIXED_STR(bufferC, "swag_runtime_convertArgcArgv(&__process_infos.arguments,argc,argv);\n");
+    CONCAT_FIXED_STR(bufferC, "swag_runtime_convertArgcArgv(&__process_infos.arguments,argc,(void**)argv);\n");
 
     // Call to global init of this module, and dependencies
     bufferC.addStringFormat("%s_globalInit(&__process_infos);\n", module->nameDown.c_str());

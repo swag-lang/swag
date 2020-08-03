@@ -1375,7 +1375,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=(((void**)r[%u].p)[0]==((void**)r[%u].p)[0])&&(((void**)r[%u].p)[1]==((void**)r[%u].p)[1]);", ip->c.u32, ip->a.u32, ip->b.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::CompareOpEqualString:
-            concat.addStringFormat("r[%u].b=swag_runtime_strcmp((const char*)r[%u].p,(const char*)r[%u].p,r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("r[%u].b=swag_runtime_strcmp(r[%u].p,r[%u].p,r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpEqualTypeInfo:
+            concat.addStringFormat("r[%u].b=swag_runtime_comparetype(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::BinOpAnd:
@@ -1457,7 +1460,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            concat.addStringFormat("swag_runtime_print_n((const char*)r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("swag_runtime_print_n(r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::IntrinsicAssert:
