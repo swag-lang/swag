@@ -191,6 +191,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 
+    SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, right));
+
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
     {
@@ -238,9 +241,6 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         }
     }
-
-    SWAG_CHECK(checkIsConcrete(context, left));
-    SWAG_CHECK(checkIsConcrete(context, right));
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);

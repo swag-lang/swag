@@ -2,7 +2,6 @@
 #include "TypeTable.h"
 #include "SemanticJob.h"
 #include "Workspace.h"
-#include "Allocator.h"
 #include "ThreadManager.h"
 #include "TypeTableJob.h"
 #include "TypeManager.h"

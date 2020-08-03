@@ -247,7 +247,7 @@ struct AstNode
     {
         if (!from)
             return;
-        inheritOrFlag(from, AST_VALUE_COMPUTED);
+        inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
         if (flags & AST_VALUE_COMPUTED)
         {
             flags |= AST_CONST_EXPR | AST_PURE;

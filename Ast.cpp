@@ -304,7 +304,7 @@ namespace Ast
     AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstTypeExpression* node = Ast::newNode<AstTypeExpression>(syntaxJob, AstNodeKind::TypeExpression, sourceFile, parent);
-        node->semanticFct       = SemanticJob::resolveTypeExpression;
+        node->semanticFct       = SemanticJob::resolveType;
         return node;
     }
 

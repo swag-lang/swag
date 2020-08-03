@@ -168,10 +168,8 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
 
 bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
 {
-    auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  expr       = node->expression;
+    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr = node->expression;
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
     expr->flags |= AST_NO_BYTECODE;
@@ -189,14 +187,14 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
             node->typeInfo = expr->typeInfo;
         }
     }
+
+    // A @typeof to get a typeinfo
     else
     {
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
-        typeTable.waitForTypeTableJobs(context->job);
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->setFlagsValueIsComputed();
-        node->flags |= AST_VALUE_IS_TYPEINFO;
+        node->inheritComputedValue(expr);
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
     }
 

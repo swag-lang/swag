@@ -113,7 +113,8 @@ struct SemanticJob : public Job
     static bool resolveUnaryOp(SemanticContext* context);
     static void forceConstType(SemanticContext* context, AstTypeExpression* node);
     static void forceConstNode(SemanticContext* context, AstNode* node);
-    static bool resolveTypeExpression(SemanticContext* context);
+    static bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo);
+    static bool resolveType(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
     static bool resolveVarDeclAfterAssign(SemanticContext* context);
     static bool convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);

@@ -92,7 +92,7 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
     }
 }
 
-bool SemanticJob::resolveTypeExpression(SemanticContext* context)
+bool SemanticJob::resolveType(SemanticContext* context)
 {
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
@@ -440,5 +440,19 @@ bool SemanticJob::resolveUserCast(SemanticContext* context)
     node->parent->typeInfo                     = node->typeInfo;
     node->parent->resolvedUserOpSymbolName     = node->resolvedUserOpSymbolName;
     node->parent->resolvedUserOpSymbolOverload = node->resolvedUserOpSymbolOverload;
+    return true;
+}
+
+bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo)
+{
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, resultTypeInfo, &node->computedValue.reg.u32));
+    typeTable.waitForTypeTableJobs(context->job);
+    if (context->result != ContextResult::Done)
+        return true;
+    node->setFlagsValueIsComputed();
+    node->flags |= AST_VALUE_IS_TYPEINFO;
     return true;
 }
