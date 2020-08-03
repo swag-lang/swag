@@ -240,6 +240,6 @@ extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
     auto ctype2 = (ConcreteTypeInfo*) type2;
     if (ctype1->name.count != ctype2->name.count)
         return false;
-
+    
     return swag_runtime_strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
 }
