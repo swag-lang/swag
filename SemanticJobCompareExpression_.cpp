@@ -186,13 +186,17 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
+    SWAG_CHECK(checkIsConcreteOrType(context, left));
+    if (context->result != ContextResult::Done)
+        return true;
+    SWAG_CHECK(checkIsConcreteOrType(context, right));
+    if (context->result != ContextResult::Done)
+        return true;
+
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
-
-    SWAG_CHECK(checkIsConcrete(context, left));
-    SWAG_CHECK(checkIsConcrete(context, right));
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)

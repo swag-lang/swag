@@ -22,6 +22,20 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     return true;
 }
 
+bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
+{
+    if (node->flags & AST_R_VALUE)
+        return true;
+
+    if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
+    {
+        SWAG_CHECK(resolveTypeAsExpression(context, node, &node->typeInfo));
+        return true;
+    }
+
+    return checkIsConcrete(context, node);
+}
+
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);

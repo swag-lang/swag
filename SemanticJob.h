@@ -96,6 +96,7 @@ struct SemanticJob : public Job
     static bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
+    static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
