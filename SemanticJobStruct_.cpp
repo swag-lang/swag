@@ -327,7 +327,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         // Using can only be used on a structure
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct)
-            return context->report({child, format("'using' can only be used on a structure type ('%s' provided)", child->typeInfo->name.c_str())});
+            return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->name.c_str())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
