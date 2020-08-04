@@ -1,10 +1,10 @@
-#module compiler1844
+#module compiler1845
 #unittest error
 
 //#[swag.printbc]
 #test
 {
-    var ptr: *u8
+    var ptr: func()
     #[swag.safety(true)]
-    ptr[0] = 0
+    ptr()
 }

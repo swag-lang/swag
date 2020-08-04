@@ -621,9 +621,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         }
     }
 
-    // Free all registers now that the call can really be done
-    freeRegisterRC(context, toFree);
-
     if (foreign)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
@@ -641,9 +638,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
+        emitSafetyNullPointer(context, varNodeRegisters);
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }
+
+    // Free all registers now that the call can really be done
+    freeRegisterRC(context, toFree);
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
