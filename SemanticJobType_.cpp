@@ -270,7 +270,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
     {
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
-        ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (typeNode->isConst)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);

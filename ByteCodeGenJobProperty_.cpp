@@ -4,6 +4,15 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
+bool ByteCodeGenJob::emitSliceOfProperty(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+    transformResultToLinear2(context, node);
+    return true;
+}
+
 bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 {
     auto node                      = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);

@@ -4,3 +4,18 @@
 @interfaceof(pointer, typeinfo)
 ----------------------
 test exhaustif sur 'is' (doit utiliser runtime comparetype())
+----------------------
+remplacer typealias par using ?
+----------------------
+struct Point2
+{
+    using R = s32
+
+    x, y: s32
+}
+
+//#[swag.printbc]
+func(T) norm(vec: T)-> @typeof(T.R)
+{
+
+}

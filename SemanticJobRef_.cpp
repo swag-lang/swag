@@ -101,7 +101,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
-        ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (typeInfoArray->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->computeName();
@@ -123,7 +122,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
-        ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (typeInfoPointer->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->computeName();

@@ -417,7 +417,8 @@ struct TypeInfoSlice : public TypeInfo
 {
     TypeInfoSlice()
     {
-        kind = TypeInfoKind::Slice;
+        kind   = TypeInfoKind::Slice;
+        sizeOf = 2 * sizeof(void*);
     }
 
     void      computeName() override;

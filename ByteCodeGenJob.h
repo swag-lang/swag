@@ -234,6 +234,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountOfProperty(ByteCodeGenContext* context);
     static bool emitDataOfProperty(ByteCodeGenContext* context);
     static bool emitKindOfProperty(ByteCodeGenContext* context);
+    static bool emitSliceOfProperty(ByteCodeGenContext* context);
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);

@@ -7,10 +7,35 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "ByteCode.h"
 
 bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return false;
+    auto first  = node->childs.front();
+    auto second = node->childs.back();
+
+    // Must start with a pointer of the same type as the slice
+    if (first->typeInfo->kind != TypeInfoKind::Pointer)
+        return context->report({node, "'@sliceof' must have a pointer as a first parameter"});
+
+    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if(ptrPointer->ptrCount != 1)
+        return context->report({ node, "'@sliceof' must have a one dimension pointer as a first parameter" });
+
+    // Must end with an U32, which is the slice count
+    if (!TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+        return context->report({node, "'@sliceof' must have an 'u32' as a second parameter"});
+
+    // Create slice type
+    auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+    ptrSlice->pointedType = ptrPointer->finalType;
+    if (ptrPointer->isConst())
+        ptrSlice->flags |= TYPEINFO_CONST;
+    ptrSlice->computeName();
+    node->typeInfo = ptrSlice;
+
+    node->byteCodeFct = ByteCodeGenJob::emitSliceOfProperty;
+    return true;
 }
 
 bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
