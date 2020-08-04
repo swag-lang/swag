@@ -325,6 +325,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
+        // Using can only be used on a structure
+        if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct)
+            return context->report({child, format("'using' can only be used on a structure type ('%s' provided)", child->typeInfo->name.c_str())});
+
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
