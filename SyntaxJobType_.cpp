@@ -244,7 +244,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     node->isRef    = false;
 
     // This is a @typeof
-    if (token.id == TokenId::IntrinsicTypeOf)
+    if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
     {
         AstNode* typeOfNode = nullptr;
         SWAG_CHECK(doIdentifierRef(node, &typeOfNode));

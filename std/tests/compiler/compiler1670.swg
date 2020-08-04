@@ -1,8 +1,5 @@
-#module compiler1670
-#unittest error
-
-#run
+#test
 {
     var x: [2] s32
-    @print(@kindof(x[0]).name)
+    @assert(@kindof(x[0]).name == "s32")
 }

@@ -1,6 +1,3 @@
-#module compiler1710
-#unittest error
-
 #test
 {
     var str = "string"

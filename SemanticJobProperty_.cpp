@@ -15,8 +15,8 @@ bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node
         return context->report({node, "'@sliceof' must have a pointer as a first parameter"});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if(ptrPointer->ptrCount != 1)
-        return context->report({ node, "'@sliceof' must have a one dimension pointer as a first parameter" });
+    if (ptrPointer->ptrCount != 1)
+        return context->report({node, "'@sliceof' must have a one dimension pointer as a first parameter"});
 
     // Must end with an U32, which is the slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, second->typeInfo, nullptr, second));
@@ -191,25 +191,57 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
+bool SemanticJob::resolveKindOfProperty(SemanticContext* context)
 {
-    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr = node->childs.front();
+    auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto  expr       = node->childs.front();
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-    expr->flags |= AST_NO_BYTECODE;
+
+    // Will be runtime for an 'any' type
+    if (expr->typeInfo->isNative(NativeTypeKind::Any))
+    {
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
+        typeTable.waitForTypeTableJobs(context->job);
+        if (context->result != ContextResult::Done)
+            return true;
+        node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;
+        node->flags |= AST_R_VALUE;
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        return true;
+    }
+
+    // For a function, this is the return type
+    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr)
+    {
+        auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(expr->typeInfo, TypeInfoKind::FuncAttr);
+        expr->typeInfo = typeFunc->returnType;
+    }
+
+    SWAG_CHECK(resolveTypeOfProperty(context));
+    return true;
+}
+
+bool SemanticJob::makeTypeOfProperty(SemanticContext* context)
+{
+    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr     = node->childs.front();
+    auto typeInfo = expr->typeInfo;
 
     // A @typeof as a type in a declaration
     if (node->typeOfAsType)
     {
-        if (node->typeOfAsConst && !expr->typeInfo->isConst())
+        if (node->typeOfAsConst && !typeInfo->isConst())
         {
-            node->typeInfo = expr->typeInfo->clone();
+            node->typeInfo = typeInfo->clone();
             node->typeInfo->setConst();
         }
         else
         {
-            node->typeInfo = expr->typeInfo;
+            node->typeInfo = typeInfo;
         }
     }
 
@@ -226,12 +258,21 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
+{
+    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr = node->childs.front();
+
+    SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+    expr->flags |= AST_NO_BYTECODE;
+    SWAG_CHECK(makeTypeOfProperty(context));
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
-    auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  expr       = node->childs.front();
+    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr = node->childs.front();
 
     switch (node->token.id)
     {
@@ -247,17 +288,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
 
     case TokenId::IntrinsicKindOf:
-        SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-        SWAG_VERIFY(!(expr->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({expr, "'@kindof' cannot be used on a tuple type"}));
-        SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->report({expr, format("'@kindof' can only be used with type 'any' ('%s' provided)", expr->typeInfo->name.c_str())}));
-        SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
-        typeTable.waitForTypeTableJobs(context->job);
-        if (context->result != ContextResult::Done)
-            return true;
-        node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;
-        node->flags |= AST_R_VALUE;
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        SWAG_CHECK(resolveKindOfProperty(context));
         return true;
 
     case TokenId::IntrinsicCountOf:

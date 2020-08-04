@@ -124,6 +124,8 @@ struct SemanticJob : public Job
     static bool resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveCountOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveKindOfProperty(SemanticContext* context);
+    static bool makeTypeOfProperty(SemanticContext* context);
     static bool resolveTypeOfProperty(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
