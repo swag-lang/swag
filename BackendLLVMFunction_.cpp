@@ -705,7 +705,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, builder.getInt64(ip->b.u32)});
+            builder.CreateMemSet(r0, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
             break;
         }
 
@@ -746,7 +746,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(r0);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r1, pp.cst0_i32, builder.getInt64(ip->b.u32)});
+            builder.CreateMemSet(r1, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -756,7 +756,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
             auto v0 = builder.CreateMul(r2, builder.getInt32(ip->c.u32));
             v0      = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, pp.cst0_i32, v0});
+            builder.CreateMemSet(r0, pp.cst0_i8, v0, llvm::MaybeAlign(0));
             break;
         }
 
@@ -845,7 +845,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             r0      = builder.CreateLoad(r0);
             r1      = builder.CreateLoad(r1);
-            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, builder.getInt64(ip->c.u32)});
+            builder.CreateMemCpy(r0, llvm::MaybeAlign(0), r1, llvm::MaybeAlign(0), ip->c.u32);
             break;
         }
         case ByteCodeOp::MemCpy:
@@ -857,7 +857,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             r0      = builder.CreateLoad(r0);
             r1      = builder.CreateLoad(r1);
             r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {r0, r1, r2});
+            builder.CreateMemCpy(r0, llvm::MaybeAlign(0), r1, llvm::MaybeAlign(0), r2);
             break;
         }
         case ByteCodeOp::MemSet:
@@ -867,9 +867,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
             r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt32Ty(), false);
+            r1      = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt8Ty(), false);
             r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            builder.CreateCall(modu.getFunction("swag_runtime_memset"), {r0, r1, r2});
+            builder.CreateMemSet(r0, r1, r2, llvm::MaybeAlign(0));
             break;
         }
         case ByteCodeOp::MemCmp:
@@ -2929,9 +2929,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
-            switch ((TokenId)ip->d.u32)
+            switch ((TokenId) ip->d.u32)
             {
-            case TokenId::IntrinsicSqrt: 
+            case TokenId::IntrinsicSqrt:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
                 break;
             }
