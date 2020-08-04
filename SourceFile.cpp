@@ -245,7 +245,7 @@ Utf8 SourceFile::getLine(long seek)
 
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
-    if (silent > 0)
+    if (silent > 0 && !diag.exceptionError)
         return false;
 
     scoped_lock lock(g_Log.mutexAccess);
@@ -253,7 +253,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     module->numErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
-    if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
+    if (unittestError && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
     {
         unittestError--;
         if (g_CommandLine.verbose && g_CommandLine.verboseUnittestErrors)

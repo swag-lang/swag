@@ -1579,7 +1579,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext)
 {
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
-    diag.criticalError = true;
+    diag.criticalError  = true;
+    diag.exceptionError = true;
     runContext->bc->sourceFile->report(diag);
     return EXCEPTION_EXECUTE_HANDLER;
 }

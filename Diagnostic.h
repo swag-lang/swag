@@ -116,4 +116,5 @@ struct Diagnostic
     bool            showRange             = true;
     bool            showMultipleCodeLines = true;
     bool            criticalError         = false;
+    bool            exceptionError        = false;
 };
