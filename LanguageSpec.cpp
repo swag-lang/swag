@@ -168,6 +168,8 @@ string LanguageSpec::tokenToName(TokenId id)
         return "!";
     case TokenId::SymMinusGreat:
         return "->";
+    case TokenId::SymEqual:
+        return "=";
     }
 
     return "???";

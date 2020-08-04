@@ -25,11 +25,22 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));
-    SWAG_CHECK(doExpression(node));
+    AstNode* expr;
+    SWAG_CHECK(doExpression(node, &expr));
     SWAG_CHECK(eatSemiCol("after alias"));
 
-    node->semanticFct        = SemanticJob::resolveAlias;
-    node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
+    // This is a type alias
+    if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
+    {
+        node->semanticFct = SemanticJob::resolveTypeAlias;
+        currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+    }
+    else
+    {
+        node->semanticFct        = SemanticJob::resolveAlias;
+        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
+    }
+
     return true;
 }
 
