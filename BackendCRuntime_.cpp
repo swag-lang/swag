@@ -99,6 +99,7 @@ __b_t swag_runtime_strcmp(const void*,const void*,__u32_t);
 __s32_t swag_runtime_strlen(const void*);
 void swag_runtime_convertArgcArgv(void*,int,void*[]);
 __b_t swag_runtime_comparetype(const void*,const void*);
+void* swag_runtime_interfaceof(const void*,const void*);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)

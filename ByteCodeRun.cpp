@@ -778,6 +778,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         g_Log.unlock();
         break;
     }
+    case ByteCodeOp::IntrinsicInterfaceOf:
+    {
+        registersRC[ip->c.u32].pointer = (uint8_t*) swag_runtime_interfaceof(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
+        break;
+    }
 
     case ByteCodeOp::SetAtPointer8:
     {

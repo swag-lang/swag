@@ -33,6 +33,47 @@ bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node
     return true;
 }
 
+bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    auto  first      = node->childs[0];
+    auto  second     = node->childs[1];
+    auto  third      = node->childs[2];
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+
+    TypeInfo* resultType;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, &resultType, &third->computedValue.reg.u32));
+    typeTable.waitForTypeTableJobs(context->job);
+    if (context->result != ContextResult::Done)
+        return true;
+
+    if (first->typeInfo->kind != TypeInfoKind::Pointer)
+        return context->report({node, "'@interfaceof' must have a pointer as a first parameter"});
+    if (second->typeInfo->kind != TypeInfoKind::Pointer)
+        return context->report({node, "'@interfaceof' must have a pointer as a second parameter"});
+    if (second->typeInfo->kind != TypeInfoKind::Pointer)
+        return context->report({node, "'@interfaceof' must have a pointer as a third parameter"});
+
+    auto ptrPointer1 = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer1->ptrCount != 1)
+        return context->report({node, "'@interfaceof' must have a one dimension pointer as a first parameter"});
+    auto ptrPointer2 = CastTypeInfo<TypeInfoPointer>(second->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer2->ptrCount != 1)
+        return context->report({node, "'@interfaceof' must have a one dimension pointer as a second parameter"});
+
+    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
+        return context->report({node, "'@interfaceof' must have a 'swag.TypeInfo' pointer as a second parameter"});
+
+    // Create slice type
+    auto ptrItf    = g_Allocator.alloc<TypeInfoStruct>();
+    ptrItf->kind   = TypeInfoKind::Interface;
+    ptrItf->sizeOf = 2 * sizeof(void*);
+    node->typeInfo = ptrItf;
+
+    node->byteCodeFct = ByteCodeGenJob::emitInterfaceOfProperty;
+    return true;
+}
+
 bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::String))
@@ -314,6 +355,11 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicSliceOf:
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveSliceOfProperty(context, node, expr->typeInfo));
+        break;
+
+    case TokenId::IntrinsicInterfaceOf:
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(resolveInterfaceOfProperty(context, node, expr->typeInfo));
         break;
     }
 

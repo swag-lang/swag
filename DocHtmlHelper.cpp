@@ -93,6 +93,7 @@ namespace DocHtmlHelper
             case TokenId::IntrinsicCountOf:
             case TokenId::IntrinsicDataOf:
             case TokenId::IntrinsicSliceOf:
+            case TokenId::IntrinsicInterfaceOf:
             case TokenId::IntrinsicIndex:
             case TokenId::IntrinsicPrint:
             case TokenId::IntrinsicAssert:

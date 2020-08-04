@@ -122,6 +122,7 @@ struct SemanticJob : public Job
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveInterfaceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveCountOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveKindOfProperty(SemanticContext* context);

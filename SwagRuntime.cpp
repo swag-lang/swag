@@ -243,3 +243,19 @@ extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
 
     return swag_runtime_strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+extern "C" void* swag_runtime_interfaceof(const void* structType, const void* itfType)
+{
+    auto ctype  = (ConcreteTypeInfoStruct*) structType;
+    auto itype  = (ConcreteTypeInfoStruct*) itfType;
+    auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
+
+    for (int i = 0; i < ctype->interfaces.count; i++)
+    {
+        //auto one = (ConcreteTypeInfoStruct*) buffer[i].value;
+        //auto same = swag_runtime_comparetype(itype, one);
+    }
+
+    return nullptr;
+}

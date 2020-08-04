@@ -60,6 +60,12 @@ bool TypeTableJob::computeStruct()
         for (int param = 0; param < concreteType->interfaces.count; param++)
         {
             SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->interfaces[param]));
+
+            uint32_t fieldOffset   = offsetof(ConcreteTypeInfoParam, value);
+            uint32_t valueOffset   = storageArray + (param * sizeof(ConcreteTypeInfoParam)) + fieldOffset;
+            addrArray[param].value = module->constantSegment.addressNoLock(realType->interfaces[param]->offset);
+            module->constantSegment.addInitPtr(valueOffset, realType->interfaces[param]->offset);
+
             storageArray += sizeof(ConcreteTypeInfoParam);
         }
     }

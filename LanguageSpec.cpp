@@ -100,12 +100,13 @@ void LanguageSpec::setup()
     keywords["any"]    = TokenId::NativeType;
     keywords["void"]   = TokenId::NativeType;
 
-    keywords["@sizeof"]  = TokenId::IntrinsicSizeOf;
-    keywords["@typeof"]  = TokenId::IntrinsicTypeOf;
-    keywords["@kindof"]  = TokenId::IntrinsicKindOf;
-    keywords["@countof"] = TokenId::IntrinsicCountOf;
-    keywords["@dataof"]  = TokenId::IntrinsicDataOf;
-    keywords["@sliceof"] = TokenId::IntrinsicSliceOf;
+    keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
+    keywords["@typeof"]      = TokenId::IntrinsicTypeOf;
+    keywords["@kindof"]      = TokenId::IntrinsicKindOf;
+    keywords["@countof"]     = TokenId::IntrinsicCountOf;
+    keywords["@dataof"]      = TokenId::IntrinsicDataOf;
+    keywords["@sliceof"]     = TokenId::IntrinsicSliceOf;
+    keywords["@interfaceof"] = TokenId::IntrinsicInterfaceOf;
 
     keywords["@index"]      = TokenId::IntrinsicIndex;
     keywords["@print"]      = TokenId::IntrinsicPrint;

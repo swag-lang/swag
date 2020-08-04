@@ -14,6 +14,7 @@ BYTECODE_OP(IntrinsicSetContext)
 BYTECODE_OP(IntrinsicArguments)
 BYTECODE_OP(IntrinsicTarget)
 BYTECODE_OP(IntrinsicIsByteCode)
+BYTECODE_OP(IntrinsicInterfaceOf)
 
 BYTECODE_OP(JumpIfZero32)
 BYTECODE_OP(JumpIfZero64)

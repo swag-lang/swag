@@ -146,13 +146,14 @@ enum class TokenId
     KwdCode,
     KwdLabel,
 
+    IntrinsicIndex,
     IntrinsicSizeOf,
     IntrinsicTypeOf,
     IntrinsicKindOf,
     IntrinsicCountOf,
     IntrinsicDataOf,
     IntrinsicSliceOf,
-    IntrinsicIndex,
+    IntrinsicInterfaceOf,
 
     IntrinsicPrint,
     IntrinsicAssert,

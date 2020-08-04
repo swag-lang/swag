@@ -87,12 +87,25 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
 
-    if (node->token.id == TokenId::IntrinsicSliceOf)
+    // Three parameters
+    if (node->token.id == TokenId::IntrinsicInterfaceOf)
+    {
+        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doExpression(node));
+    }
+
+    // Two parameters
+    else if (node->token.id == TokenId::IntrinsicSliceOf)
     {
         SWAG_CHECK(doExpression(node));
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_CHECK(doExpression(node));
     }
+
+    // One single parameter
     else
     {
         SWAG_CHECK(doExpression(node));
@@ -153,6 +166,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
     case TokenId::IntrinsicSliceOf:
+    case TokenId::IntrinsicInterfaceOf:
     case TokenId::IntrinsicAlloc:
     case TokenId::IntrinsicRealloc:
     case TokenId::IntrinsicMemCmp:
