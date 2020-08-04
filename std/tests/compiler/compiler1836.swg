@@ -7,6 +7,7 @@ struct Point2
 //#[swag.printbc]
 func(T) norm(vec: T) -> @typeof(T.R)
 {
+    #assert(@typeof(T).kind == swag.TypeInfoKind.Struct)
     return vec.x
 }
 
