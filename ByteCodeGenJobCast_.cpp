@@ -644,14 +644,10 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     }
     else if (fromTypeInfo->kind == TypeInfoKind::TypeListTuple)
     {
-        if (!(exprNode->flags & AST_SLICE_INIT_EXPRESSION))
-        {
-            auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
-            int  diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
-            auto inst         = emitInstruction(context, ByteCodeOp::Mul64byVB32, exprNode->resultRegisterRC[1]);
-            inst->b.u32       = diff;
-        }
-
+        auto fromTypeList      = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
+        int  diff              = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
+        auto inst              = emitInstruction(context, ByteCodeOp::Mul64byVB32, exprNode->resultRegisterRC[1]);
+        inst->b.u32            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Array)

@@ -123,18 +123,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNo
 
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-
-    // This is a special expression list which initialize the pointer and the count of a slice
-    if ((node->flags & AST_SLICE_INIT_EXPRESSION) ||
-        (node->parent && node->parent->kind == AstNodeKind::FuncCallParam && (node->parent->flags & AST_SLICE_INIT_EXPRESSION)))
-    {
-        node->resultRegisterRC = node->childs.front()->resultRegisterRC;
-        node->resultRegisterRC += node->childs.back()->resultRegisterRC;
-        transformResultToLinear2(context, node);
-        return true;
-    }
-
+    auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     auto job      = context->job;
     auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 

@@ -52,7 +52,7 @@ namespace std.text
             func(T) opCast(using self)->T
             {
                 #if @typeof(T) == @typeof(string)
-                    return cast(string) @{buffer, length}
+                    return cast(string) @sliceof(buffer, length)
                 #else
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }

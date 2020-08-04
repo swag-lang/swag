@@ -2,7 +2,7 @@
 using std.text
 
 //#[swag.printbc]
-func XX(v: String)->[..]u8 => @{v.buffer, v.length}
+func XX(v: String)->[..]u8 => @sliceof(v.buffer, v.length)
 
 //#[swag.printbc]
 #test

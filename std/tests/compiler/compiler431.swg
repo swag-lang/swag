@@ -1,11 +1,8 @@
-
-
-
 //#[swag.printbc]
 #test
 {
 	cst :=  0x01_02_03_04
-	var slice : [..] u8 = {cast(*u8)&cst, 4}
+	var slice : [..] u8 = @sliceof(cast(*u8)&cst, 4)
 	len(slice)
 }
 
@@ -19,7 +16,7 @@ func len(buffer: const [..] u8)
 		result += 1
 		total += cast(s32) buffer[@index]
 	}
-	
+
 	@assert(total == 10)
 	@assert(result == 4)
 }

@@ -1,6 +1,6 @@
 #test
 {
     var buffer: [..] u8 = @[65, 66, 67]
-    let str: string = cast(string) @{@dataof(buffer), @countof(buffer)}
+    let str: string = cast(string) @sliceof(@dataof(buffer), @countof(buffer))
     @assert(str == "ABC")
 }

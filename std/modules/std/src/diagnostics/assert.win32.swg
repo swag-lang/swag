@@ -18,7 +18,7 @@
             - Press Continue to ignore the assert
             "#
 
-            count2 := text.unicode16.fromUtf8(@{&messageW[count1], @countof(messageW) - count1}, info)
+            count2 := text.unicode16.fromUtf8(@sliceof(&messageW[count1], @countof(messageW) - count1), info)
             messageW[count1 + count2] = 0
 
             // Message box title

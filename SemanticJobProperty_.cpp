@@ -1,13 +1,9 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Workspace.h"
-#include "ByteCode.h"
 
 bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
@@ -23,8 +19,7 @@ bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node
         return context->report({ node, "'@sliceof' must have a one dimension pointer as a first parameter" });
 
     // Must end with an U32, which is the slice count
-    if (!TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-        return context->report({node, "'@sliceof' must have an 'u32' as a second parameter"});
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, second->typeInfo, nullptr, second));
 
     // Create slice type
     auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
