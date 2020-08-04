@@ -8,24 +8,34 @@
 
 bool Backend::emitAttributes(AstNode* node)
 {
-    if (node->flags & AST_CONST_EXPR)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[constexpr]\n");
+#define ADD_ATTR(__test, __name)                     \
+    {                                                \
+        if (__test)                                  \
+        {                                            \
+            if (first)                               \
+            {                                        \
+                CONCAT_FIXED_STR(bufferSwg, "\t#["); \
+                first = false;                       \
+            }                                        \
+            else                                     \
+            {                                        \
+                CONCAT_FIXED_STR(bufferSwg, ", ");   \
+            }                                        \
+            CONCAT_FIXED_STR(bufferSwg, __name);     \
+        }                                            \
+    }
 
-    if (node->attributeFlags & ATTRIBUTE_MACRO)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[macro]\n");
-    else if (node->attributeFlags & ATTRIBUTE_MIXIN)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[mixin]\n");
-    else if (node->attributeFlags & ATTRIBUTE_INLINE)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
-    else if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[printbc]\n");
-
-    if (node->attributeFlags & ATTRIBUTE_NORETURN)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[noreturn]\n");
-    if (node->attributeFlags & ATTRIBUTE_COMPLETE)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
-    if (node->attributeFlags & ATTRIBUTE_PROPERTY)
-        CONCAT_FIXED_STR(bufferSwg, "\t#[property]\n");
+    bool first = true;
+    ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
+    ADD_ATTR((node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "mixin");
+    ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINTBYTECODE, "printbc");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
+    if (!first)
+        CONCAT_FIXED_STR(bufferSwg, "]\n");
     return true;
 }
 
