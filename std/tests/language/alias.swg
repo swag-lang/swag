@@ -1,6 +1,6 @@
 #test
 {
-    // using can have a name alias
+    // alias is used to make a shortcut to another name or type
     {
         enum RGB { R; G; B; }
         @assert(RGB.R == 0)
@@ -9,37 +9,18 @@
         @assert(Color.G == 1)
     }
 
-    // you can alias a function
+    // types alias
+    {
+        alias Float32 = f32
+        alias Float64 = f64
+        let x: Float32 = 1.0
+        let y: Float64 = 1.0
+    }
+
+    // you can alias a function name
     {
         func thisIsABigFunctionName(x: s32) => x * x
         alias myFunc = thisIsABigFunctionName
         @assert(myFunc(4) == 16)
-    }
-
-    // using can be used with a variable or a function parameter
-    {
-        struct Point { x: s32; y: s32; }
-
-        var pt: Point
-        using pt
-
-        x = 1
-        y = 2
-        @assert(pt.x == 1)
-        @assert(pt.y == 2)
-    }
-
-    {
-        struct Point { x: s32; y: s32; }
-
-        func setOne(using point: *Point)
-        {
-            x, y = 1
-        }
-
-        var pt: Point
-        setOne(&pt)
-        @assert(pt.x == 1)
-        @assert(pt.y == 1)
     }
 }

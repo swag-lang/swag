@@ -14,7 +14,7 @@
     // 'any' is in fact a pointer to the value, and a const *TypeInfo
     {
         let a: any = 6
-        ptr := cast(const *s32) (@dataof(a))
+        ptr := cast(const *s32) @dataof(a)
         @assert(deref ptr == 6)
     }
 
