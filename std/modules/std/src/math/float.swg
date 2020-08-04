@@ -47,7 +47,7 @@ namespace std.math.constF32
 }
 
 namespace std.math
-{   
+{
     #[swag.constexpr]
     public
     {
@@ -58,13 +58,20 @@ namespace std.math
         func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
         func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
         func toDegrees(x: f64) => x * (180'f64 / constF64.Pi)
-        func toRadians(x: f64) => x * (constF64.Pi / 180'f64)        
+        func toRadians(x: f64) => x * (constF64.Pi / 180'f64)
         func isZeroEpsilon(x: f32, eps: f32 = constF32.Epsilon) => abs(x) < eps
         func isZeroEpsilon(x: f64, eps: f64 = constF64.Epsilon) => abs(x) < eps
         func isEqualEpsilon(x, y: f32, eps: f32 = constF32.Epsilon) => abs(x - y) < eps
         func isEqualEpsilon(x, y: f64, eps: f64 = constF64.Epsilon) => abs(x - y) < eps
     }
-    
+
+    #[swag.constexpr, swag.inline]
+    public
+    {
+        func sqrt(x: f32)->f32 => @sqrt(x)
+        func sqrt(x: f64)->f64 => @sqrt(x)
+    }
+
     #[swag.constexpr]
     public
     {
@@ -92,17 +99,15 @@ namespace std.math
         func log2(x: f64)->f64 => os.log2(x)
         func log10(x: f32)->f32 => os.log10f(x)
         func log10(x: f64)->f64 => os.log10(x)
-        func sqrt(x: f32)->f32 => os.sqrtf(x)
-        func sqrt(x: f64)->f64 => os.sqrt(x)
         func ceil(x: f32)->f32 => os.ceilf(x)
-        func ceil(x: f64)->f64 => os.ceil(x)		
+        func ceil(x: f64)->f64 => os.ceil(x)
         func floor(x: f32)->f32 => os.floorf(x)
-        func floor(x: f64)->f64 => os.floor(x)		
+        func floor(x: f64)->f64 => os.floor(x)
         func round(x: f32)->f32 => os.roundf(x)
-        func round(x: f64)->f64 => os.round(x)		
+        func round(x: f64)->f64 => os.round(x)
         func abs(x: f32)->f32 => cast(f32) os.fabs(cast(f64) x)
-        func abs(x: f64)->f64 => os.fabs(x)	
+        func abs(x: f64)->f64 => os.fabs(x)
         func pow(x, exp: f32)->f32 => os.powf(x, exp)
-        func pow(x, exp: f64)->f64 => os.pow(x, exp)		
+        func pow(x, exp: f64)->f64 => os.pow(x, exp)
     }
 }

@@ -28,17 +28,15 @@
             func log2(x: f64)->f64;
             func log10f(x: f32)->f32;
             func log10(x: f64)->f64;
-            func sqrtf(x: f32)->f32;
-            func sqrt(x: f64)->f64;
             func ceilf(x: f32)->f32;
-            func ceil(x: f64)->f64;		
+            func ceil(x: f64)->f64;
             func floorf(x: f32)->f32;
             func floor(x: f64)->f64;
             func roundf(x: f32)->f32;
-            func round(x: f64)->f64;		
+            func round(x: f64)->f64;
             func powf(x, exp: f32)->f32;
-            func pow(x, exp: f64)->f64;			
-			func fabs(x: f64)->f64;	
+            func pow(x, exp: f64)->f64;
+			func fabs(x: f64)->f64;
         }
     }
 }
