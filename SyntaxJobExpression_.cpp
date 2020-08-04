@@ -616,12 +616,6 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    if (token.id == TokenId::SymLeftCurly)
-    {
-        SWAG_CHECK(doExpressionListTuple(parent, result));
-        return true;
-    }
-
     return doRawMoveExpression(parent, result);
 }
 

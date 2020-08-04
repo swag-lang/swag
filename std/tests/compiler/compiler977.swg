@@ -1,7 +1,7 @@
 
 
 
-let pt = {x: 1, y: 2}
+let pt = @{x: 1, y: 2}
 
 #test
 {
@@ -9,4 +9,3 @@ let pt = {x: 1, y: 2}
 	@assert(pt.y == 2)
 	//pt.x = 0
 }
-

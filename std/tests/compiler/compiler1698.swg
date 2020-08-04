@@ -6,7 +6,7 @@ let justOverOneMillion = 1_000_000.000_000_1
 let orangesAreOrange = true
 let turnipsAreDelicious = false
 
-let http404Error = {404, "Not Found"}
+let http404Error = @{404, "Not Found"}
 #test
 {
     let (statusCode, statusMessage) = http404Error

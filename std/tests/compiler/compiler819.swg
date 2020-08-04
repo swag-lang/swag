@@ -7,6 +7,6 @@ func toto(x: struct{s32, s32})
 //#[swag.printbc]
 #test
 {
-	var aa = {10,20}
+	var aa = @{10,20}
 	toto(aa)
 }
