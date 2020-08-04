@@ -237,6 +237,7 @@
     <ClCompile Include="ByteCodeGenJobStruct_.cpp" />
     <ClCompile Include="ByteCodeGenJobUnaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobVar_.cpp" />
+    <ClCompile Include="ByteCodeGenJobSafety_.cpp" />
     <ClCompile Include="LLVMSetup.cpp" />
     <ClCompile Include="ModuleManager.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />

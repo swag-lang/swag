@@ -404,6 +404,9 @@
     <ClCompile Include="ModuleRunJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeGenJobSafety_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

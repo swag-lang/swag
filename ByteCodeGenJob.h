@@ -20,6 +20,7 @@ struct SymbolOverload;
 struct SourceLocation;
 struct TypeInfoArray;
 struct AstNode;
+struct AstArrayPointerSlicing;
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeGenContext : public JobContext
@@ -30,7 +31,8 @@ struct ByteCodeGenContext : public JobContext
     VectorNative<SourceLocation*> stackForceLocation;
     AstNode*                      forceNode = nullptr;
     VectorNative<AstNode*>        stackForceNode;
-    bool                          noLocation = false;
+    bool                          noLocation        = false;
+    uint16_t                      instructionsFlags = false;
 
     void setNoLocation()
     {
@@ -105,6 +107,24 @@ struct PushNode
     ByteCodeGenContext* savedBc;
 };
 
+struct PushICFlags
+{
+    PushICFlags(ByteCodeGenContext* bc, uint16_t flags)
+    {
+        savedBc    = bc;
+        savedFlags = bc->instructionsFlags;
+        bc->instructionsFlags |= flags;
+    }
+
+    ~PushICFlags()
+    {
+        savedBc->instructionsFlags = savedFlags;
+    }
+
+    ByteCodeGenContext* savedBc;
+    uint16_t            savedFlags;
+};
+
 static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
 static const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
 static const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
@@ -116,7 +136,6 @@ struct ByteCodeGenJob : public Job
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0);
-    static void                 emitDbgInstruction(ByteCodeGenContext* context, ByteCodeOp op);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 askForByteCode(Job* dependentJob, Job* job, AstNode* node, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
@@ -142,15 +161,6 @@ struct ByteCodeGenJob : public Job
     static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams = true);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
-    static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
-    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
-    static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
-    static void emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo);
-    static void emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
@@ -251,6 +261,18 @@ struct ByteCodeGenJob : public Job
     static bool emitDrop(ByteCodeGenContext* context);
     static bool emitStruct(ByteCodeGenContext* context);
     static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
+
+    static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
+    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
+    static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
+    static void emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo);
+    static void emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode);
+    static void emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

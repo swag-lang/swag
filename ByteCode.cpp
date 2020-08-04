@@ -135,7 +135,10 @@ void ByteCode::print()
         wprintf(bcNum, i);
 
         // Instruction
-        g_Log.setColor(LogColor::White);
+        if (ip->flags & BCI_SAFETY)
+            g_Log.setColor(LogColor::DarkGreen);
+        else
+            g_Log.setColor(LogColor::White);
         int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
         while (len++ < ALIGN_RIGHT_OPCODE)
             g_Log.print(" ");

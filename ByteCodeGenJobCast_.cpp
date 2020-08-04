@@ -675,7 +675,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     typeInfo     = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
     fromTypeInfo = TypeManager::concreteReference(fromTypeInfo);
-    bool safety  = context->sourceFile->module->mustEmitSafety(context->node);
 
     // opCast
     if (exprNode->flags & AST_USER_CAST)
@@ -691,26 +690,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     auto node = context->node;
     if (fromTypeInfo->isNative(NativeTypeKind::Any))
     {
-        auto r0 = reserveRegisterRC(context);
-
         // Check that the type is correct
         if (isExplicit)
-        {
-            if (safety)
-            {
-                auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0);
-                SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
-                inst->b.u32 = exprNode->concreteTypeInfoStorage;
-
-                RegisterList result = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, exprNode->resultRegisterRC[1], result);
-
-                inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
-                inst->d.pointer = (uint8_t*) "invalid cast from any";
-                inherhitLocation(inst, exprNode);
-                freeRegisterRC(context, result);
-            }
-        }
+            emitSafetyCastAny(context, exprNode);
 
         // Dereference the any content, except for a reference, where we want to keep the pointer
         // (pointer that comes from the data is already in the correct register)
@@ -722,7 +704,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->typeInfo       = typeInfo;
         exprNode->castedTypeInfo = nullptr;
-        freeRegisterRC(context, r0);
         return true;
     }
 

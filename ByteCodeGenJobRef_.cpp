@@ -357,71 +357,22 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
 {
-    auto     node         = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto     safety       = context->sourceFile->module->mustEmitSafety(node);
-    uint32_t maxBound     = UINT32_MAX;
-    bool     freeMaxBound = false;
+    auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
 
-    // Check type, and safety check
     int  sizeOf  = 1;
     auto typeVar = node->array->typeInfo;
     if (typeVar->kind == TypeInfoKind::Array)
-    {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-        sizeOf         = typeArray->finalType->sizeOf;
-        if (safety)
-        {
-            maxBound     = reserveRegisterRC(context);
-            auto inst    = emitInstruction(context, ByteCodeOp::CopyVBtoRA32, maxBound);
-            inst->b.u32  = typeArray->count;
-            freeMaxBound = true;
-        }
-    }
+        sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
     else if (typeVar->isNative(NativeTypeKind::String))
-    {
-        sizeOf   = 1;
-        maxBound = node->array->resultRegisterRC[1];
-    }
+        sizeOf = 1;
     else if (typeVar->kind == TypeInfoKind::Slice)
-    {
-        sizeOf   = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
-        maxBound = node->array->resultRegisterRC[1];
-    }
+        sizeOf = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
     else if (typeVar->kind == TypeInfoKind::Pointer)
-    {
         sizeOf = ((TypeInfoPointer*) typeVar)->pointedType->sizeOf;
-    }
     else
-    {
         return internalError(context, "emitMakeSlice, type not supported");
-    }
 
-    if (safety)
-    {
-        // Lower bound <= upper bound
-        {
-            auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->lowerBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
-            emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is greater than upper bound";
-            context->popLocation();
-            freeRegisterRC(context, re);
-        }
-
-        // Upper bound < maxBound
-        if (maxBound != UINT32_MAX)
-        {
-            auto re = reserveRegisterRC(context);
-            context->pushLocation(&node->upperBound->token.startLocation);
-            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->upperBound->resultRegisterRC, maxBound, re);
-            emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, upper bound is out of range";
-            context->popLocation();
-            freeRegisterRC(context, re);
-        }
-
-        if (maxBound != UINT32_MAX && freeMaxBound)
-            freeRegisterRC(context, maxBound);
-    }
+    emitSafetyMakeSlice(context, node);
 
     RegisterList r0;
     reserveLinearRegisterRC(context, r0, 2);
