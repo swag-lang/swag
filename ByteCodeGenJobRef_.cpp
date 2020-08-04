@@ -8,10 +8,12 @@
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    int  sizeOf = node->typeInfo->sizeOf;
+    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+
+    emitSafetyNullPointer(context, node->array->resultRegisterRC);
 
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
+    int sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitSafetyNullPointer(context, node->array->resultRegisterRC);
@@ -27,7 +29,9 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
+    emitSafetyNullPointer(context, node->array->resultRegisterRC[0]);
     emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
@@ -61,6 +65,8 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 
     node->array->resultRegisterRC += reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+
+    emitSafetyNullPointer(context, node->array->resultRegisterRC);
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     // Pointer increment
@@ -171,6 +177,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         emitSafetyNullPointer(context, node->array->resultRegisterRC);
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
@@ -180,9 +187,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a slice
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+
         auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         int  sizeOf        = typeInfoSlice->pointedType->sizeOf;
-        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstantInt0())

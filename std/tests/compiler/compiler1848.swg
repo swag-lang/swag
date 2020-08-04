@@ -1,12 +1,10 @@
-#module compiler450
+#module compiler1848
 #unittest error
 
 //#[swag.printbc]
 #test
 {
-	var a: *s32 = null;
+    var x: [..] s32
     #[swag.safety(true)]
-	if(a[0] == 0)
-	{
-	}
+    x[0] = 0
 }
