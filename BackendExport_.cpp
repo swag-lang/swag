@@ -232,11 +232,11 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
     return true;
 }
 
-bool Backend::emitPublicTypeAliasSwg(AstNode* node)
+bool Backend::emitPublicAliasSwg(AstNode* node)
 {
-    CONCAT_FIXED_STR(bufferSwg, "\ttypealias ");
+    CONCAT_FIXED_STR(bufferSwg, "\talias ");
     bufferSwg.addString(node->name.c_str());
-    CONCAT_FIXED_STR(bufferSwg, ": ");
+    CONCAT_FIXED_STR(bufferSwg, "= ");
     SWAG_CHECK(Ast::output(bufferSwg, node->childs.front()));
 
     CONCAT_FIXED_STR(bufferSwg, "\n");
@@ -343,12 +343,12 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         }
     }
 
-    // Typealias
-    if (!scope->publicTypeAlias.empty())
+    // Alias
+    if (!scope->publicAlias.empty())
     {
-        for (auto one : scope->publicTypeAlias)
+        for (auto one : scope->publicAlias)
         {
-            SWAG_CHECK(emitPublicTypeAliasSwg(one));
+            SWAG_CHECK(emitPublicAliasSwg(one));
         }
     }
 

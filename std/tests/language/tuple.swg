@@ -1,6 +1,6 @@
 #test
 {
-    // A tuple is an unnamed structure
+    // A tuple is an anonymous structure
     {
         tuple1 := @{2, 2}
         tuple2 := @{"string", 2, true}
@@ -23,9 +23,9 @@
         @assert(tuple.item1 == 2.0)
     }
 
-    // A tuple type is of the form (type, type...)
+    // A tuple type is of the form struct{type, type...}
     {
-        var tuple: (x: f32, y: f32)
+        var tuple: struct{x: f32, y: f32}
         tuple.x = 1.0
         tuple.y = 2.0
         @assert(tuple.x == 1.0)
@@ -45,9 +45,9 @@
         @assert(value == true)
     }
 
-    // A tuple can be use to return multiple values in a function
+    // A tuple can be used to return multiple values in a function
     {
-        func myFunction()->(f32, f32)
+        func myFunction()->struct{f32, f32}
         {
             return @{1.0, 2.0}
         }
@@ -67,7 +67,7 @@
 
     // You can name the fields of the function result too
     {
-        func myFunction()->(x: f32, y: bool)
+        func myFunction()->struct{x: f32, y: bool}
         {
             return @{x: 1.0, y: true}
         }

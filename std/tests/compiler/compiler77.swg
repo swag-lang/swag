@@ -1,8 +1,5 @@
-﻿;
-;
-
-typealias a: u32;
-typealias b: f32;
-typealias c: bool;
-typealias d: string;
-typealias e: char;
+﻿alias a = u32;
+alias b = f32;
+alias c = bool;
+alias d = string;
+alias e = char;

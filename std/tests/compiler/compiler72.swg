@@ -1,8 +1,8 @@
 ﻿#module compiler72
 ;
 
-typealias myType: u32;
-typealias myType1: bool;
+alias myType = u32;
+alias myType1 = bool;
 
 #unittest error;
-typealias myType: f32;
+alias myType = f32;

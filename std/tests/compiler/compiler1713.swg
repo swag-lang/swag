@@ -1,7 +1,7 @@
 #module compiler1773
 #unittest error
 
-typealias point: string
+alias point = string
 func toto(x: point)
 {
     point := 0

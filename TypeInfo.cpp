@@ -116,7 +116,7 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     case TypeInfoKind::Generic:
         return "generic type";
     case TypeInfoKind::Alias:
-        return "type alias";
+        return "alias";
     case TypeInfoKind::Native:
         return "type";
     }

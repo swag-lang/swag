@@ -5,7 +5,7 @@ namespace A
 {
 	namespace B
 	{
-		typealias tt1: bool;
+		alias tt1 = bool;
 	}
 }
 

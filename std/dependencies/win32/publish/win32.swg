@@ -5,23 +5,23 @@
 
     namespace win32
     {
-        typealias HANDLE: 			*void
-		typealias HWND: 			*void
-        typealias WORD: 			u16
-        typealias DWORD: 			u32
-        typealias BOOL: 			s32
-		typealias BYTE: 			u8
-		typealias LONG: 			s32
-        typealias LPVOID:			*void
-        typealias LPCVOID:			const *void
-        typealias LPCSTR:			const *u8
-		typealias LPCWSTR:			const *u16
-        typealias LPDWORD:			*DWORD
-        typealias LPOVERLAPPED:		*DWORD
-        typealias DWORD_PTR:		u64
-        typealias UINT:				u32
-		typealias SHORT:			s16
-		typealias LARGE_INTEGER:	s64
+        alias HANDLE = 			*void
+		alias HWND = 			*void
+        alias WORD = 			u16
+        alias DWORD = 			u32
+        alias BOOL = 			s32
+		alias BYTE = 			u8
+		alias LONG = 			s32
+        alias LPVOID =			*void
+        alias LPCVOID =			const *void
+        alias LPCSTR =			const *u8
+		alias LPCWSTR =			const *u16
+        alias LPDWORD =			*DWORD
+        alias LPOVERLAPPED =	*DWORD
+        alias DWORD_PTR =		u64
+        alias UINT =			u32
+		alias SHORT =			s16
+		alias LARGE_INTEGER =	s64
 
         const STD_INPUT_HANDLE 	= cast(DWORD) -10
         const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -270,7 +270,7 @@
 		const IDIGNORE        	= 5
 		const IDYES           	= 6
 		const IDNO            	= 7
-		const IDCLOSE         	= 8		
+		const IDCLOSE         	= 8
 		const IDHELP          	= 9
 		const IDTRYAGAIN      	= 10
 		const IDCONTINUE      	= 11

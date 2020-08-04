@@ -1,7 +1,7 @@
 #module compiler670
 
 
-typealias toto: bool
+alias toto = bool
 
 //#[swag.printbc]
 #unittest error

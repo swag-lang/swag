@@ -370,6 +370,7 @@ namespace Ast
             {
                 if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
                     (symbol->kind == SymbolKind::Function) ||
+                    (symbol->kind == SymbolKind::Alias) ||
                     (symbol->kind == SymbolKind::TypeAlias))
                 {
                     SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->name.c_str())}));

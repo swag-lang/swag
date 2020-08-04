@@ -52,7 +52,6 @@ enum class AstNodeKind : uint8_t
     VarDecl,
     ConstDecl,
     LetDecl,
-    TypeAlias,
     IdentifierRef,
     Identifier,
     TypeExpression,

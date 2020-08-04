@@ -1,7 +1,7 @@
 namespace std.input
 {
     /// Represents a virtual system key
-    public typealias VirtualKey: u32
+    public alias VirtualKey = u32
 
     /// Defines the keys on a keyboard
     public enum Key

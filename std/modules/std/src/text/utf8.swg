@@ -24,7 +24,7 @@ namespace std.text
             }
 
             /// Get the address of the previous utf8 character, and the corresponding unicode character
-            public func previousChar(start, buffer: const *u8)->(const *u8, char)
+            public func previousChar(start, buffer: const *u8)->struct{const *u8, char}
             {
                 if buffer == null || buffer == start
                     return @{buffer, acast 0}
@@ -45,7 +45,7 @@ namespace std.text
             }
 
             /// Get the unicode character pointed by `buffer`, and the address of the next utf8 character
-            public func nextChar(buffer: const *u8)->(const *u8, char)
+            public func nextChar(buffer: const *u8)->struct{const *u8, char}
             {
                 if buffer == null
                     return @{null, acast 0}

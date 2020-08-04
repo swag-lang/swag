@@ -299,6 +299,44 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveAlias(SemanticContext* context)
+{
+    auto job  = context->job;
+    auto node = context->node;
+
+    auto overload     = node->childs.back()->resolvedSymbolOverload;
+    auto typeResolved = overload->typeInfo;
+
+    node->flags |= AST_NO_BYTECODE;
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
+    if (context->result == ContextResult::Pending)
+        return true;
+
+    switch (typeResolved->kind)
+    {
+    case TypeInfoKind::Namespace:
+    case TypeInfoKind::Enum:
+    case TypeInfoKind::Struct:
+    case TypeInfoKind::FuncAttr:
+    case TypeInfoKind::Alias:
+        break;
+    default:
+        return job->error(context, format("'using' as an alias cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
+    }
+
+    SWAG_ASSERT(overload);
+    SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, overload));
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
+            node->ownerScope->addPublicAlias(node);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;
@@ -329,7 +367,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
-            node->ownerScope->addPublicTypeAlias(node);
+            node->ownerScope->addPublicAlias(node);
     }
 
     return true;

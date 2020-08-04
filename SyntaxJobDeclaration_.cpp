@@ -380,9 +380,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdLabel:
         SWAG_CHECK(doLabel(parent, result));
         break;
-    case TokenId::KwdTypeAlias:
-        SWAG_CHECK(doTypeAlias(parent, result));
-        break;
     case TokenId::KwdAlias:
         SWAG_CHECK(doAlias(parent, result));
         break;
@@ -443,9 +440,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdVar:
     case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent));
-        break;
-    case TokenId::KwdTypeAlias:
-        SWAG_CHECK(doTypeAlias(parent));
         break;
     case TokenId::KwdAlias:
         SWAG_CHECK(doAlias(parent));

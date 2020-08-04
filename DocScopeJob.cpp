@@ -232,10 +232,10 @@ JobResult DocScopeJob::execute()
 
     // Types
     /////////////////////////////////
-    if (!scope->publicTypeAlias.empty())
+    if (!scope->publicAlias.empty())
     {
-        DocHtmlHelper::sectionTitle1(outFile, "Types");
-        DocHtmlHelper::table(outFile, scope, scope->publicTypeAlias);
+        DocHtmlHelper::sectionTitle1(outFile, "Alias");
+        DocHtmlHelper::table(outFile, scope, scope->publicAlias);
     }
 
     // Content

@@ -1,4 +1,4 @@
-typealias T: func()->void
+alias T = func()->void
 
 var GG: bool
 
@@ -9,17 +9,17 @@ func G()
 
 //#[swag.printbc]
 #test
-{  
+{
     GG = false
-    
+
     var x: T
     if(x)
         @assert(false)
     x = &G
     if(!x)
-        @assert(false)    
+        @assert(false)
     if(x)
         x()
-        
+
     @assert(GG)
 }

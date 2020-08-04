@@ -55,7 +55,6 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::FuncDecl:
     case AstNodeKind::Namespace:
     case AstNodeKind::Alias:
-    case AstNodeKind::TypeAlias:
     case AstNodeKind::FuncDeclParam:
     case AstNodeKind::StructDecl:
         return "a " + result;
@@ -95,8 +94,6 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         return "namespace";
     case AstNodeKind::Alias:
         return "alias";
-    case AstNodeKind::TypeAlias:
-        return "typealias";
     case AstNodeKind::FuncDeclParam:
         return "parameter";
     case AstNodeKind::StructDecl:

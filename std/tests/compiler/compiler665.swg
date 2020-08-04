@@ -1,7 +1,7 @@
 
 
 
-typealias toto: s32
+alias toto = s32
 
 //#[swag.printbc]
 #test

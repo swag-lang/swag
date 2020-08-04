@@ -109,7 +109,6 @@ enum class TokenId
     KwdReadOnly,
     KwdReadWrite,
     KwdNamespace,
-    KwdTypeAlias,
     KwdAlias,
     KwdEnum,
     KwdEnumValue,

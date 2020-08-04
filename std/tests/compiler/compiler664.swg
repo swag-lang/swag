@@ -1,7 +1,7 @@
 #module compiler664
 
 
-typealias toto: s32
+alias toto = s32
 
 //#[swag.printbc]
 #unittest error

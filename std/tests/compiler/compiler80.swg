@@ -3,7 +3,7 @@
 
 namespace A
 {
-	typealias a: u32;
+	alias a = u32;
 }
 
 #unittest error;

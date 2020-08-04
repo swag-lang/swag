@@ -50,7 +50,7 @@ struct Scope
     void               addPublicStruct(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
-    void               addPublicTypeAlias(AstNode* node);
+    void               addPublicAlias(AstNode* node);
     void               addPublicNamespace(AstNode* node);
     static Utf8        makeFullName(const Utf8& parentName, const Utf8& name);
     static const char* getNakedKindName(ScopeKind kind);
@@ -78,7 +78,7 @@ struct Scope
     set<AstNode*>          publicStruct;
     set<AstNode*>          publicEnum;
     set<AstNode*>          publicConst;
-    set<AstNode*>          publicTypeAlias;
+    set<AstNode*>          publicAlias;
     set<AstNode*>          publicNamespace;
     RegisterList           registersToRelease;
     DependentJobs          dependentJobs;
@@ -88,7 +88,7 @@ struct Scope
     mutex                  mutexPublicStruct;
     mutex                  mutexPublicEnum;
     mutex                  mutexPublicConst;
-    mutex                  mutexPublicTypeAlias;
+    mutex                  mutexPublicAlias;
     mutex                  mutexPublicNamespace;
 
     AstNode* owner       = nullptr;

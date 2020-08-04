@@ -164,9 +164,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
     case TokenId::KwdConst:
     case TokenId::KwdCode:
+    case TokenId::KwdFunc:
+    case TokenId::KwdStruct:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
-    case TokenId::KwdFunc:
     case TokenId::SymLeftSquare:
         SWAG_CHECK(doTypeExpression(parent, result));
         break;

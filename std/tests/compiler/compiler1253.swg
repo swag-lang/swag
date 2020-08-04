@@ -1,4 +1,4 @@
-func toto() -> (f32, bool)
+func toto() -> struct{f32, bool}
 {
 	return @{666, true}
 }

@@ -44,26 +44,6 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::TypeAlias, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveTypeAlias;
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
-    node->inheritTokenName(token);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatSemiCol("after type alias"));
-
-    currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
-    return true;
-}
-
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
@@ -126,7 +106,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
     auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     Utf8 name = "__" + sourceFile->scopePrivate->name + "_tuple_";
     int  idx  = 0;
@@ -171,13 +151,13 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             name += typeExpression->identifier->childs.back()->name;
         Ast::normalizeIdentifierName(name);
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, syntaxError(token, format("invalid token '%s' in expression list, ',' or ')' are expected here", token.text.c_str())));
-        if (token.id == TokenId::SymRightParen)
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));
+        if (token.id == TokenId::SymRightCurly)
             break;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple type expression"));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
 
     // Compute structure name
     structNode->name = move(name);
@@ -330,8 +310,9 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;
     }
-    else if (token.id == TokenId::SymLeftParen)
+    else if (token.id == TokenId::KwdStruct)
     {
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
         return true;
     }

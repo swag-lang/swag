@@ -122,7 +122,6 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::LetDecl:
                     case AstNodeKind::ConstDecl:
                     case AstNodeKind::Alias:
-                    case AstNodeKind::TypeAlias:
                     case AstNodeKind::EnumDecl:
                     case AstNodeKind::StructDecl:
                     case AstNodeKind::InterfaceDecl:

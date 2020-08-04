@@ -1,4 +1,4 @@
 ﻿#module compiler71
 #unittest pass syntax;
 
-typealias myType: u32;
+alias myType = u32;

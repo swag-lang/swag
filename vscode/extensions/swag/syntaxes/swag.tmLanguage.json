@@ -81,7 +81,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(enum|struct|impl|interface|func|namespace|typealias|attr)\\b"
+          "match": "\\b(enum|struct|impl|interface|func|namespace|alias|attr)\\b"
         }
       ]
     },

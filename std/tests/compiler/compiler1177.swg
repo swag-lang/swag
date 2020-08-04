@@ -5,7 +5,7 @@ enum TOTO : s64
     B = 100
 }
 
-typealias X: TOTO
+alias X = TOTO
 
 func fromName(name: string)->X
 {
@@ -19,7 +19,7 @@ func fromName(name: string)->X
             return ptr[0]
         }
     }
-    
+
     return TOTO.A
 }
 

@@ -7,7 +7,7 @@ struct(T) Point
 	y: T = 10
 }
 
-typealias Point2f: Point
+alias Point2f = Point
 
 //#[swag.printbc]
 #unittest error
