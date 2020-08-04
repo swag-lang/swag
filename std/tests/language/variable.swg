@@ -45,15 +45,15 @@
     {
         var a = 1.5
         @assert(a == 1.5)
-        @assert(@typeof(a) == @typeof(f32))
+        @assert(@typeof(a) == f32)
 
         var b = "string"
         @assert(b == "string")
-        @assert(@typeof(b) == @typeof(string))
+        @assert(@typeof(b) == string)
 
         var c = 1.5'f64
         @assert(c == 1.5)
-        @assert(@typeof(c) == @typeof(f64))
+        @assert(@typeof(c) == f64)
     }
 
     // Same for multiple variables
@@ -67,26 +67,26 @@
         var c = 1.5, d = "string"
         @assert(c == 1.5)
         @assert(d == "string")
-        @assert(@typeof(c) == @typeof(f32))
-        @assert(@typeof(d) == @typeof(string))
+        @assert(@typeof(c) == f32)
+        @assert(@typeof(d) == string)
     }
 
-    // 'var' is optional if you use ':='
+    // 'var' or 'let' are optional if you use ':='
     {
         a := 1.5
         @assert(a == 1.5)
-        @assert(@typeof(a) == @typeof(f32))
+        @assert(@typeof(a) == f32)
 
         b := "string"
         @assert(b == "string")
-        @assert(@typeof(b) == @typeof(string))
+        @assert(@typeof(b) == string)
 
         c := 1.5'f64
         @assert(c == 1.5)
-        @assert(@typeof(c) == @typeof(f64))
+        @assert(@typeof(c) == f64)
     }
 
-    // If you use 'const' instead of 'var', the value is only known by the compiler
+    // If you use 'const' instead of 'var', the value is known by the compiler
     // (no memory footprint)
     {
         const a = 666
@@ -102,14 +102,14 @@
         // 'a = 0'  would raise en error
     }
 
-    // You can use '@typeof' to get the type of another expression
+    // You can use '@typeof' or '@kindof' to get the type of another expression
     {
         let a = 0
         let b: @typeof(a) = 1
         @assert(@typeof(a) == @typeof(b))
     }
 
-    // A local variable declared with the #[swag.global] attribute will global
+    // A local variable declared with the #[swag.global] attribute will be global
     {
         func toto()->s32
         {
