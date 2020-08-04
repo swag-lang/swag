@@ -4,8 +4,8 @@ using swag
 #test
 {
 	x := 6
-	@assert(x is s32)
-	@assert(6.0 is f32)
-	@assert(6 is s32)
-	@assert("6" is string)
+	@assert(@typeof(x) == s32)
+	@assert(@typeof(6.0) == f32)
+	@assert(@typeof(6) == s32)
+	@assert(@typeof("6") == string)
 }

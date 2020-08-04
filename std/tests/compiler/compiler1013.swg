@@ -19,6 +19,6 @@ enum A
 	@assert(ptr1.attributes[0].params[0].name == "x")
 
 	val := ptr1.attributes[0].params[0].value
-	@assert(val is string)
+	@assert(@kindof(val) == string)
 	@assert(val == "TOTO")
 }

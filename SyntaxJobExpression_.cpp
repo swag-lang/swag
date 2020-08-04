@@ -352,18 +352,6 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         leftNode = binaryNode;
         isBinary = true;
     }
-    else if (token.id == TokenId::KwdIs)
-    {
-        auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
-        binaryNode->semanticFct = SemanticJob::resolveIsExpression;
-        binaryNode->token       = move(token);
-
-        Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doTypeExpression(binaryNode));
-        leftNode = binaryNode;
-        isBinary = true;
-    }
     else if (token.id == TokenId::SymEqual)
     {
         return syntaxError(token, "invalid affect operator '=', do you mean '==' ?");

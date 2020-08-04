@@ -4,12 +4,12 @@ using swag
 //#[swag.printbc]
 #test
 {
-	var x : any 
-	
+	var x : any
+
 	x = 6
-	@assert(x is s32)
+	@assert(@kindof(x) == s32)
 	x = "6"
-	@assert(x is string)
+	@assert(@kindof(x) == string)
 	x = 6'f64
-	@assert(x is f64)
+	@assert(@kindof(x) == f64)
 }

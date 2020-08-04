@@ -3,7 +3,7 @@ using swag
 //#[swag.printbc]
 func toto(x: ...)
 {
-	@assert(x[0] is string)
+	@assert(@kindof(x[0]) == string)
 }
 
 //#[swag.printbc]

@@ -1,8 +1,8 @@
 func(T) toto(x, y: T)
 {
 	@assert(x == y)
-	@assert(x is f32)
-	@assert(y is f32)
+	@assert(@typeof(x) == f32)
+	@assert(@typeof(x) == f32)
 }
 
 //#[swag.printbc]

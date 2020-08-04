@@ -9,12 +9,12 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	var x : any 
+	var x : any
 	var tt: Point
-	
+
 	x = tt
-	@assert(x is Point)
-	
+	@assert(@kindof(x) == @typeof(Point))
+
 	ptr := cast(*Point) @dataof(x)
 	//@print(ptr.x)
 	@assert(ptr.x == 10)

@@ -78,7 +78,6 @@ void LanguageSpec::setup()
     keywords["default"]     = TokenId::KwdDefault;
     keywords["for"]         = TokenId::KwdFor;
     keywords["defer"]       = TokenId::KwdDefer;
-    keywords["is"]          = TokenId::KwdIs;
     keywords["init"]        = TokenId::KwdInit;
     keywords["drop"]        = TokenId::KwdDrop;
     keywords["deref"]       = TokenId::KwdDeRef;

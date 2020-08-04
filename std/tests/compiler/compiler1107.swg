@@ -1,6 +1,6 @@
 func(T) toto(x: T)
 {
-	@assert(x is s64)
+	@assert(@typeof(x) == s64)
 }
 
 #test

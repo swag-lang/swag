@@ -140,7 +140,6 @@ enum class TokenId
     KwdDefault,
     KwdFor,
     KwdDefer,
-    KwdIs,
     KwdInit,
     KwdDrop,
     KwdDeRef,
