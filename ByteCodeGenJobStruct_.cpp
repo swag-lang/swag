@@ -656,11 +656,27 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 if (typeParam->offset)
                     emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
                 emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
-                freeRegisterRC(context, child);
             }
         }
 
         freeRegisterRC(context, r0);
         freeRegisterRC(context, r1);
+    }
+}
+
+void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::LetDecl);
+    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    {
+        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        if (identifier->callParameters)
+        {
+            for (auto child : identifier->callParameters->childs)
+            {
+                freeRegisterRC(context, child);
+            }
+        }
     }
 }

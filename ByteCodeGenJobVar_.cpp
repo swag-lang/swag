@@ -48,9 +48,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
-                RegisterList r0                                                 = reserveRegisterRC(context);
+                RegisterList r0                                                     = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::MakePointerToStack, r0)->b.s32 = resolved->storageOffset;
-                node->type->resultRegisterRC                                    = r0;
+                node->type->resultRegisterRC                                        = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
 
@@ -112,6 +112,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
+                    freeStructParametersRegisters(context);
                 }
 
                 return true;

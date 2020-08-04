@@ -143,7 +143,7 @@ struct ByteCodeGenJob : public Job
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
-    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message);
+    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
     static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
     static void emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
@@ -216,6 +216,7 @@ struct ByteCodeGenJob : public Job
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static void emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset);
+    static void freeStructParametersRegisters(ByteCodeGenContext* context);
     static bool emitLocalVarDecl(ByteCodeGenContext* context);
     static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset);
     static bool emitBreak(ByteCodeGenContext* context);

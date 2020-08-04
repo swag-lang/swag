@@ -560,7 +560,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             if (typeParam->offset)
                 emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
-            freeRegisterRC(context, child);
         }
 
         if (numToInit != 1)
@@ -571,6 +570,8 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             instJump->b.s32 = startLoop - context->bc->numInstructions;
         }
 
+        for (auto child : node->parameters->childs)
+            freeRegisterRC(context, child);
         freeRegisterRC(context, r1);
     }
 
