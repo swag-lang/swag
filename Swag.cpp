@@ -155,7 +155,7 @@ int main(int argc, const char* argv[])
     if (g_CommandLine.verbose)
     {
         auto str = cmdParser.buildString(true);
-        g_Log.verbose("=> command line is " + str);
+        g_Log.verbose("-- command line is " + str);
     }
 
     // Creates a new workspace, and exit

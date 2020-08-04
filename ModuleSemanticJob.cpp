@@ -13,9 +13,6 @@ JobResult ModuleSemanticJob::execute()
     {
         if (module->buildFile)
         {
-            if (g_CommandLine.verboseBuildPass)
-                g_Log.verbose(format("   module '%s', first semantic pass on '%s'", module->name.c_str(), module->buildFile->path.c_str()));
-
             auto job             = g_Pool_semanticJob.alloc();
             job->sourceFile      = module->buildFile;
             job->module          = module;

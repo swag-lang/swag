@@ -20,8 +20,8 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
         auto targetPath = g_Workspace.cachePath.string();
         auto moduleName = format("%s%d", module->name.c_str(), precompileIndex);
         bufferC.path    = targetPath + "/" + moduleName + ".c";
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', C backend, generating files", moduleName.c_str(), module->byteCodeTestFunc.size()));
+        if (g_CommandLine.verbose)
+            g_Log.verbose(format("   module %s, C backend, precompile", moduleName.c_str(), module->byteCodeTestFunc.size()));
 
         emitRuntime(bufferC, precompileIndex);
         emitDataSegment(bufferC, &module->bssSegment, precompileIndex);

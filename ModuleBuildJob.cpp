@@ -180,6 +180,8 @@ JobResult ModuleBuildJob::execute()
     {
         pass               = ModuleBuildPass::Run;
         timeBeforeSemantic = chrono::high_resolution_clock::now();
+        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            g_Log.verbose(format("## module %s semantic pass begin", module->name.c_str()));
 
         auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module        = module;
@@ -195,6 +197,8 @@ JobResult ModuleBuildJob::execute()
         timeBeforeRun                    = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemantic;
         g_Stats.semanticTime             = g_Stats.semanticTime + elapsed.count();
+        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            g_Log.verbose(format(" # module %s semantic pass end in %.3fs", module->name.c_str(), elapsed.count()));
 
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -219,8 +223,8 @@ JobResult ModuleBuildJob::execute()
             {
                 if (!module->numErrors)
                 {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
+                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                        g_Log.verbose(format("   module %s, bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
                     for (auto func : module->byteCodeInitFunc)
                     {
@@ -234,8 +238,8 @@ JobResult ModuleBuildJob::execute()
             {
                 if (!module->numErrors)
                 {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
+                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                        g_Log.verbose(format("   module %s, bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
                     // A #run pass cannot modify a bss variable
                     module->bssCannotChange = true;
@@ -257,8 +261,8 @@ JobResult ModuleBuildJob::execute()
                 {
                     if (!module->numErrors)
                     {
-                        if (g_CommandLine.verboseBuildPass)
-                            g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                            g_Log.verbose(format("   module %s, bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                         // Modified global variables during test will be restored after
                         module->saveBssValues     = true;
@@ -283,8 +287,8 @@ JobResult ModuleBuildJob::execute()
             {
                 if (!module->numErrors)
                 {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
+                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                        g_Log.verbose(format("   module %s, bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
                     for (auto func : module->byteCodeDropFunc)
                     {
@@ -318,6 +322,8 @@ JobResult ModuleBuildJob::execute()
         timeBeforeOutput                 = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
         g_Stats.runTime                  = g_Stats.runTime + elapsed.count();
+        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
 
         pass = ModuleBuildPass::End;
         if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
@@ -340,6 +346,8 @@ JobResult ModuleBuildJob::execute()
     auto                     timeAfterOutput = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
     g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
+    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+        g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
 
     module->setHasBeenBuilt(BUILDRES_FULL);
 

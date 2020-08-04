@@ -21,9 +21,6 @@ JobResult ModuleOutputJob::execute()
         if (module->fromTestsFolder && !g_CommandLine.backendOutputTest)
             return JobResult::ReleaseJob;
 
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("-> backend pass");
-
         // Generate .swg file with public definitions
         auto exportJob          = g_Pool_moduleOutputExportJob.alloc();
         exportJob->backend      = module->backend;

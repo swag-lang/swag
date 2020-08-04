@@ -264,8 +264,8 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
             pp.dbg->setup(this, pp.module);
         }
 
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("   module '%s', llvm backend, generating files", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
+        if (g_CommandLine.verbose)
+            g_Log.verbose(format("   module %s, llvm backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);

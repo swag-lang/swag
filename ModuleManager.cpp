@@ -18,9 +18,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
     if (loadedModules.find(name) != loadedModules.end())
         return true;
 
-    bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
-    if (verbose)
-        g_Log.verbose(format("   request to load module '%s'\n", name.c_str()), false);
+    bool verbose = g_CommandLine.verbose;
 
     // First try in the target folder (local modules)
     fs::path path = g_Workspace.targetPath;
