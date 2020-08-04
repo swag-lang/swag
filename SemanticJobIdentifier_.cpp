@@ -668,7 +668,7 @@ anotherTry:
             {
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
-                    grandParent->kind == AstNodeKind::UsingAlias ||
+                    grandParent->kind == AstNodeKind::Alias ||
                     (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf))
                 {
                     if (callParameters)
@@ -1486,7 +1486,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto symbolKind = symbol->kind;
 
     // Alias
-    if (symbolKind == SymbolKind::UsingAlias)
+    if (symbolKind == SymbolKind::Alias)
     {
         symbol     = symbol->overloads[0]->symbol;
         symbolKind = symbol->kind;
@@ -1618,7 +1618,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& match = job->cacheMatches[0];
 
     // Alias
-    if (match.symbolName->kind == SymbolKind::UsingAlias)
+    if (match.symbolName->kind == SymbolKind::Alias)
         match.symbolName = match.symbolOverload->symbol;
 
     node->typeInfo = match.symbolOverload->typeInfo;
@@ -1808,7 +1808,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
     // Search in embedded function scopes
     if (kind == SymbolKind::TypeAlias ||
-        kind == SymbolKind::UsingAlias ||
+        kind == SymbolKind::Alias ||
         kind == SymbolKind::Function ||
         kind == SymbolKind::Struct ||
         kind == SymbolKind::Enum ||

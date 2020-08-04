@@ -48,6 +48,7 @@ void LanguageSpec::setup()
     keywords["readonly"]    = TokenId::KwdReadOnly;
     keywords["readwrite"]   = TokenId::KwdReadWrite;
     keywords["typealias"]   = TokenId::KwdTypeAlias;
+    keywords["alias"]       = TokenId::KwdAlias;
     keywords["enum"]        = TokenId::KwdEnum;
     keywords["enumvalue"]   = TokenId::KwdEnumValue;
     keywords["impl"]        = TokenId::KwdImpl;

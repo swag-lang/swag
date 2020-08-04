@@ -11,6 +11,28 @@
 #include "Module.h"
 #include "LanguageSpec.h"
 
+// This is an alias
+bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveUsing;
+    if (result)
+        *result = node;
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid alias name '%s'", token.text.c_str())));
+    node->inheritTokenName(token);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymEqual));
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatSemiCol("after alias"));
+
+    node->semanticFct        = SemanticJob::resolveAlias;
+    node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
+    return true;
+}
+
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::TypeAlias, sourceFile, parent);

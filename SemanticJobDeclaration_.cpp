@@ -50,14 +50,14 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     return true;
 }
 
-bool SemanticJob::resolveUsingAlias(SemanticContext* context)
+bool SemanticJob::resolveAlias(SemanticContext* context)
 {
     auto job  = context->job;
     auto node = context->node;
 
     node->flags |= AST_NO_BYTECODE;
 
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::UsingAlias));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
     if (context->result == ContextResult::Pending)
         return true;
 

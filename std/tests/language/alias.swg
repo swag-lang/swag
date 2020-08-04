@@ -1,12 +1,19 @@
 #test
 {
-    // using brings the scope of a namespace, struct or enum in the current one
+    // using can have a name alias
     {
         enum RGB { R; G; B; }
         @assert(RGB.R == 0)
 
-        using RGB
-        @assert(G == 1)
+        alias Color = RGB
+        @assert(Color.G == 1)
+    }
+
+    // you can alias a function
+    {
+        func thisIsABigFunctionName(x: s32) => x * x
+        alias myFunc = thisIsABigFunctionName
+        @assert(myFunc(4) == 16)
     }
 
     // using can be used with a variable or a function parameter

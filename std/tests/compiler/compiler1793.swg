@@ -10,7 +10,7 @@ namespace A
 
 #test
 {
-    using toto1 = A
+    alias toto1 = A
     toto1.toto()
     @assert(G == 1)
 }

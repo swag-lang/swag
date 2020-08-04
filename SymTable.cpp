@@ -266,7 +266,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
 
     if (!symbol->overloads.empty())
     {
-        if (symbol->kind != SymbolKind::UsingAlias)
+        if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
             Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
@@ -306,7 +306,7 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a namespace";
     case SymbolKind::TypeAlias:
         return "a type alias";
-    case SymbolKind::UsingAlias:
+    case SymbolKind::Alias:
         return "a name alias";
     case SymbolKind::Variable:
         return "a variable";
@@ -337,7 +337,7 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "namespace";
     case SymbolKind::TypeAlias:
         return "type alias";
-    case SymbolKind::UsingAlias:
+    case SymbolKind::Alias:
         return "name alias";
     case SymbolKind::Variable:
         return "variable";

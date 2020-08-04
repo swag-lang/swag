@@ -50,7 +50,7 @@ enum class SymbolKind
     Invalid,
     Variable,
     TypeAlias,
-    UsingAlias,
+    Alias,
     Namespace,
     Enum,
     EnumValue,

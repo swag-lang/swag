@@ -1,4 +1,4 @@
-using toto = swag
+alias toto = swag
 
 //#[toto.printbc]
 #test

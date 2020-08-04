@@ -10,7 +10,7 @@ namespace A.B
 
 #test
 {
-    using NP = A.B
+    alias NP = A.B
     NP.toto(10)
     @assert(G == 10)
 }

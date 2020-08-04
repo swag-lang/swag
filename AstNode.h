@@ -59,7 +59,7 @@ enum class AstNodeKind : uint8_t
     TypeLambda,
     Namespace,
     Using,
-    UsingAlias,
+    Alias,
     If,
     While,
     For,

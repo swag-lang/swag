@@ -18,45 +18,24 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
         AstNode* leftNode;
         SWAG_CHECK(doIdentifierRef(node, &leftNode));
 
-        // This is an alias
-        if (token.id == TokenId::SymEqual)
+        Ast::addChildBack(node, leftNode);
+
+        // We must ensure that no job can be run before the using
+        if (!node->ownerFct)
         {
-            Ast::removeFromParent(leftNode);
-            SWAG_CHECK(checkIsSingleIdentifier(leftNode));
-            auto identifier = leftNode->childs.back();
-            SWAG_CHECK(isValidVarName(identifier));
-            SWAG_CHECK(eatToken());
-
-            node->name = identifier->name;
-            node->inheritTokenLocation(identifier->token);
-
-            node->kind = AstNodeKind::UsingAlias;
-            SWAG_CHECK(doIdentifierRef(node));
-
-            node->semanticFct        = SemanticJob::resolveUsingAlias;
-            node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::UsingAlias);
-        }
-        else
-        {
-            Ast::addChildBack(node, leftNode);
-
-            // We must ensure that no job can be run before the using
-            if (!node->ownerFct)
+            for (auto child : parent->childs)
             {
-                for (auto child : parent->childs)
+                switch (child->kind)
                 {
-                    switch (child->kind)
-                    {
-                    case AstNodeKind::CompilerImport:
-                    case AstNodeKind::CompilerAssert:
-                    case AstNodeKind::CompilerForeignLib:
-                    case AstNodeKind::Using:
-                    case AstNodeKind::IdentifierRef:
-                        break;
+                case AstNodeKind::CompilerImport:
+                case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerForeignLib:
+                case AstNodeKind::Using:
+                case AstNodeKind::IdentifierRef:
+                    break;
 
-                    default:
-                        return error(node->token, "global 'using' must be defined at the top of the file");
-                    }
+                default:
+                    return error(node->token, "global 'using' must be defined at the top of the file");
                 }
             }
         }
@@ -404,6 +383,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdTypeAlias:
         SWAG_CHECK(doTypeAlias(parent, result));
         break;
+    case TokenId::KwdAlias:
+        SWAG_CHECK(doAlias(parent, result));
+        break;
     default:
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
@@ -464,6 +446,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdTypeAlias:
         SWAG_CHECK(doTypeAlias(parent));
+        break;
+    case TokenId::KwdAlias:
+        SWAG_CHECK(doAlias(parent));
         break;
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
