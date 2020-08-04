@@ -114,7 +114,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
-    if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo)
+    if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
     {
         forceConstType(context, typeNode);
         return true;

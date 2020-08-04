@@ -289,6 +289,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     switch (symbol->kind)
     {
+    case SymbolKind::GenericType:
+        SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
+        break;
+
     case SymbolKind::Namespace:
         parent->startScope = static_cast<TypeInfoNamespace*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
@@ -1220,8 +1224,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
+    // If previous identifier was generic, then stop evaluation
+    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->kind == TypeInfoKind::Generic)
+    {
+        // Just take the generic type for now
+        node->typeInfo          = g_TypeMgr.typeInfoUndefined;
+        identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
+        return true;
+    }
+
     // Already solved
-    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined))
     {
         SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
         return true;
