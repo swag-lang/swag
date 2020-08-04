@@ -23,19 +23,28 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     freeRegisterRC(context, r0);
 }
 
+bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
+{
+    if (context->contextFlags & BCC_FLAG_NOSAFETY)
+        return false;
+    if (!context->sourceFile->module->mustEmitSafety(context->node))
+        return false;
+    return true;
+}
+
 void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
+
     emitSafetyNotZero(context, r, 64, message);
 }
 
 void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
+
     emitSafetyNotZero(context, r, bits, "division by zero");
 }
 
@@ -65,24 +74,23 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, ui
 
 void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
+
     emitSafetyBoundCheckLowerEq(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
+
     emitSafetyBoundCheckLower(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -98,8 +106,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
 
 void ByteCodeGenJob::emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -116,8 +123,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, u
 
 void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -140,8 +146,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
 void ByteCodeGenJob::emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
 {
-    auto safety = context->sourceFile->module->mustEmitSafety(context->node);
-    if (!safety)
+    if (!mustEmitSafety(context))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);

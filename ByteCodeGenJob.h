@@ -23,6 +23,9 @@ struct AstNode;
 struct AstArrayPointerSlicing;
 enum class ByteCodeOp : uint16_t;
 
+static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
+static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;
+
 struct ByteCodeGenContext : public JobContext
 {
     ByteCode*                     bc;
@@ -32,6 +35,7 @@ struct ByteCodeGenContext : public JobContext
     AstNode*                      forceNode = nullptr;
     VectorNative<AstNode*>        stackForceNode;
     bool                          noLocation        = false;
+    uint32_t                      contextFlags      = 0;
     uint16_t                      instructionsFlags = false;
 
     void setNoLocation()
@@ -105,6 +109,24 @@ struct PushNode
     }
 
     ByteCodeGenContext* savedBc;
+};
+
+struct PushContextFlags
+{
+    PushContextFlags(ByteCodeGenContext* bc, uint32_t flags)
+    {
+        savedBc    = bc;
+        savedFlags = bc->contextFlags;
+        bc->contextFlags |= flags;
+    }
+
+    ~PushContextFlags()
+    {
+        savedBc->contextFlags = savedFlags;
+    }
+
+    ByteCodeGenContext* savedBc;
+    uint32_t            savedFlags;
 };
 
 struct PushICFlags
@@ -262,6 +284,7 @@ struct ByteCodeGenJob : public Job
     static bool emitStruct(ByteCodeGenContext* context);
     static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
 
+    static bool mustEmitSafety(ByteCodeGenContext* context);
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
     static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
     static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);

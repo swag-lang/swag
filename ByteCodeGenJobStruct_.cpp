@@ -628,8 +628,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
 
 void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset)
 {
-    auto node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::LetDecl);
-    auto resolved = node->resolvedSymbolOverload;
+    PushContextFlags cf(context, BCC_FLAG_NOSAFETY);
+    auto             node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::LetDecl);
+    auto             resolved = node->resolvedSymbolOverload;
 
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
