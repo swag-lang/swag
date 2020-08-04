@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "Stats.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
 #include "Os.h"
-#include "Allocator.h"
+#include "Timer.h"
 #include "CommandLineParser.h"
-#include "CopyFileJob.h"
 
 Workspace g_Workspace;
 
@@ -321,9 +319,12 @@ bool Workspace::buildTarget()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("## starting syntax pass");
 
-    auto enumJob = new EnumerateModuleJob;
-    g_ThreadMgr.addJob(enumJob);
-    g_ThreadMgr.waitEndJobs();
+    {
+        Timer timer(g_Stats.syntaxTime);
+        auto  enumJob = new EnumerateModuleJob;
+        g_ThreadMgr.addJob(enumJob);
+        g_ThreadMgr.waitEndJobs();
+    }
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   syntax pass done on %d file(s) in %d module(s)", g_Stats.numFiles.load(), modules.size()));
@@ -401,28 +402,27 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    auto timeBefore = chrono::high_resolution_clock::now();
+    {
+        Timer timer(g_Stats.totalTime, true);
 
-    setup();
+        setup();
 
-    if (g_CommandLine.devMode)
-        g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
+        if (g_CommandLine.devMode)
+            g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
 
-    if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
+        if (g_CommandLine.verboseBuildPass)
+            g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
 
-    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetArchName().c_str()));
-    addBootstrap();
-    setupTarget();
-    SWAG_CHECK(buildTarget());
-
-    auto                     timeAfter = chrono::high_resolution_clock::now();
-    chrono::duration<double> totalTime = timeAfter - timeBefore;
+        g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetArchName().c_str()));
+        addBootstrap();
+        setupTarget();
+        SWAG_CHECK(buildTarget());
+    }
 
     if (g_Workspace.numErrors)
         g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
     else
-        g_Log.messageHeaderCentered("Done", format("%.3fs", totalTime.count()));
+        g_Log.messageHeaderCentered("Done", format("%.3fs", g_Stats.totalTime.load()));
 
     return true;
 }

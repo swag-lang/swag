@@ -680,6 +680,9 @@
     <ClInclude Include="TokenizerIds.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

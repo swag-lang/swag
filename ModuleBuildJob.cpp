@@ -56,7 +56,8 @@ JobResult ModuleBuildJob::execute()
         // If we do not need to compile, then exit, we're done with that module
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc)
         {
-            pass = ModuleBuildPass::Run;
+            timeBeforeSemantic = chrono::high_resolution_clock::now();
+            pass               = ModuleBuildPass::Run;
         }
         else
         {
@@ -177,7 +178,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Semantic)
     {
-        pass = ModuleBuildPass::Run;
+        pass               = ModuleBuildPass::Run;
+        timeBeforeSemantic = chrono::high_resolution_clock::now();
 
         auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module        = module;
@@ -190,6 +192,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Run)
     {
+        timeBeforeRun                    = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemantic;
+        g_Stats.semanticTime             = g_Stats.semanticTime + elapsed.count();
+
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -309,6 +315,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
+        timeBeforeOutput                 = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
+        g_Stats.runTime                  = g_Stats.runTime + elapsed.count();
+
         pass = ModuleBuildPass::End;
         if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
         {
@@ -326,6 +336,10 @@ JobResult ModuleBuildJob::execute()
             }
         }
     }
+
+    auto                     timeAfterOutput = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
+    g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
 
     module->setHasBeenBuilt(BUILDRES_FULL);
 

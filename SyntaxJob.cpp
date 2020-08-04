@@ -4,9 +4,7 @@
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
-#include "Stats.h"
 #include "LanguageSpec.h"
-#include "SourceFile.h"
 #include "Scoped.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;

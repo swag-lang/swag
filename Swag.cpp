@@ -4,6 +4,7 @@
 #include "CommandLineParser.h"
 #include "Version.h"
 #include "Os.h"
+#include "Timer.h"
 
 void printStats()
 {
@@ -12,15 +13,18 @@ void printStats()
 
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.messageHeaderDot("total time", format("%.3fs", g_Stats.totalTime.count()));
-    g_Log.messageHeaderDot("precompile time", format("%.3fs", g_Stats.precompileTime.load()));
+    g_Log.messageHeaderDot("syntax time", format("%.3fs", g_Stats.syntaxTime.load()));
+    g_Log.messageHeaderDot("semantic time", format("%.3fs", g_Stats.semanticTime.load()));
+    g_Log.messageHeaderDot("run time", format("%.3fs", g_Stats.runTime.load()));
+    g_Log.messageHeaderDot("output time", format("%.3fs", g_Stats.outputTime.load()));
+    g_Log.messageHeaderDot("precompile time", format("%.3fs", g_Stats.precompileTimeJob.load()));
     g_Log.messageHeaderDot("compile time", format("%.3fs", g_Stats.compileTime.load()));
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
     g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));
     g_Log.messageHeaderDot("open files", format("%d", g_Stats.maxOpenFiles.load()));
-    g_Log.messageHeaderDot("lines", format("%d", g_Stats.numLines.load()));
-    g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.count())));
+    g_Log.messageHeaderDot("source lines", format("%d", g_Stats.numLines.load()));
+    g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.load())));
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("wasted memory", format("%dMb", g_Stats.wastedAllocatorMemory.load() / (1024 * 1024)));
@@ -70,8 +74,6 @@ void help(CommandLineParser& cmdParser)
 
 int main(int argc, const char* argv[])
 {
-    auto timeBefore = chrono::high_resolution_clock::now();
-
     OS::setup();
     g_Log.setup();
 
@@ -191,8 +193,6 @@ int main(int argc, const char* argv[])
         g_Workspace.build();
 
     // Prints stats, then exit
-    auto timeAfter    = chrono::high_resolution_clock::now();
-    g_Stats.totalTime = timeAfter - timeBefore;
     printStats();
 
     return g_Workspace.numErrors > 0 ? -1 : 0;
