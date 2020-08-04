@@ -90,11 +90,12 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     // Three parameters
     if (node->token.id == TokenId::IntrinsicInterfaceOf)
     {
-        SWAG_CHECK(doExpression(node));
+        AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
+        SWAG_CHECK(doExpression(params));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(params));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(params));
     }
 
     // Two parameters

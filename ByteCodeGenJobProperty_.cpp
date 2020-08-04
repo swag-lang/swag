@@ -16,27 +16,29 @@ bool ByteCodeGenJob::emitSliceOfProperty(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitInterfaceOfProperty(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node   = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto params = node->childs.front();
+
     reserveLinearRegisterRC(context, node->resultRegisterRC, 3);
 
     // Result will be a pointer to two contiguous registers
     emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->resultRegisterRC[0], node->resultRegisterRC[1]);
 
     // Reference to the interface concrete type info
-    auto childItf = node->childs[2];
+    auto childItf = params->childs[2];
     SWAG_ASSERT(childItf->computedValue.reg.u32 != UINT32_MAX);
     auto r0 = reserveRegisterRC(context);
 
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], node->childs[0]->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC);
 
     // Get interface itable pointer in the second result register
-    emitInstruction(context, ByteCodeOp::IntrinsicInterfaceOf, node->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
+    emitInstruction(context, ByteCodeOp::IntrinsicInterfaceOf, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
 
-    freeRegisterRC(context, node->childs[0]);
-    freeRegisterRC(context, node->childs[1]);
+    freeRegisterRC(context, params->childs[0]);
+    freeRegisterRC(context, params->childs[1]);
     freeRegisterRC(context, r0);
     return true;
 }

@@ -33,13 +33,18 @@ bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context)
 {
-    auto  first      = node->childs[0];
-    auto  second     = node->childs[1];
-    auto  third      = node->childs[2];
+    auto node   = context->node;
+    auto params = node->childs.front();
+
+    auto  first      = params->childs[0];
+    auto  second     = params->childs[1];
+    auto  third      = params->childs[2];
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
+
+    SWAG_CHECK(checkIsConcrete(context, first));
 
     TypeInfo* resultType;
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, &resultType, &third->computedValue.reg.u32));
@@ -310,16 +315,18 @@ bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr = node->childs.front();
 
     switch (node->token.id)
     {
     case TokenId::IntrinsicSizeOf:
+    {
+        auto expr = node->childs.front();
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->setFlagsValueIsComputed();
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
+    }
 
     case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(resolveTypeOfProperty(context));
@@ -330,6 +337,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
 
     case TokenId::IntrinsicCountOf:
+    {
+        auto expr = node->childs.front();
         if (expr->typeInfo->kind == TypeInfoKind::Enum)
         {
             auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
@@ -343,21 +352,29 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->inheritComputedValue(expr);
         SWAG_CHECK(resolveCountOfProperty(context, node, expr->typeInfo));
         break;
+    }
 
     case TokenId::IntrinsicDataOf:
+    {
+        auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveDataOfProperty(context, node, expr->typeInfo));
         break;
+    }
 
     case TokenId::IntrinsicSliceOf:
+    {
+        auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveSliceOfProperty(context, node, expr->typeInfo));
         break;
+    }
 
     case TokenId::IntrinsicInterfaceOf:
-        SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveInterfaceOfProperty(context, node, expr->typeInfo));
+    {
+        SWAG_CHECK(resolveInterfaceOfProperty(context));
         break;
+    }
     }
 
     return true;
