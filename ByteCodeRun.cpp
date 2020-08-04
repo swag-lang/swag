@@ -396,38 +396,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::SetZeroAtPointer8:
     {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(uint8_t*) (ptr + ip->b.u32) = 0;
+        auto ptr                      = registersRC[ip->a.u32].pointer;
+        *(uint8_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer16:
     {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(uint16_t*) (ptr + ip->b.u32) = 0;
+        auto ptr                       = registersRC[ip->a.u32].pointer;
+        *(uint16_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer32:
     {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(uint32_t*) (ptr + ip->b.u32) = 0;
+        auto ptr                       = registersRC[ip->a.u32].pointer;
+        *(uint32_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer64:
     {
-        auto ptr = registersRC[ip->a.u32].pointer;
-        if (ptr == nullptr)
-            context->error("dereferencing a null pointer");
-        else
-            *(uint64_t*) (ptr + ip->b.u32) = 0;
+        auto ptr                       = registersRC[ip->a.u32].pointer;
+        *(uint64_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointerX:
