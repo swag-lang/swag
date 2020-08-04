@@ -224,7 +224,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     auto expression = node->expression;
-    SWAG_CHECK(resolveCountOfProperty(context, expression, expression->typeInfo));
+    SWAG_CHECK(resolveIntrinsicCountOf(context, expression, expression->typeInfo));
 
     node->typeInfo                     = g_TypeMgr.typeInfoU32;
     node->byteCodeFct                  = ByteCodeGenJob::emitLoop;

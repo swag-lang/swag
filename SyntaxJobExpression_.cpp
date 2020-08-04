@@ -88,7 +88,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
 
     // Three parameters
-    if (node->token.id == TokenId::IntrinsicInterfaceOf)
+    if (node->token.id == TokenId::IntrinsicMakeInterface)
     {
         AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
         SWAG_CHECK(doExpression(params));
@@ -99,7 +99,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->token.id == TokenId::IntrinsicSliceOf)
+    else if (node->token.id == TokenId::IntrinsicMakeSlice)
     {
         SWAG_CHECK(doExpression(node));
         SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -166,8 +166,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
-    case TokenId::IntrinsicSliceOf:
-    case TokenId::IntrinsicInterfaceOf:
+    case TokenId::IntrinsicMakeSlice:
+    case TokenId::IntrinsicMakeInterface:
     case TokenId::IntrinsicAlloc:
     case TokenId::IntrinsicRealloc:
     case TokenId::IntrinsicMemCmp:

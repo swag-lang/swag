@@ -7,7 +7,7 @@ impl titi
 {
 	func toString(using self) -> const [..] u8
 	{
-		return @sliceof(&buf[0], 4)
+		return @mkslice(&buf[0], 4)
 	}
 }
 

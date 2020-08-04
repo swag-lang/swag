@@ -152,8 +152,8 @@ enum class TokenId
     IntrinsicKindOf,
     IntrinsicCountOf,
     IntrinsicDataOf,
-    IntrinsicSliceOf,
-    IntrinsicInterfaceOf,
+    IntrinsicMakeSlice,
+    IntrinsicMakeInterface,
 
     IntrinsicPrint,
     IntrinsicAssert,

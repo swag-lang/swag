@@ -23,7 +23,7 @@ impl IPrintable for Point
 {
     var pt: Point
     var ty = @typeof(pt)
-    itf := @interfaceof(&pt, ty, IPrintable)
+    itf := @mkinterface(&pt, ty, IPrintable)
     @assert(itf != null)
     itf.print()
     @assert(G == 666)

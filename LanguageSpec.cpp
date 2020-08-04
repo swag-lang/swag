@@ -105,22 +105,21 @@ void LanguageSpec::setup()
     keywords["@kindof"]      = TokenId::IntrinsicKindOf;
     keywords["@countof"]     = TokenId::IntrinsicCountOf;
     keywords["@dataof"]      = TokenId::IntrinsicDataOf;
-    keywords["@sliceof"]     = TokenId::IntrinsicSliceOf;
-    keywords["@interfaceof"] = TokenId::IntrinsicInterfaceOf;
-
-    keywords["@index"]      = TokenId::IntrinsicIndex;
-    keywords["@print"]      = TokenId::IntrinsicPrint;
-    keywords["@assert"]     = TokenId::IntrinsicAssert;
-    keywords["@alloc"]      = TokenId::IntrinsicAlloc;
-    keywords["@realloc"]    = TokenId::IntrinsicRealloc;
-    keywords["@free"]       = TokenId::IntrinsicFree;
-    keywords["@memcpy"]     = TokenId::IntrinsicMemCpy;
-    keywords["@memset"]     = TokenId::IntrinsicMemSet;
-    keywords["@memcmp"]     = TokenId::IntrinsicMemCmp;
-    keywords["@getcontext"] = TokenId::IntrinsicGetContext;
-    keywords["@setcontext"] = TokenId::IntrinsicSetContext;
-    keywords["@args"]       = TokenId::IntrinsicArguments;
-    keywords["@isbytecode"] = TokenId::IntrinsicIsByteCode;
+    keywords["@mkslice"]     = TokenId::IntrinsicMakeSlice;
+    keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
+    keywords["@index"]       = TokenId::IntrinsicIndex;
+    keywords["@print"]       = TokenId::IntrinsicPrint;
+    keywords["@assert"]      = TokenId::IntrinsicAssert;
+    keywords["@alloc"]       = TokenId::IntrinsicAlloc;
+    keywords["@realloc"]     = TokenId::IntrinsicRealloc;
+    keywords["@free"]        = TokenId::IntrinsicFree;
+    keywords["@memcpy"]      = TokenId::IntrinsicMemCpy;
+    keywords["@memset"]      = TokenId::IntrinsicMemSet;
+    keywords["@memcmp"]      = TokenId::IntrinsicMemCmp;
+    keywords["@getcontext"]  = TokenId::IntrinsicGetContext;
+    keywords["@setcontext"]  = TokenId::IntrinsicSetContext;
+    keywords["@args"]        = TokenId::IntrinsicArguments;
+    keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;

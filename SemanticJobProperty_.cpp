@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
     auto second = node->childs.back();
@@ -33,7 +33,7 @@ bool SemanticJob::resolveSliceOfProperty(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 {
     auto node   = context->node;
     auto params = node->childs.front();
@@ -76,7 +76,7 @@ bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -149,7 +149,7 @@ bool SemanticJob::resolveDataOfProperty(SemanticContext* context, AstNode* node,
     return true;
 }
 
-bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -234,7 +234,7 @@ bool SemanticJob::resolveCountOfProperty(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool SemanticJob::resolveKindOfProperty(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 {
     auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto  expr       = node->childs.front();
@@ -264,7 +264,7 @@ bool SemanticJob::resolveKindOfProperty(SemanticContext* context)
         expr->typeInfo = typeFunc->returnType;
     }
 
-    SWAG_CHECK(resolveTypeOfProperty(context));
+    SWAG_CHECK(resolveIntrinsicTypeOf(context));
     return true;
 }
 
@@ -301,7 +301,7 @@ bool SemanticJob::makeTypeOfProperty(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeOfProperty(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 {
     auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto expr = node->childs.front();
@@ -329,11 +329,11 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     }
 
     case TokenId::IntrinsicTypeOf:
-        SWAG_CHECK(resolveTypeOfProperty(context));
+        SWAG_CHECK(resolveIntrinsicTypeOf(context));
         return true;
 
     case TokenId::IntrinsicKindOf:
-        SWAG_CHECK(resolveKindOfProperty(context));
+        SWAG_CHECK(resolveIntrinsicKindOf(context));
         return true;
 
     case TokenId::IntrinsicCountOf:
@@ -350,7 +350,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
-        SWAG_CHECK(resolveCountOfProperty(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr->typeInfo));
         break;
     }
 
@@ -358,21 +358,21 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveDataOfProperty(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicDataOf(context, node, expr->typeInfo));
         break;
     }
 
-    case TokenId::IntrinsicSliceOf:
+    case TokenId::IntrinsicMakeSlice:
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveSliceOfProperty(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo));
         break;
     }
 
-    case TokenId::IntrinsicInterfaceOf:
+    case TokenId::IntrinsicMakeInterface:
     {
-        SWAG_CHECK(resolveInterfaceOfProperty(context));
+        SWAG_CHECK(resolveIntrinsicMakeInterface(context));
         break;
     }
     }

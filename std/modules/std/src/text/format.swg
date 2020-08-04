@@ -18,7 +18,7 @@ namespace std.text
             if ptr[nextIdx] == "%"'u8
             {
                 // Add remaining text, and starts again after the mark
-                buf.addBytes(cast(const [..] u8) @sliceof(ptr + idx, nextIdx - idx))
+                buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, nextIdx - idx))
                 idx = nextIdx + 1
                 nextIdx = idx
 
@@ -44,6 +44,6 @@ namespace std.text
 
         // Add remaining text
         if idx < nextIdx
-            buf.addBytes(cast(const [..] u8) @sliceof(ptr + idx, nextIdx - idx))
+            buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, nextIdx - idx))
     }
 }
