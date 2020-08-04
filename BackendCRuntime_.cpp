@@ -86,8 +86,6 @@ void*swag_runtime_tlsGetValue(__u32_t);
 void*swag_runtime_malloc(__u64_t);
 void*swag_runtime_realloc(void*,__u64_t);
 void swag_runtime_free(void*);
-void*swag_runtime_memcpy(void*,const void*,__u64_t);
-void*swag_runtime_memset(void*,__s32_t,__u64_t);
 __s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
 void swag_runtime_exit(__s32_t);
 void swag_runtime_print_n(const void*,int);
@@ -101,6 +99,8 @@ void swag_runtime_convertArgcArgv(void*,int,void*[]);
 __b_t swag_runtime_comparetype(const void*,const void*);
 void* swag_runtime_interfaceof(const void*,const void*);
 
+void*memcpy(void*,const void*,__u64_t);
+void*memset(void*,__s32_t,__u64_t);
 __f32_t sqrtf(__f32_t);
 __f64_t sqrt(__f64_t);
 )";

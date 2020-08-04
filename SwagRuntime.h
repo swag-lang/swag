@@ -3,8 +3,6 @@
 extern "C" void*    swag_runtime_malloc(uint64_t size);
 extern "C" void*    swag_runtime_realloc(void* addr, uint64_t size);
 extern "C" void     swag_runtime_free(void* addr);
-extern "C" void*    swag_runtime_memcpy(void* mem1, const void* mem2, uint64_t size);
-extern "C" void*    swag_runtime_memset(void* mem, int32_t value, uint64_t size);
 extern "C" int32_t  swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size);
 extern "C" void     swag_runtime_exit(int32_t exitCode);
 extern "C" void     swag_runtime_print_n(const void* message, int len);

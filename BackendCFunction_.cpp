@@ -866,9 +866,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::SetZeroStackX:
             if (ip->a.u32)
-                concat.addStringFormat("swag_runtime_memset(s+%u,0,%u);", ip->a.u32, ip->b.u32);
+                concat.addStringFormat("memset(s+%u,0,%u);", ip->a.u32, ip->b.u32);
             else
-                concat.addStringFormat("swag_runtime_memset(s,0,%u);", ip->b.u32);
+                concat.addStringFormat("memset(s,0,%u);", ip->b.u32);
             break;
 
         case ByteCodeOp::MakeDataSegPointer:
@@ -926,13 +926,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::MemCpyVC32:
-            concat.addStringFormat("swag_runtime_memcpy(r[%u].p,r[%u].p,%u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("memcpy(r[%u].p,r[%u].p,%u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemCpy:
-            concat.addStringFormat("swag_runtime_memcpy(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("memcpy(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemSet:
-            concat.addStringFormat("swag_runtime_memset(r[%u].p,r[%u].u8,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("memset(r[%u].p,r[%u].u8,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemCmp:
             concat.addStringFormat("r[%u].s32=swag_runtime_memcmp(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
@@ -1014,10 +1014,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_STR_1(concat, "*(__u64_t*)r[", ip->a.u32, "].p=0;");
             break;
         case ByteCodeOp::SetZeroAtPointerX:
-            concat.addStringFormat("swag_runtime_memset(r[%u].p,0,%u);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("memset(r[%u].p,0,%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
-            concat.addStringFormat("swag_runtime_memset(r[%u].p,0,r[%u].u32*%u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("memset(r[%u].p,0,r[%u].u32*%u);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::BinOpPlusS32:

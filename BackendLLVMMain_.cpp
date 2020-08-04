@@ -167,7 +167,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto size      = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), modu.getDataLayout().getTypeStoreSize(pp.processInfosTy));
         auto dest      = builder.CreatePointerCast(pp.processInfos, llvm::Type::getInt8PtrTy(context));
         auto src       = builder.CreatePointerCast(fct->getArg(0), llvm::Type::getInt8PtrTy(context));
-        builder.CreateCall(modu.getFunction("swag_runtime_memcpy"), {dest, src, size});
+        builder.CreateMemCpy(dest, llvm::MaybeAlign(0), src, llvm::MaybeAlign(0), size);
     }
 
     // Initialize data segments

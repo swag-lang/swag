@@ -703,7 +703,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroStackX:
         {
-            //concat.addStringFormat("swag_runtime_memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
+            //concat.addStringFormat("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
             builder.CreateMemSet(r0, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
             break;
@@ -743,7 +743,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroAtPointerX:
         {
-            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
+            //concat.addStringFormat("memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(r0);
             builder.CreateMemSet(r1, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
@@ -751,7 +751,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
         {
-            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
             auto v0 = builder.CreateMul(r2, builder.getInt32(ip->c.u32));
@@ -840,7 +840,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MemCpyVC32:
         {
-            //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             r0      = builder.CreateLoad(r0);
@@ -850,7 +850,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemCpy:
         {
-            //concat.addStringFormat("swag_runtime_memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
@@ -862,7 +862,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemSet:
         {
-            //concat.addStringFormat("swag_runtime_memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));

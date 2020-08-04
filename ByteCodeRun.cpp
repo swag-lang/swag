@@ -248,7 +248,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = ip->c.u32;
-        swag_runtime_memcpy(dst, src, size);
+        memcpy(dst, src, size);
         break;
     }
     case ByteCodeOp::MemCpy:
@@ -256,7 +256,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = registersRC[ip->c.u32].u32;
-        swag_runtime_memcpy(dst, src, size);
+        memcpy(dst, src, size);
         break;
     }
     case ByteCodeOp::MemSet:
@@ -264,7 +264,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst   = registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;
         uint32_t size  = registersRC[ip->c.u32].u32;
-        swag_runtime_memset(dst, value, size);
+        memset(dst, value, size);
         break;
     }
     case ByteCodeOp::MemCmp:
@@ -391,7 +391,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(uint64_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::SetZeroStackX:
-        swag_runtime_memset(context->bp + ip->a.u32, 0, ip->b.u32);
+        memset(context->bp + ip->a.u32, 0, ip->b.u32);
         break;
 
     case ByteCodeOp::SetZeroAtPointer8:
@@ -431,10 +431,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::SetZeroAtPointerX:
-        swag_runtime_memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
+        memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
     case ByteCodeOp::SetZeroAtPointerXRB:
-        swag_runtime_memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
+        memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 
     case ByteCodeOp::GetFromDataSeg8:
