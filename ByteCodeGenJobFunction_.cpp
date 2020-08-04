@@ -291,6 +291,20 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicSqrt:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+
+        auto child = callParams->childs[0];
+        if (child->typeInfo->isNative(NativeTypeKind::F32))
+            emitInstruction(context, ByteCodeOp::IntrinsicF32x1, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        else
+            emitInstruction(context, ByteCodeOp::IntrinsicF64x1, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        break;
+    }
+
     default:
         return internalError(context, "emitIntrinsic, unknown intrinsic");
     }

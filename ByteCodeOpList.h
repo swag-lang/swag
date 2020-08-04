@@ -289,4 +289,7 @@ BYTECODE_OP(AffectOpModuloEqU16)
 BYTECODE_OP(AffectOpModuloEqU32)
 BYTECODE_OP(AffectOpModuloEqU64)
 
+BYTECODE_OP(IntrinsicF32x1)
+BYTECODE_OP(IntrinsicF64x1)
+
 BYTECODE_OP(End)

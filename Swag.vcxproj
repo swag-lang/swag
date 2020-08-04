@@ -169,6 +169,7 @@
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
     <ClInclude Include="SwagScope.h" />
+    <ClInclude Include="TokenizerIds.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleSemanticJob.h" />

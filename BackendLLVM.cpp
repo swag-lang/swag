@@ -372,7 +372,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pmb.PrepareForLTO      = false;
     pmb.PrepareForThinLTO  = false;
     pmb.PerformThinLTO     = false;
-    pmb.Inliner            = llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+    pmb.Inliner            = isDebug ? nullptr : llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
     pmb.populateModulePassManager(llvmPass);
 
     // Generate obj file pass

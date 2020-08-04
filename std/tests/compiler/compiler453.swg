@@ -1,6 +1,3 @@
-
-
-
 func F(a: string = null)
 {
 	@assert(@countof(a) == 0)

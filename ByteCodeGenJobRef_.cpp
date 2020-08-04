@@ -115,6 +115,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 {
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
+        emitSafetyNullPointer(context, r0);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         return true;
     }
@@ -124,6 +125,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
     if (typeInfo->numRegisters() == 2)
     {
+        emitSafetyNullPointer(context, r0);
         r0 += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
@@ -137,6 +139,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
+    emitSafetyNullPointer(context, r0);
     switch (typeInfo->sizeOf)
     {
     case 1:
@@ -166,6 +169,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (typeInfo->isNative(NativeTypeKind::String))
     {
+        emitSafetyNullPointer(context, node->array->resultRegisterRC);
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);

@@ -372,6 +372,11 @@ void ByteCode::print()
             break;
         }
 
+        case ByteCodeOp::IntrinsicF32x1:
+        case ByteCodeOp::IntrinsicF64x1:
+            g_Log.print(format("VA: { %u } VB: { %u } %s", ip->a.u32, ip->b.u32, g_TokenNames[ip->d.u32]));
+            break;
+
         default:
             g_Log.setColor(LogColor::Gray);
             wprintf(L"RA: %u RB: %u RC: %u", ip->a.u32, ip->b.u32, ip->c.u32);

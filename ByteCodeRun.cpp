@@ -18,6 +18,27 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
+    case ByteCodeOp::IntrinsicF32x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicSqrt:
+            registersRC[ip->a.u32].f32 = sqrtf(registersRC[ip->b.u32].f32);
+            break;
+        }
+        break;
+    }
+    case ByteCodeOp::IntrinsicF64x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicSqrt:
+            registersRC[ip->a.u32].f64 = sqrt(registersRC[ip->b.u32].f64);
+            break;
+        }
+        break;
+    }
+
     case ByteCodeOp::TestNotZero8:
     {
         registersRC[ip->a.u32].b = registersRC[ip->b.u32].u8 != 0;

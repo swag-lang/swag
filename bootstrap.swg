@@ -18,6 +18,9 @@ func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
 func @isbytecode()->bool;
 
+func @sqrt(value: f32)->f32;
+func @sqrt(value: f64)->f64;
+
 namespace swag
 {
     // #[flags] is forced by the compiler

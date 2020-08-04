@@ -5,6 +5,13 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 
+const char* g_TokenNames[] =
+{
+#undef DEFINE_TOKEN_ID
+#define DEFINE_TOKEN_ID(__id) #__id
+#include "TokenizerIds.h"
+};
+
 void Tokenizer::setFile(SourceFile* file)
 {
     seek            = 0;

@@ -2925,6 +2925,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
             break;
 
+        case ByteCodeOp::IntrinsicF32x1:
+        {
+            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt: 
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
+                break;
+            }
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicF64x1:
+        {
+            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getDoubleTy(), r1), r0);
+                break;
+            }
+            break;
+        }
+
         default:
             ok = false;
             moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));

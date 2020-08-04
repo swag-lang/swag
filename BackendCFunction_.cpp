@@ -1722,6 +1722,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         }
 
+        case ByteCodeOp::IntrinsicF32x1:
+        {
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt:
+                concat.addStringFormat("r[%u].f32=sqrtf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicF64x1:
+        {
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt:
+                concat.addStringFormat("r[%u].f64=sqrt(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+
         default:
             ok = false;
             CONCAT_FIXED_STR(concat, "// ");

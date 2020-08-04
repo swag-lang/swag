@@ -677,6 +677,9 @@
     <ClInclude Include="ComWin32.hpp">
       <Filter>Win32</Filter>
     </ClInclude>
+    <ClInclude Include="TokenizerIds.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

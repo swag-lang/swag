@@ -1,11 +1,11 @@
 #module compiler452
-
+#unittest error;
 
 //#[swag.printbc]
-#unittest error;
 #test
 {
 	var a: string = null;
+    #[swag.safety(true)]
 	if(a[0] == 1)
 	{
 	}
