@@ -1,6 +1,6 @@
 struct Point
 {
-    x: s64
+    x: s64 = 666
 }
 
 interface IPrintable
@@ -20,7 +20,8 @@ impl IPrintable for Point
 #test
 {
     var pt: Point
-
-    type := @typeof(pt)
-    //itf := @interfaceof(&pt, type, IPrintable)
+    var ty = @typeof(pt)
+    itf := @interfaceof(&pt, ty, IPrintable)
+    @assert(itf != null)
+    itf.print()
 }

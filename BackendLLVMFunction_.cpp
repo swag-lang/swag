@@ -885,6 +885,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_memcmp"), {r1, r2, r3}), r0);
             break;
         }
+        case ByteCodeOp::IntrinsicInterfaceOf:
+        {
+            //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto r2 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            r0      = builder.CreateLoad(r0);
+            r1      = builder.CreateLoad(r1);
+            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_interfaceof"), {r0, r1}), r2);
+            break;
+        }
 
         case ByteCodeOp::CopyVBtoRA32:
         {

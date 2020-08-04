@@ -64,11 +64,8 @@ bool SemanticJob::resolveInterfaceOfProperty(SemanticContext* context, AstNode* 
     if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
         return context->report({node, "'@interfaceof' must have a 'swag.TypeInfo' pointer as a second parameter"});
 
-    // Create slice type
-    auto ptrItf    = g_Allocator.alloc<TypeInfoStruct>();
-    ptrItf->kind   = TypeInfoKind::Interface;
-    ptrItf->sizeOf = 2 * sizeof(void*);
-    node->typeInfo = ptrItf;
+    node->typeInfo = third->typeInfo;
+    third->flags |= AST_NO_BYTECODE;
 
     node->byteCodeFct = ByteCodeGenJob::emitInterfaceOfProperty;
     return true;

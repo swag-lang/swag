@@ -18,8 +18,8 @@ impl Itf for TOTO
 
 //#[swag.printbc]
 #test
-{   
+{
     ptr := cast(const *TypeInfoStruct) @typeof(TOTO)
     @assert(@countof(ptr.interfaces) == 1)
-    @assert(ptr.interfaces[0].name == "Itf")
+    @assert(ptr.interfaces[0].name == "compiler1370.Itf")
 }

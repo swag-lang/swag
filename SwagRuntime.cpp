@@ -253,8 +253,10 @@ extern "C" void* swag_runtime_interfaceof(const void* structType, const void* it
 
     for (int i = 0; i < ctype->interfaces.count; i++)
     {
-        //auto one = (ConcreteTypeInfoStruct*) buffer[i].value;
-        //auto same = swag_runtime_comparetype(itype, one);
+        if (buffer[i].name.count != itype->base.name.count)
+            continue;
+        if (swag_runtime_strcmp(buffer[i].name.buffer, itype->base.name.buffer, (uint32_t) itype->base.name.count))
+            return buffer[i].value;
     }
 
     return nullptr;

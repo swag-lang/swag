@@ -80,8 +80,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
-            typeParamItf             = g_Allocator.alloc<TypeInfoParam>();
-            typeParamItf->namedParam = typeBaseInterface->name;
+            typeParamItf = g_Allocator.alloc<TypeInfoParam>();
+            typeBaseInterface->computeScopedName();
+            typeParamItf->namedParam = typeBaseInterface->scopedName;
             typeParamItf->typeInfo   = typeBaseInterface;
             typeParamItf->node       = typeBaseInterface->declNode;
             typeStruct->interfaces.push_back(typeParamItf);
