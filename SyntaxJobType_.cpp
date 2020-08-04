@@ -26,7 +26,12 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));
     AstNode* expr;
-    SWAG_CHECK(doExpression(node, &expr));
+
+    {
+        ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
+        SWAG_CHECK(doExpression(node, &expr));
+    }
+
     SWAG_CHECK(eatSemiCol("after alias"));
 
     // This is a type alias

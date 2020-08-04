@@ -307,6 +307,13 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto overload     = node->childs.back()->resolvedSymbolOverload;
     auto typeResolved = overload->typeInfo;
 
+    if (typeResolved->kind == TypeInfoKind::Struct)
+    {
+        node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
+        SWAG_CHECK(resolveTypeAlias(context));
+        return true;
+    }
+
     node->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
     if (context->result == ContextResult::Pending)
@@ -316,7 +323,6 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     {
     case TypeInfoKind::Namespace:
     case TypeInfoKind::Enum:
-    case TypeInfoKind::Struct:
     case TypeInfoKind::FuncAttr:
     case TypeInfoKind::Alias:
         break;
