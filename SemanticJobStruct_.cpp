@@ -319,6 +319,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
         case AstNodeKind::AttrUse:
         case AstNodeKind::DocComment:
+        case AstNodeKind::Alias:
             continue;
         }
 

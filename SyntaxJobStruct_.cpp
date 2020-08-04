@@ -232,6 +232,10 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
+        case TokenId::KwdAlias:
+            SWAG_CHECK(doAlias(parent));
+            break;
+
         case TokenId::KwdUsing:
         {
             SWAG_CHECK(eatToken());
