@@ -291,6 +291,11 @@ struct AstNode
         attributeFlags |= job->currentAttributeFlags;
     }
 
+    bool hasComputedValue()
+    {
+        return (flags & AST_VALUE_COMPUTED);
+    }
+
     bool isConstantTrue()
     {
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == true;
