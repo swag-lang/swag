@@ -21,21 +21,28 @@
     // '@typeof' will give you 'any', but '@kindof' will give you the real type
     {
         let a: any = "string"
-        @assert(@typeof(a) == @typeof(any))
-        @assert(@kindof(a) == @typeof(string))
+        @assert(@typeof(a) == any)
+        @assert(@kindof(a) == string)
     }
 
     // You can declare an array with multiple types, with 'any'
     {
         let array: [] any = @[true, 2, 3.0, "4"]
-        @assert(@kindof(array[0]) == @typeof(bool))
-        @assert(@kindof(array[1]) == @typeof(s32))
-        @assert(@kindof(array[2]) == @typeof(f32))
-        @assert(@kindof(array[3]) == @typeof(string))
+        @assert(@kindof(array[0]) == bool)
+        @assert(@kindof(array[1]) == s32)
+        @assert(@kindof(array[2]) == f32)
+        @assert(@kindof(array[3]) == string)
 
         @assert(array[0] == true)
         @assert(array[1] == 2)
         @assert(array[2] == 3.0)
         @assert(array[3] == "4")
+    }
+
+    // For a function, '@kindof' is the function return type
+    {
+        func foo()->s32 => 666
+        @assert(@typeof(foo).rawType == func()->s32)
+        @assert(@kindof(foo) == s32)
     }
 }

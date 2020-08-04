@@ -32,6 +32,13 @@
         @assert(tuple.y == 2.0)
     }
 
+    // In a type definition, 'struct' can be omitted
+    {
+        var tuple: {x: f32, y: f32}
+        tuple.x = 1.0
+        @assert(tuple.x == 1.0)
+    }
+
     // You can dereference a tuple field by field
     {
         tuple1 := @{x: 1.0, y: 2.0}
@@ -47,7 +54,7 @@
 
     // A tuple can be used to return multiple values in a function
     {
-        func myFunction()->struct{f32, f32}
+        func myFunction()->{f32, f32}
         {
             return @{1.0, 2.0}
         }
@@ -56,7 +63,7 @@
         @assert(result.item0 == 1.0)
         @assert(result.item1 == 2.0)
 
-        var (x, y) = myFunction()
+        let (x, y) = myFunction()
         @assert(x == 1.0)
         @assert(y == 2.0)
 
@@ -67,7 +74,7 @@
 
     // You can name the fields of the function result too
     {
-        func myFunction()->struct{x: f32, y: bool}
+        func myFunction()->{x: f32, y: bool}
         {
             return @{x: 1.0, y: true}
         }

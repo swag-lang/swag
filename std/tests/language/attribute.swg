@@ -38,7 +38,7 @@ struct struct1
 {
     // Attributes can be retreived by reflection
     {
-        type := cast(const *TypeInfoFunc) @typeof(&function2)
+        type := @typeof(function2)
         @assert(@countof(type.attributes) == 1)
         firstOne := type.attributes[0]
         @assert(firstOne.name == "attribute.attributeD") // Full scoped name

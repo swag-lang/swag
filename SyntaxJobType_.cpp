@@ -115,7 +115,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 
     Utf8 name = "__" + sourceFile->scopePrivate->name + "_tuple_";
     int  idx  = 0;
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    while (token.id != TokenId::EndOfFile)
     {
         auto structFieldNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
         structFieldNode->flags |= AST_GENERATED;
@@ -318,6 +318,11 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
+        return true;
+    }
+    else if (token.id == TokenId::SymLeftCurly)
+    {
         SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
         return true;
     }
