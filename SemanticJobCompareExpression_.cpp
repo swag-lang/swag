@@ -250,6 +250,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({left, "a slice can only be compared to 'null'"});
     }
 
+    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr.typeInfoNull)
+    {
+        return context->report({left, "an interface can only be compared to 'null'"});
+    }
+
     // Some types can only be compared for equality
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {

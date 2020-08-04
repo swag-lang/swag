@@ -2207,22 +2207,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CompareOpEqualInterface:
-        {
-            //concat.addStringFormat("r[%u].b = (((void **) r[%u].pointer)[0] == ((void **) r[%u].pointer)[0]) && (((void **) r[%u].pointer)[1] == ((void **) r[%u].pointer)[1]);", ip->c.u32, ip->a.u32, ip->b.u32, ip->a.u32, ip->b.u32);
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(GEP_I32(allocR, ip->b.u32)));
-            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r0), builder.CreateLoad(r1));
-
-            auto r2 = GEP_I32(r0, 1);
-            auto r3 = GEP_I32(r1, 1);
-            auto v1 = builder.CreateICmpEQ(builder.CreateLoad(r2), builder.CreateLoad(r3));
-
-            auto v2 = builder.CreateIntCast(builder.CreateAnd(v0, v1), builder.getInt8Ty(), false);
-            auto r4 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v2, r4);
-            break;
-        }
         case ByteCodeOp::CompareOpEqualString:
         {
             //concat.addStringFormat("r[%u].b = swag_runtime_strcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
