@@ -14,6 +14,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
+    emitSafetyNullPointer(context, node->array->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;

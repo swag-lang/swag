@@ -94,7 +94,6 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
 
-    emitSafetyNullPointer(context, r0);
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::Bool:
