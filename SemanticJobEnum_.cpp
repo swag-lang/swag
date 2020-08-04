@@ -95,8 +95,19 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
+    // First child is enumType
+    AstNode* firstEnumValue = nullptr;
+    for (int fev = 1; fev < enumNode->childs.size(); fev++)
+    {
+        firstEnumValue = enumNode->childs[fev];
+        if (firstEnumValue->kind == AstNodeKind::EnumValue)
+            break;
+    }
+
+    SWAG_ASSERT(firstEnumValue);
+
     // Compute automatic value from previous
-    if (!assignNode && (valNode != enumNode->childs[1])) // First child is enumType
+    if (!assignNode && (valNode != firstEnumValue))
     {
         // Compute next value
         bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_FLAGS);

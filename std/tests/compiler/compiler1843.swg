@@ -1,6 +1,15 @@
-//#[swag.printbc]
-#test
+enum MouseButton
 {
-    var ptr: *u8
-    //ptr[0] = 0
+    /// Left button
+    Left
+    /// Right button
+    Middle
+    /// Middle button
+    Right
+    /// XButton1 button
+    XButton1
+    /// XButton2 button
+    XButton2
 }
+
+#assert(MouseButton.Left == 0)

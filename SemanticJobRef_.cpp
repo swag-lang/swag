@@ -8,6 +8,16 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
+bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint32_t maxCount)
+{
+    if (!(arrayAccess->flags & AST_VALUE_COMPUTED))
+        return true;
+    auto idx = arrayAccess->computedValue.reg.u32;
+    if (idx >= (uint32_t) maxCount)
+        return context->report({arrayAccess, format("index out of range (index is '%u', maximum index is '%u')", idx, maxCount - 1)});
+    return true;
+}
+
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
     auto node     = context->node;
@@ -280,6 +290,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
+        SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
         break;
     }
 
@@ -355,30 +366,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 {
                     arrayNode->setFlagsValueIsComputed();
                     auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
-                    switch (arrayAccess->typeInfo->nativeType)
-                    {
-                    case NativeTypeKind::S32:
-                    {
-                        auto idx = arrayAccess->computedValue.reg.s32;
-                        if (idx < 0)
-                            return context->report({arrayNode->access, format("index is a negative value ('%d')", idx)});
-                        else if (idx >= text.length())
-                            return context->report({arrayNode->access, format("index out of range (index is '%d', maximum index is '%u')", idx, text.length() - 1)});
-                        arrayNode->computedValue.reg.u8 = text[idx];
-                        break;
-                    }
-                    case NativeTypeKind::U32:
-                    {
-                        auto idx = arrayAccess->computedValue.reg.u32;
-                        if (idx >= (uint32_t) text.length())
-                            return context->report({arrayNode->access, format("index out of range (index is '%u', maximum index is '%u')", idx, text.length() - 1)});
-                        arrayNode->computedValue.reg.u8 = text[idx];
-                        break;
-                    }
-                    default:
-                        SWAG_ASSERT(false);
-                        break;
-                    }
+                    SWAG_CHECK(boundCheck(context, arrayNode->access, text.length()));
+                    auto idx                        = arrayAccess->computedValue.reg.u32;
+                    arrayNode->computedValue.reg.u8 = text[idx];
                 }
             }
 
@@ -415,32 +405,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
         // Try to dereference as a constant if we can
-        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
+        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && (arrayNode->access->flags & AST_VALUE_COMPUTED))
         {
-            // Check access at compile time
-            switch (arrayAccess->typeInfo->nativeType)
-            {
-            case NativeTypeKind::S32:
-            {
-                auto idx = arrayAccess->computedValue.reg.s32;
-                if (idx < 0)
-                    return context->report({arrayNode->access, format("index is a negative value ('%d')", idx)});
-                else if (idx >= (int32_t) typePtr->count)
-                    return context->report({arrayNode->access, format("index out of range (index is '%d', maximum index is '%u')", idx, typePtr->count - 1)});
-                break;
-            }
-            case NativeTypeKind::U32:
-            {
-                auto idx = arrayAccess->computedValue.reg.u32;
-                if (idx >= typePtr->count)
-                    return context->report({arrayNode->access, format("index out of range (index is '%u', maximum index is '%u')", idx, typePtr->count - 1)});
-                break;
-            }
-            default:
-                SWAG_ASSERT(false);
-                break;
-            }
-
+            SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);

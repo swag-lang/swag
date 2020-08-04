@@ -40,7 +40,8 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     int  sizeOf   = node->typeInfo->sizeOf;
     auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
 
-    emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfo);
+    if (!node->access->hasComputedValue())
+        emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfo);
 
     // Pointer increment
     if (sizeOf > 1)
@@ -224,7 +225,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         int  sizeOf        = typeInfoArray->pointedType->sizeOf;
 
-        emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
+        if (!node->access->hasComputedValue())
+            emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
         truncRegisterRC(context, node->array->resultRegisterRC, 1);
 
         // Increment pointer (if increment is not 0)

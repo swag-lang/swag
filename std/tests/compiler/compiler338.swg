@@ -1,7 +1,7 @@
 #module compiler338
-;
+#unittest error
 
-#unittest error;
+//#[swag.printbc]
 #test
 {
 	var a: [4, 6] s32;
