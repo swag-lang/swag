@@ -1,5 +1,3 @@
-#module compiler762
-
 struct Point
 {
 	x: s32
@@ -7,8 +5,8 @@ struct Point
 }
 
 //#[swag.printbc]
-#unittest error
 #test
-{	
+{
 	cpt := Point
+    @assert(cpt == Point)
 }
