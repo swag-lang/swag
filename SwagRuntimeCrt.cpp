@@ -2,32 +2,30 @@
 #include "SwagRuntime.h"
 #ifdef _WIN32
 #include <windows.h>
-#endif
 
 static char*   _argv[SWAG_MAX_COMMAND_ARGUMENTS + 1];
 static char*   _rawCmd = 0;
 extern char*   _argv[];
 extern "C" int _fltused = 0;
 
-static int _init_args()
+static int initArgs()
 {
     _argv[0] = 0;
 
     char* sysCmd   = ::GetCommandLine();
     int   szSysCmd = (int) strlen(sysCmd);
 
-    // Copy the system command line
-    TCHAR* cmd = (TCHAR*) HeapAlloc(GetProcessHeap(), 0, sizeof(TCHAR) * (szSysCmd + 1));
-    _rawCmd    = cmd;
+    char* cmd = (char*) HeapAlloc(::GetProcessHeap(), 0, sizeof(TCHAR) * (szSysCmd + 1));
+    _rawCmd   = cmd;
     if (!cmd)
         return 0;
     lstrcpy(cmd, sysCmd);
 
-    // Handle a quoted filename
+    // First argument is executable
     if (*cmd == '"')
     {
         cmd++;
-        _argv[0] = cmd; // argv[0] = exe name
+        _argv[0] = cmd;
 
         while (*cmd && *cmd != '"')
             cmd++;
@@ -35,11 +33,11 @@ static int _init_args()
         if (*cmd)
             *cmd++ = 0;
         else
-            return 0; // no end quote!
+            return 0;
     }
     else
     {
-        _argv[0] = cmd; // argv[0] = exe name
+        _argv[0] = cmd;
 
         while (*cmd && !isspace(*cmd))
             cmd++;
@@ -48,16 +46,17 @@ static int _init_args()
             *cmd++ = 0;
     }
 
+    // All other arguments
     int argc = 1;
     for (;;)
     {
-        while (*cmd && isspace(*cmd)) // Skip over any whitespace
+        while (*cmd && isspace(*cmd))
             cmd++;
 
-        if (*cmd == 0) // End of command line?
+        if (*cmd == 0)
             return argc;
 
-        if (*cmd == '"') // Argument starting with a quote???
+        if (*cmd == '"')
         {
             cmd++;
 
@@ -93,7 +92,7 @@ static int _init_args()
     }
 }
 
-static void _term_args()
+static void termArgs()
 {
     if (_rawCmd)
         HeapFree(GetProcessHeap(), 0, _rawCmd);
@@ -101,33 +100,13 @@ static void _term_args()
 
 extern "C" void mainCRTStartup()
 {
-    __argc = _init_args();
+    __argc = initArgs();
     __argv = _argv;
-
-    TCHAR* cmd = GetCommandLine();
-
-    // Skip program name
-    if (*cmd == '"')
-    {
-        while (*cmd && *cmd != '"')
-            cmd++;
-        if (*cmd == '"')
-            cmd++;
-    }
-    else
-    {
-        while (*cmd > ' ')
-            cmd++;
-    }
-
-    // Skip any white space
-    while (*cmd && *cmd <= ' ')
-        cmd++;
 
     extern int main(int, char* argv[]);
     int        ret = main(__argc, __argv);
 
-    _term_args();
+    termArgs();
     ::ExitProcess(ret);
 }
 
@@ -139,3 +118,5 @@ extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD reason, LPVOID imp)
 extern "C" void __chkstk()
 {
 }
+
+#endif // _WIN32
