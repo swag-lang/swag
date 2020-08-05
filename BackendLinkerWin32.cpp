@@ -70,7 +70,7 @@ namespace BackendLinkerWin32
         arguments += "kernel32.lib ";
         arguments += "user32.lib ";
         arguments += "ucrt.lib ";
-        arguments += "vcruntime.lib ";
+        arguments += "libvcruntime.lib ";
         arguments += "msvcrt.lib ";
 
         // Add swag.runtime
