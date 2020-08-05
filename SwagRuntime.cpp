@@ -146,7 +146,7 @@ extern "C" void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* message, uint32_t flags)
+extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* message)
 {
     if (expr)
         return;
@@ -166,10 +166,9 @@ extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const
         swag_runtime_print(": assertion failed\n");
 
 #ifdef _WIN32
-    if (flags & SWAG_ASSERT_DEVMODE)
-        MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
-    if (flags & SWAG_ASSERT_RETURN)
-        return;
+#ifdef _DEBUG
+    MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+#endif
     RaiseException(0x666, 0, 0, 0);
 #endif
     exit(-1);
@@ -212,7 +211,7 @@ extern "C" void* swag_runtime_tlsGetValue(uint32_t id)
 extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {
     uint64_t argumentsStr[64];
-    swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments", 0);
+    swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments");
 
     for (int i = 0; i < argc; i++)
     {

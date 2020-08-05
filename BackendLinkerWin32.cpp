@@ -68,14 +68,16 @@ namespace BackendLinkerWin32
 
         // External libraries
         arguments += "kernel32.lib ";
-        arguments += "user32.lib ";
         arguments += "ucrt.lib ";
         arguments += "libvcruntime.lib ";
         arguments += "msvcrt.lib ";
 
         // Add swag.runtime
-        if (buildParameters.buildCfg->backendDebugInformations)
+        if (g_CommandLine.devMode)
+        {
             arguments += "swag.runtime_d.lib ";
+            arguments += "user32.lib "; // MessageBox
+        }
         else
             arguments += "swag.runtime.lib ";
 

@@ -22,7 +22,7 @@ extern "C" void*    swag_runtime_interfaceof(const void* structType, const void*
 static uint32_t SWAG_ASSERT_DEVMODE = 0x00000001;
 static uint32_t SWAG_ASSERT_RETURN  = 0x00000002;
 
-extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* msg, uint32_t flags);
+extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* msg);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG

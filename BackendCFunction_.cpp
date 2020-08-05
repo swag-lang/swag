@@ -768,12 +768,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             continue;
 
 #define MK_ASSERT(__expr, __msg)                                              \
-    concat.addStringFormat("swag_runtime_assert(%s,\"%s\",%d,\"%s\",%d);",    \
+    concat.addStringFormat("swag_runtime_assert(%s,\"%s\",%d,\"%s\");",       \
                            __expr,                                            \
                            normalizePath(ip->node->sourceFile->path).c_str(), \
                            ip->node->token.startLocation.line + 1,            \
-                           __msg,                                             \
-                           g_CommandLine.devMode ? SWAG_ASSERT_DEVMODE : 0);
+                           __msg);
 
         case ByteCodeOp::IncPointerVB32:
             concat.addStringFormat("r[%u].p+=%d;", ip->a.u32, ip->b.s32);

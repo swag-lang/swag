@@ -398,23 +398,6 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildPara
     return it->second;
 }
 
-void BackendLLVM::createAssert(const BuildParameters& buildParameters, llvm::Value* toTest, ByteCodeInstruction* ip, const char* msg)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-    auto& builder         = *pp.builder;
-    auto& modu            = *pp.module;
-
-    auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
-    auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
-    auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
-    auto r3 = builder.CreateGlobalString(msg);
-    auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
-    builder.CreateCall(modu.getFunction("swag_runtime_assert"), {toTest, v1, r2, v3, g_CommandLine.devMode ? pp.cst1_i32 : pp.cst0_i32});
-}
-
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
@@ -2383,7 +2366,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1);
             auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            createAssert(buildParameters, r0, ip, (const char*) ip->d.pointer);
+            auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+            auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
+            auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
+            auto r3 = builder.CreateGlobalString((const char*) ip->d.pointer);
+            auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
+            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, v1, r2, v3});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
