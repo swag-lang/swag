@@ -1306,12 +1306,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     auto symbol = scope->symTable.find(node->name);
                     if (!symbol)
                         continue;
-                    if (symbol->kind == SymbolKind::TypeAlias ||
-                        symbol->kind == SymbolKind::Function ||
-                        symbol->kind == SymbolKind::Enum ||
-                        symbol->kind == SymbolKind::Interface ||
-                        symbol->kind == SymbolKind::Struct)
-                        dependentSymbols.insert(symbol);
+                    if (symbol->kind == SymbolKind::Variable)
+                        continue;
+                    dependentSymbols.insert(symbol);
                 }
             }
 
@@ -1821,31 +1818,27 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
     }
 
     // Search in embedded function scopes
-    if (kind == SymbolKind::TypeAlias ||
-        kind == SymbolKind::Alias ||
-        kind == SymbolKind::Function ||
-        kind == SymbolKind::Struct ||
-        kind == SymbolKind::Enum ||
-        kind == SymbolKind::Interface)
+    for (auto scope : job->cacheScopeEmbedded)
     {
-        for (auto scope : job->cacheScopeEmbedded)
+        auto symbol = scope->symTable.find(node->name);
+        if (!symbol)
+            continue;
+
+        // A local variable cannot be ghosted by another local variable
+        if (kind == SymbolKind::Variable && symbol->kind == SymbolKind::Variable)
+            continue;
+
+        scoped_lock lock(symbol->mutex);
+        if (symbol->cptOverloadsInit != symbol->overloads.size())
         {
-            auto symbol = scope->symTable.find(node->name);
-            if (!symbol)
-                continue;
-
-            scoped_lock lock(symbol->mutex);
-            if (symbol->cptOverloadsInit != symbol->overloads.size())
+            if (symbol->cptOverloads)
             {
-                if (symbol->cptOverloads)
-                {
-                    job->waitForSymbolNoLock(symbol);
-                    return true;
-                }
+                job->waitForSymbolNoLock(symbol);
+                return true;
             }
-
-            SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
         }
+
+        SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
     }
 
     return true;

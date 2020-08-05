@@ -6,7 +6,7 @@ struct Timer
         : destValue{dest}
         , wasForced{force}
     {
-        if (g_CommandLine.stats)
+        if (g_CommandLine.stats || force)
             timeBefore = chrono::high_resolution_clock::now();
     }
 

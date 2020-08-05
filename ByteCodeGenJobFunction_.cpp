@@ -332,6 +332,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         case NativeTypeKind::F64:
             op = ByteCodeOp::IntrinsicF64x1;
             break;
+        default:
+            SWAG_ASSERT(false);
+            break;
         }
 
         emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
