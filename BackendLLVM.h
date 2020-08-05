@@ -55,6 +55,12 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_tanf64;
     llvm::FunctionCallee fn_atanf32;
     llvm::FunctionCallee fn_atanf64;
+    llvm::FunctionCallee fn_sinhf32;
+    llvm::FunctionCallee fn_sinhf64;
+    llvm::FunctionCallee fn_coshf32;
+    llvm::FunctionCallee fn_coshf64;
+    llvm::FunctionCallee fn_tanhf32;
+    llvm::FunctionCallee fn_tanhf64;
 
     map<int32_t, llvm::BasicBlock*> labels;
 

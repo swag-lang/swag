@@ -2989,14 +2989,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicTan:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
+                break;
+            case TokenId::IntrinsicSinh:
+                builder.CreateStore(builder.CreateCall(pp.fn_sinhf32, r1), r0);
+                break;
+            case TokenId::IntrinsicCosh:
+                builder.CreateStore(builder.CreateCall(pp.fn_coshf32, r1), r0);
+                break;
+            case TokenId::IntrinsicTanh:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanhf32, r1), r0);
+                break;
             case TokenId::IntrinsicASin:
                 builder.CreateStore(builder.CreateCall(pp.fn_asinf32, r1), r0);
                 break;
             case TokenId::IntrinsicACos:
                 builder.CreateStore(builder.CreateCall(pp.fn_acosf32, r1), r0);
-                break;
-            case TokenId::IntrinsicTan:
-                builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
                 break;
             case TokenId::IntrinsicATan:
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
@@ -3049,14 +3058,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicTan:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanf64, r1), r0);
+                break;
+            case TokenId::IntrinsicSinh:
+                builder.CreateStore(builder.CreateCall(pp.fn_sinhf64, r1), r0);
+                break;
+            case TokenId::IntrinsicCosh:
+                builder.CreateStore(builder.CreateCall(pp.fn_coshf64, r1), r0);
+                break;
+            case TokenId::IntrinsicTanh:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanhf64, r1), r0);
+                break;
             case TokenId::IntrinsicASin:
                 builder.CreateStore(builder.CreateCall(pp.fn_asinf64, r1), r0);
                 break;
             case TokenId::IntrinsicACos:
                 builder.CreateStore(builder.CreateCall(pp.fn_acosf64, r1), r0);
-                break;
-            case TokenId::IntrinsicTan:
-                builder.CreateStore(builder.CreateCall(pp.fn_tanf64, r1), r0);
                 break;
             case TokenId::IntrinsicATan:
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf64, r1), r0);

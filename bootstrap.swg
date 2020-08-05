@@ -20,24 +20,35 @@ func @isbytecode()->bool;
 
 func @sqrt(value: f32)->f32;
 func @sqrt(value: f64)->f64;
+
 func @sin(value: f32)->f32;
 func @sin(value: f64)->f64;
 func @cos(value: f32)->f32;
 func @cos(value: f64)->f64;
 func @tan(value: f32)->f32;
 func @tan(value: f64)->f64;
+
+func @sinh(value: f32)->f32;
+func @sinh(value: f64)->f64;
+func @cosh(value: f32)->f32;
+func @cosh(value: f64)->f64;
+func @tanh(value: f32)->f32;
+func @tanh(value: f64)->f64;
+
 func @asin(value: f32)->f32;
 func @asin(value: f64)->f64;
 func @acos(value: f32)->f32;
 func @acos(value: f64)->f64;
 func @atan(value: f32)->f32;
 func @atan(value: f64)->f64;
+
 func @log(value: f32)->f32;
 func @log(value: f64)->f64;
 func @log2(value: f32)->f32;
 func @log2(value: f64)->f64;
 func @log10(value: f32)->f32;
 func @log10(value: f64)->f64;
+
 func @floor(value: f32)->f32;
 func @floor(value: f64)->f64;
 func @ceil(value: f32)->f32;
@@ -46,17 +57,18 @@ func @trunc(value: f32)->f32;
 func @trunc(value: f64)->f64;
 func @round(value: f32)->f32;
 func @round(value: f64)->f64;
+
 func @abs(value: f32)->f32;
 func @abs(value: f64)->f64;
 func @exp(value: f32)->f32;
-func @exp(value: f64)->f64;
-func @exp2(value: f32)->f32;
-func @exp2(value: f64)->f64;
-
 func @abs(value: s8)->s8;
 func @abs(value: s16)->s16;
 func @abs(value: s32)->s32;
 func @abs(value: s64)->s64;
+
+func @exp(value: f64)->f64;
+func @exp2(value: f32)->f32;
+func @exp2(value: f64)->f64;
 
 namespace swag
 {

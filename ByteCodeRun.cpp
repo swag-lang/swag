@@ -86,6 +86,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicTan:
             registersRC[ip->a.u32].f32 = tanf(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicSinh:
+            registersRC[ip->a.u32].f32 = sinhf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicCosh:
+            registersRC[ip->a.u32].f32 = coshf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicTanh:
+            registersRC[ip->a.u32].f32 = tanhf(registersRC[ip->b.u32].f32);
+            break;
         case TokenId::IntrinsicASin:
             registersRC[ip->a.u32].f32 = asinf(registersRC[ip->b.u32].f32);
             break;
@@ -146,6 +155,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicTan:
             registersRC[ip->a.u32].f64 = tan(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicSinh:
+            registersRC[ip->a.u32].f64 = sinh(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicCosh:
+            registersRC[ip->a.u32].f64 = cosh(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicTanh:
+            registersRC[ip->a.u32].f64 = tanh(registersRC[ip->b.u32].f64);
             break;
         case TokenId::IntrinsicASin:
             registersRC[ip->a.u32].f64 = asin(registersRC[ip->b.u32].f64);

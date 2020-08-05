@@ -295,6 +295,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicSin:
     case TokenId::IntrinsicCos:
     case TokenId::IntrinsicTan:
+    case TokenId::IntrinsicSinh:
+    case TokenId::IntrinsicCosh:
+    case TokenId::IntrinsicTanh:
     case TokenId::IntrinsicASin:
     case TokenId::IntrinsicACos:
     case TokenId::IntrinsicATan:

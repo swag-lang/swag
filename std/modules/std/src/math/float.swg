@@ -70,24 +70,35 @@ namespace std.math
     {
         func sqrt(x: f32)->f32 => @sqrt(x)
         func sqrt(x: f64)->f64 => @sqrt(x)
+
         func sin(x: f32)->f32 => @sin(x)
         func sin(x: f64)->f64 => @sin(x)
         func cos(x: f32)->f32 => @cos(x)
         func cos(x: f64)->f64 => @cos(x)
         func tan(x: f32)->f32 => @tan(x)
         func tan(x: f64)->f64 => @tan(x)
+
+        func sinh(x: f32)->f32 => @sinh(x)
+        func sinh(x: f64)->f64 => @sinh(x)
+        func cosh(x: f32)->f32 => @cosh(x)
+        func cosh(x: f64)->f64 => @cosh(x)
+        func tanh(x: f32)->f32 => @tanh(x)
+        func tanh(x: f64)->f64 => @tanh(x)
+
         func asin(x: f32)->f32 => @asin(x)
         func asin(x: f64)->f64 => @asin(x)
         func acos(x: f32)->f32 => @acos(x)
         func acos(x: f64)->f64 => @acos(x)
         func atan(x: f32)->f32 => @atan(x)
         func atan(x: f64)->f64 => @atan(x)
+
         func log(x: f32)->f32 => @log(x)
         func log(x: f64)->f64 => @log(x)
         func log2(x: f32)->f32 => @log2(x)
         func log2(x: f64)->f64 => @log2(x)
         func log10(x: f32)->f32 => @log10(x)
         func log10(x: f64)->f64 => @log10(x)
+
         func floor(x: f32)->f32 => @floor(x)
         func floor(x: f64)->f64 => @floor(x)
         func ceil(x: f32)->f32 => @ceil(x)
@@ -96,8 +107,10 @@ namespace std.math
         func trunc(x: f64)->f64 => @trunc(x)
         func round(x: f32)->f32 => @round(x)
         func round(x: f64)->f64 => @round(x)
+
         func abs(x: f32)->f32 => @abs(x)
         func abs(x: f64)->f64 => @abs(x)
+
         func exp(x: f32)->f32 => @exp(x)
         func exp(x: f64)->f64 => @exp(x)
         func exp2(x: f32)->f32 => @exp2(x)
@@ -107,12 +120,6 @@ namespace std.math
     #[swag.constexpr]
     public
     {
-        func cosh(x: f32)->f32 => os.coshf(x)
-        func cosh(x: f64)->f64 => os.cosh(x)
-        func sinh(x: f32)->f32 => os.sinhf(x)
-        func sinh(x: f64)->f64 => os.sinh(x)
-        func tanh(x: f32)->f32 => os.tanhf(x)
-        func tanh(x: f64)->f64 => os.tanh(x)
         func pow(x, e: f32)->f32 => os.powf(x, e)
         func pow(x, e: f64)->f64 => os.pow(x, e)
     }

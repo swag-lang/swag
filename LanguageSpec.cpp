@@ -125,6 +125,9 @@ void LanguageSpec::setup()
     keywords["@sin"]   = TokenId::IntrinsicSin;
     keywords["@cos"]   = TokenId::IntrinsicCos;
     keywords["@tan"]   = TokenId::IntrinsicTan;
+    keywords["@sinh"]  = TokenId::IntrinsicSinh;
+    keywords["@cosh"]  = TokenId::IntrinsicCosh;
+    keywords["@tanh"]  = TokenId::IntrinsicTanh;
     keywords["@asin"]  = TokenId::IntrinsicASin;
     keywords["@acos"]  = TokenId::IntrinsicACos;
     keywords["@atan"]  = TokenId::IntrinsicATan;
