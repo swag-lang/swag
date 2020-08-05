@@ -74,6 +74,12 @@ namespace std.math
         func sin(x: f64)->f64 => @sin(x)
         func cos(x: f32)->f32 => @cos(x)
         func cos(x: f64)->f64 => @cos(x)
+        func log(x: f32)->f32 => @log(x)
+        func log(x: f64)->f64 => @log(x)
+        func log2(x: f32)->f32 => @log2(x)
+        func log2(x: f64)->f64 => @log2(x)
+        func log10(x: f32)->f32 => @log10(x)
+        func log10(x: f64)->f64 => @log10(x)
     }
 
     #[swag.constexpr]
@@ -93,12 +99,6 @@ namespace std.math
         func tanh(x: f64)->f64 => os.tanh(x)
         func atan(x: f32)->f32 => os.atanf(x)
         func atan(x: f64)->f64 => os.atan(x)
-        func log(x: f32)->f32 => os.logf(x)
-        func log(x: f64)->f64 => os.log(x)
-        func log2(x: f32)->f32 => os.log2f(x)
-        func log2(x: f64)->f64 => os.log2(x)
-        func log10(x: f32)->f32 => os.log10f(x)
-        func log10(x: f64)->f64 => os.log10(x)
         func ceil(x: f32)->f32 => os.ceilf(x)
         func ceil(x: f64)->f64 => os.ceil(x)
         func floor(x: f32)->f32 => os.floorf(x)
