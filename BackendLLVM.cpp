@@ -84,136 +84,134 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
     // Runtime functions
     {
-        {
-            modu.getOrInsertFunction("swag_runtime_tlsAlloc", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), false));
-        }
+        modu.getOrInsertFunction("swag_runtime_tlsAlloc", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt32Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_tlsGetValue", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt32Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_tlsGetValue", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt32Ty(context),
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_tlsSetValue", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt32Ty(context),
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_tlsSetValue", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt32Ty(context),
-                llvm::Type::getInt8PtrTy(context)->getPointerTo(),
-            };
-            modu.getOrInsertFunction("swag_runtime_convertArgcArgv", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
+            llvm::Type::getInt8PtrTy(context)->getPointerTo(),
+        };
+        modu.getOrInsertFunction("swag_runtime_convertArgcArgv", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_loadDynamicLibrary", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_loadDynamicLibrary", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+    }
 
-        {
+    {
         llvm::Type* params[] = {
             llvm::Type::getInt64Ty(context),
         };
         modu.getOrInsertFunction("swag_runtime_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-        }
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt64Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt64Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt64Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_memcmp", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt64Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_memcmp", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_interfaceof", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_interfaceof", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt32Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_strcmp", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_strcmp", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_comparetype", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_comparetype", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt32Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_print_n", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_print_n", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8PtrTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_print", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_print", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt64Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_print_i64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt64Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_print_i64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getDoubleTy(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_print_f64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getDoubleTy(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_print_f64", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
+    }
 
-        {
-            llvm::Type* params[] = {
-                llvm::Type::getInt8Ty(context),
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt32Ty(context),
-                llvm::Type::getInt8PtrTy(context),
-                llvm::Type::getInt32Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-        }
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8Ty(context),
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
+            llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }
 
     // LIBC functions
@@ -222,6 +220,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
         pp.fn_asinf32 = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
         pp.fn_asinf64 = modu.getOrInsertFunction("asin", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_tanf32  = modu.getOrInsertFunction("tanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_tanf64  = modu.getOrInsertFunction("tan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_atanf32  = modu.getOrInsertFunction("atanf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_atanf64  = modu.getOrInsertFunction("atan", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
     }
 
     // Cache things

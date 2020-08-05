@@ -2995,6 +2995,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicACos:
                 builder.CreateStore(builder.CreateCall(pp.fn_acosf32, r1), r0);
                 break;
+            case TokenId::IntrinsicTan:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
+                break;
+            case TokenId::IntrinsicATan:
+                builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
+                break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
                 break;
@@ -3048,6 +3054,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicACos:
                 builder.CreateStore(builder.CreateCall(pp.fn_acosf64, r1), r0);
+                break;
+            case TokenId::IntrinsicTan:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanf64, r1), r0);
+                break;
+            case TokenId::IntrinsicATan:
+                builder.CreateStore(builder.CreateCall(pp.fn_atanf64, r1), r0);
                 break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getDoubleTy(), r1), r0);

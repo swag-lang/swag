@@ -67,12 +67,21 @@
     @print(cast(f64) @exp2(5.4'f64))
     @print("\n")*/
 
-    @print(cast(f64) @acos(0.5'f32))
+    /*@print(cast(f64) @acos(0.5'f32))
     @print("\n")
     @print(cast(f64) @acos(0.5'f64))
     @print("\n")
     @print(cast(f64) @asin(0.5'f32))
     @print("\n")
     @print(cast(f64) @asin(0.5'f64))
+    @print("\n")*/
+
+    @print(cast(f64) @tan(0.5'f32))
+    @print("\n")
+    @print(cast(f64) @tan(0.5'f64))
+    @print("\n")
+    @print(cast(f64) @atan(0.5'f32))
+    @print("\n")
+    @print(cast(f64) @atan(0.5'f64))
     @print("\n")
 }
