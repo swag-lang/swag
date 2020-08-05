@@ -32,12 +32,23 @@ static char* __itoa(char* result, int64_t value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+#include <stdio.h>
 static void __ftoa(char* result, double value)
 {
-    int64_t ipart  = (int64_t) value;
-    double  fpart  = value - (double) ipart;
-    char*   n      = __itoa(result, ipart);
-    *n++           = '.';
+    int64_t ipart = (int64_t) value;
+    double  fpart = value - (double) ipart;
+
+    char* n = result;
+    if (ipart == 0)
+    {
+        if(value < 0)
+            *n++ = '-';
+        *n++ = '0';
+    }
+    else
+        n = __itoa(result, ipart);
+    *n++ = '.';
+
     int afterPoint = 5;
     if (fpart < 0)
         fpart = -fpart;
