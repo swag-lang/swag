@@ -1,6 +1,5 @@
 #if swag.WINDOWS
 {
-    #foreignlib "kernel32"
     #foreignlib "user32"
 
     namespace win32

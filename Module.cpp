@@ -231,6 +231,12 @@ void Module::setBuildPass(BuildPass buildP)
     buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
 }
 
+void Module::addForeignLib(const Utf8& text)
+{
+    scoped_lock lk(mutexDependency);
+    buildParameters.foreignLibs.insert(text);
+}
+
 void Module::addDependency(AstNode* importNode)
 {
     scoped_lock lk(mutexDependency);

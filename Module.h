@@ -25,9 +25,10 @@ struct Module;
 struct ModuleDependency
 {
     string   name;
-    AstNode* node      = nullptr;
-    Module*  module    = nullptr;
-    bool     generated = false;
+    AstNode* node       = nullptr;
+    Module*  module     = nullptr;
+    bool     generated  = false;
+    bool     importDone = false;
 };
 
 static const uint32_t BUILDRES_NONE     = 0x00000000;
@@ -62,6 +63,7 @@ struct Module
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTestsFolder      = false;
     bool                      byteCodeOnly         = false;
+    bool                      hasNativeOutput      = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
@@ -100,6 +102,7 @@ struct Module
     AstNode*  mainIsDefined    = nullptr;
     bool      hasUnittestError = false;
 
+    void     addForeignLib(const Utf8& text);
     void     addDependency(AstNode* importNode);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();

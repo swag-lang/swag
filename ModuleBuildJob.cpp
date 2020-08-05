@@ -52,8 +52,6 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
     {
-        pass = ModuleBuildPass::LoadDependencies;
-
         // Determin now if we need to recompile
         module->backend->setMustCompile();
 
@@ -68,8 +66,24 @@ JobResult ModuleBuildJob::execute()
             for (auto& dep : module->moduleDependencies)
             {
                 auto depModule = dep.second.module;
-                SWAG_ASSERT(depModule);
+                if (dep.second.importDone)
+                    continue;
+
+                // Some dependencies can have been added by the this stage
+                if (!depModule)
+                {
+                    depModule = g_Workspace.getModuleByName(dep.first);
+                    if (!depModule)
+                    {
+                        module->error(format("unknown module dependency '%s'", dep.first.c_str()));
+                        return JobResult::ReleaseJob;
+                    }
+
+                    dep.second.module = depModule;
+                }
+
                 auto node = dep.second.node;
+                dep.second.importDone = true;
 
                 // Now the .swg export file should be in the cache
                 if (!depModule->backend->timeExportFile)
@@ -107,6 +121,8 @@ JobResult ModuleBuildJob::execute()
             // Sync with all jobs
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
+
+            pass = ModuleBuildPass::LoadDependencies;
         }
     }
 
@@ -115,19 +131,8 @@ JobResult ModuleBuildJob::execute()
     {
         for (auto& dep : module->moduleDependencies)
         {
-            // Some dependencies can have been added with the #import stage
             auto depModule = dep.second.module;
-            if (!depModule)
-            {
-                depModule = g_Workspace.getModuleByName(dep.first);
-                if (!depModule)
-                {
-                    module->error(format("unknown module dependency '%s'", dep.first.c_str()));
-                    return JobResult::ReleaseJob;
-                }
-
-                dep.second.module = depModule;
-            }
+            SWAG_ASSERT(depModule);
 
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;
@@ -209,11 +214,15 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Run)
     {
-        timeBeforeRun                    = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemantic;
-        g_Stats.semanticTime             = g_Stats.semanticTime + elapsed.count();
-        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format(" # module %s semantic pass end in %.3fs", module->name.c_str(), elapsed.count()));
+        // TIming...
+        if (g_CommandLine.stats)
+        {
+            timeBeforeRun                    = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemantic;
+            g_Stats.semanticTime             = g_Stats.semanticTime + elapsed.count();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format(" # module %s semantic pass end in %.3fs", module->name.c_str(), elapsed.count()));
+        }
 
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -334,11 +343,15 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
-        timeBeforeOutput                 = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
-        g_Stats.runTime                  = g_Stats.runTime + elapsed.count();
-        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
+        // TIming...
+        if (g_CommandLine.stats)
+        {
+            timeBeforeOutput                 = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
+            g_Stats.runTime                  = g_Stats.runTime + elapsed.count();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
+        }
 
         pass = ModuleBuildPass::End;
         if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
@@ -358,12 +371,18 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    auto                     timeAfterOutput = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
-    g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
-    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-        g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+    // Timing...
+    if (g_CommandLine.stats)
+    {
+        auto                     timeAfterOutput = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
+        g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
+        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+    }
 
+    // This will wake up dependencies
+    module->hasNativeOutput = !module->files.empty();
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;

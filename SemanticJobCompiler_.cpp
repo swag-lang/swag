@@ -35,7 +35,7 @@ bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 {
     auto node   = context->node;
     auto module = context->sourceFile->module;
-    module->buildParameters.foreignLibs.insert(node->childs.front()->token.text);
+    module->addForeignLib(node->childs.front()->token.text);
     return true;
 }
 
