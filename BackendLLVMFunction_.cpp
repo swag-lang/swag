@@ -2932,7 +2932,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt8Ty(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             }
             break;
@@ -2944,7 +2944,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt16Ty(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             }
             break;
@@ -2953,10 +2953,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            switch ((TokenId)ip->d.u32)
+            switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt32Ty(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             }
             break;
@@ -2968,7 +2968,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt64Ty(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             }
             break;

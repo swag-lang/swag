@@ -217,6 +217,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     }
 
     // Cache things
+    pp.cst0_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 0);
+    pp.cst1_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 1);
     pp.cst0_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 0);
     pp.cst1_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 1);
     pp.cst0_i16 = llvm::ConstantInt::get(llvm::Type::getInt16Ty(context), 0);
@@ -355,6 +357,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pmb.PrepareForThinLTO  = false;
     pmb.PerformThinLTO     = false;
     pmb.Inliner            = isDebug ? nullptr : llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
+
+    pmb.LibraryInfo = new llvm::TargetLibraryInfoImpl(llvm::Triple(modu.getTargetTriple()));
+
     pmb.populateModulePassManager(llvmPass);
 
     // Generate obj file pass

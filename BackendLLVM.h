@@ -33,6 +33,8 @@ struct LLVMPerThread
     llvm::FunctionType* allocatorTy    = nullptr;
     llvm::FunctionType* bytecodeRunTy  = nullptr;
 
+    llvm::Value* cst0_i1  = nullptr;
+    llvm::Value* cst1_i1  = nullptr;
     llvm::Value* cst0_i8  = nullptr;
     llvm::Value* cst1_i8  = nullptr;
     llvm::Value* cst0_i16 = nullptr;

@@ -311,7 +311,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
         auto child = callParams->childs[0];
         SWAG_ASSERT(child->typeInfo->kind == TypeInfoKind::Native);
-        ByteCodeOp op;
+        ByteCodeOp op = ByteCodeOp::End;
         switch (child->typeInfo->nativeType)
         {
         case NativeTypeKind::S8:

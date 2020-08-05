@@ -58,12 +58,14 @@
     @print(cast(s64) @abs(-5's64))
     @print("\n")*/
 
-    @print(cast(f64) @exp(5.4'f32))
+    /*@print(cast(f64) @exp(5.4'f32))
     @print("\n")
     @print(cast(f64) @exp(5.4'f64))
     @print("\n")
     @print(cast(f64) @exp2(5.4'f32))
     @print("\n")
     @print(cast(f64) @exp2(5.4'f64))
-    @print("\n")
+    @print("\n")*/
+
+    @print(cast(f64) @cos(5.0'f32))
 }
