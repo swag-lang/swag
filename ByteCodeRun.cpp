@@ -107,6 +107,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicAbs:
             registersRC[ip->a.u32].f32 = fabsf(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicExp:
+            registersRC[ip->a.u32].f32 = expf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicExp2:
+            registersRC[ip->a.u32].f32 = exp2f(registersRC[ip->b.u32].f32);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -149,6 +155,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicAbs:
             registersRC[ip->a.u32].f64 = fabs(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicExp:
+            registersRC[ip->a.u32].f64 = exp(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicExp2:
+            registersRC[ip->a.u32].f64 = exp2(registersRC[ip->b.u32].f64);
             break;
         default:
             SWAG_ASSERT(false);

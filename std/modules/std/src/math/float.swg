@@ -90,6 +90,10 @@ namespace std.math
         func round(x: f64)->f64 => @round(x)
         func abs(x: f32)->f32 => @abs(x)
         func abs(x: f64)->f64 => @abs(x)
+        func exp(x: f32)->f32 => @exp(x)
+        func exp(x: f64)->f64 => @exp(x)
+        func exp2(x: f32)->f32 => @exp2(x)
+        func exp2(x: f64)->f64 => @exp2(x)
     }
 
     #[swag.constexpr]
@@ -109,7 +113,7 @@ namespace std.math
         func tanh(x: f64)->f64 => os.tanh(x)
         func atan(x: f32)->f32 => os.atanf(x)
         func atan(x: f64)->f64 => os.atan(x)
-        func pow(x, exp: f32)->f32 => os.powf(x, exp)
-        func pow(x, exp: f64)->f64 => os.pow(x, exp)
+        func pow(x, e: f32)->f32 => os.powf(x, e)
+        func pow(x, e: f64)->f64 => os.pow(x, e)
     }
 }

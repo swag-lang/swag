@@ -132,6 +132,8 @@ void LanguageSpec::setup()
     keywords["@trunc"] = TokenId::IntrinsicTrunc;
     keywords["@round"] = TokenId::IntrinsicRound;
     keywords["@abs"]   = TokenId::IntrinsicAbs;
+    keywords["@exp"]   = TokenId::IntrinsicExp;
+    keywords["@exp2"]  = TokenId::IntrinsicExp2;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;

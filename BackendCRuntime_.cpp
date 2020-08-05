@@ -123,6 +123,10 @@ __f32_t roundf(__f32_t);
 __f64_t round(__f64_t);
 #define fabsf(__v) (__f32_t)fabs((__f64_t)__v)
 __f64_t fabs(__f64_t);
+__f32_t expf(__f32_t);
+__f64_t exp(__f64_t);
+__f32_t exp2f(__f32_t);
+__f64_t exp2(__f64_t);
 __s32_t abs(__s32_t);
 __s64_t llabs(__s64_t);
 )";
