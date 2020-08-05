@@ -1806,6 +1806,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             case TokenId::IntrinsicExp2:
                 concat.addStringFormat("r[%u].f32=exp2f(r[%u].f32);", ip->a.u32, ip->b.u32);
                 break;
+            case TokenId::IntrinsicACos:
+                concat.addStringFormat("r[%u].f32=acosf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicASin:
+                concat.addStringFormat("r[%u].f32=asinf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
             }
             break;
         }
@@ -1852,6 +1858,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 break;
             case TokenId::IntrinsicExp2:
                 concat.addStringFormat("r[%u].f64=exp2(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicACos:
+                concat.addStringFormat("r[%u].f64=acos(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicASin:
+                concat.addStringFormat("r[%u].f64=asin(r[%u].f64);", ip->a.u32, ip->b.u32);
                 break;
             }
             break;

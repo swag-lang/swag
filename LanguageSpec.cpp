@@ -124,6 +124,8 @@ void LanguageSpec::setup()
     keywords["@sqrt"]  = TokenId::IntrinsicSqrt;
     keywords["@sin"]   = TokenId::IntrinsicSin;
     keywords["@cos"]   = TokenId::IntrinsicCos;
+    keywords["@asin"]   = TokenId::IntrinsicASin;
+    keywords["@acos"]   = TokenId::IntrinsicACos;
     keywords["@log"]   = TokenId::IntrinsicLog;
     keywords["@log2"]  = TokenId::IntrinsicLog2;
     keywords["@log10"] = TokenId::IntrinsicLog10;

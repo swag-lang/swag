@@ -120,10 +120,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         }
 
         {
-            llvm::Type* params[] = {
-                llvm::Type::getInt64Ty(context),
-            };
-            modu.getOrInsertFunction("swag_runtime_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
+        llvm::Type* params[] = {
+            llvm::Type::getInt64Ty(context),
+        };
+        modu.getOrInsertFunction("swag_runtime_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
         }
 
         {
@@ -214,6 +214,14 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             };
             modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
         }
+    }
+
+    // LIBC functions
+    {
+        pp.fn_acosf32 = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_asinf32 = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
+        pp.fn_asinf64 = modu.getOrInsertFunction("asin", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
     }
 
     // Cache things
@@ -357,8 +365,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pmb.PrepareForThinLTO  = false;
     pmb.PerformThinLTO     = false;
     pmb.Inliner            = isDebug ? nullptr : llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
-
-    pmb.LibraryInfo = new llvm::TargetLibraryInfoImpl(llvm::Triple(modu.getTargetTriple()));
+    pmb.LibraryInfo        = new llvm::TargetLibraryInfoImpl(llvm::Triple(modu.getTargetTriple()));
 
     pmb.populateModulePassManager(llvmPass);
 

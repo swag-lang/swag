@@ -106,7 +106,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(sqrt|sin|cos|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2)\\b"
+          "match": "(@)\\b(sqrt|sin|cos|asin|acos|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2)\\b"
         }
       ]
     },

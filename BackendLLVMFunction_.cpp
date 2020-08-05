@@ -2989,6 +2989,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicASin:
+                builder.CreateStore(builder.CreateCall(pp.fn_asinf32, r1), r0);
+                break;
+            case TokenId::IntrinsicACos:
+                builder.CreateStore(builder.CreateCall(pp.fn_acosf32, r1), r0);
+                break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
                 break;
@@ -3036,6 +3042,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicASin:
+                builder.CreateStore(builder.CreateCall(pp.fn_asinf64, r1), r0);
+                break;
+            case TokenId::IntrinsicACos:
+                builder.CreateStore(builder.CreateCall(pp.fn_acosf64, r1), r0);
                 break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getDoubleTy(), r1), r0);
