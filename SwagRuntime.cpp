@@ -32,7 +32,6 @@ static char* __itoa(char* result, int64_t value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-#include <stdio.h>
 static void __ftoa(char* result, double value)
 {
     int64_t ipart = (int64_t) value;
@@ -167,7 +166,7 @@ extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const
 
 #ifdef _WIN32
 #ifdef _DEBUG
-    MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
     RaiseException(0x666, 0, 0, 0);
 #endif
@@ -207,6 +206,7 @@ extern "C" void* swag_runtime_tlsGetValue(uint32_t id)
 #endif
 }
 
+#include <stdio.h>
 /////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {

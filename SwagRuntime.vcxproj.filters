@@ -2,6 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SwagRuntime.cpp" />
+    <ClCompile Include="SwagRuntimeCrt.cpp" />
+    <ClCompile Include="SwagRuntimeLibC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwagRuntime.h" />

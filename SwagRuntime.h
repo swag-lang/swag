@@ -18,11 +18,7 @@ extern "C" void*    swag_runtime_tlsGetValue(uint32_t id);
 extern "C" void     swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[]);
 extern "C" bool     swag_runtime_comparetype(const void* type1, const void* type2);
 extern "C" void*    swag_runtime_interfaceof(const void* structType, const void* itfType);
-
-static uint32_t SWAG_ASSERT_DEVMODE = 0x00000001;
-static uint32_t SWAG_ASSERT_RETURN  = 0x00000002;
-
-extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* msg);
+extern "C" void     swag_runtime_assert(bool expr, const void* file, int line, const void* msg);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG

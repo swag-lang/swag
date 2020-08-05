@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Swag", "Swag.vcxproj", "{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB} = {CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SwagRuntime", "SwagRuntime.vcxproj", "{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}"
 EndProject

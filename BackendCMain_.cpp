@@ -7,7 +7,7 @@
 
 bool BackendC::emitMain(OutputFile& bufferC)
 {
-    CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_BINARY\n");
+    //CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_BINARY\n");
     CONCAT_FIXED_STR(bufferC, "int main(int argc, char *argv[]){\n");
 
     // Main context
@@ -81,7 +81,7 @@ bool BackendC::emitMain(OutputFile& bufferC)
 
     CONCAT_FIXED_STR(bufferC, "return 0;\n");
     CONCAT_FIXED_STR(bufferC, "}\n");
-    CONCAT_FIXED_STR(bufferC, "#endif /* SWAG_IS_BINARY */\n");
+    //CONCAT_FIXED_STR(bufferC, "#endif /* SWAG_IS_BINARY */\n");
     bufferC.addEol();
 
     return true;
