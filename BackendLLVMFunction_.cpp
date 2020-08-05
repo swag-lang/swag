@@ -2974,6 +2974,33 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicF32x2:
+        {
+            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
+            auto r2 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->c.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicPow:
+                builder.CreateStore(builder.CreateCall(pp.fn_powf32, {r1, r2}), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicF64x2:
+        {
+            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
+            auto r2 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->c.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicPow:
+                builder.CreateStore(builder.CreateCall(pp.fn_powf64, {r1, r2}), r0);
+                break;
+            }
+            break;
+        }
+
         case ByteCodeOp::IntrinsicF32x1:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));

@@ -115,12 +115,7 @@ namespace std.math
         func exp(x: f64)->f64 => @exp(x)
         func exp2(x: f32)->f32 => @exp2(x)
         func exp2(x: f64)->f64 => @exp2(x)
-    }
-
-    #[swag.constexpr]
-    public
-    {
-        func pow(x, e: f32)->f32 => os.powf(x, e)
-        func pow(x, e: f64)->f64 => os.pow(x, e)
+        func pow(x, y: f32)->f32 => @pow(x, y)
+        func pow(x, y: f64)->f64 => @pow(x, y)
     }
 }

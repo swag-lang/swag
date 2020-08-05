@@ -197,6 +197,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAbs:
     case TokenId::IntrinsicExp:
     case TokenId::IntrinsicExp2:
+    case TokenId::IntrinsicPow:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

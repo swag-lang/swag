@@ -85,7 +85,7 @@
     @print(cast(f64) @atan(0.5'f64))
     @print("\n")*/
 
-    @print(cast(f64) @sinh(0.5'f32))
+    /*@print(cast(f64) @sinh(0.5'f32))
     @print("\n")
     @print(cast(f64) @sinh(0.5'f64))
     @print("\n")
@@ -96,5 +96,10 @@
     @print(cast(f64) @tanh(0.5'f32))
     @print("\n")
     @print(cast(f64) @tanh(0.5'f64))
+    @print("\n")*/
+
+    @print(cast(f64) @pow(2.0'f32, 4.0'f32))
+    @print("\n")
+    @print(cast(f64) @pow(2.0'f64, 4.0'f64))
     @print("\n")
 }

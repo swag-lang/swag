@@ -69,6 +69,8 @@ func @abs(value: s64)->s64;
 func @exp(value: f64)->f64;
 func @exp2(value: f32)->f32;
 func @exp2(value: f64)->f64;
+func @pow(value1, value2: f32)->f32;
+func @pow(value1, value2: f64)->f64;
 
 namespace swag
 {

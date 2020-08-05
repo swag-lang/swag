@@ -31,6 +31,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
     case ByteCodeOp::IntrinsicS16x1:
     {
         switch ((TokenId) ip->d.u32)
@@ -44,6 +45,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
     case ByteCodeOp::IntrinsicS32x1:
     {
         switch ((TokenId) ip->d.u32)
@@ -57,6 +59,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
     case ByteCodeOp::IntrinsicS64x1:
     {
         switch ((TokenId) ip->d.u32)
@@ -70,6 +73,35 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
+    case ByteCodeOp::IntrinsicF32x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicPow:
+            registersRC[ip->a.u32].f32 = powf(registersRC[ip->b.u32].f32, registersRC[ip->c.u32].f32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF64x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicPow:
+            registersRC[ip->a.u32].f64 = pow(registersRC[ip->b.u32].f64, registersRC[ip->c.u32].f64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
     case ByteCodeOp::IntrinsicF32x1:
     {
         switch ((TokenId) ip->d.u32)
@@ -140,6 +172,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
     case ByteCodeOp::IntrinsicF64x1:
     {
         switch ((TokenId) ip->d.u32)

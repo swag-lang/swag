@@ -230,6 +230,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.fn_coshf64 = modu.getOrInsertFunction("cosh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
         pp.fn_tanhf32 = modu.getOrInsertFunction("tanhf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
         pp.fn_tanhf64 = modu.getOrInsertFunction("tanh", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
+        pp.fn_powf32  = modu.getOrInsertFunction("powf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
+        pp.fn_powf64  = modu.getOrInsertFunction("pow", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
     }
 
     // Cache things

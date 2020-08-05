@@ -291,6 +291,32 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicPow:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        auto child0                           = callParams->childs[0];
+        auto child1                           = callParams->childs[1];
+        SWAG_ASSERT(child0->typeInfo->kind == TypeInfoKind::Native);
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (child0->typeInfo->nativeType)
+        {
+        case NativeTypeKind::F32:
+            op = ByteCodeOp::IntrinsicF32x2;
+            break;
+        case NativeTypeKind::F64:
+            op = ByteCodeOp::IntrinsicF64x2;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        break;
+    }
+
     case TokenId::IntrinsicSqrt:
     case TokenId::IntrinsicSin:
     case TokenId::IntrinsicCos:

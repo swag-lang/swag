@@ -179,6 +179,7 @@ DEFINE_TOKEN_ID(IntrinsicRound)
 DEFINE_TOKEN_ID(IntrinsicAbs)
 DEFINE_TOKEN_ID(IntrinsicExp)
 DEFINE_TOKEN_ID(IntrinsicExp2)
+DEFINE_TOKEN_ID(IntrinsicPow)
 
 DEFINE_TOKEN_ID(Identifier)
 DEFINE_TOKEN_ID(LiteralNumber)
