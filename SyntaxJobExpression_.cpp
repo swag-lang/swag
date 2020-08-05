@@ -187,6 +187,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCeil:
     case TokenId::IntrinsicTrunc:
     case TokenId::IntrinsicRound:
+    case TokenId::IntrinsicAbs:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

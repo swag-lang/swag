@@ -52,6 +52,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicRound:
             registersRC[ip->a.u32].f32 = roundf(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].f32 = fabsf(registersRC[ip->b.u32].f32);
+            break;
         }
         break;
     }
@@ -88,6 +91,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicRound:
             registersRC[ip->a.u32].f64 = round(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].f64 = fabs(registersRC[ip->b.u32].f64);
             break;
         }
         break;

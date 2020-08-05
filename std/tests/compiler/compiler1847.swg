@@ -28,7 +28,7 @@
     @print(cast(f64) @log10(5.0'f64))
     @print("\n")*/
 
-    @print(cast(f64) @floor(5.4'f32))
+    /*@print(cast(f64) @floor(5.4'f32))
     @print("\n")
     @print(cast(f64) @floor(5.4'f64))
     @print("\n")
@@ -43,5 +43,10 @@
     @print(cast(f64) @round(5.4'f32))
     @print("\n")
     @print(cast(f64) @round(5.4'f64))
+    @print("\n")*/
+
+    @print(cast(f64) @abs(-5.4'f32))
+    @print("\n")
+    @print(cast(f64) @abs(-5.4'f64))
     @print("\n")
 }

@@ -1756,6 +1756,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             case TokenId::IntrinsicRound:
                 concat.addStringFormat("r[%u].f32=roundf(r[%u].f32);", ip->a.u32, ip->b.u32);
                 break;
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].f32=fabsf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
             }
             break;
         }
@@ -1793,6 +1796,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 break;
             case TokenId::IntrinsicRound:
                 concat.addStringFormat("r[%u].f64=round(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].f64=fabs(r[%u].f64);", ip->a.u32, ip->b.u32);
                 break;
             }
             break;

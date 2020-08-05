@@ -169,6 +169,7 @@ DEFINE_TOKEN_ID(IntrinsicFloor)
 DEFINE_TOKEN_ID(IntrinsicCeil)
 DEFINE_TOKEN_ID(IntrinsicTrunc)
 DEFINE_TOKEN_ID(IntrinsicRound)
+DEFINE_TOKEN_ID(IntrinsicAbs)
 
 DEFINE_TOKEN_ID(Identifier)
 DEFINE_TOKEN_ID(LiteralNumber)

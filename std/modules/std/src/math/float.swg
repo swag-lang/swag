@@ -88,6 +88,8 @@ namespace std.math
         func trunc(x: f64)->f64 => @trunc(x)
         func round(x: f32)->f32 => @round(x)
         func round(x: f64)->f64 => @round(x)
+        func abs(x: f32)->f32 => @abs(x)
+        func abs(x: f64)->f64 => @abs(x)
     }
 
     #[swag.constexpr]
@@ -107,8 +109,6 @@ namespace std.math
         func tanh(x: f64)->f64 => os.tanh(x)
         func atan(x: f32)->f32 => os.atanf(x)
         func atan(x: f64)->f64 => os.atan(x)
-        func abs(x: f32)->f32 => cast(f32) os.fabs(cast(f64) x)
-        func abs(x: f64)->f64 => os.fabs(x)
         func pow(x, exp: f32)->f32 => os.powf(x, exp)
         func pow(x, exp: f64)->f64 => os.pow(x, exp)
     }

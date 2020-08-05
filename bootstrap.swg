@@ -38,6 +38,8 @@ func @trunc(value: f32)->f32;
 func @trunc(value: f64)->f64;
 func @round(value: f32)->f32;
 func @round(value: f64)->f64;
+func @abs(value: f32)->f32;
+func @abs(value: f64)->f64;
 
 namespace swag
 {

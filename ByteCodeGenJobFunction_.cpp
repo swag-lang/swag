@@ -301,6 +301,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicCeil:
     case TokenId::IntrinsicTrunc:
     case TokenId::IntrinsicRound:
+    case TokenId::IntrinsicAbs:
     {
         node->resultRegisterRC                = reserveRegisterRC(context);
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
