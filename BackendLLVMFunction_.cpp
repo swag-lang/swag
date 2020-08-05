@@ -2949,10 +2949,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicLog10:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getFloatTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicFloor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCeil:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicTrunc:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicRound:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getFloatTy(), r1), r0);
+                break;
             }
             break;
         }
-
         case ByteCodeOp::IntrinsicF64x1:
         {
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
@@ -2976,6 +2987,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicLog10:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicFloor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCeil:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicTrunc:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicRound:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getDoubleTy(), r1), r0);
                 break;
             }
             break;

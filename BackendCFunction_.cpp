@@ -1744,7 +1744,18 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             case TokenId::IntrinsicLog10:
                 concat.addStringFormat("r[%u].f32=log10f(r[%u].f32);", ip->a.u32, ip->b.u32);
                 break;
-
+            case TokenId::IntrinsicFloor:
+                concat.addStringFormat("r[%u].f32=floorf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicCeil:
+                concat.addStringFormat("r[%u].f32=ceilf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicTrunc:
+                concat.addStringFormat("r[%u].f32=truncf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicRound:
+                concat.addStringFormat("r[%u].f32=roundf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
             }
             break;
         }
@@ -1770,6 +1781,18 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 break;
             case TokenId::IntrinsicLog10:
                 concat.addStringFormat("r[%u].f64=log10(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicFloor:
+                concat.addStringFormat("r[%u].f64=floor(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicCeil:
+                concat.addStringFormat("r[%u].f64=ceil(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicTrunc:
+                concat.addStringFormat("r[%u].f64=trunc(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicRound:
+                concat.addStringFormat("r[%u].f64=round(r[%u].f64);", ip->a.u32, ip->b.u32);
                 break;
             }
             break;

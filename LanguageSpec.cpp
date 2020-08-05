@@ -127,6 +127,10 @@ void LanguageSpec::setup()
     keywords["@log"] = TokenId::IntrinsicLog;
     keywords["@log2"] = TokenId::IntrinsicLog2;
     keywords["@log10"] = TokenId::IntrinsicLog10;
+    keywords["@floor"] = TokenId::IntrinsicFloor;
+    keywords["@ceil"] = TokenId::IntrinsicCeil;
+    keywords["@trunc"] = TokenId::IntrinsicTrunc;
+    keywords["@round"] = TokenId::IntrinsicRound;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;

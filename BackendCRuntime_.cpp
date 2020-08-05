@@ -113,6 +113,14 @@ __f32_t log2f(__f32_t);
 __f64_t log2(__f64_t);
 __f32_t log10f(__f32_t);
 __f64_t log10(__f64_t);
+__f32_t floorf(__f32_t);
+__f64_t floor(__f64_t);
+__f32_t ceilf(__f32_t);
+__f64_t ceil(__f64_t);
+__f32_t truncf(__f32_t);
+__f64_t trunc(__f64_t);
+__f32_t roundf(__f32_t);
+__f64_t round(__f64_t);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)

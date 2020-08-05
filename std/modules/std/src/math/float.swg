@@ -80,6 +80,14 @@ namespace std.math
         func log2(x: f64)->f64 => @log2(x)
         func log10(x: f32)->f32 => @log10(x)
         func log10(x: f64)->f64 => @log10(x)
+        func floor(x: f32)->f32 => @floor(x)
+        func floor(x: f64)->f64 => @floor(x)
+        func ceil(x: f32)->f32 => @ceil(x)
+        func ceil(x: f64)->f64 => @ceil(x)
+        func trunc(x: f32)->f32 => @trunc(x)
+        func trunc(x: f64)->f64 => @trunc(x)
+        func round(x: f32)->f32 => @round(x)
+        func round(x: f64)->f64 => @round(x)
     }
 
     #[swag.constexpr]
@@ -99,12 +107,6 @@ namespace std.math
         func tanh(x: f64)->f64 => os.tanh(x)
         func atan(x: f32)->f32 => os.atanf(x)
         func atan(x: f64)->f64 => os.atan(x)
-        func ceil(x: f32)->f32 => os.ceilf(x)
-        func ceil(x: f64)->f64 => os.ceil(x)
-        func floor(x: f32)->f32 => os.floorf(x)
-        func floor(x: f64)->f64 => os.floor(x)
-        func round(x: f32)->f32 => os.roundf(x)
-        func round(x: f64)->f64 => os.round(x)
         func abs(x: f32)->f32 => cast(f32) os.fabs(cast(f64) x)
         func abs(x: f64)->f64 => os.fabs(x)
         func pow(x, exp: f32)->f32 => os.powf(x, exp)

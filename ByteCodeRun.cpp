@@ -40,6 +40,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicLog10:
             registersRC[ip->a.u32].f32 = log10(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicFloor:
+            registersRC[ip->a.u32].f32 = floorf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicCeil:
+            registersRC[ip->a.u32].f32 = ceilf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicTrunc:
+            registersRC[ip->a.u32].f32 = truncf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicRound:
+            registersRC[ip->a.u32].f32 = roundf(registersRC[ip->b.u32].f32);
+            break;
         }
         break;
     }
@@ -64,6 +76,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicLog10:
             registersRC[ip->a.u32].f64 = log10(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicFloor:
+            registersRC[ip->a.u32].f64 = floor(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicCeil:
+            registersRC[ip->a.u32].f64 = ceil(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicTrunc:
+            registersRC[ip->a.u32].f64 = trunc(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicRound:
+            registersRC[ip->a.u32].f64 = round(registersRC[ip->b.u32].f64);
             break;
         }
         break;

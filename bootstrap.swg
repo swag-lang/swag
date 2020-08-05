@@ -30,6 +30,14 @@ func @log2(value: f32)->f32;
 func @log2(value: f64)->f64;
 func @log10(value: f32)->f32;
 func @log10(value: f64)->f64;
+func @floor(value: f32)->f32;
+func @floor(value: f64)->f64;
+func @ceil(value: f32)->f32;
+func @ceil(value: f64)->f64;
+func @trunc(value: f32)->f32;
+func @trunc(value: f64)->f64;
+func @round(value: f32)->f32;
+func @round(value: f64)->f64;
 
 namespace swag
 {
