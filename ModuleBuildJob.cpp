@@ -20,7 +20,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)
     {
-        for (auto dep : module->moduleDependencies)
+        for (auto& dep : module->moduleDependencies)
         {
             auto depModule = g_Workspace.getModuleByName(dep.first);
             if (!depModule)
@@ -28,6 +28,8 @@ JobResult ModuleBuildJob::execute()
                 module->error(format("unknown module dependency '%s'", dep.first.c_str()));
                 return JobResult::ReleaseJob;
             }
+
+            dep.second.module = depModule;
 
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;
@@ -40,6 +42,8 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
+        if (module->name == "tests.std")
+            module = module;
         pass = ModuleBuildPass::IncludeSwg;
     }
 
@@ -63,7 +67,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto& dep : module->moduleDependencies)
             {
-                auto depModule = g_Workspace.getModuleByName(dep.first);
+                auto depModule = dep.second.module;
                 SWAG_ASSERT(depModule);
                 auto node = dep.second.node;
 
@@ -109,10 +113,21 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::LoadDependencies)
     {
-        for (auto dep : module->moduleDependencies)
+        for (auto& dep : module->moduleDependencies)
         {
-            auto depModule = g_Workspace.getModuleByName(dep.first);
-            SWAG_ASSERT(depModule);
+            // Some dependencies can have been added with the #import stage
+            auto depModule = dep.second.module;
+            if (!depModule)
+            {
+                depModule = g_Workspace.getModuleByName(dep.first);
+                if (!depModule)
+                {
+                    module->error(format("unknown module dependency '%s'", dep.first.c_str()));
+                    return JobResult::ReleaseJob;
+                }
+
+                dep.second.module = depModule;
+            }
 
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;

@@ -69,6 +69,7 @@ namespace BackendLinkerWin32
         // External libraries
         arguments += "kernel32.lib ";
         arguments += "ucrt.lib ";
+
         arguments += "libvcruntime.lib ";
         arguments += "msvcrt.lib ";
 

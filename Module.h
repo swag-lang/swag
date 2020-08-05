@@ -20,11 +20,13 @@ struct BuildCfg;
 struct SourceLocation;
 struct AstFuncDecl;
 struct Token;
+struct Module;
 
 struct ModuleDependency
 {
     string   name;
     AstNode* node      = nullptr;
+    Module*  module    = nullptr;
     bool     generated = false;
 };
 
@@ -58,12 +60,12 @@ struct Module
     SourceFile*               buildFile            = nullptr;
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
-    bool                      fromTestsFolder            = false;
+    bool                      fromTestsFolder      = false;
     bool                      byteCodeOnly         = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
-    bool                      bssCannotChange         = false;
+    bool                      bssCannotChange      = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

@@ -4,8 +4,8 @@ namespace icu
 
     using swag
 
-    alias UBool:    u8
-    alias UChar32:  char
+    alias UBool = u8
+    alias UChar32 = char
 
     #[foreign("icu")]
     {
