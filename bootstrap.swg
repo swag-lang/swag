@@ -40,6 +40,10 @@ func @round(value: f32)->f32;
 func @round(value: f64)->f64;
 func @abs(value: f32)->f32;
 func @abs(value: f64)->f64;
+func @abs(value: s8)->s8;
+func @abs(value: s16)->s16;
+func @abs(value: s32)->s32;
+func @abs(value: s64)->s64;
 
 namespace swag
 {

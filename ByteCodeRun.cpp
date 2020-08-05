@@ -18,6 +18,58 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
+    case ByteCodeOp::IntrinsicS8x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].s8 = (int8_t) abs(registersRC[ip->b.u32].s8);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+    case ByteCodeOp::IntrinsicS16x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].s16 = (int16_t) abs(registersRC[ip->b.u32].s16);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+    case ByteCodeOp::IntrinsicS32x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].s32 = abs(registersRC[ip->b.u32].s32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+    case ByteCodeOp::IntrinsicS64x1:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicAbs:
+            registersRC[ip->a.u32].s64 = abs(registersRC[ip->b.u32].s64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
     case ByteCodeOp::IntrinsicF32x1:
     {
         switch ((TokenId) ip->d.u32)
@@ -54,6 +106,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicAbs:
             registersRC[ip->a.u32].f32 = fabsf(registersRC[ip->b.u32].f32);
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
         break;
@@ -94,6 +149,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicAbs:
             registersRC[ip->a.u32].f64 = fabs(registersRC[ip->b.u32].f64);
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
         break;

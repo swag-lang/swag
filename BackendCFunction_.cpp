@@ -1722,9 +1722,50 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         }
 
+        case ByteCodeOp::IntrinsicS8x1:
+        {
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].s8=(__s8_t)abs(r[%u].s8);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS16x1:
+        {
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].s16=(__s16_t)abs(r[%u].s16);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS32x1:
+        {
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].s32=abs(r[%u].s32);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS64x1:
+        {
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                concat.addStringFormat("r[%u].s64=llabs(r[%u].s64);", ip->a.u32, ip->b.u32);
+                break;
+            }
+            break;
+        }
+
         case ByteCodeOp::IntrinsicF32x1:
         {
-            switch ((TokenId)ip->d.u32)
+            switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
                 concat.addStringFormat("r[%u].f32=sqrtf(r[%u].f32);", ip->a.u32, ip->b.u32);

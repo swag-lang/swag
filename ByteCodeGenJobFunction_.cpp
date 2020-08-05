@@ -308,10 +308,31 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
 
         auto child = callParams->childs[0];
-        if (child->typeInfo->isNative(NativeTypeKind::F32))
-            emitInstruction(context, ByteCodeOp::IntrinsicF32x1, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
-        else
-            emitInstruction(context, ByteCodeOp::IntrinsicF64x1, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        SWAG_ASSERT(child->typeInfo->kind == TypeInfoKind::Native);
+        ByteCodeOp op;
+        switch (child->typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            op = ByteCodeOp::IntrinsicS8x1;
+            break;
+        case NativeTypeKind::S16:
+            op = ByteCodeOp::IntrinsicS16x1;
+            break;
+        case NativeTypeKind::S32:
+            op = ByteCodeOp::IntrinsicS32x1;
+            break;
+        case NativeTypeKind::S64:
+            op = ByteCodeOp::IntrinsicS64x1;
+            break;
+        case NativeTypeKind::F32:
+            op = ByteCodeOp::IntrinsicF32x1;
+            break;
+        case NativeTypeKind::F64:
+            op = ByteCodeOp::IntrinsicF64x1;
+            break;
+        }
+
+        emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
         break;
     }
 

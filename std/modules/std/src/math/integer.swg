@@ -36,13 +36,13 @@ namespace std.math
             return i
         }
 
-        #[swag.constexpr]
+        #[swag.constexpr, swag.inline]
         {
             /// Returns the absolute value
-            func abs(x: s64) => x < 0 ? -x : x
-            func abs(x: s32) => x < 0 ? -x : x
-            func abs(x: s16) => x < 0 ? -x : x
-            func abs(x: s8) => x < 0 ? -x : x
+            func abs(x: s8) => @abs(x)
+            func abs(x: s16) => @abs(x)
+            func abs(x: s32) => @abs(x)
+            func abs(x: s64) => @abs(x)
         }
     }
 }

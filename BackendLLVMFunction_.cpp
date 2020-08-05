@@ -2925,6 +2925,55 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
             break;
 
+        case ByteCodeOp::IntrinsicS8x1:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt8Ty(), r1), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS16x1:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt16Ty(), r1), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS32x1:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt32Ty(), r1), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicS64x1:
+        {
+            auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, builder.getInt64Ty(), r1), r0);
+                break;
+            }
+            break;
+        }
+
         case ByteCodeOp::IntrinsicF32x1:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));

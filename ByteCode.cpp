@@ -372,6 +372,10 @@ void ByteCode::print()
             break;
         }
 
+        case ByteCodeOp::IntrinsicS8x1:
+        case ByteCodeOp::IntrinsicS16x1:
+        case ByteCodeOp::IntrinsicS32x1:
+        case ByteCodeOp::IntrinsicS64x1:
         case ByteCodeOp::IntrinsicF32x1:
         case ByteCodeOp::IntrinsicF64x1:
             g_Log.print(format("VA: { %u } VB: { %u } %s", ip->a.u32, ip->b.u32, g_TokenNames[ip->d.u32]));

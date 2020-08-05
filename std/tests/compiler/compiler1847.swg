@@ -49,4 +49,12 @@
     @print("\n")
     @print(cast(f64) @abs(-5.4'f64))
     @print("\n")
+    @print(cast(s64) @abs(-5's8))
+    @print("\n")
+    @print(cast(s64) @abs(-5's16))
+    @print("\n")
+    @print(cast(s64) @abs(-5's32))
+    @print("\n")
+    @print(cast(s64) @abs(-5's64))
+    @print("\n")
 }

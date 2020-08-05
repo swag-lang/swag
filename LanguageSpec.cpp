@@ -121,17 +121,17 @@ void LanguageSpec::setup()
     keywords["@args"]        = TokenId::IntrinsicArguments;
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
 
-    keywords["@sqrt"] = TokenId::IntrinsicSqrt;
-    keywords["@sin"] = TokenId::IntrinsicSin;
-    keywords["@cos"] = TokenId::IntrinsicCos;
-    keywords["@log"] = TokenId::IntrinsicLog;
-    keywords["@log2"] = TokenId::IntrinsicLog2;
+    keywords["@sqrt"]  = TokenId::IntrinsicSqrt;
+    keywords["@sin"]   = TokenId::IntrinsicSin;
+    keywords["@cos"]   = TokenId::IntrinsicCos;
+    keywords["@log"]   = TokenId::IntrinsicLog;
+    keywords["@log2"]  = TokenId::IntrinsicLog2;
     keywords["@log10"] = TokenId::IntrinsicLog10;
     keywords["@floor"] = TokenId::IntrinsicFloor;
-    keywords["@ceil"] = TokenId::IntrinsicCeil;
+    keywords["@ceil"]  = TokenId::IntrinsicCeil;
     keywords["@trunc"] = TokenId::IntrinsicTrunc;
     keywords["@round"] = TokenId::IntrinsicRound;
-    keywords["@abs"] = TokenId::IntrinsicAbs;
+    keywords["@abs"]   = TokenId::IntrinsicAbs;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
