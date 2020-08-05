@@ -1,9 +1,10 @@
 #module compiler903
+#unittest error
 
 //#[swag.printbc]
-#unittest error
 func arithmeticMean(numbers: ...)
 {
+    #[swag.safety(true)]
 	cpt := cast(s32) numbers[1]
 }
 

@@ -3,7 +3,6 @@
 #include <windows.h>
 #endif
 
-#ifdef _DEBUG
 #include <tchar.h>
 
 typedef void(__cdecl* _PVFV)();
@@ -22,7 +21,7 @@ _PVFV __xc_z[] = {0};
 //int     __argc;
 //TCHAR** __targv;
 
-extern TCHAR* _argv[];
+extern TCHAR*       _argv[];
 static _PVFV*       atexitlist         = 0;
 static unsigned int max_atexit_entries = 0;
 static unsigned int cur_atexit_entries = 0;
@@ -201,7 +200,7 @@ extern "C" void mainCRTStartup()
     //_initterm(__xc_a, __xc_z); // call C++ constructors
 
     extern int main(int, char* argv[]);
-    int ret = main(__argc, __targv);// _tWinMain(GetModuleHandle(0), 0, cmd, si.dwFlags & STARTF_USESHOWWINDOW ? si.wShowWindow : SW_SHOWDEFAULT);
+    int        ret = main(__argc, __targv); // _tWinMain(GetModuleHandle(0), 0, cmd, si.dwFlags & STARTF_USESHOWWINDOW ? si.wShowWindow : SW_SHOWDEFAULT);
 
     _doexit();
     _term_args();
@@ -210,13 +209,12 @@ extern "C" void mainCRTStartup()
 
 extern "C" void __chkstk()
 {
-
 }
 
 extern "C" int _fltused = 0;
-BOOL WINAPI DllMain(HANDLE, DWORD, LPVOID);
+BOOL WINAPI    DllMain(HANDLE, DWORD, LPVOID);
 
-extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD  reason, LPVOID imp)
+extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD reason, LPVOID imp)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
@@ -234,5 +232,3 @@ extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD  reason, LPVOID imp)
 
     return TRUE;
 }
-
-#endif
