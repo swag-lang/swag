@@ -107,6 +107,12 @@ __f32_t sinf(__f32_t);
 __f64_t sin(__f64_t);
 __f32_t cosf(__f32_t);
 __f64_t cos(__f64_t);
+__f32_t logf(__f32_t);
+__f64_t log(__f64_t);
+__f32_t log2f(__f32_t);
+__f64_t log2(__f64_t);
+__f32_t log10f(__f32_t);
+__f64_t log10(__f64_t);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)

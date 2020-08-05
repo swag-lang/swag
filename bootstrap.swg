@@ -24,6 +24,12 @@ func @sin(value: f32)->f32;
 func @sin(value: f64)->f64;
 func @cos(value: f32)->f32;
 func @cos(value: f64)->f64;
+func @log(value: f32)->f32;
+func @log(value: f64)->f64;
+func @log2(value: f32)->f32;
+func @log2(value: f64)->f64;
+func @log10(value: f32)->f32;
+func @log10(value: f64)->f64;
 
 namespace swag
 {

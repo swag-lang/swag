@@ -180,6 +180,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSqrt:
     case TokenId::IntrinsicSin:
     case TokenId::IntrinsicCos:
+    case TokenId::IntrinsicLog:
+    case TokenId::IntrinsicLog2:
+    case TokenId::IntrinsicLog10:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

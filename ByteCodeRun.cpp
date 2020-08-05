@@ -31,6 +31,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicCos:
             registersRC[ip->a.u32].f32 = cosf(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicLog:
+            registersRC[ip->a.u32].f32 = log(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicLog2:
+            registersRC[ip->a.u32].f32 = log2(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicLog10:
+            registersRC[ip->a.u32].f32 = log10(registersRC[ip->b.u32].f32);
+            break;
         }
         break;
     }
@@ -46,6 +55,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         case TokenId::IntrinsicCos:
             registersRC[ip->a.u32].f64 = cos(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicLog:
+            registersRC[ip->a.u32].f64 = log(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicLog2:
+            registersRC[ip->a.u32].f64 = log2(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicLog10:
+            registersRC[ip->a.u32].f64 = log10(registersRC[ip->b.u32].f64);
             break;
         }
         break;

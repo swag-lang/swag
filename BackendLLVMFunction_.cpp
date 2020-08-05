@@ -2940,6 +2940,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicLog:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog2:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog10:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getFloatTy(), r1), r0);
+                break;
             }
             break;
         }
@@ -2958,6 +2967,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicCos:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog2:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog10:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getDoubleTy(), r1), r0);
                 break;
             }
             break;

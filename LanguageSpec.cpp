@@ -124,6 +124,9 @@ void LanguageSpec::setup()
     keywords["@sqrt"] = TokenId::IntrinsicSqrt;
     keywords["@sin"] = TokenId::IntrinsicSin;
     keywords["@cos"] = TokenId::IntrinsicCos;
+    keywords["@log"] = TokenId::IntrinsicLog;
+    keywords["@log2"] = TokenId::IntrinsicLog2;
+    keywords["@log10"] = TokenId::IntrinsicLog10;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;

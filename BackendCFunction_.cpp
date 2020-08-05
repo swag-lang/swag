@@ -1735,6 +1735,15 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             case TokenId::IntrinsicCos:
                 concat.addStringFormat("r[%u].f32=cosf(r[%u].f32);", ip->a.u32, ip->b.u32);
                 break;
+            case TokenId::IntrinsicLog:
+                concat.addStringFormat("r[%u].f32=logf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicLog2:
+                concat.addStringFormat("r[%u].f32=log2f(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicLog10:
+                concat.addStringFormat("r[%u].f32=log10f(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
 
             }
             break;
@@ -1752,6 +1761,15 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 break;
             case TokenId::IntrinsicCos:
                 concat.addStringFormat("r[%u].f64=cos(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicLog:
+                concat.addStringFormat("r[%u].f64=log(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicLog2:
+                concat.addStringFormat("r[%u].f64=log2(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicLog10:
+                concat.addStringFormat("r[%u].f64=log10(r[%u].f64);", ip->a.u32, ip->b.u32);
                 break;
             }
             break;
