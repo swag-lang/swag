@@ -25,6 +25,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         case TokenId::IntrinsicSqrt:
             registersRC[ip->a.u32].f32 = sqrtf(registersRC[ip->b.u32].f32);
             break;
+        case TokenId::IntrinsicSin:
+            registersRC[ip->a.u32].f32 = sinf(registersRC[ip->b.u32].f32);
+            break;
+        case TokenId::IntrinsicCos:
+            registersRC[ip->a.u32].f32 = cosf(registersRC[ip->b.u32].f32);
+            break;
         }
         break;
     }
@@ -34,6 +40,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         {
         case TokenId::IntrinsicSqrt:
             registersRC[ip->a.u32].f64 = sqrt(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicSin:
+            registersRC[ip->a.u32].f64 = sin(registersRC[ip->b.u32].f64);
+            break;
+        case TokenId::IntrinsicCos:
+            registersRC[ip->a.u32].f64 = cos(registersRC[ip->b.u32].f64);
             break;
         }
         break;

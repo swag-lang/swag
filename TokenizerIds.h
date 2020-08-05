@@ -160,6 +160,8 @@ DEFINE_TOKEN_ID(IntrinsicArguments),
 DEFINE_TOKEN_ID(IntrinsicIsByteCode),
 
 DEFINE_TOKEN_ID(IntrinsicSqrt),
+DEFINE_TOKEN_ID(IntrinsicSin),
+DEFINE_TOKEN_ID(IntrinsicCos),
 
 DEFINE_TOKEN_ID(Identifier),
 DEFINE_TOKEN_ID(LiteralNumber),

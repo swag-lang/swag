@@ -1729,6 +1729,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             case TokenId::IntrinsicSqrt:
                 concat.addStringFormat("r[%u].f32=sqrtf(r[%u].f32);", ip->a.u32, ip->b.u32);
                 break;
+            case TokenId::IntrinsicSin:
+                concat.addStringFormat("r[%u].f32=sinf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicCos:
+                concat.addStringFormat("r[%u].f32=cosf(r[%u].f32);", ip->a.u32, ip->b.u32);
+                break;
+
             }
             break;
         }
@@ -1739,6 +1746,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             {
             case TokenId::IntrinsicSqrt:
                 concat.addStringFormat("r[%u].f64=sqrt(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicSin:
+                concat.addStringFormat("r[%u].f64=sin(r[%u].f64);", ip->a.u32, ip->b.u32);
+                break;
+            case TokenId::IntrinsicCos:
+                concat.addStringFormat("r[%u].f64=cos(r[%u].f64);", ip->a.u32, ip->b.u32);
                 break;
             }
             break;

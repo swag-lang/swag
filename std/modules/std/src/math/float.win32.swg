@@ -4,14 +4,10 @@
     {
         #[swag.foreign("ucrtbase")]
         {
-            func cosf(x: f32)->f32;
-            func cos(x: f64)->f64;
             func coshf(x: f32)->f32;
             func cosh(x: f64)->f64;
             func acosf(x: f32)->f32;
             func acos(x: f64)->f64;
-            func sinf(x: f32)->f32;
-            func sin(x: f64)->f64;
             func sinhf(x: f32)->f32;
             func sinh(x: f64)->f64;
             func asinf(x: f32)->f32;

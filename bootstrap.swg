@@ -20,6 +20,10 @@ func @isbytecode()->bool;
 
 func @sqrt(value: f32)->f32;
 func @sqrt(value: f64)->f64;
+func @sin(value: f32)->f32;
+func @sin(value: f64)->f64;
+func @cos(value: f32)->f32;
+func @cos(value: f64)->f64;
 
 namespace swag
 {

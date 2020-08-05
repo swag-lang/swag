@@ -2934,6 +2934,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicSqrt:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
                 break;
+            case TokenId::IntrinsicSin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCos:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
+                break;
             }
             break;
         }
@@ -2946,6 +2952,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             {
             case TokenId::IntrinsicSqrt:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicSin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCos:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
                 break;
             }
             break;

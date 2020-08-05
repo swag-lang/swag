@@ -70,19 +70,19 @@ namespace std.math
     {
         func sqrt(x: f32)->f32 => @sqrt(x)
         func sqrt(x: f64)->f64 => @sqrt(x)
+        func sin(x: f32)->f32 => @sin(x)
+        func sin(x: f64)->f64 => @sin(x)
+        func cos(x: f32)->f32 => @cos(x)
+        func cos(x: f64)->f64 => @cos(x)
     }
 
     #[swag.constexpr]
     public
     {
-        func cos(x: f32)->f32 => os.cosf(x)
-        func cos(x: f64)->f64 => os.cos(x)
         func cosh(x: f32)->f32 => os.coshf(x)
         func cosh(x: f64)->f64 => os.cosh(x)
         func acos(x: f32)->f32 => os.acosf(x)
         func acos(x: f64)->f64 => os.acos(x)
-        func sin(x: f32)->f32 => os.sinf(x)
-        func sin(x: f64)->f64 => os.sin(x)
         func sinh(x: f32)->f32 => os.sinhf(x)
         func sinh(x: f64)->f64 => os.sinh(x)
         func asin(x: f32)->f32 => os.asinf(x)

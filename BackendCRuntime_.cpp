@@ -103,6 +103,10 @@ void*memcpy(void*,const void*,__u64_t);
 void*memset(void*,__s32_t,__u64_t);
 __f32_t sqrtf(__f32_t);
 __f64_t sqrt(__f64_t);
+__f32_t sinf(__f32_t);
+__f64_t sin(__f64_t);
+__f32_t cosf(__f32_t);
+__f64_t cos(__f64_t);
 )";
 
 bool BackendC::emitRuntime(OutputFile& bufferC, int precompileIndex)

@@ -122,6 +122,8 @@ void LanguageSpec::setup()
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
 
     keywords["@sqrt"] = TokenId::IntrinsicSqrt;
+    keywords["@sin"] = TokenId::IntrinsicSin;
+    keywords["@cos"] = TokenId::IntrinsicCos;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
