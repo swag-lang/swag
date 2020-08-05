@@ -63,8 +63,7 @@ bool Module::setup(const Utf8& moduleName)
     // to know if a build is necessary
     switch (g_CommandLine.backendType)
     {
-    case BackendType::Cl:
-    case BackendType::Clang:
+    case BackendType::C:
         backend = new BackendC(this);
         break;
     case BackendType::LLVM:

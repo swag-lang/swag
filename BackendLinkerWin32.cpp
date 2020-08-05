@@ -19,9 +19,6 @@ namespace BackendLinkerWin32
 
     void getLibPaths(vector<Utf8>& libPath)
     {
-        // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-        //libPath.push_back(format(R"(%s\lib\%s)", BackendSetupWin32::visualStudioPath.c_str(), target));
-
         // Windows sdk library paths
         libPath.push_back(format(R"(%s\lib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
         libPath.push_back(format(R"(%s\lib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
@@ -63,10 +60,6 @@ namespace BackendLinkerWin32
         // External libraries from windows sdk
         arguments += "kernel32.lib ";
         arguments += "ucrt.lib ";
-
-        // External libraries visual studio
-        //arguments += "vcruntime.lib ";
-        //arguments += "msvcrt.lib ";
 
         //if (g_CommandLine.devMode)
         //arguments += "user32.lib "; // MessageBox

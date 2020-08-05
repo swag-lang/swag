@@ -9,8 +9,7 @@ enum class BackendTarget
 
 enum class BackendType
 {
-    Cl,
-    Clang,
+    C,
     LLVM,
 };
 

@@ -9,7 +9,6 @@
 
 namespace BackendSetupWin32
 {
-    string visualStudioPath;
     string winSdkPath, winSdkVersion;
 } // namespace BackendSetupWin32
 
@@ -39,93 +38,6 @@ namespace OS
         }
 
         return false;
-    }
-
-    static string toString(const wstring& wstr)
-    {
-        int         size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
-        std::string strTo(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &strTo[0], size_needed, NULL, NULL);
-        return strTo;
-    }
-
-    static bool getVSFolderByCom(string& vsTarget)
-    {
-        HRESULT rc = CoInitializeEx(NULL, COINIT_MULTITHREADED);
-        if (rc != S_OK && rc != S_FALSE)
-            return false;
-
-        ISetupConfigurationPtr cfgCom;
-        rc = cfgCom.CreateInstance(__uuidof(SetupConfiguration));
-        if (rc != S_OK)
-            return false;
-
-        IEnumSetupInstancesPtr instances;
-        rc = cfgCom->EnumInstances(&instances);
-        if (rc != S_OK)
-            return false;
-
-        wstring         newestVersion;
-        ISetupInstance* instance;
-        ULONG           foundOne;
-        while (instances->Next(1, &instance, &foundOne) == S_OK)
-        {
-            BSTR instPath;
-            rc = instance->GetInstallationPath(&instPath);
-            if (rc != S_OK)
-                return false;
-
-            BSTR instVersion;
-            rc = instance->GetInstallationVersion(&instVersion);
-            if (rc != S_OK)
-                return false;
-
-            wstring wVersion = instVersion;
-            if (wVersion > newestVersion)
-            {
-                auto tryPath = toString(instPath);
-
-                auto     versionFile = tryPath + "\\VC\\Auxiliary\\Build\\Microsoft.VCToolsVersion.default.txt";
-                ifstream stream(versionFile);
-                if (!stream.is_open())
-                    continue;
-                string version;
-                if (getline(stream, version))
-                {
-                    tryPath += "/VC/Tools/MSVC/" + version;
-                    if (fs::exists(tryPath))
-                    {
-                        newestVersion = wVersion;
-                        vsTarget      = tryPath;
-                    }
-                }
-            }
-        }
-
-        return !vsTarget.empty();
-    }
-
-    static bool getVSFolder(string& vsTarget)
-    {
-        if (getVSFolderByCom(vsTarget))
-            return true;
-
-        vector<string> toTest;
-        toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
-        toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
-        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC)");
-        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC)");
-        toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
-        toTest.push_back(R"(C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
-        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC)");
-        toTest.push_back(R"(D:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC)");
-        if (!searchOnePath(toTest, vsTarget))
-            return false;
-
-        for (auto& p : fs::directory_iterator(vsTarget))
-            vsTarget = p.path().string();
-
-        return !vsTarget.empty();
     }
 
     static bool getWinSdkFolder(string& libPath, string& libVersion)
@@ -172,15 +84,6 @@ namespace OS
         if (!g_CommandLine.backendOutput)
             return;
 
-        // Visual studio folder
-        // For vcruntime & msvcrt (mandatory under windows, even with clang...)
-        // For clang-cl, it seems that it can find the folder itself
-        if (!getVSFolder(BackendSetupWin32::visualStudioPath))
-        {
-            g_Log.error("error: backend: cannot locate visual studio folder");
-            exit(-1);
-        }
-
         // Windows sdk folders and version
         if (!getWinSdkFolder(BackendSetupWin32::winSdkPath, BackendSetupWin32::winSdkVersion))
         {
@@ -191,12 +94,7 @@ namespace OS
         // Compiler
         switch (g_CommandLine.backendType)
         {
-        case BackendType::Cl:
-            Backend::compilerExe  = "cl.exe";
-            Backend::compilerPath = BackendSetupWin32::visualStudioPath + R"(\bin\Hostx64\x64\)";
-            break;
-
-        case BackendType::Clang:
+        case BackendType::C:
             Backend::compilerExe  = "clang-cl.exe";
             Backend::compilerPath = g_CommandLine.exePath.parent_path().string();
             Backend::compilerPath += "\\";

@@ -14,7 +14,7 @@ void Backend::setup()
 
     if (g_CommandLine.backendOutput)
     {
-        if (g_CommandLine.backendType == BackendType::Cl || g_CommandLine.backendType == BackendType::Clang)
+        if (g_CommandLine.backendType == BackendType::C)
         {
             auto fullPath = Backend::compilerPath + Backend::compilerExe;
             if (!fs::exists(fullPath))
