@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -40,7 +41,7 @@ static void __ftoa(char* result, double value)
     char* n = result;
     if (ipart == 0)
     {
-        if(value < 0)
+        if (value < 0)
             *n++ = '-';
         *n++ = '0';
     }
@@ -166,7 +167,7 @@ extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const
 
 #ifdef _WIN32
 #ifdef _DEBUG
-    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+        //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
     RaiseException(0x666, 0, 0, 0);
 #endif
@@ -206,12 +207,11 @@ extern "C" void* swag_runtime_tlsGetValue(uint32_t id)
 #endif
 }
 
-#include <stdio.h>
 /////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {
-    uint64_t argumentsStr[64];
-    swag_runtime_assert(argc <= 64, __FILE__, __LINE__, "too many application arguments");
+    uint64_t argumentsStr[SWAG_MAX_COMMAND_ARGUMENTS];
+    swag_runtime_assert(argc <= SWAG_MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
 
     for (int i = 0; i < argc; i++)
     {
