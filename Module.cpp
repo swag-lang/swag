@@ -215,7 +215,6 @@ bool Module::sendCompilerMessage(const CompilerMessage& msg)
     }
 
     // Convert to a concrete message for the user
-    ConcreteCompilerMessage concreteMsg;
     concreteMsg.kind              = msg.kind;
     concreteMsg.moduleName.buffer = (void*) name.c_str();
     concreteMsg.moduleName.count  = name.length();

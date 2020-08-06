@@ -90,6 +90,7 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
+    ConcreteCompilerMessage        concreteMsg;
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     bool                           sendCompilerMessage(CompilerMessageKind kind);
     bool                           sendCompilerMessage(const CompilerMessage& msg);
