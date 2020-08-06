@@ -145,10 +145,10 @@
     <ClInclude Include="DocNodeJob.h" />
     <ClInclude Include="DocScopeJob.h" />
     <ClInclude Include="EnumerateModuleJob.h" />
-    <ClInclude Include="ffi.h" />
-    <ClInclude Include="fficonfig.h" />
-    <ClInclude Include="ffitarget.h" />
-    <ClInclude Include="ffi_common.h" />
+    <ClInclude Include="ffi/ffi.h" />
+    <ClInclude Include="ffi/fficonfig.h" />
+    <ClInclude Include="ffi/ffitarget.h" />
+    <ClInclude Include="ffi/ffi_common.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
@@ -246,7 +246,7 @@
     <ClCompile Include="ByteCodeRunContext.cpp" />
     <ClCompile Include="ByteCodeRunFFI_.cpp" />
     <ClCompile Include="DependentJobs.cpp" />
-    <ClCompile Include="closures.c">
+    <ClCompile Include="ffi/closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -265,11 +265,11 @@
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="DataSegment.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
-    <ClCompile Include="ffi.c">
+    <ClCompile Include="ffi/ffi.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ffi64.c">
+    <ClCompile Include="ffi/ffi64.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -335,7 +335,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="prep_cif.c">
+    <ClCompile Include="ffi/prep_cif.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -351,7 +351,7 @@
     <ClCompile Include="TypeInfoSpecific_.cpp" />
     <ClCompile Include="TypeManager.cpp" />
     <ClCompile Include="TypeManagerCast_.cpp" />
-    <ClCompile Include="types.c">
+    <ClCompile Include="ffi/types.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -361,18 +361,18 @@
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="win64.S">
+    <CustomBuild Include="ffi/win64.S">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-cl.exe /EP win64.S &gt; win64_plain.asm
+cl.exe /EP ffi/win64.S &gt; ffi/win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj ffi/win64_plain.asm
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-cl.exe /EP win64.S &gt; win64_plain.asm
+cl.exe /EP ffi/win64.S &gt; ffi/win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj ffi/win64_plain.asm
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj</Outputs>
     </CustomBuild>

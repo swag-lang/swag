@@ -16,15 +16,6 @@
     <ClCompile Include="Swag.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="closures.c">
-      <Filter>FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="ffi.c">
-      <Filter>FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="ffi64.c">
-      <Filter>FFI</Filter>
-    </ClCompile>
     <ClCompile Include="Global.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -33,12 +24,6 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="prep_cif.c">
-      <Filter>FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="types.c">
-      <Filter>FFI</Filter>
     </ClCompile>
     <ClCompile Include="LanguageSpec.cpp">
       <Filter>Lexer</Filter>
@@ -410,6 +395,21 @@
     <ClCompile Include="SwagRuntime.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ffi/closures.c">
+      <Filter>FFI</Filter>
+    </ClCompile>
+    <ClCompile Include="ffi/ffi.c">
+      <Filter>FFI</Filter>
+    </ClCompile>
+    <ClCompile Include="ffi/ffi64.c">
+      <Filter>FFI</Filter>
+    </ClCompile>
+    <ClCompile Include="ffi/prep_cif.c">
+      <Filter>FFI</Filter>
+    </ClCompile>
+    <ClCompile Include="ffi/types.c">
+      <Filter>FFI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -417,18 +417,6 @@
     </ClInclude>
     <ClInclude Include="ThreadManager.h">
       <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="ffi.h">
-      <Filter>FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="ffi_common.h">
-      <Filter>FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="fficonfig.h">
-      <Filter>FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="ffitarget.h">
-      <Filter>FFI</Filter>
     </ClInclude>
     <ClInclude Include="Global.h">
       <Filter>Main</Filter>
@@ -686,6 +674,18 @@
     <ClInclude Include="Timer.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="ffi/ffi.h">
+      <Filter>FFI</Filter>
+    </ClInclude>
+    <ClInclude Include="ffi/ffi_common.h">
+      <Filter>FFI</Filter>
+    </ClInclude>
+    <ClInclude Include="ffi/fficonfig.h">
+      <Filter>FFI</Filter>
+    </ClInclude>
+    <ClInclude Include="ffi/ffitarget.h">
+      <Filter>FFI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -726,11 +726,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="win64.S">
-      <Filter>FFI</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".clang-format" />
     <None Include="bootstrap.swg">
       <Filter>Resource</Filter>
@@ -746,5 +741,10 @@
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ffi/win64.S">
+      <Filter>FFI</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
