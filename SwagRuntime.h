@@ -4,7 +4,7 @@ extern "C" void     swag_runtime_print_n(const void* message, int len);
 extern "C" void     swag_runtime_print(const void* message);
 extern "C" void     swag_runtime_print_i64(int64_t value);
 extern "C" void     swag_runtime_print_f64(double value);
-extern "C" bool     swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num);
+extern "C" bool     swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num);
 extern "C" void*    swag_runtime_loadDynamicLibrary(const void* name);
 extern "C" uint32_t swag_runtime_tlsAlloc();
 extern "C" void     swag_runtime_tlsSetValue(uint32_t id, void* value);

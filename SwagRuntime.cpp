@@ -58,14 +58,6 @@ static void __ftoa(char* result, double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" bool swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num)
-{
-    if (!str1 || !str2)
-        return str1 == str2;
-    return !memcmp((void*) str1, (void*) str2, num);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" void swag_runtime_print_n(const void* message, int len)
 {
     if (!message)
@@ -101,6 +93,14 @@ extern "C" void swag_runtime_print_f64(double value)
     char buf[100];
     __ftoa(buf, value);
     swag_runtime_print(buf);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+extern "C" bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
+{
+    if (!str1 || !str2)
+        return str1 == str2;
+    return !memcmp((void*) str1, (void*) str2, num);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,7 +197,7 @@ extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
     if (ctype1->name.count != ctype2->name.count)
         return false;
 
-    return swag_runtime_strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
+    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +211,7 @@ extern "C" void* swag_runtime_interfaceof(const void* structType, const void* it
     {
         if (buffer[i].name.count != itype->base.name.count)
             continue;
-        if (swag_runtime_strcmp(buffer[i].name.buffer, itype->base.name.buffer, (uint32_t) itype->base.name.count))
+        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (uint32_t) itype->base.name.count))
             return buffer[i].value;
     }
 

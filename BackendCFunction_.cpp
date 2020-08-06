@@ -1371,7 +1371,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=r[%u].u64==r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::CompareOpEqualString:
-            concat.addStringFormat("r[%u].b=swag_runtime_strcmp(r[%u].p,r[%u].p,r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("r[%u].b=swag_runtime_comparestring(r[%u].p,r[%u].p,r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::CompareOpEqualTypeInfo:
             concat.addStringFormat("r[%u].b=swag_runtime_comparetype(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
