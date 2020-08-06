@@ -371,7 +371,7 @@ namespace swag
     }
 
     // #########################################################
-    // Compiler
+    // Build configuration
     // #########################################################
 
     struct BuildCfgBackendC
@@ -408,6 +408,10 @@ namespace swag
         backendC:       BuildCfgBackendC
         backendLLVM:    BuildCfgBackendLLVM
     }
+
+    // #########################################################
+    // Compiler
+    // #########################################################
 
     #[flags]
     enum CompilerMessageKind : u64
