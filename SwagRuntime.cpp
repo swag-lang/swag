@@ -84,12 +84,6 @@ extern "C" int32_t swag_runtime_memcmp(const void* mem1, const void* mem2, uint6
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_exit(int32_t exitCode)
-{
-    exit(exitCode);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" bool swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num)
 {
     if (!str1 || !str2)

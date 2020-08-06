@@ -87,7 +87,6 @@ void*swag_runtime_malloc(__u64_t);
 void*swag_runtime_realloc(void*,__u64_t);
 void swag_runtime_free(void*);
 __s32_t swag_runtime_memcmp(const void*,const void*,__u64_t);
-void swag_runtime_exit(__s32_t);
 void swag_runtime_print_n(const void*,int);
 void swag_runtime_print(const void*);
 void swag_runtime_print_i64(__s64_t);
