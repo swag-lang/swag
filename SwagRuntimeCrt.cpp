@@ -1,12 +1,11 @@
 #include <stdint.h>
 #include "SwagRuntime.h"
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include "SwagRuntimeLibC.h"
 
 static char* _argv[SWAG_MAX_COMMAND_ARGUMENTS + 1];
 static char* _rawCmd = 0;
-extern char* _argv[];
+
+#define __isspace(__c) (__c == ' ' || __c == '\t')
 
 static int initArgs(const char* sysCmd)
 {
@@ -18,7 +17,7 @@ static int initArgs(const char* sysCmd)
     _rawCmd   = cmd;
     if (!cmd)
         return 0;
-    lstrcpy(cmd, sysCmd);
+    strcpy(cmd, sysCmd);
 
     // First argument is executable
     if (*cmd == '"')
@@ -38,7 +37,7 @@ static int initArgs(const char* sysCmd)
     {
         _argv[0] = cmd;
 
-        while (*cmd && !isspace(*cmd))
+        while (*cmd && !__isspace(*cmd))
             cmd++;
 
         if (*cmd)
@@ -49,7 +48,7 @@ static int initArgs(const char* sysCmd)
     int argc = 1;
     for (;;)
     {
-        while (*cmd && isspace(*cmd))
+        while (*cmd && __isspace(*cmd))
             cmd++;
 
         if (*cmd == 0)
@@ -76,7 +75,7 @@ static int initArgs(const char* sysCmd)
             _argv[argc++] = cmd;
             _argv[argc]   = 0;
 
-            while (*cmd && !isspace(*cmd))
+            while (*cmd && !__isspace(*cmd))
                 cmd++;
 
             if (*cmd == 0)
@@ -111,12 +110,13 @@ extern "C" int _fltused = 0;
 
 extern "C" void mainCRTStartup()
 {
-    __main(::GetCommandLine());
+    const char* GetCommandLineA();
+    __main(GetCommandLineA());
 }
 
-extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD reason, LPVOID imp)
+extern "C" int _DllMainCRTStartup(void*, int, void*)
 {
-    return TRUE;
+    return 1;
 }
 
 extern "C" void __chkstk()

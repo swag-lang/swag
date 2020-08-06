@@ -1,4 +1,6 @@
-extern "C" void* memcpy(void* dst, const void* src, size_t size)
+#include "SwagRuntimeLibC.h"
+
+EXTERN_C void* memcpy(void* dst, const void* src, size_t size)
 {
     char*       _dst = (char*) dst;
     const char* _src = (char*) src;
@@ -7,7 +9,7 @@ extern "C" void* memcpy(void* dst, const void* src, size_t size)
     return dst;
 }
 
-extern "C" int memcmp(const void* b1, const void* b2, size_t n)
+EXTERN_C int memcmp(const void* b1, const void* b2, size_t n)
 {
     const unsigned char* p1 = (const unsigned char*) b1;
     const unsigned char* p2 = (const unsigned char*) b2;
@@ -22,3 +24,14 @@ extern "C" int memcmp(const void* b1, const void* b2, size_t n)
     return 0;
 }
 
+#ifndef _WIN32
+
+EXTERN_C void exit(int code)
+{
+#ifdef _WIN32
+    extern void ExitProcess(int);
+    ExitProcess(code);
+#endif
+}
+
+#endif

@@ -7,5 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwagRuntime.h" />
+    <ClInclude Include="SwagRuntimeLibC.h" />
   </ItemGroup>
 </Project>

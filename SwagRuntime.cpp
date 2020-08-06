@@ -1,10 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 #include "SwagRuntime.h"
+#include "SwagRuntimeLibC.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 static char* __itoa(char* result, int64_t value)
@@ -60,11 +57,11 @@ static void __ftoa(char* result, double value)
 /////////////////////////////////////////////////////////////////////////////////////////////
 void __print(const void* __msg)
 {
-    swag_runtime_print_n((const char*)__msg, (int)strlen((const char*)__msg));
+    swag_runtime_print_n((const char*) __msg, (int) strlen((const char*) __msg));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print_n(const void* message, int len)
+EXTERN_C void swag_runtime_print_n(const void* message, int len)
 {
     if (!message)
     {
@@ -72,13 +69,16 @@ extern "C" void swag_runtime_print_n(const void* message, int len)
         len     = 6;
     }
 #ifdef _WIN32
+    void*            GetStdHandle(int);
+    int              WriteFile(void*, const void*, int, const int*, void*);
+    static const int STD_OUTPUT_HANDLE = -11;
     WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
 #else
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print_i64(int64_t value)
+EXTERN_C void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
     __itoa(buf, (int) value);
@@ -86,7 +86,7 @@ extern "C" void swag_runtime_print_i64(int64_t value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print_f64(double value)
+EXTERN_C void swag_runtime_print_f64(double value)
 {
     char buf[100];
     __ftoa(buf, value);
@@ -94,7 +94,7 @@ extern "C" void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const void* message)
+EXTERN_C void swag_runtime_assert(bool expr, const void* file, int line, const void* message)
 {
     if (expr)
         return;
@@ -120,15 +120,17 @@ extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const
 #ifdef _DEBUG
     //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
+    void RaiseException(int, int, int, const void*);
     RaiseException(0x666, 0, 0, 0);
 #endif
     exit(-1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void* swag_runtime_loadDynamicLibrary(const void* name)
+EXTERN_C void* swag_runtime_loadDynamicLibrary(const void* name)
 {
 #ifdef _WIN32
+    void* LoadLibraryA(const char*);
     return LoadLibraryA((const char*) name);
 #endif
 }
@@ -137,29 +139,32 @@ extern "C" void* swag_runtime_loadDynamicLibrary(const void* name)
 extern "C" uint32_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
+    int TlsAlloc();
     return TlsAlloc();
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_tlsSetValue(uint32_t id, void* value)
+EXTERN_C void swag_runtime_tlsSetValue(uint32_t id, void* value)
 {
 #ifdef _WIN32
+    void TlsSetValue(int, void*);
     TlsSetValue(id, value);
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void* swag_runtime_tlsGetValue(uint32_t id)
+EXTERN_C void* swag_runtime_tlsGetValue(uint32_t id)
 {
 #ifdef _WIN32
-    auto result = TlsGetValue(id);
+    void* TlsGetValue(int);
+    auto  result = TlsGetValue(id);
     return result;
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
+EXTERN_C void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {
     uint64_t argumentsStr[SWAG_MAX_COMMAND_ARGUMENTS];
     swag_runtime_assert(argc <= SWAG_MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
@@ -176,7 +181,7 @@ extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
+EXTERN_C bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
 {
     if (!str1 || !str2)
         return str1 == str2;
@@ -184,7 +189,7 @@ extern "C" bool swag_runtime_comparestring(const void* str1, const void* str2, u
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
+EXTERN_C bool swag_runtime_comparetype(const void* type1, const void* type2)
 {
     if (type1 == type2)
         return true;
@@ -202,7 +207,7 @@ extern "C" bool swag_runtime_comparetype(const void* type1, const void* type2)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void* swag_runtime_interfaceof(const void* structType, const void* itfType)
+EXTERN_C void* swag_runtime_interfaceof(const void* structType, const void* itfType)
 {
     auto ctype  = (ConcreteTypeInfoStruct*) structType;
     auto itype  = (ConcreteTypeInfoStruct*) itfType;
