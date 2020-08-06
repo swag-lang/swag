@@ -1,3 +1,4 @@
+#ifndef SWAG_RUNTIME_COMPILER
 #include "libc.h"
 
 static char* _argv[MAX_COMMAND_ARGUMENTS + 1];
@@ -101,3 +102,5 @@ EXTERN_C void swag_runtime_main(const char* cmdLine)
     termArgs();
     exit(ret);
 }
+
+#endif // SWAG_RUNTIME_COMPILER

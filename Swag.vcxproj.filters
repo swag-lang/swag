@@ -392,9 +392,6 @@
     <ClCompile Include="ByteCodeGenJobSafety_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="SwagRuntime.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ffi/closures.c">
       <Filter>FFI</Filter>
     </ClCompile>
