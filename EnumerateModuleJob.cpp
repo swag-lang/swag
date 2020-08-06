@@ -65,28 +65,13 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     moduleName += cFileName;
 
     // Create theModule
-    auto theModule       = g_Workspace.createOrUseModule(moduleName);
+    auto theModule             = g_Workspace.createOrUseModule(moduleName);
     theModule->fromTestsFolder = parent == "tests";
     theModule->scopeRoot->flags |= SCOPE_FLAG_MODULE_FROM_TEST;
 
-    // Add the build.swg file if it exists
-    string tmp;
-    tmp = path.string() + "/build.swg";
-    if (fs::exists(tmp))
-    {
-        auto job             = g_Pool_syntaxJob.alloc();
-        auto file            = g_Allocator.alloc<SourceFile>();
-        job->sourceFile      = file;
-        file->fromTests      = theModule->fromTestsFolder;
-        file->path           = tmp;
-        theModule->buildFile = file;
-        theModule->addFile(file);
-        g_ThreadMgr.addJob(job);
-    }
-
     // Parse all files in the "src" sub folder, except for tests where all the source code
     // is at the root folder
-    tmp             = path.string();
+    string tmp      = path.string();
     theModule->path = tmp;
     if (!theModule->fromTestsFolder)
         tmp += "/src";

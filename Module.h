@@ -63,7 +63,6 @@ struct Module
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;
     Scope*                    scopeRoot            = nullptr;
-    SourceFile*               buildFile            = nullptr;
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTestsFolder      = false;

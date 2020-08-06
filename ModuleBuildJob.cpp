@@ -146,7 +146,7 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        pass = ModuleBuildPass::BuildBuildSwg;
+        pass = ModuleBuildPass::Publish;
         for (const auto& dep : module->moduleDependencies)
         {
             if (!g_ModuleMgr.loadModule(dep.first, false, true))
@@ -155,20 +155,6 @@ JobResult ModuleBuildJob::execute()
                 return JobResult::ReleaseJob;
             }
         }
-    }
-
-    // Semantic pass on 'build.swg' file
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::BuildBuildSwg)
-    {
-        pass = ModuleBuildPass::Publish;
-
-        auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
-        semanticJob->module        = module;
-        semanticJob->dependentJob  = this;
-        semanticJob->buildFileMode = true;
-        jobsToAdd.push_back(semanticJob);
-        return JobResult::KeepJobAlive;
     }
 
     //////////////////////////////////////////////////
@@ -251,7 +237,6 @@ JobResult ModuleBuildJob::execute()
         auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module        = module;
         semanticJob->dependentJob  = this;
-        semanticJob->buildFileMode = false;
         jobsToAdd.push_back(semanticJob);
         return JobResult::KeepJobAlive;
     }
