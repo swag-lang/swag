@@ -1,7 +1,6 @@
 #pragma once
 
 extern "C" void     swag_runtime_print_n(const void* message, int len);
-extern "C" void     swag_runtime_print(const void* message);
 extern "C" void     swag_runtime_print_i64(int64_t value);
 extern "C" void     swag_runtime_print_f64(double value);
 extern "C" bool     swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num);

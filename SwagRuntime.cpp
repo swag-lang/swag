@@ -58,6 +58,12 @@ static void __ftoa(char* result, double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+void __print(const void* __msg)
+{
+    swag_runtime_print_n((const char*)__msg, (int)strlen((const char*)__msg));
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" void swag_runtime_print_n(const void* message, int len)
 {
     if (!message)
@@ -65,18 +71,10 @@ extern "C" void swag_runtime_print_n(const void* message, int len)
         message = "<null>";
         len     = 6;
     }
-#ifdef _WIN32   
+#ifdef _WIN32
     WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
 #else
 #endif
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" void swag_runtime_print(const void* message)
-{
-    if (!message)
-        message = "<null>";
-    swag_runtime_print_n(message, (int) strlen((const char *) message));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +82,7 @@ extern "C" void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
     __itoa(buf, (int) value);
-    swag_runtime_print(buf);
+    __print(buf);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,15 +90,7 @@ extern "C" void swag_runtime_print_f64(double value)
 {
     char buf[100];
     __ftoa(buf, value);
-    swag_runtime_print(buf);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
-{
-    if (!str1 || !str2)
-        return str1 == str2;
-    return !memcmp((void*) str1, (void*) str2, num);
+    __print(buf);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,23 +99,26 @@ extern "C" void swag_runtime_assert(bool expr, const void* file, int line, const
     if (expr)
         return;
 
-    const char* msg = (const char*) message;
-    swag_runtime_print("error: ");
-    swag_runtime_print(file);
-    swag_runtime_print(":");
+    __print("error: ");
+    __print(file);
+    __print(":");
     swag_runtime_print_i64(line);
+
+    const char* msg = (const char*) message;
     if (msg && msg[0])
     {
-        swag_runtime_print(": ");
-        swag_runtime_print(msg);
-        swag_runtime_print("\n");
+        __print(": ");
+        __print(msg);
+        __print("\n");
     }
     else
-        swag_runtime_print(": assertion failed\n");
+    {
+        __print(": assertion failed\n");
+    }
 
 #ifdef _WIN32
 #ifdef _DEBUG
-        //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
     RaiseException(0x666, 0, 0, 0);
 #endif
@@ -174,12 +167,20 @@ extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
     for (int i = 0; i < argc; i++)
     {
         argumentsStr[i * 2]       = (int64_t) argv[i];
-        argumentsStr[(i * 2) + 1] = (int64_t) strlen((const char *) argv[i]);
+        argumentsStr[(i * 2) + 1] = (int64_t) strlen((const char*) argv[i]);
     }
 
     void** p = (void**) dest;
     p[0]     = &argumentsStr[0];
     p[1]     = (void*) (uint64_t) argc;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+extern "C" bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
+{
+    if (!str1 || !str2)
+        return str1 == str2;
+    return !memcmp((void*) str1, (void*) str2, num);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -15,7 +15,7 @@ static int initArgs()
     char* sysCmd   = ::GetCommandLine();
     int   szSysCmd = (int) strlen(sysCmd);
 
-    char* cmd = (char*) HeapAlloc(::GetProcessHeap(), 0, sizeof(TCHAR) * (szSysCmd + 1));
+    char* cmd = (char*) malloc(szSysCmd + 1);
     _rawCmd   = cmd;
     if (!cmd)
         return 0;
@@ -95,7 +95,7 @@ static int initArgs()
 static void termArgs()
 {
     if (_rawCmd)
-        HeapFree(GetProcessHeap(), 0, _rawCmd);
+        free(_rawCmd);
 }
 
 extern "C" void mainCRTStartup()

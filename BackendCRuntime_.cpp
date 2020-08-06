@@ -84,7 +84,6 @@ __u32_t swag_runtime_tlsAlloc();
 void swag_runtime_tlsSetValue(__u32_t,void*);
 void*swag_runtime_tlsGetValue(__u32_t);
 void swag_runtime_print_n(const void*,int);
-void swag_runtime_print(const void*);
 void swag_runtime_print_i64(__s64_t);
 void swag_runtime_print_f64(__f64_t);
 void swag_runtime_assert(__b_t,const void*,int,const void*);
