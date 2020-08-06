@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "libc.h"
 
 static char* _argv[MAX_COMMAND_ARGUMENTS + 1];

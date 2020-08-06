@@ -1,5 +1,4 @@
 #ifdef _WIN32
-#include <stdint.h>
 #include "../libc.h"
 
 EXTERN_C
