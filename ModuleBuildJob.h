@@ -27,7 +27,8 @@ struct ModuleBuildJob : public Job
     void      checkPendingJobs();
 
     ModuleBuildPass                           pass = ModuleBuildPass::Dependencies;
-    chrono::high_resolution_clock::time_point timeBeforeSemantic;
+    chrono::high_resolution_clock::time_point timeBeforeSemanticModule;
+    chrono::high_resolution_clock::time_point timeBeforeSemanticCompiler;
     chrono::high_resolution_clock::time_point timeBeforeRun;
     chrono::high_resolution_clock::time_point timeBeforeOutput;
 };

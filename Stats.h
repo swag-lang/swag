@@ -16,7 +16,8 @@ struct Stats
     int            numWorkers            = 0;
     atomic<double> totalTime             = 0;
     atomic<double> syntaxTime            = 0;
-    atomic<double> semanticTime          = 0;
+    atomic<double> semanticCompilerTime  = 0;
+    atomic<double> semanticModuleTime    = 0;
     atomic<double> runTime               = 0;
     atomic<double> outputTime            = 0;
     atomic<double> precompileTimeJob     = 0;

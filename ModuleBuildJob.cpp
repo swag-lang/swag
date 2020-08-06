@@ -59,8 +59,8 @@ JobResult ModuleBuildJob::execute()
         // If we do not need to compile, then exit, we're done with that module
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc)
         {
-            timeBeforeSemantic = chrono::high_resolution_clock::now();
-            pass               = ModuleBuildPass::Run;
+            timeBeforeSemanticModule = chrono::high_resolution_clock::now();
+            pass                     = ModuleBuildPass::Run;
         }
         else
         {
@@ -200,6 +200,14 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::SemanticCompilerPass)
     {
         pass = ModuleBuildPass::SemanticModulePass;
+
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            timeBeforeSemanticCompiler = chrono::high_resolution_clock::now();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format("## module %s semantic compiler pass begin", module->name.c_str()));
+        }
+
         if (!module->filesWithCompilerFunctions.empty())
         {
             for (auto itfile : module->filesWithCompilerFunctions)
@@ -225,11 +233,16 @@ JobResult ModuleBuildJob::execute()
     {
         pass = ModuleBuildPass::Run;
 
-        if (g_CommandLine.stats)
+        if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeSemantic = chrono::high_resolution_clock::now();
+            timeBeforeSemanticModule         = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsed = timeBeforeSemanticModule - timeBeforeSemanticCompiler;
+            g_Stats.semanticCompilerTime     = g_Stats.semanticCompilerTime + elapsed.count();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s semantic pass begin", module->name.c_str()));
+            {
+                g_Log.verbose(format(" # module %s semantic compiler pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format("## module %s semantic module pass begin", module->name.c_str()));
+            }
         }
 
         if (module->numErrors)
@@ -247,13 +260,13 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Run)
     {
         // Timing...
-        if (g_CommandLine.stats)
+        if (g_CommandLine.stats || g_CommandLine.verbose)
         {
             timeBeforeRun                    = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemantic;
-            g_Stats.semanticTime             = g_Stats.semanticTime + elapsed.count();
+            chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemanticModule;
+            g_Stats.semanticModuleTime       = g_Stats.semanticModuleTime + elapsed.count();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s semantic pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), elapsed.count()));
         }
 
         if (module->numErrors)
@@ -376,7 +389,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Output)
     {
         // TIming...
-        if (g_CommandLine.stats)
+        if (g_CommandLine.stats || g_CommandLine.verbose)
         {
             timeBeforeOutput                 = chrono::high_resolution_clock::now();
             chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
@@ -405,7 +418,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     // Timing...
-    if (g_CommandLine.stats)
+    if (g_CommandLine.stats || g_CommandLine.verbose)
     {
         auto                     timeAfterOutput = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
