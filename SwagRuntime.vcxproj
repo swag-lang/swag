@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h" />
+    <ClInclude Include="libc\stdint.h" />
     <ClInclude Include="libc\win32\win32.h" />
     <ClInclude Include="SwagRuntime.h" />
   </ItemGroup>
@@ -77,6 +78,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -96,6 +98,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Oi- %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
       <SubSystem>

@@ -1,17 +1,18 @@
 #pragma once
+#include "libc/stdint.h"
 
-extern "C" void     swag_runtime_print_n(const void* message, int len);
-extern "C" void     swag_runtime_print_i64(int64_t value);
-extern "C" void     swag_runtime_print_f64(double value);
-extern "C" bool     swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num);
-extern "C" void*    swag_runtime_loadDynamicLibrary(const void* name);
-extern "C" uint32_t swag_runtime_tlsAlloc();
-extern "C" void     swag_runtime_tlsSetValue(uint32_t id, void* value);
-extern "C" void*    swag_runtime_tlsGetValue(uint32_t id);
-extern "C" void     swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[]);
-extern "C" bool     swag_runtime_comparetype(const void* type1, const void* type2);
-extern "C" void*    swag_runtime_interfaceof(const void* structType, const void* itfType);
-extern "C" void     swag_runtime_assert(bool expr, const void* file, int line, const void* msg);
+extern "C" void                  swag_runtime_print_n(const void* message, swag_runtime_int32_t len);
+extern "C" void                  swag_runtime_print_i64(swag_runtime_int64_t value);
+extern "C" void                  swag_runtime_print_f64(double value);
+extern "C" bool                  swag_runtime_comparestring(const void* str1, const void* str2, swag_runtime_uint32_t num);
+extern "C" void*                 swag_runtime_loadDynamicLibrary(const void* name);
+extern "C" swag_runtime_uint32_t swag_runtime_tlsAlloc();
+extern "C" void                  swag_runtime_tlsSetValue(swag_runtime_uint32_t id, void* value);
+extern "C" void*                 swag_runtime_tlsGetValue(swag_runtime_uint32_t id);
+extern "C" void                  swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc, void* argv[]);
+extern "C" bool                  swag_runtime_comparetype(const void* type1, const void* type2);
+extern "C" void*                 swag_runtime_interfaceof(const void* structType, const void* itfType);
+extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
@@ -19,18 +20,18 @@ extern "C" void     swag_runtime_assert(bool expr, const void* file, int line, c
 
 struct BuildCfgBackendC
 {
-    uint32_t maxApplicationArguments  = 64;
-    uint32_t minFunctionPerFile       = 1024;
-    uint32_t maxFunctionPerFile       = 2048;
-    bool     writeSourceCode          = false;
-    bool     writeByteCodeInstruction = false;
+    swag_runtime_uint32_t maxApplicationArguments  = 64;
+    swag_runtime_uint32_t minFunctionPerFile       = 1024;
+    swag_runtime_uint32_t maxFunctionPerFile       = 2048;
+    bool                  writeSourceCode          = false;
+    bool                  writeByteCodeInstruction = false;
 };
 
 struct BuildCfgBackendLLVM
 {
-    uint32_t minFunctionPerFile = 256;
-    uint32_t maxFunctionPerFile = 1024;
-    bool     outputIR           = false; // Write a 'file.ir' text file just next to the output file
+    swag_runtime_uint32_t minFunctionPerFile = 256;
+    swag_runtime_uint32_t maxFunctionPerFile = 1024;
+    bool                  outputIR           = false; // Write a 'file.ir' text file just next to the output file
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -43,8 +44,8 @@ struct BuildCfg
     bool safetyGuards = true;
 
     // Bytecode
-    uint32_t byteCodeMaxRecurse = 1024;
-    uint32_t byteCodeStackSize  = 16 * 1024;
+    swag_runtime_uint32_t byteCodeMaxRecurse = 1024;
+    swag_runtime_uint32_t byteCodeStackSize  = 16 * 1024;
 
     // Backend common
     bool backendDebugInformations = false;
@@ -116,15 +117,15 @@ enum class NativeTypeKind
 
 struct ConcreteSlice
 {
-    void*    buffer;
-    uint64_t count;
+    void*                 buffer;
+    swag_runtime_uint64_t count;
 };
 
 struct ConcreteTypeInfo
 {
-    ConcreteSlice name;
-    TypeInfoKind  kind;
-    uint32_t      sizeOf;
+    ConcreteSlice         name;
+    TypeInfoKind          kind;
+    swag_runtime_uint32_t sizeOf;
 };
 
 struct ConcreteAny
@@ -153,10 +154,10 @@ struct ConcreteTypeInfoNative
 
 struct ConcreteTypeInfoPointer
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* finalType;
-    ConcreteTypeInfo* pointedType;
-    uint32_t          ptrCount;
+    ConcreteTypeInfo      base;
+    ConcreteTypeInfo*     finalType;
+    ConcreteTypeInfo*     pointedType;
+    swag_runtime_uint32_t ptrCount;
 };
 
 struct ConcreteTypeInfoReference
@@ -167,12 +168,12 @@ struct ConcreteTypeInfoReference
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteSlice     name;
-    ConcreteTypeInfo* pointedType;
-    void*             value;
-    ConcreteSlice     attributes;
-    uint32_t          offsetOf;
-    uint32_t          padding;
+    ConcreteSlice         name;
+    ConcreteTypeInfo*     pointedType;
+    void*                 value;
+    ConcreteSlice         attributes;
+    swag_runtime_uint32_t offsetOf;
+    swag_runtime_uint32_t padding;
 };
 
 struct ConcreteTypeInfoStruct
@@ -209,11 +210,11 @@ struct ConcreteTypeInfoEnum
 
 struct ConcreteTypeInfoArray
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-    ConcreteTypeInfo* finalType;
-    uint32_t          count;
-    uint32_t          totalCount;
+    ConcreteTypeInfo      base;
+    ConcreteTypeInfo*     pointedType;
+    ConcreteTypeInfo*     finalType;
+    swag_runtime_uint32_t count;
+    swag_runtime_uint32_t totalCount;
 };
 
 struct ConcreteTypeInfoSlice

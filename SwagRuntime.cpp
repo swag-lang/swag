@@ -1,11 +1,10 @@
-#include <stdint.h>
 #include "SwagRuntime.h"
 #include "libc/libc.h"
 
-static char* __itoa(char* result, int64_t value)
+static char* __itoa(char* result, swag_runtime_int64_t value)
 {
-    char *  ptr = result, *ptr1 = result, tmp_char;
-    int64_t tmp_value;
+    char *               ptr = result, *ptr1 = result, tmp_char;
+    swag_runtime_int64_t tmp_value;
     do
     {
         tmp_value = value;
@@ -29,8 +28,8 @@ static char* __itoa(char* result, int64_t value)
 
 static void __ftoa(char* result, double value)
 {
-    int64_t ipart = (int64_t) value;
-    double  fpart = value - (double) ipart;
+    swag_runtime_int64_t ipart = (swag_runtime_int64_t) value;
+    double               fpart = value - (double) ipart;
 
     char* n = result;
     if (ipart == 0)
@@ -43,21 +42,21 @@ static void __ftoa(char* result, double value)
         n = __itoa(result, ipart);
     *n++ = '.';
 
-    int afterPoint = 5;
+    swag_runtime_int32_t afterPoint = 5;
     if (fpart < 0)
         fpart = -fpart;
     while (afterPoint--)
         fpart *= 10;
-    __itoa(n, (int64_t) fpart);
+    __itoa(n, (swag_runtime_int64_t) fpart);
 }
 
 static void __print(const void* __msg)
 {
-    swag_runtime_print_n((const char*) __msg, (int) strlen((const char*) __msg));
+    swag_runtime_print_n((const char*) __msg, (swag_runtime_int32_t) strlen((const char*) __msg));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_print_n(const void* message, int len)
+EXTERN_C void swag_runtime_print_n(const void* message, swag_runtime_int32_t len)
 {
     if (!message)
     {
@@ -70,10 +69,10 @@ EXTERN_C void swag_runtime_print_n(const void* message, int len)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_print_i64(int64_t value)
+EXTERN_C void swag_runtime_print_i64(swag_runtime_int64_t value)
 {
     char buf[100];
-    __itoa(buf, (int) value);
+    __itoa(buf, (swag_runtime_int32_t) value);
     __print(buf);
 }
 
@@ -86,7 +85,7 @@ EXTERN_C void swag_runtime_print_f64(double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_assert(bool expr, const void* file, int line, const void* message)
+EXTERN_C void swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* message)
 {
     if (expr)
         return;
@@ -126,7 +125,7 @@ EXTERN_C void* swag_runtime_loadDynamicLibrary(const void* name)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" uint32_t swag_runtime_tlsAlloc()
+EXTERN_C swag_runtime_uint32_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
     return TlsAlloc();
@@ -134,7 +133,7 @@ extern "C" uint32_t swag_runtime_tlsAlloc()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_tlsSetValue(uint32_t id, void* value)
+EXTERN_C void swag_runtime_tlsSetValue(swag_runtime_uint32_t id, void* value)
 {
 #ifdef _WIN32
     TlsSetValue(id, value);
@@ -142,33 +141,32 @@ EXTERN_C void swag_runtime_tlsSetValue(uint32_t id, void* value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void* swag_runtime_tlsGetValue(uint32_t id)
+EXTERN_C void* swag_runtime_tlsGetValue(swag_runtime_uint32_t id)
 {
 #ifdef _WIN32
-    auto  result = TlsGetValue(id);
-    return result;
+    return TlsGetValue(id);
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
+EXTERN_C void swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc, void* argv[])
 {
-    uint64_t argumentsStr[MAX_COMMAND_ARGUMENTS];
+    swag_runtime_uint64_t argumentsStr[MAX_COMMAND_ARGUMENTS];
     swag_runtime_assert(argc <= MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
 
-    for (int i = 0; i < argc; i++)
+    for (swag_runtime_int32_t i = 0; i < argc; i++)
     {
-        argumentsStr[i * 2]       = (int64_t) argv[i];
-        argumentsStr[(i * 2) + 1] = (int64_t) strlen((const char*) argv[i]);
+        argumentsStr[i * 2]       = (swag_runtime_int64_t) argv[i];
+        argumentsStr[(i * 2) + 1] = (swag_runtime_int64_t) strlen((const char*) argv[i]);
     }
 
     void** p = (void**) dest;
     p[0]     = &argumentsStr[0];
-    p[1]     = (void*) (uint64_t) argc;
+    p[1]     = (void*) (swag_runtime_uint64_t) argc;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C bool swag_runtime_comparestring(const void* str1, const void* str2, uint32_t num)
+EXTERN_C bool swag_runtime_comparestring(const void* str1, const void* str2, swag_runtime_uint32_t num)
 {
     if (!str1 || !str2)
         return str1 == str2;
@@ -190,7 +188,7 @@ EXTERN_C bool swag_runtime_comparetype(const void* type1, const void* type2)
     if (ctype1->name.count != ctype2->name.count)
         return false;
 
-    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count);
+    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (swag_runtime_uint32_t) ctype1->name.count);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,11 +198,11 @@ EXTERN_C void* swag_runtime_interfaceof(const void* structType, const void* itfT
     auto itype  = (ConcreteTypeInfoStruct*) itfType;
     auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
 
-    for (int i = 0; i < ctype->interfaces.count; i++)
+    for (swag_runtime_int32_t i = 0; i < ctype->interfaces.count; i++)
     {
         if (buffer[i].name.count != itype->base.name.count)
             continue;
-        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (uint32_t) itype->base.name.count))
+        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (swag_runtime_uint32_t) itype->base.name.count))
             return buffer[i].value;
     }
 
