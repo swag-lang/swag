@@ -2376,30 +2376,30 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicAlloc:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_malloc"), {v0});
+            auto a0 = builder.CreateCall(pp.fn_malloc, {v0});
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(a0, r1);
             break;
         }
         case ByteCodeOp::IntrinsicRealloc:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) swag_runtime_realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
             auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_realloc"), {v0, v1});
+            auto a0 = builder.CreateCall(pp.fn_realloc, {v0, v1});
             auto r2 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(a0, r2);
             break;
         }
         case ByteCodeOp::IntrinsicFree:
         {
-            //concat.addStringFormat("swag_runtime_free(r[%u].pointer);", ip->a.u32);
+            //concat.addStringFormat("free(r[%u].pointer);", ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            builder.CreateCall(modu.getFunction("swag_runtime_free"), {v0});
+            builder.CreateCall(pp.fn_free, {v0});
             break;
         }
         case ByteCodeOp::IntrinsicGetContext:

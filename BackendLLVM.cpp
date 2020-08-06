@@ -120,28 +120,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
     {
         llvm::Type* params[] = {
-            llvm::Type::getInt64Ty(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt64Ty(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt8PtrTy(context),
         };
@@ -205,6 +183,9 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
     // LIBC functions
     {
+        pp.fn_malloc  = modu.getOrInsertFunction("malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_free    = modu.getOrInsertFunction("free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
+        pp.fn_realloc = modu.getOrInsertFunction("realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
         pp.fn_memcmp  = modu.getOrInsertFunction("memcmp", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
         pp.fn_acosf32 = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
         pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));

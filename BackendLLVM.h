@@ -47,6 +47,9 @@ struct LLVMPerThread
     llvm::Value* cst0_f64 = nullptr;
     llvm::Value* cst_null = nullptr;
 
+    llvm::FunctionCallee fn_malloc;
+    llvm::FunctionCallee fn_free;
+    llvm::FunctionCallee fn_realloc;
     llvm::FunctionCallee fn_memcmp;
     llvm::FunctionCallee fn_acosf32;
     llvm::FunctionCallee fn_acosf64;

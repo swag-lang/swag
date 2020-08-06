@@ -1468,13 +1468,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), ip->d.pointer);
             break;
         case ByteCodeOp::IntrinsicAlloc:
-            concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
+            concat.addStringFormat("r[%u].p=(__u8_t*)malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_realloc(r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            concat.addStringFormat("r[%u].p=(__u8_t*)realloc(r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::IntrinsicFree:
-            concat.addStringFormat("swag_runtime_free(r[%u].p);", ip->a.u32);
+            concat.addStringFormat("free(r[%u].p);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicGetContext:
             concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
