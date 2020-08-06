@@ -97,6 +97,13 @@ JobResult SemanticJob::execute()
         auto node    = nodes.back();
         context.node = node;
 
+        // Already done by the #compiler pass
+        if (!compilerPass && node->flags & AST_DONE_COMPILER_PASS)
+        {
+            nodes.pop_back();
+            continue;
+        }
+
 #ifdef SWAG_HAS_ASSERT
         if (g_CommandLine.devMode)
         {
@@ -218,6 +225,8 @@ JobResult SemanticJob::execute()
                     continue;
             }
 
+            if (compilerPass)
+                node->flags |= AST_DONE_COMPILER_PASS;
             nodes.pop_back();
             break;
         }

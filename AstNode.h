@@ -42,6 +42,7 @@ enum class AstNodeResolveState : uint8_t
     Enter,
     ProcessingChilds,
     PostChilds,
+    Done,
 };
 
 enum class AstNodeKind : uint8_t

@@ -11,6 +11,7 @@
 #include "ByteCode.h"
 #include "Backend.h"
 #include "CopyFileJob.h"
+#include "SemanticJob.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -173,7 +174,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
-        pass = ModuleBuildPass::Semantic;
+        pass = ModuleBuildPass::SemanticCompilerPass;
         if (g_CommandLine.backendOutput && !module->path.empty() && !module->fromTestsFolder)
         {
             // Everything in a /publih folder will be copied "as is" in the output directory
@@ -196,15 +197,43 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Semantic)
+    if (pass == ModuleBuildPass::SemanticCompilerPass)
     {
+        pass = ModuleBuildPass::SemanticModulePass;
         if (!module->filesWithCompilerFunctions.empty())
-            module = module;
+        {
+            for (auto itfile : module->filesWithCompilerFunctions)
+            {
+                for (auto itfunc : itfile->compilerFunctions)
+                {
+                    auto semanticJob          = g_Pool_semanticJob.alloc();
+                    semanticJob->sourceFile   = itfile;
+                    semanticJob->module       = module;
+                    semanticJob->dependentJob = this;
+                    semanticJob->compilerPass = true;
+                    semanticJob->nodes.push_back(itfunc);
+                    jobsToAdd.push_back(semanticJob);
+                }
+            }
 
-        pass               = ModuleBuildPass::Run;
-        timeBeforeSemantic = chrono::high_resolution_clock::now();
-        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format("## module %s semantic pass begin", module->name.c_str()));
+            return JobResult::KeepJobAlive;
+        }
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::SemanticModulePass)
+    {
+        pass = ModuleBuildPass::Run;
+
+        if (g_CommandLine.stats)
+        {
+            timeBeforeSemantic = chrono::high_resolution_clock::now();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format("## module %s semantic pass begin", module->name.c_str()));
+        }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module        = module;

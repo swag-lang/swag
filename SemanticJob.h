@@ -48,8 +48,8 @@ struct OneGenericMatch
     uint32_t flags;
 };
 
-static const uint32_t COLLECT_ALL           = 0x00000000;
-static const uint32_t COLLECT_PASS_INLINE   = 0x00000001;
+static const uint32_t COLLECT_ALL         = 0x00000000;
+static const uint32_t COLLECT_PASS_INLINE = 0x00000001;
 
 struct SemanticJob : public Job
 {
@@ -236,6 +236,7 @@ struct SemanticJob : public Job
     SymbolMatchContext            symMatch;
     SemanticContext               context;
     Concat                        tmpConcat;
+    bool                          compilerPass = false;
 
     void reset() override
     {
@@ -253,6 +254,7 @@ struct SemanticJob : public Job
         symMatch.reset();
         context.reset();
         tmpConcat.clear();
+        compilerPass = false;
     }
 
     void release() override
