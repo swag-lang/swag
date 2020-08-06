@@ -86,11 +86,13 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
+    void addCompilerFunc(ByteCode* bc);
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;
+    VectorNative<ByteCode*>    byteCodeCompiler[64];
     VectorNative<ByteCode*>    byteCodeFunc;
     VectorNative<ByteCode*>    byteCodeTestFunc;
     VectorNative<ByteCode*>    byteCodeInitFunc;

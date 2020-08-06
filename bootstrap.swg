@@ -409,9 +409,9 @@ namespace swag
     }
 
     #[flags]
-    enum CompilerMessageKind : u32
+    enum CompilerMessageKind : u64
     {
-        All = 0xFFFFFFFF
+        All = 0xFFFFFFFF_FFFFFFFF
 	}
 
     // #########################################################

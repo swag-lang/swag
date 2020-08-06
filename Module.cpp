@@ -192,6 +192,22 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
+void Module::addCompilerFunc(ByteCode* bc)
+{
+    auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+
+    SWAG_ASSERT(funcDecl->parameters);
+    SWAG_ASSERT(funcDecl->parameters->flags & AST_VALUE_COMPUTED);
+
+    // Register the function in all the corresponding buckets
+    auto filter = funcDecl->parameters->computedValue.reg.u64;
+    for (uint32_t i = 0; i < 64; i++)
+    {
+        if (filter & ((uint64_t) 1 << i))
+            byteCodeCompiler[i].push_back(bc);
+    }
+}
+
 void Module::addByteCodeFunc(ByteCode* bc)
 {
     SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
@@ -215,6 +231,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
             byteCodeDropFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_RUN_FUNC)
             byteCodeRunFunc.push_back(bc);
+        else if (bc->node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+            addCompilerFunc(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
         {
             SWAG_ASSERT(!byteCodeMainFunc);

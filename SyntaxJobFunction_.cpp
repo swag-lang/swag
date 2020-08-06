@@ -394,7 +394,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
         SWAG_CHECK(doExpression(funcNode, &funcNode->parameters));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
-        funcNode->parameters->flags |= AST_NO_BYTECODE;
     }
 
     // Return type

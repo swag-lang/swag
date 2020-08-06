@@ -8,17 +8,8 @@
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
-    if (!parameters)
+    if (!parameters || (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
         return true;
-
-    if (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-    {
-        SWAG_VERIFY(parameters->typeInfo->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
-        parameters->typeInfo->computeScopedName();
-        SWAG_VERIFY(parameters->typeInfo->scopedName == "swag.CompilerMessageKind", context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
-        SWAG_VERIFY(parameters->flags & AST_VALUE_COMPUTED, context->report({ parameters, "expression cannot be evaluated at compiler time" }));
-        return true;
-    }
 
     bool defaultValueDone = false;
     int  index            = 0;
@@ -270,6 +261,20 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         funcNode->pendingLambdaJob = nullptr;
         return true;
+    }
+
+    // If this is a #compiler function, we must have a flag mask as parameters
+    if ((funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
+    {
+        auto parameters = funcNode->parameters;
+        auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        paramType->computeScopedName();
+        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMessageKind", context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        SWAG_CHECK(evaluateConstExpression(context, parameters));
+        if (context->result != ContextResult::Done)
+            return true;
+        funcNode->parameters->flags |= AST_NO_BYTECODE;
     }
 
     // Return type
@@ -546,8 +551,9 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
-            typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo);
-            if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeListTuple)
+            typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
+            auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
+            if (concreteReturn->kind == TypeInfoKind::TypeListTuple)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
