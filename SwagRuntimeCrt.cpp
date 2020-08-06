@@ -2,18 +2,17 @@
 #include "SwagRuntime.h"
 #ifdef _WIN32
 #include <windows.h>
+#endif
 
-static char*   _argv[SWAG_MAX_COMMAND_ARGUMENTS + 1];
-static char*   _rawCmd = 0;
-extern char*   _argv[];
-extern "C" int _fltused = 0;
+static char* _argv[SWAG_MAX_COMMAND_ARGUMENTS + 1];
+static char* _rawCmd = 0;
+extern char* _argv[];
 
-static int initArgs()
+static int initArgs(const char* sysCmd)
 {
     _argv[0] = 0;
 
-    char* sysCmd   = ::GetCommandLine();
-    int   szSysCmd = (int) strlen(sysCmd);
+    int szSysCmd = (int) strlen(sysCmd);
 
     char* cmd = (char*) malloc(szSysCmd + 1);
     _rawCmd   = cmd;
@@ -98,16 +97,21 @@ static void termArgs()
         free(_rawCmd);
 }
 
+static void __main(const char* cmdLine)
+{
+    int        argc = initArgs(cmdLine);
+    extern int main(int, char* argv[]);
+    int        ret = main(argc, _argv);
+    termArgs();
+    exit(ret);
+}
+
+#ifdef _WIN32
+extern "C" int _fltused = 0;
+
 extern "C" void mainCRTStartup()
 {
-    __argc = initArgs();
-    __argv = _argv;
-
-    extern int main(int, char* argv[]);
-    int        ret = main(__argc, __argv);
-
-    termArgs();
-    ::ExitProcess(ret);
+    __main(::GetCommandLine());
 }
 
 extern "C" BOOL _DllMainCRTStartup(HANDLE hInst, DWORD reason, LPVOID imp)
