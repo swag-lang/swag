@@ -192,7 +192,14 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
-bool Module::sendCompilerMesssage(const CompilerMessage& msg)
+bool Module::sendCompilerMessage(CompilerMessageKind kind)
+{
+    CompilerMessage msg;
+    msg.kind = kind;
+    return sendCompilerMessage(msg);
+}
+
+bool Module::sendCompilerMessage(const CompilerMessage& msg)
 {
     scoped_lock lk(mutexByteCode);
     SWAG_ASSERT((uint64_t) msg.kind != 0);
@@ -207,7 +214,13 @@ bool Module::sendCompilerMesssage(const CompilerMessage& msg)
         }
     }
 
-    currentCompilerMessage = &msg;
+    // Convert to a concrete message for the user
+    ConcreteCompilerMessage concreteMsg;
+    concreteMsg.kind              = msg.kind;
+    concreteMsg.moduleName.buffer = (void*) name.c_str();
+    concreteMsg.moduleName.count  = name.length();
+    currentCompilerMessage        = &concreteMsg;
+
     for (auto bc : byteCodeCompiler[index])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node));

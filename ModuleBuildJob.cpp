@@ -339,14 +339,10 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::Output;
     }
 
-    // Output pass on all modules
+    // Output pass
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
-        CompilerMessage msg;
-        msg.kind = CompilerMessageKind::PassBeforeOutput;
-        module->sendCompilerMesssage(msg);
-
         // TIming...
         if (g_CommandLine.stats)
         {
@@ -362,6 +358,7 @@ JobResult ModuleBuildJob::execute()
         {
             if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
             {
+                module->sendCompilerMessage(CompilerMessageKind::PassBeforeOutput);
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();
                 outputJob->module       = module;
                 outputJob->dependentJob = this;
@@ -386,7 +383,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     // This will wake up dependencies
-    module->hasNativeOutput = !module->files.empty();
+    module->sendCompilerMessage(CompilerMessageKind::PassAllDone);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;

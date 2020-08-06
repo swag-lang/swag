@@ -1,6 +1,8 @@
-func toto() => swag.CompilerMessageKind.All
-
-#compiler(toto())
+#compiler(swag.CompilerMessageKind.PassAllDone)
 {
-    //@print("toto")
+    msg := @msg()
+
+    @print(cast(s64) msg.kind)
+    @print(" ")
+    @print(msg.moduleName)
 }

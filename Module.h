@@ -31,6 +31,11 @@ struct ModuleDependency
     bool     importDone = false;
 };
 
+struct CompilerMessage
+{
+    CompilerMessageKind kind;
+};
+
 static const uint32_t BUILDRES_NONE     = 0x00000000;
 static const uint32_t BUILDRES_EXPORT   = 0x00000001;
 static const uint32_t BUILDRES_COMPILER = 0x00000002;
@@ -63,7 +68,6 @@ struct Module
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTestsFolder      = false;
     bool                      byteCodeOnly         = false;
-    bool                      hasNativeOutput      = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
@@ -86,11 +90,12 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    const CompilerMessage* currentCompilerMessage = nullptr;
-    bool                   sendCompilerMesssage(const CompilerMessage& msg);
-    void                   addCompilerFunc(ByteCode* bc);
-    void                   addByteCodeFunc(ByteCode* bc);
-    void                   registerForeign(AstFuncDecl* node);
+    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
+    bool                           sendCompilerMessage(CompilerMessageKind kind);
+    bool                           sendCompilerMessage(const CompilerMessage& msg);
+    void                           addCompilerFunc(ByteCode* bc);
+    void                           addByteCodeFunc(ByteCode* bc);
+    void                           registerForeign(AstFuncDecl* node);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;

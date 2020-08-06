@@ -61,26 +61,6 @@ struct BuildCfg
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class CompilerMessageKind : swag_runtime_uint64_t
-{
-    None               = 0,
-    PassBeforeOutput   = 0x0000000000000001,
-    All                = 0xFFFFFFFFFFFFFFFF,
-};
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-struct CompilerMessage
-{
-    CompilerMessageKind kind;
-};
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 enum class TypeInfoKind
 {
     Invalid,
@@ -241,4 +221,26 @@ struct ConcreteTypeInfoSlice
 {
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;
+};
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+enum class CompilerMessageKind : swag_runtime_uint64_t
+{
+    None             = 0,
+    PassBeforeOutput = 0x0000000000000001,
+    PassAllDone      = 0x0000000000000002,
+    All              = 0xFFFFFFFFFFFFFFFF,
+};
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+struct ConcreteCompilerMessage
+{
+    ConcreteSlice       moduleName;
+    CompilerMessageKind kind;
 };
