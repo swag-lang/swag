@@ -2,7 +2,6 @@
 #include "SwagRuntime.h"
 #include "libc/libc.h"
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 static char* __itoa(char* result, int64_t value)
 {
     char *  ptr = result, *ptr1 = result, tmp_char;
@@ -28,7 +27,6 @@ static char* __itoa(char* result, int64_t value)
     return retVal;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 static void __ftoa(char* result, double value)
 {
     int64_t ipart = (int64_t) value;
@@ -53,7 +51,6 @@ static void __ftoa(char* result, double value)
     __itoa(n, (int64_t) fpart);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 static void __print(const void* __msg)
 {
     swag_runtime_print_n((const char*) __msg, (int) strlen((const char*) __msg));

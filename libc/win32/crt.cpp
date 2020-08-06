@@ -11,8 +11,8 @@ EXTERN_C
 
     void mainCRTStartup()
     {
-        void __main(const char* cmdLine);
-        __main(GetCommandLineA());
+        void swag_runtime_main(const char* cmdLine);
+        swag_runtime_main(GetCommandLineA());
     }
 
     int _DllMainCRTStartup(void*, int, void*)
