@@ -63,7 +63,9 @@ struct BuildCfg
 
 enum class CompilerMessageKind : swag_runtime_uint64_t
 {
-    All = 0xFFFFFFFFFFFFFFFF,
+    None               = 0,
+    PassBeforeOutput   = 0x0000000000000001,
+    All                = 0xFFFFFFFFFFFFFFFF,
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

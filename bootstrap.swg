@@ -412,8 +412,9 @@ namespace swag
     #[flags]
     enum CompilerMessageKind : u64
     {
-        None = 0
-        All = 0xFFFFFFFF_FFFFFFFF
+        None =                  0
+        PassBeforeOutput =      0x00000000_00000001
+        All =                   0xFFFFFFFF_FFFFFFFF
 	}
 
     struct CompilerMessage

@@ -47,8 +47,8 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::IncludeSwg;
     }
 
-    // We add the "?.swg" file corresponding to the
-    // module we want to import
+    // We add the "???.swg" export file that corresponds
+    // to each module we want to import
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
     {
@@ -82,7 +82,7 @@ JobResult ModuleBuildJob::execute()
                     dep.second.module = depModule;
                 }
 
-                auto node = dep.second.node;
+                auto node             = dep.second.node;
                 dep.second.importDone = true;
 
                 // Now the .swg export file should be in the cache
@@ -214,7 +214,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Run)
     {
-        // TIming...
+        // Timing...
         if (g_CommandLine.stats)
         {
             timeBeforeRun                    = chrono::high_resolution_clock::now();
@@ -343,6 +343,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
+        CompilerMessage msg;
+        msg.kind = CompilerMessageKind::PassBeforeOutput;
+        module->sendCompilerMesssage(msg);
+
         // TIming...
         if (g_CommandLine.stats)
         {
