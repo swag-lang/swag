@@ -138,7 +138,7 @@
       "patterns": [
         {
           "name": "entity.name.function.preprocessor",
-          "match": "(#)\\b(run|test|init|drop|main)\\b"
+          "match": "(#)\\b(run|test|init|drop|main|compiler)\\b"
         }
       ]
     },

@@ -173,6 +173,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicMemCmp:
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicArguments:
+    case TokenId::IntrinsicCompilerMsg:
     case TokenId::IntrinsicIsByteCode:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;

@@ -910,6 +910,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine.userArgumentsSlice.second;
         break;
     }
+    case ByteCodeOp::IntrinsicCompilerMsg:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) context->sourceFile->module->currentCompilerMessage;
+        break;
+    }
     case ByteCodeOp::IntrinsicIsByteCode:
     {
         registersRC[ip->a.u32].b = true;

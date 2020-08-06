@@ -1489,6 +1489,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::IntrinsicIsByteCode:
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].b=0;");
             break;
+        case ByteCodeOp::IntrinsicCompilerMsg:
+            CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=0;");
+            break;
 
         case ByteCodeOp::NegBool:
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].b^=1;");

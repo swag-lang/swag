@@ -17,6 +17,7 @@ func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
 func @isbytecode()->bool;
+func @msg()->const *swag.CompilerMessage;
 
 func @sqrt(value: f32)->f32;
 func @sqrt(value: f64)->f64;
@@ -411,7 +412,13 @@ namespace swag
     #[flags]
     enum CompilerMessageKind : u64
     {
+        None = 0
         All = 0xFFFFFFFF_FFFFFFFF
+	}
+
+    struct CompilerMessage
+    {
+        kind: CompilerMessageKind = CompilerMessageKind.None
 	}
 
     // #########################################################

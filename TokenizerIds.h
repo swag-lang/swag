@@ -159,6 +159,7 @@ DEFINE_TOKEN_ID(IntrinsicGetContext)
 DEFINE_TOKEN_ID(IntrinsicSetContext)
 DEFINE_TOKEN_ID(IntrinsicArguments)
 DEFINE_TOKEN_ID(IntrinsicIsByteCode)
+DEFINE_TOKEN_ID(IntrinsicCompilerMsg)
 
 DEFINE_TOKEN_ID(IntrinsicSqrt)
 DEFINE_TOKEN_ID(IntrinsicSin)

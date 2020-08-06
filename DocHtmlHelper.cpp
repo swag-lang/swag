@@ -106,6 +106,7 @@ namespace DocHtmlHelper
             case TokenId::IntrinsicGetContext:
             case TokenId::IntrinsicSetContext:
             case TokenId::IntrinsicArguments:
+            case TokenId::IntrinsicCompilerMsg:
             case TokenId::IntrinsicIsByteCode:
                 result += "<span class=\"intrinsic\">";
                 result += token.text;

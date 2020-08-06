@@ -86,9 +86,11 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    void addCompilerFunc(ByteCode* bc);
-    void addByteCodeFunc(ByteCode* bc);
-    void registerForeign(AstFuncDecl* node);
+    const CompilerMessage* currentCompilerMessage = nullptr;
+    bool                   sendCompilerMesssage(const CompilerMessage& msg);
+    void                   addCompilerFunc(ByteCode* bc);
+    void                   addByteCodeFunc(ByteCode* bc);
+    void                   registerForeign(AstFuncDecl* node);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;

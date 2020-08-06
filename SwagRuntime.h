@@ -61,6 +61,24 @@ struct BuildCfg
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+enum class CompilerMessageKind : swag_runtime_uint64_t
+{
+    All = 0xFFFFFFFFFFFFFFFF,
+};
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+struct CompilerMessage
+{
+    CompilerMessageKind kind;
+};
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 enum class TypeInfoKind
 {
     Invalid,

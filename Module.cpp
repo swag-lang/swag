@@ -192,6 +192,31 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
+bool Module::sendCompilerMesssage(const CompilerMessage& msg)
+{
+    scoped_lock lk(mutexByteCode);
+    SWAG_ASSERT((uint64_t) msg.kind != 0);
+
+    int index = -1;
+    for (int i = 0; i < 64; i++)
+    {
+        if ((uint64_t) msg.kind & ((uint64_t) 1 << i))
+        {
+            index = i;
+            break;
+        }
+    }
+
+    currentCompilerMessage = &msg;
+    for (auto bc : byteCodeCompiler[index])
+    {
+        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node));
+    }
+
+    currentCompilerMessage = nullptr;
+    return true;
+}
+
 void Module::addCompilerFunc(ByteCode* bc)
 {
     auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
