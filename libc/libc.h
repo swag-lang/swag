@@ -1,7 +1,10 @@
 #pragma once
-
 #define EXTERN_C extern "C"
 #define MAX_COMMAND_ARGUMENTS 512
+
+#ifdef _WIN32
+#include "win32/win32.h"
+#endif
 
 EXTERN_C void*  memcpy(void* dst, const void* src, size_t size);
 EXTERN_C int    memcmp(const void* b1, const void* b2, size_t n);

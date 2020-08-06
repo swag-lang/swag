@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h" />
+    <ClInclude Include="libc\win32\win32.h" />
     <ClInclude Include="SwagRuntime.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

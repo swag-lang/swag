@@ -68,11 +68,7 @@ EXTERN_C void swag_runtime_print_n(const void* message, int len)
         len     = 6;
     }
 #ifdef _WIN32
-    void*            GetStdHandle(int);
-    int              WriteFile(void*, const void*, int, const int*, void*);
-    static const int STD_OUTPUT_HANDLE = -11;
     WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
-#else
 #endif
 }
 
@@ -119,7 +115,6 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, int line, const v
 #ifdef _DEBUG
     //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
 #endif
-    void RaiseException(int, int, int, const void*);
     RaiseException(0x666, 0, 0, 0);
 #endif
     exit(-1);
@@ -129,7 +124,6 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, int line, const v
 EXTERN_C void* swag_runtime_loadDynamicLibrary(const void* name)
 {
 #ifdef _WIN32
-    void* LoadLibraryA(const char*);
     return LoadLibraryA((const char*) name);
 #endif
 }
@@ -138,7 +132,6 @@ EXTERN_C void* swag_runtime_loadDynamicLibrary(const void* name)
 extern "C" uint32_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
-    int TlsAlloc();
     return TlsAlloc();
 #endif
 }
@@ -147,7 +140,6 @@ extern "C" uint32_t swag_runtime_tlsAlloc()
 EXTERN_C void swag_runtime_tlsSetValue(uint32_t id, void* value)
 {
 #ifdef _WIN32
-    void TlsSetValue(int, void*);
     TlsSetValue(id, value);
 #endif
 }
@@ -156,7 +148,6 @@ EXTERN_C void swag_runtime_tlsSetValue(uint32_t id, void* value)
 EXTERN_C void* swag_runtime_tlsGetValue(uint32_t id)
 {
 #ifdef _WIN32
-    void* TlsGetValue(int);
     auto  result = TlsGetValue(id);
     return result;
 #endif
