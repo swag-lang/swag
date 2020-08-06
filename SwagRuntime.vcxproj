@@ -13,7 +13,8 @@
   <ItemGroup>
     <ClCompile Include="libc\main.cpp" />
     <ClCompile Include="libc\win32\crt.cpp" />
-    <ClCompile Include="libc\win32\ucrt.cpp" />
+    <ClCompile Include="libc\win32\memcmp.cpp" />
+    <ClCompile Include="libc\win32\memcpy.cpp" />
     <ClCompile Include="SwagRuntime.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +80,7 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
     <Link>
       <SubSystem>

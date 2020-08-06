@@ -2,13 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SwagRuntime.cpp" />
-    <ClCompile Include="libc\win32\ucrt.cpp">
-      <Filter>LibC\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="libc\main.cpp">
       <Filter>LibC</Filter>
     </ClCompile>
     <ClCompile Include="libc\win32\crt.cpp">
+      <Filter>LibC\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="libc\win32\memcmp.cpp">
+      <Filter>LibC\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="libc\win32\memcpy.cpp">
       <Filter>LibC\Win32</Filter>
     </ClCompile>
   </ItemGroup>
