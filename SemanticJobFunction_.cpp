@@ -6,10 +6,19 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics)
+bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
     if (!parameters)
         return true;
+
+    if (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    {
+        SWAG_VERIFY(parameters->typeInfo->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        parameters->typeInfo->computeScopedName();
+        SWAG_VERIFY(parameters->typeInfo->scopedName == "swag.CompilerMessageKind", context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        SWAG_VERIFY(parameters->flags & AST_VALUE_COMPUTED, context->report({ parameters, "expression cannot be evaluated at compiler time" }));
+        return true;
+    }
 
     bool defaultValueDone = false;
     int  index            = 0;
@@ -42,7 +51,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         auto paramType = nodeParam->typeInfo;
         if (paramType->kind == TypeInfoKind::Code)
         {
-            SWAG_VERIFY(funcAttr->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'code' is only valid in a 'swag.macro' or 'swag.mixin' function"}));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'code' is only valid in a 'swag.macro' or 'swag.mixin' function"}));
         }
 
         // Not everything is possible for types for attributes
@@ -57,7 +66,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Variadic must be the last one
         if (paramType->kind == TypeInfoKind::Variadic)
         {
-            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
 
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
@@ -65,7 +74,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (paramType->kind == TypeInfoKind::TypedVariadic)
         {
-            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
 
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())

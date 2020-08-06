@@ -14,7 +14,7 @@
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm          = m;
-    isOptimized = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
+    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
     dbgBuilder    = new llvm::DIBuilder(*modu, true);
     llvmModule    = modu;
     llvmContext   = &modu->getContext();
@@ -318,7 +318,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         mapScopes[decl->content->ownerScope] = SP;
 
     // Parameters
-    if (decl && decl->parameters)
+    if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
     {
         auto idxParam = typeFunc->numReturnRegisters();
         for (int i = 0; i < decl->parameters->childs.size(); i++)

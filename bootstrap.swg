@@ -408,6 +408,12 @@ namespace swag
         backendLLVM:    BuildCfgBackendLLVM
     }
 
+    #[flags]
+    enum CompilerMessageKind : u32
+    {
+        All = 0xFFFFFFFF
+	}
+
     // #########################################################
     // Default compiler configuration
     // #########################################################

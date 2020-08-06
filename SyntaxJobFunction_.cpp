@@ -262,6 +262,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeFuncId == TokenId::CompilerFuncInit ||
         typeFuncId == TokenId::CompilerFuncDrop ||
         typeFuncId == TokenId::CompilerFuncMain ||
+        typeFuncId == TokenId::CompilerFuncCompiler ||
         typeFuncId == TokenId::CompilerAst ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
@@ -297,6 +298,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "#main";
             funcNode->name       = "__main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
+            break;
+        case TokenId::CompilerFuncCompiler:
+            funcNode->token.text = "#compiler";
+            funcNode->name       = "__compiler" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC;
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
@@ -380,6 +386,17 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
 
+    // #compiler has an expression has parameters
+    else if (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_CHECK(doExpression(funcNode, &funcNode->parameters));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        funcNode->parameters->flags |= AST_NO_BYTECODE;
+    }
+
     // Return type
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
@@ -412,6 +429,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // Content of function
     if (token.id == TokenId::SymSemiColon || isIntrinsic)
     {
+        SWAG_VERIFY(!funcForCompiler, syntaxError(token, format("special function '%s' must have a body", funcNode->token.text.c_str())));
         SWAG_CHECK(eatSemiCol("after function declaration"));
         return true;
     }

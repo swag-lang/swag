@@ -484,6 +484,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:
     case TokenId::CompilerFuncMain:
+    case TokenId::CompilerFuncCompiler:
         SWAG_CHECK(doFuncDecl(parent, result));
         break;
     case TokenId::CompilerRun:
