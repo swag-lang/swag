@@ -94,7 +94,6 @@ void swag_runtime_print_i64(__s64_t);
 void swag_runtime_print_f64(__f64_t);
 void swag_runtime_assert(__b_t,const void*,int,const void*);
 __b_t swag_runtime_strcmp(const void*,const void*,__u32_t);
-__s32_t swag_runtime_strlen(const void*);
 void swag_runtime_convertArgcArgv(void*,int,void*[]);
 __b_t swag_runtime_comparetype(const void*,const void*);
 void* swag_runtime_interfaceof(const void*,const void*);

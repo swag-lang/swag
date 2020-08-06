@@ -2,7 +2,7 @@
 func test(x: f64)
 {
     @assert(x > -1 && x < 222)
-    //@print("toto\n")
+    //@print(5100's64)
 }
 
 #test

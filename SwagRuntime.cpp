@@ -90,16 +90,6 @@ extern "C" void swag_runtime_exit(int32_t exitCode)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" int32_t swag_runtime_strlen(const void* message)
-{
-    const char* msg = (const char*) message;
-    int32_t     len = 0;
-    while (*msg++)
-        len++;
-    return len;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" bool swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num)
 {
     if (!str1 || !str2)
@@ -126,14 +116,14 @@ extern "C" void swag_runtime_print(const void* message)
 {
     if (!message)
         message = "<null>";
-    swag_runtime_print_n(message, swag_runtime_strlen(message));
+    swag_runtime_print_n(message, (int) strlen((const char *) message));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" void swag_runtime_print_i64(int64_t value)
 {
     char buf[100];
-    __itoa(buf, value);
+    __itoa(buf, (int) value);
     swag_runtime_print(buf);
 }
 
@@ -216,7 +206,7 @@ extern "C" void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
     for (int i = 0; i < argc; i++)
     {
         argumentsStr[i * 2]       = (int64_t) argv[i];
-        argumentsStr[(i * 2) + 1] = (int64_t) swag_runtime_strlen(argv[i]);
+        argumentsStr[(i * 2) + 1] = (int64_t) strlen((const char *) argv[i]);
     }
 
     void** p = (void**) dest;

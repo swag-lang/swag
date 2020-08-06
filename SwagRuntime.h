@@ -6,7 +6,6 @@ extern "C" void     swag_runtime_free(void* addr);
 extern "C" int32_t  swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size);
 extern "C" void     swag_runtime_exit(int32_t exitCode);
 extern "C" void     swag_runtime_print_n(const void* message, int len);
-extern "C" int32_t  swag_runtime_strlen(const void* message);
 extern "C" void     swag_runtime_print(const void* message);
 extern "C" void     swag_runtime_print_i64(int64_t value);
 extern "C" void     swag_runtime_print_f64(double value);
