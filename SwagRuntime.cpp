@@ -78,12 +78,6 @@ extern "C" void swag_runtime_free(void* addr)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" int32_t swag_runtime_memcmp(const void* mem1, const void* mem2, uint64_t size)
-{
-    return memcmp(mem1, mem2, size);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 extern "C" bool swag_runtime_strcmp(const void* str1, const void* str2, uint32_t num)
 {
     if (!str1 || !str2)
@@ -99,8 +93,8 @@ extern "C" void swag_runtime_print_n(const void* message, int len)
         message = "<null>";
         len     = 6;
     }
-#ifdef _WIN32
-    WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
+#ifdef _WIN32   
+    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
 #else
 #endif
 }

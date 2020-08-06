@@ -144,15 +144,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* params[] = {
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt64Ty(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_memcmp", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt8PtrTy(context),
         };
         modu.getOrInsertFunction("swag_runtime_interfaceof", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
     }
@@ -208,13 +199,13 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt8Ty(context),
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt32Ty(context),
-            llvm::Type::getInt8PtrTy(context)
-        };
+            llvm::Type::getInt8PtrTy(context)};
         modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }
 
     // LIBC functions
     {
+        pp.fn_memcmp  = modu.getOrInsertFunction("memcmp", llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
         pp.fn_acosf32 = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
         pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
         pp.fn_asinf32 = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));

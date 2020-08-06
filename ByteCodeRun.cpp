@@ -477,7 +477,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst               = registersRC[ip->b.u32].pointer;
         void*    src               = registersRC[ip->c.u32].pointer;
         uint32_t size              = registersRC[ip->d.u32].u32;
-        registersRC[ip->a.u32].s32 = swag_runtime_memcmp(dst, src, size);
+        registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
     }
 

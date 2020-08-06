@@ -865,7 +865,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             r1      = builder.CreateLoad(r1);
             r2      = builder.CreateLoad(r2);
             r3      = builder.CreateIntCast(builder.CreateLoad(r3), builder.getInt64Ty(), false);
-            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_memcmp"), {r1, r2, r3}), r0);
+            builder.CreateStore(builder.CreateCall(pp.fn_memcmp, {r1, r2, r3}), r0);
             break;
         }
         case ByteCodeOp::IntrinsicInterfaceOf:
