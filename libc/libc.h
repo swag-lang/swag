@@ -15,4 +15,4 @@ EXTERN_C void*  malloc(size_t);
 EXTERN_C void   free(void*);
 EXTERN_C void*  realloc(void*, size_t);
 
-void __main(const char* cmdLine);
+#define isspace(__c) (__c == ' ' || __c == '\t')

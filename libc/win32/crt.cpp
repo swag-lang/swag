@@ -12,6 +12,7 @@ EXTERN_C
 
     void mainCRTStartup()
     {
+        void __main(const char* cmdLine);
         __main(GetCommandLineA());
     }
 

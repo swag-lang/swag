@@ -4,8 +4,6 @@
 static char* _argv[MAX_COMMAND_ARGUMENTS + 1];
 static char* _rawCmd = 0;
 
-#define __isspace(__c) (__c == ' ' || __c == '\t')
-
 static int initArgs(const char* sysCmd)
 {
     _argv[0] = 0;
@@ -37,7 +35,7 @@ static int initArgs(const char* sysCmd)
     {
         _argv[0] = cmd;
 
-        while (*cmd && !__isspace(*cmd))
+        while (*cmd && !isspace(*cmd))
             cmd++;
 
         if (*cmd)
@@ -48,7 +46,7 @@ static int initArgs(const char* sysCmd)
     int argc = 1;
     for (;;)
     {
-        while (*cmd && __isspace(*cmd))
+        while (*cmd && isspace(*cmd))
             cmd++;
 
         if (*cmd == 0)
@@ -75,7 +73,7 @@ static int initArgs(const char* sysCmd)
             _argv[argc++] = cmd;
             _argv[argc]   = 0;
 
-            while (*cmd && !__isspace(*cmd))
+            while (*cmd && !isspace(*cmd))
                 cmd++;
 
             if (*cmd == 0)
