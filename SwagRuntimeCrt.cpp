@@ -11,13 +11,14 @@ static int initArgs(const char* sysCmd)
 {
     _argv[0] = 0;
 
-    int szSysCmd = (int) strlen(sysCmd);
+    int lenCmd = (int) strlen(sysCmd);
 
-    char* cmd = (char*) malloc(szSysCmd + 1);
+    char* cmd = (char*) malloc(lenCmd + 1);
     _rawCmd   = cmd;
     if (!cmd)
         return 0;
-    strcpy(cmd, sysCmd);
+
+    memcpy(cmd, sysCmd, lenCmd + 1);
 
     // First argument is executable
     if (*cmd == '"')
