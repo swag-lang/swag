@@ -319,3 +319,11 @@ void SourceFile::load(LoadRequest* request)
     if (g_Stats.maxOpenFiles > maxStdIo / 2)
         close();
 }
+
+void SourceFile::addCompilerFunction(AstNode* funcNode)
+{
+    unique_lock lk(mutexCompilerFunctions);
+    unique_lock lk1(module->mutexCompilerFunctions);
+    module->filesWithCompilerFunctions.insert(this);
+    compilerFunctions.push_back(funcNode);
+}

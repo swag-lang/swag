@@ -58,6 +58,10 @@ struct SourceFile : public File
     Scope*   scopePrivate = nullptr;
     AstNode* sourceNode   = nullptr;
 
+    VectorNative<AstNode*> compilerFunctions;
+    shared_mutex           mutexCompilerFunctions;
+    void                   addCompilerFunction(AstNode* funcNode);
+
     TextFormat   textFormat    = TextFormat::UTF8;
     int          headerSize    = 0;
     long         fileSeek      = 0;

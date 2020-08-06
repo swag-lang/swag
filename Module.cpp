@@ -92,6 +92,16 @@ void Module::addFile(SourceFile* file)
 
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
+
+    // If the file has compiler functions, then we need to register it in the module
+    {
+        unique_lock lk1(file->mutexCompilerFunctions);
+        if (!file->compilerFunctions.empty())
+        {
+            unique_lock lk2(mutexCompilerFunctions);
+            filesWithCompilerFunctions.insert(file);
+        }
+    }
 }
 
 void Module::removeFile(SourceFile* file)
@@ -114,6 +124,14 @@ void Module::removeFile(SourceFile* file)
     scopeRoot->childScopes[indexInParent]                = scopeRoot->childScopes.back();
     scopeRoot->childScopes[indexInParent]->indexInParent = indexInParent;
     file->scopeRoot->indexInParent                       = UINT32_MAX;
+
+    // If the file has compiler functions, then we need to unregister it from the module
+    {
+        unique_lock lk2(mutexCompilerFunctions);
+        auto        it = filesWithCompilerFunctions.find(file);
+        if (it != filesWithCompilerFunctions.end())
+            filesWithCompilerFunctions.erase(it);
+    }
 }
 
 void Module::reserveRegisterRR(uint32_t count)

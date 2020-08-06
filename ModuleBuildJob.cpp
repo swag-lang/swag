@@ -198,6 +198,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Semantic)
     {
+        if (!module->filesWithCompilerFunctions.empty())
+            module = module;
+
         pass               = ModuleBuildPass::Run;
         timeBeforeSemantic = chrono::high_resolution_clock::now();
         if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)

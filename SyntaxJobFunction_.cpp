@@ -303,6 +303,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "#compiler";
             funcNode->name       = "__compiler" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC;
+            sourceFile->addCompilerFunction(funcNode);
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
