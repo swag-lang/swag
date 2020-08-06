@@ -1,8 +1,7 @@
 #include <stdint.h>
-#include "SwagRuntimeLibC.h"
+#include "../libc.h"
 
-// Only contains function that are not part of ucrt.lib, as for now we use the windows crt and
-// only compile for windows
+// Only contains function that are not part of ucrt.lib
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void* memcpy(void* dst, const void* src, size_t size)

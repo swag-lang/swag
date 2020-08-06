@@ -11,13 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="libc\main.cpp" />
+    <ClCompile Include="libc\win32\crt.cpp" />
+    <ClCompile Include="libc\win32\ucrt.cpp" />
     <ClCompile Include="SwagRuntime.cpp" />
-    <ClCompile Include="SwagRuntimeCrt.cpp" />
-    <ClCompile Include="SwagRuntimeLibC.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libc\libc.h" />
     <ClInclude Include="SwagRuntime.h" />
-    <ClInclude Include="SwagRuntimeLibC.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

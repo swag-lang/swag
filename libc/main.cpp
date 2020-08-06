@@ -1,8 +1,7 @@
 #include <stdint.h>
-#include "SwagRuntime.h"
-#include "SwagRuntimeLibC.h"
+#include "libc.h"
 
-static char* _argv[SWAG_MAX_COMMAND_ARGUMENTS + 1];
+static char* _argv[MAX_COMMAND_ARGUMENTS + 1];
 static char* _rawCmd = 0;
 
 #define __isspace(__c) (__c == ' ' || __c == '\t')
@@ -86,7 +85,7 @@ static int initArgs(const char* sysCmd)
                 *cmd++ = 0;
         }
 
-        if (argc >= SWAG_MAX_COMMAND_ARGUMENTS)
+        if (argc >= MAX_COMMAND_ARGUMENTS)
             return argc;
     }
 }
@@ -97,7 +96,7 @@ static void termArgs()
         free(_rawCmd);
 }
 
-static void __main(const char* cmdLine)
+void __main(const char* cmdLine)
 {
     int        argc = initArgs(cmdLine);
     extern int main(int, char* argv[]);
@@ -105,23 +104,3 @@ static void __main(const char* cmdLine)
     termArgs();
     exit(ret);
 }
-
-#ifdef _WIN32
-extern "C" int _fltused = 0;
-
-extern "C" void mainCRTStartup()
-{
-    const char* GetCommandLineA();
-    __main(GetCommandLineA());
-}
-
-extern "C" int _DllMainCRTStartup(void*, int, void*)
-{
-    return 1;
-}
-
-extern "C" void __chkstk()
-{
-}
-
-#endif // _WIN32

@@ -13,8 +13,6 @@ extern "C" bool     swag_runtime_comparetype(const void* type1, const void* type
 extern "C" void*    swag_runtime_interfaceof(const void* structType, const void* itfType);
 extern "C" void     swag_runtime_assert(bool expr, const void* file, int line, const void* msg);
 
-#define SWAG_MAX_COMMAND_ARGUMENTS 512
-
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

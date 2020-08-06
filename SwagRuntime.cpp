@@ -1,7 +1,6 @@
 #include <stdint.h>
-#include <stdio.h>
 #include "SwagRuntime.h"
-#include "SwagRuntimeLibC.h"
+#include "libc/libc.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 static char* __itoa(char* result, int64_t value)
@@ -55,7 +54,7 @@ static void __ftoa(char* result, double value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-void __print(const void* __msg)
+static void __print(const void* __msg)
 {
     swag_runtime_print_n((const char*) __msg, (int) strlen((const char*) __msg));
 }
@@ -166,8 +165,8 @@ EXTERN_C void* swag_runtime_tlsGetValue(uint32_t id)
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_convertArgcArgv(void* dest, int argc, void* argv[])
 {
-    uint64_t argumentsStr[SWAG_MAX_COMMAND_ARGUMENTS];
-    swag_runtime_assert(argc <= SWAG_MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
+    uint64_t argumentsStr[MAX_COMMAND_ARGUMENTS];
+    swag_runtime_assert(argc <= MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
 
     for (int i = 0; i < argc; i++)
     {

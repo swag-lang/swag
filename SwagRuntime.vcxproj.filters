@@ -2,11 +2,28 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SwagRuntime.cpp" />
-    <ClCompile Include="SwagRuntimeCrt.cpp" />
-    <ClCompile Include="SwagRuntimeLibC.cpp" />
+    <ClCompile Include="libc\win32\ucrt.cpp">
+      <Filter>LibC\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="libc\main.cpp">
+      <Filter>LibC</Filter>
+    </ClCompile>
+    <ClCompile Include="libc\win32\crt.cpp">
+      <Filter>LibC\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwagRuntime.h" />
-    <ClInclude Include="SwagRuntimeLibC.h" />
+    <ClInclude Include="libc\libc.h">
+      <Filter>LibC</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="LibC">
+      <UniqueIdentifier>{8b6bcd70-8f10-42ff-9e89-76c2c0601fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LibC\Win32">
+      <UniqueIdentifier>{8ff5276b-eb11-47b3-927f-5b0e319395ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
