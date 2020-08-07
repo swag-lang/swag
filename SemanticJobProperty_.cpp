@@ -47,9 +47,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, first));
 
     TypeInfo* resultType;
-    bool      shouldWait = false;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, &resultType, &third->computedValue.reg.u32, shouldWait));
-    typeTable.waitForTypeTableJobs(context->job);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, &resultType, &third->computedValue.reg.u32, true));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -248,9 +246,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     if (expr->typeInfo->isNative(NativeTypeKind::Any))
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
-        bool shouldWait = false;
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, shouldWait));
-        typeTable.waitForTypeTableJobs(context->job);
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, true));
         if (context->result != ContextResult::Done)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;

@@ -131,10 +131,8 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.name.count  = node->name.length();
 
     TypeInfo* resultType;
-    auto&     typeTable  = module->typeTable;
-    bool      shouldWait = false;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, shouldWait));
-    typeTable.waitForTypeTableJobs(context->job);
+    auto&     typeTable = module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, true));
     if (context->result != ContextResult::Done)
         return true;
     node->concreteTypeInfo = resultType;

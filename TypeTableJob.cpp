@@ -102,6 +102,5 @@ JobResult TypeTableJob::execute()
         SWAG_ASSERT(false);
     }
 
-    typeTable->typeTableJobDone();
     return JobResult::ReleaseJob;
 }

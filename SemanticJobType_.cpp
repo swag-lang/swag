@@ -469,9 +469,7 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
 
-    bool shouldWait = false;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, resultTypeInfo, &node->computedValue.reg.u32, shouldWait));
-    typeTable.waitForTypeTableJobs(context->job);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, resultTypeInfo, &node->computedValue.reg.u32, true));
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();

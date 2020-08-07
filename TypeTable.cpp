@@ -10,7 +10,7 @@ TypeTable::TypeTable()
 {
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, bool forceNoScope, bool& shouldWait)
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, bool forceNoScope, bool shouldWait)
 {
     if (!typeInfo)
     {
@@ -31,7 +31,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     return true;
 }
 
-bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, bool& shouldWait)
+bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, bool shouldWait)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -50,7 +50,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
     return true;
 }
 
-bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType, bool& shouldWait)
+bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType, bool shouldWait)
 {
     auto                   sourceFile   = context->sourceFile;
     auto                   module       = sourceFile->module;
@@ -73,7 +73,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteSlice* result, uint32_t offset, bool& shouldWait)
+bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteSlice* result, uint32_t offset, bool shouldWait)
 {
     if (attributes.empty())
         return true;
@@ -136,7 +136,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
     return true;
 }
 
-bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, const Utf8& str, uint32_t offsetInBuffer, bool& shouldWait)
+bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, const Utf8& str, uint32_t offsetInBuffer, bool shouldWait)
 {
     if (str.empty())
     {
@@ -155,14 +155,13 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, c
     return true;
 }
 
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool& shouldWait)
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool shouldWait)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
     unique_lock lk(mutexTypes);
     unique_lock lk1(module->constantSegment.mutex);
-    shouldWait = false;
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, shouldWait));
     return true;
 }
@@ -178,7 +177,7 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
     return typeInfo->scopedName;
 }
 
-bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool forceNoScope, bool& shouldWait)
+bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool forceNoScope, bool shouldWait)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     switch (typeInfo->kind)
@@ -314,16 +313,26 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Interface:
     {
         auto job                   = g_Pool_typeTableJob.alloc();
-        job->dependentJob          = context->baseJob->dependentJob;
         job->module                = module;
         job->typeTable             = this;
         job->sourceFile            = sourceFile;
         job->concreteTypeInfoValue = concreteTypeInfoValue;
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
-        shouldWait                 = true;
         job->nodes.push_back(context->node);
-        addTypeTableJob(job);
+
+        if (shouldWait)
+        {
+            job->dependentJob = context->baseJob;
+            context->baseJob->setPending(nullptr);
+            context->baseJob->jobsToAdd.push_back(job);
+        }
+        else
+        {
+            job->dependentJob = context->baseJob->dependentJob;
+            g_ThreadMgr.addJob(job);
+        }
+
         break;
     }
 
@@ -404,31 +413,4 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     return true;
-}
-
-void TypeTable::typeTableJobDone()
-{
-    unique_lock lk(mutexJobs);
-    SWAG_ASSERT(pendingJobs);
-    pendingJobs--;
-    if (pendingJobs == 0)
-        dependentJobs.setRunning();
-}
-
-void TypeTable::addTypeTableJob(Job* job)
-{
-    unique_lock lk(mutexJobs);
-    pendingJobs++;
-    g_ThreadMgr.addJob(job);
-}
-
-void TypeTable::waitForTypeTableJobs(Job* job)
-{
-    unique_lock lk1(mutexTypes);
-    unique_lock lk(mutexJobs);
-    if (pendingJobs)
-    {
-        dependentJobs.add(job);
-        job->setPending(nullptr);
-    }
 }

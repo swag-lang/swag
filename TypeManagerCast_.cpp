@@ -1568,8 +1568,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
                 auto& typeTable        = context->sourceFile->module->typeTable;
-                bool  shouldWait       = false;
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage, shouldWait));
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage, false));
             }
 
             return true;
@@ -1580,8 +1579,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
-            bool  shouldWait         = false;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, shouldWait));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, false));
         }
     }
     else if (fromType->isNative(NativeTypeKind::Any))
@@ -1591,8 +1589,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
-            bool  shouldWait         = false;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, shouldWait));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, false));
         }
     }
 
