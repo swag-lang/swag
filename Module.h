@@ -90,10 +90,10 @@ struct Module
     const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
     bool                           canSendCompilerMessages = true;
 
-    bool sendCompilerMessage(CompilerMessageKind kind);
+    bool sendCompilerMessage(CompilerMsgKind kind);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg);
     void addCompilerFunc(ByteCode* bc);
-    bool hasCompilerFuncFor(CompilerMessageKind kind);
+    bool hasCompilerFuncFor(CompilerMsgKind kind);
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
 

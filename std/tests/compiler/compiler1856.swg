@@ -1,4 +1,4 @@
-#compiler(swag.CompilerMessageKind.PassAllDone)
+#compiler(swag.CompilerMsgKindMask.PassAllDone)
 {
     msg := @msg()
 

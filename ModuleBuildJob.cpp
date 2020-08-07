@@ -389,7 +389,7 @@ JobResult ModuleBuildJob::execute()
         {
             if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
             {
-                module->sendCompilerMessage(CompilerMessageKind::PassBeforeOutput);
+                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();
                 outputJob->module       = module;
                 outputJob->dependentJob = this;
@@ -414,7 +414,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     // This will wake up dependencies
-    module->sendCompilerMessage(CompilerMessageKind::PassAllDone);
+    module->sendCompilerMessage(CompilerMsgKind::PassAllDone);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;

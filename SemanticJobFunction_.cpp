@@ -118,9 +118,9 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (module->isBootStrap || !module->hasCompilerFuncFor(CompilerMessageKind::SemanticFunc))
+    if (module->isBootStrap || !module->canSendCompilerMessages)
         return true;
-    if (!module->canSendCompilerMessages)
+    if (!module->hasCompilerFuncFor(CompilerMsgKind::SemanticFunc))
         return true;
 
     // Send user message
@@ -128,7 +128,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     ConcreteCompilerMessageSemantic msg;
-    msg.base.kind   = CompilerMessageKind::SemanticFunc;
+    msg.base.kind   = CompilerMsgKind::SemanticFunc;
     msg.name.buffer = (void*) node->name.c_str();
     msg.name.count  = node->name.length();
 
@@ -301,7 +301,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMessageKind", context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgKindMask", context->report({parameters, "'#compiler' function must have 'swag.CompilerMsgKindMask' as a parameter"}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;

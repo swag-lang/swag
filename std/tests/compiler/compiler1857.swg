@@ -1,4 +1,4 @@
-#compiler(swag.CompilerMessageKind.SemanticFunc)
+#compiler(swag.CompilerMsgKindMask.SemanticFunc)
 {
     msg := cast(const *swag.CompilerMessageSemantic) @msg()
     /*@print(msg.name)

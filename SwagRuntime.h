@@ -227,12 +227,18 @@ struct ConcreteTypeInfoSlice
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class CompilerMessageKind : swag_runtime_uint64_t
+enum class CompilerMsgKind
 {
-    None             = 0,
-    PassBeforeOutput = 0x0000000000000001,
-    PassAllDone      = 0x0000000000000002,
-    SemanticFunc     = 0x0000000000000004,
+    PassBeforeOutput,
+    PassAllDone,
+    SemanticFunc,
+};
+
+enum class CompilerMsgKindMask : swag_runtime_uint64_t
+{
+    PassBeforeOutput = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeOutput,
+    PassAllDone      = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassAllDone,
+    SemanticFunc     = 1 << (swag_runtime_uint32_t) CompilerMsgKind::SemanticFunc,
     All              = 0xFFFFFFFFFFFFFFFF,
 };
 
@@ -242,8 +248,8 @@ enum class CompilerMessageKind : swag_runtime_uint64_t
 
 struct ConcreteCompilerMessage
 {
-    ConcreteSlice       moduleName;
-    CompilerMessageKind kind;
+    ConcreteSlice   moduleName;
+    CompilerMsgKind kind;
 };
 
 struct ConcreteCompilerMessageSemantic

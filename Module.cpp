@@ -216,7 +216,7 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
-bool Module::sendCompilerMessage(CompilerMessageKind kind)
+bool Module::sendCompilerMessage(CompilerMsgKind kind)
 {
     ConcreteCompilerMessage msg;
     msg.kind = kind;
@@ -229,18 +229,8 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
         return true;
 
     unique_lock lk(mutexByteCodeCompiler);
-    SWAG_ASSERT((uint64_t) msg->kind != 0);
 
-    int index = -1;
-    for (int i = 0; i < 64; i++)
-    {
-        if ((uint64_t) msg->kind & ((uint64_t) 1 << i))
-        {
-            index = i;
-            break;
-        }
-    }
-
+    int index = (int) msg->kind;
     if (byteCodeCompiler[index].empty())
         return true;
 
@@ -259,19 +249,10 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
     return true;
 }
 
-bool Module::hasCompilerFuncFor(CompilerMessageKind kind)
+bool Module::hasCompilerFuncFor(CompilerMsgKind kind)
 {
-    for (uint32_t i = 0; i < 64; i++)
-    {
-        if ((uint64_t) kind & ((uint64_t) 1 << i))
-        {
-            shared_lock lk(mutexByteCodeCompiler);
-            if (!byteCodeCompiler[i].empty())
-                return true;
-        }
-    }
-
-    return false;
+    int index = (int) kind;
+    return !byteCodeCompiler[index].empty();
 }
 
 void Module::addCompilerFunc(ByteCode* bc)

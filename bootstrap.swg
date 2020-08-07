@@ -413,20 +413,26 @@ namespace swag
     // Compiler
     // #########################################################
 
-    #[flags]
-    enum CompilerMessageKind : u64
+    enum CompilerMsgKind : u32
     {
-        None =                  0
-        PassBeforeOutput =      0x00000000_00000001
-        PassAllDone =           0x00000000_00000002
-        SemanticFunc =          0x00000000_00000004
+        PassBeforeOutput
+        PassAllDone 
+        SemanticFunc
+	}
+
+    #[flags]
+    enum CompilerMsgKindMask : u64
+    {
+        PassBeforeOutput =      1 << cast(u32) CompilerMsgKind.PassBeforeOutput
+        PassAllDone =           1 << cast(u32) CompilerMsgKind.PassAllDone
+        SemanticFunc =          1 << cast(u32) CompilerMsgKind.SemanticFunc
         All =                   0xFFFFFFFF_FFFFFFFF
 	}
 
     struct CompilerMessage
     {
         moduleName:     string
-        kind:           CompilerMessageKind = CompilerMessageKind.None
+        kind:           CompilerMsgKind = ?
 	}
 
     struct CompilerMessageSemantic
