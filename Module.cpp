@@ -145,6 +145,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     // Only one run at a time !
     static mutex mutexExecuteNode;
     g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
+    SWAG_ASSERT(node->bc);
+    SWAG_ASSERT(node->bc->out);
     bool result = executeNodeNoLock(sourceFile, node);
     mutexExecuteNode.unlock();
     return result;

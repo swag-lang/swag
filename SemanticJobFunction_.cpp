@@ -142,7 +142,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         node->concreteTypeInfo = resultType;
         msg.type               = (ConcreteTypeInfo*) module->constantSegment.address(node->concreteTypeInfoStorage);*/
 
-        module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
+        //module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
     }
 
     // Only one main per module !
