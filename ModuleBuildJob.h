@@ -23,7 +23,6 @@ struct ModuleBuildJob : public Job
     }
 
     JobResult execute() override;
-    void      checkPendingJobs();
 
     ModuleBuildPass                           pass = ModuleBuildPass::Dependencies;
     chrono::high_resolution_clock::time_point timeBeforeSemanticModule;

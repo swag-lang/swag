@@ -8,6 +8,7 @@ struct Workspace
 {
     void createNew();
 
+    void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
     Module* createOrUseModule(const Utf8& moduleName);
