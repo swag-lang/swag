@@ -64,7 +64,7 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoAlias::computeScopedName()
 {
-    unique_lock lk(mutex);
+    unique_lock lk(mutexScopeName);
     if (rawType->kind == TypeInfoKind::Native)
         scopedName = name;
     else
@@ -133,7 +133,7 @@ TypeInfo* TypeInfoReference::clone()
 
 void TypeInfoReference::computeScopedName()
 {
-    unique_lock lk(mutex);
+    unique_lock lk(mutexScopeName);
     if (!scopedName.empty())
         return;
 
@@ -199,7 +199,7 @@ void TypeInfoPointer::computePointedType()
 
 void TypeInfoPointer::computeScopedName()
 {
-    unique_lock lk(mutex);
+    unique_lock lk(mutexScopeName);
     if (!scopedName.empty())
         return;
 
@@ -299,7 +299,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoArray::computeScopedName()
 {
-    unique_lock lk(mutex);
+    unique_lock lk(mutexScopeName);
     if (!scopedName.empty())
         return;
 
@@ -785,7 +785,8 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 void TypeInfoStruct::computeName()
 {
     unique_lock lk(mutex);
-
+    if (!nakedName.empty())
+        return;
     nakedName = structName;
     if (genericParameters.size() > 0)
     {

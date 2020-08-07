@@ -262,7 +262,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
 
 bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
-    shared_lock lk(mutex);
+    scoped_lock lkn(symbol->mutex);
 
     if (!symbol->overloads.empty())
     {
@@ -277,7 +277,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         }
         else
         {
-            Utf8       msg           = format("symbol '%s' already defined as a name alias in an accessible scope", symbol->name.c_str());
+            Utf8       msg = format("symbol '%s' already defined as a name alias in an accessible scope", symbol->name.c_str());
             Diagnostic diag{node, node->token, msg};
             context->report(diag);
         }

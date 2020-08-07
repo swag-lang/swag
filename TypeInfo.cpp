@@ -23,7 +23,7 @@ void TypeInfo::computeScopedNameNoLock()
 
     SWAG_ASSERT(!nakedName.empty());
 
-    // Function types are scoped with the name, because too functions of the exact same type 
+    // Function types are scoped with the name, because too functions of the exact same type
     // (parameters and return value) should have a different concrete type info, because of attributes
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
     {
@@ -36,8 +36,18 @@ void TypeInfo::computeScopedNameNoLock()
 
 void TypeInfo::computeScopedName()
 {
-    unique_lock lk(mutex);
-    computeScopedNameNoLock();
+    {
+        shared_lock lk(mutexScopeName);
+        if (!scopedName.empty())
+            return;
+    }
+
+    {
+        scoped_lock lk(mutexScopeName);
+        if (!scopedName.empty())
+            return;
+        computeScopedNameNoLock();
+    }
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

@@ -543,9 +543,11 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job           = context->job;
 
-    typeInterface->declNode = node;
-    typeInterface->name     = node->name;
-    typeInterface->kind     = TypeInfoKind::Interface;
+    typeInterface->declNode   = node;
+    typeInterface->name       = node->name;
+    typeInterface->nakedName  = node->name;
+    typeInterface->structName = node->name;
+    typeInterface->kind       = TypeInfoKind::Interface;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;

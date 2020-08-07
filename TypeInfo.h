@@ -143,8 +143,10 @@ struct TypeInfo
     Utf8         name;       // preName + nakedName
     Utf8Crc      scopedName; // preName + scope name + nakedName
     shared_mutex mutex;
-    TypeInfo*    constCopy = nullptr;
-    AstNode*     declNode  = nullptr;
+    shared_mutex mutexScopeName;
+
+    TypeInfo* constCopy = nullptr;
+    AstNode*  declNode  = nullptr;
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;

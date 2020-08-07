@@ -49,6 +49,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         {
             auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
             typeStruct->scope         = newScope;
+            typeStruct->nakedName     = structName;
+            typeStruct->name          = structName;
             newScope->owner->typeInfo = typeStruct;
         }
     }
