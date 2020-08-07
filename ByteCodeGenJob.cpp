@@ -425,6 +425,7 @@ JobResult ByteCodeGenJob::execute()
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {
             unique_lock lk(originalNode->mutex);
+            SWAG_ASSERT(originalNode->byteCodeJob);
             originalNode->flags |= AST_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -533,6 +534,7 @@ JobResult ByteCodeGenJob::execute()
     {
         unique_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_RESOLVED;
+        SWAG_ASSERT(originalNode->flags & AST_BYTECODE_RESOLVED);
         originalNode->byteCodeJob = nullptr;
     }
 
