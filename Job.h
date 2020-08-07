@@ -55,7 +55,6 @@ enum class JobResult
     Continue,
     ReleaseJob,
     KeepJobAlive,
-    KeepJobAlivePending,
 };
 
 static const uint32_t JOB_IS_IN_QUEUE    = 0x00000001;

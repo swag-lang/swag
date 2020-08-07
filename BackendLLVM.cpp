@@ -261,7 +261,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     {
         pp.pass = BackendPreCompilePass::End;
         emitAllFunctionBody(buildParameters, module, ownerJob);
-        return JobResult::KeepJobAlivePending;
+        return JobResult::KeepJobAlive;
     }
 
     if (pp.pass == BackendPreCompilePass::End)

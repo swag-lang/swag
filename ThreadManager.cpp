@@ -104,7 +104,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // Notify my parent job that i'm done
-    if (result != JobResult::KeepJobAlivePending && job->dependentJob)
+    if (result != JobResult::KeepJobAlive && job->dependentJob)
     {
         SWAG_ASSERT(job->dependentJob->waitOnJobs);
         job->dependentJob->waitOnJobs--;

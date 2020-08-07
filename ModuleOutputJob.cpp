@@ -109,7 +109,7 @@ JobResult ModuleOutputJob::execute()
             }
         }
 
-        return JobResult::KeepJobAlivePending;
+        return JobResult::KeepJobAlive;
     }
 
     if (pass == ModuleOutputJobPass::Compile)
@@ -157,7 +157,7 @@ JobResult ModuleOutputJob::execute()
             jobsToAdd.push_back(compileJob);
         }
 
-        return JobResult::KeepJobAlivePending;
+        return JobResult::KeepJobAlive;
     }
 
     if (pass == ModuleOutputJobPass::Run)
