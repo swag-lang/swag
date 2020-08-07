@@ -145,8 +145,12 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     // Only one run at a time !
     static mutex mutexExecuteNode;
     g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
+
+    SWAG_ASSERT(node->flags & AST_BYTECODE_GENERATED);
+    SWAG_ASSERT(node->flags & AST_BYTECODE_RESOLVED);
     SWAG_ASSERT(node->bc);
     SWAG_ASSERT(node->bc->out);
+
     bool result = executeNodeNoLock(sourceFile, node);
     mutexExecuteNode.unlock();
     return result;
@@ -221,6 +225,9 @@ bool Module::sendCompilerMessage(CompilerMessageKind kind)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
 {
+    if (!canSendCompilerMessages)
+        return true;
+
     unique_lock lk(mutexByteCodeCompiler);
     SWAG_ASSERT((uint64_t) msg->kind != 0);
 

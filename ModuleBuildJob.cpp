@@ -185,6 +185,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticCompilerPass)
     {
+        module->canSendCompilerMessages = false;
         pass = ModuleBuildPass::SemanticModulePass;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
@@ -217,6 +218,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModulePass)
     {
+        // Cannot send compiler messages while we are resolving #compiler functions
+        module->canSendCompilerMessages = true;
         pass = ModuleBuildPass::Run;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
