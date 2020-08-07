@@ -212,31 +212,33 @@ void Module::registerForeign(AstFuncDecl* node)
 
 bool Module::sendCompilerMessage(CompilerMessageKind kind)
 {
-    CompilerMessage msg;
+    ConcreteCompilerMessage msg;
     msg.kind = kind;
-    return sendCompilerMessage(msg);
+    return sendCompilerMessage(&msg);
 }
 
-bool Module::sendCompilerMessage(const CompilerMessage& msg)
+bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
 {
-    scoped_lock lk(mutexByteCode);
-    SWAG_ASSERT((uint64_t) msg.kind != 0);
+    unique_lock lk(mutexByteCodeCompiler);
+    SWAG_ASSERT((uint64_t) msg->kind != 0);
 
     int index = -1;
     for (int i = 0; i < 64; i++)
     {
-        if ((uint64_t) msg.kind & ((uint64_t) 1 << i))
+        if ((uint64_t) msg->kind & ((uint64_t) 1 << i))
         {
             index = i;
             break;
         }
     }
 
+    if (byteCodeCompiler[index].empty())
+        return true;
+
     // Convert to a concrete message for the user
-    concreteMsg.kind              = msg.kind;
-    concreteMsg.moduleName.buffer = (void*) name.c_str();
-    concreteMsg.moduleName.count  = name.length();
-    currentCompilerMessage        = &concreteMsg;
+    msg->moduleName.buffer = (void*) name.c_str();
+    msg->moduleName.count  = name.length();
+    currentCompilerMessage = msg;
 
     for (auto bc : byteCodeCompiler[index])
     {
@@ -244,7 +246,23 @@ bool Module::sendCompilerMessage(const CompilerMessage& msg)
     }
 
     currentCompilerMessage = nullptr;
+
     return true;
+}
+
+bool Module::hasCompilerFuncFor(CompilerMessageKind kind)
+{
+    for (uint32_t i = 0; i < 64; i++)
+    {
+        if ((uint64_t) kind & ((uint64_t) 1 << i))
+        {
+            shared_lock lk(mutexByteCodeCompiler);
+            if (!byteCodeCompiler[i].empty())
+                return true;
+        }
+    }
+
+    return false;
 }
 
 void Module::addCompilerFunc(ByteCode* bc)
@@ -259,7 +277,10 @@ void Module::addCompilerFunc(ByteCode* bc)
     for (uint32_t i = 0; i < 64; i++)
     {
         if (filter & ((uint64_t) 1 << i))
+        {
+            scoped_lock lk(mutexByteCodeCompiler);
             byteCodeCompiler[i].push_back(bc);
+        }
     }
 }
 

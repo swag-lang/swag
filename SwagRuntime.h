@@ -232,6 +232,7 @@ enum class CompilerMessageKind : swag_runtime_uint64_t
     None             = 0,
     PassBeforeOutput = 0x0000000000000001,
     PassAllDone      = 0x0000000000000002,
+    SemanticFunc     = 0x0000000000000004,
     All              = 0xFFFFFFFFFFFFFFFF,
 };
 
@@ -243,4 +244,11 @@ struct ConcreteCompilerMessage
 {
     ConcreteSlice       moduleName;
     CompilerMessageKind kind;
+};
+
+struct ConcreteCompilerMessageSemantic
+{
+    ConcreteCompilerMessage base;
+    ConcreteSlice           name;
+    ConcreteTypeInfo*       type;
 };

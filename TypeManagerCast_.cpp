@@ -1568,7 +1568,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
                 auto& typeTable        = context->sourceFile->module->typeTable;
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage));
+                bool  shouldWait       = false;
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, &toNode->concreteTypeInfo, &toNode->concreteTypeInfoStorage, shouldWait));
             }
 
             return true;
@@ -1579,7 +1580,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
+            bool  shouldWait         = false;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, shouldWait));
         }
     }
     else if (fromType->isNative(NativeTypeKind::Any))
@@ -1589,7 +1591,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
+            bool  shouldWait         = false;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage, shouldWait));
         }
     }
 
@@ -1656,7 +1659,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
                     fromNode->castOffset     = field->offset;
                     fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo = toType;
+                    fromNode->typeInfo       = toType;
                 }
 
                 done = field;

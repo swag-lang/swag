@@ -65,16 +65,17 @@ void Workspace::addBootstrap()
         exit(-1);
     modules.push_back(bootstrapModule);
 
-    auto     file        = g_Allocator.alloc<SourceFile>();
-    auto     job         = g_Pool_syntaxJob.alloc();
-    fs::path p           = g_CommandLine.exePath;
-    file->path           = p.parent_path().string() + "/bootstrap.swg";
-    file->module         = bootstrapModule;
-    file->swagFile       = true;
-    file->externalBuffer = (uint8_t*) ptr;
-    file->externalSize   = size;
+    auto     file         = g_Allocator.alloc<SourceFile>();
+    auto     job          = g_Pool_syntaxJob.alloc();
+    fs::path p            = g_CommandLine.exePath;
+    file->path            = p.parent_path().string() + "/bootstrap.swg";
+    file->module          = bootstrapModule;
+    file->isBootstrapFile = true;
+    file->externalBuffer  = (uint8_t*) ptr;
+    file->externalSize    = size;
     bootstrapModule->addFile(file);
-    job->sourceFile = file;
+    bootstrapModule->isBootStrap = true;
+    job->sourceFile              = file;
     g_ThreadMgr.addJob(job);
 }
 

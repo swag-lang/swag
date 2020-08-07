@@ -31,11 +31,6 @@ struct ModuleDependency
     bool     importDone = false;
 };
 
-struct CompilerMessage
-{
-    CompilerMessageKind kind;
-};
-
 static const uint32_t BUILDRES_NONE     = 0x00000000;
 static const uint32_t BUILDRES_EXPORT   = 0x00000001;
 static const uint32_t BUILDRES_COMPILER = 0x00000002;
@@ -92,16 +87,17 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    ConcreteCompilerMessage        concreteMsg;
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     bool                           sendCompilerMessage(CompilerMessageKind kind);
-    bool                           sendCompilerMessage(const CompilerMessage& msg);
+    bool                           sendCompilerMessage(ConcreteCompilerMessage* msg);
     void                           addCompilerFunc(ByteCode* bc);
+    bool                           hasCompilerFuncFor(CompilerMessageKind kind);
     void                           addByteCodeFunc(ByteCode* bc);
     void                           registerForeign(AstFuncDecl* node);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;
+    shared_mutex               mutexByteCodeCompiler;
     VectorNative<ByteCode*>    byteCodeCompiler[64];
     VectorNative<ByteCode*>    byteCodeFunc;
     VectorNative<ByteCode*>    byteCodeTestFunc;
@@ -112,6 +108,7 @@ struct Module
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
+    bool      isBootStrap      = false;
     bool      hasUnittestError = false;
 
     void     addForeignLib(const Utf8& text);

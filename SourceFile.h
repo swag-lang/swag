@@ -45,13 +45,13 @@ struct SourceFile : public File
     uint32_t externalSize   = 0;
     uint32_t seekExternal   = 0;
 
-    uint64_t  writeTime     = 0;
-    int       numErrors     = 0;
-    int       unittestError = 0;
-    int       silent        = 0;
-    bool      swagFile      = false;
-    uint32_t  indexInModule = UINT32_MAX;
-    BuildPass buildPass     = BuildPass::Full;
+    uint64_t  writeTime       = 0;
+    int       numErrors       = 0;
+    int       unittestError   = 0;
+    int       silent          = 0;
+    uint32_t  indexInModule   = UINT32_MAX;
+    BuildPass buildPass       = BuildPass::Full;
+    bool      isBootstrapFile = false;
 
     char*    buffer       = nullptr;
     Scope*   scopeRoot    = nullptr;

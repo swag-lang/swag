@@ -312,7 +312,7 @@ JobResult ByteCodeGenJob::execute()
     if (pass == Pass::Generate)
     {
         // Register SystemAllocator interface to the default bytecode context
-        if (sourceFile->swagFile && (originalNode->name == "SystemAllocator"))
+        if (sourceFile->isBootstrapFile && (originalNode->name == "SystemAllocator"))
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
             context.result  = ContextResult::Done;

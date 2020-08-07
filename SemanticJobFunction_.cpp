@@ -124,6 +124,27 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Send user message
+    if (!module->isBootStrap && module->hasCompilerFuncFor(CompilerMessageKind::SemanticFunc))
+    {
+        ConcreteCompilerMessageSemantic msg;
+        msg.base.kind   = CompilerMessageKind::SemanticFunc;
+        msg.name.buffer = (void*) node->name.c_str();
+        msg.name.count  = node->name.length();
+
+        /*TypeInfo* resultType;
+        auto&     typeTable  = module->typeTable;
+        bool      shouldWait = false;
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, shouldWait));
+        typeTable.waitForTypeTableJobs(context->job);
+        if (context->result != ContextResult::Done)
+            return true;
+        node->concreteTypeInfo = resultType;
+        msg.type               = (ConcreteTypeInfo*) module->constantSegment.address(node->concreteTypeInfoStorage);*/
+
+        module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
+    }
+
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {

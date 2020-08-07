@@ -419,14 +419,22 @@ namespace swag
         None =                  0
         PassBeforeOutput =      0x00000000_00000001
         PassAllDone =           0x00000000_00000002
+        SemanticFunc =          0x00000000_00000004
         All =                   0xFFFFFFFF_FFFFFFFF
 	}
 
     struct CompilerMessage
     {
-        moduleName: string
-        kind: CompilerMessageKind = CompilerMessageKind.None
+        moduleName:     string
+        kind:           CompilerMessageKind = CompilerMessageKind.None
 	}
+
+    struct CompilerMessageSemantic
+    {
+        using base:     CompilerMessage
+        name:           string
+        type:           const* TypeInfo
+    }
 
     // #########################################################
     // Default compiler configuration

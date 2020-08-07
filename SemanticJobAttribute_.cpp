@@ -103,7 +103,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
 {
     // Predefined attributes
-    if (kind == AstNodeKind::AttrDecl && context->sourceFile->swagFile)
+    if (kind == AstNodeKind::AttrDecl && context->sourceFile->isBootstrapFile)
     {
         if (forNode->name == "attributeUsage" || forNode->name == "attributeMulti")
         {

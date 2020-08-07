@@ -320,7 +320,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
-            SWAG_VERIFY(sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
+            SWAG_VERIFY(sourceFile->isBootstrapFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
         else
         {
             if (token.id != TokenId::Identifier &&

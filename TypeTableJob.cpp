@@ -14,7 +14,8 @@ bool TypeTableJob::computeStruct()
     unique_lock lk(typeTable->mutexTypes);
     unique_lock lk1(module->constantSegment.mutex);
 
-    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+    bool shouldWait = false;
+    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), shouldWait));
 
     // Fields
     concreteType->fields.buffer = nullptr;
@@ -27,7 +28,8 @@ bool TypeTableJob::computeStruct()
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
         for (int param = 0; param < concreteType->fields.count; param++)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->fields[param]));
+            shouldWait = false;
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->fields[param], shouldWait));
             storageArray += sizeof(ConcreteTypeInfoParam);
         }
     }
@@ -43,7 +45,8 @@ bool TypeTableJob::computeStruct()
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->methods.buffer), storageArray);
         for (int param = 0; param < concreteType->methods.count; param++)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->methods[param]));
+            shouldWait = false;
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->methods[param], shouldWait));
             storageArray += sizeof(ConcreteTypeInfoParam);
         }
     }
@@ -59,7 +62,8 @@ bool TypeTableJob::computeStruct()
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->interfaces.buffer), storageArray);
         for (int param = 0; param < concreteType->interfaces.count; param++)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->interfaces[param]));
+            shouldWait = false;
+            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->interfaces[param], shouldWait));
 
             uint32_t fieldOffset   = offsetof(ConcreteTypeInfoParam, value);
             uint32_t valueOffset   = storageArray + (param * sizeof(ConcreteTypeInfoParam)) + fieldOffset;

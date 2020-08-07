@@ -515,7 +515,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module
-    if (sourceFile->swagFile)
+    if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
@@ -676,7 +676,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module
-    if (sourceFile->swagFile)
+    if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
     return true;
