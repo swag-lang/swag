@@ -246,17 +246,14 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
 
         if (!node->byteCodeJob)
         {
-            node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-            node->byteCodeJob->sourceFile   = sourceFile;
-            node->byteCodeJob->module       = sourceFile->module;
-            node->byteCodeJob->dependentJob = dependentJob;
-            node->byteCodeJob->nodes.push_back(node);
+            node->byteCodeJob             = g_Pool_byteCodeGenJob.alloc();
+            node->byteCodeJob->sourceFile = sourceFile;
+            node->byteCodeJob->module     = sourceFile->module;
             if (flags & ASKBC_WAIT_DONE)
-            {
-                SWAG_ASSERT(job);
-                node->byteCodeJob->dependentJobs.add(job);
-            }
-
+                node->byteCodeJob->dependentJob = job;
+            else
+                node->byteCodeJob->dependentJob = dependentJob;
+            node->byteCodeJob->nodes.push_back(node);
             node->bc             = g_Allocator.alloc<ByteCode>();
             node->bc->node       = node;
             node->bc->sourceFile = node->sourceFile;
@@ -264,9 +261,15 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
             node->bc->name.replaceAll('.', '_');
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->bc);
-
-            g_ThreadMgr.addJob(node->byteCodeJob);
+            if (flags & ASKBC_WAIT_DONE)
+                job->jobsToAdd.push_back(node->byteCodeJob);
+            else
+                g_ThreadMgr.addJob(node->byteCodeJob);
+            return;
         }
+
+        if (flags & ASKBC_WAIT_DONE)
+            node->byteCodeJob->dependentJobs.add(job);
 
         return;
     }
@@ -274,8 +277,9 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
     if (flags & ASKBC_WAIT_RESOLVED)
     {
         SWAG_ASSERT(job);
-        if (!(node->flags & AST_BYTECODE_RESOLVED) && node->byteCodeJob)
+        if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
+            SWAG_ASSERT(node->byteCodeJob);
             node->byteCodeJob->dependentJobs.add(job);
             job->setPending(nullptr);
             return;
@@ -292,6 +296,8 @@ JobResult ByteCodeGenJob::execute()
         SWAG_ASSERT(nodes.size() == 1);
         originalNode = nodes.front();
     }
+
+    SWAG_ASSERT(originalNode->byteCodeJob);
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;

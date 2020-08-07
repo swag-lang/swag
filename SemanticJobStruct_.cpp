@@ -524,6 +524,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
+        SWAG_ASSERT(!node->byteCodeJob);
         node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
         node->byteCodeJob->sourceFile   = sourceFile;
         node->byteCodeJob->module       = sourceFile->module;

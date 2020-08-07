@@ -120,6 +120,8 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
 
     if (module->isBootStrap || !module->hasCompilerFuncFor(CompilerMessageKind::SemanticFunc))
         return true;
+    if (!module->canSendCompilerMessages)
+        return true;
 
     // Send user message
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
