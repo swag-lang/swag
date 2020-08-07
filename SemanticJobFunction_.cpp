@@ -113,6 +113,37 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    if (module->isBootStrap || !module->hasCompilerFuncFor(CompilerMessageKind::SemanticFunc))
+        return true;
+
+    // Send user message
+    auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+    ConcreteCompilerMessageSemantic msg;
+    msg.base.kind   = CompilerMessageKind::SemanticFunc;
+    msg.name.buffer = (void*) node->name.c_str();
+    msg.name.count  = node->name.length();
+
+    TypeInfo* resultType;
+    auto&     typeTable  = module->typeTable;
+    bool      shouldWait = false;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, shouldWait));
+    typeTable.waitForTypeTableJobs(context->job);
+    if (context->result != ContextResult::Done)
+        return true;
+    node->concreteTypeInfo = resultType;
+    msg.type               = (ConcreteTypeInfo*) module->constantSegment.address(node->concreteTypeInfoStorage);
+
+    module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
+    return true;
+}
+
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -123,27 +154,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Function));
     if (context->result == ContextResult::Pending)
         return true;
-
-    // Send user message
-    if (!module->isBootStrap && module->hasCompilerFuncFor(CompilerMessageKind::SemanticFunc))
-    {
-        ConcreteCompilerMessageSemantic msg;
-        msg.base.kind   = CompilerMessageKind::SemanticFunc;
-        msg.name.buffer = (void*) node->name.c_str();
-        msg.name.count  = node->name.length();
-
-        /*TypeInfo* resultType;
-        auto&     typeTable  = module->typeTable;
-        bool      shouldWait = false;
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, shouldWait));
-        typeTable.waitForTypeTableJobs(context->job);
-        if (context->result != ContextResult::Done)
-            return true;
-        node->concreteTypeInfo = resultType;
-        msg.type               = (ConcreteTypeInfo*) module->constantSegment.address(node->concreteTypeInfoStorage);*/
-
-        module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
-    }
 
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
