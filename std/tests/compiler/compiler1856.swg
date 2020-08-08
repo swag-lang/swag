@@ -1,11 +1,9 @@
-#compiler(swag.CompilerMsgKindMask.PassAllDone)
+#compiler(swag.CompilerMsgKindMask.PassBeforeOutput)
 {
     itf := @compiler()
     msg := itf.getMessage()
-
-    /*@print(cast(s64) msg.kind)
-    @print(" ")
-    @print(msg.moduleName)*/
-
     @assert(msg.moduleName == "tests.compiler")
+
+    cfg := itf.getBuildCfg()
+    //cfg.backendLLVM.outputIR = true
 }

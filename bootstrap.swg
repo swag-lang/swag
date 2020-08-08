@@ -439,7 +439,8 @@ namespace swag
 
     interface ICompiler
     {
-        getMessage: func(self)->const* CompilerMessage
+        getMessage:     func(self)->const* CompilerMessage
+        getBuildCfg:    func(self)->*BuildCfg
     }
 
     // #########################################################
