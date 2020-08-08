@@ -186,7 +186,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::SemanticCompilerPass)
     {
         module->canSendCompilerMessages = false;
-        pass = ModuleBuildPass::SemanticModulePass;
+        pass                            = ModuleBuildPass::SemanticModulePass;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -205,7 +205,7 @@ JobResult ModuleBuildJob::execute()
                     semanticJob->sourceFile   = itfile;
                     semanticJob->module       = module;
                     semanticJob->dependentJob = this;
-                    semanticJob->compilerPass = true;
+                    semanticJob->flags |= JOB_COMPILER_PASS;
                     semanticJob->nodes.push_back(itfunc);
                     jobsToAdd.push_back(semanticJob);
                 }
@@ -220,7 +220,7 @@ JobResult ModuleBuildJob::execute()
     {
         // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = true;
-        pass = ModuleBuildPass::Run;
+        pass                            = ModuleBuildPass::Run;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -237,9 +237,9 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
-        semanticJob->module        = module;
-        semanticJob->dependentJob  = this;
+        auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
+        semanticJob->module       = module;
+        semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
         return JobResult::KeepJobAlive;
     }

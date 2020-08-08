@@ -237,7 +237,6 @@ struct SemanticJob : public Job
     SymbolMatchContext            symMatch;
     SemanticContext               context;
     Concat                        tmpConcat;
-    bool                          compilerPass = false;
 
     void reset() override
     {
@@ -255,7 +254,6 @@ struct SemanticJob : public Job
         symMatch.reset();
         context.reset();
         tmpConcat.clear();
-        compilerPass = false;
     }
 
     void release() override

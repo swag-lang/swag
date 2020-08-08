@@ -1,29 +1,24 @@
-var cptcpt = 0
+using swag
+
+var cpt = 0's64
+
+func testInline(type: const* swag.TypeInfoFunc)
+{
+    visit i: type.attributes
+    {
+        if(i.name == "swag.inline")
+        {
+            @print(type.name)
+            @print("\n")
+        }
+    }
+}
 
 #compiler(swag.CompilerMsgKindMask.SemanticFunc)
 {
-    //cpt := 0's64
+    msg := cast(const *swag.CompilerMessage) @msg()
+    if(msg.type.kind == swag.TypeInfoKind.FuncAttr)
+        testInline(cast(const* swag.TypeInfoFunc) msg.type)
 
-    /*msg := cast(const *swag.CompilerMessage) @msg()
-    while msg != null
-    {
-        cptcpt += 1
-        msg = cast(const *swag.CompilerMessage) @msg()
-        if msg == null
-            break
-
-        /*@print(msg.name)
-        @print(" ")
-        @print(msg.type.name)
-        @print("\n")*/
-    }*/
-
-    //@print(cptcpt)
-    //@print(" ")
-
-    /*msg := cast(const *swag.CompilerMessage) @msg()
-    @print(msg.name)
-    @print(" ")
-    @print(msg.type.name)
-    @print("\n")*/
+    cpt += 1
 }

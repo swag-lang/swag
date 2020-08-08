@@ -17,8 +17,8 @@ enum class JobKind
 };
 
 static const uint32_t AFFINITY_BACKEND_FCTBODY = 0x00000001;
-static const uint32_t AFFINITY_EXECBC   = 0x00000002;
-static const uint32_t AFFINITY_ALL      = 0xFFFFFFFF;
+static const uint32_t AFFINITY_EXECBC          = 0x00000002;
+static const uint32_t AFFINITY_ALL             = 0xFFFFFFFF;
 
 enum class ContextResult
 {
@@ -61,6 +61,7 @@ static const uint32_t JOB_IS_IN_QUEUE    = 0x00000001;
 static const uint32_t JOB_IS_IN_THREAD   = 0x00000002;
 static const uint32_t JOB_IS_PENDING     = 0x00000004;
 static const uint32_t JOB_IS_PENDING_RUN = 0x00000008;
+static const uint32_t JOB_COMPILER_PASS  = 0x00000010;
 
 struct Job : public PoolElem
 {

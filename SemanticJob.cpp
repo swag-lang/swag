@@ -98,7 +98,7 @@ JobResult SemanticJob::execute()
         context.node = node;
 
         // Already done by the #compiler pass
-        if (!compilerPass && node->flags & AST_DONE_COMPILER_PASS)
+        if (!(flags & JOB_COMPILER_PASS) && node->flags & AST_DONE_COMPILER_PASS)
         {
             nodes.pop_back();
             continue;
@@ -225,7 +225,7 @@ JobResult SemanticJob::execute()
                     continue;
             }
 
-            if (compilerPass)
+            if (flags & JOB_COMPILER_PASS)
                 node->flags |= AST_DONE_COMPILER_PASS;
             nodes.pop_back();
             break;

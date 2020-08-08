@@ -44,6 +44,8 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         mapNames.add(symbol);
     }
 
+    symbol->nodes.push_back(node);
+
     // Error if overload is not possible
     {
         unique_lock lock(symbol->mutex);

@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 #include "Module.h"
+#include "SemanticJob.h"
 
 void Job::addDependentJob(Job* job)
 {
@@ -13,6 +14,28 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
+    if (flags & JOB_COMPILER_PASS)
+    {
+        if (symbol->ownerTable->scope->isGlobal())
+        {
+            for (auto node : symbol->nodes)
+            {
+                if (node->flags & AST_DONE_COMPILER_PASS)
+                    continue;
+
+                auto job          = g_Pool_semanticJob.alloc();
+                job->sourceFile   = node->sourceFile;
+                job->module       = node->sourceFile->module;
+                job->dependentJob = dependentJob;
+                job->flags |= JOB_COMPILER_PASS;
+                job->nodes.push_back(node);
+                jobsToAdd.push_back(job);
+            }
+
+            symbol->nodes.clear();
+        }
+    }
+
     setPending(symbol);
     symbol->addDependentJobNoLock(this);
 }
