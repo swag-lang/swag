@@ -58,7 +58,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
     // Run !
     runContext.bp = runContext.sp;
     bc->enterByteCode(&runContext);
-    g_Run.run(&runContext);
+    module->runner.run(&runContext);
 }
 
 void initDefaultContext()

@@ -59,53 +59,8 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
     if (!fn)
     {
-        if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
-        {
-            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
-            return nullptr;
-        }
-
-        // Compile the generated files
-        auto externalModule = g_Workspace.getModuleByName(moduleName.text);
-        if (!externalModule)
-        {
-            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
-            return nullptr;
-        }
-
-        // Need to compile the dll version of the module in order to be able to call a function
-        // from the compiler
-        if (externalModule->buildParameters.outputType == BackendOutputType::DynamicLib)
-        {
-            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
-            return nullptr;
-        }
-
-        auto compileJob                        = g_Pool_moduleCompileJob.alloc();
-        compileJob->module                     = externalModule;
-        compileJob->buildParameters            = externalModule->buildParameters;
-        compileJob->buildParameters.outputType = BackendOutputType::DynamicLib;
-        compileJob->mutexDone                  = &mutexDone;
-        compileJob->condVar                    = &condVar;
-        g_ThreadMgr.addJob(compileJob);
-
-        // Sync wait for the dll to be generated
-        unique_lock lk(mutexDone);
-        condVar.wait(lk);
-
-        // Last try
-        if (!g_ModuleMgr.loadModule(moduleName.text))
-        {
-            context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
-            return nullptr;
-        }
-
-        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
-        if (!externalModule)
-        {
-            context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
-            return nullptr;
-        }
+        context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
+        return nullptr;
     }
 
     return fn;

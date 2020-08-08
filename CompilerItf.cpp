@@ -19,10 +19,9 @@ static cb itable[] =
         getBuildCfg,
 };
 
-static void* iitf[] = {nullptr, (void*) itable};
-
 void* getCompilerItf(Module* module)
 {
-    iitf[0] = module;
-    return &iitf;
+    module->compilerItf[0] = module;
+    module->compilerItf[1] = itable;
+    return &module->compilerItf;
 }

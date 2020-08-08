@@ -1,5 +1,6 @@
 #pragma once
 #include "ByteCodeRunContext.h"
+#include "ByteCodeRun.h"
 #include "Pool.h"
 #include "BuildPass.h"
 #include "BuildParameters.h"
@@ -110,6 +111,7 @@ struct Module
     VectorNative<ByteCode*>    byteCodeRunFunc;
     VectorNative<AstFuncDecl*> allForeign;
     ByteCodeRunContext         runContext;
+    ByteCodeRun                runner;
     mutex                      mutexExecuteNode;
 
     ByteCode* byteCodeMainFunc = nullptr;
@@ -127,6 +129,7 @@ struct Module
     uint32_t                    hasBeenBuilt = BUILDRES_NONE;
 
     TypeTable typeTable;
+    void*     compilerItf[2];
 
     shared_mutex     mutexGlobalVars;
     vector<AstNode*> globalVarsBss;

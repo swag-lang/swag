@@ -11,8 +11,6 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
-ByteCodeRun g_Run;
-
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->bc->registersRC[context->bc->curRC];
@@ -915,7 +913,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicCompiler:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) getCompilerItf(context->sourceFile->module);
-            //(uint8_t*) context->sourceFile->module->currentCompilerMessage;
+        //(uint8_t*) context->sourceFile->module->currentCompilerMessage;
         break;
     }
     case ByteCodeOp::IntrinsicIsByteCode:
@@ -1788,9 +1786,11 @@ static int exceptionHandler(ByteCodeRunContext* runContext)
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
+    auto module = runContext->sourceFile->module;
+
     __try
     {
-        if (!g_Run.runLoop(runContext))
+        if (!module->runner.runLoop(runContext))
             return false;
     }
     __except (exceptionHandler(runContext))

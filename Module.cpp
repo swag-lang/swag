@@ -175,7 +175,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
         node->bc->enterByteCode(&runContext);
     }
 
-    bool result = g_Run.run(&runContext);
+    auto module = sourceFile->module;
+    bool result = module->runner.run(&runContext);
     node->bc->leaveByteCode();
     if (!result)
         return false;

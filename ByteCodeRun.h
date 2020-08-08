@@ -21,8 +21,4 @@ struct ByteCodeRun
 
     VectorNative<ffi_type*> ffiArgs;
     VectorNative<void*>     ffiArgsValues;
-    condition_variable      condVar;
-    mutex                   mutexDone;
 };
-
-extern ByteCodeRun g_Run;
