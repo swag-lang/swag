@@ -52,7 +52,7 @@ uint32_t DataSegment::offset(uint8_t* location)
         auto bucket = &buckets[i];
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
-            auto offset = (uint32_t) (location - bucket->buffer);
+            auto offset = (uint32_t)(location - bucket->buffer);
             offset += bucket->totalCountBefore;
             return offset;
         }
@@ -186,6 +186,9 @@ uint32_t DataSegment::addString(const Utf8& str)
 
 void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)
 {
+    if (compilerOnly)
+        return;
+
     DataSegmentRef ref;
     ref.destOffset = fromOffset;
     ref.srcOffset  = toOffset;
@@ -197,6 +200,9 @@ void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind
 
 void DataSegment::addInitPtrFunc(uint32_t offset, ByteCode* bc)
 {
+    if (compilerOnly)
+        return;
+
     scoped_lock lk(mutexPtr);
     initFuncPtr[offset] = bc;
 }

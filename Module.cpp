@@ -13,6 +13,8 @@
 
 bool Module::setup(const Utf8& moduleName)
 {
+    constantSegmentCompiler.compilerOnly = true;
+
     name   = moduleName;
     nameUp = name;
     nameUp.replaceAll('.', '_');

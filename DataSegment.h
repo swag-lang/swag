@@ -64,4 +64,6 @@ struct DataSegment
 
     void saveValue(void* address, uint32_t size);
     void restoreAllValues();
+
+    bool compilerOnly = false;
 };
