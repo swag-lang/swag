@@ -3,6 +3,24 @@
 
 thread_local Allocator g_Allocator;
 
+void* operator new(size_t t)
+{
+    t           = g_Allocator.alignSize((int) t);
+    uint64_t* p = (uint64_t*) g_Allocator.alloc((uint32_t) t + sizeof(uint64_t));
+    *p          = (uint64_t) t;
+    g_Stats.wastedAllocatorMemory += sizeof(uint64_t);
+    return p + 1;
+}
+
+void operator delete(void* addr)
+{
+    if (!addr)
+        return;
+    uint64_t* p = (uint64_t*) addr;
+    p--;
+    return g_Allocator.free(p, (int) *p);
+}
+
 void* Allocator::alloc(int size)
 {
     // Must be aligned
@@ -54,9 +72,9 @@ void Allocator::free(void* ptr, int size)
         return;
     SWAG_ASSERT(!(size & 7));
 
-    size /= 8;
-    if (size >= MAX_FREE_BUCKETS)
+    auto bsize = size / 8;
+    if (bsize >= MAX_FREE_BUCKETS)
         return;
-    *(void**) ptr     = freeBuckets[size];
-    freeBuckets[size] = ptr;
+    *(void**) ptr      = freeBuckets[bsize];
+    freeBuckets[bsize] = ptr;
 }

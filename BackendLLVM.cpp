@@ -278,6 +278,11 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
 
         // Output file
         generateObjFile(buildParameters);
+
+        delete pp.module;
+        delete pp.context;
+        delete pp.builder;
+        delete pp.dbg;
     }
 
     return JobResult::ReleaseJob;
@@ -361,6 +366,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         destFileIR.close();
     }
 
+    delete targetMachine;
     return true;
 }
 

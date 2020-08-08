@@ -72,7 +72,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
     curRC++;
     if (curRC >= registersRC.size())
     {
-        auto rc = (Register*) malloc(maxReservedRegisterRC * sizeof(Register));
+        auto rc = maxReservedRegisterRC ? (Register*) g_Allocator.alloc(maxReservedRegisterRC * sizeof(Register)) : nullptr;
         registersRC.push_back(rc);
     }
 }
@@ -86,6 +86,7 @@ void ByteCode::leaveByteCode()
     }
 #endif
 
+    //g_Allocator.free(registersRC[curRC], maxReservedRegisterRC * sizeof(Register));
     curRC--;
 }
 

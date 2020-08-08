@@ -35,6 +35,7 @@ struct DataSegment
     uint32_t                  offset(uint8_t* location);
     uint8_t*                  address(uint32_t location);
     uint8_t*                  addressNoLock(uint32_t location);
+    void                      release();
     vector<DataSegmentHeader> buckets;
     shared_mutex              mutex;
 

@@ -35,8 +35,9 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     }
 
     DataSegmentHeader bucket;
-    bucket.size             = max(size, BUCKET_SIZE);
-    bucket.buffer           = (uint8_t*) calloc(1, bucket.size);
+    bucket.size   = max(size, BUCKET_SIZE);
+    bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
+    memset(bucket.buffer, 0, bucket.size);
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.emplace_back(bucket);
@@ -311,4 +312,12 @@ void DataSegment::restoreAllValues()
     }
 
     savedValues.clear();
+}
+
+void DataSegment::release()
+{
+    for (int i = 0; i < buckets.size(); i++)
+    {
+        auto bucket = &buckets[i];
+    }
 }
