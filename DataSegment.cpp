@@ -5,6 +5,7 @@
 #include "RaceCondition.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "SwagRuntime.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
@@ -172,7 +173,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str)
     auto strLen = (uint32_t) str.length() + 1;
     auto offset = reserveNoLock(strLen);
     auto addr   = addressNoLock(offset);
-    memcpy(addr, str.c_str(), strLen);
+    swag_runtime_memcpy(addr, str.c_str(), strLen);
     mapString[str] = offset;
 
     return offset;
@@ -279,7 +280,7 @@ void DataSegment::saveValue(void* address, uint32_t size)
         break;
     default:
         auto buf = g_Allocator.alloc(size);
-        memcpy(buf, address, size);
+        swag_runtime_memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
     }
@@ -304,7 +305,7 @@ void DataSegment::restoreAllValues()
             *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.first;
             break;
         default:
-            memcpy(one.first, one.second.first, one.second.second);
+            swag_runtime_memcpy(one.first, one.second.first, one.second.second);
             break;
         }
     }

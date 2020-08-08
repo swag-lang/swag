@@ -571,7 +571,7 @@ static inline void* memcpy_tiny(void* dst, const void* src, size_t size)
 //---------------------------------------------------------------------
 // main routine
 //---------------------------------------------------------------------
-extern "C" void* memcpy(void* destination, const void* source, size_t size)
+extern "C" void* memcpy_fast(void* destination, const void* source, size_t size)
 {
     unsigned char*       dst       = (unsigned char*) destination;
     const unsigned char* src       = (const unsigned char*) source;
@@ -686,6 +686,16 @@ extern "C" void* memcpy(void* destination, const void* source, size_t size)
     memcpy_tiny(dst, src, size);
 
     return destination;
+}
+
+extern "C" void* memcpy(void* destination, const void* source, size_t size)
+{
+    return memcpy_fast(destination, source, size);
+}
+
+extern "C" void* swag_runtime_memcpy(void* destination, const void* source, size_t size)
+{
+    return memcpy_fast(destination, source, size);
 }
 
 #endif

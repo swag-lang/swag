@@ -23,7 +23,9 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
 
 Module* Workspace::createOrUseModule(const Utf8& moduleName)
 {
-    Module* module;
+    Module* module = getModuleByName(moduleName);
+    if (module)
+        return module;
 
     {
         unique_lock lk(mutexModules);
@@ -36,11 +38,11 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName)
         module->setup(moduleName);
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
-
-        // Is this the module we want to build ?
-        if (g_CommandLine.moduleFilter == moduleName)
-            filteredModule = module;
     }
+
+    // Is this the module we want to build ?
+    if (g_CommandLine.moduleFilter == moduleName)
+        filteredModule = module;
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;
@@ -310,7 +312,6 @@ void Workspace::setupTarget()
     targetPath += "/";
     cachePath += "/";
 }
-
 
 void Workspace::checkPendingJobs()
 {

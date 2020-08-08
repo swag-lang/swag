@@ -22,9 +22,9 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-#llvm
 llvm/
 llvm-bin/
+VTune Profiler Results/
 
 # Visual Studio 2015 cache/options directory
 .vs/

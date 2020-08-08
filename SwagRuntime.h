@@ -13,6 +13,7 @@ extern "C" void                  swag_runtime_convertArgcArgv(void* dest, swag_r
 extern "C" bool                  swag_runtime_comparetype(const void* type1, const void* type2);
 extern "C" void*                 swag_runtime_interfaceof(const void* structType, const void* itfType);
 extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
+extern "C" void*                 swag_runtime_memcpy(void* destination, const void* source, size_t size);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG

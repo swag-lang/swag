@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Concat.h"
 #include "Allocator.h"
+#include "SwagRuntime.h"
 
 Concat::Concat()
 {
@@ -143,14 +144,14 @@ void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
     checkCount(len);
-    memcpy(currentSP, v.c_str(), len);
+    swag_runtime_memcpy(currentSP, v.c_str(), len);
     currentSP += len;
 }
 
 void Concat::addString(const char* v, int len)
 {
     checkCount(len);
-    memcpy(currentSP, v, len);
+    swag_runtime_memcpy(currentSP, v, len);
     currentSP += len;
 }
 
@@ -158,7 +159,7 @@ void Concat::addString(const char* v)
 {
     auto len = (int) strlen(v);
     checkCount(len);
-    memcpy(currentSP, v, len);
+    swag_runtime_memcpy(currentSP, v, len);
     currentSP += len;
 }
 
