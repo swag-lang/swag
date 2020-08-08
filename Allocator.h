@@ -2,7 +2,7 @@
 #include "Assert.h"
 #include "Stats.h"
 #define ALLOCATOR_BUCKET_SIZE 1024 * 1024
-#define MAX_FREE_BUCKETS 4096 / 8
+#define MAX_FREE_BUCKETS 512 / 8
 
 struct AllocatorBucket
 {
@@ -31,6 +31,8 @@ struct Allocator
     int   alignSize(int size);
     void  free(void*, int size);
     void* alloc(int size);
+
+    void* tryFreeBlock(uint32_t maxCount, int size);
 
     typedef struct FreeBlock
     {

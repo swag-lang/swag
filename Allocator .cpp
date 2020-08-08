@@ -8,7 +8,6 @@ void* operator new(size_t t)
     t           = g_Allocator.alignSize((int) t);
     uint64_t* p = (uint64_t*) g_Allocator.alloc((uint32_t) t + sizeof(uint64_t));
     *p          = (uint64_t) t;
-    g_Stats.wastedAllocatorMemory += sizeof(uint64_t);
     return p + 1;
 }
 
@@ -19,6 +18,70 @@ void operator delete(void* addr)
     uint64_t* p = (uint64_t*) addr;
     p--;
     return g_Allocator.free(p, (int) *p);
+}
+
+void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
+{
+    if (!firstFreeBlock)
+        return nullptr;
+
+    FreeBlock* prevBlock = nullptr;
+    auto       tryBlock  = firstFreeBlock;
+    uint32_t   cpt       = 0;
+
+    while (tryBlock && cpt++ < maxCount)
+    {
+        if (size <= tryBlock->size)
+        {
+            auto remainSize = tryBlock->size - size;
+            if (remainSize > 32)
+            {
+                auto bucket = remainSize / 8;
+                auto split  = (uint8_t*) tryBlock + size;
+                auto result = tryBlock;
+
+                if (bucket < MAX_FREE_BUCKETS)
+                {
+                    auto next                     = freeBuckets[bucket];
+                    freeBuckets[bucket]           = split;
+                    *(void**) freeBuckets[bucket] = next;
+
+                    if (prevBlock)
+                        prevBlock->next = tryBlock->next;
+                    else
+                        firstFreeBlock = tryBlock->next;
+                }
+                else
+                {
+                    auto next       = tryBlock->next;
+                    auto splitBlock = (FreeBlock*) split;
+                    if (prevBlock)
+                        prevBlock->next = splitBlock;
+                    else
+                        firstFreeBlock = splitBlock;
+                    splitBlock->size = remainSize;
+                    splitBlock->next = next;
+                }
+
+                return result;
+            }
+            else
+            {
+                auto result = tryBlock;
+                if (prevBlock)
+                    prevBlock->next = tryBlock->next;
+                else
+                    firstFreeBlock = tryBlock->next;
+
+                return result;
+            }
+        }
+
+        prevBlock = tryBlock;
+        tryBlock  = tryBlock->next;
+    }
+
+    return nullptr;
 }
 
 void* Allocator::alloc(int size)
@@ -32,7 +95,6 @@ void* Allocator::alloc(int size)
     {
         if (freeBuckets[bucket])
         {
-            g_Stats.wastedAllocatorMemory -= size;
             auto result         = freeBuckets[bucket];
             freeBuckets[bucket] = *(void**) result;
             return result;
@@ -40,41 +102,22 @@ void* Allocator::alloc(int size)
     }
 
     // Try the first free block
-    if (firstFreeBlock)
-    {
-        if (size <= firstFreeBlock->size)
-        {
-            auto remainSize = firstFreeBlock->size - size;
-            if (remainSize > 32)
-            {
-                auto split           = (uint8_t*) firstFreeBlock + size;
-                auto result          = firstFreeBlock;
-                auto next            = firstFreeBlock->next;
-                firstFreeBlock       = (FreeBlock*) split;
-                firstFreeBlock->size = remainSize;
-                firstFreeBlock->next = next;
-                g_Stats.wastedAllocatorMemory -= size;
-                return result;
-            }
-            else if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
-            {
-                g_Stats.wastedAllocatorMemory -= firstFreeBlock->size;
-                auto result    = firstFreeBlock;
-                firstFreeBlock = firstFreeBlock->next;
-                return result;
-            }
-        }
-    }
+    auto result = tryFreeBlock(1, size);
+    if (result)
+        return result;
 
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
     {
+        result = tryFreeBlock(UINT32_MAX, size);
+        if (result)
+            return result;
+
         // We get the remaining space in the last bucket, to be able to use it as
         // a free block
         if (lastBucket)
         {
             auto remain = lastBucket->allocated - lastBucket->maxUsed;
-            g_Stats.wastedAllocatorMemory += remain;
 
             bucket = remain / 8;
             if (bucket < MAX_FREE_BUCKETS)
@@ -97,6 +140,7 @@ void* Allocator::alloc(int size)
         lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);
         lastBucket->data      = (uint8_t*) malloc(lastBucket->allocated);
         currentData           = lastBucket->data;
+
         g_Stats.allocatorMemory += lastBucket->allocated;
     }
 
@@ -121,8 +165,6 @@ void Allocator::free(void* ptr, int size)
     if (!ptr)
         return;
     SWAG_ASSERT(!(size & 7));
-
-    g_Stats.wastedAllocatorMemory += size;
 
     auto bsize = size / 8;
     if (bsize < MAX_FREE_BUCKETS)

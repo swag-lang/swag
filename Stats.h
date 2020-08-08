@@ -11,7 +11,6 @@ struct Stats
     atomic<int>    maxOpenFiles          = 0;
     atomic<int>    numOpenFiles          = 0;
     atomic<int>    allocatorMemory       = 0;
-    atomic<int>    wastedAllocatorMemory = 0;
     atomic<int>    totalConcreteTypes    = 0;
     int            numWorkers            = 0;
     atomic<double> totalTime             = 0;
