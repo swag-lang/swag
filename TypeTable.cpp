@@ -5,9 +5,13 @@
 #include "ThreadManager.h"
 #include "TypeTableJob.h"
 #include "TypeManager.h"
+#include "Module.h"
 
-TypeTable::TypeTable()
+DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
 {
+    if (flags & CONCRETE_FOR_COMPILER)
+        return &module->constantSegmentCompiler;
+    return &module->constantSegment;
 }
 
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, bool forceNoScope, uint32_t cflags)
@@ -20,14 +24,15 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, &tmpStorageOffset, forceNoScope, cflags));
-    *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
+    *result = (ConcreteTypeInfo*) segment->addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
-    module->constantSegment.addInitPtr(concreteTypeInfoValue ? OFFSETOF(*result) : storageOffset, tmpStorageOffset);
+    segment->addInitPtr(concreteTypeInfoValue ? OFFSETOF(*result) : storageOffset, tmpStorageOffset);
     return true;
 }
 
@@ -35,12 +40,13 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
-        auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeInfo, computedValue);
-        ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
-        module->constantSegment.addInitPtr(storageOffset, storageOffsetValue);
+        auto storageOffsetValue = segment->addComputedValueNoLock(sourceFile, typeInfo, computedValue);
+        ptrAny->value           = segment->addressNoLock(storageOffsetValue);
+        segment->addInitPtr(storageOffset, storageOffsetValue);
     }
     else
         ptrAny->value = nullptr;
@@ -52,8 +58,10 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
 
 bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
 {
-    auto                   sourceFile   = context->sourceFile;
-    auto                   module       = sourceFile->module;
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
+
     ConcreteTypeInfoParam* concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
 
     concreteType->offsetOf = realType->offset;
@@ -65,9 +73,9 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
     // Value
     if (realType->flags & TYPEINFO_DEFINED_VALUE)
     {
-        auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
-        concreteType->value     = module->constantSegment.addressNoLock(storageOffsetValue);
-        module->constantSegment.addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
+        auto storageOffsetValue = segment->addComputedValueNoLock(sourceFile, realType->typeInfo, realType->value);
+        concreteType->value     = segment->addressNoLock(storageOffsetValue);
+        segment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
     }
 
     return true;
@@ -80,13 +88,14 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
 
     result->count = attributes.size();
 
-    uint32_t storageOffsetAttributes = module->constantSegment.reserveNoLock((uint32_t) result->count * sizeof(ConcreteAttribute));
-    uint8_t* ptrStorageAttributes    = module->constantSegment.addressNoLock(storageOffsetAttributes);
+    uint32_t storageOffsetAttributes = segment->reserveNoLock((uint32_t) result->count * sizeof(ConcreteAttribute));
+    uint8_t* ptrStorageAttributes    = segment->addressNoLock(storageOffsetAttributes);
     result->buffer                   = ptrStorageAttributes;
-    module->constantSegment.addInitPtr(offset, storageOffsetAttributes);
+    segment->addInitPtr(offset, storageOffsetAttributes);
 
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.attributes)
@@ -106,10 +115,10 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         if (!one.parameters.empty())
         {
             // Slice for all parameters
-            uint32_t storageOffsetParams = module->constantSegment.reserveNoLock((uint32_t) one.parameters.size() * sizeof(ConcreteAttributeParameter));
-            uint8_t* ptrStorageAllParams = module->constantSegment.addressNoLock(storageOffsetParams);
+            uint32_t storageOffsetParams = segment->reserveNoLock((uint32_t) one.parameters.size() * sizeof(ConcreteAttributeParameter));
+            uint8_t* ptrStorageAllParams = segment->addressNoLock(storageOffsetParams);
             ptrParamsAttribute->buffer   = ptrStorageAllParams;
-            module->constantSegment.addInitPtr(curOffsetAttributes, storageOffsetParams);
+            segment->addInitPtr(curOffsetAttributes, storageOffsetParams);
 
             uint32_t curOffsetParams = storageOffsetParams;
             for (auto& oneParam : one.parameters)
@@ -147,8 +156,10 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, c
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto offset     = module->constantSegment.addStringNoLock(str);
-    module->constantSegment.addInitPtr(offsetInBuffer, offset);
+    auto segment    = getConstantSegment(module, cflags);
+
+    auto offset = segment->addStringNoLock(str);
+    segment->addInitPtr(offsetInBuffer, offset);
     result->buffer = (void*) str.c_str();
     SWAG_ASSERT(result->buffer);
     result->count = str.length();
@@ -159,9 +170,10 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
 
     unique_lock lk(mutexTypes);
-    unique_lock lk1(module->constantSegment.mutex);
+    unique_lock lk1(segment->mutex);
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, cflags));
     return true;
 }
@@ -190,25 +202,40 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         break;
     }
 
-    // Already computed
     if (!forceNoScope)
         typeInfo->computeScopedName();
+
+    // Already computed ?
     if (typeInfo->kind != TypeInfoKind::Param)
     {
-        auto it = concreteTypes.find(getTypeName(typeInfo, forceNoScope));
-        if (it != concreteTypes.end())
+        if (cflags & CONCRETE_FOR_COMPILER)
         {
-            *ptrTypeInfo = it->second.first;
-            *storage     = it->second.second;
-            return true;
+            auto it = concreteTypesCompiler.find(getTypeName(typeInfo, forceNoScope));
+            if (it != concreteTypesCompiler.end())
+            {
+                *ptrTypeInfo = it->second.first;
+                *storage     = it->second.second;
+                return true;
+            }
+        }
+        else
+        {
+            auto it = concreteTypes.find(getTypeName(typeInfo, forceNoScope));
+            if (it != concreteTypes.end())
+            {
+                *ptrTypeInfo = it->second.first;
+                *storage     = it->second.second;
+                return true;
+            }
+            g_Stats.totalConcreteTypes++;
         }
     }
 
-    g_Stats.totalConcreteTypes++;
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
 
-    auto            node       = context->node;
-    auto            sourceFile = context->sourceFile;
-    auto            module     = sourceFile->module;
     auto&           swagScope  = g_Workspace.swagScope;
     TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)
@@ -256,8 +283,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     // Build concrete structure content
-    uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
-    ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
+    uint32_t          storageOffset         = segment->reserveNoLock(typeStruct->sizeOf);
+    ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) segment->addressNoLock(storageOffset);
 
     auto& typeName = getTypeName(typeInfo, forceNoScope);
     SWAG_ASSERT(!typeName.empty());
@@ -267,8 +294,11 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr            = g_Allocator.alloc<TypeInfoPointer>();
-    concreteTypes[typeName] = {typePtr, storageOffset};
+    auto typePtr = g_Allocator.alloc<TypeInfoPointer>();
+    if (cflags & CONCRETE_FOR_COMPILER)
+        concreteTypesCompiler[typeName] = {typePtr, storageOffset};
+    else
+        concreteTypes[typeName] = {typePtr, storageOffset};
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST | TYPEINFO_TYPEINFO_PTR;
@@ -319,6 +349,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         job->concreteTypeInfoValue = concreteTypeInfoValue;
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
+        job->cflags                = cflags & ~CONCRETE_SHOULD_WAIT;
         job->nodes.push_back(context->node);
 
         if (cflags & CONCRETE_SHOULD_WAIT)
@@ -348,10 +379,10 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         concreteType->parameters.count  = realType->parameters.size();
         if (concreteType->parameters.count)
         {
-            uint32_t               storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->parameters.size() * sizeof(ConcreteTypeInfoParam));
-            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) module->constantSegment.addressNoLock(storageArray);
+            uint32_t               storageArray = segment->reserveNoLock((uint32_t) realType->parameters.size() * sizeof(ConcreteTypeInfoParam));
+            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
             concreteType->parameters.buffer     = addrArray;
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
+            segment->addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
             for (int param = 0; param < concreteType->parameters.count; param++)
             {
                 SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageArray, realType->parameters[param], cflags));
@@ -375,10 +406,10 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)
         {
-            uint32_t               storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->values.size() * sizeof(ConcreteTypeInfoParam));
-            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) module->constantSegment.addressNoLock(storageArray);
+            uint32_t               storageArray = segment->reserveNoLock((uint32_t) realType->values.size() * sizeof(ConcreteTypeInfoParam));
+            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
             concreteType->values.buffer         = addrArray;
-            module->constantSegment.addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
+            segment->addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
             for (int param = 0; param < concreteType->values.count; param++)
             {
                 SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageArray, realType->values[param], cflags));

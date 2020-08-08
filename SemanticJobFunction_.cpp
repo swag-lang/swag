@@ -133,12 +133,14 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.name.count  = node->name.length();
 
     TypeInfo* resultType;
-    auto&     typeTable = module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    uint32_t  storageOffset;
+
+    auto& typeTable = module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
     if (context->result != ContextResult::Done)
         return true;
     node->concreteTypeInfo = resultType;
-    msg.type               = (ConcreteTypeInfo*) module->constantSegment.address(node->concreteTypeInfoStorage);
+    msg.type               = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);
 
     module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
     return true;
