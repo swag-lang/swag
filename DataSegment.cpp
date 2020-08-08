@@ -316,8 +316,4 @@ void DataSegment::restoreAllValues()
 
 void DataSegment::release()
 {
-    for (int i = 0; i < buckets.size(); i++)
-    {
-        auto bucket = &buckets[i];
-    }
 }
