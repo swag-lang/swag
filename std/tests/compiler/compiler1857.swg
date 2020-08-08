@@ -8,8 +8,9 @@ func testInline(type: const* swag.TypeInfoFunc)
     {
         if(i.name == "swag.inline")
         {
-            @print(type.name)
-            @print("\n")
+            cpt += 1
+            //@print(type.name)
+            //@print("\n")
         }
     }
 }

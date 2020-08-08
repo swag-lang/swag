@@ -258,14 +258,8 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     // Anonymous pointers
-    // Pointer to void or pointer to u8, cause LLVM do not know pointer to void (!!)
-    if (isSameFlags & ISSAME_CAST)
-    {
-        if (other->finalType == g_TypeMgr.typeInfoVoid)
-            return true;
-        //if (other->finalType == g_TypeMgr.typeInfoU8)
-        //    return true;
-    }
+    if ((isSameFlags & ISSAME_CAST) && other->finalType == g_TypeMgr.typeInfoVoid)
+        return true;
 
     return finalType->isSame(other->finalType, isSameFlags);
 }

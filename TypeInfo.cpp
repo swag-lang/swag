@@ -28,6 +28,7 @@ void TypeInfo::computeScopedNameNoLock()
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
     {
         newName += declNode->name;
+        newName += ".";
     }
 
     newName += nakedName;
