@@ -407,6 +407,9 @@
     <ClCompile Include="ffi/types.c">
       <Filter>FFI</Filter>
     </ClCompile>
+    <ClCompile Include="CompilerItf.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -682,6 +685,9 @@
     </ClInclude>
     <ClInclude Include="ffi/ffitarget.h">
       <Filter>FFI</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerItf.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

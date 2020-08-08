@@ -12,7 +12,7 @@ BYTECODE_OP(IntrinsicRealloc)
 BYTECODE_OP(IntrinsicGetContext)
 BYTECODE_OP(IntrinsicSetContext)
 BYTECODE_OP(IntrinsicArguments)
-BYTECODE_OP(IntrinsicCompilerMsg)
+BYTECODE_OP(IntrinsicCompiler)
 BYTECODE_OP(IntrinsicIsByteCode)
 BYTECODE_OP(IntrinsicInterfaceOf)
 

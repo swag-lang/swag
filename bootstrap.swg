@@ -17,7 +17,7 @@ func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
 func @isbytecode()->bool;
-func @msg()->const *swag.CompilerMessage;
+func @compiler()->swag.ICompiler;
 
 func @sqrt(value: f32)->f32;
 func @sqrt(value: f64)->f64;
@@ -435,6 +435,11 @@ namespace swag
         kind:           CompilerMsgKind = ?
 	    name:           string
         type:           const* TypeInfo
+    }
+
+    interface ICompiler
+    {
+        getMessage: func(self)->const* CompilerMessage
     }
 
     // #########################################################

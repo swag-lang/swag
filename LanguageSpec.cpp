@@ -121,7 +121,7 @@ void LanguageSpec::setup()
     keywords["@setcontext"]  = TokenId::IntrinsicSetContext;
     keywords["@args"]        = TokenId::IntrinsicArguments;
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
-    keywords["@msg"]         = TokenId::IntrinsicCompilerMsg;
+    keywords["@compiler"]    = TokenId::IntrinsicCompiler;
 
     keywords["@sqrt"]  = TokenId::IntrinsicSqrt;
     keywords["@sin"]   = TokenId::IntrinsicSin;

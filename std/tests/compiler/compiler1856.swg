@@ -1,6 +1,7 @@
 #compiler(swag.CompilerMsgKindMask.PassAllDone)
 {
-    msg := @msg()
+    itf := @compiler()
+    msg := itf.getMessage()
 
     /*@print(cast(s64) msg.kind)
     @print(" ")

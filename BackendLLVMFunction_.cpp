@@ -2438,7 +2438,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i8, r0);
             break;
         }
-        case ByteCodeOp::IntrinsicCompilerMsg:
+        case ByteCodeOp::IntrinsicCompiler:
         {
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].p = 0;");
             auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
