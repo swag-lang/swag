@@ -248,13 +248,8 @@ enum class CompilerMsgKindMask : swag_runtime_uint64_t
 
 struct ConcreteCompilerMessage
 {
-    ConcreteSlice   moduleName;
-    CompilerMsgKind kind;
-};
-
-struct ConcreteCompilerMessageSemantic
-{
-    ConcreteCompilerMessage base;
-    ConcreteSlice           name;
-    ConcreteTypeInfo*       type;
+    ConcreteSlice     moduleName;
+    CompilerMsgKind   kind;
+    ConcreteSlice     name;
+    ConcreteTypeInfo* type;
 };

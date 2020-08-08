@@ -433,12 +433,7 @@ namespace swag
     {
         moduleName:     string
         kind:           CompilerMsgKind = ?
-	}
-
-    struct CompilerMessageSemantic
-    {
-        using base:     CompilerMessage
-        name:           string
+	    name:           string
         type:           const* TypeInfo
     }
 

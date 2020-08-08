@@ -127,8 +127,8 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-    ConcreteCompilerMessageSemantic msg;
-    msg.base.kind   = CompilerMsgKind::SemanticFunc;
+    ConcreteCompilerMessage msg;
+    msg.kind        = CompilerMsgKind::SemanticFunc;
     msg.name.buffer = (void*) node->name.c_str();
     msg.name.count  = node->name.length();
 
