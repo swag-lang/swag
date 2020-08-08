@@ -320,10 +320,21 @@ void SourceFile::load(LoadRequest* request)
         close();
 }
 
-void SourceFile::addCompilerFunction(AstNode* funcNode)
+void SourceFile::addCompilerPassNode(AstNode* node)
 {
-    unique_lock lk(mutexCompilerFunctions);
-    unique_lock lk1(module->mutexCompilerFunctions);
-    module->filesWithCompilerFunctions.insert(this);
-    compilerFunctions.push_back(funcNode);
+    unique_lock lk(mutexCompilerPass);
+    unique_lock lk1(module->mutexCompilerPass);
+    module->filesForCompilerPass.insert(this);
+    switch (node->kind)
+    {
+    case AstNodeKind::FuncDecl:
+        compilerPassFunctions.push_back(node);
+        break;
+    case AstNodeKind::Using:
+        compilerPassUsing.push_back(node);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
 }

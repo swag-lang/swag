@@ -195,20 +195,21 @@ JobResult ModuleBuildJob::execute()
                 g_Log.verbose(format("## module %s semantic compiler pass begin", module->name.c_str()));
         }
 
-        if (!module->filesWithCompilerFunctions.empty())
+        if (!module->filesForCompilerPass.empty())
         {
-            for (auto itfile : module->filesWithCompilerFunctions)
+            for (auto itfile : module->filesForCompilerPass)
             {
-                for (auto itfunc : itfile->compilerFunctions)
-                {
-                    auto semanticJob          = g_Pool_semanticJob.alloc();
-                    semanticJob->sourceFile   = itfile;
-                    semanticJob->module       = module;
-                    semanticJob->dependentJob = this;
-                    semanticJob->flags |= JOB_COMPILER_PASS;
+                auto semanticJob          = g_Pool_semanticJob.alloc();
+                semanticJob->sourceFile   = itfile;
+                semanticJob->module       = module;
+                semanticJob->dependentJob = this;
+                semanticJob->flags |= JOB_COMPILER_PASS;
+                jobsToAdd.push_back(semanticJob);
+
+                for (auto itfunc : itfile->compilerPassFunctions)
                     semanticJob->nodes.push_back(itfunc);
-                    jobsToAdd.push_back(semanticJob);
-                }
+                for (auto itusing : itfile->compilerPassUsing)
+                    semanticJob->nodes.push_back(itusing);
             }
 
             return JobResult::KeepJobAlive;

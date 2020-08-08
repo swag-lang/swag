@@ -93,13 +93,13 @@ void Module::addFile(SourceFile* file)
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
-    // If the file has compiler functions, then we need to register it in the module
+    // If the file has nodes for the compiler pass, then we need to register it in the module
     {
-        unique_lock lk1(file->mutexCompilerFunctions);
-        if (!file->compilerFunctions.empty())
+        unique_lock lk1(file->mutexCompilerPass);
+        if (!file->compilerPassFunctions.empty())
         {
-            unique_lock lk2(mutexCompilerFunctions);
-            filesWithCompilerFunctions.insert(file);
+            unique_lock lk2(mutexCompilerPass);
+            filesForCompilerPass.insert(file);
         }
     }
 }
@@ -127,10 +127,10 @@ void Module::removeFile(SourceFile* file)
 
     // If the file has compiler functions, then we need to unregister it from the module
     {
-        unique_lock lk2(mutexCompilerFunctions);
-        auto        it = filesWithCompilerFunctions.find(file);
-        if (it != filesWithCompilerFunctions.end())
-            filesWithCompilerFunctions.erase(it);
+        unique_lock lk2(mutexCompilerPass);
+        auto        it = filesForCompilerPass.find(file);
+        if (it != filesForCompilerPass.end())
+            filesForCompilerPass.erase(it);
     }
 }
 

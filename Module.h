@@ -81,8 +81,8 @@ struct Module
 
     void setBuildPass(BuildPass buildP);
 
-    shared_mutex     mutexCompilerFunctions;
-    set<SourceFile*> filesWithCompilerFunctions;
+    shared_mutex     mutexCompilerPass;
+    set<SourceFile*> filesForCompilerPass;
 
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;

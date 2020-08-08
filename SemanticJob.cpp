@@ -72,7 +72,7 @@ JobResult SemanticJob::execute()
 
     if (!originalNode)
     {
-        SWAG_ASSERT(nodes.size() == 1);
+        //SWAG_ASSERT(nodes.size() == 1);
         originalNode = nodes.front();
     }
 

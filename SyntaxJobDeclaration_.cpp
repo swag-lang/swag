@@ -38,6 +38,8 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                     return error(node->token, "global 'using' must be defined at the top of the file");
                 }
             }
+
+            sourceFile->addCompilerPassNode(node);
         }
 
         if (token.id == TokenId::SymComma)
