@@ -86,7 +86,6 @@ void ByteCode::leaveByteCode()
     }
 #endif
 
-    //g_Allocator.free(registersRC[curRC], maxReservedRegisterRC * sizeof(Register));
     curRC--;
 }
 
