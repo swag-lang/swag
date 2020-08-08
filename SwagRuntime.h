@@ -229,6 +229,8 @@ struct ConcreteTypeInfoSlice
 
 enum class CompilerMsgKind
 {
+    PassBeforeSemantic,
+    PassBeforeRun,
     PassBeforeOutput,
     PassAllDone,
     SemanticFunc,
@@ -236,10 +238,12 @@ enum class CompilerMsgKind
 
 enum class CompilerMsgKindMask : swag_runtime_uint64_t
 {
-    PassBeforeOutput = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeOutput,
-    PassAllDone      = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassAllDone,
-    SemanticFunc     = 1 << (swag_runtime_uint32_t) CompilerMsgKind::SemanticFunc,
-    All              = 0xFFFFFFFFFFFFFFFF,
+    PassBeforeSemantic = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeSemantic,
+    PassBeforeRun      = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeRun,
+    PassBeforeOutput   = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeOutput,
+    PassAllDone        = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassAllDone,
+    SemanticFunc       = 1 << (swag_runtime_uint32_t) CompilerMsgKind::SemanticFunc,
+    All                = 0xFFFFFFFFFFFFFFFF,
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

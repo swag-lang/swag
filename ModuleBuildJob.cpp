@@ -239,6 +239,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforeSemantic);
         auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
@@ -275,6 +276,8 @@ JobResult ModuleBuildJob::execute()
 
         if (runByteCode)
         {
+            module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun);
+
             // #init functions are only executed in a bytecode module
             if (!module->byteCodeInitFunc.empty() && module->byteCodeOnly)
             {
@@ -355,7 +358,7 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        // During unit testing, be sure we don't have
+        // During unit testing, be sure we don't have untriggered errors
         if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
         {
             for (auto file : module->files)
