@@ -689,6 +689,9 @@
     <ClInclude Include="TypeTable.h">
       <Filter>Type</Filter>
     </ClInclude>
+    <ClInclude Include="SpinLock.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
