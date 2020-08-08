@@ -134,7 +134,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
 
     TypeInfo* resultType;
     auto&     typeTable = module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, true));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &node->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
     node->concreteTypeInfo = resultType;
