@@ -62,12 +62,6 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="TypeManager.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="TypeManagerCast_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFile.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -91,9 +85,6 @@
     </ClCompile>
     <ClCompile Include="Module.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="TypeInfo.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="Scope.cpp">
       <Filter>Semantic</Filter>
@@ -245,15 +236,6 @@
     <ClCompile Include="SemanticJobOp_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="TypeInfoMatch_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="TypeInfoSpecific_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="TypeTable.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeGenJobProperty_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -332,9 +314,6 @@
     <ClCompile Include="ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="TypeTableJob.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SemanticJobFunction_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -410,6 +389,27 @@
     <ClCompile Include="CompilerItf.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="TypeInfo.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeInfoMatch_.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeInfoSpecific_.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeManager.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeManagerCast_.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeTable.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeTableJob.cpp">
+      <Filter>Type</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -473,14 +473,8 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TypeInfo.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="Utf8Crc.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="TypeManager.h">
-      <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile.h">
       <Filter>Main</Filter>
@@ -549,9 +543,6 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="Generic.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="TypeTable.h">
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="SwagScope.h">
@@ -629,9 +620,6 @@
     <ClInclude Include="VectorNative.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="TypeTableJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="CopyFileJob.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -689,6 +677,18 @@
     <ClInclude Include="CompilerItf.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="TypeTableJob.h">
+      <Filter>Type</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeInfo.h">
+      <Filter>Type</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeManager.h">
+      <Filter>Type</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTable.h">
+      <Filter>Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -726,6 +726,9 @@
     </Filter>
     <Filter Include="Backend\C">
       <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Type">
+      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

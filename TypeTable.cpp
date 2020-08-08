@@ -7,6 +7,17 @@
 #include "TypeManager.h"
 #include "Module.h"
 
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
+
+    unique_lock lk(segment->mutex);
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, cflags));
+    return true;
+}
+
 DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
@@ -163,18 +174,6 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, c
     result->buffer = (void*) str.c_str();
     SWAG_ASSERT(result->buffer);
     result->count = str.length();
-    return true;
-}
-
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
-{
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
-
-    unique_lock lk(mutexTypes);
-    unique_lock lk1(segment->mutex);
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, cflags));
     return true;
 }
 

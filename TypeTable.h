@@ -30,7 +30,6 @@ struct TypeTable
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     DataSegment* getConstantSegment(Module* module, uint32_t flags);
 
-    shared_mutex                            mutexTypes;
     map<Utf8Crc, pair<TypeInfo*, uint32_t>> concreteTypes;
     map<Utf8Crc, pair<TypeInfo*, uint32_t>> concreteTypesCompiler;
 };

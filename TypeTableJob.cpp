@@ -12,7 +12,6 @@ bool TypeTableJob::computeStruct()
     auto realType     = (TypeInfoStruct*) typeInfo;
     auto segment      = typeTable->getConstantSegment(module, cflags);
 
-    unique_lock lk(typeTable->mutexTypes);
     unique_lock lk1(segment->mutex);
 
     SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
