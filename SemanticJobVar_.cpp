@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
