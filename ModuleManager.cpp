@@ -13,8 +13,12 @@ bool ModuleManager::isModuleLoaded(const Utf8& name)
 
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNotHere)
 {
+    if (isModuleLoaded(name))
+        return true;
+
     unique_lock lk(mutex);
 
+    // In case it is now loaded, after the lock
     if (loadedModules.find(name) != loadedModules.end())
         return true;
 
@@ -28,9 +32,6 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
-        if (name == "icu")
-            h = h;
-
         // Try on system folders
         if (canBeSystem)
         {
