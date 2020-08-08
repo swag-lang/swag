@@ -62,10 +62,15 @@ bool TypeTableJob::computeStruct()
         {
             SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->interfaces[param], cflags));
 
-            uint32_t fieldOffset   = offsetof(ConcreteTypeInfoParam, value);
-            uint32_t valueOffset   = storageArray + (param * sizeof(ConcreteTypeInfoParam)) + fieldOffset;
-            addrArray[param].value = segment->addressNoLock(realType->interfaces[param]->offset);
-            segment->addInitPtr(valueOffset, realType->interfaces[param]->offset);
+            // Compute the storage of the interface for swag_runtime_interfaceof
+            // Not needed if we are computing a compiler type
+            if (!(cflags & CONCRETE_FOR_COMPILER))
+            {
+                uint32_t fieldOffset   = offsetof(ConcreteTypeInfoParam, value);
+                uint32_t valueOffset   = storageArray + (param * sizeof(ConcreteTypeInfoParam)) + fieldOffset;
+                addrArray[param].value = segment->addressNoLock(realType->interfaces[param]->offset);
+                segment->addInitPtr(valueOffset, realType->interfaces[param]->offset);
+            }
 
             storageArray += sizeof(ConcreteTypeInfoParam);
         }
