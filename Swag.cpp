@@ -5,6 +5,7 @@
 #include "Version.h"
 #include "Os.h"
 #include "Timer.h"
+#include "Module.h"
 
 void printStats()
 {

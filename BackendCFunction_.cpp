@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
 #include "SwagRuntime.h"
+#include "Module.h"
 
 BackendFunctionBodyJob* BackendC::newFunctionJob()
 {

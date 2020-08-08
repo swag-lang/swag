@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Os.h"
+#include "Module.h"
 
 bool Backend::emitAttributes(AstNode* node)
 {

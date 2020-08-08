@@ -5,6 +5,7 @@
 #include "BackendLinkerWin32.h"
 #include "BackendSetupWin32.h"
 #include "Workspace.h"
+#include "Module.h"
 
 namespace OS
 {

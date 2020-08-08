@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
+#include "Module.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {

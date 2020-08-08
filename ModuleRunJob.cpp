@@ -3,6 +3,7 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "DiagnosticInfos.h"
+#include "Module.h"
 
 thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 

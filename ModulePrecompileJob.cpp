@@ -3,6 +3,7 @@
 #include "Backend.h"
 #include "Workspace.h"
 #include "Timer.h"
+#include "Module.h"
 
 thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
 

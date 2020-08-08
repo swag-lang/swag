@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "ThreadManager.h"
+#include "Module.h"
 
 thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
 

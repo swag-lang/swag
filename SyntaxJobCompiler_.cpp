@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Scoped.h"
+#include "Module.h"
 
 bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {

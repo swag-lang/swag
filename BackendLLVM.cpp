@@ -3,6 +3,7 @@
 #include "BackendLLVMDbg.h"
 #include "Workspace.h"
 #include "OS.h"
+#include "Module.h"
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {

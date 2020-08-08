@@ -1,6 +1,6 @@
 #pragma once
-#include "ByteCodeRunContext.h"
-#include "swagScope.h"
+#include "SwagScope.h"
+#include "Utf8.h"
 struct Module;
 struct Scope;
 
@@ -34,7 +34,6 @@ struct Workspace
     vector<Module*>    modules;
     map<Utf8, Module*> mapModulesNames;
     Module*            filteredModule = nullptr;
-    ByteCodeRunContext runContext;
     Module*            bootstrapModule;
     SwagScope          swagScope;
 };

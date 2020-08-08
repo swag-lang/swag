@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "Module.h"
 
 thread_local Pool<BackendCFunctionBodyJob> g_Pool_backendCFunctionBodyJob;
 thread_local Concat                        g_Concat;

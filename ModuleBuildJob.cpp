@@ -12,6 +12,7 @@
 #include "Backend.h"
 #include "CopyFileJob.h"
 #include "SemanticJob.h"
+#include "Module.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 

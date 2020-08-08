@@ -5,6 +5,7 @@
 #include "SourceFile.h"
 #include "DiagnosticInfos.h"
 #include "ByteCodeRunContext.h"
+#include "Module.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op) #__op,

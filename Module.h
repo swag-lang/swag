@@ -1,4 +1,5 @@
 #pragma once
+#include "ByteCodeRunContext.h"
 #include "Pool.h"
 #include "BuildPass.h"
 #include "BuildParameters.h"
@@ -108,6 +109,7 @@ struct Module
     VectorNative<ByteCode*>    byteCodeDropFunc;
     VectorNative<ByteCode*>    byteCodeRunFunc;
     VectorNative<AstFuncDecl*> allForeign;
+    ByteCodeRunContext         runContext;
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;

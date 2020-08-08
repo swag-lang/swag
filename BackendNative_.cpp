@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "BackendFunctionBodyJob.h"
+#include "Module.h"
 
 void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end)
 {

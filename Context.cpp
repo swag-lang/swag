@@ -6,6 +6,7 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 #include "Global.h"
+#include "Module.h"
 
 swag_tls_id_t        g_tlsContextId = 0;
 swag_context_t       g_defaultContext;
@@ -31,8 +32,9 @@ static void byteCodeRun(void* byteCodePtr, ...)
     }
 
     ByteCodeRunContext runContext;
-    auto               node = bc->node;
-    runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
+    auto               node   = bc->node;
+    auto               module = node->sourceFile->module;
+    runContext.setup(node->sourceFile, node, module->runContext.numRegistersRR, module->runContext.stackSize);
 
     // Parameters
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)

@@ -2,7 +2,6 @@
 #include "Register.h"
 #include "Log.h"
 #include "SourceFile.h"
-#include "Module.h"
 #include "Job.h"
 struct SemanticContext;
 struct AstNode;
@@ -50,7 +49,7 @@ struct ByteCodeRunContext : public JobContext
         if (sp - sizeof(T) < stack)
         {
             hasError = true;
-            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", sourceFile->module->buildParameters.buildCfg->byteCodeStackSize);
+            errorMsg = "stack overflow during bytecode execution";
             return;
         }
 

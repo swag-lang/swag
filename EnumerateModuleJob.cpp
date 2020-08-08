@@ -8,6 +8,7 @@
 #include "Stats.h"
 #include "Allocator.h"
 #include "Scope.h"
+#include "Module.h"
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* theModule)
 {

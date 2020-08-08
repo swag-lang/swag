@@ -1,4 +1,5 @@
 #pragma once
+#include "CommandLine.h"
 
 struct Timer
 {

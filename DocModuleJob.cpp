@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "Os.h"
+#include "Module.h"
 
 thread_local Pool<DocModuleJob> g_Pool_docModuleJob;
 

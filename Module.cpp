@@ -160,8 +160,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
 {
-    auto runContext = &g_Workspace.runContext;
-
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
     if (g_CommandLine.devMode)
@@ -174,11 +172,11 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
     // Global setup
     {
         scoped_lock lkRR(mutexRegisterRR);
-        runContext->setup(sourceFile, node, maxReservedRegisterRR, buildParameters.buildCfg->byteCodeStackSize);
-        node->bc->enterByteCode(runContext);
+        runContext.setup(sourceFile, node, maxReservedRegisterRR, buildParameters.buildCfg->byteCodeStackSize);
+        node->bc->enterByteCode(&runContext);
     }
 
-    bool result = g_Run.run(&g_Workspace.runContext);
+    bool result = g_Run.run(&runContext);
     node->bc->leaveByteCode();
     if (!result)
         return false;

@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
 #include "SwagRuntime.h"
+#include "Module.h"
 
 ByteCodeRun g_Run;
 

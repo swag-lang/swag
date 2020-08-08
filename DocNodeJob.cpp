@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "DocContent.h"
 #include "DocModuleJob.h"
+#include "Module.h"
 
 thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 

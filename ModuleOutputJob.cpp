@@ -8,6 +8,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 #include "ModuleRunJob.h"
+#include "Module.h"
 
 thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 

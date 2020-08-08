@@ -8,6 +8,7 @@
 #include "Os.h"
 #include "Timer.h"
 #include "CommandLineParser.h"
+#include "Module.h"
 
 Workspace g_Workspace;
 

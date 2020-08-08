@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "Job.h"
+#include "Module.h"
 #include "BackendC.h"
 #include "Workspace.h"
 #include "OS.h"

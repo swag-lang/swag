@@ -2,6 +2,7 @@
 #include "ModuleCompileJob.h"
 #include "Backend.h"
 #include "Workspace.h"
+#include "Module.h"
 #include "Timer.h"
 
 thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;

@@ -2,6 +2,7 @@
 #include "Backend.h"
 #include "Workspace.h"
 #include "OS.h"
+#include "Module.h"
 
 string Backend::compilerExe;
 string Backend::compilerPath;

@@ -4,6 +4,7 @@
 #include "Backend.h"
 #include "OS.h"
 #include "BackendSetupWin32.h"
+#include "Module.h"
 
 namespace BackendLinkerWin32
 {
