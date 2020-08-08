@@ -9,17 +9,21 @@ RaceCondition::RaceCondition(Instance* instance, bool read)
     myInstance = instance;
 
     auto currentThreadId = this_thread::get_id();
-    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId || (myInstance->read && read));
-    myInstance->count++;
-    myInstance->lastThreadID = currentThreadId;
-    myInstance->defined      = true;
-    myInstance->read         = read;
+    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId);
+    myInstance->read = read;
+
+    if (!read)
+    {
+        myInstance->count++;
+        myInstance->lastThreadID = currentThreadId;
+        myInstance->defined      = true;
+    }
 }
 
 RaceCondition::~RaceCondition()
 {
     scoped_lock lk(myInstance->mutex);
-    if (myInstance->lastThreadID == this_thread::get_id())
+    if (!myInstance->read && myInstance->lastThreadID == this_thread::get_id())
     {
         myInstance->count--;
         if (myInstance->count == 0)

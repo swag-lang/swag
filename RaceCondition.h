@@ -10,8 +10,7 @@ struct RaceCondition
         std::atomic<int> count   = 0;
         bool             defined = false;
         bool             read    = false;
-
-        Instance() = default;
+        Instance()               = default;
     };
 
     RaceCondition()                     = delete;

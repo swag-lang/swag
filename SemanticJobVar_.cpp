@@ -10,23 +10,59 @@
 bool SemanticJob::reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
     auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
 
-    // Need to lock both data segments, as both can be modified if 'seg' is a data
-    scoped_lock lockConstant(sourceFile->module->constantSegment.mutex);
-    scoped_lock lockData(sourceFile->module->mutableSegment.mutex);
+    if (seg == &module->constantSegment || seg == &module->bssSegment)
+        seg->mutex.lock();
 
-    return reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+    // Need to lock both data and constant segments, as both can be modified if 'seg' is a data
+    else
+    {
+        SWAG_ASSERT(seg == &module->mutableSegment);
+        seg->mutex.lock();
+        module->constantSegment.mutex.lock();
+    }
+
+    auto result = reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+
+    if (seg == &module->constantSegment || seg == &module->bssSegment)
+        seg->mutex.unlock();
+    else
+    {
+        module->constantSegment.mutex.unlock();
+        seg->mutex.unlock();
+    }
+
+    return result;
 }
 
 bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
     auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
 
-    // Need to lock both data segments, as both can be modified if 'seg' is a data
-    scoped_lock lockConstant(sourceFile->module->constantSegment.mutex);
-    scoped_lock lockData(sourceFile->module->mutableSegment.mutex);
+    if (seg == &module->constantSegment || seg == &module->bssSegment)
+        seg->mutex.lock();
 
-    return storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+    // Need to lock both data and constant segments, as both can be modified if 'seg' is a data
+    else
+    {
+        SWAG_ASSERT(seg == &module->mutableSegment);
+        seg->mutex.lock();
+        module->constantSegment.mutex.lock();
+    }
+
+    auto result = storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+
+    if (seg == &module->constantSegment || seg == &module->bssSegment)
+        seg->mutex.unlock();
+    else
+    {
+        module->constantSegment.mutex.unlock();
+        seg->mutex.unlock();
+    }
+
+    return result;
 }
 
 bool SemanticJob::reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
@@ -243,7 +279,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         else
         {
             autoName = true;
-            varName = format("item%u", idx);
+            varName  = format("item%u", idx);
         }
 
         auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
