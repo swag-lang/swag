@@ -13,6 +13,7 @@ struct ByteCodeInstruction;
 struct X64PerThread
 {
     string                filename;
+    Concat                concat;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     map<int32_t, llvm::BasicBlock*> labels;
