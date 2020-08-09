@@ -272,11 +272,11 @@ bool BackendX64::emitRelocationTable(X64PerThread& pp, CoffRelocationTable& coff
     auto& concat = pp.concat;
     *offset      = concat.totalCount;
 
-    SWAG_ASSERT(cofftable.table.size() <= UINT32_MAX);
+    SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
     auto tableSize = (uint32_t) cofftable.table.size();
     if (tableSize > 0xFFFF)
     {
-        *count = (uint16_t) 0xFFFF;
+        *count = 0xFFFF;
         *sectionFlags |= IMAGE_SCN_LNK_NRELOC_OVFL;
         concat.addU32(tableSize + 1);
         concat.addU32(0);
@@ -304,7 +304,7 @@ bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
 
     // .text
-    emitRelocationTable(pp, pp.relocationTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableOffset, pp.patchTextSectionRelocTableCount);
+    emitRelocationTable(pp, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableOffset, pp.patchTextSectionRelocTableCount);
 
     return true;
 }

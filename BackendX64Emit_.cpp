@@ -23,7 +23,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
         reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
         reloc.symbolIndex    = callSym->index;
         reloc.type           = IMAGE_REL_AMD64_REL32;
-        pp.relocationTextSection.table.push_back(reloc);
+        pp.relocTableTextSection.table.push_back(reloc);
 
         concat.addS32(0);
     }

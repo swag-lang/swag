@@ -56,7 +56,7 @@ struct X64PerThread
     vector<const Utf8*> stringTable;
     uint32_t            stringTableOffset = 0;
 
-    CoffRelocationTable relocationTextSection;
+    CoffRelocationTable relocTableTextSection;
 
     vector<CoffSymbol>     allSymbols;
     map<Utf8Crc, uint32_t> mapSymbols;
