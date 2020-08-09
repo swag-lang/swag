@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendX64.h"
+#include "BackendX64Inst.h"
 #include "BackendX64FunctionBodyJob.h"
 #include "Module.h"
 #include "ByteCode.h"
@@ -19,10 +20,42 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
     {
         if (buildParameters.compileType != BackendCompileType::Test)
             return true;
+    }
+
+    // Symbol
+    pp.allSymbols.push_back({bc->callName().c_str(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset});
+
+    auto                   ip = bc->out;
+    VectorNative<uint32_t> pushRAParams;
+    for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
+    {
+        if (ip->node->flags & AST_NO_BACKEND)
+        {
+            SWAG_ASSERT(!(ip->flags & BCI_JUMP_DEST));
+            continue;
+        }
+
+        switch (ip->op)
+        {
+        case ByteCodeOp::End:
+            continue;
+        }
+
+        switch (ip->op)
+        {
+        case ByteCodeOp::Ret:
+            BackendX64Inst::emit(concat, BackendX64Inst::Ret);
+            continue;
+        }
     }
 
     return true;

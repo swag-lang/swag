@@ -713,6 +713,9 @@
     <ClInclude Include="BackendX64FunctionBodyJob.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
+    <ClInclude Include="BackendX64Inst.h">
+      <Filter>Backend\X64</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

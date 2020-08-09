@@ -38,7 +38,10 @@ struct X64PerThread
     vector<CoffSymbol>    allSymbols;
     uint32_t              textSectionOffset = 0;
     uint32_t              textSectionSize   = 0;
-    BackendPreCompilePass pass              = {BackendPreCompilePass::Init};
+    vector<const Utf8*>   stringTable;
+    uint32_t              stringTableOffset = 0;
+
+    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
 
 struct BackendX64 : public Backend

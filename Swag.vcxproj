@@ -124,6 +124,7 @@
     <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BackendX64.h" />
     <ClInclude Include="BackendX64FunctionBodyJob.h" />
+    <ClInclude Include="BackendX64Inst.h" />
     <ClInclude Include="BuildParameters.h" />
     <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />

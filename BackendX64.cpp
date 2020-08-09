@@ -171,13 +171,23 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     applyPatch(pp, PatchType::SymbolTableOffset, concat.totalCount);
-    applyPatch(pp, PatchType::SymbolTableCount, 1);
+    applyPatch(pp, PatchType::SymbolTableCount, (uint32_t) pp.allSymbols.size());
 
+    pp.stringTableOffset = 4;
     for (auto& symbol : pp.allSymbols)
     {
-        SWAG_ASSERT(symbol.name.length() < 8);
-        concat.addString(symbol.name.c_str(), 8); // .Name
-        concat.addU32(symbol.value);              // .Value
+        // .Name
+        if (symbol.name.length() <= 8)
+            concat.addString(symbol.name.c_str(), 8);
+        else
+        {
+            concat.addU32(0);
+            concat.addU32(pp.stringTableOffset);
+            pp.stringTable.push_back(&symbol.name);
+            pp.stringTableOffset += symbol.name.length() + 1;
+        }
+
+        concat.addU32(symbol.value); // .Value
         switch (symbol.kind)
         {
         case CoffSymbolKind::Function:
@@ -189,9 +199,9 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             SWAG_ASSERT(false);
             break;
         }
-    }
 
-    concat.addU8(0); // .NumberOfAuxSymbols
+        concat.addU8(0); // .NumberOfAuxSymbols
+    }
 
     return true;
 }
@@ -203,7 +213,10 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    concat.addU32(4); // .Size of table in bytes + 4
+    concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
+    for (auto str : pp.stringTable)
+        concat.addString(str->c_str(), str->length() + 1);
+
     return true;
 }
 
