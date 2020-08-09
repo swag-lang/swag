@@ -76,13 +76,9 @@ struct BackendX64 : public Backend
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool                createRuntime(const BuildParameters& buildParameters);
-    llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC);
-    bool                createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::FunctionType** result);
-    bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
-    void                getCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
+    bool createRuntime(const BuildParameters& buildParameters);
+    bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
-    bool emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
     bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
     void        applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
@@ -104,6 +100,9 @@ struct BackendX64 : public Backend
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
+
+    void emitCall(X64PerThread& pp, const Utf8& name);
+    void emitRet(X64PerThread& pp);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

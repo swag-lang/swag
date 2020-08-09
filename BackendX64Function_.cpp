@@ -51,7 +51,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         switch (ip->op)
         {
         case ByteCodeOp::Ret:
-            BackendX64Inst::emit(concat, BackendX64Inst::Ret);
+            emitRet(pp);
             continue;
         }
     }
