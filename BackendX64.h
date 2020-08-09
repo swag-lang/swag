@@ -25,7 +25,6 @@ enum class CoffSymbolKind
 {
     Function,
     Extern,
-    StaticSectionText,
 };
 
 struct CoffSymbol
@@ -55,7 +54,6 @@ struct X64PerThread
     map<PatchType, void*> allPatches;
 
     uint32_t            textSectionOffset = 0;
-    uint32_t            textSectionSize   = 0;
     vector<const Utf8*> stringTable;
     uint32_t            stringTableOffset = 0;
 

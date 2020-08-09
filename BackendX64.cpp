@@ -35,7 +35,6 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         if (g_CommandLine.verbose)
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
-        addSymbol(pp, Utf8Crc(".text"), CoffSymbolKind::StaticSectionText);
         emitHeader(buildParameters);
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
@@ -47,6 +46,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
     {
         pp.pass = BackendPreCompilePass::End;
 
+        // Align .text section to 16 bytes
         while (concat.totalCount % 16)
             concat.addU8(0);
         pp.textSectionOffset = concat.totalCount;
@@ -58,6 +58,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
     if (pp.pass == BackendPreCompilePass::End)
     {
+        // Specific functions in the main file
         if (precompileIndex == 0)
         {
             emitInitDataSeg(buildParameters);
@@ -66,6 +67,9 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);
         }
+
+        // This is it for functions
+        applyPatch(pp, PatchType::TextSectionSize, concat.totalCount - pp.textSectionOffset);
 
         // Output file
         emitSymbolTable(buildParameters);
@@ -229,22 +233,6 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             concat.addU16(0);                       // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
             concat.addU8(0);                        // .NumberOfAuxSymbols
-            break;
-        case CoffSymbolKind::StaticSectionText:
-            concat.addU16(1);                     // .SectionNumber
-            concat.addU16(0);                     // .Type
-            concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
-            concat.addU8(0);                      // .NumberOfAuxSymbols
-
-            /*concat.addU32(pp.textSectionOffset);
-            concat.addU16((uint16_t) pp.relocationTextSection.table.size());
-            concat.addU16(0);
-            concat.addU32(0);
-            concat.addU16(0);
-            concat.addU8(1);
-            concat.addU8(0);
-            concat.addU8(0);
-            concat.addU8(0);*/
             break;
         default:
             SWAG_ASSERT(false);

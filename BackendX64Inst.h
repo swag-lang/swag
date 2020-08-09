@@ -4,8 +4,9 @@ namespace BackendX64Inst
 {
     enum Instruction : uint8_t
     {
-        Xor = 0x33,
-        Ret = 0xC3,
+        Xor  = 0x33,
+        Ret  = 0xC3,
+        Call = 0xE8,
     };
 
     enum ModRM : uint8_t
@@ -22,4 +23,4 @@ namespace BackendX64Inst
     {
         concat.addU16(modRM << 8 | inst);
     }
-};
+}; // namespace BackendX64Inst
