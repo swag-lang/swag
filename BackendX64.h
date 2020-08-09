@@ -11,16 +11,6 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
-enum class PatchType
-{
-    SymbolTableOffset,
-    SymbolTableCount,
-    TextSectionOffset,
-    TextSectionSize,
-    TextSectionRelocTableOffset,
-    TextSectionRelocTableCount,
-};
-
 enum class CoffSymbolKind
 {
     Function,
@@ -49,9 +39,15 @@ struct CoffRelocationTable
 
 struct X64PerThread
 {
-    string                filename;
-    Concat                concat;
-    map<PatchType, void*> allPatches;
+    string filename;
+    Concat concat;
+
+    uint32_t* patchSymbolTableOffset;
+    uint32_t* patchSymbolTableCount;
+    uint32_t* patchTextSectionOffset;
+    uint32_t* patchTextSectionSize;
+    uint32_t* patchTextSectionRelocTableOffset;
+    uint16_t* patchTextSectionRelocTableCount;
 
     uint32_t            textSectionOffset = 0;
     vector<const Utf8*> stringTable;
@@ -78,8 +74,6 @@ struct BackendX64 : public Backend
 
     bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
-    void        applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
-    void        addPatch(X64PerThread& pp, PatchType type, void* addr);
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0);
 

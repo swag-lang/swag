@@ -43,8 +43,8 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // Align .text section to 16 bytes
         while (concat.totalCount % 16)
             concat.addU8(0);
-        pp.textSectionOffset = concat.totalCount;
-        applyPatch(pp, PatchType::TextSectionOffset, pp.textSectionOffset);
+        pp.textSectionOffset       = concat.totalCount;
+        *pp.patchTextSectionOffset = pp.textSectionOffset;
 
         emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlive;
@@ -63,7 +63,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         }
 
         // This is it for functions
-        applyPatch(pp, PatchType::TextSectionSize, concat.totalCount - pp.textSectionOffset);
+        *pp.patchTextSectionSize = concat.totalCount - pp.textSectionOffset;
 
         // Output file
         emitSymbolTable(buildParameters);
@@ -73,21 +73,6 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
     }
 
     return JobResult::ReleaseJob;
-}
-
-void BackendX64::addPatch(X64PerThread& pp, PatchType type, void* addr)
-{
-    pp.allPatches[type] = addr;
-}
-
-void BackendX64::applyPatch(X64PerThread& pp, PatchType type, uint32_t value)
-{
-    auto it = pp.allPatches.find(type);
-    SWAG_ASSERT(it != pp.allPatches.end());
-    if (type == PatchType::TextSectionRelocTableCount)
-        *(uint16_t*) it->second = (uint16_t) value;
-    else
-        *(uint32_t*) it->second = value;
 }
 
 CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
@@ -141,8 +126,8 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     time(&now);
     concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
 
-    addPatch(pp, PatchType::SymbolTableOffset, concat.addU32Addr(0)); // .PointerToSymbolTable
-    addPatch(pp, PatchType::SymbolTableCount, concat.addU32Addr(0));  // .NumberOfSymbols
+    pp.patchSymbolTableOffset = concat.addU32Addr(0); // .PointerToSymbolTable
+    pp.patchSymbolTableCount  = concat.addU32Addr(0); // .NumberOfSymbols
 
     concat.addU16(0); // .SizeOfOptionalHeader
 
@@ -154,12 +139,12 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU32(0);             // .VirtualSize
     concat.addU32(0);             // .VirtualAddress
 
-    addPatch(pp, PatchType::TextSectionSize, concat.addU32Addr(0));             // .SizeOfRawData
-    addPatch(pp, PatchType::TextSectionOffset, concat.addU32Addr(0));           // .PointerToRawData
-    addPatch(pp, PatchType::TextSectionRelocTableOffset, concat.addU32Addr(0)); // .PointerToRelocations
-    concat.addU32(0);                                                           // .PointerToLinenumbers
-    addPatch(pp, PatchType::TextSectionRelocTableCount, concat.addU16Addr(0));  // .PointerToRelocations
-    concat.addU16(0);                                                           // .NumberOfLinenumbers
+    pp.patchTextSectionSize             = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchTextSectionOffset           = concat.addU32Addr(0); // .PointerToRawData
+    pp.patchTextSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+    concat.addU32(0);                                           // .PointerToLinenumbers
+    pp.patchTextSectionRelocTableCount = concat.addU16Addr(0);  // .PointerToRelocations
+    concat.addU16(0);                                           // .NumberOfLinenumbers
     concat.addU32(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
     // bss section
@@ -211,8 +196,8 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    applyPatch(pp, PatchType::SymbolTableOffset, concat.totalCount);
-    applyPatch(pp, PatchType::SymbolTableCount, (uint32_t) pp.allSymbols.size());
+    *pp.patchSymbolTableOffset = concat.totalCount;
+    *pp.patchSymbolTableCount  = (uint32_t) pp.allSymbols.size();
 
     pp.stringTableOffset = 4;
     for (auto& symbol : pp.allSymbols)
@@ -273,8 +258,8 @@ bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    applyPatch(pp, PatchType::TextSectionRelocTableOffset, concat.totalCount);
-    applyPatch(pp, PatchType::TextSectionRelocTableCount, (uint16_t) pp.relocationTextSection.table.size());
+    *pp.patchTextSectionRelocTableOffset = concat.totalCount;
+    *pp.patchTextSectionRelocTableCount  = (uint16_t) pp.relocationTextSection.table.size();
     for (auto& reloc : pp.relocationTextSection.table)
     {
         concat.addU32(reloc.virtualAddress);
