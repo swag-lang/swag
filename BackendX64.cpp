@@ -65,10 +65,19 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // This is it for functions
         *pp.patchTextSectionSize = concat.totalCount - pp.textSectionOffset;
 
-        // Output file
+        // Tables
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
         emitRelocationTables(buildParameters);
+
+        // Segments
+        if (precompileIndex == 0)
+        {
+            *pp.patchCSOffset = concat.totalCount;
+            *pp.patchDSOffset = concat.totalCount + module->constantSegment.totalCount;
+        }
+
+        // Output file
         generateObjFile(buildParameters);
     }
 
@@ -120,7 +129,10 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     // Coff header
     /////////////////////////////////////////////
     concat.addU16(IMAGE_FILE_MACHINE_AMD64); // .Machine
-    concat.addU16(4);                        // .NumberOfSections
+    if (precompileIndex == 0)
+        concat.addU16(4); // .NumberOfSections
+    else
+        concat.addU16(1); // .NumberOfSections
 
     time_t now;
     time(&now);
@@ -145,46 +157,49 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU32(0);                                           // .PointerToLinenumbers
     pp.patchTextSectionRelocTableCount = concat.addU16Addr(0);  // .PointerToRelocations
     concat.addU16(0);                                           // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
+    pp.patchTextSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
-    // bss section
-    /////////////////////////////////////////////
-    concat.addString(".bss", 8); // .Name
-    concat.addU32(0);            // .VirtualSize
-    concat.addU32(0);            // .VirtualAddress
-    concat.addU32(0);            // .SizeOfRawData
-    concat.addU32(0);            // .PointerToRawData
-    concat.addU32(0);            // .PointerToRelocations
-    concat.addU32(0);            // .PointerToLinenumbers
-    concat.addU16(0);            // .NumberOfRelocations
-    concat.addU16(0);            // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
+    if (precompileIndex == 0)
+    {
+        // bss section
+        /////////////////////////////////////////////
+        concat.addString(".bss", 8);                  // .Name
+        concat.addU32(0);                             // .VirtualSize
+        concat.addU32(0);                             // .VirtualAddress
+        concat.addU32(module->bssSegment.totalCount); // .SizeOfRawData
+        concat.addU32(0);                             // .PointerToRawData
+        concat.addU32(0);                             // .PointerToRelocations
+        concat.addU32(0);                             // .PointerToLinenumbers
+        concat.addU16(0);                             // .NumberOfRelocations
+        concat.addU16(0);                             // .NumberOfLinenumbers
+        concat.addU32(IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
 
-    // constant section
-    /////////////////////////////////////////////
-    concat.addString(".rdata", 8); // .Name
-    concat.addU32(0);              // .VirtualSize
-    concat.addU32(0);              // .VirtualAddress
-    concat.addU32(0);              // .SizeOfRawData
-    concat.addU32(0);              // .PointerToRawData
-    concat.addU32(0);              // .PointerToRelocations
-    concat.addU32(0);              // .PointerToLinenumbers
-    concat.addU16(0);              // .NumberOfRelocations
-    concat.addU16(0);              // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
+        // constant section
+        /////////////////////////////////////////////
+        concat.addString(".rdata", 8);                     // .Name
+        concat.addU32(0);                                  // .VirtualSize
+        concat.addU32(0);                                  // .VirtualAddress
+        concat.addU32(module->constantSegment.totalCount); // .SizeOfRawData
+        pp.patchCSOffset = concat.addU32Addr(0);           // .PointerToRawData
+        concat.addU32(0);                                  // .PointerToRelocations
+        concat.addU32(0);                                  // .PointerToLinenumbers
+        concat.addU16(0);                                  // .NumberOfRelocations
+        concat.addU16(0);                                  // .NumberOfLinenumbers
+        concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
 
-    // mutable section
-    /////////////////////////////////////////////
-    concat.addString(".data", 8); // .Name
-    concat.addU32(0);             // .VirtualSize
-    concat.addU32(0);             // .VirtualAddress
-    concat.addU32(0);             // .SizeOfRawData
-    concat.addU32(0);             // .PointerToRawData
-    concat.addU32(0);             // .PointerToRelocations
-    concat.addU32(0);             // .PointerToLinenumbers
-    concat.addU16(0);             // .NumberOfRelocations
-    concat.addU16(0);             // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
+        // mutable section
+        /////////////////////////////////////////////
+        concat.addString(".data", 8);                                            // .Name
+        concat.addU32(0);                                                        // .VirtualSize
+        concat.addU32(0);                                                        // .VirtualAddress
+        pp.patchDSOffset = concat.addU32Addr(module->mutableSegment.totalCount); // .SizeOfRawData
+        concat.addU32(0);                                                        // .PointerToRawData
+        concat.addU32(0);                                                        // .PointerToRelocations
+        concat.addU32(0);                                                        // .PointerToLinenumbers
+        concat.addU16(0);                                                        // .NumberOfRelocations
+        concat.addU16(0);                                                        // .NumberOfLinenumbers
+        concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
+    }
 
     return true;
 }
@@ -197,7 +212,8 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     *pp.patchSymbolTableOffset = concat.totalCount;
-    *pp.patchSymbolTableCount  = (uint32_t) pp.allSymbols.size();
+    SWAG_ASSERT(pp.allSymbols.size() <= UINT32_MAX);
+    *pp.patchSymbolTableCount = (uint32_t) pp.allSymbols.size();
 
     pp.stringTableOffset = 4;
     for (auto& symbol : pp.allSymbols)
@@ -251,21 +267,44 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
+bool BackendX64::emitRelocationTable(X64PerThread& pp, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint32_t* offset, uint16_t* count)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    auto& concat = pp.concat;
+    *offset      = concat.totalCount;
 
-    *pp.patchTextSectionRelocTableOffset = concat.totalCount;
-    *pp.patchTextSectionRelocTableCount  = (uint16_t) pp.relocationTextSection.table.size();
-    for (auto& reloc : pp.relocationTextSection.table)
+    SWAG_ASSERT(cofftable.table.size() <= UINT32_MAX);
+    auto tableSize = (uint32_t) cofftable.table.size();
+    if (tableSize > 0xFFFF)
+    {
+        *count = (uint16_t) 0xFFFF;
+        *sectionFlags |= IMAGE_SCN_LNK_NRELOC_OVFL;
+        concat.addU32(tableSize + 1);
+        concat.addU32(0);
+        concat.addU16(0);
+    }
+    else
+    {
+        *count = (uint16_t) tableSize;
+    }
+
+    for (auto& reloc : cofftable.table)
     {
         concat.addU32(reloc.virtualAddress);
         concat.addU32(reloc.symbolIndex);
         concat.addU16(reloc.type);
     }
+
+    return true;
+}
+
+bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+
+    // .text
+    emitRelocationTable(pp, pp.relocationTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableOffset, pp.patchTextSectionRelocTableCount);
 
     return true;
 }
@@ -282,11 +321,23 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
 
     ofstream destFile(filename, ios::binary);
 
+    // Output the full concat buffer
     auto bucket = pp.concat.firstBucket;
     while (bucket)
     {
         destFile.write((const char*) bucket->datas, bucket->count);
         bucket = bucket->nextBucket;
+    }
+
+    if (precompileIndex == 0)
+    {
+        // Then the constant segment
+        for (auto oneB : module->constantSegment.buckets)
+            destFile.write((const char*) oneB.buffer, oneB.count);
+
+        // Then the mutable segment
+        for (auto oneB : module->mutableSegment.buckets)
+            destFile.write((const char*) oneB.buffer, oneB.count);
     }
 
     destFile.flush();

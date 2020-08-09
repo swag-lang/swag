@@ -48,6 +48,9 @@ struct X64PerThread
     uint32_t* patchTextSectionSize;
     uint32_t* patchTextSectionRelocTableOffset;
     uint16_t* patchTextSectionRelocTableCount;
+    uint32_t* patchTextSectionFlags;
+    uint32_t* patchCSOffset;
+    uint32_t* patchDSOffset;
 
     uint32_t            textSectionOffset = 0;
     vector<const Utf8*> stringTable;
@@ -79,6 +82,7 @@ struct BackendX64 : public Backend
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
+    bool emitRelocationTable(X64PerThread& pp, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint32_t* offset, uint16_t* count);
     bool emitRelocationTables(const BuildParameters& buildParameters);
     bool emitHeader(const BuildParameters& buildParameters);
 
