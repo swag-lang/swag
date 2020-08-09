@@ -11,6 +11,7 @@ enum class BackendType
 {
     C,
     LLVM,
+    X64,
 };
 
 struct CommandLine

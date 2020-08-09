@@ -101,6 +101,7 @@ namespace OS
             break;
 
         case BackendType::LLVM:
+        case BackendType::X64:
             LLVM::setup();
             Backend::linkerPath = g_CommandLine.exePath.parent_path().string();
             Backend::linkerPath += "\\";

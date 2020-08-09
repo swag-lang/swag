@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ModuleCompileJob.h"
 #include "Backend.h"
-#include "Workspace.h"
 #include "Module.h"
 #include "Timer.h"
 

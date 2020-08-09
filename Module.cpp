@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "BackendC.h"
 #include "BackendLLVM.h"
+#include "BackendX64.h"
 #include "ThreadManager.h"
 
 bool Module::setup(const Utf8& moduleName)
@@ -70,6 +71,9 @@ bool Module::setup(const Utf8& moduleName)
         break;
     case BackendType::LLVM:
         backend = new BackendLLVM(this);
+        break;
+    case BackendType::X64:
+        backend = new BackendX64(this);
         break;
     default:
         SWAG_ASSERT(false);

@@ -35,6 +35,12 @@ struct BuildCfgBackendLLVM
     bool                  outputIR           = false; // Write a 'file.ir' text file just next to the output file
 };
 
+struct BuildCfgBackendX64
+{
+    swag_runtime_uint32_t minFunctionPerFile = 256;
+    swag_runtime_uint32_t maxFunctionPerFile = 1024;
+};
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -56,6 +62,7 @@ struct BuildCfg
     // Specific backend parameters
     BuildCfgBackendC    backendC;
     BuildCfgBackendLLVM backendLLVM;
+    BuildCfgBackendX64  backendX64;
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

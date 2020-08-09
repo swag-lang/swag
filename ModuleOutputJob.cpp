@@ -50,6 +50,11 @@ JobResult ModuleOutputJob::execute()
             minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;
         }
+        else if (g_CommandLine.backendType == BackendType::X64)
+        {
+            minPerFile = module->buildParameters.buildCfg->backendX64.minFunctionPerFile;
+            maxPerFile = module->buildParameters.buildCfg->backendX64.maxFunctionPerFile;
+        }
         else
         {
             minPerFile = module->buildParameters.buildCfg->backendC.minFunctionPerFile;
@@ -66,10 +71,11 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::Compile;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
-            // Precompile a specific version, to test it
-            // No need for C backend, because the C backend will generate only one .C file compatible will all cases
-            if (g_CommandLine.backendType == BackendType::LLVM)
+            // For C backend, only one pass (test/normal), because only one C file is generated with every cases (the difference is made
+            // with an #ifdef). For other backends, we generate one obj file per case
+            if (g_CommandLine.backendType != BackendType::C)
             {
+                // Precompile a specific version, to test it
                 if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
                 {
                     // Do not generate test on dependencies if we want to compile only one specific module

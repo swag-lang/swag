@@ -390,6 +390,12 @@ namespace swag
         outputIR: bool          = false;
     }
 
+    struct BuildCfgBackendX64
+    {
+        minFunctionPerFile: u32 = 256;
+        maxFunctionPerFile: u32 = 1024;
+    }
+
     struct BuildCfg
     {
         // Add guard code
@@ -407,6 +413,7 @@ namespace swag
         // Specific backend parameters
         backendC:       BuildCfgBackendC
         backendLLVM:    BuildCfgBackendLLVM
+        backendX64:     BuildCfgBackendX64
     }
 
     // #########################################################

@@ -122,6 +122,8 @@
     <ClInclude Include="BackendSetupWin32.h" />
     <ClInclude Include="BackendLinkerWin32.h" />
     <ClInclude Include="BackendLLVM.h" />
+    <ClInclude Include="BackendX64.h" />
+    <ClInclude Include="BackendX64FunctionBodyJob.h" />
     <ClInclude Include="BuildParameters.h" />
     <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />
@@ -226,6 +228,11 @@
     <ClCompile Include="BackendSetupWin32.cpp" />
     <ClCompile Include="BackendLinkerWin32.cpp" />
     <ClCompile Include="BackendLLVM.cpp" />
+    <ClCompile Include="BackendX64.cpp" />
+    <ClCompile Include="BackendX64Data_.cpp" />
+    <ClCompile Include="BackendX64FunctionBodyJob.cpp" />
+    <ClCompile Include="BackendX64Function_.cpp" />
+    <ClCompile Include="BackendX64Main_.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobAffectOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
