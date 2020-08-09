@@ -35,11 +35,11 @@ bool BackendC::emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, in
     else
         CONCAT_FIXED_STR(bufferC, "__u64_t __cs[]={\n");
 
-    dataSegment->rewindRead();
-    uint64_t value = 0;
-    int      cpt   = 0;
-    char     buf[50];
-    while (dataSegment->readU64(value))
+    DataSegment::Seek seek;
+    uint64_t          value = 0;
+    int               cpt   = 0;
+    char              buf[50];
+    while (dataSegment->readU64(seek, value))
     {
         if (value > 0xFFFF)
             sprintf_s(buf, "0x%llX", value);

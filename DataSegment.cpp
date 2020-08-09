@@ -209,50 +209,48 @@ void DataSegment::addInitPtrFunc(uint32_t offset, ByteCode* bc)
     initFuncPtr[offset] = bc;
 }
 
-void DataSegment::rewindRead()
+bool DataSegment::readU64(Seek& seek, uint64_t& result)
 {
-    seekRead   = 0;
-    seekBucket = 0;
-}
-
-bool DataSegment::readU64(uint64_t& result)
-{
-    if (seekBucket == buckets.size())
+    if (seek.seekBucket == buckets.size())
         return false;
 
-    auto* curBucket = &buckets[seekBucket];
-    if (seekRead + 8 <= curBucket->count)
+    auto* curBucket = &buckets[seek.seekBucket];
+    if (seek.seekRead + 8 <= curBucket->count)
     {
-        uint64_t* ptr = (uint64_t*) (curBucket->buffer + seekRead);
-        seekRead += 8;
+        uint64_t* ptr = (uint64_t*) (curBucket->buffer + seek.seekRead);
+        seek.seekRead += 8;
         result = *ptr;
         return true;
     }
 
-    int cpt        = 0;
-    result         = 0;
-    uint8_t* ptr   = curBucket->buffer + seekRead;
-    uint32_t shift = 0;
-    while (cpt != 8 && seekBucket != buckets.size())
+    int cpt              = 0;
+    result               = 0;
+    uint8_t* ptr         = curBucket->buffer + seek.seekRead;
+    uint32_t shift       = 0;
+    bool     resultValid = false;
+    while (cpt != 8 && seek.seekBucket != buckets.size())
     {
-        while (cpt != 8 && (seekRead < curBucket->count))
+        while (cpt != 8 && (seek.seekRead < curBucket->count))
         {
             result |= ((uint64_t) *ptr) << shift;
             shift += 8;
             cpt++;
             ptr++;
-            seekRead++;
+            seek.seekRead++;
+            resultValid = true;
         }
 
-        if (seekRead == curBucket->count)
+        if (seek.seekRead == curBucket->count)
         {
-            seekBucket++;
-            if (seekBucket != buckets.size())
+            seek.seekBucket++;
+            if (seek.seekBucket != buckets.size())
             {
-                seekRead  = 0;
-                curBucket = &buckets[seekBucket];
-                ptr       = curBucket->buffer;
+                seek.seekRead = 0;
+                curBucket     = &buckets[seek.seekBucket];
+                ptr           = curBucket->buffer;
             }
+            else if (!resultValid)
+                return false;
         }
     }
 

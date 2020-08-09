@@ -11,10 +11,6 @@ void swag_assert(const char* expr, const char* file, int line)
     g_diagnosticInfos.log();
     g_Log.setDefaultColor();
     g_Log.unlock();
-
-#ifndef _DEBUG
     OS::assertBox(expr, file, line);
-#endif
-    assert(false);
 }
 #endif
