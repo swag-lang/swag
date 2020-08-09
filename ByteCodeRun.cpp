@@ -1781,7 +1781,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext)
     diag.criticalError  = true;
     diag.exceptionError = true;
     runContext->bc->sourceFile->report(diag);
-    return EXCEPTION_EXECUTE_HANDLER;
+    return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
