@@ -76,10 +76,7 @@ struct BackendX64 : public Backend
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool createRuntime(const BuildParameters& buildParameters);
     bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
-
-    bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
     void        applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
     void        addPatch(X64PerThread& pp, PatchType type, void* addr);

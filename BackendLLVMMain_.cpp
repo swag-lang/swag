@@ -95,19 +95,16 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
 
     // Call to test functions
-    if (buildParameters.compileType == BackendCompileType::Test)
+    if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
     {
-        if (!module->byteCodeTestFunc.empty())
+        for (auto bc : module->byteCodeTestFunc)
         {
-            for (auto bc : module->byteCodeTestFunc)
-            {
-                auto node = bc->node;
-                if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
-                    continue;
+            auto node = bc->node;
+            if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
 
-                auto fcc = modu.getOrInsertFunction(bc->callName().c_str(), funcTypeVoid);
-                builder.CreateCall(fcc);
-            }
+            auto fcc = modu.getOrInsertFunction(bc->callName().c_str(), funcTypeVoid);
+            builder.CreateCall(fcc);
         }
     }
 

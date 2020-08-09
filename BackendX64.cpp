@@ -4,11 +4,6 @@
 #include "OS.h"
 #include "Module.h"
 
-bool BackendX64::createRuntime(const BuildParameters& buildParameters)
-{
-    return true;
-}
-
 JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     int   ct              = buildParameters.compileType;
@@ -36,7 +31,6 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
         emitHeader(buildParameters);
-        createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);
         emitDataSegment(buildParameters, &module->constantSegment);

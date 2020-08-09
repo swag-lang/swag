@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "BackendLLVMFunctionBodyJob.h"
 #include "BackendLLVM.h"
-#include "Workspace.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "ThreadManager.h"
 #include "Module.h"
 
 thread_local Pool<BackendLLVMFunctionBodyJob> g_Pool_backendLLVMFunctionBodyJob;
