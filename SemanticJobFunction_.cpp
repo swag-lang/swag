@@ -448,18 +448,17 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // For a short lambda without a specified return type, we need to defer the symbol registration, as we
-    // need to infer it from the lambda expression
-    SWAG_CHECK(registerFuncSymbol(context, funcNode, shortLambda ? OVERLOAD_INCOMPLETE : 0));
-
     // If this is a lambda waiting for a match to know the types of its parameters, need to wait
     // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
     {
         funcNode->pendingLambdaJob = context->job;
-        context->result            = ContextResult::Pending;
-        return true;
+        context->result = ContextResult::Pending;
     }
+
+    // For a short lambda without a specified return type, we need to defer the symbol registration, as we
+    // need to infer it from the lambda expression
+    SWAG_CHECK(registerFuncSymbol(context, funcNode, shortLambda ? OVERLOAD_INCOMPLETE : 0));
 
     return true;
 }

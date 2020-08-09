@@ -494,6 +494,9 @@ JobResult ByteCodeGenJob::execute()
                     break;
                 }
 
+                if (dep->byteCodeJob->dependentNodes.empty())
+                    continue;
+
                 for (auto newDep : dep->byteCodeJob->dependentNodes)
                 {
                     auto it = done.find(newDep);
