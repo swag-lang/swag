@@ -18,7 +18,4 @@ struct ByteCodeRun
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
-
-    VectorNative<ffi_type*> ffiArgs;
-    VectorNative<void*>     ffiArgsValues;
 };

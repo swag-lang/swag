@@ -138,8 +138,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     // Function call parameters
     ffi_cif cif;
     int     numParameters = (int) typeInfoFunc->parameters.size();
-    ffiArgs.clear();
-    ffiArgsValues.clear();
+    context->ffiArgs.clear();
+    context->ffiArgsValues.clear();
     Register* sp = (Register*) context->sp;
 
     // Variadic parameters are first on the stack, so need to treat them before
@@ -149,13 +149,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
             // Pointer
-            ffiArgs.push_back(ffiFromTypeInfo(typeParam));
-            ffiArgsValues.push_back(&sp->pointer);
+            context->ffiArgs.push_back(ffiFromTypeInfo(typeParam));
+            context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
 
             // Count
-            ffiArgs.push_back(&ffi_type_uint64);
-            ffiArgsValues.push_back(&sp->u64);
+            context->ffiArgs.push_back(&ffi_type_uint64);
+            context->ffiArgsValues.push_back(&sp->u64);
             sp++;
 
             numParameters--;
@@ -166,8 +166,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
-        ffiArgs.push_back(ffiFromTypeInfo(typeParam));
-        if (!ffiArgs.back())
+        context->ffiArgs.push_back(ffiFromTypeInfo(typeParam));
+        if (!context->ffiArgs.back())
         {
             context->hasError = true;
             context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
@@ -176,23 +176,23 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
 
         if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
-            ffiArgsValues.push_back(&sp->pointer); // Pointer
+            context->ffiArgsValues.push_back(&sp->pointer); // Pointer
             sp++;
-            ffiArgs.push_back(&ffi_type_uint32); // Count
-            ffiArgsValues.push_back(&sp->u32);
+            context->ffiArgs.push_back(&ffi_type_uint32); // Count
+            context->ffiArgsValues.push_back(&sp->u32);
             sp++;
         }
         else if (typeParam->isNative(NativeTypeKind::Any))
         {
-            ffiArgsValues.push_back(&sp->pointer); // Value
+            context->ffiArgsValues.push_back(&sp->pointer); // Value
             sp++;
-            ffiArgs.push_back(&ffi_type_pointer); // Type
-            ffiArgsValues.push_back(&sp->pointer);
+            context->ffiArgs.push_back(&ffi_type_pointer); // Type
+            context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            ffiArgsValues.push_back(&sp->pointer);
+            context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else
@@ -200,16 +200,16 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             switch (typeParam->sizeOf)
             {
             case 1:
-                ffiArgsValues.push_back(&sp->u8);
+                context->ffiArgsValues.push_back(&sp->u8);
                 break;
             case 2:
-                ffiArgsValues.push_back(&sp->u16);
+                context->ffiArgsValues.push_back(&sp->u16);
                 break;
             case 4:
-                ffiArgsValues.push_back(&sp->u32);
+                context->ffiArgsValues.push_back(&sp->u32);
                 break;
             case 8:
-                ffiArgsValues.push_back(&sp->u64);
+                context->ffiArgsValues.push_back(&sp->u64);
                 break;
             default:
                 context->hasError = true;
@@ -221,7 +221,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         }
     }
 
-    numParameters = (int) ffiArgs.size();
+    numParameters = (int)context->ffiArgs.size();
 
     // Function return type
     ffi_type* typeResult = &ffi_type_void;
@@ -234,14 +234,14 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             returnType->isNative(NativeTypeKind::String))
         {
             numParameters++;
-            ffiArgs.push_back(&ffi_type_pointer);
-            ffiArgsValues.push_back(&context->registersRR);
+            context->ffiArgs.push_back(&ffi_type_pointer);
+            context->ffiArgsValues.push_back(&context->registersRR);
         }
         else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             numParameters++;
-            ffiArgs.push_back(&ffi_type_pointer);
-            ffiArgsValues.push_back(context->registersRR);
+            context->ffiArgs.push_back(&ffi_type_pointer);
+            context->ffiArgsValues.push_back(context->registersRR);
         }
         else
         {
@@ -256,7 +256,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     }
 
     // Initialize the cif
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, ffiArgs.empty() ? nullptr : &ffiArgs[0]);
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, context->ffiArgs.empty() ? nullptr : &context->ffiArgs[0]);
 
     void* resultPtr = nullptr;
     if (typeResult != &ffi_type_void && !(returnType->flags & TYPEINFO_RETURN_BY_COPY))
@@ -284,7 +284,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     }
 
     // Make the call
-    ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
+    ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, context->ffiArgsValues.empty() ? nullptr : &context->ffiArgsValues[0]);
 
 #ifdef SWAG_HAS_ASSERT
     if (g_CommandLine.devMode)
