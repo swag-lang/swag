@@ -42,24 +42,28 @@ struct X64PerThread
     string filename;
     Concat concat;
 
-    uint32_t* patchSymbolTableOffset;
-    uint32_t* patchSymbolTableCount;
-    uint32_t* patchTextSectionOffset;
-    uint32_t* patchTextSectionSize;
-    uint32_t* patchTextSectionRelocTableOffset;
-    uint16_t* patchTextSectionRelocTableCount;
-    uint32_t* patchTextSectionFlags;
-    uint32_t* patchCSOffset;
-    uint32_t* patchDSOffset;
-
-    uint32_t            textSectionOffset = 0;
-    vector<const Utf8*> stringTable;
-    uint32_t            stringTableOffset = 0;
-
-    CoffRelocationTable relocTableTextSection;
-
+    vector<const Utf8*>    stringTable;
+    CoffRelocationTable    relocTableTextSection;
     vector<CoffSymbol>     allSymbols;
     map<Utf8Crc, uint32_t> mapSymbols;
+
+    uint32_t* patchSymbolTableOffset           = nullptr;
+    uint32_t* patchSymbolTableCount            = nullptr;
+    uint32_t* patchTextSectionOffset           = nullptr;
+    uint32_t* patchTextSectionSize             = nullptr;
+    uint32_t* patchTextSectionRelocTableOffset = nullptr;
+    uint16_t* patchTextSectionRelocTableCount  = nullptr;
+    uint32_t* patchTextSectionFlags            = nullptr;
+    uint32_t* patchCSOffset                    = nullptr;
+    uint32_t* patchDSOffset                    = nullptr;
+
+    uint32_t textSectionOffset = 0;
+    uint32_t stringTableOffset = 0;
+
+    uint16_t sectionIndexText = 0;
+    uint16_t sectionIndexBS   = 0;
+    uint16_t sectionIndexCS   = 0;
+    uint16_t sectionIndexDS   = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };

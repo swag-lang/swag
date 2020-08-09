@@ -31,7 +31,6 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
         emitHeader(buildParameters);
-        emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);
         emitDataSegment(buildParameters, &module->constantSegment);
     }
@@ -113,6 +112,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     sym.name  = name;
     sym.kind  = kind;
     sym.value = value;
+    SWAG_ASSERT(pp.allSymbols.size() < UINT32_MAX);
     sym.index = (uint32_t) pp.allSymbols.size();
     pp.allSymbols.emplace_back(sym);
     pp.mapSymbols[name] = (uint32_t) pp.allSymbols.size() - 1;
@@ -147,6 +147,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     // Code section
     /////////////////////////////////////////////
+    pp.sectionIndexText = 1;
     concat.addString(".text", 8); // .Name
     concat.addU32(0);             // .VirtualSize
     concat.addU32(0);             // .VirtualAddress
@@ -163,6 +164,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     {
         // bss section
         /////////////////////////////////////////////
+        pp.sectionIndexBS = 2;
         concat.addString(".bss", 8);                  // .Name
         concat.addU32(0);                             // .VirtualSize
         concat.addU32(0);                             // .VirtualAddress
@@ -176,6 +178,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // constant section
         /////////////////////////////////////////////
+        pp.sectionIndexCS = 3;
         concat.addString(".rdata", 8);                     // .Name
         concat.addU32(0);                                  // .VirtualSize
         concat.addU32(0);                                  // .VirtualAddress
@@ -189,6 +192,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // mutable section
         /////////////////////////////////////////////
+        pp.sectionIndexDS = 4;
         concat.addString(".data", 8);                                            // .Name
         concat.addU32(0);                                                        // .VirtualSize
         concat.addU32(0);                                                        // .VirtualAddress
@@ -233,7 +237,7 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
         switch (symbol.kind)
         {
         case CoffSymbolKind::Function:
-            concat.addU16(1);                             // .SectionNumber
+            concat.addU16(pp.sectionIndexText);           // .SectionNumber
             concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
             concat.addU8(0);                              // .NumberOfAuxSymbols
