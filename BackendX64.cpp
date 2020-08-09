@@ -14,6 +14,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -43,7 +44,9 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
-        pp.pass = BackendPreCompilePass::End;
+        pp.pass              = BackendPreCompilePass::End;
+        pp.textSectionOffset = concat.totalCount;
+        applyPatch(pp, PatchType::TextSectionOffset, pp.textSectionOffset);
         emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlive;
     }
@@ -147,12 +150,14 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addString(".text", 8); // .Name
     concat.addU32(0);             // .VirtualSize
     concat.addU32(0);             // .VirtualAddress
-    concat.addU32(0);             // .SizeOfRawData
-    concat.addU32(0);             // .PointerToRawData
-    concat.addU32(0);             // .PointerToRelocations
-    concat.addU32(0);             // .PointerToLinenumbers
-    concat.addU16(0);             // .NumberOfRelocations
-    concat.addU16(0);             // .NumberOfLinenumbers
+
+    addPatch(pp, PatchType::TextSectionSize, concat.addU32Addr(0));   // .SizeOfRawData
+    addPatch(pp, PatchType::TextSectionOffset, concat.addU32Addr(0)); // .PointerToRawData
+
+    concat.addU32(0); // .PointerToRelocations
+    concat.addU32(0); // .PointerToLinenumbers
+    concat.addU16(0); // .NumberOfRelocations
+    concat.addU16(0); // .NumberOfLinenumbers
     concat.addU32(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ);
 
     return true;
@@ -168,12 +173,23 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     applyPatch(pp, PatchType::SymbolTableOffset, concat.totalCount);
     applyPatch(pp, PatchType::SymbolTableCount, 1);
 
-    concat.addString("main", 8); // .Name
-    concat.addU32(0);            // .Value
-    concat.addU16(4);            // .SectionNumber
-
-    concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
-    concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
+    for (auto& symbol : pp.allSymbols)
+    {
+        SWAG_ASSERT(symbol.name.length() < 8);
+        concat.addString(symbol.name.c_str(), 8); // .Name
+        concat.addU32(symbol.value);              // .Value
+        switch (symbol.kind)
+        {
+        case CoffSymbolKind::Function:
+            concat.addU16(4);                             // .SectionNumber
+            concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
 
     concat.addU8(0); // .NumberOfAuxSymbols
 

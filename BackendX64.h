@@ -14,6 +14,20 @@ enum class PatchType
 {
     SymbolTableOffset,
     SymbolTableCount,
+    TextSectionOffset,
+    TextSectionSize,
+};
+
+enum class CoffSymbolKind
+{
+    Function,
+};
+
+struct CoffSymbol
+{
+    Utf8           name;
+    CoffSymbolKind kind;
+    uint32_t       value;
 };
 
 struct X64PerThread
@@ -21,7 +35,10 @@ struct X64PerThread
     string                filename;
     Concat                concat;
     map<PatchType, void*> allPatches;
-    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
+    vector<CoffSymbol>    allSymbols;
+    uint32_t              textSectionOffset = 0;
+    uint32_t              textSectionSize   = 0;
+    BackendPreCompilePass pass              = {BackendPreCompilePass::Init};
 };
 
 struct BackendX64 : public Backend
