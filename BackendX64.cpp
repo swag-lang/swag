@@ -96,8 +96,31 @@ void BackendX64::applyPatch(X64PerThread& pp, PatchType type, uint32_t value)
         *(uint32_t*) it->second = value;
 }
 
-CoffSymbol* BackendX64::addSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value)
+CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
 {
+    auto it = pp.mapSymbols.find(name);
+    if (it != pp.mapSymbols.end())
+        return &pp.allSymbols[it->second];
+    return nullptr;
+}
+
+CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value)
+{
+    auto it = getSymbol(pp, name);
+    if (it)
+    {
+        if (kind == CoffSymbolKind::Extern)
+            return it;
+        if (kind == CoffSymbolKind::Function && it->kind == CoffSymbolKind::Extern)
+        {
+            it->kind  = kind;
+            it->value = value;
+            return it;
+        }
+
+        SWAG_ASSERT(false);
+    }
+
     CoffSymbol sym;
     sym.name  = name;
     sym.kind  = kind;
@@ -106,14 +129,6 @@ CoffSymbol* BackendX64::addSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSym
     pp.allSymbols.emplace_back(sym);
     pp.mapSymbols[name] = (uint32_t) pp.allSymbols.size() - 1;
     return &pp.allSymbols.back();
-}
-
-CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
-{
-    auto it = pp.mapSymbols.find(name);
-    if (it != pp.mapSymbols.end())
-        return &pp.allSymbols[it->second];
-    return nullptr;
 }
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)

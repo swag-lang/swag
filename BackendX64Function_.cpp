@@ -30,7 +30,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto& concat          = pp.concat;
 
     // Symbol
-    addSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
+    getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;

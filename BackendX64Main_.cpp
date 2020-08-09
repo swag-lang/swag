@@ -13,7 +13,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    addSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
+    getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test)
@@ -26,22 +26,22 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
                 if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                     continue;
 
-                auto callSym = getSymbol(pp, bc->callName());
-                if (callSym)
+                auto callSym = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Extern);
+                if (callSym->kind == CoffSymbolKind::Function)
                 {
                     concat.addU8(BackendX64Inst::Call);
-                    int jumpTo = callSym->value + pp.textSectionOffset;
-                    concat.addS32(jumpTo - (concat.totalCount + 4));
+                    concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount + 4));
                 }
                 else
                 {
                     concat.addU8(BackendX64Inst::Call);
-                    callSym = addSymbol(pp, bc->callName(), CoffSymbolKind::Extern);
+
                     CoffRelocation reloc;
                     reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
                     reloc.symbolIndex    = callSym->index;
                     reloc.type           = IMAGE_REL_AMD64_REL32;
                     pp.relocationTextSection.table.push_back(reloc);
+
                     concat.addS32(0);
                 }
             }

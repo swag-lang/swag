@@ -88,7 +88,7 @@ struct BackendX64 : public Backend
     void        applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
     void        addPatch(X64PerThread& pp, PatchType type, void* addr);
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
-    CoffSymbol* addSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0);
+    CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0);
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
