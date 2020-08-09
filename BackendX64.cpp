@@ -35,6 +35,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         if (g_CommandLine.verbose)
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
+        addSymbol(pp, Utf8Crc(".text"), CoffSymbolKind::StaticSectionText);
         emitHeader(buildParameters);
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
@@ -44,9 +45,13 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
-        pp.pass              = BackendPreCompilePass::End;
+        pp.pass = BackendPreCompilePass::End;
+
+        while (concat.totalCount % 16)
+            concat.addU8(0);
         pp.textSectionOffset = concat.totalCount;
         applyPatch(pp, PatchType::TextSectionOffset, pp.textSectionOffset);
+
         emitAllFunctionBody(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlive;
     }
@@ -65,6 +70,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // Output file
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
+        emitRelocationTables(buildParameters);
         generateObjFile(buildParameters);
     }
 
@@ -80,7 +86,30 @@ void BackendX64::applyPatch(X64PerThread& pp, PatchType type, uint32_t value)
 {
     auto it = pp.allPatches.find(type);
     SWAG_ASSERT(it != pp.allPatches.end());
-    *(uint32_t*) it->second = value;
+    if (type == PatchType::TextSectionRelocTableCount)
+        *(uint16_t*) it->second = (uint16_t) value;
+    else
+        *(uint32_t*) it->second = value;
+}
+
+CoffSymbol* BackendX64::addSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value)
+{
+    CoffSymbol sym;
+    sym.name  = name;
+    sym.kind  = kind;
+    sym.value = value;
+    sym.index = (uint32_t) pp.allSymbols.size();
+    pp.allSymbols.emplace_back(sym);
+    pp.mapSymbols[name] = (uint32_t) pp.allSymbols.size() - 1;
+    return &pp.allSymbols.back();
+}
+
+CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
+{
+    auto it = pp.mapSymbols.find(name);
+    if (it != pp.mapSymbols.end())
+        return &pp.allSymbols[it->second];
+    return nullptr;
 }
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -105,6 +134,20 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0); // .SizeOfOptionalHeader
 
     concat.addU16(IMAGE_FILE_LARGE_ADDRESS_AWARE | IMAGE_FILE_DEBUG_STRIPPED); // .Characteristics
+
+    // Code section
+    /////////////////////////////////////////////
+    concat.addString(".text", 8); // .Name
+    concat.addU32(0);             // .VirtualSize
+    concat.addU32(0);             // .VirtualAddress
+
+    addPatch(pp, PatchType::TextSectionSize, concat.addU32Addr(0));             // .SizeOfRawData
+    addPatch(pp, PatchType::TextSectionOffset, concat.addU32Addr(0));           // .PointerToRawData
+    addPatch(pp, PatchType::TextSectionRelocTableOffset, concat.addU32Addr(0)); // .PointerToRelocations
+    concat.addU32(0);                                                           // .PointerToLinenumbers
+    addPatch(pp, PatchType::TextSectionRelocTableCount, concat.addU16Addr(0));  // .PointerToRelocations
+    concat.addU16(0);                                                           // .NumberOfLinenumbers
+    concat.addU32(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
     // bss section
     /////////////////////////////////////////////
@@ -145,21 +188,6 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0);             // .NumberOfLinenumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
 
-    // Code section
-    /////////////////////////////////////////////
-    concat.addString(".text", 8); // .Name
-    concat.addU32(0);             // .VirtualSize
-    concat.addU32(0);             // .VirtualAddress
-
-    addPatch(pp, PatchType::TextSectionSize, concat.addU32Addr(0));   // .SizeOfRawData
-    addPatch(pp, PatchType::TextSectionOffset, concat.addU32Addr(0)); // .PointerToRawData
-
-    concat.addU32(0); // .PointerToRelocations
-    concat.addU32(0); // .PointerToLinenumbers
-    concat.addU16(0); // .NumberOfRelocations
-    concat.addU16(0); // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ);
-
     return true;
 }
 
@@ -191,16 +219,37 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
         switch (symbol.kind)
         {
         case CoffSymbolKind::Function:
-            concat.addU16(4);                             // .SectionNumber
+            concat.addU16(1);                             // .SectionNumber
             concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
+            concat.addU8(0);                              // .NumberOfAuxSymbols
+            break;
+        case CoffSymbolKind::Extern:
+            concat.addU16(0);                       // .SectionNumber
+            concat.addU16(0);                       // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+            concat.addU8(0);                        // .NumberOfAuxSymbols
+            break;
+        case CoffSymbolKind::StaticSectionText:
+            concat.addU16(1);                     // .SectionNumber
+            concat.addU16(0);                     // .Type
+            concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
+            concat.addU8(0);                      // .NumberOfAuxSymbols
+
+            /*concat.addU32(pp.textSectionOffset);
+            concat.addU16((uint16_t) pp.relocationTextSection.table.size());
+            concat.addU16(0);
+            concat.addU32(0);
+            concat.addU16(0);
+            concat.addU8(1);
+            concat.addU8(0);
+            concat.addU8(0);
+            concat.addU8(0);*/
             break;
         default:
             SWAG_ASSERT(false);
             break;
         }
-
-        concat.addU8(0); // .NumberOfAuxSymbols
     }
 
     return true;
@@ -216,6 +265,25 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
     for (auto str : pp.stringTable)
         concat.addString(str->c_str(), str->length() + 1);
+
+    return true;
+}
+
+bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    applyPatch(pp, PatchType::TextSectionRelocTableOffset, concat.totalCount);
+    applyPatch(pp, PatchType::TextSectionRelocTableCount, (uint16_t) pp.relocationTextSection.table.size());
+    for (auto& reloc : pp.relocationTextSection.table)
+    {
+        concat.addU32(reloc.virtualAddress);
+        concat.addU32(reloc.symbolIndex);
+        concat.addU16(reloc.type);
+    }
 
     return true;
 }

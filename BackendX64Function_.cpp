@@ -20,19 +20,17 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
+    // Do not emit a text function if we are not compiling a test executable
+    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
+        return true;
+
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-    {
-        if (buildParameters.compileType != BackendCompileType::Test)
-            return true;
-    }
-
     // Symbol
-    pp.allSymbols.push_back({bc->callName().c_str(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset});
+    addSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;

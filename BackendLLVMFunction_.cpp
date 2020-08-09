@@ -400,11 +400,9 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(const BuildParameters& buildPara
 
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-    {
-        if (buildParameters.compileType != BackendCompileType::Test)
-            return true;
-    }
+    // Do not emit a text function if we are not compiling a test executable
+    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
+        return true;
 
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;

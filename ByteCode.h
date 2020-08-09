@@ -55,7 +55,8 @@ struct ByteCode
     VectorNative<Register*> registersRC;
     VectorNative<void*>     autoFree;
 
-    Utf8 name;
+    Utf8                   name;
+    VectorNative<AstNode*> localVars;
 
     ByteCodeInstruction* out          = nullptr;
     SourceFile*          sourceFile   = nullptr;
@@ -68,8 +69,6 @@ struct ByteCode
     uint32_t maxReservedRegisterRC = 0;
     int32_t  curRC                 = -1;
     uint32_t numJumps              = 0;
-
-    VectorNative<AstNode*> localVars;
 
     bool compilerGenerated = false;
     bool addedToList       = false;

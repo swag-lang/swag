@@ -86,6 +86,13 @@ void Concat::addU32(uint32_t v)
     currentSP += sizeof(uint32_t);
 }
 
+void Concat::addU64(uint64_t v)
+{
+    checkCount(sizeof(uint64_t));
+    *(uint64_t*) currentSP = v;
+    currentSP += sizeof(uint64_t);
+}
+
 void* Concat::addU32Addr(uint32_t v)
 {
     checkCount(sizeof(uint32_t));
@@ -94,11 +101,12 @@ void* Concat::addU32Addr(uint32_t v)
     return currentSP - sizeof(uint32_t);
 }
 
-void Concat::addU64(uint64_t v)
+void* Concat::addU16Addr(uint16_t v)
 {
-    checkCount(sizeof(uint64_t));
-    *(uint64_t*) currentSP = v;
-    currentSP += sizeof(uint64_t);
+    checkCount(sizeof(uint16_t));
+    *(uint16_t*) currentSP = v;
+    currentSP += sizeof(uint16_t);
+    return currentSP - sizeof(uint16_t);
 }
 
 void Concat::addS8(int8_t v)

@@ -18,8 +18,9 @@ struct Concat
     void  addU8(uint8_t v);
     void  addU16(uint16_t v);
     void  addU32(uint32_t v);
-    void* addU32Addr(uint32_t v);
     void  addU64(uint64_t v);
+    void* addU32Addr(uint32_t v);
+    void* addU16Addr(uint16_t v);
     void  addS8(int8_t v);
     void  addS16(int16_t v);
     void  addS32(int32_t v);
