@@ -199,7 +199,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU32(0);             // .PointerToLinenumbers
     concat.addU16(0);             // .NumberOfRelocations
     concat.addU16(0);             // .NumberOfLinenumbers
-    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
+    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
 
     return true;
 }
