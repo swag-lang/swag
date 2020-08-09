@@ -94,11 +94,11 @@ static void termArgs()
         free(_rawCmd);
 }
 
+EXTERN_C int  main(int, char* argv[]);
 EXTERN_C void swag_runtime_main(const char* cmdLine)
 {
-    int        argc = initArgs(cmdLine);
-    extern int main(int, char* argv[]);
-    int        ret = main(argc, _argv);
+    int argc = initArgs(cmdLine);
+    int ret  = main(argc, _argv);
     termArgs();
     exit(ret);
 }

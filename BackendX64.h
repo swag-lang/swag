@@ -10,13 +10,18 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
+enum class PatchType
+{
+    SymbolTableOffset,
+    SymbolTableCount,
+};
+
 struct X64PerThread
 {
     string                filename;
     Concat                concat;
+    map<PatchType, void*> allPatches;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
-
-    map<int32_t, llvm::BasicBlock*> labels;
 };
 
 struct BackendX64 : public Backend
@@ -38,6 +43,12 @@ struct BackendX64 : public Backend
 
     bool emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
     bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
+
+    void applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
+    void addPatch(X64PerThread& pp, PatchType type, void* addr);
+    bool emitSymbolTable(const BuildParameters& buildParameters);
+    bool emitStringTable(const BuildParameters& buildParameters);
+    bool emitHeader(const BuildParameters& buildParameters);
 
     bool generateObjFile(const BuildParameters& buildParameters);
 

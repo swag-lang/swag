@@ -24,6 +24,8 @@ void Concat::clear()
 
 void Concat::checkCount(int offset)
 {
+    totalCount += offset;
+
     if (lastBucket)
     {
         if (lastBucket->count + offset < bucketSize)
@@ -82,6 +84,14 @@ void Concat::addU32(uint32_t v)
     checkCount(sizeof(uint32_t));
     *(uint32_t*) currentSP = v;
     currentSP += sizeof(uint32_t);
+}
+
+void* Concat::addU32Addr(uint32_t v)
+{
+    checkCount(sizeof(uint32_t));
+    *(uint32_t*) currentSP = v;
+    currentSP += sizeof(uint32_t);
+    return currentSP - sizeof(uint32_t);
 }
 
 void Concat::addU64(uint64_t v)
