@@ -82,13 +82,12 @@ struct BackendX64 : public Backend
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
     void                getCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
 
-    CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
-    CoffSymbol* addSymbol(const Utf8* name, CoffSymbolKind kind, uint32_t value = 0);
-    bool        emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
-    bool        emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
+    bool emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRT, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams);
+    bool emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
     void        applyPatch(X64PerThread& pp, PatchType type, uint32_t value);
     void        addPatch(X64PerThread& pp, PatchType type, void* addr);
+    CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* addSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0);
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
