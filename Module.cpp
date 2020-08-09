@@ -149,6 +149,7 @@ void Module::reserveRegisterRR(uint32_t count)
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
+    static mutex mutexExecuteNode;
     g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
 
     SWAG_ASSERT(node->flags & AST_BYTECODE_GENERATED);
