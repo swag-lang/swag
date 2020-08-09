@@ -232,6 +232,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
     if (flags & ASKBC_ADD_DEP_NODE)
     {
         SWAG_ASSERT(job);
+        scoped_lock lk(job->mutexDependentNodes);
         job->dependentNodes.push_back(node);
     }
 
@@ -497,6 +498,7 @@ JobResult ByteCodeGenJob::execute()
                 if (dep->byteCodeJob->dependentNodes.empty())
                     continue;
 
+                shared_lock lk1(dep->byteCodeJob->mutexDependentNodes);
                 for (auto newDep : dep->byteCodeJob->dependentNodes)
                 {
                     auto it = done.find(newDep);
