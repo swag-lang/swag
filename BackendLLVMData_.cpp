@@ -97,24 +97,12 @@ bool BackendLLVM::emitInitDataSeg(const BuildParameters& buildParameters)
     auto cs = pp.constantSeg;
     for (auto& k : module->mutableSegment.initPtr)
     {
-        auto kind = k.destSeg;
-
-        if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-        {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-        else
-        {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
+        SWAG_ASSERT(k.destSeg == SegmentKind::Constant);
+        auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
+        dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+        auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
+        src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+        builder.CreateStore(src, dest);
     }
 
     builder.CreateRetVoid();

@@ -64,37 +64,23 @@ bool BackendC::emitInitDataSeg(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "static void initDataSeg(){\n");
     for (auto& k : module->mutableSegment.initPtr)
     {
-        auto kind = k.destSeg;
-        if (kind == SegmentKind::Me || kind == SegmentKind::Data)
+        SWAG_ASSERT(k.destSeg == SegmentKind::Constant);
+        if (firstMS)
         {
-            if (firstMS)
-            {
-                CONCAT_FIXED_STR(bufferC, "__u8_t*__ms8=(__u8_t*)__ms;\n");
-                firstMS = false;
-            }
-
-            bufferC.addStringFormat("*(void**)(__ms8+%d)=__ms8+%d;\n", k.destOffset, k.srcOffset);
+            CONCAT_FIXED_STR(bufferC, "__u8_t*__ms8=(__u8_t*)__ms;\n");
+            firstMS = false;
         }
-        else
+
+        if (firstCS)
         {
-            if (firstMS)
-            {
-                CONCAT_FIXED_STR(bufferC, "__u8_t*__ms8=(__u8_t*)__ms;\n");
-                firstMS = false;
-            }
-
-            if (firstCS)
-            {
-                CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
-                firstCS = false;
-            }
-
-            bufferC.addStringFormat("*(void**)(__ms8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
+            CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
+            firstCS = false;
         }
+
+        bufferC.addStringFormat("*(void**)(__ms8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
     }
 
     CONCAT_FIXED_STR(bufferC, "}\n\n");
-
     return true;
 }
 
