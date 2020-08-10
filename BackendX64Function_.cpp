@@ -28,6 +28,18 @@ inline void emitAddtoRAX(X64PerThread& pp, uint32_t value)
     pp.concat.addU32(value);
 }
 
+inline void emitMoveRAXtoStack(X64PerThread& pp, uint32_t stackOffset)
+{
+    // mov [rdi + ?] = rax
+    pp.concat.addString("\x48\x89\x87", 3);
+    pp.concat.addU32(stackOffset);
+}
+
+inline void emitMoveRAXtoReg(X64PerThread& pp, uint32_t r)
+{
+    emitMoveRAXtoStack(pp, r * sizeof(Register));
+}
+
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
@@ -101,6 +113,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         switch (ip->op)
         {
         case ByteCodeOp::End:
+        case ByteCodeOp::DecSP:
+        case ByteCodeOp::IncSP:
+        case ByteCodeOp::CopySPtoBP:
+        case ByteCodeOp::PushRR:
+        case ByteCodeOp::PopRR:
             continue;
         }
 
@@ -110,10 +127,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
             emitSymbolToRAX(pp, pp.csIndex);
             emitAddtoRAX(pp, ip->b.u32);
-
-            // mov qword ptr [rdi + ?], rax
-            concat.addString("\x48\x89\x87", 3);
-            concat.addU32(ip->a.u32 * sizeof(Register));
+            emitMoveRAXtoReg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::CopyVBtoRA32:
@@ -129,9 +143,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // mov rax, ?
             concat.addString("\x48\xB8", 2);
             concat.addU64(ip->b.u64);
-            // mov qword ptr [rdi + ?] = rax
-            concat.addString("\x48\x89\x87", 3);
-            concat.addU32(ip->a.u32 * sizeof(Register));
+
+            emitMoveRAXtoReg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::IntrinsicPrintString:
@@ -165,11 +178,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString("\x48\x8B\x87", 3);
             concat.addU32(ip->a.u32 * sizeof(Register));
 
-            // mov qword ptr [rdi + ?] = rax
-            concat.addString("\x48\x89\x87", 3);
-            concat.addU32(offsetFLT);
+            emitMoveRAXtoStack(pp, offsetFLT);
 
-            // movsd xmm0, [rdi + 0x220000]
+            // movsd xmm0, [rdi + ?]
             concat.addString("\xF2\x0F\x10\x87", 4);
             concat.addU32(offsetFLT);
 
