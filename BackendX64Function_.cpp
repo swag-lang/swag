@@ -90,14 +90,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
+        case ByteCodeOp::GetFromDataSeg8:
+        case ByteCodeOp::GetFromDataSeg16:
+        case ByteCodeOp::GetFromDataSeg32:
         case ByteCodeOp::GetFromDataSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
             BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
-
-            // mov rax, [rax]
-            concat.addString("\x48\x8B\x00", 3);
-
+            concat.addString("\x48\x8B\x00", 3); // mov rax, [rax]
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
