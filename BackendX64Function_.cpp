@@ -7,7 +7,7 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 
-inline void emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex)
+inline void emitSymbol2RAX(X64PerThread& pp, uint32_t symbolIndex)
 {
     auto& concat = pp.concat;
 
@@ -21,23 +21,35 @@ inline void emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex)
     concat.addU32(0);
 }
 
-inline void emitAddtoRAX(X64PerThread& pp, uint32_t value)
+inline void emitAdd2RAX(X64PerThread& pp, uint32_t value)
 {
     // add rax, ?
     pp.concat.addString("\x48\x05", 2);
     pp.concat.addU32(value);
 }
 
-inline void emitMoveRAXtoStack(X64PerThread& pp, uint32_t stackOffset)
+inline void emitMoveRAX2Stack(X64PerThread& pp, uint32_t stackOffset)
 {
     // mov [rdi + ?] = rax
     pp.concat.addString("\x48\x89\x87", 3);
     pp.concat.addU32(stackOffset);
 }
 
-inline void emitMoveRAXtoReg(X64PerThread& pp, uint32_t r)
+inline void emitMoveRAX2Reg(X64PerThread& pp, uint32_t r)
 {
-    emitMoveRAXtoStack(pp, r * sizeof(Register));
+    emitMoveRAX2Stack(pp, r * sizeof(Register));
+}
+
+inline void emitMoveStack2RAX(X64PerThread& pp, uint32_t stackOffset)
+{
+    // mov rax, [rdi + ?]
+    pp.concat.addString("\x48\x8B\x87", 3);
+    pp.concat.addU32(stackOffset);
+}
+
+inline void emitMoveReg2RAX(X64PerThread& pp, uint32_t r)
+{
+    emitMoveStack2RAX(pp, r * sizeof(Register));
 }
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
@@ -125,9 +137,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
-            emitSymbolToRAX(pp, pp.csIndex);
-            emitAddtoRAX(pp, ip->b.u32);
-            emitMoveRAXtoReg(pp, ip->a.u32);
+            emitSymbol2RAX(pp, pp.csIndex);
+            emitAdd2RAX(pp, ip->b.u32);
+            emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::CopyVBtoRA32:
@@ -144,7 +156,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString("\x48\xB8", 2);
             concat.addU64(ip->b.u64);
 
-            emitMoveRAXtoReg(pp, ip->a.u32);
+            emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::IntrinsicPrintString:
@@ -173,12 +185,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicPrintF64:
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
-
-            // mov rax, [rdi + ?]
-            concat.addString("\x48\x8B\x87", 3);
-            concat.addU32(ip->a.u32 * sizeof(Register));
-
-            emitMoveRAXtoStack(pp, offsetFLT);
+            emitMoveReg2RAX(pp, ip->a.u32);
+            emitMoveRAX2Stack(pp, offsetFLT);
 
             // movsd xmm0, [rdi + ?]
             concat.addString("\xF2\x0F\x10\x87", 4);
