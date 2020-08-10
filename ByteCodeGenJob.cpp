@@ -232,7 +232,7 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
     if (flags & ASKBC_ADD_DEP_NODE)
     {
         SWAG_ASSERT(job);
-        scoped_lock lk(job->mutexDependentNodes);
+        scoped_lock lk1(job->mutexDependentNodes);
         job->dependentNodes.push_back(node);
     }
 

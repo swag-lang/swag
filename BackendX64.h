@@ -41,21 +41,34 @@ struct X64PerThread
 {
     string filename;
     Concat concat;
+    Concat postConcat;
 
     vector<const Utf8*>    stringTable;
     CoffRelocationTable    relocTableTextSection;
+    CoffRelocationTable    relocTableCSSection;
+    CoffRelocationTable    relocTableDSSection;
     vector<CoffSymbol>     allSymbols;
     map<Utf8Crc, uint32_t> mapSymbols;
 
-    uint32_t* patchSymbolTableOffset           = nullptr;
-    uint32_t* patchSymbolTableCount            = nullptr;
-    uint32_t* patchTextSectionOffset           = nullptr;
-    uint32_t* patchTextSectionSize             = nullptr;
+    uint32_t* patchSymbolTableOffset = nullptr;
+    uint32_t* patchSymbolTableCount  = nullptr;
+    uint32_t* patchTextSectionOffset = nullptr;
+    uint32_t* patchTextSectionSize   = nullptr;
+
     uint32_t* patchTextSectionRelocTableOffset = nullptr;
     uint16_t* patchTextSectionRelocTableCount  = nullptr;
     uint32_t* patchTextSectionFlags            = nullptr;
-    uint32_t* patchCSOffset                    = nullptr;
-    uint32_t* patchDSOffset                    = nullptr;
+
+    uint32_t* patchCSSectionRelocTableOffset = nullptr;
+    uint16_t* patchCSSectionRelocTableCount  = nullptr;
+    uint32_t* patchCSSectionFlags            = nullptr;
+
+    uint32_t* patchDSSectionRelocTableOffset = nullptr;
+    uint16_t* patchDSSectionRelocTableCount  = nullptr;
+    uint32_t* patchDSSectionFlags            = nullptr;
+
+    uint32_t* patchCSOffset = nullptr;
+    uint32_t* patchDSOffset = nullptr;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
@@ -86,15 +99,12 @@ struct BackendX64 : public Backend
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
-    bool emitRelocationTable(X64PerThread& pp, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint32_t* offset, uint16_t* count);
-    bool emitRelocationTables(const BuildParameters& buildParameters);
+    bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
     bool generateObjFile(const BuildParameters& buildParameters);
 
-    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
-    bool emitInitDataSeg(const BuildParameters& buildParameters);
-    bool emitInitConstantSeg(const BuildParameters& buildParameters);
+    bool buildRelocDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);

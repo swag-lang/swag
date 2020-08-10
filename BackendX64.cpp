@@ -31,8 +31,6 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
         emitHeader(buildParameters);
-        emitDataSegment(buildParameters, &module->mutableSegment);
-        emitDataSegment(buildParameters, &module->constantSegment);
     }
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
@@ -54,8 +52,8 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
-            emitInitDataSeg(buildParameters);
-            emitInitConstantSeg(buildParameters);
+            buildRelocDataSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection);
+            buildRelocDataSegment(buildParameters, &module->mutableSegment, pp.relocTableDSSection);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);
@@ -67,13 +65,24 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // Tables
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
-        emitRelocationTables(buildParameters);
+
+        *pp.patchTextSectionRelocTableOffset = concat.totalCount;
+        emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
 
         // Segments
         if (precompileIndex == 0)
         {
+            // We do not use concat to avoid dummy copies. We will save the segments as they are
             *pp.patchCSOffset = concat.totalCount;
             *pp.patchDSOffset = concat.totalCount + module->constantSegment.totalCount;
+
+            // And we use another concat buffer for relocation tables of segments, because they must be defined after
+            // the content
+            *pp.patchCSSectionRelocTableOffset = *pp.patchDSOffset + module->mutableSegment.totalCount;
+            emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
+
+            *pp.patchDSSectionRelocTableOffset = *pp.patchCSSectionRelocTableOffset + pp.postConcat.totalCount;
+            emitRelocationTable(pp.postConcat, pp.relocTableDSSection, pp.patchDSSectionFlags, pp.patchDSSectionRelocTableCount);
         }
 
         // Output file
@@ -179,30 +188,30 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // constant section
         /////////////////////////////////////////////
         pp.sectionIndexCS = 3;
-        concat.addString(".rdata", 8);                     // .Name
-        concat.addU32(0);                                  // .VirtualSize
-        concat.addU32(0);                                  // .VirtualAddress
-        concat.addU32(module->constantSegment.totalCount); // .SizeOfRawData
-        pp.patchCSOffset = concat.addU32Addr(0);           // .PointerToRawData
-        concat.addU32(0);                                  // .PointerToRelocations
-        concat.addU32(0);                                  // .PointerToLinenumbers
-        concat.addU16(0);                                  // .NumberOfRelocations
-        concat.addU16(0);                                  // .NumberOfLinenumbers
-        concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
+        concat.addString(".rdata", 8);                            // .Name
+        concat.addU32(0);                                         // .VirtualSize
+        concat.addU32(0);                                         // .VirtualAddress
+        concat.addU32(module->constantSegment.totalCount);        // .SizeOfRawData
+        pp.patchCSOffset                  = concat.addU32Addr(0); // .PointerToRawData
+        pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+        concat.addU32(0);                                         // .PointerToLinenumbers
+        pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+        concat.addU16(0);                                         // .NumberOfLinenumbers
+        pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ);
 
         // mutable section
         /////////////////////////////////////////////
         pp.sectionIndexDS = 4;
-        concat.addString(".data", 8);                                            // .Name
-        concat.addU32(0);                                                        // .VirtualSize
-        concat.addU32(0);                                                        // .VirtualAddress
-        pp.patchDSOffset = concat.addU32Addr(module->mutableSegment.totalCount); // .SizeOfRawData
-        concat.addU32(0);                                                        // .PointerToRawData
-        concat.addU32(0);                                                        // .PointerToRelocations
-        concat.addU32(0);                                                        // .PointerToLinenumbers
-        concat.addU16(0);                                                        // .NumberOfRelocations
-        concat.addU16(0);                                                        // .NumberOfLinenumbers
-        concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
+        concat.addString(".data", 8);                             // .Name
+        concat.addU32(0);                                         // .VirtualSize
+        concat.addU32(0);                                         // .VirtualAddress
+        concat.addU32(module->mutableSegment.totalCount);         // .SizeOfRawData
+        pp.patchDSOffset                  = concat.addU32Addr(0); // .PointerToRawData
+        pp.patchDSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+        concat.addU32(0);                                         // .PointerToLinenumbers
+        pp.patchDSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+        concat.addU16(0);                                         // .NumberOfLinenumbers
+        pp.patchDSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
     }
 
     return true;
@@ -271,11 +280,8 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::emitRelocationTable(X64PerThread& pp, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint32_t* offset, uint16_t* count)
+bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
 {
-    auto& concat = pp.concat;
-    *offset      = concat.totalCount;
-
     SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
     auto tableSize = (uint32_t) cofftable.table.size();
     if (tableSize > 0xFFFF)
@@ -297,18 +303,6 @@ bool BackendX64::emitRelocationTable(X64PerThread& pp, CoffRelocationTable& coff
         concat.addU32(reloc.symbolIndex);
         concat.addU16(reloc.type);
     }
-
-    return true;
-}
-
-bool BackendX64::emitRelocationTables(const BuildParameters& buildParameters)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-
-    // .text
-    emitRelocationTable(pp, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableOffset, pp.patchTextSectionRelocTableCount);
 
     return true;
 }
@@ -342,6 +336,14 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
         // Then the mutable segment
         for (auto oneB : module->mutableSegment.buckets)
             destFile.write((const char*) oneB.buffer, oneB.count);
+
+        // Then the post concat buffer that contains relocation tables for CS and DS
+        bucket = pp.postConcat.firstBucket;
+        while (bucket)
+        {
+            destFile.write((const char*) bucket->datas, bucket->count);
+            bucket = bucket->nextBucket;
+        }
     }
 
     destFile.flush();
