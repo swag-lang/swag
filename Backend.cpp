@@ -9,6 +9,8 @@ string Backend::compilerPath;
 string Backend::linkerExe;
 string Backend::linkerPath;
 
+char ___c[20];
+
 void Backend::setup()
 {
     OS::setupBackend();
