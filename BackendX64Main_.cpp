@@ -28,7 +28,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     BackendX64Inst::emit(concat, BackendX64Inst::Xor, BackendX64Inst::EAX_EAX);
-    emitRet(pp);
+    BackendX64Inst::emit(concat, BackendX64Inst::Ret);
     return true;
 }
 

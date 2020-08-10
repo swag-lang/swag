@@ -72,6 +72,10 @@ struct X64PerThread
     uint32_t* patchCSOffset = nullptr;
     uint32_t* patchDSOffset = nullptr;
 
+    uint32_t bsIndex = 0;
+    uint32_t msIndex = 0;
+    uint32_t csIndex = 0;
+
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
 
@@ -115,7 +119,7 @@ struct BackendX64 : public Backend
     bool emitMain(const BuildParameters& buildParameters);
 
     void emitCall(X64PerThread& pp, const Utf8& name);
-    void emitRet(X64PerThread& pp);
+    void emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

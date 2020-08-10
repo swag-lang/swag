@@ -29,7 +29,16 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
     }
 }
 
-void BackendX64::emitRet(X64PerThread& pp)
+void BackendX64::emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex)
 {
-    BackendX64Inst::emit(pp.concat, BackendX64Inst::Ret);
+    auto& concat = pp.concat;
+
+    concat.addString("\x48\x8D\x05", 3);
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+    reloc.symbolIndex    = symbolIndex;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
+    pp.relocTableTextSection.table.push_back(reloc);
+    concat.addU32(0);
 }

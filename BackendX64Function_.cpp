@@ -97,15 +97,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
-
-            // lea rax, [rip + __cs]
-            concat.addString("\x48\x8D\x05", 3);
-            CoffRelocation reloc;
-            reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
-            reloc.symbolIndex    = getSymbol(pp, "__cs")->index;
-            reloc.type           = IMAGE_REL_AMD64_REL32;
-            pp.relocTableTextSection.table.push_back(reloc);
-            concat.addU32(0);
+            emitSymbolToRAX(pp, pp.csIndex);
             
             // add rax, ?
             concat.addString("\x48\x05", 2);

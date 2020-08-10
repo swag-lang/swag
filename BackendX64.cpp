@@ -45,15 +45,15 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
 
     if (precompileIndex == 0)
     {
-        getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS);
-        getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS);
-        getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS);
+        pp.bsIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
+        pp.msIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
+        pp.csIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
     }
     else
     {
-        getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern);
-        getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern);
-        getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern);
+        pp.bsIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
+        pp.msIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
+        pp.csIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
     }
 
     return true;
