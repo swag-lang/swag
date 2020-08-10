@@ -178,20 +178,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString("\x8B\x97", 2);
             concat.addU32(ip->b.u32 * sizeof(Register));
 
-            // mov rcx, [rdi + ?]
-            concat.addString("\x48\x8B\x8F", 3);
-            concat.addU32(ip->a.u32 * sizeof(Register));
-
+            emitMoveReg2RCX(pp, ip->a.u32);
             emitCall(pp, "swag_runtime_print_n");
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
-
-            // mov rcx, [rdi + ?]
-            concat.addString("\x48\x8B\x8F", 3);
-            concat.addU32(ip->a.u32 * sizeof(Register));
-
+            emitMoveReg2RCX(pp, ip->a.u32);
             emitCall(pp, "swag_runtime_print_i64");
             break;
 

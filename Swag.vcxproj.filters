@@ -425,9 +425,6 @@
     <ClCompile Include="BackendX64Main_.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="BackendX64Emit_.cpp">
-      <Filter>Backend\X64</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
