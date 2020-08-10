@@ -15,8 +15,7 @@ enum class CoffSymbolKind
 {
     Function,
     Extern,
-    CSReloc,
-    DSReloc,
+    Custom,
 };
 
 struct CoffSymbol
@@ -25,6 +24,7 @@ struct CoffSymbol
     CoffSymbolKind kind;
     uint32_t       value;
     uint32_t       index;
+    uint16_t       sectionIdx;
 };
 
 struct CoffRelocation
@@ -65,9 +65,9 @@ struct X64PerThread
     uint16_t* patchCSSectionRelocTableCount  = nullptr;
     uint32_t* patchCSSectionFlags            = nullptr;
 
-    uint32_t* patchDSSectionRelocTableOffset = nullptr;
-    uint16_t* patchDSSectionRelocTableCount  = nullptr;
-    uint32_t* patchDSSectionFlags            = nullptr;
+    uint32_t* patchMSSectionRelocTableOffset = nullptr;
+    uint16_t* patchMSSectionRelocTableCount  = nullptr;
+    uint32_t* patchMSSectionFlags            = nullptr;
 
     uint32_t* patchCSOffset = nullptr;
     uint32_t* patchDSOffset = nullptr;
@@ -77,8 +77,8 @@ struct X64PerThread
 
     uint16_t sectionIndexText = 0;
     uint16_t sectionIndexBS   = 0;
+    uint16_t sectionIndexMS   = 0;
     uint16_t sectionIndexCS   = 0;
-    uint16_t sectionIndexDS   = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
@@ -98,7 +98,7 @@ struct BackendX64 : public Backend
     bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
-    CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0);
+    CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
@@ -108,7 +108,7 @@ struct BackendX64 : public Backend
     bool generateObjFile(const BuildParameters& buildParameters);
 
     bool buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
-    bool buildRelocDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
+    bool buildRelocMutableSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);

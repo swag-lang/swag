@@ -9,7 +9,6 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
 
     getOrAddSymbol(pp, "swag_runtime_tlsAlloc", CoffSymbolKind::Extern);
     getOrAddSymbol(pp, "swag_runtime_tlsGetValue", CoffSymbolKind::Extern);
@@ -43,6 +42,19 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     getOrAddSymbol(pp, "tanh", CoffSymbolKind::Extern);
     getOrAddSymbol(pp, "powf", CoffSymbolKind::Extern);
     getOrAddSymbol(pp, "pow", CoffSymbolKind::Extern);
+
+    if (precompileIndex == 0)
+    {
+        getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS);
+        getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS);
+        getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS);
+    }
+    else
+    {
+        getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern);
+        getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern);
+        getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern);
+    }
 
     return true;
 }
@@ -97,7 +109,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         if (precompileIndex == 0)
         {
             buildRelocConstantSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection);
-            buildRelocDataSegment(buildParameters, &module->mutableSegment, pp.relocTableDSSection);
+            buildRelocMutableSegment(buildParameters, &module->mutableSegment, pp.relocTableDSSection);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);
@@ -125,8 +137,8 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             *pp.patchCSSectionRelocTableOffset = *pp.patchDSOffset + module->mutableSegment.totalCount;
             emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
 
-            *pp.patchDSSectionRelocTableOffset = *pp.patchCSSectionRelocTableOffset + pp.postConcat.totalCount;
-            emitRelocationTable(pp.postConcat, pp.relocTableDSSection, pp.patchDSSectionFlags, pp.patchDSSectionRelocTableCount);
+            *pp.patchMSSectionRelocTableOffset = *pp.patchCSSectionRelocTableOffset + pp.postConcat.totalCount;
+            emitRelocationTable(pp.postConcat, pp.relocTableDSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
         }
 
         // Output file
@@ -144,7 +156,7 @@ CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
     return nullptr;
 }
 
-CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value)
+CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     auto it = getSymbol(pp, name);
     if (it)
@@ -164,9 +176,10 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     }
 
     CoffSymbol sym;
-    sym.name  = name;
-    sym.kind  = kind;
-    sym.value = value;
+    sym.name       = name;
+    sym.kind       = kind;
+    sym.value      = value;
+    sym.sectionIdx = sectionIdx;
     SWAG_ASSERT(pp.allSymbols.size() < UINT32_MAX);
     sym.index = (uint32_t) pp.allSymbols.size();
     pp.allSymbols.emplace_back(sym);
@@ -247,17 +260,17 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // mutable section
         /////////////////////////////////////////////
-        pp.sectionIndexDS = 4;
+        pp.sectionIndexMS = 4;
         concat.addString(".data", 8);                             // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         concat.addU32(module->mutableSegment.totalCount);         // .SizeOfRawData
         pp.patchDSOffset                  = concat.addU32Addr(0); // .PointerToRawData
-        pp.patchDSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+        pp.patchMSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
         concat.addU32(0);                                         // .PointerToLinenumbers
-        pp.patchDSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+        pp.patchMSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
         concat.addU16(0);                                         // .NumberOfLinenumbers
-        pp.patchDSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
+        pp.patchMSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE);
     }
 
     return true;
@@ -303,14 +316,8 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
             concat.addU8(0);                        // .NumberOfAuxSymbols
             break;
-        case CoffSymbolKind::CSReloc:
-            concat.addU16(pp.sectionIndexCS);       // .SectionNumber
-            concat.addU16(0);                       // .Type
-            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-            concat.addU8(0);                        // .NumberOfAuxSymbols
-            break;
-        case CoffSymbolKind::DSReloc:
-            concat.addU16(pp.sectionIndexDS);       // .SectionNumber
+        case CoffSymbolKind::Custom:
+            concat.addU16(symbol.sectionIdx);       // .SectionNumber
             concat.addU16(0);                       // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
             concat.addU8(0);                        // .NumberOfAuxSymbols

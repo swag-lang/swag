@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "ByteCode.h"
 
-bool BackendX64::buildRelocDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable)
+bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable)
 {
     if (!dataSegment->buckets.size())
         return true;
@@ -21,9 +21,9 @@ bool BackendX64::buildRelocDataSegment(const BuildParameters& buildParameters, D
         CoffSymbol* sym;
         SWAG_ASSERT(k.destOffset < dataSegment->totalCount);
         if (k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Data)
-            sym = getOrAddSymbol(pp, format("__dsr%d", k.srcOffset), CoffSymbolKind::DSReloc, k.srcOffset);
+            sym = getOrAddSymbol(pp, format("__dsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset);
         else
-            sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::CSReloc, k.srcOffset);
+            sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset);
 
         reloc.virtualAddress = k.destOffset;
         reloc.symbolIndex    = sym->index;
@@ -50,7 +50,7 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
 
-        auto sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::CSReloc, k.srcOffset);
+        auto sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset);
 
         reloc.virtualAddress = k.destOffset;
         reloc.symbolIndex    = sym->index;
