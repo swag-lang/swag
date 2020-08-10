@@ -107,11 +107,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.relocTableTextSection.table.push_back(reloc);
             concat.addU32(0);
             
-            // add rax, ip->b.u32
+            // add rax, ?
             concat.addString("\x48\x05", 2);
             concat.addU32(ip->b.u32);
 
-            // mov qword ptr [rdi + ip->a.u32], rax
+            // mov qword ptr [rdi + ?], rax
             concat.addString("\x48\x89\x87", 3);
             concat.addU32(ip->a.u32 * sizeof(Register));
 
@@ -128,11 +128,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
 
-            // mov edx, [rdi + reg]
+            // mov edx, [rdi + ?]
             concat.addString("\x8B\x97", 2);
             concat.addU32(ip->b.u32 * sizeof(Register));
 
-            // mov rcx, [rdi + reg]
+            // mov rcx, [rdi + ?]
             concat.addString("\x48\x8B\x8F", 3);
             concat.addU32(ip->a.u32 * sizeof(Register));
 
