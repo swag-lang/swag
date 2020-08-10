@@ -69,7 +69,7 @@ bool BackendC::emitInitMutableSeg(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "static void initMutableSeg(){\n");
     for (auto& k : module->mutableSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Constant)
+        if (k.fromSegment == SegmentKind::Constant)
         {
             if (firstMS)
             {
@@ -87,7 +87,7 @@ bool BackendC::emitInitMutableSeg(OutputFile& bufferC)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Type);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
 
             if (firstMS)
             {
@@ -118,7 +118,7 @@ bool BackendC::emitInitTypeSeg(OutputFile& bufferC)
 
     for (auto& k : module->typeSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Me)
+        if (k.fromSegment == SegmentKind::Me)
         {
             if (firstTS)
             {
@@ -130,7 +130,7 @@ bool BackendC::emitInitTypeSeg(OutputFile& bufferC)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Constant);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Constant);
             if (firstTS)
             {
                 CONCAT_FIXED_STR(bufferC, "__u8_t*__ts8=(__u8_t*)__ts;\n");
@@ -158,7 +158,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 
     for (auto& k : module->constantSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant)
+        if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
             if (firstCS)
             {
@@ -170,7 +170,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Type);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
 
             if (firstTS)
             {

@@ -192,9 +192,9 @@ void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind
         return;
 
     DataSegmentRef ref;
-    ref.destOffset = fromOffset;
-    ref.srcOffset  = toOffset;
-    ref.destSeg    = seg;
+    ref.destOffset  = fromOffset;
+    ref.srcOffset   = toOffset;
+    ref.fromSegment = seg;
 
     scoped_lock lk(mutexPtr);
     initPtr.push_back(ref);

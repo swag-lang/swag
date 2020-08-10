@@ -104,7 +104,7 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
     auto ts = pp.typeSeg;
     for (auto& k : module->mutableSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Constant)
+        if (k.fromSegment == SegmentKind::Constant)
         {
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
@@ -114,7 +114,7 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Type);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
@@ -148,7 +148,7 @@ bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
     auto cs = pp.constantSeg;
     for (auto& k : module->typeSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Me)
+        if (k.fromSegment == SegmentKind::Me)
         {
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
@@ -158,7 +158,7 @@ bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Constant);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Constant);
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
@@ -192,7 +192,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
     auto ts = pp.typeSeg;
     for (auto& k : module->constantSegment.initPtr)
     {
-        if (k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant)
+        if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
@@ -202,7 +202,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
         }
         else
         {
-            SWAG_ASSERT(k.destSeg == SegmentKind::Type);
+            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
             auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.destOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));

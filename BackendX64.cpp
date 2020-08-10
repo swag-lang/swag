@@ -163,7 +163,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
                 emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
             }
 
-            uint32_t tsRelocOffset = msRelocOffset + pp.postConcat.totalCount;
+            uint32_t tsRelocOffset = csRelocOffset + pp.postConcat.totalCount;
             if (!pp.relocTableTSSection.table.empty())
             {
                 *pp.patchTSSectionRelocTableOffset = tsRelocOffset;
@@ -305,7 +305,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // type section
         /////////////////////////////////////////////
         pp.sectionIndexTS = 5;
-        concat.addString(".rdata\0\0", 8);                       // .Name
+        concat.addString(".rdata\0\0\0", 8);                      // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         concat.addU32(module->typeSegment.totalCount);            // .SizeOfRawData

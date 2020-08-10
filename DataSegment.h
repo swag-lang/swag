@@ -26,7 +26,7 @@ struct DataSegmentRef
 {
     uint32_t    destOffset;
     uint32_t    srcOffset;
-    SegmentKind destSeg;
+    SegmentKind fromSegment;
 };
 
 struct DataSegment
