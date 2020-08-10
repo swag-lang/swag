@@ -535,7 +535,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
             SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = child->concreteTypeInfoStorage;
+            emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = child->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             if (typeParam->kind == TypeInfoKind::Struct)

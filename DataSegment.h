@@ -19,6 +19,7 @@ enum class SegmentKind
     Me,
     Data,
     Constant,
+    Type,
 };
 
 struct DataSegmentRef

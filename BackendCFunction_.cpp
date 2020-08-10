@@ -893,6 +893,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].p=(__u8_t*)__cs+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
             concat.addStringFormat("r[%u].u64=%u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
             break;
+        case ByteCodeOp::MakeTypeSegPointer:
+            if (ip->b.u32)
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)((__u8_t*)__ts+", ip->b.u32, ");");
+            else
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)(__u8_t*)__ts;");
+            break;
 
         case ByteCodeOp::MakePointerToStack:
             if (ip->b.u32)

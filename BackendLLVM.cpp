@@ -255,6 +255,7 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
         emitDataSegment(buildParameters, &module->mutableSegment);
+        emitDataSegment(buildParameters, &module->typeSegment);
         emitDataSegment(buildParameters, &module->constantSegment);
     }
 
@@ -269,7 +270,8 @@ JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* o
     {
         if (precompileIndex == 0)
         {
-            emitInitDataSeg(buildParameters);
+            emitInitMutableSeg(buildParameters);
+            emitInitTypeSeg(buildParameters);
             emitInitConstantSeg(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);

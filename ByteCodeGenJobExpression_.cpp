@@ -211,7 +211,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
         SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
+        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
         node->parent->resultRegisterRC                                                  = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)

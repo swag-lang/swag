@@ -93,7 +93,8 @@ bool BackendC::emitGlobalInit(OutputFile& bufferC)
     CONCAT_FIXED_STR(bufferC, "__process_infos=*processInfos;\n");
 
     // Initialize data segments
-    CONCAT_FIXED_STR(bufferC, "initDataSeg();\n");
+    CONCAT_FIXED_STR(bufferC, "initMutableSeg();\n");
+    CONCAT_FIXED_STR(bufferC, "initTypeSeg();\n");
     CONCAT_FIXED_STR(bufferC, "initConstantSeg();\n");
 
     // Call to #init functions

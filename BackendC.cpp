@@ -28,6 +28,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
         emitRuntime(bufferC, precompileIndex);
         emitDataSegment(bufferC, &module->bssSegment, precompileIndex);
         emitDataSegment(bufferC, &module->mutableSegment, precompileIndex);
+        emitDataSegment(bufferC, &module->typeSegment, precompileIndex);
         emitDataSegment(bufferC, &module->constantSegment, precompileIndex);
         emitPublic(bufferC, g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(bufferC, module, module->scopeRoot);
@@ -45,7 +46,8 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     {
         if (precompileIndex == 0)
         {
-            emitInitDataSeg(bufferC);
+            emitInitMutableSeg(bufferC);
+            emitInitTypeSeg(bufferC);
             emitInitConstantSeg(bufferC);
             emitGlobalInit(bufferC);
             emitGlobalDrop(bufferC);

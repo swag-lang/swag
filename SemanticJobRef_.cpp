@@ -647,14 +647,14 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     auto sourceFile = context->sourceFile;
     auto node       = context->node;
 
-    uint8_t* ptr = sourceFile->module->constantSegment.address(parent->previousResolvedNode->computedValue.reg.u32);
+    uint8_t* ptr = sourceFile->module->typeSegment.address(parent->previousResolvedNode->computedValue.reg.u32);
     ptr += overload->storageOffset;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo              = overload->typeInfo;
-        node->computedValue.reg.u32 = sourceFile->module->constantSegment.offset(*(uint8_t**) ptr);
+        node->computedValue.reg.u32 = sourceFile->module->typeSegment.offset(*(uint8_t**) ptr);
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
     else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))

@@ -48,7 +48,8 @@ struct X64PerThread
     vector<const Utf8*>    stringTable;
     CoffRelocationTable    relocTableTextSection;
     CoffRelocationTable    relocTableCSSection;
-    CoffRelocationTable    relocTableDSSection;
+    CoffRelocationTable    relocTableMSSection;
+    CoffRelocationTable    relocTableTSSection;
     vector<CoffSymbol>     allSymbols;
     map<Utf8Crc, uint32_t> mapSymbols;
 
@@ -69,12 +70,18 @@ struct X64PerThread
     uint16_t* patchMSSectionRelocTableCount  = nullptr;
     uint32_t* patchMSSectionFlags            = nullptr;
 
+    uint32_t* patchTSSectionRelocTableOffset = nullptr;
+    uint16_t* patchTSSectionRelocTableCount  = nullptr;
+    uint32_t* patchTSSectionFlags            = nullptr;
+
     uint32_t* patchCSOffset = nullptr;
-    uint32_t* patchDSOffset = nullptr;
+    uint32_t* patchMSOffset = nullptr;
+    uint32_t* patchTSOffset = nullptr;
 
     uint32_t bsIndex = 0;
     uint32_t msIndex = 0;
     uint32_t csIndex = 0;
+    uint32_t tsIndex = 0;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
@@ -83,6 +90,7 @@ struct X64PerThread
     uint16_t sectionIndexBS   = 0;
     uint16_t sectionIndexMS   = 0;
     uint16_t sectionIndexCS   = 0;
+    uint16_t sectionIndexTS   = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
@@ -112,6 +120,7 @@ struct BackendX64 : public Backend
     bool generateObjFile(const BuildParameters& buildParameters);
 
     bool buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
+    bool buildRelocTypeSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
     bool buildRelocMutableSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);

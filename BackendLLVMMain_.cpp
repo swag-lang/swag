@@ -168,7 +168,8 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     // Initialize data segments
-    builder.CreateCall(modu.getFunction("initDataSeg"));
+    builder.CreateCall(modu.getFunction("initMutableSeg"));
+    builder.CreateCall(modu.getFunction("initTypeSeg"));
     builder.CreateCall(modu.getFunction("initConstantSeg"));
 
     // Call to #init functions

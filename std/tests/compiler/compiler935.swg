@@ -1,5 +1,3 @@
-
-
 var x: any = 666
 
 //#[swag.printbc]

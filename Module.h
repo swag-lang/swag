@@ -78,6 +78,7 @@ struct Module
     uint32_t     maxReservedRegisterRR = 0;
 
     DataSegment mutableSegment;
+    DataSegment typeSegment;
     DataSegment constantSegment;
     DataSegment constantSegmentCompiler;
     DataSegment bssSegment;

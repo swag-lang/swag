@@ -129,7 +129,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     PushICFlags ic(context, BCI_SAFETY);
 
     auto r0   = reserveRegisterRC(context);
-    auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0);
+    auto inst = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     inst->b.u32 = exprNode->concreteTypeInfoStorage;
 

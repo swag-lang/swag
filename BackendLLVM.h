@@ -22,6 +22,7 @@ struct LLVMPerThread
     llvm::GlobalVariable* bssSeg            = nullptr;
     llvm::GlobalVariable* mutableSeg        = nullptr;
     llvm::GlobalVariable* constantSeg       = nullptr;
+    llvm::GlobalVariable* typeSeg           = nullptr;
     llvm::GlobalVariable* mainContext       = nullptr;
     llvm::GlobalVariable* defaultAllocTable = nullptr;
     llvm::GlobalVariable* processInfos      = nullptr;
@@ -121,7 +122,8 @@ struct BackendLLVM : public Backend
     bool generateObjFile(const BuildParameters& buildParameters);
 
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
-    bool emitInitDataSeg(const BuildParameters& buildParameters);
+    bool emitInitMutableSeg(const BuildParameters& buildParameters);
+    bool emitInitTypeSeg(const BuildParameters& buildParameters);
     bool emitInitConstantSeg(const BuildParameters& buildParameters);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);

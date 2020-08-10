@@ -67,8 +67,8 @@ bool TypeTableJob::computeStruct()
             {
                 uint32_t fieldOffset   = offsetof(ConcreteTypeInfoParam, value);
                 uint32_t valueOffset   = storageArray + (param * sizeof(ConcreteTypeInfoParam)) + fieldOffset;
-                addrArray[param].value = segment->addressNoLock(realType->interfaces[param]->offset);
-                segment->addInitPtr(valueOffset, realType->interfaces[param]->offset);
+                addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
+                segment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
             }
 
             storageArray += sizeof(ConcreteTypeInfoParam);

@@ -22,7 +22,7 @@ DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
         return &module->constantSegmentCompiler;
-    return &module->constantSegment;
+    return &module->typeSegment;
 }
 
 bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, bool forceNoScope, uint32_t cflags)

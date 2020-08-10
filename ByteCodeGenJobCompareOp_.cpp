@@ -280,7 +280,7 @@ bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
     if (left->typeInfo->isNative(NativeTypeKind::Any))
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
+        auto inst              = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, node->resultRegisterRC);
         inst->b.u32            = right->computedValue.reg.u32;
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
         freeRegisterRC(context, left);

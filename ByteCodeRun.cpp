@@ -756,6 +756,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->b.u32].u64     = count;
         break;
     }
+    case ByteCodeOp::MakeTypeSegPointer:
+    {
+        auto module = context->sourceFile->module;
+        auto offset = ip->b.u32;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->typeSegment.address(offset);
+        registersRC[ip->a.u32].pointer = ip->d.pointer;
+        break;
+    }
 
     case ByteCodeOp::BinOpModuloS32:
     {

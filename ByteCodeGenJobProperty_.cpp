@@ -29,7 +29,7 @@ bool ByteCodeGenJob::emitInterfaceOfProperty(ByteCodeGenContext* context)
     SWAG_ASSERT(childItf->computedValue.reg.u32 != UINT32_MAX);
     auto r0 = reserveRegisterRC(context);
 
-    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
+    emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC);

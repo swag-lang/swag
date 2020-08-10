@@ -27,7 +27,8 @@ struct BackendC : public Backend
 
     bool emitRuntime(OutputFile& bufferC, int precompileIndex);
     bool emitDataSegment(OutputFile& bufferC, DataSegment* dataSegment, int precompileIndex);
-    bool emitInitDataSeg(OutputFile& bufferC);
+    bool emitInitMutableSeg(OutputFile& bufferC);
+    bool emitInitTypeSeg(OutputFile& bufferC);
     bool emitInitConstantSeg(OutputFile& bufferC);
     bool emitMain(OutputFile& bufferC);
     bool emitGlobalInit(OutputFile& bufferC);

@@ -765,6 +765,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
+        case ByteCodeOp::MakeTypeSegPointer:
+        {
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ts + %u); ", ip->a.u32, ip->b.u32);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.typeSeg), CST_RB32);
+            builder.CreateStore(r1, r0);
+            break;
+        }
         case ByteCodeOp::MakeConstantSegPointerOC:
         {
             //concat.addStringFormat("r[%u].pointer = __cs + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));

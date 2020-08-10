@@ -24,8 +24,8 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         else
         {
             auto module               = context->sourceFile->module;
-            auto ptr1                 = module->constantSegment.address(left->computedValue.reg.u32);
-            auto ptr2                 = module->constantSegment.address(right->computedValue.reg.u32);
+            auto ptr1                 = module->typeSegment.address(left->computedValue.reg.u32);
+            auto ptr2                 = module->typeSegment.address(right->computedValue.reg.u32);
             node->computedValue.reg.b = swag_runtime_comparetype(ptr1, ptr2);
         }
     }
