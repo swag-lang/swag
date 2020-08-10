@@ -7,27 +7,34 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 
+inline void emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex)
+{
+    auto& concat = pp.concat;
+
+    concat.addString("\x48\x8D\x05", 3);
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+    reloc.symbolIndex    = symbolIndex;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
+    pp.relocTableTextSection.table.push_back(reloc);
+    concat.addU32(0);
+}
+
+inline void emitAddtoRAX(X64PerThread& pp, uint32_t value)
+{
+    // add rax, ?
+    pp.concat.addString("\x48\x05", 2);
+    pp.concat.addU32(value);
+}
+
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
 }
 
-extern "C" void tt1(const char*, int)
-{
-}
-
-extern char ___c[20];
-
-void tt()
-{
-    double cc = 0;
-    cc        = 3.14;
-}
-
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
-    tt();
-
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
@@ -102,15 +109,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
             emitSymbolToRAX(pp, pp.csIndex);
-
-            // add rax, ?
-            concat.addString("\x48\x05", 2);
-            concat.addU32(ip->b.u32);
+            emitAddtoRAX(pp, ip->b.u32);
 
             // mov qword ptr [rdi + ?], rax
             concat.addString("\x48\x89\x87", 3);
             concat.addU32(ip->a.u32 * sizeof(Register));
-
             break;
 
         case ByteCodeOp::CopyVBtoRA32:

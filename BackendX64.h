@@ -119,7 +119,6 @@ struct BackendX64 : public Backend
     bool emitMain(const BuildParameters& buildParameters);
 
     void emitCall(X64PerThread& pp, const Utf8& name);
-    void emitSymbolToRAX(X64PerThread& pp, uint32_t symbolIndex);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
