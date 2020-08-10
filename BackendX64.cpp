@@ -4,6 +4,49 @@
 #include "OS.h"
 #include "Module.h"
 
+bool BackendX64::createRuntime(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    getOrAddSymbol(pp, "swag_runtime_tlsAlloc", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_tlsGetValue", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_tlsSetValue", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_convertArgcArgv", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_loadDynamicLibrary", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_interfaceof", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_comparestring", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_comparetype", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_print_n", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_print_i64", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_print_f64", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "swag_runtime_assert", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "malloc", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "free", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "realloc", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "memcmp", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "acosf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "acos", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "asinf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "asin", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "tanf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "tan", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "atanf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "atan", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "sinhf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "sinh", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "coshf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "cosh", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "tanhf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "tanh", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "powf", CoffSymbolKind::Extern);
+    getOrAddSymbol(pp, "pow", CoffSymbolKind::Extern);
+
+    return true;
+}
+
 JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
 {
     int   ct              = buildParameters.compileType;
@@ -31,6 +74,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
 
         emitHeader(buildParameters);
+        createRuntime(buildParameters);
     }
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)

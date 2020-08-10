@@ -90,6 +90,7 @@ struct BackendX64 : public Backend
     {
     }
 
+    bool                    createRuntime(const BuildParameters& buildParameters);
     JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
