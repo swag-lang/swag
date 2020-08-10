@@ -52,7 +52,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
-            buildRelocDataSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection);
+            buildRelocConstantSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection);
             buildRelocDataSegment(buildParameters, &module->mutableSegment, pp.relocTableDSSection);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
@@ -105,6 +105,8 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     auto it = getSymbol(pp, name);
     if (it)
     {
+        if (it->kind == kind)
+            return it;
         if (kind == CoffSymbolKind::Extern)
             return it;
         if (kind == CoffSymbolKind::Function && it->kind == CoffSymbolKind::Extern)
@@ -253,6 +255,18 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             break;
         case CoffSymbolKind::Extern:
             concat.addU16(0);                       // .SectionNumber
+            concat.addU16(0);                       // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+            concat.addU8(0);                        // .NumberOfAuxSymbols
+            break;
+        case CoffSymbolKind::CSReloc:
+            concat.addU16(pp.sectionIndexCS);       // .SectionNumber
+            concat.addU16(0);                       // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+            concat.addU8(0);                        // .NumberOfAuxSymbols
+            break;
+        case CoffSymbolKind::DSReloc:
+            concat.addU16(pp.sectionIndexDS);       // .SectionNumber
             concat.addU16(0);                       // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
             concat.addU8(0);                        // .NumberOfAuxSymbols

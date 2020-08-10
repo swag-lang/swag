@@ -15,6 +15,8 @@ enum class CoffSymbolKind
 {
     Function,
     Extern,
+    CSReloc,
+    DSReloc,
 };
 
 struct CoffSymbol
@@ -104,6 +106,7 @@ struct BackendX64 : public Backend
 
     bool generateObjFile(const BuildParameters& buildParameters);
 
+    bool buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
     bool buildRelocDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
