@@ -3,5 +3,5 @@
 {
     //@print("toto\n")
     //@print("toto la fripouille\n")
-    @print(666's64)
+    @print(7666'f64)
 }

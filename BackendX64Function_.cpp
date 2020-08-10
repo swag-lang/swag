@@ -14,14 +14,14 @@ BackendFunctionBodyJob* BackendX64::newFunctionJob()
 
 extern "C" void tt1(const char*, int)
 {
-
 }
 
 extern char ___c[20];
 
 void tt()
 {
-    double cc = 1.4;
+    double cc = 0;
+    cc        = 3.14;
 }
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -43,39 +43,43 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // Reserve registers
     uint32_t sizeStack   = 0;
+    uint32_t offsetFLT   = 0;
     uint32_t offsetStack = 0;
     uint32_t offsetRT    = 0;
+
+    // For float load
+    sizeStack += 8;
 
     if (typeFunc->stackSize)
     {
         sizeStack += typeFunc->stackSize;
+        offsetFLT += typeFunc->stackSize;
     }
 
     if (bc->maxCallResults)
     {
         offsetStack += bc->maxCallResults * sizeof(Register);
         sizeStack += bc->maxCallResults * sizeof(Register);
+        offsetFLT += bc->maxCallResults * sizeof(Register);
     }
 
     if (bc->maxReservedRegisterRC)
     {
-        offsetStack += bc->maxReservedRegisterRC * sizeof(Register);
         offsetRT += bc->maxReservedRegisterRC * sizeof(Register);
+        offsetStack += bc->maxReservedRegisterRC * sizeof(Register);
         sizeStack += bc->maxReservedRegisterRC * sizeof(Register);
+        offsetFLT += bc->maxReservedRegisterRC * sizeof(Register);
     }
 
-    if (sizeStack)
-    {
-        // push rdi
-        concat.addU8(0x57);
+    // push rdi
+    concat.addU8(0x57);
 
-        // sub rsp, sizestack
-        concat.addString("\x48\x81\xEC", 3);
-        concat.addU32(sizeStack);
+    // sub rsp, sizestack
+    concat.addString("\x48\x81\xEC", 3);
+    concat.addU32(sizeStack);
 
-        // mov rdi, rsp
-        concat.addString("\x48\x89\xE7", 3);
-    }
+    // mov rdi, rsp
+    concat.addString("\x48\x89\xE7", 3);
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -98,7 +102,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
             emitSymbolToRAX(pp, pp.csIndex);
-            
+
             // add rax, ?
             concat.addString("\x48\x05", 2);
             concat.addU32(ip->b.u32);
@@ -142,13 +146,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
-            //CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
+            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
 
             // mov rcx, [rdi + ?]
             concat.addString("\x48\x8B\x8F", 3);
             concat.addU32(ip->a.u32 * sizeof(Register));
 
             emitCall(pp, "swag_runtime_print_i64");
+            break;
+
+        case ByteCodeOp::IntrinsicPrintF64:
+            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
+
+            // mov rax, [rdi + ?]
+            concat.addString("\x48\x8B\x87", 3);
+            concat.addU32(ip->a.u32 * sizeof(Register));
+
+            // mov qword ptr [rdi + ?] = rax
+            concat.addString("\x48\x89\x87", 3);
+            concat.addU32(offsetFLT);
+
+            // movsd xmm0, [rdi + 0x220000]
+            concat.addString("\xF2\x0F\x10\x87", 4);
+            concat.addU32(offsetFLT);
+
+            emitCall(pp, "swag_runtime_print_f64");
             break;
 
         case ByteCodeOp::Ret:
