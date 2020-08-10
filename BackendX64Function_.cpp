@@ -99,7 +99,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyVBtoRA32:
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
-            // mov dword ptr [rdi + ?] = ?
+            // mov [rdi + ?] = ?
             concat.addString("\xC7\x87", 2);
             concat.addU32(ip->a.u32 * sizeof(Register));
             concat.addU32(ip->b.u32);

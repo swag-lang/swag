@@ -380,12 +380,14 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
     auto callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
     if (callSym->kind == CoffSymbolKind::Function)
     {
-        concat.addU8(BackendX64Inst::Call);
+        // call
+        concat.addU8(0xE8);
         concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount + 4));
     }
     else
     {
-        concat.addU8(BackendX64Inst::Call);
+        // call
+        concat.addU8(0xE8);
 
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
@@ -393,7 +395,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
 
-        concat.addS32(0);
+        concat.addU32(0);
     }
 }
 
