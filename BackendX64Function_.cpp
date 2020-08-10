@@ -52,6 +52,18 @@ inline void emitMoveReg2RAX(X64PerThread& pp, uint32_t r)
     emitMoveStack2RAX(pp, r * sizeof(Register));
 }
 
+inline void emitMoveStack2RCX(X64PerThread& pp, uint32_t stackOffset)
+{
+    // mov rcx, [rdi + ?]
+    pp.concat.addString("\x48\x8B\x8F", 3);
+    pp.concat.addU32(stackOffset);
+}
+
+inline void emitMoveReg2RCX(X64PerThread& pp, uint32_t r)
+{
+    emitMoveStack2RCX(pp, r * sizeof(Register));
+}
+
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
