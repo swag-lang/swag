@@ -21,7 +21,7 @@ extern char ___c[20];
 
 void tt()
 {
-    tt1(___c + 5, 666);
+    double cc = 1.4;
 }
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -111,10 +111,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyVBtoRA32:
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
-            // mov dword ptr[rdi + ?] = ?
+            // mov dword ptr [rdi + ?] = ?
             concat.addString("\xC7\x87", 2);
             concat.addU32(ip->a.u32 * sizeof(Register));
             concat.addU32(ip->b.u32);
+            break;
+
+        case ByteCodeOp::CopyVBtoRA64:
+            //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
+            // mov rax, ?
+            concat.addString("\x48\xB8", 2);
+            concat.addU64(ip->b.u64);
+            // mov qword ptr [rdi + ?] = rax
+            concat.addString("\x48\x89\x87", 3);
+            concat.addU32(ip->a.u32 * sizeof(Register));
             break;
 
         case ByteCodeOp::IntrinsicPrintString:
@@ -129,6 +139,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(ip->a.u32 * sizeof(Register));
 
             emitCall(pp, "swag_runtime_print_n");
+            break;
+
+        case ByteCodeOp::IntrinsicPrintS64:
+            //CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
+
+            // mov rcx, [rdi + ?]
+            concat.addString("\x48\x8B\x8F", 3);
+            concat.addU32(ip->a.u32 * sizeof(Register));
+
+            emitCall(pp, "swag_runtime_print_i64");
             break;
 
         case ByteCodeOp::Ret:
