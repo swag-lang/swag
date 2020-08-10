@@ -1,4 +1,4 @@
-#if swag.WINDOWS
+#if std.WINDOWS
 {
 	#import "win32"
 	#import "xinput"
@@ -6,12 +6,32 @@
 
 namespace std
 {
-    #if #cfg != "final"
+    // Setup
+    #if #arch == "x64"
     {
-        const ASSERT = true
+        public const BIG_ENDIAN = false
     }
     #else
     {
-        const ASSERT = false
+        #assert(false, "invalid arch:" ~ #arch)
+    }
+
+    // Platform setup
+    #if #os == "windows"
+    {
+        public const WINDOWS = true
+    }
+    #else
+    {
+        #assert(false, "invalid os:" ~ #os)
+    }
+
+    #if #cfg != "final"
+    {
+        public const ASSERT = true
+    }
+    #else
+    {
+        public const ASSERT = false
     }
 }

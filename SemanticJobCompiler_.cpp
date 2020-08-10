@@ -314,13 +314,16 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
-    case TokenId::CompilerTarget:
-    {
+    case TokenId::CompilerArch:
         node->computedValue.text = g_Workspace.GetArchName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
-    }
+    case TokenId::CompilerOs:
+        node->computedValue.text = g_Workspace.GetOsName();
+        node->typeInfo           = g_TypeMgr.typeInfoString;
+        node->setFlagsValueIsComputed();
+        return true;
 
     case TokenId::CompilerCallerLine:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerline' can only be set in a function parameter declaration"}));

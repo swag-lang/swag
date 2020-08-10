@@ -1,4 +1,4 @@
-#if swag.WINDOWS
+#if #os == "windows"
 {
     alias HANDLE = *void
 

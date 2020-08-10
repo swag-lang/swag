@@ -512,7 +512,7 @@ namespace std.crypto
 		{
 			loop unrolling: unroll
 			{
-			#if swag.BIG_ENDIAN
+			#if std.BIG_ENDIAN
 			{
 				one   := current[0] ^ Swap(crc)
 				two   := current[1]

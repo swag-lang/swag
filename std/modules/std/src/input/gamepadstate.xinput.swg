@@ -1,4 +1,4 @@
-#if swag.WINDOWS
+#if std.WINDOWS
 {
     using xinput, win32, std.input
 

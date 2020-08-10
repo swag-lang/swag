@@ -223,10 +223,21 @@ void Workspace::deleteFolderContent(const fs::path& path)
 
 Utf8 Workspace::GetArchName()
 {
-    switch (g_CommandLine.target)
+    switch (g_CommandLine.arch)
     {
-    case BackendTarget::Win64:
-        return "win64";
+    case BackendArch::X64:
+        return "x64";
+    default:
+        return "?";
+    }
+}
+
+Utf8 Workspace::GetOsName()
+{
+    switch (g_CommandLine.os)
+    {
+    case BackendOs::Windows:
+        return "windows";
     default:
         return "?";
     }

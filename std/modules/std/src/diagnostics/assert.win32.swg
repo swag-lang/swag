@@ -1,4 +1,4 @@
-#if swag.WINDOWS && std.ASSERT
+#if std.WINDOWS && std.ASSERT
 {
     using win32, std
 

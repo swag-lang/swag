@@ -19,6 +19,7 @@ struct Workspace
     Module* getModuleByName(const Utf8& moduleName);
     void    deleteFolderContent(const fs::path& path);
     Utf8    GetArchName();
+    Utf8    GetOsName();
     void    setupTarget();
 
     bool watch();

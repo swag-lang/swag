@@ -453,19 +453,4 @@ namespace swag
         getMessage:     func(self)->const* CompilerMessage
         getBuildCfg:    func(self)->*BuildCfg
     }
-
-    // #########################################################
-    // Default compiler configuration
-    // #########################################################
-
-    // Platform setup
-    #if #target == "win64"
-    {
-        const WINDOWS = true
-        const BIG_ENDIAN = false
-    }
-    #else
-    {
-        #assert(false, "invalid target:" ~ #target)
-    }
 }

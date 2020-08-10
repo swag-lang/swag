@@ -2,9 +2,14 @@
 #include "BuildPass.h"
 #include "Utf8.h"
 
-enum class BackendTarget
+enum class BackendArch
 {
-    Win64,
+    X64,
+};
+
+enum class BackendOs
+{
+    Windows,
 };
 
 enum class BackendType
@@ -61,12 +66,13 @@ struct CommandLine
     bool generateDoc = false;
 
     // Output
-    string        buildCfg           = "debug";
-    string        buildCfgDebug      = "default";
-    string        buildCfgSafety     = "default";
-    string        buildCfgOptimSpeed = "default";
-    string        buildCfgOptimSize  = "default";
-    BackendTarget target             = BackendTarget::Win64;
+    string      buildCfg           = "debug";
+    string      buildCfgDebug      = "default";
+    string      buildCfgSafety     = "default";
+    string      buildCfgOptimSpeed = "default";
+    string      buildCfgOptimSize  = "default";
+    BackendOs   os                 = BackendOs::Windows;
+    BackendArch arch               = BackendArch::X64;
 
     // Backend
     BackendType backendType        = BackendType::LLVM;

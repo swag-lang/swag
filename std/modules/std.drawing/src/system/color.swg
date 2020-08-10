@@ -2,7 +2,7 @@ namespace std.drawing
 {
 	public struct Color
 	{
-		#if swag.BIG_ENDIAN
+		#if std.BIG_ENDIAN
 		{
 			a, r, g, b: u8
 			#[swag.offset("a")]
@@ -26,9 +26,9 @@ namespace std.drawing
             {
                 self.argb = argb
             }
-            
+
             #[swag.complete]
-            func opAffect(self, argb: Argb) 
+            func opAffect(self, argb: Argb)
             {
                 self.argb = cast(u32) argb
             }

@@ -1,4 +1,4 @@
-#if swag.WINDOWS
+#if std.WINDOWS
 {
 	namespace std.input
 	{
