@@ -19,14 +19,17 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::PreCompile;
 
         // No need to generate something for a module from tests/ folder, if we do not want test backend
-        if (module->fromTestsFolder && !g_CommandLine.backendOutputTest)
+        if (module->fromTestsFolder && !g_CommandLine.outputTest)
             return JobResult::ReleaseJob;
 
         // Generate .swg file with public definitions
-        auto exportJob          = g_Pool_moduleExportJob.alloc();
-        exportJob->backend      = module->backend;
-        exportJob->dependentJob = dependentJob;
-        jobsToAdd.push_back(exportJob);
+        if (g_CommandLine.output)
+        {
+            auto exportJob          = g_Pool_moduleExportJob.alloc();
+            exportJob->backend      = module->backend;
+            exportJob->dependentJob = dependentJob;
+            jobsToAdd.push_back(exportJob);
+        }
 
         // Generate documentation for module (except for tests)
         if (g_CommandLine.generateDoc && !module->fromTestsFolder)
@@ -34,7 +37,7 @@ JobResult ModuleOutputJob::execute()
             auto docJob    = g_Pool_docModuleJob.alloc();
             docJob->module = module;
             g_ThreadMgr.addJob(docJob);
-            if (!g_CommandLine.backendOutput)
+            if (!g_CommandLine.output)
                 return JobResult::ReleaseJob;
         }
     }
@@ -76,7 +79,7 @@ JobResult ModuleOutputJob::execute()
             if (g_CommandLine.backendType != BackendType::C)
             {
                 // Precompile a specific version, to test it
-                if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
+                if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
                 {
                     // Do not generate test on dependencies if we want to compile only one specific module
                     if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
@@ -94,7 +97,7 @@ JobResult ModuleOutputJob::execute()
                 }
 
                 // Precompile the normal version
-                if (!module->fromTestsFolder && g_CommandLine.backendOutputLegit)
+                if (!module->fromTestsFolder && g_CommandLine.outputLegit)
                 {
                     auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
                     preCompileJob->module                          = module;
@@ -129,7 +132,7 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::Run;
 
         // Compile a specific version, to test it
-        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
+        if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
         {
             // Do not generate test on dependencies if we want to compile only one specific module
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
@@ -149,7 +152,7 @@ JobResult ModuleOutputJob::execute()
 
         // Compile the official normal version, except if it comes from the test folder (because
         // there's no official version for the test folder, only a test executable)
-        if (!module->fromTestsFolder && g_CommandLine.backendOutputLegit)
+        if (!module->fromTestsFolder && g_CommandLine.outputLegit)
         {
             auto compileJob                         = g_Pool_moduleCompileJob.alloc();
             compileJob->module                      = module;
@@ -175,7 +178,7 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
+        if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
         {
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
             {
@@ -191,7 +194,7 @@ JobResult ModuleOutputJob::execute()
         }
 
         // Run command
-        if (g_CommandLine.run && !module->fromTestsFolder && g_CommandLine.backendOutputLegit)
+        if (g_CommandLine.run && !module->fromTestsFolder && g_CommandLine.outputLegit)
         {
             auto job                         = g_Pool_moduleRunJob.alloc();
             job->module                      = module;

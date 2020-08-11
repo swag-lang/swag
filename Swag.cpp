@@ -29,7 +29,7 @@ void printStats()
     g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.load())));
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
-    if (g_CommandLine.backendOutput)
+    if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)
         g_Log.messageHeaderDot("executed #test", format("%d", g_Stats.testFunctions.load()));
@@ -138,7 +138,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "doc")
     {
-        g_CommandLine.backendOutput = false;
+        g_CommandLine.output = false;
         g_CommandLine.generateDoc   = true;
     }
     else

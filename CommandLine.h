@@ -75,10 +75,10 @@ struct CommandLine
     BackendArch arch               = BackendArch::X64;
 
     // Backend
-    BackendType backendType        = BackendType::LLVM;
-    bool        backendOutput      = true;
-    bool        backendOutputTest  = true;
-    bool        backendOutputLegit = true;
+    BackendType backendType = BackendType::LLVM;
+    bool        output      = true;
+    bool        outputTest  = true;
+    bool        outputLegit = true;
 
     fs::path exePath;
     string   exePathStr;

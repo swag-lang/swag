@@ -17,9 +17,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
 
-    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput, nullptr, "output backend");
-    addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit, nullptr, "output native backend");
-    addArg("--output-test", "-ot", CommandLineType::Bool, &cmdLine->backendOutputTest, nullptr, "output test backend");
+    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
+    addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
+    addArg("--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
 
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "test mode (compile the ./tests folder and run all #test)");
     addArg("--run-test-bytecode", "-rb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");

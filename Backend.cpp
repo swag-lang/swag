@@ -15,7 +15,7 @@ void Backend::setup()
 {
     OS::setupBackend();
 
-    if (g_CommandLine.backendOutput)
+    if (g_CommandLine.output)
     {
         if (g_CommandLine.backendType == BackendType::C)
         {

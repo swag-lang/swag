@@ -253,7 +253,7 @@ void Workspace::setupTarget()
         g_Log.verbose(format("-- target directory is '%s'", targetPath.string().c_str()));
 
     // Clean target
-    if (g_CommandLine.clean && g_CommandLine.backendOutput)
+    if (g_CommandLine.clean && g_CommandLine.output)
     {
         if (fs::exists(targetPath))
             deleteFolderContent(targetPath);
@@ -312,7 +312,7 @@ void Workspace::setupTarget()
     }
 
     // Clean target
-    if (g_CommandLine.clean && g_CommandLine.backendOutput)
+    if (g_CommandLine.clean && g_CommandLine.output)
     {
         if (fs::exists(cachePath))
             deleteFolderContent(cachePath);

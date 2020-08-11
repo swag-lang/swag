@@ -81,7 +81,7 @@ namespace OS
 
     void setupBackend()
     {
-        if (!g_CommandLine.backendOutput)
+        if (!g_CommandLine.output)
             return;
 
         // Windows sdk folders and version

@@ -42,8 +42,6 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        if (module->name == "tests.std")
-            module = module;
         pass = ModuleBuildPass::IncludeSwg;
     }
 
@@ -52,11 +50,11 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
     {
-        // Determin now if we need to recompile
+        // Determine now if we need to recompile
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
-        if (!module->backend->mustCompile && !g_CommandLine.generateDoc)
+        if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test)
         {
             timeBeforeSemanticModule = chrono::high_resolution_clock::now();
             pass                     = ModuleBuildPass::Run;
@@ -160,7 +158,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Publish)
     {
         pass = ModuleBuildPass::SemanticCompilerPass;
-        if (g_CommandLine.backendOutput && !module->path.empty() && !module->fromTestsFolder)
+        if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
             // Everything in a /publih folder will be copied "as is" in the output directory
             string publishPath = module->path + "/publish";
@@ -390,7 +388,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::End;
         if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
         {
-            if (g_CommandLine.backendOutput || g_CommandLine.generateDoc)
+            if (g_CommandLine.output || g_CommandLine.generateDoc)
             {
                 module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();
