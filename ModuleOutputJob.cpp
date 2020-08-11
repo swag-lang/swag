@@ -23,12 +23,12 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
 
         // Generate .swg file with public definitions
-        auto exportJob          = g_Pool_moduleOutputExportJob.alloc();
+        auto exportJob          = g_Pool_moduleExportJob.alloc();
         exportJob->backend      = module->backend;
         exportJob->dependentJob = dependentJob;
         jobsToAdd.push_back(exportJob);
 
-        // Generate documentation for module
+        // Generate documentation for module (except for tests)
         if (g_CommandLine.generateDoc && !module->fromTestsFolder)
         {
             auto docJob    = g_Pool_docModuleJob.alloc();
