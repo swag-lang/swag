@@ -1,13 +1,15 @@
 //var g = "toto"
-var g = -6's8
+var g = 0
 
 #[swag.printbc]
 #test
 {
-    {
+    @print(cast(s64) g)
+
+    /*{
         x := -6's8
         @print(cast(s64) x)
-    }
+    }*/
 
     /*{
         x := -6's64

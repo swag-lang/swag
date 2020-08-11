@@ -113,7 +113,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitDeRef64Rax(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
-
         case ByteCodeOp::GetFromStack64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
             BackendX64Inst::emitLeaStack2Rax(pp, offsetStack + ip->b.u32);
