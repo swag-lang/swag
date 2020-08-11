@@ -289,7 +289,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::JumpIfNotTrue:
+    case ByteCodeOp::JumpIfFalse:
     {
         if (!registersRC[ip->a.u32].b)
             context->ip += ip->b.s32;

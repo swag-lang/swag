@@ -163,7 +163,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     {
     case ByteCodeOp::Jump:
     case ByteCodeOp::JumpIfTrue:
-    case ByteCodeOp::JumpIfNotTrue:
+    case ByteCodeOp::JumpIfFalse:
     case ByteCodeOp::JumpIfNotZero32:
     case ByteCodeOp::JumpIfNotZero64:
     case ByteCodeOp::JumpIfZero32:

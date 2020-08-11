@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 {
     auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If);
 
-    // Resolve ByteCodeOp::JumpIfNotTrue expression
+    // Resolve ByteCodeOp::JumpIfFalse expression
     auto instruction = context->bc->out + ifNode->seekJumpExpression;
     auto diff        = ifNode->seekJumpAfterIf - ifNode->seekJumpExpression;
 
@@ -163,7 +163,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
     ifNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
     freeRegisterRC(context, node);
     return true;
 }
@@ -189,7 +189,7 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
 {
     auto loopNode = static_cast<AstBreakable*>(context->node);
 
-    // Resolve ByteCodeOp::JumpIfNotTrue expression
+    // Resolve ByteCodeOp::JumpIfFalse expression
     auto instruction   = context->bc->out + loopNode->seekJumpExpression;
     auto diff          = loopNode->seekJumpAfterBlock - loopNode->seekJumpExpression;
     instruction->b.s32 = diff - 1;
@@ -299,7 +299,7 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 
     auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
 
     // Increment the index
     if (whileNode->needIndex())
@@ -333,7 +333,7 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
     forNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
 
     // Increment the index
     if (forNode->needIndex())

@@ -2191,7 +2191,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
-        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfFalse:
         {
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);

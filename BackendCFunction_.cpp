@@ -1385,7 +1385,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addS32Str8(ip->a.s32 + i + 1);
             concat.addChar(';');
             break;
-        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfFalse:
             CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b)goto _");
             concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');

@@ -312,7 +312,7 @@ void ByteCode::print()
         case ByteCodeOp::JumpIfZero64:
         case ByteCodeOp::JumpIfNotZero32:
         case ByteCodeOp::JumpIfNotZero64:
-        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfFalse:
         case ByteCodeOp::JumpIfTrue:
             g_Log.setColor(LogColor::Gray);
             wprintf(L"RA: %u ", ip->a.u32);
@@ -405,7 +405,7 @@ void ByteCode::markLabels()
             numJumps--;
             break;
         case ByteCodeOp::JumpIfTrue:
-        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfFalse:
         case ByteCodeOp::JumpIfNotZero32:
         case ByteCodeOp::JumpIfNotZero64:
         case ByteCodeOp::JumpIfZero32:

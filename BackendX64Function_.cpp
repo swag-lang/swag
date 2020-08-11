@@ -150,7 +150,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
-        case ByteCodeOp::JumpIfNotTrue:
+        case ByteCodeOp::JumpIfFalse:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);

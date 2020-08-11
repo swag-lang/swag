@@ -67,7 +67,7 @@ bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
     }
 
     reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
-    emitInstruction(context, ByteCodeOp::JumpIfNotTrue, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
 
     // If true
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
