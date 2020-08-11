@@ -866,19 +866,19 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::MakeConstantSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)((__u8_t*)__cs+", ip->b.u32, ");");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)__cs+", ip->b.u32, ";");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)(__u8_t*)__cs;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)__cs;");
             break;
         case ByteCodeOp::MakeConstantSegPointerOC:
-            concat.addStringFormat("r[%u].p=(__u8_t*)__cs+%u;", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
-            concat.addStringFormat("r[%u].u64=%u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
+            CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)__cs+", (uint32_t)(ip->c.u64 >> 32), ";");
+            CONCAT_STR_2(concat, "r[", ip->b.u32, "].u64=", (ip->c.u64) & 0xFFFFFFFF, ";");
             break;
         case ByteCodeOp::MakeTypeSegPointer:
             if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)((__u8_t*)__ts+", ip->b.u32, ");");
+                CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)__ts+", ip->b.u32, ";");
             else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)(__u8_t*)__ts;");
+                CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)__ts;");
             break;
 
         case ByteCodeOp::MakeStackPointer:

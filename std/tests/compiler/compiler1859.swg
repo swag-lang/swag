@@ -4,10 +4,10 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
-    if(g == 0)
-        @print("a")
-    else
-        @print("b")
+    {
+        x := @[1's64, 2, 3]
+        @print(x[0])
+    }
 
     if false
     {
