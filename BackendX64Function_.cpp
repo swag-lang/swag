@@ -126,6 +126,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::CompareOpEqual32:
+            //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString2("\x39\xD8"); // cmp eax, ebx
+            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
+            break;
+
+        case ByteCodeOp::JumpIfNotTrue:
+            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
+            //concat.addS32Str8(ip->b.s32 + i + 1);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x84\xC0"); // test al, al
+            concat.addString2("\x0F\x84"); // jz ?
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            concat.addU32(0);
+            break;
         case ByteCodeOp::JumpIfZero32:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);

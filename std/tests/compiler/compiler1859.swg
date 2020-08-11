@@ -4,10 +4,16 @@ var g = 5
 #[swag.printbc]
 #test
 {
-    loop 5 @print("g")
+    a := 5
+    if a == 4
+        @print("a")
+    else
+        @print("b")
 
     if false
     {
+        loop 5 @print("g")
+
         {
             x := -6's8
             @print(cast(s64) x)
