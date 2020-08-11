@@ -4,7 +4,7 @@ var g = -6's8
 #[swag.printbc]
 #test
 {
-    x := -6
+    x := -6's64
     @print(cast(s64) x)
     //@print(g)
     //@print("\n")

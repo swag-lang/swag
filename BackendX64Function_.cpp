@@ -114,6 +114,29 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::GetFromStack64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
+            concat.addString("\x48\x89\xF8", 3); // mov rax, rdi
+            BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
+            concat.addString("\x48\x8B\x00", 3); // mov rax, [rax]
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
+        case ByteCodeOp::SetAtPointer64:
+            //concat.addStringFormat("*(__u64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitAdd2RAX(pp, ip->c.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString("\x48\x89\x18", 3); // mov [rax], rbx
+            break;
+
+        case ByteCodeOp::MakeStackPointer:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = stack + ", ip->b.u32, ";");
+            concat.addString("\x48\x89\xF8", 3); // mov rax, rdi
+            BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.csIndex);
