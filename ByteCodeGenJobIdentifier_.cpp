@@ -157,8 +157,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::GetFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
-                emitInstruction(context, ByteCodeOp::GetFromDataSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
             }
         }
         else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
@@ -183,7 +183,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
-                inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg64, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
         }
 

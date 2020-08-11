@@ -814,7 +814,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64/=%u;", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::GetFromDataSeg64:
+        case ByteCodeOp::GetFromMutableSeg64:
             concat.addStringFormat("r[%u].u64=*(__u64_t*)((__u8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromBssSeg64:

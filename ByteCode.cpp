@@ -289,7 +289,7 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
-        case ByteCodeOp::GetFromDataSeg64:
+        case ByteCodeOp::GetFromMutableSeg64:
         case ByteCodeOp::GetFromBssSeg64:
         case ByteCodeOp::Mul64byVB32:
         case ByteCodeOp::Div64byVB32:

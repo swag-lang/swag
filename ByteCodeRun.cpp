@@ -621,7 +621,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 
-    case ByteCodeOp::GetFromDataSeg64:
+    case ByteCodeOp::GetFromMutableSeg64:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)

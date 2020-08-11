@@ -588,7 +588,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::GetFromDataSeg64:
+        case ByteCodeOp::GetFromMutableSeg64:
         {
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
