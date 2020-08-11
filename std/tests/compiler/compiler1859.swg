@@ -8,6 +8,13 @@ var g = 5's8
     {
         {
             x := @[1's64, 2, 3]
+            ptr := &x[0]
+            @print(ptr[0])
+            @print(ptr[1])
+        }
+
+        {
+            x := @[1's64, 2, 3]
             @print(x[0])
             @print(x[1])
             @print(x[2])

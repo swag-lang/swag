@@ -6,6 +6,7 @@
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "TypeInfo.h"
+#include "Module.h"
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
@@ -77,6 +78,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     concat.addU8(0x57); // push rdi
+    while ((sizeStack % 16) != 8)
+        sizeStack++; // Align to 16 bytes (we have a push just before, that's already 8 bytes)
     BackendX64Inst::emitSubRsp(pp, sizeStack);
     concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
@@ -334,6 +337,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // ret
             concat.addU8(0xc3);
+            break;
+
+        default:
+            if (moduleToGen && moduleToGen->name == "compiler1859")
+                printf("!!!!! %s\n", g_ByteCodeOpNames[(int) ip->op]);
             break;
         }
     }
