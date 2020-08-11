@@ -687,17 +687,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
-    case ByteCodeOp::MakeConstantSegPointerOC:
-    {
-        auto module = context->sourceFile->module;
-        auto offset = (uint32_t)(ip->c.u64 >> 32);
-        auto count  = (uint32_t)(ip->c.u64 & 0xFFFFFFFF);
-        if (!ip->d.pointer)
-            ip->d.pointer = module->constantSegment.address(offset);
-        registersRC[ip->a.u32].pointer = ip->d.pointer;
-        registersRC[ip->b.u32].u64     = count;
-        break;
-    }
     case ByteCodeOp::MakeTypeSegPointer:
     {
         auto module = context->sourceFile->module;

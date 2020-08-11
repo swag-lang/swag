@@ -721,18 +721,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::MakeConstantSegPointerOC:
-        {
-            //concat.addStringFormat("r[%u].pointer = __cs + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32));
-            //concat.addStringFormat("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF);
-            auto r0     = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto offset = (uint32_t)(ip->c.u64 >> 32);
-            auto r1     = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(offset));
-            builder.CreateStore(r1, r0);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            builder.CreateStore(llvm::ConstantInt::get(builder.getInt64Ty(), (ip->c.u64 & 0xFFFFFFFF)), r2);
-            break;
-        }
 
         case ByteCodeOp::MakeStackPointer:
         {

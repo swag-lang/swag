@@ -252,10 +252,6 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
-        case ByteCodeOp::MakeConstantSegPointerOC:
-            wprintf(L"RA: %u RB: %u VC: { %u, %u } ", ip->a.u32, ip->b.u32, (uint32_t)(ip->c.u64 >> 32), (uint32_t)(ip->c.u64 & 0xFFFFFFFF));
-            break;
-
         case ByteCodeOp::MakeStackPointerParam:
             wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;

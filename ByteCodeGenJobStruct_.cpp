@@ -80,10 +80,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-                auto inst = emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointerOC, 1, 2);
                 SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
-                inst->c.u64 = ((uint64_t) exprList->storageOffsetSegment << 32) | (uint32_t) typeList->subTypes.size();
-
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = exprList->storageOffsetSegment;
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u32 = (uint32_t) typeList->subTypes.size();
                 emitInstruction(&cxt, ByteCodeOp::MemCpyVC32, 0, 1)->c.u32 = typeVar->sizeOf;
             }
             else if (typeVar->isNative(NativeTypeKind::String))

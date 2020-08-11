@@ -42,10 +42,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             reserveRegisterRC(context, node->resultRegisterRC, 2);
             node->parent->resultRegisterRC = node->resultRegisterRC;
-            auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointerOC, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            auto storageOffset = node->resolvedSymbolOverload->storageOffset;
-            inst->c.u64        = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1])->b.u32           = typeArray->count;
             return true;
         }
 
