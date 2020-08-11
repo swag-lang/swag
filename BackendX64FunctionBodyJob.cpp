@@ -25,7 +25,8 @@ JobResult BackendX64FunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        bachendX64->emitFunctionBody(buildParameters, module, one);
+        if(!bachendX64->emitFunctionBody(buildParameters, module, one))
+            return JobResult::ReleaseJob;
     }
 
     return JobResult::ReleaseJob;

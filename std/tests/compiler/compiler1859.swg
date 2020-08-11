@@ -4,7 +4,16 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
-    if true
+    {
+        cpt := 0
+        while cpt < 4
+        {
+            @print("X")
+            cpt += 1
+        }
+    }
+
+    if false
     {
         {
             x := @[1's64, 2, 3]

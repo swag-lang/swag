@@ -340,8 +340,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         default:
-            if (moduleToGen && moduleToGen->name == "compiler1859")
-                printf("!!!!! %s\n", g_ByteCodeOpNames[(int) ip->op]);
+            if (bc->name == "compiler1859___test0")
+                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int)ip->op]));
             break;
         }
     }

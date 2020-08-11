@@ -123,6 +123,8 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->buildPass < BuildPass::Full)
             return JobResult::ReleaseJob;
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         pass = ModuleOutputJobPass::Run;
 
@@ -169,6 +171,9 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::Run)
     {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
         // Run test executable
         if (g_CommandLine.test && g_CommandLine.backendOutputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
         {
