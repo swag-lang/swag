@@ -498,7 +498,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC);
+        auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRCtoRRCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);

@@ -256,13 +256,13 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u VC: { %u, %u } ", ip->a.u32, ip->b.u32, (uint32_t)(ip->c.u64 >> 32), (uint32_t)(ip->c.u64 & 0xFFFFFFFF));
             break;
 
-        case ByteCodeOp::MakePointerToStackParam:
+        case ByteCodeOp::MakeStackPointerParam:
             wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::SetZeroAtPointerX:
         case ByteCodeOp::GetFromStack64:
-        case ByteCodeOp::MakePointerToStack:
+        case ByteCodeOp::MakeStackPointer:
         case ByteCodeOp::SetZeroAtPointer8:
         case ByteCodeOp::SetZeroAtPointer16:
         case ByteCodeOp::SetZeroAtPointer32:

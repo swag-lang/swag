@@ -142,14 +142,14 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         uint32_t oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
-            emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC)->b.u32 = offsetIdx;
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = offsetIdx;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
 
         // Reference to the stack, and store the number of element in a register
-        emitInstruction(context, ByteCodeOp::MakePointerToStack, node->resultRegisterRC[0])->b.u32 = listNode->storageOffset;
+        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->storageOffset;
         emitInstruction(context, ByteCodeOp::CopyVBtoRA32, node->resultRegisterRC[1])->b.u32       = (uint32_t) listNode->childs.size();
     }
     else

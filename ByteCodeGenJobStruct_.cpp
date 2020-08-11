@@ -609,7 +609,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     {
         // Push self
         RegisterList r0   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::MakePointerToStack, r0);
+        auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
         inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference
@@ -636,7 +636,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
     {
         RegisterList r0   = reserveRegisterRC(context);
         RegisterList r1   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::MakePointerToStack, r0);
+        auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
         inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference

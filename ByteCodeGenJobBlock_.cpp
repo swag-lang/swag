@@ -583,7 +583,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         {
             auto r0 = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::MakePointerToStack, r0)->b.u32 = one->storageOffset;
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0)->b.u32 = one->storageOffset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
 

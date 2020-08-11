@@ -881,7 +881,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=(__u8_t*)(__u8_t*)__ts;");
             break;
 
-        case ByteCodeOp::MakePointerToStack:
+        case ByteCodeOp::MakeStackPointer:
             if (ip->b.u32)
                 CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=s+", ip->b.u32, ";");
             else
@@ -1567,7 +1567,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::GetFromStackParam64:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "]=*rp", ip->c.u32, ";");
             break;
-        case ByteCodeOp::MakePointerToStackParam:
+        case ByteCodeOp::MakeStackPointerParam:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)&rp", ip->c.u32, "->p;");
             break;
 

@@ -737,7 +737,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MakePointerToStack:
+        case ByteCodeOp::MakeStackPointer:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = stack + ", ip->b.u32, ";");
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
@@ -2665,7 +2665,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::MakePointerToStackParam:
+        case ByteCodeOp::MakeStackPointerParam:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &rp", ip->c.u32, "->pointer;");
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
