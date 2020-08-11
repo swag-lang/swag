@@ -284,7 +284,7 @@ void ByteCode::print()
 
         case ByteCodeOp::GetFromStackParam64:
         case ByteCodeOp::CopySP:
-        case ByteCodeOp::MakeDataSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
         case ByteCodeOp::MakeBssSegPointer:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;

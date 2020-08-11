@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
-                inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             if (node->flags & AST_TAKE_ADDRESS)
                 inst->c.pointer = (uint8_t*) resolved;
@@ -143,7 +143,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
-                inst = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u32     = resolved->storageOffset;
             inst->c.pointer = (uint8_t*) resolved;
         }
@@ -164,7 +164,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
         {
             ByteCodeInstruction* inst;
-            inst        = emitInstruction(context, ByteCodeOp::MakeDataSegPointer, node->resultRegisterRC);
+            inst        = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = 0; // This is a read, so do not store size
 

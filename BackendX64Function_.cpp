@@ -162,7 +162,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
-        case ByteCodeOp::MakeDataSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ms + %u); ", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
             BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
@@ -205,34 +205,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
             emitCall(pp, "swag_runtime_print_n");
             break;
-
         case ByteCodeOp::IntrinsicPrintS64:
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
             BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
             emitCall(pp, "swag_runtime_print_i64");
             break;
-
         case ByteCodeOp::IntrinsicPrintF64:
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
             BackendX64Inst::emitMoveRAX2Stack(pp, offsetFLT);
-
-            // movsd xmm0, [rdi + ?]
-            concat.addString4("\xF2\x0F\x10\x87");
+            concat.addString4("\xF2\x0F\x10\x87"); // movsd xmm0, [rdi + ?]
             concat.addU32(offsetFLT);
-
             emitCall(pp, "swag_runtime_print_f64");
             break;
 
         case ByteCodeOp::Ret:
             if (sizeStack)
             {
-                // add rsp, sizestack
-                concat.addString3("\x48\x81\xC4");
+                concat.addString3("\x48\x81\xC4"); // add rsp, sizestack
                 concat.addU32(sizeStack);
-
-                // pop rdi
-                concat.addU8(0x5F);
+                concat.addU8(0x5F); // pop rdi
             }
 
             // ret

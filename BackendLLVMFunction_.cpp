@@ -692,7 +692,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MakeDataSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = __ms + ", ip->b.u32, ";");
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));

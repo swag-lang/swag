@@ -852,7 +852,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 concat.addStringFormat("memset(s,0,%u);", ip->b.u32);
             break;
 
-        case ByteCodeOp::MakeDataSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
             if (ip->b.u32)
                 CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=(__u8_t*)__ms+", ip->b.u32, ";");
             else

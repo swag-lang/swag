@@ -638,7 +638,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MakeDataSegPointer:
+    case ByteCodeOp::MakeMutableSegPointer:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
