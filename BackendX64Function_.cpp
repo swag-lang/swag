@@ -265,6 +265,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::IncPointer32:
+            //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->b.u32);
+            concat.addString2("\x48\x98");     // cdqe
+            concat.addString3("\x48\x01\xD8"); // add rax, rbx
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
+            break;
+
+        case ByteCodeOp::Mul64byVB32:
+            //concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString3("\x48\x69\xC0"); // imul rax, rax, ?
+            concat.addU32(ip->b.u32);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::CopyVBtoRA32:
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
             // mov [rdi + ?] = ?

@@ -4,13 +4,15 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
+    if true
     {
-        x := @[1's64, 2, 3]
-        @print(x[1])
-    }
+        {
+            x := @[1's64, 2, 3]
+            @print(x[0])
+            @print(x[1])
+            @print(x[2])
+        }
 
-    if false
-    {
         {
             a := 5
             if a != 5
@@ -45,12 +47,9 @@ var g = 5's8
         {
             x := -6's64
             @print(cast(s64) x)
-            @print("\n")
             @print(cast(s64) g)
-            @print("\n")
-            @print("toto la fripouille\n")
+            @print("fripouille")
             @print(666's64)
-            @print("\n")
             @print(7666'f64)
         }
     }
