@@ -4,14 +4,32 @@ var g = 5
 #[swag.printbc]
 #test
 {
-    a := 5
-    if a == 4
-        @print("a")
-    else
-        @print("b")
-
     if false
     {
+        {
+            a := 5
+            if a != 5
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
+            a := 5
+            if a == 5
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
+            a := 5
+            if a == 4
+                @print("a")
+            else
+                @print("b")
+        }
+
         loop 5 @print("g")
 
         {
