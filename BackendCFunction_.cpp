@@ -1364,16 +1364,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::TestNotZero8:
-            concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b);
+            concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero16:
-            concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b);
+            concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero32:
-            concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b);
+            concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero64:
-            concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b);
+            concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::Jump:

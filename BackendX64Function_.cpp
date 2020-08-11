@@ -132,11 +132,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS32:
             //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
-            concat.addString2("\x8B\x00");     // mov eax, [rax]
+            concat.addString2("\x8B\x00"); // mov eax, [rax]
             BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
-            concat.addString2("\x01\xC3");     // add ebx, eax
+            concat.addString2("\x01\xC3"); // add ebx, eax
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
-            concat.addString2("\x89\x18");     // mov [rax], ebx
+            concat.addString2("\x89\x18"); // mov [rax], ebx
             break;
 
         case ByteCodeOp::CompareOpLowerS32:
@@ -163,6 +163,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
             concat.addString3("\x0F\x94\xC0"); // sete al
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
+            break;
+
+        case ByteCodeOp::TestNotZero64:
+            //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->b.u32);
+            concat.addString4("\x48\x83\xF8\x00"); // cmp rax, 0
+            concat.addString3("\x0F\x95\xC0");     // setne al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::NegBool:
@@ -326,6 +334,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(ip->c.u32);
             emitCall(pp, "memcpy");
             break;
+
+        case ByteCodeOp::IntrinsicAssert:
+            //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
+            BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
+            concat.addString2("\x31\xD2");     // xor edx, edx
+            concat.addString3("\x4D\x31\xC0"); // xor r8, r8
+            concat.addString3("\x4D\x31\xC9"); // xor r9, r9
+            emitCall(pp, "swag_runtime_assert");
+            break;
+
+        case ByteCodeOp::IntrinsicIsByteCode:
+            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x30\xC0");     // xor al, al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             concat.addString2("\x8B\x97"); // mov edx, [rdi + ?]
@@ -360,7 +384,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         default:
             if (bc->name == "compiler1859___test0")
-                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int)ip->op]));
+                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }

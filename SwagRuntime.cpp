@@ -91,7 +91,7 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, swag_runtime_int3
         return;
 
     __print("error: ");
-    __print(file);
+    __print(file ? file : "<unknown file>");
     __print(":");
     swag_runtime_print_i64(line);
 

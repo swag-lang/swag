@@ -4,17 +4,19 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
-    {
-        cpt := 0
-        while cpt < 4
-        {
-            @print("X")
-            cpt += 1
-        }
-    }
+    if !@isbytecode()
+        @assert(false)
 
     if false
     {
+        {
+            cpt := 0
+            while cpt < 4
+            {
+                @print("X")
+                cpt += 1
+            }
+        }
         {
             x := @[1's64, 2, 3]
             ptr := &x[0]
