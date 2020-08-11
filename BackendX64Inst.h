@@ -17,7 +17,7 @@ namespace BackendX64Inst
         concat.addU32(0);
     }
 
-    inline void emitSubRsp(X64PerThread& pp, uint32_t value)
+    inline void emitSubRSP(X64PerThread& pp, uint32_t value)
     {
         if (value)
         {
@@ -26,7 +26,7 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emitAddRsp(X64PerThread& pp, uint32_t value)
+    inline void emitAddRSP(X64PerThread& pp, uint32_t value)
     {
         if (value)
         {
@@ -123,9 +123,14 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emitDeRef64Rax(X64PerThread& pp)
+    inline void emitDeRefRAX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x8B\x00"); // mov rax, [rax]
+    }
+
+    inline void emitDeRefRBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x8B\x1B"); // mov rbx, [rbx]
     }
 
     inline void emitLeaStack2Rax(X64PerThread& pp, uint32_t stackOffset)

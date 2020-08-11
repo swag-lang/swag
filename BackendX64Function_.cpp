@@ -80,12 +80,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     concat.addU8(0x57); // push rdi
     while ((sizeStack % 16) != 8)
         sizeStack++; // Align to 16 bytes (we have a push just before, that's already 8 bytes)
-    BackendX64Inst::emitSubRsp(pp, sizeStack);
+    BackendX64Inst::emitSubRSP(pp, sizeStack);
     concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
     // C calling convention, space for at least 4 parameters when calling a function
     // (should be reserved only if we have a call)
-    BackendX64Inst::emitSubRsp(pp, 4 * sizeof(uint64_t));
+    BackendX64Inst::emitSubRSP(pp, 4 * sizeof(uint64_t));
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -127,6 +127,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
             concat.addString3("\x48\x63\xC0"); // movsx rax, eax
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
+        case ByteCodeOp::AffectOpPlusEqS32:
+            //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x8B\x00");     // mov eax, [rax]
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString2("\x01\xC3");     // add ebx, eax
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x89\x18");     // mov [rax], ebx
+            break;
+
+        case ByteCodeOp::CompareOpLowerS32:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString2("\x39\xD8");     // cmp eax, ebx
+            concat.addString3("\x0F\x9C\xC0"); // setl al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
             break;
 
         case ByteCodeOp::CompareOpEqual32:
@@ -189,7 +208,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::DeRef64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
-            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitDeRefRAX(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
@@ -197,20 +216,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.bsIndex);
             BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
-            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitDeRefRAX(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::GetFromMutableSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
             BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
-            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitDeRefRAX(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::GetFromStack64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
             BackendX64Inst::emitLeaStack2Rax(pp, offsetStack + ip->b.u32);
-            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitDeRefRAX(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
@@ -331,7 +350,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Ret:
             if (sizeStack)
             {
-                BackendX64Inst::emitAddRsp(pp, sizeStack + 4 * sizeof(uint64_t));
+                BackendX64Inst::emitAddRSP(pp, sizeStack + 4 * sizeof(uint64_t));
                 concat.addU8(0x5F); // pop rdi
             }
 
