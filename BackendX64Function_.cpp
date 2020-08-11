@@ -116,8 +116,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::GetFromStack64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
-            concat.addString("\x48\x89\xF8", 3); // mov rax, rdi
-            BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
+
+            //concat.addString("\x48\x89\xF8", 3); // mov rax, rdi
+            //BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
+
+            concat.addString("\x48\x8D\x87", 3); // lea rax, [rdi + ?]
+            concat.addU32(offsetStack + ip->b.u32);
+
             concat.addString("\x48\x8B\x00", 3); // mov rax, [rax]
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
