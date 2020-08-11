@@ -406,23 +406,34 @@ JobResult ModuleBuildJob::execute()
             pass = ModuleBuildPass::RunNative;
 
         // Do not generate an executable that have been run in script mode
-        if (!module->byteCodeMainFunc || !g_CommandLine.script)
+        bool mustOutput = true;
+        if (module->byteCodeMainFunc && g_CommandLine.script)
+            mustOutput = false;
+        else if (module->name.empty()) // bootstrap
+            mustOutput = false;
+        else if (module->buildPass < BuildPass::Backend)
+            mustOutput = false;
+        else if (module->files.empty())
+            mustOutput = false;
+        else if (module->hasUnittestError) // module must have unittest errors, so not output
+            mustOutput = false;
+        else if (module->fromTestsFolder && !g_CommandLine.outputTest)
+            mustOutput = false;
+
+        if (mustOutput)
         {
-            if (!module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
+            if (g_CommandLine.output || g_CommandLine.generateDoc)
             {
-                if (g_CommandLine.output || g_CommandLine.generateDoc)
-                {
-                    module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
-                    auto outputJob          = g_Pool_moduleOutputJob.alloc();
-                    outputJob->module       = module;
-                    outputJob->dependentJob = this;
-                    jobsToAdd.push_back(outputJob);
-                    return JobResult::KeepJobAlive;
-                }
-                else if (module->backend->mustCompile)
-                {
-                    OS::touchFile(module->backend->bufferSwg.path);
-                }
+                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
+                auto outputJob          = g_Pool_moduleOutputJob.alloc();
+                outputJob->module       = module;
+                outputJob->dependentJob = this;
+                jobsToAdd.push_back(outputJob);
+                return JobResult::KeepJobAlive;
+            }
+            else if (module->backend->mustCompile)
+            {
+                OS::touchFile(module->backend->bufferSwg.path);
             }
         }
     }
