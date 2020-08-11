@@ -43,6 +43,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "c|llvm|x64", "the type of backend to use");
+    addArg("--script", nullptr, CommandLineType::Bool, &cmdLine->script, nullptr, "run full bytecode");
 }
 
 void CommandLineParser::logArguments()

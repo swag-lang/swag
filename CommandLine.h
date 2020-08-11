@@ -26,6 +26,7 @@ struct CommandLine
     BuildPass buildPass = BuildPass::Full;
     bool      rebuild   = false;
     bool      run       = false;
+    bool      script    = false;
 
     // Input
     bool   clean = false;

@@ -56,7 +56,7 @@ JobResult ModuleBuildJob::execute()
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
-        if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test)
+        if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
             timeBeforeSemanticModule = chrono::high_resolution_clock::now();
             pass                     = ModuleBuildPass::RunByteCode;
@@ -268,93 +268,102 @@ JobResult ModuleBuildJob::execute()
         // If we have #run functions
         else if (!module->byteCodeRunFunc.empty())
             runByteCode = true;
-        // If the module is a bytecode module
-        else if (module->byteCodeOnly)
+        // If we need to run in bytecode mode
+        else if (g_CommandLine.run && g_CommandLine.script)
             runByteCode = true;
 
         if (runByteCode)
         {
             module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun);
 
-            // #init functions are only executed in a bytecode module
-            if (!module->byteCodeInitFunc.empty() && module->byteCodeOnly)
+            // #init functions are only executed in script mode, if the module has a #main
+            if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
             {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                        g_Log.verbose(format("   module %s, bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
+                if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                    g_Log.verbose(format("   module %s, bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
-                    for (auto func : module->byteCodeInitFunc)
-                    {
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
+                for (auto func : module->byteCodeInitFunc)
+                {
+                    module->executeNode(func->node->sourceFile, func->node);
                 }
             }
+
+            if (module->numErrors)
+                return JobResult::ReleaseJob;
 
             // #run functions are always executed
             if (!module->byteCodeRunFunc.empty())
             {
-                if (!module->numErrors)
+                if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                    g_Log.verbose(format("   module %s, bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
+
+                // A #run pass cannot modify a bss variable
+                module->bssCannotChange = true;
+
+                for (auto func : module->byteCodeRunFunc)
                 {
-                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                        g_Log.verbose(format("   module %s, bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
-
-                    // A #run pass cannot modify a bss variable
-                    module->bssCannotChange = true;
-
-                    for (auto func : module->byteCodeRunFunc)
-                    {
-                        g_Stats.runFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
-
-                    module->bssCannotChange = false;
+                    g_Stats.runFunctions++;
+                    module->executeNode(func->node->sourceFile, func->node);
                 }
+
+                module->bssCannotChange = false;
             }
+
+            if (module->numErrors)
+                return JobResult::ReleaseJob;
 
             // #test functions are only executed in test mode
             if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
             {
                 if (!module->byteCodeTestFunc.empty())
                 {
-                    if (!module->numErrors)
+                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                        g_Log.verbose(format("   module %s, bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+                    // Modified global variables during test will be restored after
+                    module->saveBssValues     = true;
+                    module->saveMutableValues = true;
+
+                    for (auto func : module->byteCodeTestFunc)
                     {
-                        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                            g_Log.verbose(format("   module %s, bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-                        // Modified global variables during test will be restored after
-                        module->saveBssValues     = true;
-                        module->saveMutableValues = true;
-
-                        for (auto func : module->byteCodeTestFunc)
-                        {
-                            g_Stats.testFunctions++;
-                            module->executeNode(func->node->sourceFile, func->node);
-                        }
-
-                        module->bssSegment.restoreAllValues();
-                        module->mutableSegment.restoreAllValues();
-                        module->saveBssValues     = false;
-                        module->saveMutableValues = false;
+                        g_Stats.testFunctions++;
+                        module->executeNode(func->node->sourceFile, func->node);
                     }
+
+                    module->bssSegment.restoreAllValues();
+                    module->mutableSegment.restoreAllValues();
+                    module->saveBssValues     = false;
+                    module->saveMutableValues = false;
                 }
             }
 
-            // #drop functions are only executed in a bytecode module
-            if (!module->byteCodeDropFunc.empty() && module->byteCodeOnly)
-            {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                        g_Log.verbose(format("   module %s, bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
+            if (module->numErrors)
+                return JobResult::ReleaseJob;
 
-                    for (auto func : module->byteCodeDropFunc)
-                    {
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
+            // #main function, in script mode
+            if (module->byteCodeMainFunc && g_CommandLine.script)
+            {
+                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node);
+            }
+
+            if (module->numErrors)
+                return JobResult::ReleaseJob;
+
+            // #drop functions are only executed in script mode, if the module has a #main
+            if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+            {
+                if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                    g_Log.verbose(format("   module %s, bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
+
+                for (auto func : module->byteCodeDropFunc)
+                {
+                    module->executeNode(func->node->sourceFile, func->node);
                 }
             }
         }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         // During unit testing, be sure we don't have untriggered errors
         if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
@@ -387,21 +396,33 @@ JobResult ModuleBuildJob::execute()
                 g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
         }
 
-        pass = ModuleBuildPass::RunNative;
-        if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // Do not run native tests or command in script mode, it's already done in bytecode
+        if (g_CommandLine.script)
+            pass = ModuleBuildPass::Done;
+        else
+            pass = ModuleBuildPass::RunNative;
+
+        // Do not generate an executable that have been run in script mode
+        if (!module->byteCodeMainFunc || !g_CommandLine.script)
         {
-            if (g_CommandLine.output || g_CommandLine.generateDoc)
+            if (!module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
             {
-                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
-                auto outputJob          = g_Pool_moduleOutputJob.alloc();
-                outputJob->module       = module;
-                outputJob->dependentJob = this;
-                jobsToAdd.push_back(outputJob);
-                return JobResult::KeepJobAlive;
-            }
-            else if (module->backend->mustCompile)
-            {
-                OS::touchFile(module->backend->bufferSwg.path);
+                if (g_CommandLine.output || g_CommandLine.generateDoc)
+                {
+                    module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
+                    auto outputJob          = g_Pool_moduleOutputJob.alloc();
+                    outputJob->module       = module;
+                    outputJob->dependentJob = this;
+                    jobsToAdd.push_back(outputJob);
+                    return JobResult::KeepJobAlive;
+                }
+                else if (module->backend->mustCompile)
+                {
+                    OS::touchFile(module->backend->bufferSwg.path);
+                }
             }
         }
     }
