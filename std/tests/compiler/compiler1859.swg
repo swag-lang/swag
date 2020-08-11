@@ -1,9 +1,14 @@
 //var g = "toto"
-var g = 5
+var g = 5's8
 
 #[swag.printbc]
 #test
 {
+    if(g == 0)
+        @print("a")
+    else
+        @print("b")
+
     if false
     {
         {

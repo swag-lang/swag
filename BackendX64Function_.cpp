@@ -49,7 +49,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t offsetStack = 0;
     uint32_t offsetRT    = 0;
 
-    // For float load 
+    // For float load
     // (should be reserved only if we have floating point operations in that function)
     sizeStack += 8;
 
@@ -130,7 +130,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
             BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
-            concat.addString2("\x39\xD8"); // cmp eax, ebx
+            concat.addString2("\x39\xD8");     // cmp eax, ebx
+            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpEqual64:
+            //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
             concat.addString3("\x0F\x94\xC0"); // sete al
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->c.u32);
             break;
