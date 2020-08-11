@@ -1,9 +1,10 @@
 //var g = "toto"
-var g = 0
+var g = 5
 
 #[swag.printbc]
 #test
 {
+    g = 10
     @print(cast(s64) g)
 
     /*{

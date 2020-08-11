@@ -106,6 +106,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::GetFromBssSeg64:
+            //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitSymbol2RAX(pp, pp.bsIndex);
+            BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
+            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::GetFromMutableSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
@@ -155,7 +162,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitAdd2RAX(pp, offsetStack + ip->b.u32);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
-
+        case ByteCodeOp::MakeDataSegPointer:
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ms + %u); ", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
+            BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::MakeBssSegPointer:
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__bs + %u); ", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emitSymbol2RAX(pp, pp.bsIndex);
+            BackendX64Inst::emitAdd2RAX(pp, ip->b.u32);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.csIndex);
@@ -171,7 +189,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(ip->b.u32);
             break;
         case ByteCodeOp::CopyVBtoRA64:
-            //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);            
+            //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             concat.addString2("\x48\xB8"); // mov rax, ?
             concat.addU64(ip->b.u64);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
