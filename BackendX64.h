@@ -16,6 +16,7 @@ enum class CoffSymbolKind
     Function,
     Extern,
     Custom,
+    GlobalString,
 };
 
 struct CoffSymbol
@@ -45,14 +46,15 @@ struct X64PerThread
     Concat concat;
     Concat postConcat;
 
-    vector<const Utf8*>    stringTable;
-    CoffRelocationTable    relocTableTextSection;
-    CoffRelocationTable    relocTableCSSection;
-    CoffRelocationTable    relocTableMSSection;
-    CoffRelocationTable    relocTableTSSection;
-    vector<CoffSymbol>     allSymbols;
-    map<Utf8Crc, uint32_t> mapSymbols;
-    map<uint32_t, int32_t> labels;
+    vector<const Utf8*>       stringTable;
+    CoffRelocationTable       relocTableTextSection;
+    CoffRelocationTable       relocTableCSSection;
+    CoffRelocationTable       relocTableMSSection;
+    CoffRelocationTable       relocTableTSSection;
+    vector<CoffSymbol>        allSymbols;
+    map<Utf8Crc, uint32_t>    mapSymbols;
+    map<Utf8Crc, CoffSymbol*> globalStrings;
+    map<uint32_t, int32_t>    labels;
 
     struct LabelToSolve
     {
@@ -84,6 +86,7 @@ struct X64PerThread
     uint32_t* patchTSSectionFlags            = nullptr;
 
     uint32_t* patchCSOffset = nullptr;
+    uint32_t* patchCSCount  = nullptr;
     uint32_t* patchMSOffset = nullptr;
     uint32_t* patchTSOffset = nullptr;
 
@@ -121,6 +124,7 @@ struct BackendX64 : public Backend
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    void        emitGlobalString(X64PerThread& pp, const Utf8Crc& str);
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);

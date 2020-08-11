@@ -338,16 +338,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
-            concat.addString2("\x31\xD2");     // xor edx, edx
-            concat.addString3("\x4D\x31\xC0"); // xor r8, r8
-            concat.addString3("\x4D\x31\xC9"); // xor r9, r9
+            concat.addString2("\x48\xBA"); // mov rdx, ?
+            emitGlobalString(pp, normalizePath(ip->node->sourceFile->path));
+            concat.addString3("\x49\xC7\xC0"); // mov r8, ?
+            concat.addU32(ip->node->token.startLocation.line + 1);
+            if (ip->d.pointer)
+            {
+                concat.addString3("\x49\xB9"); // mov r9, ?
+                emitGlobalString(pp, (const char*) ip->d.pointer);
+            }
+            else
+                concat.addString3("\x4D\x31\xC9"); // xor r9, r9
             emitCall(pp, "swag_runtime_assert");
             break;
 
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
-            concat.addString2("\x30\xC0");     // xor al, al
+            concat.addString2("\x30\xC0"); // xor al, al
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicPrintString:

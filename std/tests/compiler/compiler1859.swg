@@ -4,8 +4,9 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
-    if !@isbytecode()
-        @assert(false)
+    {
+        var x: *u32 = null
+    }
 
     if false
     {

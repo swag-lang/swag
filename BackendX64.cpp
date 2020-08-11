@@ -217,6 +217,32 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     return &pp.allSymbols.back();
 }
 
+void BackendX64::emitGlobalString(X64PerThread& pp, const Utf8Crc& str)
+{
+    auto&       concat = pp.concat;
+    auto        it     = pp.globalStrings.find(str);
+    CoffSymbol* sym    = nullptr;
+    if (it != pp.globalStrings.end())
+        sym = it->second;
+    else
+    {
+        Utf8 symName          = format("__str_%u_%s", (uint32_t) pp.globalStrings.size(), pp.filename.c_str());
+        sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
+        pp.globalStrings[str] = sym;
+        scoped_lock lk(module->constantSegment.mutex);
+        sym->value       = module->constantSegment.addStringNoLock(str);
+        *pp.patchCSCount = module->constantSegment.totalCount;
+    }
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+    reloc.symbolIndex    = sym->index;
+    reloc.type           = IMAGE_REL_AMD64_ADDR64;
+    pp.relocTableTextSection.table.push_back(reloc);
+
+    concat.addU64(0);
+}
+
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -277,15 +303,15 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // constant section
         /////////////////////////////////////////////
         pp.sectionIndexCS = 3;
-        concat.addString(".rdata\0\0", 8);                        // .Name
-        concat.addU32(0);                                         // .VirtualSize
-        concat.addU32(0);                                         // .VirtualAddress
-        concat.addU32(module->constantSegment.totalCount);        // .SizeOfRawData
-        pp.patchCSOffset                  = concat.addU32Addr(0); // .PointerToRawData
-        pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-        concat.addU32(0);                                         // .PointerToLinenumbers
-        pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-        concat.addU16(0);                                         // .NumberOfLinenumbers
+        concat.addString(".rdata\0\0", 8);                                                         // .Name
+        concat.addU32(0);                                                                          // .VirtualSize
+        concat.addU32(0);                                                                          // .VirtualAddress
+        pp.patchCSCount                   = concat.addU32Addr(module->constantSegment.totalCount); // .SizeOfRawData
+        pp.patchCSOffset                  = concat.addU32Addr(0);                                  // .PointerToRawData
+        pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0);                                  // .PointerToRelocations
+        concat.addU32(0);                                                                          // .PointerToLinenumbers
+        pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);                                   // .NumberOfRelocations
+        concat.addU16(0);                                                                          // .NumberOfLinenumbers
         pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
 
         // mutable section
@@ -365,6 +391,12 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
             concat.addU16(0);                       // .Type
             concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
             concat.addU8(0);                        // .NumberOfAuxSymbols
+            break;
+        case CoffSymbolKind::GlobalString:
+            concat.addU16(pp.sectionIndexCS);     // .SectionNumber
+            concat.addU16(0);                     // .Type
+            concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
+            concat.addU8(0);                      // .NumberOfAuxSymbols
             break;
         default:
             SWAG_ASSERT(false);
