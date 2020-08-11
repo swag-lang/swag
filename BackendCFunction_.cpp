@@ -814,27 +814,8 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s64/=%u;", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::GetFromDataSeg8:
-            concat.addStringFormat("r[%u].u8=*(__u8_t*)((__u8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::GetFromDataSeg16:
-            concat.addStringFormat("r[%u].u16=*(__u16_t*)((__u8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::GetFromDataSeg32:
-            concat.addStringFormat("r[%u].u32=*(__u32_t*)((__u8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
-            break;
         case ByteCodeOp::GetFromDataSeg64:
             concat.addStringFormat("r[%u].u64=*(__u64_t*)((__u8_t*)__ms+%u);", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::GetFromBssSeg8:
-            concat.addStringFormat("r[%u].u8=*(__u8_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::GetFromBssSeg16:
-            concat.addStringFormat("r[%u].u16=*(__u16_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::GetFromBssSeg32:
-            concat.addStringFormat("r[%u].u32=*(__u32_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::GetFromBssSeg64:
             concat.addStringFormat("r[%u].u64=*(__u64_t*)(__bs+%u);", ip->a.u32, ip->b.u32);
@@ -905,24 +886,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_STR_2(concat, "r[", ip->a.u32, "].p=s+", ip->b.u32, ";");
             else
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].p=s;");
-            break;
-        case ByteCodeOp::GetFromStack8:
-            if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].u8=*(__u8_t*)(s+", ip->b.u32, ");");
-            else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].u8=*(__u8_t*)s;");
-            break;
-        case ByteCodeOp::GetFromStack16:
-            if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].u16=*(__u16_t*)(s+", ip->b.u32, ");");
-            else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].u16=*(__u16_t*)s;");
-            break;
-        case ByteCodeOp::GetFromStack32:
-            if (ip->b.u32)
-                CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32=*(__u32_t*)(s+", ip->b.u32, ");");
-            else
-                CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32=*(__u32_t*) s;");
             break;
         case ByteCodeOp::GetFromStack64:
             if (ip->b.u32)

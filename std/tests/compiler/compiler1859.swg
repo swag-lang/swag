@@ -1,10 +1,12 @@
 //var g = "toto"
-var g = 666's32
+//var g = 666's32
 
 #[swag.printbc]
 #test
 {
-    @print(cast(s64) g)
+    x := 0's64
+
+    //@print(cast(s64) g)
     //@print(g)
     //@print("\n")
     //@print("toto la fripouille\n")

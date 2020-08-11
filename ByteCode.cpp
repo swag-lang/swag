@@ -261,9 +261,6 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::SetZeroAtPointerX:
-        case ByteCodeOp::GetFromStack8:
-        case ByteCodeOp::GetFromStack16:
-        case ByteCodeOp::GetFromStack32:
         case ByteCodeOp::GetFromStack64:
         case ByteCodeOp::MakePointerToStack:
         case ByteCodeOp::SetZeroAtPointer8:
@@ -292,13 +289,7 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
-        case ByteCodeOp::GetFromDataSeg8:
-        case ByteCodeOp::GetFromDataSeg16:
-        case ByteCodeOp::GetFromDataSeg32:
         case ByteCodeOp::GetFromDataSeg64:
-        case ByteCodeOp::GetFromBssSeg8:
-        case ByteCodeOp::GetFromBssSeg16:
-        case ByteCodeOp::GetFromBssSeg32:
         case ByteCodeOp::GetFromBssSeg64:
         case ByteCodeOp::Mul64byVB32:
         case ByteCodeOp::Div64byVB32:

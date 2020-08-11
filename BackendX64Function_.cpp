@@ -90,9 +90,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
-        case ByteCodeOp::GetFromDataSeg8:
-        case ByteCodeOp::GetFromDataSeg16:
-        case ByteCodeOp::GetFromDataSeg32:
         case ByteCodeOp::GetFromDataSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
@@ -115,7 +112,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(ip->a.u32 * sizeof(Register));
             concat.addU32(ip->b.u32);
             break;
-
         case ByteCodeOp::CopyVBtoRA64:
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             // mov rax, ?

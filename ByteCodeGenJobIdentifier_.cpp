@@ -179,49 +179,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             ByteCodeInstruction* inst;
+            SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
             if (resolved->flags & OVERLOAD_VAR_BSS)
-            {
-                switch (typeInfo->sizeOf)
-                {
-                case 1:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg8, node->resultRegisterRC);
-                    break;
-                case 2:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg16, node->resultRegisterRC);
-                    break;
-                case 4:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg32, node->resultRegisterRC);
-                    break;
-                case 8:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
-                    break;
-                default:
-                    return internalError(context, "emitIdentifier, invalid global variable sizeof");
-                    break;
-                }
-            }
+                inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
-            {
-                switch (typeInfo->sizeOf)
-                {
-                case 1:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg8, node->resultRegisterRC);
-                    break;
-                case 2:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg16, node->resultRegisterRC);
-                    break;
-                case 4:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg32, node->resultRegisterRC);
-                    break;
-                case 8:
-                    inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg64, node->resultRegisterRC);
-                    break;
-                default:
-                    return internalError(context, "emitIdentifier, invalid global variable sizeof");
-                    break;
-                }
-            }
-
+                inst = emitInstruction(context, ByteCodeOp::GetFromDataSeg64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
         }
 
@@ -272,25 +234,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else
         {
-            ByteCodeInstruction* inst;
-            switch (typeInfo->sizeOf)
-            {
-            case 1:
-                inst = emitInstruction(context, ByteCodeOp::GetFromStack8, node->resultRegisterRC);
-                break;
-            case 2:
-                inst = emitInstruction(context, ByteCodeOp::GetFromStack16, node->resultRegisterRC);
-                break;
-            case 4:
-                inst = emitInstruction(context, ByteCodeOp::GetFromStack32, node->resultRegisterRC);
-                break;
-            case 8:
-                inst = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-                break;
-            default:
-                return internalError(context, "emitIdentifier, invalid local variable sizeof");
-            }
+            SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
 
+            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
         }
 

@@ -565,15 +565,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
 
-    case ByteCodeOp::GetFromStack8:
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + ip->b.u32);
-        break;
-    case ByteCodeOp::GetFromStack16:
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + ip->b.u32);
-        break;
-    case ByteCodeOp::GetFromStack32:
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + ip->b.u32);
-        break;
     case ByteCodeOp::GetFromStack64:
     case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
@@ -630,61 +621,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 
-    case ByteCodeOp::GetFromDataSeg8:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
-        break;
-    }
-    case ByteCodeOp::GetFromDataSeg16:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
-        break;
-    }
-    case ByteCodeOp::GetFromDataSeg32:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
-        break;
-    }
     case ByteCodeOp::GetFromDataSeg64:
     {
         auto module = context->sourceFile->module;
         if (!ip->d.pointer)
             ip->d.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
-        break;
-    }
-
-    case ByteCodeOp::GetFromBssSeg8:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->bssSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
-        break;
-    }
-    case ByteCodeOp::GetFromBssSeg16:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->bssSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
-        break;
-    }
-    case ByteCodeOp::GetFromBssSeg32:
-    {
-        auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->bssSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::GetFromBssSeg64:

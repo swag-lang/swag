@@ -588,60 +588,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::GetFromDataSeg8:
-        {
-            //concat.addStringFormat("r[%u].u8 = *(__u8_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32);
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromDataSeg16:
-        {
-            //concat.addStringFormat("r[%u].u16 = *(__u16_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromDataSeg32:
-        {
-            //concat.addStringFormat("r[%u].u32 = *(__u32_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
         case ByteCodeOp::GetFromDataSeg64:
         {
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-
-        case ByteCodeOp::GetFromBssSeg8:
-        {
-            //concat.addStringFormat("r[%u].u8 = *(__u8_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), CST_RB32);
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromBssSeg16:
-        {
-            //concat.addStringFormat("r[%u].u16 = *(__u16_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromBssSeg32:
-        {
-            //concat.addStringFormat("r[%u].u32 = *(__u32_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), CST_RB32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -794,30 +745,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::GetFromStack8:
-        {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u8 = *(__u8_t*) (stack + ", ip->b.u32, ");");
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromStack16:
-        {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u16 = *(__u16_t*) (stack + ", ip->b.u32, ");");
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
-        case ByteCodeOp::GetFromStack32:
-        {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 = *(__u32_t*) (stack + ", ip->b.u32, ");");
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
-            break;
-        }
+
         case ByteCodeOp::GetFromStack64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
