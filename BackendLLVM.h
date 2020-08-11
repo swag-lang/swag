@@ -130,7 +130,7 @@ struct BackendLLVM : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    llvm::BasicBlock* getOrCreateLabel(const BuildParameters& buildParameters, llvm::Function* func, int32_t ip);
+    llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip);
 
     LLVMPerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

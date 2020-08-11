@@ -43,6 +43,11 @@ struct Concat
     void      addU32Str(uint32_t value);
     void      addS32Str8(int value);
 
+    uint8_t* getSeekPtr()
+    {
+        return currentSP;
+    }
+
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
     uint8_t*      currentSP   = nullptr;

@@ -52,6 +52,15 @@ struct X64PerThread
     CoffRelocationTable    relocTableTSSection;
     vector<CoffSymbol>     allSymbols;
     map<Utf8Crc, uint32_t> mapSymbols;
+    map<uint32_t, int32_t> labels;
+
+    struct LabelToSolve
+    {
+        uint32_t ipDest;
+        int32_t  currentOffset;
+        uint8_t* patch;
+    };
+    vector<LabelToSolve> labelsToSolve;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -107,7 +116,8 @@ struct BackendX64 : public Backend
     bool                    compile(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
-    bool emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
+    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);

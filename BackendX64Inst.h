@@ -17,11 +17,38 @@ namespace BackendX64Inst
         concat.addU32(0);
     }
 
+    inline void emitSubRsp(X64PerThread& pp, uint32_t value)
+    {
+        if (value)
+        {
+            pp.concat.addString3("\x48\x81\xEC"); // sub rsp, ?
+            pp.concat.addU32(value);
+        }
+    }
+
+    inline void emitAddRsp(X64PerThread& pp, uint32_t value)
+    {
+        if (value)
+        {
+            pp.concat.addString3("\x48\x81\xC4"); // add rsp, ?
+            pp.concat.addU32(value);
+        }
+    }
+
     inline void emitAdd2RAX(X64PerThread& pp, uint32_t value)
     {
         if (value)
         {
             pp.concat.addString2("\x48\x05"); // add rax, ?
+            pp.concat.addU32(value);
+        }
+    }
+
+    inline void emitSub2RAX(X64PerThread& pp, uint32_t value)
+    {
+        if (value)
+        {
+            pp.concat.addString2("\x48\x2D"); // sub rax, ?
             pp.concat.addU32(value);
         }
     }

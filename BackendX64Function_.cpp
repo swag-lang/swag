@@ -12,6 +12,18 @@ BackendFunctionBodyJob* BackendX64::newFunctionJob()
     return g_Pool_backendX64FunctionBodyJob.alloc();
 }
 
+uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
+{
+    auto it = pp.labels.find(ip);
+    if (it == pp.labels.end())
+    {
+        pp.labels[ip] = pp.concat.totalCount;
+        return pp.concat.totalCount;
+    }
+
+    return it->second;
+}
+
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -24,6 +36,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto& concat          = pp.concat;
     auto  typeFunc        = bc->callType();
 
+    pp.labels.clear();
+    pp.labelsToSolve.clear();
+    bc->markLabels();
+
     // Symbol
     getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
 
@@ -33,7 +49,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t offsetStack = 0;
     uint32_t offsetRT    = 0;
 
-    // For float load
+    // For float load 
+    // (should be reserved only if we have floating point operations in that function)
     sizeStack += 8;
 
     if (typeFunc->stackSize)
@@ -57,15 +74,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         offsetFLT += bc->maxReservedRegisterRC * sizeof(Register);
     }
 
-    // push rdi
-    concat.addU8(0x57);
+    // RDI will be a pointer to the stack, and the list of registers is stored at the start
+    // of the stack
+    concat.addU8(0x57); // push rdi
+    BackendX64Inst::emitSubRsp(pp, sizeStack);
+    concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
-    // sub rsp, sizestack
-    concat.addString3("\x48\x81\xEC");
-    concat.addU32(sizeStack);
-
-    // mov rdi, rsp
-    concat.addString3("\x48\x89\xE7");
+    // C calling convention, space for at least 4 parameters when calling a function
+    // (should be reserved only if we have a call)
+    BackendX64Inst::emitSubRsp(pp, 4 * sizeof(uint64_t));
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -76,6 +93,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             SWAG_ASSERT(!(ip->flags & BCI_JUMP_DEST));
             continue;
         }
+
+        if (ip->flags & BCI_JUMP_DEST)
+            getOrCreateLabel(pp, i);
 
         switch (ip->op)
         {
@@ -103,6 +123,30 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CastS32S64:
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
             concat.addString3("\x48\x63\xC0"); // movsx rax, eax
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
+        case ByteCodeOp::JumpIfZero32:
+            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
+            //concat.addS32Str8(ip->b.s32 + i + 1);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x85\xC0"); // test eax, eax
+            concat.addString2("\x0F\x84"); // jz ?
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            concat.addU32(0);
+            break;
+        case ByteCodeOp::Jump:
+            //CONCAT_FIXED_STR(concat, "goto _");
+            //concat.addS32Str8(ip->a.s32 + i + 1);
+            concat.addU8(0xE9); // jmp ?
+            pp.labelsToSolve.push_back({ip->a.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            concat.addU32(0);
+            break;
+
+        case ByteCodeOp::DecrementRA32:
+            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitSub2RAX(pp, 1);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
@@ -197,11 +241,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
-
-            // mov edx, [rdi + ?]
-            concat.addString2("\x8B\x97");
+            concat.addString2("\x8B\x97"); // mov edx, [rdi + ?]
             concat.addU32(ip->b.u32 * sizeof(Register));
-
             BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
             emitCall(pp, "swag_runtime_print_n");
             break;
@@ -222,8 +263,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Ret:
             if (sizeStack)
             {
-                concat.addString3("\x48\x81\xC4"); // add rsp, sizestack
-                concat.addU32(sizeStack);
+                BackendX64Inst::emitAddRsp(pp, sizeStack + 4 * sizeof(uint64_t));
                 concat.addU8(0x5F); // pop rdi
             }
 
@@ -231,6 +271,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU8(0xc3);
             break;
         }
+    }
+
+    // Solve labels
+    for (auto& toSolve : pp.labelsToSolve)
+    {
+        auto it = pp.labels.find(toSolve.ipDest);
+        SWAG_ASSERT(it != pp.labels.end());
+
+        auto relOffset             = it->second - (toSolve.currentOffset + 4);
+        *(uint32_t*) toSolve.patch = relOffset;
     }
 
     return true;
