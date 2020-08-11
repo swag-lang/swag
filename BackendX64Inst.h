@@ -46,35 +46,41 @@ namespace BackendX64Inst
 
     inline void emitMoveStack2RAX(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString3("\x48\x8B\x87"); // mov rax, [rdi + ?]
-        pp.concat.addU32(stackOffset);
-    }
-
-    inline void emitMoveReg2RAX(X64PerThread& pp, uint32_t r)
-    {
-        emitMoveStack2RAX(pp, r * sizeof(Register));
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x48\x8B\x07"); // mov rax, [rdi]
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x8B\x87"); // mov rax, [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
     }
 
     inline void emitMoveStack2RBX(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString3("\x48\x8B\x9F"); // mov rbx, [rdi + ?]
-        pp.concat.addU32(stackOffset);
-    }
-
-    inline void emitMoveReg2RBX(X64PerThread& pp, uint32_t r)
-    {
-        emitMoveStack2RBX(pp, r * sizeof(Register));
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x48\x8B\x1F"); // mov rbx, [rdi]
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x8B\x9F"); // mov rbx, [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
     }
 
     inline void emitMoveStack2RCX(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString3("\x48\x8B\x8F"); // mov rcx, [rdi + ?]
-        pp.concat.addU32(stackOffset);
-    }
-
-    inline void emitMoveReg2RCX(X64PerThread& pp, uint32_t r)
-    {
-        emitMoveStack2RCX(pp, r * sizeof(Register));
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x48\x8B\x0F"); // mov rcx, [rdi]
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x8B\x8F"); // mov rcx, [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
     }
 
     inline void emitDeRef64Rax(X64PerThread& pp)
@@ -93,5 +99,21 @@ namespace BackendX64Inst
             pp.concat.addString3("\x48\x8D\x87"); // lea rax, [rdi + ?]
             pp.concat.addU32(stackOffset);
         }
+    }
+
+    //////////////////////////////////////////////////
+    inline void emitMoveReg2RAX(X64PerThread& pp, uint32_t r)
+    {
+        emitMoveStack2RAX(pp, r * sizeof(Register));
+    }
+
+    inline void emitMoveReg2RBX(X64PerThread& pp, uint32_t r)
+    {
+        emitMoveStack2RBX(pp, r * sizeof(Register));
+    }
+
+    inline void emitMoveReg2RCX(X64PerThread& pp, uint32_t r)
+    {
+        emitMoveStack2RCX(pp, r * sizeof(Register));
     }
 }; // namespace BackendX64Inst
