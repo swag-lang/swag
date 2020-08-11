@@ -110,6 +110,19 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emitMoveStack2RDX(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x48\x8B\x17"); // mov rdx, [rdi]
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x8B\x97"); // mov rdx, [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
     inline void emitDeRef64Rax(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x8B\x00"); // mov rax, [rax]
@@ -142,5 +155,10 @@ namespace BackendX64Inst
     inline void emitMoveReg2RCX(X64PerThread& pp, uint32_t r)
     {
         emitMoveStack2RCX(pp, r * sizeof(Register));
+    }
+
+    inline void emitMoveReg2RDX(X64PerThread& pp, uint32_t r)
+    {
+        emitMoveStack2RDX(pp, r * sizeof(Register));
     }
 }; // namespace BackendX64Inst

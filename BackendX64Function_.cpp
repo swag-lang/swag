@@ -183,6 +183,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::DeRef64:
+            //concat.addStringFormat("r[%u].u64 = *(__u64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitDeRef64Rax(pp);
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::GetFromBssSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.bsIndex);
@@ -272,6 +279,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::MemCpyVC32:
+            //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emitMoveReg2RCX(pp, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RDX(pp, ip->b.u32);
+            concat.addString3("\x49\xC7\xC0"); // mov r8, ?
+            concat.addU32(ip->c.u32);
+            emitCall(pp, "memcpy");
+            break;
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             concat.addString2("\x8B\x97"); // mov edx, [rdi + ?]
