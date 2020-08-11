@@ -7,7 +7,6 @@
 #include "Backend.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
-#include "ModuleRunJob.h"
 #include "Module.h"
 
 thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
@@ -129,7 +128,7 @@ JobResult ModuleOutputJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        pass = ModuleOutputJobPass::Run;
+        pass = ModuleOutputJobPass::Done;
 
         // Compile a specific version, to test it
         if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
@@ -170,38 +169,6 @@ JobResult ModuleOutputJob::execute()
         }
 
         return JobResult::KeepJobAlive;
-    }
-
-    if (pass == ModuleOutputJobPass::Run)
-    {
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
-
-        // Run test executable
-        if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
-        {
-            if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
-            {
-                auto job                            = g_Pool_moduleRunJob.alloc();
-                job->module                         = module;
-                job->buildParameters                = module->buildParameters;
-                job->buildParameters.outputFileName = module->name;
-                job->buildParameters.compileType    = BackendCompileType::Test;
-                if (!module->fromTestsFolder)
-                    job->buildParameters.postFix = ".test";
-                g_ThreadMgr.addJob(job);
-            }
-        }
-
-        // Run command
-        if (g_CommandLine.run && !module->fromTestsFolder && g_CommandLine.outputLegit)
-        {
-            auto job                         = g_Pool_moduleRunJob.alloc();
-            job->module                      = module;
-            job->buildParameters             = module->buildParameters;
-            job->buildParameters.compileType = BackendCompileType::Normal;
-            g_ThreadMgr.addJob(job);
-        }
     }
 
     return JobResult::ReleaseJob;

@@ -11,6 +11,8 @@
 #include "CopyFileJob.h"
 #include "SemanticJob.h"
 #include "Module.h"
+#include "ModuleRunJob.h"
+#include "ThreadManager.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -57,7 +59,7 @@ JobResult ModuleBuildJob::execute()
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test)
         {
             timeBeforeSemanticModule = chrono::high_resolution_clock::now();
-            pass                     = ModuleBuildPass::Run;
+            pass                     = ModuleBuildPass::RunByteCode;
         }
         else
         {
@@ -218,7 +220,7 @@ JobResult ModuleBuildJob::execute()
     {
         // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = true;
-        pass                            = ModuleBuildPass::Run;
+        pass                            = ModuleBuildPass::RunByteCode;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -244,7 +246,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Run)
+    if (pass == ModuleBuildPass::RunByteCode)
     {
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
@@ -385,7 +387,7 @@ JobResult ModuleBuildJob::execute()
                 g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
         }
 
-        pass = ModuleBuildPass::End;
+        pass = ModuleBuildPass::RunNative;
         if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size() && !module->hasUnittestError)
         {
             if (g_CommandLine.output || g_CommandLine.generateDoc)
@@ -404,14 +406,50 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    // Timing...
-    if (g_CommandLine.stats || g_CommandLine.verbose)
+    if (pass == ModuleBuildPass::RunNative)
     {
-        auto                     timeAfterOutput = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
-        g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
-        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+        pass = ModuleBuildPass::Done;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            auto                     timeAfterOutput = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
+            g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+        }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // Run test executable
+        if (g_CommandLine.test && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
+        {
+            if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
+            {
+                auto job                            = g_Pool_moduleRunJob.alloc();
+                job->module                         = module;
+                job->dependentJob                   = this;
+                job->buildParameters                = module->buildParameters;
+                job->buildParameters.outputFileName = module->name;
+                job->buildParameters.compileType    = BackendCompileType::Test;
+                if (!module->fromTestsFolder)
+                    job->buildParameters.postFix = ".test";
+                g_ThreadMgr.addJob(job);
+            }
+        }
+
+        // Run command
+        if (g_CommandLine.run && !module->fromTestsFolder)
+        {
+            auto job                         = g_Pool_moduleRunJob.alloc();
+            job->module                      = module;
+            job->dependentJob                = this;
+            job->buildParameters             = module->buildParameters;
+            job->buildParameters.compileType = BackendCompileType::Normal;
+            g_ThreadMgr.addJob(job);
+        }
     }
 
     // This will wake up dependencies

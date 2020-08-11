@@ -10,9 +10,10 @@ enum class ModuleBuildPass
     Publish,
     SemanticCompilerPass,
     SemanticModulePass,
-    Run,
+    RunByteCode,
     Output,
-    End,
+    RunNative,
+    Done,
 };
 
 struct ModuleBuildJob : public Job
