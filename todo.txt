@@ -1,0 +1,7 @@
+-------------------------------------
+le fichier d'export fait merder avec ses noms de fonctions qui changent à chaque fois (append node)
+faut que ce soit consistant (mode -ot:false déconne par exemple, parceque l'exe a été linké avec une ancienne dll, et l'abi n'est pas respecté)
+-------------------------------------
+if expression/switch expression
+var a: s32 = if b == 0 6 else 5
+-------------------------------------
