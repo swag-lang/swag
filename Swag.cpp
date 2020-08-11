@@ -147,12 +147,11 @@ int main(int argc, const char* argv[])
         exit(-1);
     }
 
+    // Process all arguments
     if (!cmdParser.process(argc - 2, argv + 2))
-    {
         exit(-1);
-    }
 
-    // Output command line
+    // Output command line in verbose mode
     if (g_CommandLine.verbose)
     {
         auto str = cmdParser.buildString(true);
@@ -166,7 +165,7 @@ int main(int argc, const char* argv[])
         exit(0);
     }
 
-    // User arguments
+    // User arguments that can be retrieved with '@args'
     pair<void*, void*> oneArg;
     g_CommandLine.exePathStr = g_CommandLine.exePath.string();
     oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();

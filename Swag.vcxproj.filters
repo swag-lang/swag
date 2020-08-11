@@ -278,9 +278,6 @@
     <ClCompile Include="ModuleBuildJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleOutputExportJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="BackendCFunctionBodyJob.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
@@ -424,6 +421,9 @@
     </ClCompile>
     <ClCompile Include="BackendX64Main_.cpp">
       <Filter>Backend\X64</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleExportJob.cpp">
+      <Filter>Backend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,9 +593,6 @@
     <ClInclude Include="ModuleBuildJob.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleOutputExportJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="BackendCFunctionBodyJob.h">
       <Filter>Backend\C</Filter>
     </ClInclude>
@@ -715,6 +712,9 @@
     </ClInclude>
     <ClInclude Include="BackendX64Inst.h">
       <Filter>Backend\X64</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleExportJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

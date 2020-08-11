@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ModuleOutputJob.h"
-#include "ModuleOutputExportJob.h"
+#include "ModuleExportJob.h"
 #include "ModulePreCompileJob.h"
 #include "ModuleCompileJob.h"
 #include "DocModuleJob.h"

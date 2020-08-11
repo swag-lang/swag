@@ -159,7 +159,7 @@
     <ClInclude Include="ModuleBuildJob.h" />
     <ClInclude Include="DocModuleJob.h" />
     <ClInclude Include="ModuleLoadJob.h" />
-    <ClInclude Include="ModuleOutputExportJob.h" />
+    <ClInclude Include="ModuleExportJob.h" />
     <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleRunJob.h" />
     <ClInclude Include="Os.h" />
@@ -293,7 +293,7 @@
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="DocModuleJob.cpp" />
     <ClCompile Include="ModuleLoadJob.cpp" />
-    <ClCompile Include="ModuleOutputExportJob.cpp" />
+    <ClCompile Include="ModuleExportJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModulePrecompileJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />

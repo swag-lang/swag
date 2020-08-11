@@ -2,10 +2,10 @@
 #include "Job.h"
 struct Backend;
 
-struct ModuleOutputExportJob : public Job
+struct ModuleExportJob : public Job
 {
     JobResult execute() override;
     Backend*  backend = nullptr;
 };
 
-extern thread_local Pool<ModuleOutputExportJob> g_Pool_moduleOutputExportJob;
+extern thread_local Pool<ModuleExportJob> g_Pool_moduleOutputExportJob;
