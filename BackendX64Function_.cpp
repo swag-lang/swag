@@ -90,6 +90,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
+        case ByteCodeOp::CastS8S16:
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString("\x66\x0F\xBE\xC0", 4); // movsx ax, al
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::CastS16S32:
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString("\x0F\xBF\xC0", 3); // movsx eax, ax
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::CastS32S64:
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString("\x48\x63\xC0", 3); // movsx rax, eax
+            BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::GetFromDataSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emitSymbol2RAX(pp, pp.msIndex);
