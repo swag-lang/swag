@@ -5,6 +5,11 @@ var g = -6's8
 #test
 {
     {
+        x := -6's8
+        @print(cast(s64) x)
+    }
+
+    /*{
         x := -6's64
         @print(cast(s64) x)
         @print("\n")
@@ -14,5 +19,5 @@ var g = -6's8
         @print(666's64)
         @print("\n")
         @print(7666'f64)
-    }
+    }*/
 }

@@ -121,6 +121,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::SetAtPointer8:
+            //concat.addStringFormat("*(__u8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitAdd2RAX(pp, ip->c.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString2("\x88\x18"); // mov [rax], bl
+            break;
+        case ByteCodeOp::SetAtPointer16:
+            //concat.addStringFormat("*(__u16_t*)(r[%u].pointer + %u) = r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitAdd2RAX(pp, ip->c.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString3("\x66\x89\x18"); // mov [rax], bx
+            break;
+        case ByteCodeOp::SetAtPointer32:
+            //concat.addStringFormat("*(__u32_t*)(r[%u].pointer + %u) = r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            BackendX64Inst::emitAdd2RAX(pp, ip->c.u32);
+            BackendX64Inst::emitMoveReg2RBX(pp, ip->b.u32);
+            concat.addString2("\x89\x18"); // mov [rax], ebx
+            break;
         case ByteCodeOp::SetAtPointer64:
             //concat.addStringFormat("*(__u64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
