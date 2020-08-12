@@ -4,30 +4,30 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    if true
     {
-        x := 0.5'f64
-        if(x < 0.1)
-            @print("a")
-        else
-            @print("b")
-    }
+        {
+            x := 0.5'f64
+            if(x < 0.1)
+                @print("a")
+            else
+                @print("b")
+        }
 
-    {
-        x := 0.5'f32
-        if(x < 0.1)
-            @print("a")
-        else
-            @print("b")
-    }
+        {
+            x := 0.5'f32
+            if(x < 0.1)
+                @print("a")
+            else
+                @print("b")
+        }
 
-    {
-        x := 1's64
-        if(x < 1)
-            @print("a")
-    }
+        {
+            x := 1's64
+            if(x < 1)
+                @print("a")
+        }
 
-    if false
-    {
         {
             x := 5'f32
             x *= -2
