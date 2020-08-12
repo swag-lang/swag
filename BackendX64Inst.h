@@ -186,7 +186,11 @@ namespace BackendX64Inst
     {
         if (val == 0)
             emit_ClearRBX(pp);
-        else
+        else if (val <= 0xFFFFFFFF)
+        {
+            pp.concat.addString3("\x48\xc7\xc3"); // mov rbx, ?
+            pp.concat.addU32((uint32_t) val);
+        }
         {
             pp.concat.addString2("\x48\xbb"); // mov rbx, ?
             pp.concat.addU64(val);
