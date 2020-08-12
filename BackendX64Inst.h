@@ -223,6 +223,11 @@ namespace BackendX64Inst
         pp.concat.addString3("\x48\x31\xdb"); // xor rbx, rbx
     }
 
+    inline void emit_Clear_RDX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x31\xd2"); // xor rdx, rdx
+    }
+
     inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
     {
         if (val == 0)
@@ -271,6 +276,26 @@ namespace BackendX64Inst
     inline void emit_Move_RBX_At_RAX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x89\x18"); // mov qword ptr [rax], rbx
+    }
+
+    inline void emit_Move_AL_At_RBX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x88\x03"); // mov [rbx], al
+    }
+
+    inline void emit_Move_AX_At_RBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x66\x89\x03"); // mov [rbx], ax
+    }
+
+    inline void emit_Move_EAX_At_RBX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x89\x03"); // mov [rbx], eax
+    }
+
+    inline void emit_Move_RAX_At_RBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x89\x03"); // mov [rbx], rax
     }
 
     inline void emit_Cmp_AL_With_BL(X64PerThread& pp)

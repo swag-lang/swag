@@ -5,12 +5,25 @@ var g = 5's8
 #test
 {
     {
-        x, y := 0
-        x /= y
+        x := 10's8
+        x /= -2
+        @print(cast(s64) x)
     }
 
     if true
     {
+        {
+            x := 10
+            x /= -2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := 10
+            x /= 2
+            @print(cast(s64) x)
+        }
+
         {
             var x, y: *u8 = null
             y += 1
