@@ -131,12 +131,17 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emitDeRefRAX(X64PerThread& pp)
+    inline void emit_DeRef32_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x8b\x00"); // mov eax, dword ptr [rax]
+    }
+
+    inline void emit_DeRef64_RAX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x8B\x00"); // mov rax, [rax]
     }
 
-    inline void emitDeRefRBX(X64PerThread& pp)
+    inline void emit_DeRef64_RBX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x8B\x1B"); // mov rbx, [rbx]
     }
@@ -180,6 +185,21 @@ namespace BackendX64Inst
     inline void emit_ClearRBX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x31\xdb"); // xor rbx, rbx
+    }
+
+    inline void emit_MoveCst64_In_RAX(X64PerThread& pp, uint64_t val)
+    {
+        if (val == 0)
+            emit_ClearRAX(pp);
+        else if (val <= 0xFFFFFFFF)
+        {
+            pp.concat.addString3("\x48\xc7\xc0"); // mov rax, ?
+            pp.concat.addU32((uint32_t) val);
+        }
+        {
+            pp.concat.addString2("\x48\xb8"); // mov rax, ?
+            pp.concat.addU64(val);
+        }
     }
 
     inline void emit_MoveCst64_In_RBX(X64PerThread& pp, uint64_t val)

@@ -7,6 +7,12 @@ var g = 5's8
     if true
     {
         {
+            x := 0
+            y := 1
+            @print(cast(s64) y)
+        }
+
+        {
             var y: u64
             @print(cast(s64) y)
         }
