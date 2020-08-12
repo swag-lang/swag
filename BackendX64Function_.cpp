@@ -255,6 +255,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_EBX_At_RAX(pp);
             break;
+        case ByteCodeOp::AffectOpMinusEqS16:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s16;");
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef16_RBX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
+            concat.addString3("\x66\x29\xc3"); // sub bx, ax
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_EBX_At_RAX(pp);
+            break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s8;");
