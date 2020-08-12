@@ -5,19 +5,55 @@ var g = 5's8
 #test
 {
     {
-        x := -12's64
-        x /= -2
-        @print(cast(s64) x)
-    }
-
-    {
-        x := -1's64
+        x := 5'f64
         x /= 2
-        @print(cast(s64) x)
+        @print(cast(f64) x)
     }
 
-    if true
     {
+        x := 5'f32
+        x /= 2
+        @assert(cast(f64) x == 2.5)
+    }
+
+    if false
+    {
+        {
+            x := 10'u64
+            x /= 2
+            @assert(cast(s64) x == 5)
+        }
+
+        {
+            x := 10'u32
+            x /= 2
+            @assert(cast(s64) x == 5)
+        }
+
+        {
+            x := 10'u16
+            x /= 2
+            @assert(cast(s64) x == 5)
+        }
+
+        {
+            x := 10'u8
+            x /= 2
+            @assert(cast(s64) x == 5)
+        }
+
+        {
+            x := -12's64
+            x /= -2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := -1's64
+            x /= 2
+            @print(cast(s64) x)
+        }
+
         {
             x := -12's16
             x /= -2

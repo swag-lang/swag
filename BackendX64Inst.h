@@ -157,30 +157,66 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_DeRef8_RAX(X64PerThread& pp)
+    inline void emit_Move_Stack_In_XMM0_F32(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString2("\x8a\x00"); // mov al, byte ptr [rax]
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x07"); // movss xmm0, dword ptr [rdi]
+        }
+        else
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm0, dword ptr [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
     }
 
-    inline void emit_DeRef16_RAX(X64PerThread& pp)
+    inline void emit_Move_Stack_In_XMM1_F32(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString3("\x66\x8b\x00"); // mov ax, word ptr [rax]
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x0f"); // movss xmm1, dword ptr [rdi]
+        }
+        else
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm1, dword ptr [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
     }
 
-    inline void emit_DeRef32_RAX(X64PerThread& pp)
+    inline void emit_Move_XMM0_At_Stack_F32(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString2("\x8b\x00"); // mov eax, dword ptr [rax]
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf3\x0f\x11\x07"); // movss dword ptr [rdi], xmm0
+        }
+        else
+        {
+            pp.concat.addString4("\xf3\x0f\x11\x87"); // movss dword ptr [rdi + ?], xmm0
+            pp.concat.addU32(stackOffset);
+        }
     }
 
-    inline void emit_DeRef64_RAX(X64PerThread& pp)
+    inline void emit_Move_XMM0_At_Stack_F64(X64PerThread& pp, uint32_t stackOffset)
     {
-        pp.concat.addString3("\x48\x8B\x00"); // mov rax, [rax]
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf2\x0f\x11\x07"); // movsd qword ptr [rdi], xmm0
+        }
+        else
+        {
+            pp.concat.addString4("\xf2\x0f\x11\x87"); // movsd qword ptr [rdi + ?], xmm0
+            pp.concat.addU32(stackOffset);
+        }
     }
 
-    inline void emit_DeRef64_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x8B\x1B"); // mov rbx, [rbx]
-    }
+    // clang-format off
+    inline void emit_DeRef8_RAX(X64PerThread& pp) { pp.concat.addString2("\x8a\x00"); } // mov al, byte ptr [rax]
+    inline void emit_DeRef16_RAX(X64PerThread& pp) { pp.concat.addString3("\x66\x8b\x00"); } // mov ax, word ptr [rax]
+    inline void emit_DeRef32_RAX(X64PerThread& pp) { pp.concat.addString2("\x8b\x00"); } // mov eax, dword ptr [rax]
+    inline void emit_DeRef64_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x8B\x00"); } // mov rax, [rax]
+    inline void emit_DeRef64_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x8B\x1B"); } // mov rbx, [rbx]
+    inline void emit_DeRef_RAX_In_XMM0_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x10\x00"); } // movss xmm0, dword ptr [rax]
+    // clang-format on
 
     inline void emit_Lea_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
     {
@@ -193,6 +229,11 @@ namespace BackendX64Inst
             pp.concat.addString3("\x48\x8D\x87"); // lea rax, [rdi + ?]
             pp.concat.addU32(stackOffset);
         }
+    }
+
+    inline void emit_Move_XMM0_At_RAX_F32(X64PerThread& pp)
+    {
+        pp.concat.addString4("\xf3\x0f\x11\x00"); // movss dword ptr [rax], xmm0
     }
 
     inline void emit_Move_Cst8_At_RAX(X64PerThread& pp, uint8_t val)
@@ -213,20 +254,11 @@ namespace BackendX64Inst
         pp.concat.addU32(val);
     }
 
-    inline void emit_Clear_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x31\xc0"); // xor rax, rax
-    }
-
-    inline void emit_Clear_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x31\xdb"); // xor rbx, rbx
-    }
-
-    inline void emit_Clear_RDX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x31\xd2"); // xor rdx, rdx
-    }
+    // clang-format off
+    inline void emit_Clear_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc0"); } // xor rax, rax
+    inline void emit_Clear_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xdb"); } // xor rbx, rbx
+    inline void emit_Clear_RDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor rdx, rdx
+    // clang-format on
 
     inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
     {
@@ -258,149 +290,48 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_BL_At_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x88\x18"); // mov [rax], bl
-    }
+    // clang-format off
+    inline void emit_Move_BL_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x88\x18"); } // mov [rax], bl
+    inline void emit_Move_BX_At_RAX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x18"); } // mov [rax], bx
+    inline void emit_Move_EBX_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x89\x18"); } // mov [rax], ebx
+    inline void emit_Move_RBX_At_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x89\x18"); } // mov [rax], rbx
+    inline void emit_Move_AL_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x88\x03"); } // mov [rbx], al
+    inline void emit_Move_AX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x03"); } // mov [rbx], ax
+    inline void emit_Move_EAX_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x89\x03"); } // mov [rbx], eax
+    inline void emit_Move_RAX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x89\x03"); } // mov [rbx], rax
 
-    inline void emit_Move_BX_At_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x66\x89\x18"); // mov [rax], bx
-    }
+    inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
+    inline void emit_Cmp_AX_With_BX(X64PerThread& pp) { pp.concat.addString3("\x66\x39\xd8"); } // cmp ax, bx
+    inline void emit_Cmp_EAX_With_EBX(X64PerThread& pp) { pp.concat.addString2("\x39\xD8"); } // cmp eax, ebx
+    inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x39\xD8"); } // cmp rax, rbx
 
-    inline void emit_Move_EBX_At_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x89\x18"); // mov [rax], ebx
-    }
+    inline void emit_Test_AL_With_AL(X64PerThread& pp) { pp.concat.addString2("\x84\xC0"); } // test al, al
+    inline void emit_Test_AX_With_AX(X64PerThread& pp) { pp.concat.addString3("\x66\x85\xc0"); } // test ax, ax
+    inline void emit_Test_EAX_With_EAX(X64PerThread& pp) { pp.concat.addString2("\x85\xC0"); } // test eax, eax
+    inline void emit_Test_RAX_With_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x85\xc0"); } // test rax, rax
 
-    inline void emit_Move_RBX_At_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x89\x18"); // mov qword ptr [rax], rbx
-    }
-
-    inline void emit_Move_AL_At_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x88\x03"); // mov [rbx], al
-    }
-
-    inline void emit_Move_AX_At_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x66\x89\x03"); // mov [rbx], ax
-    }
-
-    inline void emit_Move_EAX_At_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x89\x03"); // mov [rbx], eax
-    }
-
-    inline void emit_Move_RAX_At_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x89\x03"); // mov [rbx], rax
-    }
-
-    inline void emit_Cmp_AL_With_BL(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x38\xd8"); // cmp al, bl
-    }
-
-    inline void emit_Cmp_AX_With_BX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x66\x39\xd8"); // cmp ax, bx
-    }
-
-    inline void emit_Cmp_EAX_With_EBX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x39\xD8"); // cmp eax, ebx
-    }
-
-    inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
-    }
-
-    inline void emit_Test_AL_With_AL(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x84\xC0"); // test al, al
-    }
-
-    inline void emit_Test_AX_With_AX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x66\x85\xc0"); // test ax, ax
-    }
-
-    inline void emit_Test_EAX_With_EAX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x85\xC0"); // test eax, eax
-    }
-
-    inline void emit_Test_RAX_With_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x48\x85\xc0"); // test rax, rax
-    }
-
-    inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x66\x98"); // cbw
-    }
-
-    inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp)
-    {
-        pp.concat.addU8(0x98); // cwde
-    }
-
-    inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp)
-    {
-        pp.concat.addString3("\x0f\xbf\xdb"); // movsx ebx, bx  
-    }
-
-    inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp)
-    {
-        pp.concat.addString2("\x48\x98"); // cdqe
-    }
+    inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
+    inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
+    inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
+    inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
+    // clang-format on
 
     //////////////////////////////////////////////////
-    inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_AL_At_Stack(pp, r * sizeof(Register));
-    }
 
-    inline void emit_Move_AX_At_Reg(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_AX_At_Stack(pp, r * sizeof(Register));
-    }
+    // clang-format off
+    inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r) {emit_Move_AL_At_Stack(pp, r * sizeof(Register)); }
+    inline void emit_Move_AX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_AX_At_Stack(pp, r * sizeof(Register)); }
+    inline void emit_Move_EAX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_EAX_At_Stack(pp, r * sizeof(Register));}
+    inline void emit_Move_RAX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_RAX_At_Stack(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RAX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_RBX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RBX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_RCX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RCX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_RDX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RDX(pp, r * sizeof(Register)); }
+    inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM0_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F32(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM1_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F32(pp, r * sizeof(Register)); }
+    inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
+    inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
+    // clang-format on
 
-    inline void emit_Move_EAX_At_Reg(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_EAX_At_Stack(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Move_RAX_At_Reg(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_RAX_At_Stack(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Move_Reg_In_RAX(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_Stack_In_RAX(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Move_Reg_In_RBX(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_Stack_In_RBX(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Move_Reg_In_RCX(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_Stack_In_RCX(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Move_Reg_In_RDX(X64PerThread& pp, uint32_t r)
-    {
-        emit_Move_Stack_In_RDX(pp, r * sizeof(Register));
-    }
-
-    inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r)
-    {
-        emit_Lea_Stack_In_RAX(pp, r * sizeof(Register));
-    }
 }; // namespace BackendX64Inst
