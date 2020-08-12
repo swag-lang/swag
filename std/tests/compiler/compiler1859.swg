@@ -10,11 +10,11 @@ var g = 5's8
 
         if !@isbytecode()
         {
-            y = deref x
+            //y = deref x
         }
     }
 
-    if false
+    if true
     {
         {
             cpt := 0
