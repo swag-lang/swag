@@ -138,18 +138,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS32:
             //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x8B\x00"); // mov eax, [rax]
+            BackendX64Inst::emit_DeRef32_RAX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             concat.addString2("\x01\xC3"); // add ebx, eax
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x89\x18"); // mov [rax], ebx
+            BackendX64Inst::emit_Move_EBX_At_RAX(pp);
             break;
 
         case ByteCodeOp::CompareOpLowerS32:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString2("\x39\xD8");     // cmp eax, ebx
+            BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
             concat.addString3("\x0F\x9C\xC0"); // setl al
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
@@ -158,7 +158,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString2("\x39\xD8");     // cmp eax, ebx
+            BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
             concat.addString3("\x0F\x94\xC0"); // sete al
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
