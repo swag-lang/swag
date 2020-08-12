@@ -7,6 +7,38 @@ var g = 5's8
     if true
     {
         {
+            x := 10'f64
+            if(x > 1.5)
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
+            x := 1'f32
+            if(x > 1.5)
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
+            x := 2's8
+            if(x > 1)
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
+            x := 1's64
+            if(x > 1)
+                @print("a")
+            else
+                @print("b")
+        }
+
+        {
             x := 0.5'f64
             if(x < 0.1)
                 @print("a")
@@ -16,7 +48,7 @@ var g = 5's8
 
         {
             x := 0.5'f32
-            if(x < 0.1)
+            if(x < 1.0)
                 @print("a")
             else
                 @print("b")
