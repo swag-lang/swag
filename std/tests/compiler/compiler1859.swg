@@ -5,25 +5,59 @@ var g = 5's8
 #test
 {
     {
-        x := 0's8
-        x += -1
-        @print(cast(s64) x)
+        x := 1's16
+        switch x
+        {
+            case 0: @assert(false)
+            case 1: @print("1")
+        }
     }
 
     {
-        x := 0's16
-        x += -1
-        @print(cast(s64) x)
+        x := 1's8
+        switch x
+        {
+            case 0: @assert(false)
+            case 1: @print("1")
+        }
     }
 
     {
-        x := 0's64
-        x += -1
-        @print(cast(s64) x)
+        x := 10's8
+        switch x
+        {
+            case 0: @assert(false)
+            case 1: @print("1")
+            default: @print("2")
+        }
     }
 
     if false
     {
+        {
+            x := 0's8
+            y := x == 1 ? 10 : 20
+            @print(cast(s64) y)
+        }
+
+        {
+            x := 0's8
+            x += -1
+            @print(cast(s64) x)
+        }
+
+        {
+            x := 0's16
+            x += -1
+            @print(cast(s64) x)
+        }
+
+        {
+            x := 0's64
+            x += -1
+            @print(cast(s64) x)
+        }
+
         {
             x := @[1'u8]
             ptr := &x[0]

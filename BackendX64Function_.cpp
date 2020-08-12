@@ -118,6 +118,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Cst64_In_RBX(pp, 0);
             BackendX64Inst::emit_Move_RBX_At_RAX(pp);
             break;
+        case ByteCodeOp::CopyRBtoRA:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
 
         case ByteCodeOp::CastS8S16:
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
@@ -181,6 +186,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
 
+        case ByteCodeOp::CompareOpEqual8:
+            //concat.addStringFormat("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_AL_With_BL(pp);
+            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpEqual16:
+            //concat.addStringFormat("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_AX_With_BX(pp);
+            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
         case ByteCodeOp::CompareOpEqual32:
             //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
@@ -213,6 +234,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::JumpIfTrue:
+            //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
+            //concat.addS32Str8(ip->b.s32 + i + 1);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString2("\x84\xC0"); // test al, al
+            concat.addString2("\x0F\x85"); // jnz ?
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            concat.addU32(0);
+            break;
         case ByteCodeOp::JumpIfFalse:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
