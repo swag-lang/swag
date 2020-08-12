@@ -338,9 +338,14 @@ namespace BackendX64Inst
         pp.concat.addString2("\x66\x98"); // cbw
     }
 
+    inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x98); // cwde
+    }
+
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp)
     {
-        pp.concat.addString2("\x48\x98"); // csqe
+        pp.concat.addString2("\x48\x98"); // cdqe
     }
 
     //////////////////////////////////////////////////
