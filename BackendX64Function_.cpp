@@ -181,7 +181,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_DeRef64_RBX(pp);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
-            concat.addString2("\x48\x98"); // cdqe            
+            concat.addString2("\x48\x98");     // cdqe
             concat.addString3("\x48\x01\xc3"); // add rbx, rax
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_EBX_At_RAX(pp);
@@ -232,8 +232,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::TestNotZero64:
             //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
-            concat.addString4("\x48\x83\xF8\x00"); // cmp rax, 0
-            concat.addString3("\x0F\x95\xC0");     // setne al
+            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            concat.addString3("\x0F\x95\xC0"); // setne al
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 

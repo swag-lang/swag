@@ -5,24 +5,29 @@ var g = 5's8
 #test
 {
     {
-        var x, y: *u8 = null
-        y += 1
-        z := x ?? y
-        if z != null
-            @print("A")
-    }
-
-    {
-        var x, y: *u8 = null
-        z := x ?? y
-        if z != null
-            @print("X")
-        else
-            @print("Y")
+        x, y := 0
+        x /= y
     }
 
     if true
     {
+        {
+            var x, y: *u8 = null
+            y += 1
+            z := x ?? y
+            if z != null
+                @print("A")
+        }
+
+        {
+            var x, y: *u8 = null
+            z := x ?? y
+            if z != null
+                @print("X")
+            else
+                @print("Y")
+        }
+
         {
             x := 1's16
             switch x
