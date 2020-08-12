@@ -239,6 +239,16 @@ void ByteCode::print()
         case ByteCodeOp::TestNotZero16:
         case ByteCodeOp::TestNotZero32:
         case ByteCodeOp::TestNotZero64:
+        case ByteCodeOp::AffectOpDivEqS8:
+        case ByteCodeOp::AffectOpDivEqS16:
+        case ByteCodeOp::AffectOpDivEqS32:
+        case ByteCodeOp::AffectOpDivEqS64:
+        case ByteCodeOp::AffectOpDivEqU8:
+        case ByteCodeOp::AffectOpDivEqU16:
+        case ByteCodeOp::AffectOpDivEqU32:
+        case ByteCodeOp::AffectOpDivEqU64:
+        case ByteCodeOp::AffectOpDivEqF32:
+        case ByteCodeOp::AffectOpDivEqF64:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 

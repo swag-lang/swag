@@ -204,7 +204,7 @@ namespace BackendX64Inst
         }
         else
         {
-            pp.concat.addString4("\xf2\x0f\x10\x87"); // movsd xmm1, qword ptr [rdi + ?]
+            pp.concat.addString4("\xf2\x0f\x10\x8f"); // movsd xmm1, qword ptr [rdi + ?]
             pp.concat.addU32(stackOffset);
         }
     }

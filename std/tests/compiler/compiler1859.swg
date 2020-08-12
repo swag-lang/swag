@@ -4,24 +4,48 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    if true
     {
-        x := 5'f64
-        x /= 2
-        @print(cast(f64) x)
-    }
+        {
+            x := 5'f32
+            x += 2
+            @print(cast(f64) x)
+        }
 
-    if false
-    {
+        {
+            x := 5'f64
+            x += 2
+            @print(cast(f64) x)
+        }
+
         {
             x := 5'f64
             x /= 2
-            @print(cast(f64) x)
+            @assert(cast(f64) x == 2.5)
+        }
+
+        {
+            x := 5'f64
+            x /= 2
+            @assert(cast(f64) x == 2.5)
+        }
+
+        {
+            x := 5'f64
+            x /= 2
+            @assert(cast(f64) x == 2.5)
+        }
+
+        {
+            x := 5'f64
+            x /= 2
+            @assert(cast(f64) x == 2.5)
         }
 
         {
             x := 5'f32
             x /= 2
-            @print(cast(f64) x)
+            @assert(cast(f64) x == 2.5)
         }
 
         {
@@ -255,7 +279,7 @@ var g = 5's8
 
         {
             x := -6's8
-            @print(cast(s64) x)
+            @assert(cast(s64) x == -6)
         }
 
         {
