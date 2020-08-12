@@ -366,9 +366,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
-            BackendX64Inst::emit_MoveReg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x30\xC0"); // xor al, al
-            BackendX64Inst::emit_MoveRAX_At_Reg(pp, ip->a.u32);
+            BackendX64Inst::emit_LeaReg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveCst32_At_RAX(pp, 0);
             break;
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
