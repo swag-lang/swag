@@ -253,6 +253,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_MoveRAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::ClearMaskU64:
+            //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
+            BackendX64Inst::emit_MoveReg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveCst64_In_RBX(pp, ip->b.u64);
+            concat.addString3("\x48\x21\xd8"); // and rax, rbx
+            BackendX64Inst::emit_MoveRAX_At_Reg(pp, ip->a.u32);           
+            break;
+
+        case ByteCodeOp::SetZeroStack32:
+            //CONCAT_STR_1(concat, "*(__u32_t*)(s+", ip->a.u32, ")=0;");
+            BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_MoveCst32_At_RAX(pp, 0);
+            break;
+
         case ByteCodeOp::SetAtPointer8:
             //concat.addStringFormat("*(__u8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
             BackendX64Inst::emit_MoveReg_In_RAX(pp, ip->a.u32);

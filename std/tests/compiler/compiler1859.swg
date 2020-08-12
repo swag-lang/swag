@@ -5,12 +5,17 @@ var g = 5's8
 #test
 {
     {
-        var x: *u32 = null
-        var y: u32
+        var y: u8
+        @print(cast(s64) y)
     }
 
     if false
     {
+        {
+            var y: u32
+            @print(cast(s64) y)
+        }
+
         {
             cpt := 0
             while cpt < 4
