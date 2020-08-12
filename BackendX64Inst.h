@@ -278,6 +278,11 @@ namespace BackendX64Inst
         pp.concat.addString2("\x39\xD8"); // cmp eax, ebx
     }
 
+    inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
+    }
+
     //////////////////////////////////////////////////
     inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r)
     {

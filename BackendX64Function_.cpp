@@ -166,7 +166,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
+            BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
             concat.addString3("\x0F\x94\xC0"); // sete al
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
