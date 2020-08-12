@@ -72,13 +72,18 @@ void Diagnostic::report(bool verboseMode) const
     {
         // Get all lines of code
         vector<Utf8> lines;
-        for (int i = 0; i < REPORT_NUM_CODE_LINES; i++)
+        if (showMultipleCodeLines)
         {
-            if (startLocation.seekStartLine[i] == -1)
-                continue;
-            if (!showMultipleCodeLines && i != REPORT_NUM_CODE_LINES - 1)
-                continue;
-            lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
+            for (int i = -2; i <= 0; i++)
+            {
+                if (startLocation.line + i < 0)
+                    continue;
+                lines.push_back(sourceFile->getLine(startLocation.line + i));
+            }
+        }
+        else
+        {
+            lines.push_back(sourceFile->getLine(startLocation.line));
         }
 
         // Print all lines

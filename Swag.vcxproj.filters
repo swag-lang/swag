@@ -521,9 +521,6 @@
     <ClInclude Include="Module.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="SourceLocation.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="ByteCodeGenJob.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>

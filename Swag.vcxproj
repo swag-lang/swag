@@ -171,7 +171,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
-    <ClInclude Include="SourceLocation.h" />
     <ClInclude Include="SpinLock.h" />
     <ClInclude Include="SwagScope.h" />
     <ClInclude Include="Timer.h" />

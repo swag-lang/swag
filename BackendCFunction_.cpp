@@ -726,7 +726,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                     if (ip->node->token.startLocation.column != ip->node->token.endLocation.column)
                     {
                         lastLine = ip->node->token.startLocation.line;
-                        auto s   = bc->sourceFile->getLine(ip->node->token.startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+                        auto s   = bc->sourceFile->getLine(lastLine);
                         s.trimLeft();
                         if (!s.empty())
                             s.pop_back();

@@ -26,7 +26,7 @@ struct SourceFile : public File
     SourceFile();
 
     char32_t getChar(unsigned& offset);
-    Utf8     getLine(long seek);
+    Utf8     getLine(long lineNo);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     void     load(LoadRequest* request);
@@ -38,12 +38,13 @@ struct SourceFile : public File
     char getPrivateChar();
     bool checkFormat();
 
-    Module*  module  = nullptr;
-    AstNode* astRoot = nullptr;
-    Utf8     externalContent;
-    uint8_t* externalBuffer = nullptr;
-    uint32_t externalSize   = 0;
-    uint32_t seekExternal   = 0;
+    vector<string> allLines;
+    Module*        module  = nullptr;
+    AstNode*       astRoot = nullptr;
+    Utf8           externalContent;
+    uint8_t*       externalBuffer = nullptr;
+    uint32_t       externalSize   = 0;
+    uint32_t       seekExternal   = 0;
 
     uint64_t  writeTime       = 0;
     int       numErrors       = 0;
@@ -70,7 +71,6 @@ struct SourceFile : public File
     long         bufferSize    = 0;
     int          totalRead     = 0;
     bool         doneLoading   = false;
-    bool         directMode    = false;
     bool         formatDone    = false;
     bool         fromTests     = false;
     bool         generated     = false;

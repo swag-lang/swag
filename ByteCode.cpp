@@ -122,7 +122,7 @@ void ByteCode::print()
         if (location && location->line != lastLine && ip->op != ByteCodeOp::End)
         {
             lastLine = location->line;
-            auto s   = sourceFile->getLine(location->seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+            auto s   = sourceFile->getLine(lastLine);
             s.trimLeft();
             g_Log.setColor(LogColor::DarkYellow);
             for (int idx = 0; idx < 9; idx++)

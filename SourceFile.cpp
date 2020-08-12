@@ -102,14 +102,6 @@ char SourceFile::getPrivateChar()
         return externalBuffer[seekExternal++];
     }
 
-    if (directMode)
-    {
-        if (!fileHandle)
-            return 0;
-        auto c = fgetc(fileHandle);
-        return c == EOF ? 0 : (char) c;
-    }
-
     if (bufferCurSeek >= bufferSize)
     {
         // Done
@@ -212,36 +204,31 @@ char32_t SourceFile::getChar(unsigned& offset)
     return '?';
 }
 
-Utf8 SourceFile::getLine(long seek)
+Utf8 SourceFile::getLine(long lineNo)
 {
     scoped_lock lk(mutexGetLine);
+    if (externalBuffer)
+        return "?";
 
-    if (!externalBuffer)
-    {
-        openRead();
-        seekTo(seek + headerSize);
-        directMode = true;
-    }
-    else
-    {
-        seekExternal = seek;
-    }
-
-    Utf8 line;
-    int  column = 0;
-    while (true)
-    {
-        unsigned offset = 0;
-        auto     c      = getChar(offset);
-        if (!c || c == '\n')
-            break;
-        line += c;
-        column++;
-    }
-
-    directMode = false;
     close();
-    return line;
+
+    // Put all lines in a cache, the first time
+    // This is slow, but this is ok, as getLine is not called in normal situations
+    if (allLines.empty())
+    {
+        ifstream fle(path, ios::binary);
+        if (!fle.is_open())
+            return "?";
+
+        string   line;
+        line.reserve(1024);
+        while (std::getline(fle, line))
+        {
+            allLines.push_back(line);
+        }
+    }
+
+    return allLines[lineNo];
 }
 
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
