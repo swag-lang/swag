@@ -197,6 +197,21 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_MoveBL_At_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x88\x18"); // mov [rax], bl
+    }
+
+    inline void emit_MoveBX_At_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x66\x89\x18"); // mov [rax], bx
+    }
+
+    inline void emit_MoveEBX_At_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x89\x18"); // mov [rax], ebx
+    }
+
     inline void emit_MoveRBX_At_RAX(X64PerThread& pp)
     {
         pp.concat.addString3("\x48\x89\x18"); // mov qword ptr [rax], rbx
@@ -208,7 +223,7 @@ namespace BackendX64Inst
         emit_MoveRAX_At_Stack(pp, r * sizeof(Register));
     }
 
-    inline void emitMoveEAX2Reg(X64PerThread& pp, uint32_t r)
+    inline void emit_Move_EAX_At_Reg(X64PerThread& pp, uint32_t r)
     {
         emit_MoveEAX_At_Stack(pp, r * sizeof(Register));
     }
