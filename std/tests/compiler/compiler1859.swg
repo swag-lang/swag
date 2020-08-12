@@ -5,11 +5,19 @@ var g = 5's8
 #test
 {
         {
+            x := 5'f64
+            x -= 2
+            @print(cast(f64) x)
+        }
+
+        {
             x := 5'f32
             x -= 2
             @print(cast(f64) x)
         }
 
+    if false
+    {
         {
             x := 5's64
             x -= 2
@@ -34,8 +42,6 @@ var g = 5's8
             @print(cast(s64) x)
         }
 
-    if false
-    {
         {
             x := 5'f32
             x += 2
