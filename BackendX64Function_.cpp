@@ -238,6 +238,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString4("\xf3\x0f\x5e\xc1"); // divss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
             break;
+        case ByteCodeOp::AffectOpDivEqF64:
+            //CONCAT_STR_2(concat, "*(__f64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef_RAX_In_XMM0_F64(pp);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, ip->b.u32);
+            concat.addString4("\xf2\x0f\x5e\xc1"); // divsd xmm0, xmm1
+            BackendX64Inst::emit_Move_XMM0_At_RAX_F64(pp);
+            break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s8;");

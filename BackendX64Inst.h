@@ -183,6 +183,32 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Move_Stack_In_XMM0_F64(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x07"); // movsd xmm0, qword ptr [rdi]
+        }
+        else
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x87"); // movsd xmm0, qword ptr [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_XMM1_F64(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x0f"); // movsd xmm1, qword ptr [rdi]
+        }
+        else
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x87"); // movsd xmm1, qword ptr [rdi + ?]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
     inline void emit_Move_XMM0_At_Stack_F32(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -216,6 +242,7 @@ namespace BackendX64Inst
     inline void emit_DeRef64_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x8B\x00"); } // mov rax, [rax]
     inline void emit_DeRef64_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x8B\x1B"); } // mov rbx, [rbx]
     inline void emit_DeRef_RAX_In_XMM0_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x10\x00"); } // movss xmm0, dword ptr [rax]
+    inline void emit_DeRef_RAX_In_XMM0_F64(X64PerThread& pp) { pp.concat.addString4("\xf2\x0f\x10\x00"); } // movsd xmm0, qword ptr [rax]
     // clang-format on
 
     inline void emit_Lea_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
@@ -231,10 +258,10 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_XMM0_At_RAX_F32(X64PerThread& pp)
-    {
-        pp.concat.addString4("\xf3\x0f\x11\x00"); // movss dword ptr [rax], xmm0
-    }
+    // clang-format off
+    inline void emit_Move_XMM0_At_RAX_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x11\x00"); } // movss dword ptr [rax], xmm0
+    inline void emit_Move_XMM0_At_RAX_F64(X64PerThread& pp) { pp.concat.addString4("\xf2\x0f\x11\x00"); } // movsd qword ptr [rax], xmm0
+    // clang-format on
 
     inline void emit_Move_Cst8_At_RAX(X64PerThread& pp, uint8_t val)
     {
@@ -330,6 +357,8 @@ namespace BackendX64Inst
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM0_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM1_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F32(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM0_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F64(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM1_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F64(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
     // clang-format on
