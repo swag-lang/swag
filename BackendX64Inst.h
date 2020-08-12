@@ -333,6 +333,16 @@ namespace BackendX64Inst
         pp.concat.addString3("\x48\x85\xc0"); // test rax, rax
     }
 
+    inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x66\x98"); // cbw
+    }
+
+    inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x48\x98"); // csqe
+    }
+
     //////////////////////////////////////////////////
     inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r)
     {
