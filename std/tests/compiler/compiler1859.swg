@@ -10,6 +10,18 @@ var g = 5's8
         @print(cast(s64) x)
     }
 
+    {
+        x := 0's16
+        x += -1
+        @print(cast(s64) x)
+    }
+
+    {
+        x := 0's64
+        x += -1
+        @print(cast(s64) x)
+    }
+
     if false
     {
         {
