@@ -29,6 +29,7 @@ struct Concat
     void      addF64(double v);
     void      addBool(bool v);
     void      addPointer(void* v);
+    void      addString1(const char* v);
     void      addString2(const char* v);
     void      addString3(const char* v);
     void      addString4(const char* v);

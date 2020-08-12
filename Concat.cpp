@@ -166,6 +166,13 @@ void Concat::addString(const Utf8& v)
     currentSP += len;
 }
 
+void Concat::addString1(const char* v)
+{
+    checkCount(1);
+    *(uint8_t*) currentSP = *(uint8_t*) v;
+    currentSP += 1;
+}
+
 void Concat::addString2(const char* v)
 {
     checkCount(2);

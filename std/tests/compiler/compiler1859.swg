@@ -5,13 +5,43 @@ var g = 5's8
 #test
 {
     {
-        x := 10's8
+        x := -12's64
         x /= -2
+        @print(cast(s64) x)
+    }
+
+    {
+        x := -1's64
+        x /= 2
         @print(cast(s64) x)
     }
 
     if true
     {
+        {
+            x := -12's16
+            x /= -2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := -1's16
+            x /= 2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := -1's32
+            x /= 2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := -10's8
+            x /= -2
+            @print(cast(s64) x)
+        }
+
         {
             x := 10
             x /= -2

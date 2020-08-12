@@ -323,6 +323,11 @@ namespace BackendX64Inst
         pp.concat.addString2("\x84\xC0"); // test al, al
     }
 
+    inline void emit_Test_AX_With_AX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x66\x85\xc0"); // test ax, ax
+    }
+
     inline void emit_Test_EAX_With_EAX(X64PerThread& pp)
     {
         pp.concat.addString2("\x85\xC0"); // test eax, eax
@@ -341,6 +346,11 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp)
     {
         pp.concat.addU8(0x98); // cwde
+    }
+
+    inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x0f\xbf\xdb"); // movsx ebx, bx  
     }
 
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp)
