@@ -303,6 +303,11 @@ namespace BackendX64Inst
         pp.concat.addString2("\x85\xC0"); // test eax, eax
     }
 
+    inline void emit_Test_RAX_With_RAX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x85\xc0"); // test rax, rax
+    }
+
     //////////////////////////////////////////////////
     inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r)
     {

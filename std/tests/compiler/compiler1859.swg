@@ -5,35 +5,52 @@ var g = 5's8
 #test
 {
     {
-        x := 1's16
-        switch x
-        {
-            case 0: @assert(false)
-            case 1: @print("1")
-        }
+        var x, y: *u8 = null
+        y += 1
+        z := x ?? y
+        if z != null
+            @print("A")
     }
 
     {
-        x := 1's8
-        switch x
-        {
-            case 0: @assert(false)
-            case 1: @print("1")
-        }
-    }
-
-    {
-        x := 10's8
-        switch x
-        {
-            case 0: @assert(false)
-            case 1: @print("1")
-            default: @print("2")
-        }
+        var x, y: *u8 = null
+        z := x ?? y
+        if z != null
+            @print("X")
+        else
+            @print("Y")
     }
 
     if true
     {
+        {
+            x := 1's16
+            switch x
+            {
+                case 0: @assert(false)
+                case 1: @print("1")
+            }
+        }
+
+        {
+            x := 1's8
+            switch x
+            {
+                case 0: @assert(false)
+                case 1: @print("1")
+            }
+        }
+
+        {
+            x := 10's8
+            switch x
+            {
+                case 0: @assert(false)
+                case 1: @print("1")
+                default: @print("2")
+            }
+        }
+
         {
             x := 0's8
             y := x == 1 ? 10 : 20

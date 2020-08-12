@@ -176,6 +176,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_EBX_At_RAX(pp);
             break;
+        case ByteCodeOp::AffectOpPlusEqPointer:
+            //CONCAT_STR_2(concat, "*(__u8_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef64_RBX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
+            concat.addString2("\x48\x98"); // cdqe            
+            concat.addString3("\x48\x01\xc3"); // add rbx, rax
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_EBX_At_RAX(pp);
+            break;
 
         case ByteCodeOp::CompareOpLowerS32:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -257,6 +267,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
+            concat.addString2("\x0F\x84"); // jz ?
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            concat.addU32(0);
+            break;
+        case ByteCodeOp::JumpIfZero64:
+            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
+            //concat.addS32Str8(ip->b.s32 + i + 1);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
             concat.addString2("\x0F\x84"); // jz ?
             pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
             concat.addU32(0);
