@@ -27,7 +27,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         }
     }
 
-    BackendX64Inst::emit_ClearRAX(pp);
+    BackendX64Inst::emit_Clear_RAX(pp);
     concat.addU8(0xC3); // ret
     return true;
 }
