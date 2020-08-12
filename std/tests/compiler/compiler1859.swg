@@ -1,10 +1,16 @@
 //var g = "toto"
 var g = 5's8
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    if true
+    {
+        x := 0's8
+        x += -1
+        @print(cast(s64) x)
+    }
+
+    if false
     {
         {
             x := @[1'u8]
