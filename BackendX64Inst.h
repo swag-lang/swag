@@ -57,8 +57,16 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            pp.concat.addString2("\x48\x05"); // add rax, ?
-            pp.concat.addU32(value);
+            if (value <= 0xFF)
+            {
+                pp.concat.addString3("\x48\x83\xc0"); // add rax, ?
+                pp.concat.addU8((uint8_t) value);
+            }
+            else
+            {
+                pp.concat.addString2("\x48\x05"); // add rax, ?
+                pp.concat.addU32(value);
+            }
         }
     }
 
