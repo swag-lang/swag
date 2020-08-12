@@ -4,7 +4,21 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
-    if true
+    {
+        x := @[1'u8]
+        ptr := &x[0]
+        y := ptr[0]
+        @print(cast(s64) y)
+    }
+
+    {
+        x := @[5'u16]
+        ptr := &x[0]
+        y := ptr[0]
+        @print(cast(s64) y)
+    }
+
+    if false
     {
         {
             x := 0
