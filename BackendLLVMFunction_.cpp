@@ -214,11 +214,9 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     llvm::FunctionType* funcType = nullptr;
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &funcType));
 
-    // Public foreign name
-    auto name = Ast::computeFullNameForeign(node, true);
-
     // Create function
-    llvm::Function* func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name.c_str(), modu);
+    node->computeFullNameForeign(true);
+    llvm::Function* func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, node->fullnameForeign.c_str(), modu);
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
     builder.SetInsertPoint(block);

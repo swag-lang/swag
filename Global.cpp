@@ -94,47 +94,6 @@ Utf8 toStringF64(double v)
     return s;
 }
 
-void concatForC(Utf8& dst, Utf8& src)
-{
-    dst.reserve(dst.length() + src.length() + 1);
-    const char* pz   = src.c_str();
-    char        last = 0;
-    while (*pz)
-    {
-        switch (*pz)
-        {
-        case '.':
-        case '(':
-        case ')':
-        case '-':
-        case ',':
-        case ' ':
-            if (last != '_')
-                dst += '_';
-            last = '_';
-            break;
-
-        case '*':
-        case '>':
-            dst += 'P';
-            last = 0;
-            break;
-        case '[':
-        case ']':
-            dst += 'A';
-            last = 0;
-            break;
-
-        default:
-            dst += *pz;
-            last = 0;
-            break;
-        }
-
-        pz++;
-    }
-}
-
 void* doByteCodeLambda(void* ptr)
 {
     uint64_t u = (uint64_t) ptr;

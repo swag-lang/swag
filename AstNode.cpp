@@ -34,14 +34,19 @@ void AstNode::inheritLocationFromChilds()
         token.endLocation = back->token.endLocation;
 }
 
-void AstNode::computeScopedName()
+void AstNode::computeScopedNameNoLock()
 {
-    scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
     if (ownerScope->fullname.empty())
         scopedName = name;
     else
         scopedName = ownerScope->fullname + "." + name.c_str();
+}
+
+void AstNode::computeScopedName()
+{
+    scoped_lock lk(mutex);
+    computeScopedNameNoLock();
 }
 
 Utf8 AstNode::getKindName(AstNode* node)
@@ -252,6 +257,33 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->aliasNames        = aliasNames;
 
     return newNode;
+}
+
+void AstFuncDecl::computeFullNameForeign(bool forExport)
+{
+    scoped_lock lk(mutex);
+    if (!fullnameForeign.empty())
+        return;
+
+    if (!forExport)
+    {
+        auto          typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        ComputedValue value;
+        if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
+            fullnameForeign = value.text;
+        else
+            fullnameForeign = name;
+        return;
+    }
+
+    SWAG_ASSERT(ownerScope);
+
+    computeScopedNameNoLock();
+    fullnameForeign = scopedName;
+    Ast::normalizeIdentifierName(fullnameForeign);
+    fullnameForeign += "_";
+    fullnameForeign += name;
+    fullnameForeign += format("_%lX", (uint64_t) this);
 }
 
 AstNode* AstFuncDecl::clone(CloneContext& context)

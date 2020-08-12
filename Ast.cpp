@@ -233,12 +233,31 @@ namespace Ast
     {
         auto len = name.length();
         auto pz  = name.buffer;
+
         for (int i = 0; i < len; i++)
         {
-            if (*pz == '*')
-                *pz = 'P';
-            else if (*pz == '.')
+            switch (*pz)
+            {
+            case '\'':
+            case '.':
+            case '(':
+            case ')':
+            case '-':
+            case ',':
+            case ' ':
                 *pz = '_';
+                break;
+
+            case '*':
+            case '>':
+                *pz = 'P';
+                break;
+            case '[':
+            case ']':
+                *pz = 'A';
+                break;
+            }
+
             pz++;
         }
     }
@@ -349,32 +368,6 @@ namespace Ast
         }
 
         return node;
-    }
-
-    Utf8 computeFullNameForeign(AstNode* node, bool forExport)
-    {
-        if (!forExport)
-        {
-            auto          typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue value;
-            if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
-                return value.text;
-            return node->name;
-        }
-
-        Utf8 fullnameForeign;
-
-        SWAG_ASSERT(node->ownerScope);
-        if (!node->ownerScope->fullname.empty())
-        {
-            concatForC(fullnameForeign, node->ownerScope->fullname);
-            fullnameForeign += "_";
-        }
-
-        concatForC(fullnameForeign, node->name);
-        fullnameForeign += format("_%lX", (uint64_t) node);
-
-        return fullnameForeign;
     }
 
     Utf8 computeTypeDisplay(const Utf8& name, TypeInfo* typeInfo)

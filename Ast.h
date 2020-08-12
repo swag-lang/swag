@@ -81,7 +81,6 @@ namespace Ast
     extern Utf8     literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
     extern void     normalizeIdentifierName(Utf8& name);
     extern AstNode* clone(AstNode* source, AstNode* parent);
-    extern Utf8     computeFullNameForeign(AstNode* node, bool forExport);
     extern Utf8     computeTypeDisplay(const Utf8& name, TypeInfo* typeInfo);
     extern Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
 

@@ -325,6 +325,7 @@ struct AstNode
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
+    void             computeScopedNameNoLock();
     void             computeScopedName();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
@@ -429,6 +430,9 @@ struct AstFuncDecl : public AstNode
     Job*           pendingLambdaJob  = nullptr;
 
     uint32_t stackSize = 0;
+
+    Utf8 fullnameForeign;
+    void computeFullNameForeign(bool forExport);
 };
 
 struct AstAttrDecl : public AstNode

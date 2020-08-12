@@ -562,8 +562,8 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     else
         CONCAT_FIXED_STR(buffer, "void");
     buffer.addChar(' ');
-    auto name = Ast::computeFullNameForeign(node, forWrapper);
-    buffer.addString(name);
+    node->computeFullNameForeign(forWrapper);
+    buffer.addString(node->fullnameForeign);
     buffer.addChar('(');
 
     bool first = true;

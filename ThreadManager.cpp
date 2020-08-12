@@ -88,10 +88,13 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     // So we rerun it immediately
     if (job->flags & JOB_IS_PENDING_RUN)
     {
-        SWAG_ASSERT(result != JobResult::ReleaseJob);
         job->flags &= ~JOB_IS_PENDING_RUN;
-        addJobNoLock(job);
-        return;
+        if (result != JobResult::ReleaseJob)
+        {
+            job->flags &= ~JOB_IS_PENDING_RUN;
+            addJobNoLock(job);
+            return;
+        }
     }
 
     // Some jobs need to be run because this one is finished
