@@ -9,7 +9,7 @@ var g = 5's8
             @print(cast(s64) @index)
     }
 
-    if false
+    if true
     {
         {
             x := -1'f64

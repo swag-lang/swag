@@ -35,20 +35,29 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Add_Cst32_At_RAX(X64PerThread& pp, uint32_t value)
+    {
+        if (value)
+        {
+            pp.concat.addString2("\x81\x00"); // add dword ptr [rax], ?
+            pp.concat.addU32(value);
+        }
+    }
+
+    inline void emit_Sub_Cst32_At_RAX(X64PerThread& pp, uint32_t value)
+    {
+        if (value)
+        {
+            pp.concat.addString2("\x81\x28"); // sub dword ptr [rax], ?
+            pp.concat.addU32(value);
+        }
+    }
+
     inline void emit_Add_Cst32_To_RAX(X64PerThread& pp, uint32_t value)
     {
         if (value)
         {
             pp.concat.addString2("\x48\x05"); // add rax, ?
-            pp.concat.addU32(value);
-        }
-    }
-
-    inline void emit_Sub_Cst32_To_RAX(X64PerThread& pp, uint32_t value)
-    {
-        if (value)
-        {
-            pp.concat.addString2("\x48\x2D"); // sub rax, ?
             pp.concat.addU32(value);
         }
     }
