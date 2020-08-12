@@ -293,6 +293,16 @@ namespace BackendX64Inst
         pp.concat.addString3("\x48\x39\xD8"); // cmp rax, rbx
     }
 
+    inline void emit_Test_AL_With_AL(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x84\xC0"); // test al, al
+    }
+
+    inline void emit_Test_EAX_With_EAX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x85\xC0"); // test eax, eax
+    }
+
     //////////////////////////////////////////////////
     inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r)
     {

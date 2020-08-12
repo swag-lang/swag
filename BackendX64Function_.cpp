@@ -238,7 +238,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x84\xC0"); // test al, al
+            BackendX64Inst::emit_Test_AL_With_AL(pp);
             concat.addString2("\x0F\x85"); // jnz ?
             pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
             concat.addU32(0);
@@ -247,7 +247,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x84\xC0"); // test al, al
+            BackendX64Inst::emit_Test_AL_With_AL(pp);
             concat.addString2("\x0F\x84"); // jz ?
             pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
             concat.addU32(0);
@@ -256,7 +256,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString2("\x85\xC0"); // test eax, eax
+            BackendX64Inst::emit_Test_EAX_With_EAX(pp);
             concat.addString2("\x0F\x84"); // jz ?
             pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
             concat.addU32(0);

@@ -1,7 +1,7 @@
 //var g = "toto"
 var g = 5's8
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     {
@@ -32,7 +32,7 @@ var g = 5's8
         }
     }
 
-    if false
+    if true
     {
         {
             x := 0's8
