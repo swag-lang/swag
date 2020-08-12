@@ -6,6 +6,12 @@ var g = 5's8
 {
     {
         var x: *u32 = null
+        var y: u32 = ?
+
+        if !@isbytecode()
+        {
+            y = deref x
+        }
     }
 
     if false

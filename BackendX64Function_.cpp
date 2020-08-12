@@ -113,6 +113,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
+        case ByteCodeOp::ClearRA:
+            BackendX64Inst::emitLeaReg2RAX(pp, ip->a.u32);
+            concat.addString3("\x48\xc7\x00"); // mov qword ptr [rax], 0
+            concat.addU32(0);
+            break;
+
         case ByteCodeOp::CastS8S16:
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
             concat.addString4("\x66\x0F\xBE\xC0"); // movsx ax, al
@@ -213,6 +219,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::DeRef32:
+            //concat.addStringFormat("r[%u].u32 = *(__u32_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
+            concat.addString2("\x8b\x00"); // mov eax, dword ptr [rax]           
+            BackendX64Inst::emitMoveEAX2Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::DeRef64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32);
             BackendX64Inst::emitMoveReg2RAX(pp, ip->a.u32);
@@ -236,7 +248,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::GetFromStack64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
-            BackendX64Inst::emitLeaStack2Rax(pp, offsetStack + ip->b.u32);
+            BackendX64Inst::emitLeaStack2RAX(pp, offsetStack + ip->b.u32);
             BackendX64Inst::emitDeRefRAX(pp);
             BackendX64Inst::emitMoveRAX2Reg(pp, ip->a.u32);
             break;
@@ -344,7 +356,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(ip->node->token.startLocation.line + 1);
             if (ip->d.pointer)
             {
-                concat.addString3("\x49\xB9"); // mov r9, ?
+                concat.addString2("\x49\xB9"); // mov r9, ?
                 emitGlobalString(pp, (const char*) ip->d.pointer);
             }
             else
