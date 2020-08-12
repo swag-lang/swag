@@ -5,6 +5,24 @@ var g = 5's8
 #test
 {
         {
+            x := 5'f32
+            x -= 2
+            @print(cast(f64) x)
+        }
+
+        {
+            x := 5's64
+            x -= 2
+            @print(cast(s64) x)
+        }
+
+        {
+            x := 5's32
+            x -= 2
+            @print(cast(s64) x)
+        }
+
+        {
             x := 5's16
             x -= 2
             @print(cast(s64) x)
