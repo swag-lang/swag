@@ -172,10 +172,25 @@ namespace BackendX64Inst
         pp.concat.addU32(val);
     }
 
+    inline void emit_ClearRAX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x31\xc0"); // xor rax, rax
+    }
+
+    inline void emit_ClearRBX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x48\x31\xdb"); // xor rbx, rbx
+    }
+
     inline void emit_MoveCst64_In_RBX(X64PerThread& pp, uint64_t val)
     {
-        pp.concat.addString2("\x48\xbb"); // mov rbx, ?
-        pp.concat.addU64(val);
+        if (val == 0)
+            emit_ClearRBX(pp);
+        else
+        {
+            pp.concat.addString2("\x48\xbb"); // mov rbx, ?
+            pp.concat.addU64(val);
+        }
     }
 
     inline void emit_MoveRBX_At_RAX(X64PerThread& pp)

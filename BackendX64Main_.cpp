@@ -27,11 +27,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         }
     }
 
-    // xor eax, eax
-    concat.addString("\x31\xC0", 2);
-    
-    // ret
-    concat.addU8(0xC3);
+    BackendX64Inst::emit_ClearRAX(pp);
+    concat.addU8(0xC3); // ret
     return true;
 }
 

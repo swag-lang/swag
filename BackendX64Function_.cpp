@@ -279,7 +279,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::SetZeroStack64:
             //CONCAT_STR_1(concat, "*(__u64_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
-            BackendX64Inst::emit_MoveCst64_In_RBX(pp, 0);
+            BackendX64Inst::emit_ClearRBX(pp);
             BackendX64Inst::emit_MoveRBX_At_RAX(pp);
             break;
 

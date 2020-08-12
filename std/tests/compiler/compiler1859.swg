@@ -4,13 +4,13 @@ var g = 5's8
 #[swag.printbc]
 #test
 {
+    if true
     {
-        var y: u64
-        @print(cast(s64) y)
-    }
+        {
+            var y: u64
+            @print(cast(s64) y)
+        }
 
-    if false
-    {
         {
             var y: u16
             @print(cast(s64) y)
