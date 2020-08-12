@@ -421,7 +421,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
             concat.addString3("\x0F\x9C\xC0"); // setl al
-            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpLowerS64:
+            //concat.addStringFormat("r[%u].b = r[%u].s64 < r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
+            concat.addString3("\x0F\x9C\xC0"); // setl al
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpLowerF32:
+            //concat.addStringFormat("r[%u].b = r[%u].f32 < r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F32(pp);
+            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpLowerF64:
+            //concat.addStringFormat("r[%u].b = r[%u].f64 < r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F64(pp);
+            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
 
         case ByteCodeOp::CompareOpEqual8:

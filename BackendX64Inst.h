@@ -178,7 +178,7 @@ namespace BackendX64Inst
         }
         else
         {
-            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm1, dword ptr [rdi + ?]
+            pp.concat.addString4("\xf3\x0f\x10\x8f"); // movss xmm1, dword ptr [rdi + ?]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -334,6 +334,8 @@ namespace BackendX64Inst
     inline void emit_Cmp_AX_With_BX(X64PerThread& pp) { pp.concat.addString3("\x66\x39\xd8"); } // cmp ax, bx
     inline void emit_Cmp_EAX_With_EBX(X64PerThread& pp) { pp.concat.addString2("\x39\xD8"); } // cmp eax, ebx
     inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x39\xD8"); } // cmp rax, rbx
+    inline void emit_Cmp_XMM0_With_XMM1_F32(X64PerThread& pp) { pp.concat.addString3("\x0f\x2f\xc8"); } // comiss xmm1, xmm0 (inverted !)
+    inline void emit_Cmp_XMM0_With_XMM1_F64(X64PerThread& pp) { pp.concat.addString4("\x66\x0f\x2f\xc8"); } // comisd xmm1, xmm0 (inverted !)
 
     inline void emit_Test_AL_With_AL(X64PerThread& pp) { pp.concat.addString2("\x84\xC0"); } // test al, al
     inline void emit_Test_AX_With_AX(X64PerThread& pp) { pp.concat.addString3("\x66\x85\xc0"); } // test ax, ax
