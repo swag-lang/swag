@@ -5,12 +5,22 @@ var g = 5's8
 #test
 {
     {
-        var y: u8
+        var y: u64
         @print(cast(s64) y)
     }
 
     if false
     {
+        {
+            var y: u16
+            @print(cast(s64) y)
+        }
+
+        {
+            var y: u8
+            @print(cast(s64) y)
+        }
+
         {
             var y: u32
             @print(cast(s64) y)

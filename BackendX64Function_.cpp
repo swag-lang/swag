@@ -261,10 +261,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_MoveRAX_At_Reg(pp, ip->a.u32);           
             break;
 
+        case ByteCodeOp::SetZeroStack8:
+            //CONCAT_STR_1(concat, "*(__u8_t*)(s+", ip->a.u32, ")=0;");
+            BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_MoveCst8_At_RAX(pp, 0);
+            break;
+        case ByteCodeOp::SetZeroStack16:
+            //CONCAT_STR_1(concat, "*(__u16_t*)(s+", ip->a.u32, ")=0;");
+            BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_MoveCst16_At_RAX(pp, 0);
+            break;
         case ByteCodeOp::SetZeroStack32:
             //CONCAT_STR_1(concat, "*(__u32_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
             BackendX64Inst::emit_MoveCst32_At_RAX(pp, 0);
+            break;
+        case ByteCodeOp::SetZeroStack64:
+            //CONCAT_STR_1(concat, "*(__u64_t*)(s+", ip->a.u32, ")=0;");
+            BackendX64Inst::emit_LeaStack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_MoveCst64_In_RBX(pp, 0);
+            BackendX64Inst::emit_MoveRBX_At_RAX(pp);
             break;
 
         case ByteCodeOp::SetAtPointer8:

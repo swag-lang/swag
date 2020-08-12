@@ -154,6 +154,18 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_MoveCst8_At_RAX(X64PerThread& pp, uint8_t val)
+    {
+        pp.concat.addString2("\xC6\x00"); // mov byte ptr [rax], ?
+        pp.concat.addU8(val);
+    }
+
+    inline void emit_MoveCst16_At_RAX(X64PerThread& pp, uint16_t val)
+    {
+        pp.concat.addString3("\x66\xC7\x00"); // mov word ptr [rax], ?
+        pp.concat.addU16(val);
+    }
+
     inline void emit_MoveCst32_At_RAX(X64PerThread& pp, uint32_t val)
     {
         pp.concat.addString3("\x48\xc7\x00"); // mov qword ptr [rax], ?
