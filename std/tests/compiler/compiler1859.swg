@@ -4,7 +4,12 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
-    if true
+    {
+        loop 4
+            @print(cast(s64) @index)
+    }
+
+    if false
     {
         {
             x := -1'f64

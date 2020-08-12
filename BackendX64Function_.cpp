@@ -624,6 +624,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(0);
             break;
 
+        case ByteCodeOp::IncrementRA32:
+            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32++;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Add_Cst32_To_RAX(pp, 1);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::DecrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
