@@ -549,6 +549,36 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString2("\x34\x01"); // xor al, 1
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::NegS32:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = -r[", ip->a.u32, "].s32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString2("\xf7\xd8"); // neg eax
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::NegS64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = -r[", ip->a.u32, "].s64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString3("\x48\xf7\xd8"); // neg rax
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::NegF32:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0x80000000);
+            BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetFLT);
+            BackendX64Inst::emit_Move_Stack_In_XMM1_F32(pp, offsetFLT);
+            concat.addString3("\x0f\x57\xc1"); // xorps xmm0, xmm1
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::NegF64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = -r[", ip->a.u32, "].f64;");
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0x80000000'00000000);
+            BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetFLT);
+            BackendX64Inst::emit_Move_Stack_In_XMM1_F64(pp, offsetFLT);
+            concat.addString4("\x66\x0f\x57\xc1"); // xorpd xmm0, xmm1
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
+            break;
 
         case ByteCodeOp::JumpIfTrue:
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");

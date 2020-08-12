@@ -7,6 +7,30 @@ var g = 5's8
     if true
     {
         {
+            x := -1'f64
+            x = -x
+            @print(cast(f64) x)
+        }
+
+        {
+            x := 1'f32
+            x = -x
+            @print(cast(f64) x)
+        }
+
+        {
+            x := -1's64
+            x = -x
+            @print(cast(s64) x)
+        }
+
+        {
+            x := 1's32
+            x = -x
+            @print(cast(s64) x)
+        }
+
+        {
             x := 10'f64
             if(x > 1.5)
                 @print("a")
