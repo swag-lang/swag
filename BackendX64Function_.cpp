@@ -185,6 +185,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_RAX_At_RBX(pp);
             break;
+        case ByteCodeOp::AffectOpMulEqF32:
+            //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef_RAX_In_XMM0_F32(pp);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            concat.addString4("\xf3\x0f\x59\xc1"); // mulss xmm0, xmm1
+            BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
+            break;
+        case ByteCodeOp::AffectOpMulEqF64:
+            //CONCAT_STR_2(concat, "*(__f64_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef_RAX_In_XMM0_F64(pp);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, ip->b.u32);
+            concat.addString4("\xf2\x0f\x59\xc1"); // mulss xmm0, xmm1
+            BackendX64Inst::emit_Move_XMM0_At_RAX_F64(pp);
+            break;
 
         case ByteCodeOp::AffectOpDivEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s8;");
