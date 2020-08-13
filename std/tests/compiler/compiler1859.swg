@@ -7,6 +7,27 @@ var g = 5's8
     if false
     {
         {
+            a := 6
+            a = a | 1
+            @print(cast(s64) a)
+        }
+        {
+            a := 6's64
+            a = a | 1
+            @print(cast(s64) a)
+        }
+        {
+            a := 6
+            a = a & 4
+            @print(cast(s64) a)
+        }
+        {
+            a := 6's64
+            a = a & 4
+            @print(cast(s64) a)
+        }
+
+        {
             loop 4
                 @print(cast(s64) @index)
         }
