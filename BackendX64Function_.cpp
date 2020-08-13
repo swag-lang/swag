@@ -214,13 +214,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpDivS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Clear_RDX(pp);
-            BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0xF7, 32);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32);
             break;
         case ByteCodeOp::BinOpDivS64:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Clear_RDX(pp);
-            BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0xF7, 64);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64);
+            break;
+        case ByteCodeOp::BinOpDivU32:
+            //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32);
+            break;
+        case ByteCodeOp::BinOpDivU64:
+            //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64);
             break;
         case ByteCodeOp::BinOpDivF32:
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);

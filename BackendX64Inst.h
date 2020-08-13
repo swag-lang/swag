@@ -628,9 +628,13 @@ namespace BackendX64Inst
             break;
         case 32:
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            if (op == 0xF7)                   // idiv
+                pp.concat.addString1("\x99"); // cdq
             break;
         case 64:
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            if (op == 0xF7)                       // idiv
+                pp.concat.addString2("\x48\x99"); // cqo
             pp.concat.addU8(0x48);
             break;
         default:
@@ -676,6 +680,65 @@ namespace BackendX64Inst
         case 16:
             BackendX64Inst::emit_Move_AX_At_Reg(pp, ip->c.u32);
             break;
+        case 32:
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits)
+    {
+        switch (bits)
+        {
+        case 32:
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            pp.concat.addString1("\x99"); // cdq
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            pp.concat.addString2("\x48\x99"); // cqo
+            pp.concat.addU8(0x48);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        pp.concat.addU8(0xF7);
+
+        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
+        if (offsetStack == 0)
+        {
+            if (isSigned)
+                pp.concat.addU8(0x3F);
+            else
+                pp.concat.addU8(0x37);
+        }
+        else if (offsetStack <= 0x7F)
+        {
+            if (isSigned)
+                pp.concat.addU8(0x7F);
+            else
+                pp.concat.addU8(0x77);
+            pp.concat.addU8((uint8_t) offsetStack);
+        }
+        else
+        {
+            if (isSigned)
+                pp.concat.addU8(0xBF);
+            else
+                pp.concat.addU8(0xB7);
+            pp.concat.addU32(offsetStack);
+        }
+
+        switch (bits)
+        {
         case 32:
             BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
             break;
