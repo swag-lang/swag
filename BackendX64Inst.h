@@ -1,5 +1,6 @@
 #pragma once
 #include "Register.h"
+#include "ByteCode.h"
 
 namespace BackendX64Inst
 {
@@ -543,5 +544,61 @@ namespace BackendX64Inst
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
     // clang-format on
+
+    //////////////////////////////////////////////////
+
+    inline void emit_BinOp_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
+    {
+        switch (bits)
+        {
+        case 64:
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            pp.concat.addU8(0x48);
+            break;
+        case 32:
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            break;
+        case 16:
+            BackendX64Inst::emit_Move_Reg_In_AX(pp, ip->a.u32);
+            break;
+        case 8:
+            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
+            break;
+        }
+
+        pp.concat.addU8(op);
+
+        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
+        if (offsetStack == 0)
+        {
+            pp.concat.addU8(0x07);
+        }
+        else if (offsetStack <= 0x7F)
+        {
+            pp.concat.addU8(0x47);
+            pp.concat.addU8((uint8_t) offsetStack);
+        }
+        else
+        {
+            pp.concat.addU8(0x87);
+            pp.concat.addU32(offsetStack);
+        }
+
+        switch (bits)
+        {
+        case 64:
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+        case 32:
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case 16:
+            BackendX64Inst::emit_Move_AX_At_Reg(pp, ip->c.u32);
+            break;
+        case 8:
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        }
+    }
 
 }; // namespace BackendX64Inst

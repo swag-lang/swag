@@ -4,20 +4,26 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
-    {
-        a, b := 1
-        x := a && b
-        @print(cast(s64) x)
-    }
-
-    {
-        a, b := 100
-        x := a || b
-        @print(cast(s64) x)
-    }
+    /*{
+        a := 1
+        a = a + 5
+        @print(cast(s64) a)
+    }*/
 
     if true
     {
+        {
+            a, b := 1
+            x := a && b
+            @print(cast(s64) x)
+        }
+
+        {
+            a, b := 100
+            x := a || b
+            @print(cast(s64) x)
+        }
+
         {
             a := 6
             a = a | 1

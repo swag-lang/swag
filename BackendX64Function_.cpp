@@ -158,45 +158,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpBitmaskAndS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
-            concat.addString2("\x23\x87"); // and eax, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x23 /* and */, 32);
             break;
         case ByteCodeOp::BinOpBitmaskAndS64:
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString3("\x48\x23\x87"); // and eax, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x23 /* and */, 64);
             break;
         case ByteCodeOp::BinOpBitmaskOrS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
-            concat.addString2("\x0b\x87"); // or eax, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x0b /* or */, 32);
             break;
         case ByteCodeOp::BinOpBitmaskOrS64:
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString3("\x48\x0b\x87"); // or eax, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x0b /* or */, 64);
             break;
         case ByteCodeOp::BinOpAnd:
             //concat.addStringFormat("r[%u].b = r[%u].b && r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
-            concat.addString2("\x22\x87"); // and al, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x22 /* and */, 8);
             break;
         case ByteCodeOp::BinOpOr:
             //concat.addStringFormat("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
-            concat.addString2("\x0a\x87"); // or al, [edi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
-            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x0a /* or */, 8);
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
