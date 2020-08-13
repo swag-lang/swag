@@ -274,9 +274,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString4("\xf3\x0f\x10\x07"); // movss xmm0, dword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x47"); // movss xmm0, dword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm0, dword ptr [rdi + ?]
+            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm0, dword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -287,9 +292,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString4("\xf3\x0f\x10\x0f"); // movss xmm1, dword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf3\x0f\x10\x4f"); // movss xmm1, dword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString4("\xf3\x0f\x10\x8f"); // movss xmm1, dword ptr [rdi + ?]
+            pp.concat.addString4("\xf3\x0f\x10\x8f"); // movss xmm1, dword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
