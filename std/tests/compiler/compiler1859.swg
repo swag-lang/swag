@@ -4,13 +4,29 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
-    /*{
+    {
+        a := 1
+        a = a - 5
+        @print(cast(s64) a)
+    }
+    {
+        a := 1's64
+        a = a - 5
+        @print(cast(s64) a)
+    }
+
+    {
         a := 1
         a = a + 5
         @print(cast(s64) a)
-    }*/
+    }
+    {
+        a := 1's64
+        a = a + 5
+        @print(cast(s64) a)
+    }
 
-    if true
+    if false
     {
         {
             a, b := 1
