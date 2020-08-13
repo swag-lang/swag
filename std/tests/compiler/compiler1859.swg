@@ -4,30 +4,40 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    if true
     {
-        a := 1
-        a = a - 5
-        @print(cast(s64) a)
-    }
-    {
-        a := 1's64
-        a = a - 5
-        @print(cast(s64) a)
-    }
+        {
+            x := 3'f32
+            x = x + 1.5
+            @print(cast(f64) x)
+        }
+        {
+            x := 3'f64
+            x = x + 1.5
+            @print(cast(f64) x)
+        }
+        {
+            a := 1
+            a = a - 5
+            @print(cast(s64) a)
+        }
+        {
+            a := 1's64
+            a = a - 5
+            @print(cast(s64) a)
+        }
 
-    {
-        a := 1
-        a = a + 5
-        @print(cast(s64) a)
-    }
-    {
-        a := 1's64
-        a = a + 5
-        @print(cast(s64) a)
-    }
+        {
+            a := 1
+            a = a + 5
+            @print(cast(s64) a)
+        }
+        {
+            a := 1's64
+            a = a + 5
+            @print(cast(s64) a)
+        }
 
-    if false
-    {
         {
             a, b := 1
             x := a && b

@@ -164,6 +164,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_BinOp_At_Reg(pp, ip, 0x03, 64);
             break;
+        case ByteCodeOp::BinOpPlusF32:
+            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpFloat_At_Reg(pp, ip, 0x58, 32);
+            break;
+        case ByteCodeOp::BinOpPlusF64:
+            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpFloat_At_Reg(pp, ip, 0x58, 64);
+            break;
 
         case ByteCodeOp::BinOpMinusS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 - r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);

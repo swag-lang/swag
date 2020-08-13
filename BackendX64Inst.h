@@ -547,22 +547,75 @@ namespace BackendX64Inst
 
     //////////////////////////////////////////////////
 
+    inline void emit_BinOpFloat_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
+    {
+        switch (bits)
+        {
+        case 32:
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            pp.concat.addU8(0xF3);
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->a.u32);
+            pp.concat.addU8(0xF2);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(op);
+
+        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
+        if (offsetStack == 0)
+        {
+            pp.concat.addU8(0x07);
+        }
+        else if (offsetStack <= 0x7F)
+        {
+            pp.concat.addU8(0x47);
+            pp.concat.addU8((uint8_t) offsetStack);
+        }
+        else
+        {
+            pp.concat.addU8(0x87);
+            pp.concat.addU32(offsetStack);
+        }
+
+        switch (bits)
+        {
+        case 32:
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->c.u32);
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->c.u32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
     inline void emit_BinOp_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
     {
         switch (bits)
         {
-        case 64:
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            pp.concat.addU8(0x48);
-            break;
-        case 32:
-            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+        case 8:
+            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
             break;
         case 16:
             BackendX64Inst::emit_Move_Reg_In_AX(pp, ip->a.u32);
             break;
-        case 8:
-            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
+        case 32:
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            pp.concat.addU8(0x48);
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
 
@@ -586,17 +639,20 @@ namespace BackendX64Inst
 
         switch (bits)
         {
-        case 64:
-            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
-            break;
-        case 32:
-            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+        case 8:
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
         case 16:
             BackendX64Inst::emit_Move_AX_At_Reg(pp, ip->c.u32);
             break;
-        case 8:
-            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+        case 32:
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case 64:
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
     }
