@@ -4,6 +4,19 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    {
+        x := 3'u32
+        x = x ^ 5
+        @print(cast(s64) x)
+    }
+    {
+        x := 3'u64
+        x = x ^ 5
+        @print(cast(s64) x)
+    }
+
+    if false
+    {
         {
             x := 3'f64
             x = x * 3
@@ -26,9 +39,6 @@ var g = 5's8
             @print(cast(s64) x)
         }
 
-
-    if false
-    {
         {
             x := 3'f32
             x = x - 1.5
