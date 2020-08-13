@@ -405,7 +405,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__u16_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u16;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_DeRef16_RAX(pp);
-            concat.addString2("\x66\x99"); // cwd
+            BackendX64Inst::emit_Clear_DX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             concat.addString3("\x66\xf7\xf3"); // idiv ax, bx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
@@ -415,7 +415,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__u32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u32;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_DeRef32_RAX(pp);
-            concat.addString1("\x99"); // cdq
+            BackendX64Inst::emit_Clear_EDX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             concat.addString2("\xf7\xf3"); // idiv eax, ebx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
@@ -425,7 +425,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__u64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u64;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_DeRef64_RAX(pp);
-            concat.addString2("\x48\x99"); // cqo
+            BackendX64Inst::emit_Clear_RDX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             concat.addString3("\x48\xf7\xf3"); // idiv rax, rbx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
