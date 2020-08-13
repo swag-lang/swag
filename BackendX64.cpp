@@ -141,11 +141,22 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
             // We do not use concat to avoid dummy copies. We will save the segments as they are
             if (module->constantSegment.totalCount)
+            {
+                *pp.patchCSCount  = module->constantSegment.totalCount;
                 *pp.patchCSOffset = csOffset;
+            }
+
             if (module->mutableSegment.totalCount)
+            {
+                *pp.patchMSCount  = module->mutableSegment.totalCount;
                 *pp.patchMSOffset = msOffset;
+            }
+
             if (module->typeSegment.totalCount)
+            {
+                *pp.patchTSCount  = module->typeSegment.totalCount;
                 *pp.patchTSOffset = tsOffset;
+            }
 
             // And we use another concat buffer for relocation tables of segments, because they must be defined after
             // the content
@@ -168,6 +179,15 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
             {
                 *pp.patchTSSectionRelocTableOffset = tsRelocOffset;
                 emitRelocationTable(pp.postConcat, pp.relocTableTSSection, pp.patchTSSectionFlags, pp.patchTSSectionRelocTableCount);
+            }
+        }
+        else
+        {
+            uint32_t csOffset = concat.totalCount;
+            if (pp.stringSegment.totalCount)
+            {
+                *pp.patchCSOffset = csOffset;
+                *pp.patchCSCount  = pp.stringSegment.totalCount;
             }
         }
 
@@ -217,21 +237,24 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64PerThread& pp, const Utf8Crc& str)
+void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str)
 {
     auto&       concat = pp.concat;
     auto        it     = pp.globalStrings.find(str);
     CoffSymbol* sym    = nullptr;
     if (it != pp.globalStrings.end())
-        sym = it->second;
+        sym = &pp.allSymbols[it->second];
     else
     {
         Utf8 symName          = format("__str_%u_%s", (uint32_t) pp.globalStrings.size(), pp.filename.c_str());
         sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
-        pp.globalStrings[str] = sym;
-        scoped_lock lk(module->constantSegment.mutex);
-        sym->value       = module->constantSegment.addStringNoLock(str);
-        *pp.patchCSCount = module->constantSegment.totalCount;
+        pp.globalStrings[str] = sym->index;
+
+        // Use the constant segment for the main thread (obj 0), and use the stringSegment for others
+        if (precompileIndex == 0)
+            sym->value = module->constantSegment.addStringNoLock(str);
+        else
+            sym->value = pp.stringSegment.addStringNoLock(str);
     }
 
     CoffRelocation reloc;
@@ -256,7 +279,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     if (precompileIndex == 0)
         concat.addU16(5); // .NumberOfSections
     else
-        concat.addU16(1); // .NumberOfSections
+        concat.addU16(2); // .NumberOfSections
 
     time_t now;
     time(&now);
@@ -284,11 +307,26 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0);                                           // .NumberOfLinenumbers
     pp.patchTextSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
+    // constant section
+    // as an additional thread can create strings, we have a constant segment too
+    /////////////////////////////////////////////
+    pp.sectionIndexCS = 2;
+    concat.addString(".rdata\0\0", 8);                        // .Name
+    concat.addU32(0);                                         // .VirtualSize
+    concat.addU32(0);                                         // .VirtualAddress
+    pp.patchCSCount                   = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchCSOffset                  = concat.addU32Addr(0); // .PointerToRawData
+    pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+    concat.addU32(0);                                         // .PointerToLinenumbers
+    pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+    concat.addU16(0);                                         // .NumberOfLinenumbers
+    pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
+
     if (precompileIndex == 0)
     {
         // bss section
         /////////////////////////////////////////////
-        pp.sectionIndexBS = 2;
+        pp.sectionIndexBS = 3;
         concat.addString(".bss\0\0\0\0", 8);          // .Name
         concat.addU32(0);                             // .VirtualSize
         concat.addU32(0);                             // .VirtualAddress
@@ -300,27 +338,13 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addU16(0);                             // .NumberOfLinenumbers
         concat.addU32(IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
-        // constant section
-        /////////////////////////////////////////////
-        pp.sectionIndexCS = 3;
-        concat.addString(".rdata\0\0", 8);                                                         // .Name
-        concat.addU32(0);                                                                          // .VirtualSize
-        concat.addU32(0);                                                                          // .VirtualAddress
-        pp.patchCSCount                   = concat.addU32Addr(module->constantSegment.totalCount); // .SizeOfRawData
-        pp.patchCSOffset                  = concat.addU32Addr(0);                                  // .PointerToRawData
-        pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0);                                  // .PointerToRelocations
-        concat.addU32(0);                                                                          // .PointerToLinenumbers
-        pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);                                   // .NumberOfRelocations
-        concat.addU16(0);                                                                          // .NumberOfLinenumbers
-        pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
-
         // mutable section
         /////////////////////////////////////////////
         pp.sectionIndexMS = 4;
         concat.addString(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
-        concat.addU32(module->mutableSegment.totalCount);         // .SizeOfRawData
+        pp.patchMSCount                   = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchMSOffset                  = concat.addU32Addr(0); // .PointerToRawData
         pp.patchMSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
         concat.addU32(0);                                         // .PointerToLinenumbers
@@ -334,7 +358,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addString(".rdata\0\0\0", 8);                      // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
-        concat.addU32(module->typeSegment.totalCount);            // .SizeOfRawData
+        pp.patchTSCount                   = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchTSOffset                  = concat.addU32Addr(0); // .PointerToRawData
         pp.patchTSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
         concat.addU32(0);                                         // .PointerToLinenumbers
@@ -496,11 +520,22 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
         bucket = bucket->nextBucket;
     }
 
+    uint32_t subTotal = 0;
     SWAG_ASSERT(totalCount == pp.concat.totalCount);
-    if (precompileIndex == 0)
+    if (precompileIndex)
     {
-        uint32_t subTotal = 0;
-
+        // Then the constant segment
+        SWAG_ASSERT(totalCount == *pp.patchCSOffset || *pp.patchCSOffset == 0);
+        for (auto oneB : pp.stringSegment.buckets)
+        {
+            totalCount += oneB.count;
+            subTotal += oneB.count;
+            destFile.write((const char*) oneB.buffer, oneB.count);
+        }
+        SWAG_ASSERT(subTotal == pp.stringSegment.totalCount);
+    }
+    else
+    {
         // Then the constant segment
         SWAG_ASSERT(totalCount == *pp.patchCSOffset || *pp.patchCSOffset == 0);
         for (auto oneB : module->constantSegment.buckets)

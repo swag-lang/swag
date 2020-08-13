@@ -1060,13 +1060,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
             concat.addString2("\x48\xBA"); // mov rdx, ?
-            emitGlobalString(pp, normalizePath(ip->node->sourceFile->path));
+            emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path));
             concat.addString3("\x49\xC7\xC0"); // mov r8, ?
             concat.addU32(ip->node->token.startLocation.line + 1);
             if (ip->d.pointer)
             {
                 concat.addString2("\x49\xB9"); // mov r9, ?
-                emitGlobalString(pp, (const char*) ip->d.pointer);
+                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer);
             }
             else
                 concat.addString3("\x4D\x31\xC9"); // xor r9, r9

@@ -2,6 +2,7 @@
 #include "Utf8Crc.h"
 #include "Backend.h"
 #include "BuildParameters.h"
+#include "DataSegment.h"
 
 struct Module;
 struct BuildParameters;
@@ -46,15 +47,16 @@ struct X64PerThread
     Concat concat;
     Concat postConcat;
 
-    vector<const Utf8*>       stringTable;
-    CoffRelocationTable       relocTableTextSection;
-    CoffRelocationTable       relocTableCSSection;
-    CoffRelocationTable       relocTableMSSection;
-    CoffRelocationTable       relocTableTSSection;
-    vector<CoffSymbol>        allSymbols;
-    map<Utf8Crc, uint32_t>    mapSymbols;
-    map<Utf8Crc, CoffSymbol*> globalStrings;
-    map<uint32_t, int32_t>    labels;
+    vector<const Utf8*>    stringTable;
+    CoffRelocationTable    relocTableTextSection;
+    CoffRelocationTable    relocTableCSSection;
+    CoffRelocationTable    relocTableMSSection;
+    CoffRelocationTable    relocTableTSSection;
+    vector<CoffSymbol>     allSymbols;
+    map<Utf8Crc, uint32_t> mapSymbols;
+    map<Utf8Crc, uint32_t> globalStrings;
+    map<uint32_t, int32_t> labels;
+    DataSegment            stringSegment;
 
     struct LabelToSolve
     {
@@ -88,7 +90,9 @@ struct X64PerThread
     uint32_t* patchCSOffset = nullptr;
     uint32_t* patchCSCount  = nullptr;
     uint32_t* patchMSOffset = nullptr;
+    uint32_t* patchMSCount  = nullptr;
     uint32_t* patchTSOffset = nullptr;
+    uint32_t* patchTSCount  = nullptr;
 
     uint32_t bsIndex = 0;
     uint32_t msIndex = 0;
@@ -124,7 +128,7 @@ struct BackendX64 : public Backend
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    void        emitGlobalString(X64PerThread& pp, const Utf8Crc& str);
+    void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str);
 
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);

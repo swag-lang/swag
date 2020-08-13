@@ -23,7 +23,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             auto node = bc->node;
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-            emitCall(pp, bc->callName());
+            //emitCall(pp, bc->callName());
         }
     }
 

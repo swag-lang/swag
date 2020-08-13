@@ -4,13 +4,12 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    if false
     {
-        ptr := @typeof(s32)
-        @print(ptr.name)
-    }
-
-    if true
-    {
+        {
+            ptr := @typeof(s32)
+            @print(ptr.name)
+        }
         {
             ptr := @typeof(s32)
             @print(cast(s64) ptr.sizeof)
