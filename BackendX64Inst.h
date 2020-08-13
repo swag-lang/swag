@@ -479,7 +479,9 @@ namespace BackendX64Inst
     // clang-format off
     inline void emit_Clear_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc0"); } // xor rax, rax
     inline void emit_Clear_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xdb"); } // xor rbx, rbx
-    inline void emit_Clear_RDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor rdx, rdx
+    inline void emit_Clear_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc9"); } // xor rcx, rcx
+    inline void emit_Clear_EDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor edx, edx
+    inline void emit_Clear_RDX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xd2"); } // xor rdx, rdx
     // clang-format on
 
     inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
@@ -698,11 +700,17 @@ namespace BackendX64Inst
         {
         case 32:
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
-            pp.concat.addString1("\x99"); // cdq
+            if (isSigned)
+                pp.concat.addString1("\x99"); // cdq
+            else
+                emit_Clear_EDX(pp);
             break;
         case 64:
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            pp.concat.addString2("\x48\x99"); // cqo
+            if (isSigned)
+                pp.concat.addString2("\x48\x99"); // cqo
+            else
+                emit_Clear_RDX(pp);
             pp.concat.addU8(0x48);
             break;
         default:
