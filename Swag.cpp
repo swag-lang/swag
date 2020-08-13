@@ -15,6 +15,7 @@ void printStats()
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     g_Log.messageHeaderDot("syntax time", format("%.3fs", g_Stats.syntaxTime.load()));
+    g_Log.messageHeaderDot("read files", format("%.3fs", g_Stats.readFiles.load()));
     g_Log.messageHeaderDot("semantic comp time", format("%.3fs", g_Stats.semanticCompilerTime.load()));
     g_Log.messageHeaderDot("semantic mod time", format("%.3fs", g_Stats.semanticModuleTime.load()));
     g_Log.messageHeaderDot("run time", format("%.3fs", g_Stats.runTime.load()));
@@ -138,8 +139,8 @@ int main(int argc, const char* argv[])
     }
     else if (command == "doc")
     {
-        g_CommandLine.output = false;
-        g_CommandLine.generateDoc   = true;
+        g_CommandLine.output      = false;
+        g_CommandLine.generateDoc = true;
     }
     else
     {

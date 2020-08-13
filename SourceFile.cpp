@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "DiagnosticInfos.h"
 #include "Os.h"
+#include "Timer.h"
 
 const auto BUF_SIZE = 2048;
 
@@ -113,6 +114,7 @@ char SourceFile::getPrivateChar()
 
         // First time, open and read in sync. This is faster to open files in jobs that letting
         // the loading thread open files one by one
+        Timer read(g_Stats.readFiles);
         if (!openedOnce)
         {
             if (!openRead())
