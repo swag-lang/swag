@@ -117,7 +117,7 @@ namespace BackendX64Inst
         }
         else
         {
-            pp.concat.addString2("\x89\x87"); // mov dword ptr [rdi + ?], eax
+            pp.concat.addString2("\x89\x87"); // mov dword ptr [rdi + ????????], eax
             pp.concat.addU32(stackOffset);
         }
     }
@@ -128,7 +128,7 @@ namespace BackendX64Inst
         {
             pp.concat.addString2("\x8a\x07"); // mov al, byte ptr [rdi]
         }
-        else if (stackOffset <= 0xFF)
+        else if (stackOffset <= 0x7F)
         {
             pp.concat.addString2("\x8a\x47"); // mov al, byte ptr [rdi + ??]
             pp.concat.addU8((uint8_t) stackOffset);
@@ -146,6 +146,11 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x66\x8b\x07"); // mov ax, word ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x66\x8b\x47"); // mov ax, word ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
             pp.concat.addString3("\x66\x8b\x87"); // mov ax, word ptr [rdi + ????????]
@@ -159,7 +164,7 @@ namespace BackendX64Inst
         {
             pp.concat.addString2("\x8b\x07"); // mov eax, dword ptr [rdi]
         }
-        else if (stackOffset <= 0xFF)
+        else if (stackOffset <= 0x7F)
         {
             pp.concat.addString2("\x8b\x47"); // mov eax, dword ptr [rdi + ??]
             pp.concat.addU8((uint8_t) stackOffset);
@@ -177,9 +182,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x48\x8B\x07"); // mov rax, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x8b\x47"); // mov rax, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x48\x8B\x87"); // mov rax, qword ptr [rdi + ?]
+            pp.concat.addString3("\x48\x8B\x87"); // mov rax, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -190,9 +200,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x48\x8B\x1F"); // mov rbx, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x8B\x5F"); // mov rbx, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x48\x8B\x9F"); // mov rbx, qword ptr [rdi + ?]
+            pp.concat.addString3("\x48\x8B\x9F"); // mov rbx, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -203,9 +218,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x48\x8B\x0F"); // mov rcx, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x8B\x4F"); // mov rcx, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x48\x8B\x8F"); // mov rcx, qword ptr [rdi + ?]
+            pp.concat.addString3("\x48\x8B\x8F"); // mov rcx, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -216,9 +236,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x48\x8B\x17"); // mov rdx, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x8B\x57"); // mov rdx, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x48\x8B\x97"); // mov rdx, qword ptr [rdi + ?]
+            pp.concat.addString3("\x48\x8B\x97"); // mov rdx, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }

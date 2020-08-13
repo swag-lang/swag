@@ -16,7 +16,7 @@ var g = 5's8
         @print(cast(s64) x)
     }
 
-    if false
+    if true
     {
         {
             a := 6
