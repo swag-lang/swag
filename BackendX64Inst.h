@@ -70,28 +70,20 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_RAX_At_Stack(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString3("\x48\x89\x07"); // mov qword ptr [rdi], rax
-        }
-        else
-        {
-            pp.concat.addString3("\x48\x89\x87"); // mov qword ptr [rdi + ?], rax
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     inline void emit_Move_AL_At_Stack(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
         {
             pp.concat.addString2("\x88\x07"); // mov byte ptr [rdi], al
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString2("\x88\x47"); // mov byte ptr [rdi + ??], al
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString2("\x88\x87"); // mov byte ptr [rdi + ?], al
+            pp.concat.addString2("\x88\x87"); // mov byte ptr [rdi + ????????], al
             pp.concat.addU32(stackOffset);
         }
     }
@@ -102,9 +94,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x66\x89\x07"); // mov word ptr [rdi], ax
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x66\x89\x47"); // mov word ptr [rdi + ??], ax
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x66\x89\x87"); // mov word ptr [rdi + ?], ax
+            pp.concat.addString3("\x66\x89\x87"); // mov word ptr [rdi + ????????], ax
             pp.concat.addU32(stackOffset);
         }
     }
@@ -115,9 +112,32 @@ namespace BackendX64Inst
         {
             pp.concat.addString2("\x89\x07"); // mov dword ptr [rdi], eax
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString2("\x89\x47"); // mov dword ptr [rdi + ??], eax
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
             pp.concat.addString2("\x89\x87"); // mov dword ptr [rdi + ????????], eax
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_RAX_At_Stack(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x48\x89\x07"); // mov qword ptr [rdi], rax
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x89\x47"); // mov qword ptr [rdi + ??], rax
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x89\x87"); // mov qword ptr [rdi + ????????], rax
             pp.concat.addU32(stackOffset);
         }
     }
