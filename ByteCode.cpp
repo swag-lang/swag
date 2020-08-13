@@ -35,7 +35,7 @@ Utf8 ByteCode::callName()
 {
     Utf8 callName;
     if (name.empty())
-        callName = node->scopedName;
+        callName = node->computeScopedName();
     else
         callName = name;
     callName += format("_%lX", (uint64_t) this);

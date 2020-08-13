@@ -326,7 +326,7 @@ struct AstNode
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
     void             computeScopedNameNoLock();
-    void             computeScopedName();
+    Utf8             computeScopedName();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 
@@ -338,7 +338,7 @@ struct AstNode
 
     Token         token;
     Utf8Crc       name;
-    Utf8          scopedName;
+    Utf8          scopedName1;
     shared_mutex  mutex;
     ComputedValue computedValue;
     RegisterList  resultRegisterRC;

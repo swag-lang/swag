@@ -34,19 +34,11 @@ void AstNode::inheritLocationFromChilds()
         token.endLocation = back->token.endLocation;
 }
 
-void AstNode::computeScopedNameNoLock()
+Utf8 AstNode::computeScopedName()
 {
-    SWAG_ASSERT(ownerScope);
     if (ownerScope->fullname.empty())
-        scopedName = name;
-    else
-        scopedName = ownerScope->fullname + "." + name.c_str();
-}
-
-void AstNode::computeScopedName()
-{
-    scoped_lock lk(mutex);
-    computeScopedNameNoLock();
+        return name;
+    return ownerScope->fullname + "." + name.c_str();
 }
 
 Utf8 AstNode::getKindName(AstNode* node)
@@ -180,7 +172,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     computedValue        = from->computedValue;
     name                 = from->name;
-    scopedName           = from->scopedName;
     sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;
@@ -278,8 +269,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     SWAG_ASSERT(ownerScope);
 
-    computeScopedNameNoLock();
-    fullnameForeign = scopedName;
+    fullnameForeign = computeScopedName();
     Ast::normalizeIdentifierName(fullnameForeign);
     fullnameForeign += "_";
     fullnameForeign += name;

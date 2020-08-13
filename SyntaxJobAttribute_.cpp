@@ -207,9 +207,9 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
 
     vector<Utf8> embeddedCode;
     attrBlockNode->computeScopedName();
-    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->scopedName, embeddedCode);
-    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->scopedName, embeddedCode);
-    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->scopedName, embeddedCode);
+    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->computeScopedName(), embeddedCode);
+    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->computeScopedName(), embeddedCode);
+    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->computeScopedName(), embeddedCode);
 
     // Construct a #test per embedded code to be able to run examples
     SyntaxJob embeddedJob;

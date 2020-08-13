@@ -23,18 +23,18 @@ JobResult DocScopeJob::execute()
         {
             if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
                 return JobResult::ReleaseJob;
-            auto scopeJob = g_Pool_docScopeJob.alloc();
+            auto scopeJob    = g_Pool_docScopeJob.alloc();
             scopeJob->module = module;
-            scopeJob->scope = child;
+            scopeJob->scope  = child;
             g_ThreadMgr.addJob(scopeJob);
             break;
         }
 
         case ScopeKind::Struct:
         {
-            auto scopeJob = g_Pool_docScopeJob.alloc();
+            auto scopeJob    = g_Pool_docScopeJob.alloc();
             scopeJob->module = module;
-            scopeJob->scope = child;
+            scopeJob->scope  = child;
             g_ThreadMgr.addJob(scopeJob);
             break;
         }
@@ -43,9 +43,9 @@ JobResult DocScopeJob::execute()
         {
             if (scope->publicEnum.find(child->owner) != scope->publicEnum.end())
                 continue;
-            auto scopeJob = g_Pool_docScopeJob.alloc();
+            auto scopeJob    = g_Pool_docScopeJob.alloc();
             scopeJob->module = module;
-            scopeJob->scope = child;
+            scopeJob->scope  = child;
             g_ThreadMgr.addJob(scopeJob);
             break;
         }
@@ -135,7 +135,8 @@ JobResult DocScopeJob::execute()
     {
         for (auto node : scope->publicFunc)
         {
-            auto it = nameToJob.find(node->scopedName);
+            auto scopedName = node->computeScopedName();
+            auto it         = nameToJob.find(scopedName);
             if (it == nameToJob.end())
             {
                 if (node->attributeFlags & ATTRIBUTE_NODOC)
@@ -149,7 +150,7 @@ JobResult DocScopeJob::execute()
                 auto nodeJob    = g_Pool_docNodeJob.alloc();
                 nodeJob->module = module;
                 nodeJob->nodes.push_back(node);
-                nameToJob[node->scopedName] = nodeJob;
+                nameToJob[scopedName] = nodeJob;
             }
             else
                 it->second->nodes.push_back(node);
@@ -157,7 +158,8 @@ JobResult DocScopeJob::execute()
 
         for (auto node : scope->publicGenericFunc)
         {
-            auto it = nameToJob.find(node->scopedName);
+            auto scopedName = node->computeScopedName();
+            auto it         = nameToJob.find(scopedName);
             if (it == nameToJob.end())
             {
                 if (node->attributeFlags & ATTRIBUTE_NODOC)
@@ -169,7 +171,7 @@ JobResult DocScopeJob::execute()
                 auto nodeJob    = g_Pool_docNodeJob.alloc();
                 nodeJob->module = module;
                 nodeJob->nodes.push_back(node);
-                nameToJob[node->scopedName] = nodeJob;
+                nameToJob[scopedName] = nodeJob;
             }
             else
                 it->second->nodes.push_back(node);
