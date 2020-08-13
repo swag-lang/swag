@@ -19,7 +19,7 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount);
+        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
@@ -56,10 +56,9 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - 8);
+        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me)
         {
-            SWAG_ASSERT(k.srcOffset < dataSegment->totalCount - 8);
             sym = getOrAddSymbol(pp, format("__tsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexTS);
         }
         else
@@ -94,7 +93,7 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount);
+        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);

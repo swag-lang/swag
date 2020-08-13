@@ -196,7 +196,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
-            concat.addString3("\x48\xd3\xe8"); // sar rax, cl
+            concat.addString3("\x48\xd3\xe8"); // shr rax, cl
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
 
@@ -977,6 +977,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::MakeTypeSegPointer:
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ts + %u); ", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.tsIndex);
+            BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::MakeMutableSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ms + %u); ", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Symbol_In_RAX(pp, pp.msIndex);
@@ -994,6 +1000,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Symbol_In_RAX(pp, pp.csIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+
+        case ByteCodeOp::IncPointerVB32:
+            //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
+            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString3("\x48\x81\x00"); // add [rax], ????????
+            concat.addU32(ip->b.s32);
             break;
 
         case ByteCodeOp::IncPointer32:
