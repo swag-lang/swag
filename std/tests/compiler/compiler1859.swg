@@ -6,11 +6,15 @@ var g = 5's8
 {
     {
         ptr := @typeof(s32)
-        @print(cast(s64) ptr.sizeof)
+        @print(ptr.name)
     }
 
-    if false
+    if true
     {
+        {
+            ptr := @typeof(s32)
+            @print(cast(s64) ptr.sizeof)
+        }
         {
             x := 0xFFFFFFFF
             x = x >> 1
