@@ -24,7 +24,7 @@ namespace BackendX64Inst
             if (value <= 0x7F)
             {
                 pp.concat.addString3("\x48\x83\xEC"); // sub rsp, ??
-                pp.concat.addU8((uint8_t)value);
+                pp.concat.addU8((uint8_t) value);
             }
             else
             {
@@ -422,9 +422,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString3("\x48\x89\xF8"); // mov rax, rdi
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x8D\x47"); // lea rax, [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString3("\x48\x8D\x87"); // lea rax, [rdi + ?]
+            pp.concat.addString3("\x48\x8D\x87"); // lea rax, [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -462,13 +467,13 @@ namespace BackendX64Inst
     {
         if (val == 0)
             emit_Clear_RAX(pp);
-        else if (val <= 0xFFFFFFFF)
+        else if (val <= 0x7FFFFFFF)
         {
-            pp.concat.addString3("\x48\xc7\xc0"); // mov rax, ?
+            pp.concat.addString3("\x48\xc7\xc0"); // mov rax, ????????
             pp.concat.addU32((uint32_t) val);
         }
         {
-            pp.concat.addString2("\x48\xb8"); // mov rax, ?
+            pp.concat.addString2("\x48\xb8"); // mov rax, ????????_????????
             pp.concat.addU64(val);
         }
     }
@@ -477,13 +482,13 @@ namespace BackendX64Inst
     {
         if (val == 0)
             emit_Clear_RBX(pp);
-        else if (val <= 0xFFFFFFFF)
+        else if (val <= 0x7FFFFFFF)
         {
-            pp.concat.addString3("\x48\xc7\xc3"); // mov rbx, ?
+            pp.concat.addString3("\x48\xc7\xc3"); // mov rbx, ????????
             pp.concat.addU32((uint32_t) val);
         }
         {
-            pp.concat.addString2("\x48\xbb"); // mov rbx, ?
+            pp.concat.addString2("\x48\xbb"); // mov rbx, ????????_????????
             pp.concat.addU64(val);
         }
     }
