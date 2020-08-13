@@ -171,6 +171,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
 
+        case ByteCodeOp::BinOpShiftRightU32:
+            //concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString2("\xd3\xf8"); // sar eax, cl
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::BinOpShiftRightU64:
+            //concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString3("\x48\xd3\xf8"); // sar rax, cl
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+
         case ByteCodeOp::BinOpXorU32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 ^ r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x33, 32);

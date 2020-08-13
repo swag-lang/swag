@@ -5,3 +5,5 @@ faut que ce soit consistant (mode -ot:false déconne par exemple, parceque l'exe 
 if expression/switch expression
 var a: s32 = if b == 0 6 else 5
 -------------------------------------
+shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
+-------------------------------------
