@@ -253,7 +253,6 @@ struct SemanticJob : public Job
         cacheBadGenericSignature.clear();
         symMatch.reset();
         context.reset();
-        tmpConcat.clear();
     }
 
     void release() override

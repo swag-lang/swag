@@ -13,7 +13,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
+    getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())

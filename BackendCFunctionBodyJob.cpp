@@ -14,6 +14,8 @@ JobResult BackendCFunctionBodyJob::execute()
     BackendC* bachendC        = (BackendC*) backend;
     int       precompileIndex = buildParameters.precompileIndex;
 
+    g_Concat.init();
+
     for (auto one : byteCodeFunc)
     {
         TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
@@ -34,10 +36,13 @@ JobResult BackendCFunctionBodyJob::execute()
     }
 
     // Flush all
-    auto firstBucket = g_Concat.firstBucket;
-    while (firstBucket)
+    auto     firstBucket = g_Concat.firstBucket;
+    uint32_t totalCount  = 0;
+    while (firstBucket != g_Concat.lastBucket->nextBucket)
     {
-        bachendC->bufferCFiles[precompileIndex].save(firstBucket, [this](Job* job) {
+        totalCount += g_Concat.bucketCount(firstBucket);
+        auto& file = bachendC->bufferCFiles[precompileIndex];
+        file.save(firstBucket, g_Concat.bucketCount(firstBucket), [this](Job* job) {
             if (job->jobKind == JobKind::BACKEND_FCT_BODY)
                 return false;
             return true;
@@ -46,6 +51,9 @@ JobResult BackendCFunctionBodyJob::execute()
         firstBucket = firstBucket->nextBucket;
     }
 
+    auto wantedTotal = g_Concat.totalCount();
+    SWAG_ASSERT(totalCount == wantedTotal);
     g_Concat.clear();
+
     return JobResult::ReleaseJob;
 }

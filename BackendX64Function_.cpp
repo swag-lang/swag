@@ -18,8 +18,9 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        pp.labels[ip] = pp.concat.totalCount;
-        return pp.concat.totalCount;
+        auto count = pp.concat.totalCount();
+        pp.labels[ip] = count;
+        return count;
     }
 
     return it->second;
@@ -42,7 +43,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Symbol
-    getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount - pp.textSectionOffset);
+    getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
 
     // Reserve registers
     uint32_t sizeStack   = 0;
@@ -818,7 +819,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
             concat.addString2("\x0F\x85"); // jnz ?
-            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount(), concat.getSeekPtr()});
             concat.addU32(0);
             break;
         case ByteCodeOp::JumpIfFalse:
@@ -827,7 +828,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
             concat.addString2("\x0F\x84"); // jz ?
-            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount(), concat.getSeekPtr()});
             concat.addU32(0);
             break;
         case ByteCodeOp::JumpIfZero32:
@@ -836,7 +837,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
             concat.addString2("\x0F\x84"); // jz ?
-            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount(), concat.getSeekPtr()});
             concat.addU32(0);
             break;
         case ByteCodeOp::JumpIfZero64:
@@ -845,14 +846,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_RAX_With_RAX(pp);
             concat.addString2("\x0F\x84"); // jz ?
-            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            pp.labelsToSolve.push_back({ip->b.s32 + i + 1, (int32_t) concat.totalCount(), concat.getSeekPtr()});
             concat.addU32(0);
             break;
         case ByteCodeOp::Jump:
             //CONCAT_FIXED_STR(concat, "goto _");
             //concat.addS32Str8(ip->a.s32 + i + 1);
             concat.addU8(0xE9); // jmp ?
-            pp.labelsToSolve.push_back({ip->a.s32 + i + 1, (int32_t) concat.totalCount, concat.getSeekPtr()});
+            pp.labelsToSolve.push_back({ip->a.s32 + i + 1, (int32_t) concat.totalCount(), concat.getSeekPtr()});
             concat.addU32(0);
             break;
 

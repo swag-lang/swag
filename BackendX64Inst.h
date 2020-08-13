@@ -11,7 +11,7 @@ namespace BackendX64Inst
         concat.addString3("\x48\x8D\x05");
 
         CoffRelocation reloc;
-        reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+        reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
         reloc.symbolIndex    = symbolIndex;
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);

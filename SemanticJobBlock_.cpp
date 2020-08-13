@@ -282,7 +282,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     // Get back the expression string
     auto& concat = context->job->tmpConcat;
-    concat.clear();
+    concat.init(1024);
     Ast::output(concat, node->expression);
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);

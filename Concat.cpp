@@ -3,99 +3,97 @@
 #include "Allocator.h"
 #include "SwagRuntime.h"
 
-Concat::Concat()
+void Concat::init(int size)
 {
-    bucketSize = 32 * 1024;
+    if (bucketSize)
+    {
+        lastBucket      = firstBucket;
+        currentSP       = lastBucket->datas;
+        totalCountBytes = 0;
+        return;
+    }
+
+    bucketSize         = size;
+    firstBucket        = g_Allocator.alloc<ConcatBucket>();
+    firstBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
+    lastBucket         = firstBucket;
+    currentSP          = lastBucket->datas;
 }
 
 void Concat::clear()
 {
-    auto bucket = firstBucket;
-    while (bucket)
-    {
-        bucket->count = 0;
-        bucket        = bucket->nextBucket;
-    }
-
-    lastBucket = firstBucket;
-    if (lastBucket)
-        currentSP = lastBucket->datas;
+    totalCountBytes += bucketCount(lastBucket);
+    lastBucket             = firstBucket;
+    currentSP              = lastBucket->datas;
+    lastBucket->countBytes = 0;
 }
 
-void Concat::checkCount(int offset)
+void Concat::ensureSpace(int numBytes)
 {
-    totalCount += offset;
+    auto count = (int) (currentSP - lastBucket->datas);
+    if (count + numBytes < bucketSize)
+        return;
+    totalCountBytes += count;
+    lastBucket->countBytes = count;
 
-    if (lastBucket)
+    // Next is already allocated
+    if (lastBucket->nextBucket)
     {
-        if (lastBucket->count + offset < bucketSize)
-        {
-            lastBucket->count += offset;
-            return;
-        }
-
-        // Next is already allocated
-        if (lastBucket->nextBucket)
-        {
-            lastBucket        = lastBucket->nextBucket;
-            currentSP         = lastBucket->datas;
-            lastBucket->count = offset;
-            return;
-        }
+        lastBucket             = lastBucket->nextBucket;
+        currentSP              = lastBucket->datas;
+        lastBucket->countBytes = 0;
+        return;
     }
 
     // Need to allocate a new bucket
     auto newBucket = g_Allocator.alloc<ConcatBucket>();
-    if (!firstBucket)
-        firstBucket = newBucket;
-    if (lastBucket)
-        lastBucket->nextBucket = newBucket;
+    SWAG_ASSERT(firstBucket && lastBucket);
+    lastBucket->nextBucket = newBucket;
+    lastBucket             = newBucket;
 
-    lastBucket = newBucket;
-    SWAG_ASSERT(offset < bucketSize);
+    SWAG_ASSERT(numBytes < bucketSize);
     lastBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
-    currentSP         = newBucket->datas;
-    newBucket->count  = offset;
+    currentSP         = lastBucket->datas;
 }
 
 void Concat::addBool(bool v)
 {
-    checkCount(sizeof(bool));
+    ensureSpace(sizeof(bool));
     *(bool*) currentSP = v;
     currentSP += sizeof(bool);
 }
 
 void Concat::addU8(uint8_t v)
 {
-    checkCount(sizeof(uint8_t));
+    ensureSpace(sizeof(uint8_t));
     *(uint8_t*) currentSP = v;
     currentSP += sizeof(uint8_t);
 }
 
 void Concat::addU16(uint16_t v)
 {
-    checkCount(sizeof(uint16_t));
+    ensureSpace(sizeof(uint16_t));
     *(uint16_t*) currentSP = v;
     currentSP += sizeof(uint16_t);
 }
 
 void Concat::addU32(uint32_t v)
 {
-    checkCount(sizeof(uint32_t));
+    ensureSpace(sizeof(uint32_t));
     *(uint32_t*) currentSP = v;
     currentSP += sizeof(uint32_t);
 }
 
 void Concat::addU64(uint64_t v)
 {
-    checkCount(sizeof(uint64_t));
+    ensureSpace(sizeof(uint64_t));
     *(uint64_t*) currentSP = v;
     currentSP += sizeof(uint64_t);
 }
 
 uint32_t* Concat::addU32Addr(uint32_t v)
 {
-    checkCount(sizeof(uint32_t));
+    ensureSpace(sizeof(uint32_t));
     *(uint32_t*) currentSP = v;
     currentSP += sizeof(uint32_t);
     return (uint32_t*) (currentSP - sizeof(uint32_t));
@@ -103,7 +101,7 @@ uint32_t* Concat::addU32Addr(uint32_t v)
 
 uint16_t* Concat::addU16Addr(uint16_t v)
 {
-    checkCount(sizeof(uint16_t));
+    ensureSpace(sizeof(uint16_t));
     *(uint16_t*) currentSP = v;
     currentSP += sizeof(uint16_t);
     return (uint16_t*) (currentSP - sizeof(uint16_t));
@@ -111,49 +109,49 @@ uint16_t* Concat::addU16Addr(uint16_t v)
 
 void Concat::addS8(int8_t v)
 {
-    checkCount(sizeof(int8_t));
+    ensureSpace(sizeof(int8_t));
     *(int8_t*) currentSP = v;
     currentSP += sizeof(int8_t);
 }
 
 void Concat::addS16(int16_t v)
 {
-    checkCount(sizeof(int16_t));
+    ensureSpace(sizeof(int16_t));
     *(int16_t*) currentSP = v;
     currentSP += sizeof(int16_t);
 }
 
 void Concat::addS32(int32_t v)
 {
-    checkCount(sizeof(int32_t));
+    ensureSpace(sizeof(int32_t));
     *(int32_t*) currentSP = v;
     currentSP += sizeof(int32_t);
 }
 
 void Concat::addS64(int64_t v)
 {
-    checkCount(sizeof(int64_t));
+    ensureSpace(sizeof(int64_t));
     *(int64_t*) currentSP = v;
     currentSP += sizeof(int64_t);
 }
 
 void Concat::addF32(float v)
 {
-    checkCount(sizeof(float));
+    ensureSpace(sizeof(float));
     *(float*) currentSP = v;
     currentSP += sizeof(float);
 }
 
 void Concat::addF64(double v)
 {
-    checkCount(sizeof(double));
+    ensureSpace(sizeof(double));
     *(double*) currentSP = v;
     currentSP += sizeof(double);
 }
 
 void Concat::addPointer(void* v)
 {
-    checkCount(sizeof(void*));
+    ensureSpace(sizeof(void*));
     *(void**) currentSP = v;
     currentSP += sizeof(void*);
 }
@@ -161,28 +159,28 @@ void Concat::addPointer(void* v)
 void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
-    checkCount(len);
+    ensureSpace(len);
     swag_runtime_memcpy(currentSP, v.c_str(), len);
     currentSP += len;
 }
 
 void Concat::addString1(const char* v)
 {
-    checkCount(1);
+    ensureSpace(1);
     *(uint8_t*) currentSP = *(uint8_t*) v;
     currentSP += 1;
 }
 
 void Concat::addString2(const char* v)
 {
-    checkCount(2);
+    ensureSpace(2);
     *(uint16_t*) currentSP = *(uint16_t*) v;
     currentSP += 2;
 }
 
 void Concat::addString3(const char* v)
 {
-    checkCount(3);
+    ensureSpace(3);
     *(uint16_t*) currentSP = *(uint16_t*) v;
     currentSP[2]           = v[2];
     currentSP += 3;
@@ -190,14 +188,14 @@ void Concat::addString3(const char* v)
 
 void Concat::addString4(const char* v)
 {
-    checkCount(4);
+    ensureSpace(4);
     *(uint32_t*) currentSP = *(uint32_t*) v;
     currentSP += 4;
 }
 
 void Concat::addString(const char* v, int len)
 {
-    checkCount(len);
+    ensureSpace(len);
     swag_runtime_memcpy(currentSP, v, len);
     currentSP += len;
 }
@@ -205,20 +203,20 @@ void Concat::addString(const char* v, int len)
 void Concat::addString(const char* v)
 {
     auto len = (int) strlen(v);
-    checkCount(len);
+    ensureSpace(len);
     swag_runtime_memcpy(currentSP, v, len);
     currentSP += len;
 }
 
 void Concat::addChar(char c)
 {
-    checkCount(1);
+    ensureSpace(1);
     *currentSP++ = c;
 }
 
 void Concat::addEol()
 {
-    checkCount(1);
+    ensureSpace(1);
     *currentSP++ = '\n';
 }
 
@@ -255,7 +253,7 @@ void Concat::addU32Str(uint32_t value)
 
 void Concat::addS32Str8(int value)
 {
-    checkCount(8);
+    ensureSpace(8);
 
     currentSP += 8;
     auto pz = currentSP;

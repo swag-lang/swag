@@ -24,9 +24,9 @@ bool OutputFile::openWrite()
 bool OutputFile::flush(bool last, const function<bool(Job*)>& execAsync)
 {
     auto bucket = firstBucket;
-    while (bucket)
+    while (bucket != lastBucket->nextBucket)
     {
-        save(bucket, execAsync);
+        save(bucket, bucketCount(bucket), execAsync);
         bucket = bucket->nextBucket;
     }
 
@@ -40,7 +40,7 @@ bool OutputFile::flush(bool last, const function<bool(Job*)>& execAsync)
     return true;
 }
 
-void OutputFile::save(ConcatBucket* bucket, const function<bool(Job*)>& execAsync)
+void OutputFile::save(ConcatBucket* bucket, uint32_t count, const function<bool(Job*)>& execAsync)
 {
     if (!openWrite())
         return;
@@ -50,8 +50,8 @@ void OutputFile::save(ConcatBucket* bucket, const function<bool(Job*)>& execAsyn
     over->Offset = seekSave;
     overlappeds.push_back(over);
 
-    auto result = ::WriteFile(winHandle, bucket->datas, bucket->count, NULL, over);
-    seekSave += bucket->count;
+    auto result = ::WriteFile(winHandle, bucket->datas, count, NULL, over);
+    seekSave += count;
 
     if (!result)
     {

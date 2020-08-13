@@ -97,9 +97,9 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         pp.pass = BackendPreCompilePass::End;
 
         // Align .text section to 16 bytes
-        while (concat.totalCount % 16)
+        while (concat.totalCount() % 16)
             concat.addU8(0);
-        pp.textSectionOffset       = concat.totalCount;
+        pp.textSectionOffset       = concat.totalCount();
         *pp.patchTextSectionOffset = pp.textSectionOffset;
 
         emitAllFunctionBody(buildParameters, module, ownerJob);
@@ -120,7 +120,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         }
 
         // This is it for functions
-        *pp.patchTextSectionSize = concat.totalCount - pp.textSectionOffset;
+        *pp.patchTextSectionSize = concat.totalCount() - pp.textSectionOffset;
 
         // Tables
         emitSymbolTable(buildParameters);
@@ -128,14 +128,14 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
         if (!pp.relocTableTextSection.table.empty())
         {
-            *pp.patchTextSectionRelocTableOffset = concat.totalCount;
+            *pp.patchTextSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
         }
 
         // Segments
         if (precompileIndex == 0)
         {
-            uint32_t csOffset = concat.totalCount;
+            uint32_t csOffset = concat.totalCount();
             uint32_t msOffset = csOffset + module->constantSegment.totalCount;
             uint32_t tsOffset = msOffset + module->mutableSegment.totalCount;
 
@@ -160,6 +160,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
 
             // And we use another concat buffer for relocation tables of segments, because they must be defined after
             // the content
+            pp.postConcat.init();
             uint32_t csRelocOffset = tsOffset + module->typeSegment.totalCount;
             if (!pp.relocTableCSSection.table.empty())
             {
@@ -167,14 +168,14 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
                 emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
             }
 
-            uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount;
+            uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount();
             if (!pp.relocTableMSSection.table.empty())
             {
                 *pp.patchMSSectionRelocTableOffset = msRelocOffset;
                 emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
             }
 
-            uint32_t tsRelocOffset = csRelocOffset + pp.postConcat.totalCount;
+            uint32_t tsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
             if (!pp.relocTableTSSection.table.empty())
             {
                 *pp.patchTSSectionRelocTableOffset = tsRelocOffset;
@@ -183,7 +184,7 @@ JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ow
         }
         else
         {
-            uint32_t csOffset = concat.totalCount;
+            uint32_t csOffset = concat.totalCount();
             if (pp.stringSegment.totalCount)
             {
                 *pp.patchCSOffset = csOffset;
@@ -258,7 +259,7 @@ void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const U
     }
 
     CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+    reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
     reloc.symbolIndex    = sym->index;
     reloc.type           = IMAGE_REL_AMD64_ADDR64;
     pp.relocTableTextSection.table.push_back(reloc);
@@ -275,6 +276,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     // Coff header
     /////////////////////////////////////////////
+    concat.init();
     concat.addU16(IMAGE_FILE_MACHINE_AMD64); // .Machine
     if (precompileIndex == 0)
         concat.addU16(5); // .NumberOfSections
@@ -377,7 +379,7 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    *pp.patchSymbolTableOffset = concat.totalCount;
+    *pp.patchSymbolTableOffset = concat.totalCount();
     SWAG_ASSERT(pp.allSymbols.size() <= UINT32_MAX);
     *pp.patchSymbolTableCount = (uint32_t) pp.allSymbols.size();
 
@@ -481,7 +483,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
     {
         // call
         concat.addU8(0xE8);
-        concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount + 4));
+        concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
     }
     else
     {
@@ -489,7 +491,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
         concat.addU8(0xE8);
 
         CoffRelocation reloc;
-        reloc.virtualAddress = concat.totalCount - pp.textSectionOffset;
+        reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
         reloc.symbolIndex    = callSym->index;
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
@@ -513,15 +515,16 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
     // Output the full concat buffer
     uint32_t totalCount = 0;
     auto     bucket     = pp.concat.firstBucket;
-    while (bucket)
+    while (bucket != pp.concat.lastBucket->nextBucket)
     {
-        destFile.write((const char*) bucket->datas, bucket->count);
-        totalCount += bucket->count;
+        auto count = pp.concat.bucketCount(bucket);
+        destFile.write((const char*) bucket->datas, count);
+        totalCount += count;
         bucket = bucket->nextBucket;
     }
 
     uint32_t subTotal = 0;
-    SWAG_ASSERT(totalCount == pp.concat.totalCount);
+    SWAG_ASSERT(totalCount == pp.concat.totalCount());
     if (precompileIndex)
     {
         // Then the constant segment
@@ -571,9 +574,10 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
 
         // Then the post concat buffer that contains relocation tables for CS and DS
         bucket = pp.postConcat.firstBucket;
-        while (bucket)
+        while (bucket != pp.postConcat.lastBucket->nextBucket)
         {
-            destFile.write((const char*) bucket->datas, bucket->count);
+            auto count = pp.postConcat.bucketCount(bucket);
+            destFile.write((const char*) bucket->datas, count);
             bucket = bucket->nextBucket;
         }
     }

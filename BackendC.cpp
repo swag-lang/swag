@@ -16,6 +16,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
 
     if (pass[precompileIndex] == BackendPreCompilePass::Init)
     {
+        bufferC.init(32 * 1024);
         pass[precompileIndex] = BackendPreCompilePass::FunctionBodies;
 
         // Compute output file name depending on the precompile index

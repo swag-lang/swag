@@ -460,6 +460,7 @@ bool Backend::generateExportFile()
     if (!mustCompile)
         return true;
 
+    bufferSwg.init(4 * 1024);
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
     for (const auto& dep : module->moduleDependencies)

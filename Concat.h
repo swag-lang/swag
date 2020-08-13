@@ -6,14 +6,14 @@ struct ConcatBucket
 {
     uint8_t*      datas      = nullptr;
     ConcatBucket* nextBucket = nullptr;
-    int           count      = 0;
+    int           countBytes = 0;
 };
 
 struct Concat
 {
-    Concat();
+    void init(int size = 32 * 1024);
     void clear();
-    void checkCount(int offset);
+    void ensureSpace(int numBytes);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);
@@ -49,11 +49,27 @@ struct Concat
         return currentSP;
     }
 
-    ConcatBucket* firstBucket = nullptr;
-    ConcatBucket* lastBucket  = nullptr;
-    uint8_t*      currentSP   = nullptr;
-    int           bucketSize  = 4 * 1024;
-    uint32_t      totalCount  = 0;
+    uint32_t totalCount()
+    {
+        if (!lastBucket)
+            return 0;
+        return totalCountBytes + (int) (currentSP - lastBucket->datas);
+    }
+
+    uint32_t bucketCount(ConcatBucket* b)
+    {
+        if (b != lastBucket)
+            return b->countBytes;
+        auto count = (int) (currentSP - lastBucket->datas);
+        SWAG_ASSERT(count <= bucketSize);
+        return count;
+    }
+
+    ConcatBucket* firstBucket     = nullptr;
+    ConcatBucket* lastBucket      = nullptr;
+    uint8_t*      currentSP       = nullptr;
+    int           bucketSize      = 0;
+    uint32_t      totalCountBytes = 0;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                    \
