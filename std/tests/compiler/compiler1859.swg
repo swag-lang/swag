@@ -25,7 +25,7 @@ var g = 5's8
         @print(cast(s64) x)
     }
 
-    if false
+    if true
     {
         {
             x := -5's32
