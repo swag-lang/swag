@@ -9,6 +9,21 @@ var g = 5's8
         x ^= 3
         @print(cast(s64) x)
     }
+    {
+        x := 5's16
+        x ^= 3
+        @print(cast(s64) x)
+    }
+    {
+        x := 5's32
+        x ^= 3
+        @print(cast(s64) x)
+    }
+    {
+        x := 5's64
+        x ^= 3
+        @print(cast(s64) x)
+    }
 
     if false
     {

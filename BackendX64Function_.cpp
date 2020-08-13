@@ -321,6 +321,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
             concat.addString2("\x30\x18"); // xor [rax], bl
             break;
+        case ByteCodeOp::AffectOpXOrEqS16:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString3("\x66\x31\x18"); // xor [rax], bx
+            break;
+        case ByteCodeOp::AffectOpXOrEqS32:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString2("\x31\x18"); // xor [rax], ebx
+            break;
+        case ByteCodeOp::AffectOpXOrEqS64:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString3("\x48\x31\x18"); // xor [rax], rbx
+            break;
 
         case ByteCodeOp::AffectOpMulEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s8;");
