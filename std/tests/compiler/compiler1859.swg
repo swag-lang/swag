@@ -6,27 +6,47 @@ var g = 5's8
 {
     {
         x := 5's8
-        x ^= 3
+        x |= 30
         @print(cast(s64) x)
     }
     {
         x := 5's16
-        x ^= 3
+        x |= 7
         @print(cast(s64) x)
     }
     {
         x := 5's32
-        x ^= 3
+        x |= 18
         @print(cast(s64) x)
     }
     {
         x := 5's64
-        x ^= 3
+        x |= 31
         @print(cast(s64) x)
     }
 
-    if true
+    if false
     {
+        {
+            x := 5's8
+            x ^= 3
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's16
+            x ^= 3
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's32
+            x ^= 3
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's64
+            x ^= 3
+            @print(cast(s64) x)
+        }
         {
             x := -5's32
             x = x % 3
