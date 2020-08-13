@@ -53,7 +53,7 @@ void Concat::checkCount(int offset)
 
     lastBucket = newBucket;
     SWAG_ASSERT(offset < bucketSize);
-    lastBucket->datas = (uint8_t*) malloc(bucketSize);
+    lastBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
     currentSP         = newBucket->datas;
     newBucket->count  = offset;
 }
@@ -183,8 +183,8 @@ void Concat::addString2(const char* v)
 void Concat::addString3(const char* v)
 {
     checkCount(3);
-    *(uint16_t*)currentSP = *(uint16_t*)v;
-    currentSP[2] = v[2];
+    *(uint16_t*) currentSP = *(uint16_t*) v;
+    currentSP[2]           = v[2];
     currentSP += 3;
 }
 
