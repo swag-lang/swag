@@ -456,7 +456,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (g_CommandLine.test && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0))
+        if (g_CommandLine.test && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0) && g_CommandLine.runBackendTests)
         {
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
             {
