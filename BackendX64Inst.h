@@ -597,7 +597,7 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_BinOp_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
+    inline void emit_BinOpInt_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
     {
         switch (bits)
         {
