@@ -646,16 +646,25 @@ namespace BackendX64Inst
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);
         if (offsetStack == 0)
         {
-            pp.concat.addU8(0x07);
+            if (op == 0xF7) // idiv
+                pp.concat.addU8(0x3F);
+            else
+                pp.concat.addU8(0x07);
         }
         else if (offsetStack <= 0x7F)
         {
-            pp.concat.addU8(0x47);
+            if (op == 0xF7) // idiv
+                pp.concat.addU8(0x7F);
+            else
+                pp.concat.addU8(0x47);
             pp.concat.addU8((uint8_t) offsetStack);
         }
         else
         {
-            pp.concat.addU8(0x87);
+            if (op == 0xF7) // idiv
+                pp.concat.addU8(0xBF);
+            else
+                pp.concat.addU8(0x87);
             pp.concat.addU32(offsetStack);
         }
 
