@@ -21,8 +21,16 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            pp.concat.addString3("\x48\x81\xEC"); // sub rsp, ?
-            pp.concat.addU32(value);
+            if (value <= 0x7F)
+            {
+                pp.concat.addString3("\x48\x83\xEC"); // sub rsp, ??
+                pp.concat.addU8((uint8_t)value);
+            }
+            else
+            {
+                pp.concat.addString3("\x48\x81\xEC"); // sub rsp, ????????
+                pp.concat.addU32(value);
+            }
         }
     }
 
@@ -30,8 +38,16 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            pp.concat.addString3("\x48\x81\xC4"); // add rsp, ?
-            pp.concat.addU32(value);
+            if (value <= 0x7F)
+            {
+                pp.concat.addString3("\x48\x83\xC4"); // add rsp, ??
+                pp.concat.addU8((uint8_t) value);
+            }
+            else
+            {
+                pp.concat.addString3("\x48\x81\xC4"); // add rsp, ????????
+                pp.concat.addU32(value);
+            }
         }
     }
 
@@ -39,8 +55,16 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            pp.concat.addString2("\x81\x00"); // add dword ptr [rax], ?
-            pp.concat.addU32(value);
+            if (value <= 0x7F)
+            {
+                pp.concat.addString2("\x83\x00"); // add dword ptr [rax], ??
+                pp.concat.addU8((uint8_t) value);
+            }
+            else
+            {
+                pp.concat.addString2("\x81\x00"); // add dword ptr [rax], ????????
+                pp.concat.addU32(value);
+            }
         }
     }
 
@@ -48,8 +72,16 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            pp.concat.addString2("\x81\x28"); // sub dword ptr [rax], ?
-            pp.concat.addU32(value);
+            if (value <= 0x7F)
+            {
+                pp.concat.addString2("\x83\x28"); // sub dword ptr [rax], ??
+                pp.concat.addU8((uint8_t) value);
+            }
+            else
+            {
+                pp.concat.addString2("\x81\x28"); // sub dword ptr [rax], ????????
+                pp.concat.addU32(value);
+            }
         }
     }
 
@@ -57,14 +89,14 @@ namespace BackendX64Inst
     {
         if (value)
         {
-            if (value <= 0xFF)
+            if (value <= 0x7F)
             {
-                pp.concat.addString3("\x48\x83\xc0"); // add rax, ?
+                pp.concat.addString3("\x48\x83\xc0"); // add rax, ??
                 pp.concat.addU8((uint8_t) value);
             }
             else
             {
-                pp.concat.addString2("\x48\x05"); // add rax, ?
+                pp.concat.addString2("\x48\x05"); // add rax, ????????
                 pp.concat.addU32(value);
             }
         }
@@ -310,9 +342,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString4("\xf2\x0f\x10\x07"); // movsd xmm0, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x47"); // movsd xmm0, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString4("\xf2\x0f\x10\x87"); // movsd xmm0, qword ptr [rdi + ?]
+            pp.concat.addString4("\xf2\x0f\x10\x87"); // movsd xmm0, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -323,9 +360,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString4("\xf2\x0f\x10\x0f"); // movsd xmm1, qword ptr [rdi]
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x4f"); // movsd xmm1, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString4("\xf2\x0f\x10\x8f"); // movsd xmm1, qword ptr [rdi + ?]
+            pp.concat.addString4("\xf2\x0f\x10\x8f"); // movsd xmm1, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -349,9 +391,14 @@ namespace BackendX64Inst
         {
             pp.concat.addString4("\xf2\x0f\x11\x07"); // movsd qword ptr [rdi], xmm0
         }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf2\x0f\x11\x47"); // movsd qword ptr [rdi + ??], xmm0
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
         else
         {
-            pp.concat.addString4("\xf2\x0f\x11\x87"); // movsd qword ptr [rdi + ?], xmm0
+            pp.concat.addString4("\xf2\x0f\x11\x87"); // movsd qword ptr [rdi + ????????], xmm0
             pp.concat.addU32(stackOffset);
         }
     }
