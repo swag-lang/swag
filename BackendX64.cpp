@@ -285,7 +285,8 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     time_t now;
     time(&now);
-    concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
+    //concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
+    concat.addU32(0);
 
     pp.patchSymbolTableOffset = concat.addU32Addr(0); // .PointerToSymbolTable
     pp.patchSymbolTableCount  = concat.addU32Addr(0); // .NumberOfSymbols
@@ -511,6 +512,11 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
     auto filename   = path;
 
     ofstream destFile(filename, ios::binary);
+    if (!destFile.is_open())
+    {
+        module->error(format("unable to write output file '%s'", filename.c_str()));
+        return false;
+    }
 
     // Output the full concat buffer
     uint32_t totalCount = 0;

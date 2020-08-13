@@ -16,10 +16,11 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
     auto&          pp              = perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
+    SWAG_ASSERT(precompileIndex == 0);
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
@@ -53,10 +54,11 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
     auto&          pp              = perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
+    SWAG_ASSERT(precompileIndex == 0);
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me)
         {
             sym = getOrAddSymbol(pp, format("__tsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexTS);
@@ -90,10 +92,11 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
     auto&          pp              = perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
+    SWAG_ASSERT(precompileIndex == 0);
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset < dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
