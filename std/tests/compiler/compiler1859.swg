@@ -4,29 +4,39 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    if true
     {
-        x := 5's8
-        x &= 30
-        @print(cast(s64) x)
-    }
-    {
-        x := 5's16
-        x &= 7
-        @print(cast(s64) x)
-    }
-    {
-        x := 5's32
-        x &= 18
-        @print(cast(s64) x)
-    }
-    {
-        x := 5's64
-        x &= 31
-        @print(cast(s64) x)
-    }
+        {
+            x := 0xFFFFFFFF
+            x = x >> 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 0xFFFFFFFF_FFFFFFFF
+            x = x >> 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's8
+            x &= 30
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's16
+            x &= 7
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's32
+            x &= 18
+            @print(cast(s64) x)
+        }
+        {
+            x := 5's64
+            x &= 31
+            @print(cast(s64) x)
+        }
 
-    if false
-    {
         {
             x := 5's8
             x |= 30
@@ -422,55 +432,55 @@ var g = 5's8
         {
             x := 5'f64
             x /= 2
-            @assert(cast(f64) x == 2.5)
+            @print(cast(f64) x)
         }
 
         {
             x := 5'f64
             x /= 2
-            @assert(cast(f64) x == 2.5)
+            @print(cast(f64) x)
         }
 
         {
             x := 5'f64
             x /= 2
-            @assert(cast(f64) x == 2.5)
+            @print(cast(f64) x)
         }
 
         {
             x := 5'f64
             x /= 2
-            @assert(cast(f64) x == 2.5)
+            @print(cast(f64) x)
         }
 
         {
             x := 5'f32
             x /= 2
-            @assert(cast(f64) x == 2.5)
+            @print(cast(f64) x)
         }
 
         {
             x := 10'u64
             x /= 2
-            @assert(cast(s64) x == 5)
+            @print(cast(s64) x)
         }
 
         {
             x := 10'u32
             x /= 2
-            @assert(cast(s64) x == 5)
+            @print(cast(s64) x)
         }
 
         {
             x := 10'u16
             x /= 2
-            @assert(cast(s64) x == 5)
+            @print(cast(s64) x)
         }
 
         {
             x := 10'u8
             x /= 2
-            @assert(cast(s64) x == 5)
+            @print(cast(s64) x)
         }
 
         {
@@ -680,7 +690,7 @@ var g = 5's8
 
         {
             x := -6's8
-            @assert(cast(s64) x == -6)
+            @print(cast(s64) x)
         }
 
         {
