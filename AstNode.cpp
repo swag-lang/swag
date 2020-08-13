@@ -256,9 +256,9 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     if (!fullnameForeign.empty())
         return;
 
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
     if (!forExport)
     {
-        auto          typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
         ComputedValue value;
         if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
             fullnameForeign = value.text;
@@ -270,10 +270,10 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     SWAG_ASSERT(ownerScope);
 
     fullnameForeign = computeScopedName();
-    Ast::normalizeIdentifierName(fullnameForeign);
     fullnameForeign += "_";
     fullnameForeign += name;
-    fullnameForeign += format("_%lX", (uint64_t) this);
+    fullnameForeign += typeFunc->name;
+    Ast::normalizeIdentifierName(fullnameForeign);
 }
 
 AstNode* AstFuncDecl::clone(CloneContext& context)

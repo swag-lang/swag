@@ -248,6 +248,9 @@ namespace Ast
                 *pz = '_';
                 break;
 
+            case '&':
+                *pz = 'R';
+                break;
             case '*':
             case '>':
                 *pz = 'P';
