@@ -5,18 +5,29 @@ var g = 5's8
 #test
 {
     {
-        x := 10'u32
-        x = x >> 2
-        @print(cast(s64) x)
+        x := 5'f32
+        x = x / 2
+        @print(cast(f64) x)
     }
     {
-        x := 30'u64
-        x = x >> 1
-        @print(cast(s64) x)
+        x := 7'f64
+        x = x / 2
+        @print(cast(f64) x)
     }
 
-    if true
+    if false
     {
+        {
+            x := 10'u32
+            x = x >> 2
+            @print(cast(s64) x)
+        }
+        {
+            x := 30'u64
+            x = x >> 1
+            @print(cast(s64) x)
+        }
+
         {
             x := 3'u32
             x = x << 4
