@@ -597,7 +597,7 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_BinOpInt_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
+    inline void emit_BinOpInt_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint16_t op, uint32_t bits)
     {
         switch (bits)
         {
@@ -619,7 +619,10 @@ namespace BackendX64Inst
             break;
         }
 
-        pp.concat.addU8(op);
+        if(op & 0xFF00)
+            pp.concat.addU16(op);
+        else
+            pp.concat.addU8((uint8_t) op);
 
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);
         if (offsetStack == 0)

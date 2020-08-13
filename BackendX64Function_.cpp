@@ -156,6 +156,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::BinOpMulS32:
+            //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0xAF0F, 32);
+            break;
+        case ByteCodeOp::BinOpMulS64:
+            //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0xAF0F, 64);
+            break;
+        case ByteCodeOp::BinOpMulF32:
+            //concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpFloat_At_Reg(pp, ip, 0x59, 32);
+            break;
+        case ByteCodeOp::BinOpMulF64:
+            //concat.addStringFormat("r[%u].f64 = r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_BinOpFloat_At_Reg(pp, ip, 0x59, 64);
+            break;
+
         case ByteCodeOp::BinOpPlusS32:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x03, 32);
