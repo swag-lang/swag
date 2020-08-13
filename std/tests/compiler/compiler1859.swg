@@ -4,6 +4,14 @@ var g = 5's8
 //#[swag.printbc]
 #test
 {
+    {
+        x := 5's8
+        x ^= 3
+        @print(cast(s64) x)
+    }
+
+    if false
+    {
         {
             x := -5's32
             x = x % 3
@@ -25,8 +33,6 @@ var g = 5's8
             @print(cast(s64) x)
         }
 
-    if true
-    {
         {
             x := -5's32
             x = x / 2

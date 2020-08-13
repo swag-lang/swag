@@ -315,6 +315,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x0a, 8);
             break;
 
+        case ByteCodeOp::AffectOpXOrEqS8:
+            //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s8;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString2("\x30\x18"); // xor [rax], bl
+            break;
+
         case ByteCodeOp::AffectOpMulEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].s8;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
