@@ -776,7 +776,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                            __msg);
 
         case ByteCodeOp::IncPointerVB32:
-            concat.addStringFormat("r[%u].p+=%d;", ip->a.u32, ip->b.s32);
+            concat.addStringFormat("r[%u].p+=%u;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::IncPointer32:
             concat.addStringFormat("r[%u].p=r[%u].p+r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);

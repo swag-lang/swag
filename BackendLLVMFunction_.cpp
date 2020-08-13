@@ -479,7 +479,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
         case ByteCodeOp::IncPointerVB32:
         {
-            //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
+            //concat.addStringFormat("r[%u].pointer += %u;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateLoad(r0);
             auto r2 = builder.CreateInBoundsGEP(r1, CST_RB32);

@@ -1003,7 +1003,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IncPointerVB32:
-            //concat.addStringFormat("r[%u].pointer += %d;", ip->a.u32, ip->b.s32);
+            //concat.addStringFormat("r[%u].pointer += %u;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
             concat.addString3("\x48\x81\x00"); // add [rax], ????????
             concat.addU32(ip->b.s32);

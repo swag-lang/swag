@@ -658,7 +658,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[0]);
-        emitInstruction(context, ByteCodeOp::IncPointerVB32, lastParam->resultRegisterRC)->b.s32 = -8;
+        emitInstruction(context, ByteCodeOp::CopyVBtoRA32, r0[1])->b.u32 = 8;
+        emitInstruction(context, ByteCodeOp::DecPointer32, lastParam->resultRegisterRC, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[1]);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0[0]);
