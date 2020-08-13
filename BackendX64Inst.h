@@ -122,6 +122,55 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Move_Stack_In_AL(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString2("\x8a\x07"); // mov al, byte ptr [rdi]
+        }
+        else if (stackOffset <= 0xFF)
+        {
+            pp.concat.addString2("\x8a\x47"); // mov al, byte ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString2("\x8a\x87"); // mov al, byte ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_AX(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x66\x8b\x07"); // mov ax, word ptr [rdi]
+        }
+        else
+        {
+            pp.concat.addString3("\x66\x8b\x87"); // mov ax, word ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_EAX(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString2("\x8b\x07"); // mov eax, dword ptr [rdi]
+        }
+        else if (stackOffset <= 0xFF)
+        {
+            pp.concat.addString2("\x8b\x47"); // mov eax, dword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString2("\x8b\x87"); // mov eax, dword ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
     inline void emit_Move_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -372,6 +421,9 @@ namespace BackendX64Inst
     inline void emit_Move_AX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_AX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_EAX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_EAX_At_Stack(pp, r * sizeof(Register));}
     inline void emit_Move_RAX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_RAX_At_Stack(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_AL(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_AL(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_AX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_AX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_EAX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_EAX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RBX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RBX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RCX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RCX(pp, r * sizeof(Register)); }
