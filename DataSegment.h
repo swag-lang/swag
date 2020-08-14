@@ -24,7 +24,7 @@ enum class SegmentKind
 
 struct DataSegmentRef
 {
-    uint32_t    destOffset;
+    uint32_t    patchOffset;
     uint32_t    srcOffset;
     SegmentKind fromSegment;
 };
@@ -48,7 +48,7 @@ struct DataSegment
 
     uint32_t                 addString(const Utf8& str);
     uint32_t                 addStringNoLock(const Utf8& str);
-    void                     addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
+    void                     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
     void                     addInitPtrFunc(uint32_t offset, ByteCode* bc);
     shared_mutex             mutexPtr;
     map<Utf8, uint32_t>      mapString;

@@ -186,14 +186,14 @@ uint32_t DataSegment::addString(const Utf8& str)
     return addStringNoLock(str);
 }
 
-void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)
+void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg)
 {
     if (compilerOnly)
         return;
 
     DataSegmentRef ref;
-    ref.destOffset  = fromOffset;
-    ref.srcOffset   = toOffset;
+    ref.patchOffset = patchOffset;
+    ref.srcOffset   = srcOffset;
     ref.fromSegment = seg;
 
     scoped_lock lk(mutexPtr);

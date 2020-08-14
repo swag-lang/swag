@@ -106,7 +106,7 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
     {
         if (k.fromSegment == SegmentKind::Constant)
         {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
@@ -115,7 +115,7 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
         else
         {
             SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
@@ -150,7 +150,7 @@ bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
     {
         if (k.fromSegment == SegmentKind::Me)
         {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
@@ -159,7 +159,7 @@ bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
         else
         {
             SWAG_ASSERT(k.fromSegment == SegmentKind::Constant);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
@@ -194,7 +194,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
     {
         if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
@@ -203,7 +203,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
         else
         {
             SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.destOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
             auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));

@@ -20,7 +20,7 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
@@ -31,9 +31,9 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
             sym = getOrAddSymbol(pp, format("__tsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexTS);
         }
 
-        *(void**) dataSegment->address(k.destOffset) = 0;
+        *(void**) dataSegment->address(k.patchOffset) = 0;
 
-        reloc.virtualAddress = k.destOffset;
+        reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;
         relocTable.table.push_back(reloc);
@@ -58,7 +58,7 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me)
         {
             sym = getOrAddSymbol(pp, format("__tsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexTS);
@@ -69,9 +69,9 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
         }
 
-        *(void**) dataSegment->address(k.destOffset) = 0;
+        *(void**) dataSegment->address(k.patchOffset) = 0;
 
-        reloc.virtualAddress = k.destOffset;
+        reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;
         relocTable.table.push_back(reloc);
@@ -96,7 +96,7 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
     for (auto& k : dataSegment->initPtr)
     {
         CoffSymbol* sym;
-        SWAG_ASSERT(k.destOffset <= dataSegment->totalCount - sizeof(void*));
+        SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
         if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
         {
             sym = getOrAddSymbol(pp, format("__csr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexCS);
@@ -107,9 +107,9 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
             sym = getOrAddSymbol(pp, format("__tsr%d", k.srcOffset), CoffSymbolKind::Custom, k.srcOffset, pp.sectionIndexTS);
         }
 
-        *(void**) dataSegment->address(k.destOffset) = 0;
+        *(void**) dataSegment->address(k.patchOffset) = 0;
 
-        reloc.virtualAddress = k.destOffset;
+        reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;
         relocTable.table.push_back(reloc);

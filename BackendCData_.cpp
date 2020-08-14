@@ -83,7 +83,7 @@ bool BackendC::emitInitMutableSeg(OutputFile& bufferC)
                 firstCS = false;
             }
 
-            bufferC.addStringFormat("*(void**)(__ms8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ms8+%d)=__cs8+%d;\n", k.patchOffset, k.srcOffset);
         }
         else
         {
@@ -101,7 +101,7 @@ bool BackendC::emitInitMutableSeg(OutputFile& bufferC)
                 firstTS = false;
             }
 
-            bufferC.addStringFormat("*(void**)(__ms8+%d)=__ts8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ms8+%d)=__ts8+%d;\n", k.patchOffset, k.srcOffset);
         }
     }
 
@@ -126,7 +126,7 @@ bool BackendC::emitInitTypeSeg(OutputFile& bufferC)
                 firstTS = false;
             }
 
-            bufferC.addStringFormat("*(void**)(__ts8+%d)=__ts8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ts8+%d)=__ts8+%d;\n", k.patchOffset, k.srcOffset);
         }
         else
         {
@@ -141,7 +141,7 @@ bool BackendC::emitInitTypeSeg(OutputFile& bufferC)
                 CONCAT_FIXED_STR(bufferC, "__u8_t*__cs8=(__u8_t*)__cs;\n");
                 firstCS = false;
             }
-            bufferC.addStringFormat("*(void**)(__ts8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__ts8+%d)=__cs8+%d;\n", k.patchOffset, k.srcOffset);
         }
     }
 
@@ -166,7 +166,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
                 firstCS = false;
             }
 
-            bufferC.addStringFormat("*(void**)(__cs8+%d)=__cs8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__cs8+%d)=__cs8+%d;\n", k.patchOffset, k.srcOffset);
         }
         else
         {
@@ -178,7 +178,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
                 firstTS = false;
             }
 
-            bufferC.addStringFormat("*(void**)(__cs8+%d)=__ts8+%d;\n", k.destOffset, k.srcOffset);
+            bufferC.addStringFormat("*(void**)(__cs8+%d)=__ts8+%d;\n", k.patchOffset, k.srcOffset);
         }
     }
 
