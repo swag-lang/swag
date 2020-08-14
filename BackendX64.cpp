@@ -13,17 +13,17 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
 
     if (precompileIndex == 0)
     {
-        pp.bsIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
-        pp.csIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
-        pp.msIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
-        pp.tsIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
+        pp.symBSIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
+        pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
+        pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
+        pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
     }
     else
     {
-        pp.bsIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
-        pp.csIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
-        pp.msIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
-        pp.tsIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
+        pp.symBSIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
+        pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
+        pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
+        pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
     }
 
     return true;

@@ -924,14 +924,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::GetFromBssSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.bsIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symBSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::GetFromMutableSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.msIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symMSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
@@ -1009,25 +1009,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::MakeTypeSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ts + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.tsIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symTSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::MakeMutableSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ms + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.msIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symMSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::MakeBssSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__bs + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.bsIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symBSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.csIndex);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symCSIndex);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;

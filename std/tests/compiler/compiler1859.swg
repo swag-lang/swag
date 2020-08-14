@@ -1,5 +1,7 @@
 //var g = "toto"
 var g = 5's8
+var g1 = "toto"
+var g2 = "titi"
 
 func tt()
 {
@@ -41,6 +43,8 @@ func tt5()->[..] s64
 {
     if false
     {
+        @print(g1)
+        @print(g2)
         {
             x := "toto"
             if x == "toto"

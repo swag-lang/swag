@@ -94,10 +94,10 @@ struct X64PerThread
     uint32_t* patchTSOffset = nullptr;
     uint32_t* patchTSCount  = nullptr;
 
-    uint32_t bsIndex = 0;
-    uint32_t msIndex = 0;
-    uint32_t csIndex = 0;
-    uint32_t tsIndex = 0;
+    uint32_t symBSIndex = 0;
+    uint32_t symMSIndex = 0;
+    uint32_t symCSIndex = 0;
+    uint32_t symTSIndex = 0;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
