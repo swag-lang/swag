@@ -966,7 +966,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqualString:
     {
-        registersRC[ip->c.u32].b = swag_runtime_comparestring(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        registersRC[ip->c.u32].b = swag_runtime_comparestring(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32, registersRC[ip->d.u32].u32);
         break;
     }
     case ByteCodeOp::CompareOpEqualTypeInfo:

@@ -166,11 +166,13 @@ EXTERN_C void swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C bool swag_runtime_comparestring(const void* str1, const void* str2, swag_runtime_uint32_t num)
+EXTERN_C bool swag_runtime_comparestring(const void* str1, const void* str2, swag_runtime_uint32_t num1, swag_runtime_uint32_t num2)
 {
+    if (num1 != num2)
+        return false;
     if (!str1 || !str2)
         return str1 == str2;
-    return !memcmp((void*) str1, (void*) str2, num);
+    return !memcmp((void*) str1, (void*) str2, num1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,10 +187,7 @@ EXTERN_C bool swag_runtime_comparetype(const void* type1, const void* type2)
 
     auto ctype1 = (ConcreteTypeInfo*) type1;
     auto ctype2 = (ConcreteTypeInfo*) type2;
-    if (ctype1->name.count != ctype2->name.count)
-        return false;
-
-    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (swag_runtime_uint32_t) ctype1->name.count);
+    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (swag_runtime_uint32_t) ctype1->name.count, (swag_runtime_uint32_t) ctype2->name.count);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,9 +199,7 @@ EXTERN_C void* swag_runtime_interfaceof(const void* structType, const void* itfT
 
     for (swag_runtime_int32_t i = 0; i < ctype->interfaces.count; i++)
     {
-        if (buffer[i].name.count != itype->base.name.count)
-            continue;
-        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (swag_runtime_uint32_t) itype->base.name.count))
+        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (swag_runtime_uint32_t) buffer[i].name.count, (swag_runtime_uint32_t) itype->base.name.count))
             return buffer[i].value;
     }
 
