@@ -11,7 +11,7 @@ func tt1(x: s64)
     @print(x)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func tt2(x: f64, y: s64)
 {
     @print(x)
@@ -19,13 +19,20 @@ func tt2(x: f64, y: s64)
 }
 
 #[swag.printbc]
+func tt3(x: s64)->s64
+{
+    return x + 1
+}
+
+//#[swag.printbc]
 #test
 {
-    //tt()
-    tt1(666)
-    tt2(666.0, 50)
-    if false
+    if true
     {
+        @print(tt3(555))
+        tt()
+        tt1(666)
+        tt2(666.0, 50)
         {
             ptr := @typeof(s32)
             @print(ptr.name)

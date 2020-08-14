@@ -1079,6 +1079,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "swag_runtime_print_f64");
             break;
 
+        case ByteCodeOp::CopyRCtoRR:
+            //registersRR[ip->a.u32] = registersRC[ip->b.u32];
+            SWAG_ASSERT(ip->a.u32 <= 1); // Can only return 2 registers
+            if (ip->a.u32 == 0)
+                BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->b.u32);
+            else
+                BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            break;
+        case ByteCodeOp::CopyRRtoRCCall:
+            //registersRC[ip->a.u32] = registersRR[ip->b.u32];
+            SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
+            if (ip->a.u32 == 0)
+                BackendX64Inst::emit_Move_RCX_At_Reg(pp, ip->a.u32);
+            else
+                BackendX64Inst::emit_Move_RDX_At_Reg(pp, ip->b.u32);
+            break;
+
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;

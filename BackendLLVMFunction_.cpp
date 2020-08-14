@@ -424,9 +424,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
         allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxReservedRegisterRC));
-    llvm::AllocaInst* allocRT = nullptr;
+    llvm::AllocaInst* allocRR = nullptr;
     if (bc->maxCallResults)
-        allocRT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxCallResults));
+        allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxCallResults));
 
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
@@ -2627,7 +2627,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRCtoRRCall:
         {
             // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
-            auto r0 = GEP_I32(allocRT, ip->a.u32);
+            auto r0 = GEP_I32(allocRR, ip->a.u32);
             auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(r1, r0);
             break;
@@ -2636,7 +2636,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(GEP_I32(allocRT, ip->b.u32));
+            auto r1 = builder.CreateLoad(GEP_I32(allocRR, ip->b.u32));
             builder.CreateStore(r1, r0);
             break;
         }
@@ -2781,7 +2781,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
 
             VectorNative<llvm::Value*> fctParams;
-            getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
+            getCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
 
             //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
             {
@@ -2826,7 +2826,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
-            getCallParameters(buildParameters, allocR, allocRT, fctParams, typeFuncBC, pushRAParams);
+            getCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
 
             pushRAParams.clear();
@@ -2834,7 +2834,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::ForeignCall:
-            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRT, moduleToGen, ip, pushRAParams));
+            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRR, moduleToGen, ip, pushRAParams));
             break;
 
         case ByteCodeOp::IntrinsicS8x1:
@@ -3066,7 +3066,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
 void BackendLLVM::getCallParameters(const BuildParameters&      buildParameters,
                                     llvm::AllocaInst*           allocR,
-                                    llvm::AllocaInst*           allocRT,
+                                    llvm::AllocaInst*           allocRR,
                                     VectorNative<llvm::Value*>& params,
                                     TypeInfoFuncAttr*           typeFuncBC,
                                     VectorNative<uint32_t>&     pushRAParams)
@@ -3078,7 +3078,7 @@ void BackendLLVM::getCallParameters(const BuildParameters&      buildParameters,
 
     for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
     {
-        auto r0 = GEP_I32(allocRT, j);
+        auto r0 = GEP_I32(allocRR, j);
         params.push_back(r0);
     }
 
@@ -3187,7 +3187,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
 
 bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
                                   llvm::AllocaInst*       allocR,
-                                  llvm::AllocaInst*       allocRT,
+                                  llvm::AllocaInst*       allocRR,
                                   Module*                 moduleToGen,
                                   ByteCodeInstruction*    ip,
                                   VectorNative<uint32_t>& pushParams)
@@ -3323,12 +3323,12 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
         returnType->isNative(NativeTypeKind::String))
     {
         //CONCAT_FIXED_STR(concat, "&rt[0]");
-        params.push_back(TO_PTR_I8(allocRT));
+        params.push_back(TO_PTR_I8(allocRR));
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         //CONCAT_FIXED_STR(concat, "rt[0].pointer");
-        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRT)));
+        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
     }
 
     // Make the call
@@ -3349,11 +3349,11 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
             //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
-            builder.CreateStore(result, TO_PTR_PTR_I8(allocRT));
+            builder.CreateStore(result, TO_PTR_PTR_I8(allocRR));
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
-            auto r = TO_PTR_NATIVE(allocRT, returnType->nativeType);
+            auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
             if (!r)
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
             builder.CreateStore(result, r);
