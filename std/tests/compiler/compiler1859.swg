@@ -39,7 +39,7 @@ func tt5()->[..] s64
 #[swag.printbc]
 #test
 {
-    if false
+    if true
     {
         {
             x := "toto"
