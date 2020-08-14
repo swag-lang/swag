@@ -8,14 +8,20 @@
 #include "Module.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op) #__op,
+#define BYTECODE_OP(__op, __flags) #__op,
 const char* g_ByteCodeOpNames[] = {
 #include "ByteCodeOpList.h"
 };
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op) (int) strlen(#__op),
+#define BYTECODE_OP(__op, __flags) (int) strlen(#__op),
 int g_ByteCodeOpNamesLen[] = {
+#include "ByteCodeOpList.h"
+};
+
+#undef BYTECODE_OP
+#define BYTECODE_OP(__op, __flags) __flags,
+uint32_t g_ByteCodeOpFlags[] = {
 #include "ByteCodeOpList.h"
 };
 
@@ -148,166 +154,47 @@ void ByteCode::print()
 
         // Parameters
         g_Log.setColor(LogColor::Gray);
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_A)
+            g_Log.print(format("A [%u] ", ip->a.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_B)
+            g_Log.print(format("B [%u] ", ip->b.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_C)
+            g_Log.print(format("C [%u] ", ip->c.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_D)
+            g_Log.print(format("D [%u] ", ip->d.u32));
+
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_A)
+            g_Log.print(format("A (%u) ", ip->a.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_B)
+            g_Log.print(format("B (%u) ", ip->b.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_C)
+            g_Log.print(format("C (%u) ", ip->c.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_D)
+            g_Log.print(format("D (%u) ", ip->d.u32));
+
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_A)
+            g_Log.print(format("A {0x%X} ", ip->a.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_B)
+            g_Log.print(format("B {0x%x} ", ip->b.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_C)
+            g_Log.print(format("C {0x%x} ", ip->c.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_D)
+            g_Log.print(format("D {0x%x} ", ip->d.u32));
+
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_A)
+            g_Log.print(format("A {0x%llx} ", ip->a.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_B)
+            g_Log.print(format("B {0x%llx} ", ip->b.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_C)
+            g_Log.print(format("C {0x%llx} ", ip->c.u32));
+        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_D)
+            g_Log.print(format("D {0x%llx} ", ip->d.u32));
+
         switch (ip->op)
         {
-        case ByteCodeOp::Ret:
-        case ByteCodeOp::End:
-        case ByteCodeOp::PushBP:
-        case ByteCodeOp::PopBP:
-        case ByteCodeOp::CopySPtoBP:
-            break;
-
-        case ByteCodeOp::IncSP:
-        case ByteCodeOp::DecSP:
-        case ByteCodeOp::SetZeroStack8:
-        case ByteCodeOp::SetZeroStack16:
-        case ByteCodeOp::SetZeroStack32:
-        case ByteCodeOp::SetZeroStack64:
-            wprintf(L"VA: { %u }", ip->a.u32);
-            break;
-
-        case ByteCodeOp::SetZeroStackX:
-            wprintf(L"VA: { %u } VB: { %u }", ip->a.u32, ip->b.u32);
-            break;
-
         case ByteCodeOp::IntrinsicAssert:
-            if (ip->c.pointer)
-            {
-                auto    size = strlen((const char*) ip->c.pointer);
-                wstring wc(size + 1, L'#');
-                mbstowcs_s(nullptr, &wc[0], size + 1, (const char*) ip->c.pointer, size);
-                wprintf(L"RA: %u { \"%s\" }", ip->a.u32, wc.c_str());
-            }
-            else
-                wprintf(L"RA: %u ", ip->a.u32);
-            break;
-
-        case ByteCodeOp::PushRAParam:
-        case ByteCodeOp::PushRR:
-        case ByteCodeOp::PopRR:
-        case ByteCodeOp::DeRef8:
-        case ByteCodeOp::DeRef16:
-        case ByteCodeOp::DeRef32:
-        case ByteCodeOp::DeRef64:
-        case ByteCodeOp::IntrinsicPrintF64:
-        case ByteCodeOp::IntrinsicPrintS64:
-        case ByteCodeOp::ClearRA:
-        case ByteCodeOp::DecrementRA32:
-        case ByteCodeOp::IncrementRA32:
-        case ByteCodeOp::LambdaCall:
-        case ByteCodeOp::CastS8S16:
-        case ByteCodeOp::CastS16S32:
-        case ByteCodeOp::CastS32S64:
-        case ByteCodeOp::CastS32F32:
-        case ByteCodeOp::CastS64F32:
-        case ByteCodeOp::CastS64F64:
-        case ByteCodeOp::CastU32F32:
-        case ByteCodeOp::CastU64F32:
-        case ByteCodeOp::CastU64F64:
-        case ByteCodeOp::CastF32S32:
-        case ByteCodeOp::CastF32F64:
-        case ByteCodeOp::CastF64S64:
-        case ByteCodeOp::CastF64F32:
-        case ByteCodeOp::CastBool8:
-        case ByteCodeOp::CastBool16:
-        case ByteCodeOp::CastBool32:
-        case ByteCodeOp::CastBool64:
-        case ByteCodeOp::CopySPVaargs:
-        case ByteCodeOp::IntrinsicGetContext:
-        case ByteCodeOp::IntrinsicSetContext:
-        case ByteCodeOp::NegBool:
-        case ByteCodeOp::InvertS8:
-        case ByteCodeOp::InvertS16:
-        case ByteCodeOp::InvertS32:
-        case ByteCodeOp::InvertS64:
-        case ByteCodeOp::NegS32:
-        case ByteCodeOp::NegS64:
-        case ByteCodeOp::NegF32:
-        case ByteCodeOp::NegF64:
-            wprintf(L"RA: %u ", ip->a.u32);
-            break;
-
-        case ByteCodeOp::CopyRBtoRA:
-        case ByteCodeOp::CopyRBAddrToRA:
-        case ByteCodeOp::CopyRRtoRC:
-        case ByteCodeOp::CopyRRtoRCCall:
-        case ByteCodeOp::CopyRCtoRR:
-        case ByteCodeOp::CopyRCtoRRCall:
-        case ByteCodeOp::IntrinsicPrintString:
-        case ByteCodeOp::DeRefStringSlice:
-        case ByteCodeOp::TestNotZero8:
-        case ByteCodeOp::TestNotZero16:
-        case ByteCodeOp::TestNotZero32:
-        case ByteCodeOp::TestNotZero64:
-        case ByteCodeOp::AffectOpDivEqS8:
-        case ByteCodeOp::AffectOpDivEqS16:
-        case ByteCodeOp::AffectOpDivEqS32:
-        case ByteCodeOp::AffectOpDivEqS64:
-        case ByteCodeOp::AffectOpDivEqU8:
-        case ByteCodeOp::AffectOpDivEqU16:
-        case ByteCodeOp::AffectOpDivEqU32:
-        case ByteCodeOp::AffectOpDivEqU64:
-        case ByteCodeOp::AffectOpDivEqF32:
-        case ByteCodeOp::AffectOpDivEqF64:
-            wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::SetAtPointer8:
-        case ByteCodeOp::SetAtPointer16:
-        case ByteCodeOp::SetAtPointer32:
-        case ByteCodeOp::SetAtPointer64:
-        case ByteCodeOp::DeRefPointer:
-        case ByteCodeOp::MemCpyVC32:
-        case ByteCodeOp::SetZeroAtPointerXRB:
-            wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
-
-        case ByteCodeOp::MakeStackPointerParam:
-            wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
-
-        case ByteCodeOp::SetZeroAtPointerX:
-        case ByteCodeOp::GetFromStack64:
-        case ByteCodeOp::MakeStackPointer:
-        case ByteCodeOp::SetZeroAtPointer8:
-        case ByteCodeOp::SetZeroAtPointer16:
-        case ByteCodeOp::SetZeroAtPointer32:
-        case ByteCodeOp::SetZeroAtPointer64:
-        case ByteCodeOp::IncPointerVB32:
-        case ByteCodeOp::BinOpShiftRightU64VB:
-        case ByteCodeOp::AddVBtoRA32:
-        case ByteCodeOp::MakeConstantSegPointer:
-        case ByteCodeOp::MakeTypeSegPointer:
-            wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::ClearMaskU32:
-            wprintf(L"RA: %u VB: { 0x%x } ", ip->a.u32, ip->b.u32);
-            break;
-        case ByteCodeOp::ClearMaskU64:
-            wprintf(L"RA: %u VB: { 0x%llx } ", ip->a.u32, ip->b.u64);
-            break;
-
-        case ByteCodeOp::GetFromStackParam64:
-        case ByteCodeOp::CopySP:
-        case ByteCodeOp::MakeMutableSegPointer:
-        case ByteCodeOp::MakeBssSegPointer:
-            wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
-
-        case ByteCodeOp::GetFromMutableSeg64:
-        case ByteCodeOp::GetFromBssSeg64:
-        case ByteCodeOp::Mul64byVB32:
-        case ByteCodeOp::Div64byVB32:
-            wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::CopyVBtoRA32:
-            wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::CopyVBtoRA64:
-            wprintf(L"RA: %u VB: { %I64x }", ip->a.u32, ip->b.u64);
+            if (ip->d.pointer)
+                g_Log.print((const char*) ip->d.pointer);
             break;
 
         case ByteCodeOp::Jump:
@@ -320,44 +207,34 @@ void ByteCode::print()
         case ByteCodeOp::JumpIfNotZero64:
         case ByteCodeOp::JumpIfFalse:
         case ByteCodeOp::JumpIfTrue:
-            g_Log.setColor(LogColor::Gray);
-            wprintf(L"RA: %u ", ip->a.u32);
             g_Log.setColor(LogColor::Cyan);
             wprintf(bcNum, ip->b.s32 + i + 1);
             break;
 
         case ByteCodeOp::MakeLambdaForeign:
         {
-            wprintf(L"RA: %u ", ip->a.u32);
             auto func = (AstFuncDecl*) ip->b.pointer;
             SWAG_ASSERT(func);
-            g_Log.print("[");
             g_Log.print(func->sourceFile->path);
-            g_Log.print(", ");
+            g_Log.print(" ");
             g_Log.print(func->name);
-            g_Log.print("]");
             break;
         }
 
         case ByteCodeOp::MakeLambda:
         {
-            wprintf(L"RA: %u ", ip->a.u32);
             auto bc = (ByteCode*) ip->b.pointer;
             SWAG_ASSERT(bc);
-            g_Log.print("[");
             g_Log.print(bc->sourceFile->path);
-            g_Log.print(", ");
+            g_Log.print(" ");
             g_Log.print(bc->node->name);
-            g_Log.print("]");
             break;
         }
 
         case ByteCodeOp::ForeignCall:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            g_Log.print("[");
             g_Log.print(funcNode->name);
-            g_Log.print("]");
             break;
         }
 
@@ -377,17 +254,12 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicS64x1:
         case ByteCodeOp::IntrinsicF32x1:
         case ByteCodeOp::IntrinsicF64x1:
-            g_Log.print(format("VA: { %u } VB: { %u } %s", ip->a.u32, ip->b.u32, g_TokenNames[ip->d.u32]));
+            g_Log.print(g_TokenNames[ip->d.u32]);
             break;
 
         case ByteCodeOp::IntrinsicF32x2:
         case ByteCodeOp::IntrinsicF64x2:
-            g_Log.print(format("VA: { %u } VB: { %u } VC: { %u } %s", ip->a.u32, ip->b.u32, ip->c.u32, g_TokenNames[ip->d.u32]));
-            break;
-
-        default:
-            g_Log.setColor(LogColor::Gray);
-            wprintf(L"RA: %u RB: %u RC: %u", ip->a.u32, ip->b.u32, ip->c.u32);
+            g_Log.print(g_TokenNames[ip->d.u32]);
             break;
         }
 
