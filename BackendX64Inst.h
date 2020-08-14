@@ -825,6 +825,59 @@ namespace BackendX64Inst
 
     inline void emitJump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
     {
+        LabelToSolve label;
+        label.ipDest = jumpOffset + instructionCount + 1;
+
+        // Can we solve the lavel now ?
+        auto it = pp.labels.find(label.ipDest);
+        if (it != pp.labels.end())
+        {
+            // Estimate jump
+            label.currentOffset = (int32_t) pp.concat.totalCount() + 1;
+            int relOffset       = it->second - (label.currentOffset + 1);
+            if (relOffset >= -127 && relOffset <= 128)
+            {
+                switch (jumpType)
+                {
+                case JNZ:
+                    pp.concat.addString1("\x75"); // jnz ??
+                    break;
+                case JZ:
+                    pp.concat.addString1("\x74"); // jz ??
+                    break;
+                case JUMP:
+                    pp.concat.addString1("\xeb"); // jmp ??
+                    break;
+                }
+
+                int8_t offset8 = (int8_t) relOffset;
+                SWAG_ASSERT(offset8 >= -127 && offset8 <= 128);
+                pp.concat.addU8(*(uint8_t*) &offset8);
+            }
+            else
+            {
+                switch (jumpType)
+                {
+                case JNZ:
+                    pp.concat.addString2("\x0F\x85"); // jnz ????????
+                    break;
+                case JZ:
+                    pp.concat.addString2("\x0F\x84"); // jz ????????
+                    break;
+                case JUMP:
+                    pp.concat.addU8(0xE9); // jmp ????????
+                    break;
+                }
+
+                label.currentOffset = (int32_t) pp.concat.totalCount();
+                relOffset           = it->second - (label.currentOffset + 4);
+                pp.concat.addU32(*(uint32_t*) &relOffset);
+            }
+
+            return;
+        }
+
+        // Here we do not know the destination label, so we assume 32 bits of offset
         switch (jumpType)
         {
         case JNZ:
@@ -838,8 +891,6 @@ namespace BackendX64Inst
             break;
         }
 
-        LabelToSolve label;
-        label.ipDest        = jumpOffset + instructionCount + 1;
         label.currentOffset = (int32_t) pp.concat.totalCount();
         pp.concat.addU32(0);
         label.patch = pp.concat.getSeekPtr() - 4;
