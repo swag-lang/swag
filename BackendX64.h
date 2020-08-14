@@ -41,6 +41,13 @@ struct CoffRelocationTable
     vector<CoffRelocation> table;
 };
 
+struct LabelToSolve
+{
+    uint32_t ipDest;
+    int32_t  currentOffset;
+    uint8_t* patch;
+};
+
 struct X64PerThread
 {
     string filename;
@@ -57,14 +64,7 @@ struct X64PerThread
     map<Utf8Crc, uint32_t> globalStrings;
     map<uint32_t, int32_t> labels;
     DataSegment            stringSegment;
-
-    struct LabelToSolve
-    {
-        uint32_t ipDest;
-        int32_t  currentOffset;
-        uint8_t* patch;
-    };
-    vector<LabelToSolve> labelsToSolve;
+    vector<LabelToSolve>   labelsToSolve;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -124,6 +124,7 @@ struct BackendX64 : public Backend
     BackendFunctionBodyJob* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
+    void     addJump32(X64PerThread& pp, int32_t instructionCount, int32_t jumpOffset);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
