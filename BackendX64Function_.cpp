@@ -26,16 +26,6 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
     return it->second;
 }
 
-void BackendX64::addJump32(X64PerThread& pp, int32_t instructionCount, int32_t jumpOffset)
-{
-    LabelToSolve label;
-    label.ipDest        = jumpOffset + instructionCount + 1;
-    label.currentOffset = (int32_t) pp.concat.totalCount();
-    pp.concat.addU32(0);
-    label.patch = pp.concat.getSeekPtr() - 4;
-    pp.labelsToSolve.push_back(label);
-}
-
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -828,38 +818,33 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
-            concat.addString2("\x0F\x85"); // jnz ?
-            addJump32(pp, i, ip->b.s32);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfFalse:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
-            concat.addString2("\x0F\x84"); // jz ?
-            addJump32(pp, i, ip->b.s32);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero32:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
-            concat.addString2("\x0F\x84"); // jz ?
-            addJump32(pp, i, ip->b.s32);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero64:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_RAX_With_RAX(pp);
-            concat.addString2("\x0F\x84"); // jz ?
-            addJump32(pp, i, ip->b.s32);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::Jump:
             //CONCAT_FIXED_STR(concat, "goto _");
             //concat.addS32Str8(ip->a.s32 + i + 1);
-            concat.addU8(0xE9); // jmp ?
-            addJump32(pp, i, ip->a.s32);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, ip->a.s32);
             break;
 
         case ByteCodeOp::IncrementRA32:

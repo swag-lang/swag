@@ -4,6 +4,13 @@
 
 namespace BackendX64Inst
 {
+    enum JumpType
+    {
+        JNZ,
+        JZ,
+        JUMP,
+    };
+
     inline void emit_Symbol_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
     {
         auto& concat = pp.concat;
@@ -814,6 +821,29 @@ namespace BackendX64Inst
                 break;
             }
         }
+    }
+
+    inline void emitJump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
+    {
+        switch (jumpType)
+        {
+        case JNZ:
+            pp.concat.addString2("\x0F\x85"); // jnz ????????
+            break;
+        case JZ:
+            pp.concat.addString2("\x0F\x84"); // jz ????????
+            break;
+        case JUMP:
+            pp.concat.addU8(0xE9); // jmp ????????
+            break;
+        }
+
+        LabelToSolve label;
+        label.ipDest        = jumpOffset + instructionCount + 1;
+        label.currentOffset = (int32_t) pp.concat.totalCount();
+        pp.concat.addU32(0);
+        label.patch = pp.concat.getSeekPtr() - 4;
+        pp.labelsToSolve.push_back(label);
     }
 
 }; // namespace BackendX64Inst
