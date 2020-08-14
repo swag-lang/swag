@@ -637,10 +637,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_XMM0_At_RAX_F64(pp);
             break;
 
-        case ByteCodeOp::CompareOpGreaterS32:
-            //concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+        case ByteCodeOp::CompareOpGreaterU32:
+            //concat.addStringFormat("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
+            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpGreaterU64:
+            //concat.addStringFormat("r[%u].b = r[%u].u64 > r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
+            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpGreaterS32:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EBX(pp, ip->b.u32);
             BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
             concat.addString3("\x0f\x9f\xc0"); // setg al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
@@ -688,8 +704,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOpLowerS32:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EBX(pp, ip->b.u32);
             BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
             concat.addString3("\x0F\x9C\xC0"); // setl al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);

@@ -41,6 +41,20 @@ func tt5()->[..] s64
 {
     if true
     {
+        {
+            x := 0'u64
+            y := 1'u64
+            z := x > y
+            @print(cast(s64) z)
+        }
+
+        {
+            x := 1'u32
+            y := 0'u32
+            z := x > y
+            @print(cast(s64) z)
+        }
+
         @print(tt4())
 
         {
