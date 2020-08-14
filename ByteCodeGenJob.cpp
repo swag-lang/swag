@@ -22,11 +22,23 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
 
 uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
 {
+    // From the normal cache
     if (!context->bc->availableRegistersRC.empty())
     {
         auto result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();
         return result;
+    }
+
+    // From the linear cache
+    if (!context->bc->availableRegistersRC2.empty())
+    {
+        auto r0 = context->bc->availableRegistersRC2.back();
+        context->bc->availableRegistersRC2.pop_back();
+        auto r1 = context->bc->availableRegistersRC2.back();
+        context->bc->availableRegistersRC2.pop_back();
+        context->bc->availableRegistersRC.push_back(r1);
+        return r0;
     }
 
     return context->bc->maxReservedRegisterRC++;
@@ -36,9 +48,7 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
 {
     rc.clear();
     while (num--)
-    {
         rc += reserveRegisterRC(context);
-    }
 }
 
 void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
