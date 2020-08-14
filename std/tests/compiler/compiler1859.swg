@@ -39,7 +39,17 @@ func tt5()->[..] s64
 //#[swag.printbc]
 #test
 {
-    if true
+    {
+        x := "toto"
+        if x == "toto"
+            @print("true")
+        if x == "toto1"
+            @print("true")
+        else
+            @print("false")
+    }
+
+    if false
     {
         {
             x := 0'u64

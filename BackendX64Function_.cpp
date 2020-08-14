@@ -767,6 +767,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x0F\x94\xC0"); // sete al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
+        case ByteCodeOp::CompareOpEqualString:
+            //concat.addStringFormat("r[%u].b = swag_runtime_comparestring(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
+            emitCall(pp, "swag_runtime_comparestring");
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
 
         case ByteCodeOp::TestNotZero8:
             //concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
