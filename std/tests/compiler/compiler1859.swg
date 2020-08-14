@@ -36,7 +36,7 @@ func tt5()->[..] s64
     return @[10, 20, 30, 40]
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     if true

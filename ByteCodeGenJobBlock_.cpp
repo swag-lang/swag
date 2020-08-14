@@ -449,6 +449,11 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 
         freeRegisterRC(context, r0);
 
+        for (auto expr : caseNode->expressions)
+        {
+            freeRegisterRC(context, expr->resultRegisterRC);
+        }
+
         // Jump to the next case, except for the default, which is the last
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
