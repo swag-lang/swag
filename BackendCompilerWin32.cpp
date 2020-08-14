@@ -24,7 +24,6 @@ namespace OS
 
         clArguments += "/nologo ";
         clArguments += "/GS- ";
-        clArguments += "/MD ";
 
         for (const auto& file : cFiles)
             clArguments += "/Tc\"" + file + "\" ";
