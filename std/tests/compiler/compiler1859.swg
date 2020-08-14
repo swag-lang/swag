@@ -1,9 +1,29 @@
 //var g = "toto"
 var g = 5's8
 
-//#[swag.printbc]
+func tt()
+{
+    @print("toto")
+}
+
+func tt1(x: s64)
+{
+    @print(x)
+}
+
+#[swag.printbc]
+func tt2(x: f64, y: s64)
+{
+    @print(x)
+    @print(y)
+}
+
+#[swag.printbc]
 #test
 {
+    //tt()
+    tt1(666)
+    tt2(666.0, 50)
     if false
     {
         {

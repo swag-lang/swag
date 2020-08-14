@@ -7,6 +7,8 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 #include "Module.h"
+#include "TypeInfo.h"
+#include "TypeManager.h"
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
@@ -53,28 +55,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // For float load
     // (should be reserved only if we have floating point operations in that function)
-    sizeStack += 8;
-
-    if (typeFunc->stackSize)
-    {
-        sizeStack += typeFunc->stackSize;
-        offsetFLT += typeFunc->stackSize;
-    }
-
-    if (bc->maxCallResults)
-    {
-        offsetStack += bc->maxCallResults * sizeof(Register);
-        sizeStack += bc->maxCallResults * sizeof(Register);
-        offsetFLT += bc->maxCallResults * sizeof(Register);
-    }
-
-    if (bc->maxReservedRegisterRC)
-    {
-        offsetRT += bc->maxReservedRegisterRC * sizeof(Register);
-        offsetStack += bc->maxReservedRegisterRC * sizeof(Register);
-        sizeStack += bc->maxReservedRegisterRC * sizeof(Register);
-        offsetFLT += bc->maxReservedRegisterRC * sizeof(Register);
-    }
+    // In order we have :
+    // RC at 0 (bc->maxReservedRegisterRC)
+    // RT (max call results)
+    // Local function stack
+    // FLT
+    offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
+    offsetStack = offsetRT + bc->maxCallResults * sizeof(Register);
+    offsetFLT   = offsetStack + typeFunc->stackSize;
+    sizeStack   = offsetFLT + 8;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
@@ -1021,14 +1010,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Mul64byVB32:
             //concat.addStringFormat("r[%u].s64 *= %u;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            concat.addString3("\x48\x69\xC0"); // imul rax, rax, ?
+            concat.addString3("\x48\x69\xC0"); // imul rax, rax, ????????
             concat.addU32(ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::CopyVBtoRA32:
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
-            concat.addString2("\xC7\x87"); // mov [rdi + ?] = ?
+            concat.addString2("\xC7\x87"); // mov [rdi + ?] = ????????
             concat.addU32(ip->a.u32 * sizeof(Register));
             concat.addU32(ip->b.u32);
             break;
@@ -1042,7 +1031,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
-            concat.addString3("\x49\xC7\xC0"); // mov r8, ?
+            concat.addString3("\x49\xC7\xC0"); // mov r8, ????????
             concat.addU32(ip->c.u32);
             emitCall(pp, "memcpy");
             break;
@@ -1050,13 +1039,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
-            concat.addString2("\x48\xBA"); // mov rdx, ?
+            concat.addString2("\x48\xBA"); // mov rdx, ????????
             emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path));
-            concat.addString3("\x49\xC7\xC0"); // mov r8, ?
+            concat.addString3("\x49\xC7\xC0"); // mov r8, ????????
             concat.addU32(ip->node->token.startLocation.line + 1);
             if (ip->d.pointer)
             {
-                concat.addString2("\x49\xB9"); // mov r9, ?
+                concat.addString2("\x49\xB9"); // mov r9, ????????
                 emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer);
             }
             else
@@ -1090,6 +1079,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "swag_runtime_print_f64");
             break;
 
+        case ByteCodeOp::PushRAParam:
+            pushRAParams.push_back(ip->a.u32);
+            break;
+        case ByteCodeOp::GetFromStackParam64:
+            concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+
+        case ByteCodeOp::LocalCall:
+        {
+            auto funcBC = (ByteCode*) ip->a.pointer;
+
+            for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
+            {
+                concat.addString2("\xff\xb7"); // push [rdi + ????????]
+                concat.addU32(pushRAParams[iParam] * sizeof(Register));
+            }
+
+            emitCall(pp, funcBC->callName());
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, (int) pushRAParams.size() * sizeof(Register));
+            pushRAParams.clear();
+            break;
+        }
+
         case ByteCodeOp::Ret:
             if (sizeStack)
             {
@@ -1119,4 +1136,48 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     return true;
+}
+
+void BackendX64::emitGetParameter(X64PerThread& pp, uint32_t r, uint32_t idx)
+{
+    switch (idx)
+    {
+    case 0:
+        BackendX64Inst::emit_Move_RCX_At_Reg(pp, r);
+        break;
+    case 1:
+        BackendX64Inst::emit_Move_RDX_At_Reg(pp, r);
+        break;
+    }
+}
+
+void BackendX64::emitOneCallParameter(X64PerThread& pp, int indexCallParam, int numCallParams, uint32_t offsetStackR, uint32_t r)
+{
+    switch (indexCallParam)
+    {
+    case 0:
+        BackendX64Inst::emit_Move_Reg_In_RCX(pp, r);
+        break;
+    case 1:
+        BackendX64Inst::emit_Move_Reg_In_RDX(pp, r);
+        break;
+    }
+}
+
+void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+{
+    int      numCallParams  = (int) typeFuncBC->numParamsRegisters() + typeFuncBC->numReturnRegisters();
+    uint32_t indexCallParam = numCallParams;
+
+    // Emit parameter from right to left
+    // Note that pushRAParams is already inverted
+    for (int idxCall = 0; idxCall < pushRAParams.size(); idxCall++)
+    {
+        auto regIndex = pushRAParams[idxCall];
+        emitOneCallParameter(pp, --indexCallParam, numCallParams, 0, regIndex);
+    }
+
+    for (int j = typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
+        emitOneCallParameter(pp, --indexCallParam, numCallParams, offsetRT, j);
+    SWAG_ASSERT(indexCallParam == 0);
 }
