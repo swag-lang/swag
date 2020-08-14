@@ -1015,12 +1015,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::CompareOpLowerEqU32:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 <= registersRC[ip->b.u32].u32;
-        break;
-    }
-
     case ByteCodeOp::CompareOpGreaterS32:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].s32 > registersRC[ip->b.u32].s32;

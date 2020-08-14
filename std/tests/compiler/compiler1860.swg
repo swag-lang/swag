@@ -1,12 +1,7 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    a := 0
-    switch(a)
-    {
-        case 0: break;
-        case 1: break;
-    }
-
-    a += 1
+    a := 254'u8
+    a += 5
+    @print(cast(s64) a)
 }
