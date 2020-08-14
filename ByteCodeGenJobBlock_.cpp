@@ -370,9 +370,10 @@ bool ByteCodeGenJob::emitForAfterPost(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
 {
-    auto node                    = context->node;
-    auto switchNode              = CastAst<AstSwitch>(node, AstNodeKind::Switch);
-    switchNode->resultRegisterRC = switchNode->expression->resultRegisterRC;
+    auto node       = context->node;
+    auto switchNode = CastAst<AstSwitch>(node, AstNodeKind::Switch);
+
+    freeRegisterRC(context, switchNode->expression->resultRegisterRC);
 
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
@@ -448,11 +449,8 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         }
 
         freeRegisterRC(context, r0);
-
         for (auto expr : caseNode->expressions)
-        {
             freeRegisterRC(context, expr->resultRegisterRC);
-        }
 
         // Jump to the next case, except for the default, which is the last
         blockNode->seekJumpNextCase = context->bc->numInstructions;
