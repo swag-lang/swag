@@ -38,6 +38,7 @@ struct ByteCodeInstruction
     SourceLocation* getLocation(ByteCode* bc);
 };
 
+#define MAX_CACHE_FREE_REG 8
 struct ByteCode
 {
     void enterByteCode(ByteCodeRunContext* context);
@@ -52,6 +53,7 @@ struct ByteCode
 
     VectorNative<uint32_t>  availableRegistersRC;
     VectorNative<uint32_t>  availableRegistersRC2;
+    uint32_t                regIsFree[MAX_CACHE_FREE_REG] = {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX};
     VectorNative<Register*> registersRC;
     VectorNative<void*>     autoFree;
 

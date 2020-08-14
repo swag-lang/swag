@@ -27,6 +27,11 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
     {
         auto result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();
+        if (result < MAX_CACHE_FREE_REG)
+        {
+            SWAG_ASSERT(context->bc->regIsFree[result] != UINT32_MAX);
+            context->bc->regIsFree[result] = UINT32_MAX;
+        }
         return result;
     }
 
@@ -37,7 +42,13 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
         context->bc->availableRegistersRC2.pop_back();
         auto r1 = context->bc->availableRegistersRC2.back();
         context->bc->availableRegistersRC2.pop_back();
+        if (r1 < MAX_CACHE_FREE_REG)
+        {
+            SWAG_ASSERT(context->bc->regIsFree[r1] == UINT32_MAX);
+            context->bc->regIsFree[r1] = (uint32_t) context->bc->availableRegistersRC.size();
+        }
         context->bc->availableRegistersRC.push_back(r1);
+
         return r0;
     }
 
@@ -83,7 +94,7 @@ void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& 
     for (int i = 0; i < count; i++)
         rs += rc[i];
     for (int i = count; i < rc.size(); i++)
-        context->bc->availableRegistersRC.push_back(rc[i]);
+        freeRegisterRC(context, rc[i]);
 
     rc = rs;
 }
@@ -105,9 +116,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 
     auto n = rc.size();
     for (int i = n - 1; i >= 0; i--)
-    {
         freeRegisterRC(context, rc[i]);
-    }
 
     rc.clear();
 }
@@ -115,9 +124,48 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
 #ifdef SWAG_HAS_ASSERT
+    if (rc < MAX_CACHE_FREE_REG)
+        SWAG_ASSERT(context->bc->regIsFree[rc] == UINT32_MAX);
     for (auto r : context->bc->availableRegistersRC)
         SWAG_ASSERT(r != rc);
 #endif
+
+    // In linear cache ?
+    if (rc < MAX_CACHE_FREE_REG)
+    {
+        if (rc && context->bc->regIsFree[rc - 1] != UINT32_MAX)
+        {
+            uint32_t fi = context->bc->regIsFree[rc - 1];
+            uint32_t bi = context->bc->availableRegistersRC.back();
+            if (bi < MAX_CACHE_FREE_REG)
+                context->bc->regIsFree[bi] = fi;
+            context->bc->regIsFree[rc - 1]        = UINT32_MAX;
+            context->bc->availableRegistersRC[fi] = bi;
+            context->bc->availableRegistersRC.pop_back();
+
+            context->bc->availableRegistersRC2.push_back(rc);
+            context->bc->availableRegistersRC2.push_back(rc - 1);
+            return;
+        }
+
+        if (rc < MAX_CACHE_FREE_REG - 1 && context->bc->regIsFree[rc + 1] != UINT32_MAX)
+        {
+            uint32_t fi = context->bc->regIsFree[rc + 1];
+            uint32_t bi = context->bc->availableRegistersRC.back();
+            if (bi < MAX_CACHE_FREE_REG)
+                context->bc->regIsFree[bi] = fi;
+            context->bc->regIsFree[rc + 1]        = UINT32_MAX;
+            context->bc->availableRegistersRC[fi] = bi;
+            context->bc->availableRegistersRC.pop_back();
+
+            context->bc->availableRegistersRC2.push_back(rc + 1);
+            context->bc->availableRegistersRC2.push_back(rc);
+            return;
+        }
+
+        context->bc->regIsFree[rc] = (uint32_t) context->bc->availableRegistersRC.size();
+    }
+
     context->bc->availableRegistersRC.push_back(rc);
 }
 
