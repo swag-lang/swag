@@ -670,6 +670,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
 
+        case ByteCodeOp::CompareOpLowerU32:
+            //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
+            concat.addString3("\x0f\x92\xc0"); // setb al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpLowerU64:
+            //concat.addStringFormat("r[%u].b = r[%u].u64 < r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
+            concat.addString3("\x0f\x92\xc0"); // setb al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
         case ByteCodeOp::CompareOpLowerS32:
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
@@ -1090,10 +1106,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CopyRRtoRCCall:
             //registersRC[ip->a.u32] = registersRR[ip->b.u32];
             SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
-            if (ip->a.u32 == 0)
+            if (ip->b.u32 == 0)
                 BackendX64Inst::emit_Move_RCX_At_Reg(pp, ip->a.u32);
             else
-                BackendX64Inst::emit_Move_RDX_At_Reg(pp, ip->b.u32);
+                BackendX64Inst::emit_Move_RDX_At_Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::PushRAParam:

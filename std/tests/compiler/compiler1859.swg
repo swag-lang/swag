@@ -18,10 +18,22 @@ func tt2(x: f64, y: s64)
     @print(y)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func tt3(x: s64)->s64
 {
     return x + 1
+}
+
+//#[swag.printbc]
+func tt4()->string
+{
+    return "string"
+}
+
+//#[swag.printbc]
+func tt5()->[..] s64
+{
+    return @[10, 20, 30, 40]
 }
 
 //#[swag.printbc]
@@ -29,10 +41,32 @@ func tt3(x: s64)->s64
 {
     if true
     {
+        @print(tt4())
+
+        {
+            x := tt5()
+            @print(x[3])
+        }
+
         @print(tt3(555))
         tt()
         tt1(666)
         tt2(666.0, 50)
+
+        {
+            x := 0'u64
+            y := 1'u64
+            z := x < y
+            @print(cast(s64) z)
+        }
+
+        {
+            x := 0'u32
+            y := 1'u32
+            z := x < y
+            @print(cast(s64) z)
+        }
+
         {
             ptr := @typeof(s32)
             @print(ptr.name)
