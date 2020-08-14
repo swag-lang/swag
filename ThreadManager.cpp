@@ -131,7 +131,9 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 
 static int exceptionHandler()
 {
+#ifdef SWAG_HAS_ASSERT
     g_diagnosticInfos.reportError("exception during job execution !");
+#endif
 
     if (g_CommandLine.devMode)
     {

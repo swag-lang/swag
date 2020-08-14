@@ -51,8 +51,7 @@ JobResult BackendCFunctionBodyJob::execute()
         firstBucket = firstBucket->nextBucket;
     }
 
-    auto wantedTotal = g_Concat.totalCount();
-    SWAG_ASSERT(totalCount == wantedTotal);
+    SWAG_ASSERT(totalCount == g_Concat.totalCount());
     g_Concat.clear();
 
     return JobResult::ReleaseJob;

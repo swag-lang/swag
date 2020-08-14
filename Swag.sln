@@ -14,6 +14,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (Runtime)|x64 = Debug (Runtime)|x64
 		Debug|x64 = Debug|x64
+		Final|x64 = Final|x64
 		Release (Runtime)|x64 = Release (Runtime)|x64
 		Release|x64 = Release|x64
 	EndGlobalSection
@@ -22,6 +23,8 @@ Global
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Debug (Runtime)|x64.Build.0 = Debug|x64
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Debug|x64.ActiveCfg = Debug|x64
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Debug|x64.Build.0 = Debug|x64
+		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Final|x64.ActiveCfg = Final|x64
+		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Final|x64.Build.0 = Final|x64
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Release (Runtime)|x64.ActiveCfg = Release|x64
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Release (Runtime)|x64.Build.0 = Release|x64
 		{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}.Release|x64.ActiveCfg = Release|x64
@@ -30,6 +33,8 @@ Global
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Debug (Runtime)|x64.Build.0 = Debug (Runtime)|x64
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Debug|x64.ActiveCfg = Debug|x64
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Debug|x64.Build.0 = Debug|x64
+		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Final|x64.ActiveCfg = Release|x64
+		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Final|x64.Build.0 = Release|x64
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Release (Runtime)|x64.ActiveCfg = Release (Runtime)|x64
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Release (Runtime)|x64.Build.0 = Release (Runtime)|x64
 		{CDDA1E7E-EB88-479A-9DF5-8894C8EE73CB}.Release|x64.ActiveCfg = Release|x64

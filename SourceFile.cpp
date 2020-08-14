@@ -273,7 +273,9 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     // Block execution in devmode, to be able to attach...
     if (diag.criticalError && g_CommandLine.devMode)
     {
+#ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.log();
+#endif
         OS::errorBox("[Developer Mode]", "Error raised !");
         return false;
     }
