@@ -1373,6 +1373,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
         }
         else
         {
+            // rr[0] is rcx, rr[1] is rdx, this is the convention for local calls
             pp.concat.addString3("\x48\x89\xc1"); // copy rcx, rax
         }
     }
@@ -1456,31 +1457,32 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, uint32_t& exceededStack, M
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
     {
-        SWAG_ASSERT(false);
+        return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        SWAG_ASSERT(false);
+        return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
     }
 
     for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
     {
         auto type = paramsTypes[i];
+        auto r    = paramsRegisters[i];
         if (type->flags & TYPEINFO_INTEGER)
         {
             switch (i)
             {
             case 0:
-                BackendX64Inst::emit_Move_Reg_In_RCX(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_RCX(pp, r);
                 break;
             case 1:
-                BackendX64Inst::emit_Move_Reg_In_RDX(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_RDX(pp, r);
                 break;
             case 2:
-                BackendX64Inst::emit_Move_Reg_In_R8(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_R8(pp, r);
                 break;
             case 3:
-                BackendX64Inst::emit_Move_Reg_In_R9(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_R9(pp, r);
                 break;
             }
         }
@@ -1489,16 +1491,16 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, uint32_t& exceededStack, M
             switch (i)
             {
             case 0:
-                BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, r);
                 break;
             case 1:
-                BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, r);
                 break;
             case 2:
-                BackendX64Inst::emit_Move_Reg_In_XMM2_F64(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_XMM2_F64(pp, r);
                 break;
             case 3:
-                BackendX64Inst::emit_Move_Reg_In_XMM3_F64(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move_Reg_In_XMM3_F64(pp, r);
                 break;
             }
         }
@@ -1508,6 +1510,7 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, uint32_t& exceededStack, M
     if (paramsRegisters.size() > 4)
     {
         // Need to reserve additional room in the stack for all other parameters
+        // (remember: we already have reserved 4 x uint64_t for the first four parameters)
         for (int i = 4; i < (int) paramsRegisters.size(); i++)
             exceededStack += paramsTypes[i]->sizeOf;
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
