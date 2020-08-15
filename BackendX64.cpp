@@ -356,7 +356,13 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     {
         // .Name
         if (symbol.name.length() <= 8)
-            concat.addString(symbol.name.c_str(), 8);
+        {
+            // Be sure it's stuffed with 0 after the name, or we can have weird things
+            // in the compiler
+            concat.addU64(0);
+            auto ptr = concat.getSeekPtr() - 8;
+            memcpy(ptr, symbol.name.c_str(), symbol.name.length());
+        }
         else
         {
             concat.addU32(0);
