@@ -23,22 +23,24 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
 
 Module* Workspace::createOrUseModule(const Utf8& moduleName)
 {
-    Module* module = getModuleByName(moduleName);
-    if (module)
-        return module;
+    Module* module = nullptr;
 
     {
         unique_lock lk(mutexModules);
 
         auto it = mapModulesNames.find(moduleName);
         if (it != mapModulesNames.end())
+        {
+            it->second->setup(moduleName);
             return it->second;
+        }
 
         module = g_Allocator.alloc<Module>();
-        module->setup(moduleName);
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
     }
+
+    module->setup(moduleName);
 
     // Is this the module we want to build ?
     if (g_CommandLine.moduleFilter == moduleName)

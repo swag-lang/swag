@@ -117,6 +117,7 @@ struct Module
     AstNode*  mainIsDefined    = nullptr;
     bool      isBootStrap      = false;
     bool      hasUnittestError = false;
+    bool      setupDone        = false;
 
     void     addForeignLib(const Utf8& text);
     void     addDependency(AstNode* importNode);

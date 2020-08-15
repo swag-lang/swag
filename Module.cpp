@@ -14,6 +14,11 @@
 
 bool Module::setup(const Utf8& moduleName)
 {
+    unique_lock lk(mutexFile);
+    if (setupDone)
+        return true;
+    setupDone = true;
+
     constantSegmentCompiler.compilerOnly = true;
 
     name   = moduleName;
