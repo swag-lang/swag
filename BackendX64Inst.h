@@ -464,8 +464,26 @@ namespace BackendX64Inst
             pp.concat.addU8((uint8_t) stackOffset);
         }
         else
-        {
+        {                        
             pp.concat.addString3("\x44\x8b\x8f"); // mov r9d, dword ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_R9(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString3("\x4c\x8b\x0f"); // mov r9, qword ptr [rdi]
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString3("\x4c\x8b\x4f"); // mov r9, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString3("\x4c\x8b\x8f"); // mov r9, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -538,6 +556,42 @@ namespace BackendX64Inst
         else
         {
             pp.concat.addString4("\xf2\x0f\x10\x8f"); // movsd xmm1, qword ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_XMM2_F64(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x17"); // movsd xmm2, qword ptr [rdi]
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x57"); // movsd xmm2, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x97"); // movsd xmm2, qword ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move_Stack_In_XMM3_F64(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x1f"); // movsd xmm3, qword ptr [rdi]
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x5f"); // movsd xmm3, qword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString4("\xf2\x0f\x10\x9f"); // movsd xmm3, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -825,12 +879,15 @@ namespace BackendX64Inst
     inline void emit_Move_Reg_In_RDX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RDX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R8D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8D(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R8(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_R9(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R9D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9D(pp, r * sizeof(Register)); }
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM0_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM1_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM0_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F64(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM1_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F64(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM2_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM2_F64(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_XMM3_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM3_F64(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
     // clang-format on

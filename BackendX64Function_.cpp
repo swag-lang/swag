@@ -1308,6 +1308,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::ForeignCall:
+            emitForeignCall(pp, offsetRT, ip, pushRAParams);
+            break;
+
         case ByteCodeOp::Ret:
             if (sizeStack)
             {
@@ -1338,46 +1342,151 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-void BackendX64::emitGetParameter(X64PerThread& pp, uint32_t r, uint32_t idx)
+void BackendX64::emitForeignCall(X64PerThread& pp, uint32_t offsetRT, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams)
 {
-    switch (idx)
-    {
-    case 0:
-        BackendX64Inst::emit_Move_RCX_At_Reg(pp, r);
-        break;
-    case 1:
-        BackendX64Inst::emit_Move_RDX_At_Reg(pp, r);
-        break;
-    }
-}
+    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-void BackendX64::emitOneCallParameter(X64PerThread& pp, int indexCallParam, int numCallParams, uint32_t offsetStackR, uint32_t r)
-{
-    switch (indexCallParam)
-    {
-    case 0:
-        BackendX64Inst::emit_Move_Reg_In_RCX(pp, r);
-        break;
-    case 1:
-        BackendX64Inst::emit_Move_Reg_In_RDX(pp, r);
-        break;
-    }
+    // Get function name
+    ComputedValue foreignValue;
+    Utf8          funcName;
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        funcName = foreignValue.text;
+    else
+        funcName = nodeFunc->name;
+
+    emitCallParameters(pp, offsetRT, typeFuncBC, pushRAParams);
+    emitCall(pp, funcName);
+
+    pushRAParams.clear();
 }
 
 void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
-    int      numCallParams  = (int) typeFuncBC->numParamsRegisters() + typeFuncBC->numReturnRegisters();
-    uint32_t indexCallParam = numCallParams;
+    int numCallParams = (int) typeFuncBC->parameters.size();
 
-    // Emit parameter from right to left
-    // Note that pushRAParams is already inverted
-    for (int idxCall = 0; idxCall < pushRAParams.size(); idxCall++)
+    VectorNative<uint32_t>  paramsRegisters;
+    VectorNative<TypeInfo*> paramsTypes;
+
+    // Variadic are first
+    if (numCallParams)
     {
-        auto regIndex = pushRAParams[idxCall];
-        emitOneCallParameter(pp, --indexCallParam, numCallParams, 0, regIndex);
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            auto index = pushRAParams.back();
+            pushRAParams.pop_back();
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+
+            index = pushRAParams.back();
+            pushRAParams.pop_back();
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU32);
+        }
     }
 
-    for (int j = typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
-        emitOneCallParameter(pp, --indexCallParam, numCallParams, offsetRT, j);
-    SWAG_ASSERT(indexCallParam == 0);
+    // All parameters
+    for (int i = 0; i < (int) typeFuncBC->parameters.size(); i++)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
+
+        auto index = pushRAParams.back();
+        pushRAParams.pop_back();
+
+        if (typeParam->kind == TypeInfoKind::Pointer ||
+            typeParam->kind == TypeInfoKind::Struct ||
+            typeParam->kind == TypeInfoKind::Interface ||
+            typeParam->kind == TypeInfoKind::Array)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            index = pushRAParams.back();
+            pushRAParams.pop_back();
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU32);
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+            index = pushRAParams.back();
+            pushRAParams.pop_back();
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
+        }
+        else
+        {
+            SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
+    }
+
+    // Return by parameter
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String))
+    {
+        SWAG_ASSERT(false);
+    }
+    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        SWAG_ASSERT(false);
+    }
+
+    for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
+    {
+        auto type = paramsTypes[i];
+        if (type->flags & TYPEINFO_INTEGER)
+        {
+            switch (i)
+            {
+            case 0:
+                BackendX64Inst::emit_Move_Reg_In_RCX(pp, paramsRegisters[i]);
+                break;
+            case 1:
+                BackendX64Inst::emit_Move_Reg_In_RDX(pp, paramsRegisters[i]);
+                break;
+            case 2:
+                BackendX64Inst::emit_Move_Reg_In_R8(pp, paramsRegisters[i]);
+                break;
+            case 3:
+                BackendX64Inst::emit_Move_Reg_In_R9(pp, paramsRegisters[i]);
+                break;
+            }
+        }
+        else if (type->flags & TYPEINFO_FLOAT)
+        {
+            switch (i)
+            {
+            case 0:
+                BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, paramsRegisters[i]);
+                break;
+            case 1:
+                BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, paramsRegisters[i]);
+                break;
+            case 2:
+                BackendX64Inst::emit_Move_Reg_In_XMM2_F64(pp, paramsRegisters[i]);
+                break;
+            case 3:
+                BackendX64Inst::emit_Move_Reg_In_XMM3_F64(pp, paramsRegisters[i]);
+                break;
+            }
+        }
+    }
+
+    if (paramsRegisters.size() > 4)
+    {
+        SWAG_ASSERT(false);
+        for (int i = (int) paramsRegisters.size() - 1; i >= 0; i--)
+        {
+        }
+    }
 }

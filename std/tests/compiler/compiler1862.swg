@@ -1,4 +1,4 @@
-#if #os == "windows"
+/*#if #os == "windows"
 {
     #foreignlib "user32"
     #[swag.foreign("user32")]
@@ -7,9 +7,6 @@
     #[swag.printbc]
     #test
     {
-        str := "coucou"
-        str1 := str[0..2]
-
-        MessageBoxA(null, cast(const *u8) str1, cast(const *u8) "la foule", 0)
+        MessageBoxA(null, cast(const *u8) "coucou", cast(const *u8) "la foule", 0)
     }
-}
+}*/

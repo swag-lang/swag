@@ -135,10 +135,6 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    void emitGetParameter(X64PerThread& pp, uint32_t r, uint32_t idx);
-    void emitOneCallParameter(X64PerThread& pp, int indexCallParam, int numCallParams, uint32_t offsetStackR, uint32_t r);
-    void emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
-
     bool generateObjFile(const BuildParameters& buildParameters);
 
     bool buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
@@ -150,6 +146,9 @@ struct BackendX64 : public Backend
     bool emitMain(const BuildParameters& buildParameters);
 
     void emitCall(X64PerThread& pp, const Utf8& name);
+
+    void emitForeignCall(X64PerThread& pp, uint32_t offsetRT, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams);
+    void emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
