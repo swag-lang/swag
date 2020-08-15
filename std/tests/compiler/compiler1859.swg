@@ -53,13 +53,22 @@ struct B
 //#[swag.printbc]
 #test
 {
+    if false
     {
-        var x: B
-        @print(cast(s64) x.y)
-    }
+        {
+            var x: [4] s64
+            x[1] = 666
+            @print(x[1])
+            cpt := 2
+            init(&x[0], cpt)
+            @print(x[1])
+        }
 
-    if true
-    {
+        {
+            var x: B
+            @print(cast(s64) x.y)
+        }
+
         {
             x := @[1's64, 2]
             ptr := &x[0]

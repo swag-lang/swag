@@ -986,6 +986,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Cst64_In_R8(pp, ip->b.u32);
             emitCall(pp, "memset");
             break;
+        case ByteCodeOp::SetZeroAtPointerXRB:
+            //concat.addStringFormat("memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Clear_RDX(pp);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->b.u32);
+            concat.addString2("\x69\xc0"); // imul eax, ????????
+            concat.addU32(ip->c.u32);
+            concat.addString3("\x49\x89\xc0"); // mov r8, rax           
+            emitCall(pp, "memset");
+            break;
 
         case ByteCodeOp::SetZeroStack8:
             //CONCAT_STR_1(concat, "*(__u8_t*)(s+", ip->a.u32, ")=0;");
