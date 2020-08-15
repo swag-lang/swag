@@ -100,8 +100,8 @@ void LanguageSpec::setup()
     keywords["any"]    = TokenId::NativeType;
     keywords["void"]   = TokenId::NativeType;
 
-    keywords["@init"]        = TokenId::KwdInit;
-    keywords["@drop"]        = TokenId::KwdDrop;
+    keywords["@init"]        = TokenId::IntrinsicInit;
+    keywords["@drop"]        = TokenId::IntrinsicDrop;
     keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
     keywords["@typeof"]      = TokenId::IntrinsicTypeOf;
     keywords["@kindof"]      = TokenId::IntrinsicKindOf;

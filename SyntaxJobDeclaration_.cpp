@@ -326,10 +326,10 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::SymLeftParen:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
-    case TokenId::KwdInit:
+    case TokenId::IntrinsicInit:
         SWAG_CHECK(doInit(parent, result));
         break;
-    case TokenId::KwdDrop:
+    case TokenId::IntrinsicDrop:
         SWAG_CHECK(doDrop(parent, result));
         break;
     case TokenId::KwdBreak:
