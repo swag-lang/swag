@@ -53,18 +53,17 @@ struct B
 //#[swag.printbc]
 #test
 {
-    {
-        ptr := &tt3
-        @print(ptr(5))
-    }
-
-    {
-        ptr := &tt4
-        @print(ptr())
-    }
-
     if false
     {
+        {
+            ptr := &tt3
+            @print(ptr(5))
+        }
+
+        {
+            ptr := &tt4
+            @print(ptr())
+        }
         {
             var x: any = 0
             if(@kindof(x) == s32)

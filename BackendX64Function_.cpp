@@ -1315,8 +1315,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addU8(0x5F); // pop rdi
             }
 
-            // ret
-            concat.addU8(0xc3);
+            concat.addU8(0xc3); // ret
             break;
 
         default:
