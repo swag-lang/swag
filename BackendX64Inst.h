@@ -795,6 +795,7 @@ namespace BackendX64Inst
     inline void emit_Test_AX_With_AX(X64PerThread& pp) { pp.concat.addString3("\x66\x85\xc0"); } // test ax, ax
     inline void emit_Test_EAX_With_EAX(X64PerThread& pp) { pp.concat.addString2("\x85\xC0"); } // test eax, eax
     inline void emit_Test_RAX_With_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x85\xc0"); } // test rax, rax
+    inline void emit_Test_RBX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x85\xdb"); } // test rbx, rbx
 
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde

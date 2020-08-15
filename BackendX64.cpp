@@ -446,18 +446,16 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
 {
     auto& concat = pp.concat;
 
+    // call
+    concat.addU8(0xE8);
+
     auto callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
     if (callSym->kind == CoffSymbolKind::Function)
     {
-        // call
-        concat.addU8(0xE8);
         concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
     }
     else
     {
-        // call
-        concat.addU8(0xE8);
-
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
         reloc.symbolIndex    = callSym->index;

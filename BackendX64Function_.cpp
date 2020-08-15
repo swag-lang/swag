@@ -1233,6 +1233,52 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::MakeLambda:
+        {
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
+            auto funcBC = (ByteCode*) ip->b.pointer;
+            SWAG_ASSERT(funcBC);
+            BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0);
+
+            CoffRelocation reloc;
+            reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+            auto callSym         = getOrAddSymbol(pp, funcBC->callName(), CoffSymbolKind::Extern);
+            reloc.symbolIndex    = callSym->index;
+            reloc.type           = IMAGE_REL_AMD64_ADDR64;
+            pp.relocTableTextSection.table.push_back(reloc);
+
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        }
+
+        case ByteCodeOp::LambdaCall:
+        {
+            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
+
+            // Test if it's a native lambda or a bytecode one
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, SWAG_LAMBDA_MARKER);
+            concat.addString3("\x48\x21\xc3"); // and rbx, rax
+            BackendX64Inst::emit_Test_RBX_With_RBX(pp);
+            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+            auto jumpToBC = (uint32_t*) concat.getSeekPtr();
+            concat.addU32(0);           
+
+            // Native lambda
+            for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
+            {
+                concat.addString2("\xff\xb7"); // push [rdi + ????????]
+                concat.addU32(pushRAParams[iParam] * sizeof(Register));
+            }
+
+            concat.addString2("\xff\xd0"); // call rax
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, (int) pushRAParams.size() * sizeof(Register));
+            //BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, 0);
+
+            pushRAParams.clear();
+            break;
+        }
+
         case ByteCodeOp::LocalCall:
         {
             auto funcBC = (ByteCode*) ip->a.pointer;

@@ -53,7 +53,17 @@ struct B
 //#[swag.printbc]
 #test
 {
-    if true
+    {
+        ptr := &tt3
+        @print(ptr(5))
+    }
+
+    {
+        ptr := &tt4
+        @print(ptr())
+    }
+
+    if false
     {
         {
             var x: any = 0
