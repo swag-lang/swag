@@ -14,32 +14,6 @@ bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::emitSafetyIntegerAdd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t bits)
-{
-    if (!mustEmitSafety(context))
-        return;
-
-    PushICFlags  ic(context, BCI_SAFETY);
-    RegisterList tmp;
-    reserveRegisterRC(context, tmp, 2);
-
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, tmp[0], r0);
-    emitInstruction(context, ByteCodeOp::DeRef8, tmp[0]);
-    emitInstruction(context, ByteCodeOp::ClearMaskU32, tmp[0])->b.u32 = 0xFF;
-
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, tmp[1], r1);
-    emitInstruction(context, ByteCodeOp::ClearMaskU32, tmp[1])->b.u32 = 0xFF;
-
-    emitInstruction(context, ByteCodeOp::BinOpPlusS32, tmp[0], tmp[1], tmp[0]);
-
-    emitInstruction(context, ByteCodeOp::CopyVBtoRA32, tmp[1])->b.u32 = 255;
-    emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, tmp[0], tmp[1], tmp[0]);
-    emitInstruction(context, ByteCodeOp::NegBool, tmp[0]);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, tmp[0])->d.pointer = (uint8_t*) "integer overflow";
-
-    freeRegisterRC(context, tmp);
-}
-
 void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
 {
     PushICFlags ic(context, BCI_SAFETY);
