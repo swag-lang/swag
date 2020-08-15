@@ -1,4 +1,4 @@
-#if #os == "windows"
+/*#if #os == "windows"
 {
     namespace Windows
     {
@@ -30,4 +30,4 @@
         //Windows.SetConsoleTextAttribute(h, Windows.FOREGROUND_BLUE);
         Windows.WriteFile(h, @dataof("toto"), 4, null, null);
     }
-}
+}*/
