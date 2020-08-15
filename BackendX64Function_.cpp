@@ -951,26 +951,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::SetZeroAtPointer64:
+            //CONCAT_STR_2(concat, "*(__u64_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_At_RAX(pp, ip->b.u32, 0);
+            break;
+
         case ByteCodeOp::SetZeroStack8:
             //CONCAT_STR_1(concat, "*(__u8_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
-            BackendX64Inst::emit_Move_Cst8_At_RAX(pp, 0);
+            BackendX64Inst::emit_Move_Cst8_At_RAX(pp, 0, 0);
             break;
         case ByteCodeOp::SetZeroStack16:
             //CONCAT_STR_1(concat, "*(__u16_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
-            BackendX64Inst::emit_Move_Cst16_At_RAX(pp, 0);
+            BackendX64Inst::emit_Move_Cst16_At_RAX(pp, 0, 0);
             break;
         case ByteCodeOp::SetZeroStack32:
             //CONCAT_STR_1(concat, "*(__u32_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
-            BackendX64Inst::emit_Move_Cst32_At_RAX(pp, 0);
+            BackendX64Inst::emit_Move_Cst32_At_RAX(pp, 0, 0);
             break;
         case ByteCodeOp::SetZeroStack64:
             //CONCAT_STR_1(concat, "*(__u64_t*)(s+", ip->a.u32, ")=0;");
             BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
-            BackendX64Inst::emit_Clear_RBX(pp);
-            BackendX64Inst::emit_Move_RBX_At_RAX(pp);
+            BackendX64Inst::emit_Move_Cst64_At_RAX(pp, 0, 0);
             break;
         case ByteCodeOp::SetZeroStackX:
             //concat.addStringFormat("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
@@ -1104,7 +1109,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_Cst32_At_RAX(pp, 0);
+            BackendX64Inst::emit_Move_Cst32_At_RAX(pp, 0, 0);
             break;
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
@@ -1185,7 +1190,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         default:
             if (bc->name == "compiler1859___test0")
-                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
+            moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }

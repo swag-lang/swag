@@ -41,16 +41,18 @@ func tt5()->[..] s64
 struct A
 {
     x, y: s64 = 5
+    z: s64
 }
 //#[swag.printbc]
 #test
 {
     {
         var x: A
-        @print(x.y)
+        @print(x.x)
+        @print(x.z)
     }
 
-    if false
+    if true
     {
         @print(g1)
         @print(g2)
