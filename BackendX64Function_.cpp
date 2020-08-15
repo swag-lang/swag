@@ -1261,10 +1261,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test_RBX_With_RBX(pp);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
-            auto jumpToBC = (uint32_t*) concat.getSeekPtr();
-            concat.addU32(0);           
+            auto jumpToBCAddr = (uint32_t*) concat.getSeekPtr();
+            concat.addU32(0);
+            auto jumpToBCOffset = concat.totalCount();
 
             // Native lambda
+            //////////////////
             for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
             {
                 concat.addString2("\xff\xb7"); // push [rdi + ????????]
@@ -1273,8 +1275,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             concat.addString2("\xff\xd0"); // call rax
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, (int) pushRAParams.size() * sizeof(Register));
-            //BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, 0);
+            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
+            auto jumpToAfterAddr = (uint32_t*) concat.getSeekPtr();
+            concat.addU32(0);
+            auto jumpToAfterOffset = concat.totalCount();
 
+            // ByteCode lambda
+            //////////////////
+            *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+            concat.addString1("\x90");
+
+            // End
+            //////////////////
+            *jumpToAfterAddr = concat.totalCount() - jumpToAfterOffset;
             pushRAParams.clear();
             break;
         }
