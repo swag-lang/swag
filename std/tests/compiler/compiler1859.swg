@@ -53,8 +53,22 @@ struct B
 //#[swag.printbc]
 #test
 {
-    if false
+    if true
     {
+        {
+            var x: any = 0
+            if(@kindof(x) == s32)
+                @print("true")
+            else
+                @print("false")
+        }
+        {
+            var x: any = 0
+            if(@kindof(x) == s64)
+                @print("true")
+            else
+                @print("false")
+        }
         {
             ptr := @alloc(10)
             ptr = @realloc(ptr, 20)

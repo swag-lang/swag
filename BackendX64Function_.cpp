@@ -114,6 +114,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::CopyRBAddrToRA:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &r[", ip->b.u32, "];");
+            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
 
         case ByteCodeOp::CastBool32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
@@ -775,6 +780,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
             BackendX64Inst::emit_Move_Reg_In_R9D(pp, ip->d.u32);
             emitCall(pp, "swag_runtime_comparestring");
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            break;
+        case ByteCodeOp::CompareOpEqualTypeInfo:
+            //concat.addStringFormat("r[%u].b = swag_runtime_comparetype(r[%u].pointer, r[%u].pointer);", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            emitCall(pp, "swag_runtime_comparetype");
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
 
