@@ -261,7 +261,10 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
 void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
+#ifdef SWAG_HAS_ASSERT
     auto node = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+#endif
+
     for (auto child : parent->childs)
     {
         switch (child->kind)
@@ -275,6 +278,7 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             flattenStructChilds(context, child, result);
             continue;
+
         case AstNodeKind::CompilerIf:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);

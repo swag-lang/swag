@@ -15,8 +15,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
 
-    auto numRegs = exprNode->resultRegisterRC.size();
-    SWAG_ASSERT(numRegs <= 2);
+    SWAG_ASSERT(exprNode->resultRegisterRC.size() <= 2);
 
     // Make a pointer to the value
     if (fromTypeInfo->kind == TypeInfoKind::Native)
@@ -563,10 +562,12 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
     if (fromTypeInfo->kind == TypeInfoKind::TypeListTuple)
     {
+#ifdef SWAG_HAS_ASSERT
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         SWAG_ASSERT(typeList->subTypes.size() == 2);
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Pointer || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->kind == TypeInfoKind::Native);
+#endif
 
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);

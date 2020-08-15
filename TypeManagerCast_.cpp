@@ -2194,15 +2194,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     {
         if (fromNode->typeInfo->kind == TypeInfoKind::TypeListTuple || fromNode->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
-            TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-            auto          fromSize = typeList->subTypes.size();
-
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
                 fromNode = fromNode->childs.empty() ? nullptr : fromNode->childs.front();
 
             if (fromNode && (fromNode->flags & AST_CONST_EXPR))
             {
-                SWAG_ASSERT(fromSize == fromNode->childs.size());
+#ifdef SWAG_HAS_ASSERT
+                TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+                SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
+#endif
+
                 auto module   = context->sourceFile->module;
                 auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
