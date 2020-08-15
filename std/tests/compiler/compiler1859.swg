@@ -47,7 +47,23 @@ struct A
 //#[swag.printbc]
 #test
 {
-    if true
+    {
+        x := @[1's64, 2]
+        ptr := &x[0]
+        @print(ptr[1])
+        ptr[1] = 33
+        @print(ptr[1])
+    }
+
+    {
+        x := @[1's64]
+        ptr := &x[0]
+        @print(ptr[0])
+        ptr[0] = 10
+        @print(ptr[0])
+    }
+
+    if false
     {
         {
             var y: u32

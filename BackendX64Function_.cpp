@@ -912,6 +912,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::DeRefPointer:
+            //concat.addStringFormat("r[%u].pointer = *(__u8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->c.u32);
+            concat.addString3("\x48\x01\xD8"); // add rax, rbx
+            BackendX64Inst::emit_DeRef64_RAX(pp);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->b.u32);
+            break;
         case ByteCodeOp::DeRefStringSlice:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (r[%u].pointer + 8); ", ip->b.u32, ip->a.u32);
             //concat.addStringFormat("r[%u].pointer = *(__u8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32);
