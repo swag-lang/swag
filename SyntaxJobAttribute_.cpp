@@ -58,7 +58,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdPublic:
         attr = ATTRIBUTE_PUBLIC;
         SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PRIVATE), error(token, "attribute 'private' and attribute 'public' are mutually exclusive"));
-        SWAG_VERIFY(currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct, error(token, "a public definition must appear at file or namespace scope"));
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     default:
@@ -106,7 +106,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     AstNode* topStmt = nullptr;
 
     {
-        Scoped            scoped(this, newScope);
+        Scoped               scoped(this, newScope);
         ScopedAttributeFlags scopedAttributes(this, attr);
         SWAG_CHECK(doTopLevelInstruction(parent, &topStmt));
         if (result)

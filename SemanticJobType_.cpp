@@ -338,7 +338,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-        if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
+        if (node->ownerScope->isGlobalOrImpl())
             node->ownerScope->addPublicAlias(node);
     }
 
@@ -374,7 +374,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-        if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
+        if (node->ownerScope->isGlobalOrImpl())
             node->ownerScope->addPublicAlias(node);
     }
 

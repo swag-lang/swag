@@ -164,7 +164,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result, Token* endTo
     if (result)
         *result = node;
 
-    bool isGlobal  = currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct;
+    bool isGlobal  = currentScope->isGlobalOrImpl();
     auto openCurly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 

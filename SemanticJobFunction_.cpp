@@ -222,7 +222,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-        if (!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
+        if (!node->ownerScope->isGlobalOrImpl())
             return context->report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
             return context->report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});

@@ -68,6 +68,11 @@ struct Scope
         return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
+    bool isGlobalOrImpl()
+    {
+        return isGlobal() || kind == ScopeKind::Struct || kind == ScopeKind::Enum;
+    }
+
     SymTable               symTable;
     Utf8Crc                name;
     Utf8                   fullname;

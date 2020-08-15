@@ -338,7 +338,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     {
         if (scope->kind == ScopeKind::Namespace)
             bufferSwg.addStringFormat("namespace %s {\n", scope->name.c_str());
-        else if (scope->kind == ScopeKind::Struct)
+        else if (!scope->isGlobal() && scope->isGlobalOrImpl())
             bufferSwg.addStringFormat("impl %s {\n", scope->name.c_str());
         else
             CONCAT_FIXED_STR(bufferSwg, "{\n");
