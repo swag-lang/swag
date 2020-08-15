@@ -8,14 +8,14 @@ struct MyStruct
 
 impl MyStruct
 {
-    const CONST = true
+    const MyConst = true
     func returnTrue() => true
 }
 
 #test
 {
     @assert(MyStruct.returnTrue())
-    @assert(MyStruct.CONST)
+    @assert(MyStruct.MyConst)
 }
 
 // You can have multiple 'impl' blocks.
@@ -39,7 +39,7 @@ impl MyStruct
     @assert(c.returnZ() == 20)
 }
 
-// 'impl' can also be used in enum
+// 'impl' can also be used for an enum
 enum RGB { R; G; B; }
 impl RGB
 {
@@ -52,5 +52,6 @@ impl RGB
     @assert(RGB.isRed(RGB.R))
     @assert(RGB.isRedOrBlue(RGB.B))
     using RGB
+    @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))
 }
