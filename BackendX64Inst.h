@@ -611,116 +611,94 @@ namespace BackendX64Inst
 
     inline void emit_Move_Cst8_At_RAX(X64PerThread& pp, uint32_t offset, uint8_t val)
     {
-        if (val <= 0x7F)
+        if (offset == 0)
         {
-            if (offset == 0)
-            {
-                pp.concat.addString2("\xc6\x00"); // mov byte ptr [rax], ??
-                pp.concat.addU8(val);
-            }
-            else if (offset <= 0x7F)
-            {
-                pp.concat.addString2("\xc6\x40"); // mov byte ptr [rax + ??], ??
-                pp.concat.addU8((uint8_t) offset);
-                pp.concat.addU8(val);
-            }
-            else
-            {
-                pp.concat.addString2("\xc6\x80"); // mov byte ptr [rax + ????????], ??
-                pp.concat.addU32(offset);
-                pp.concat.addU8(val);
-            }
+            pp.concat.addString2("\xc6\x00"); // mov byte ptr [rax], ??
+            pp.concat.addU8(val);
+        }
+        else if (offset <= 0x7F)
+        {
+            pp.concat.addString2("\xc6\x40"); // mov byte ptr [rax + ??], ??
+            pp.concat.addU8((uint8_t) offset);
+            pp.concat.addU8(val);
         }
         else
         {
-            SWAG_ASSERT(false);
+            pp.concat.addString2("\xc6\x80"); // mov byte ptr [rax + ????????], ??
+            pp.concat.addU32(offset);
+            pp.concat.addU8(val);
         }
     }
 
     inline void emit_Move_Cst16_At_RAX(X64PerThread& pp, uint32_t offset, uint16_t val)
     {
-        if (val <= 0x7F)
+        if (offset == 0)
         {
-            emit_Move_Cst8_At_RAX(pp, offset, (uint8_t) val);
+            pp.concat.addString3("\x66\xc7\x00"); // mov word ptr [rax], ????
+            pp.concat.addU16(val);
         }
-        else if (val <= 0x7FFF)
+        else if (offset <= 0x7F)
         {
-            if (offset == 0)
-            {
-                pp.concat.addString3("\x66\xC7\x00"); // mov word ptr [rax], ????
-                pp.concat.addU16(val);
-            }
-            else if (offset <= 0x7F)
-            {
-                pp.concat.addString3("\x66\xc7\x40"); // mov word ptr [rax + ??], ????
-                pp.concat.addU8((uint8_t)offset);
-                pp.concat.addU16(val);
-            }
-            else
-            {
-                pp.concat.addString3("\x66\xc7\x80"); // mov word ptr [rax + ????????], ????
-                pp.concat.addU32(offset);
-                pp.concat.addU16(val);
-            }
+            pp.concat.addString3("\x66\xc7\x40"); // mov word ptr [rax + ??], ????
+            pp.concat.addU8((uint8_t) offset);
+            pp.concat.addU16(val);
         }
         else
         {
-            SWAG_ASSERT(false);
+            pp.concat.addString3("\x66\xc7\x80"); // mov word ptr [rax + ????????], ????
+            pp.concat.addU32(offset);
+            pp.concat.addU16(val);
         }
-    }
+
+    } // namespace BackendX64Inst
 
     inline void emit_Move_Cst32_At_RAX(X64PerThread& pp, uint32_t offset, uint32_t val)
     {
-        if (val <= 0x7F)
+        if (offset == 0)
         {
-            emit_Move_Cst8_At_RAX(pp, offset, (uint8_t)val);
+            pp.concat.addString2("\xc7\x00"); // mov dword ptr [rax], ????????
+            pp.concat.addU32((uint8_t) val);
         }
-        else if (val <= 0x7FFF)
+        else if (offset <= 0x7F)
         {
-            emit_Move_Cst16_At_RAX(pp, offset, (uint16_t)val);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            if (offset == 0)
-            {
-                pp.concat.addString3("\x48\xc7\x00"); // mov qword ptr [rax], ????????
-                pp.concat.addU32(val);
-            }
-            else if (offset <= 0x7F)
-            {
-                pp.concat.addString3("\x48\xc7\x40"); // mov qword ptr [rax + ??], ????????
-                pp.concat.addU8((uint8_t) offset);
-                pp.concat.addU32(val);
-            }
-            else
-            {
-                pp.concat.addString3("\x48\xc7\x80"); // mov qword ptr [rax + ????????], ????????
-                pp.concat.addU32(offset);
-                pp.concat.addU32(val);
-            }
+            pp.concat.addString2("\xc7\x40"); // mov dword ptr [rax + ??], ????????
+            pp.concat.addU8((uint8_t) offset);
+            pp.concat.addU32(val);
         }
         else
         {
-            SWAG_ASSERT(false);
+            pp.concat.addString2("\xc7\x80"); // mov dword ptr [rax + ????????], ????????
+            pp.concat.addU32(offset);
+            pp.concat.addU32(val);
         }
     }
 
     inline void emit_Move_Cst64_At_RAX(X64PerThread& pp, uint32_t offset, uint64_t val)
     {
-        if (val <= 0x7F)
+        if (val <= 0x7FFFFFFF)
         {
-            emit_Move_Cst8_At_RAX(pp, offset, (uint8_t)val);
-        }
-        else if (val <= 0x7FFF)
-        {
-            emit_Move_Cst16_At_RAX(pp, offset, (uint16_t)val);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            emit_Move_Cst32_At_RAX(pp, offset, (uint32_t)val);
+            if (offset == 0)
+            {
+                pp.concat.addString3("\x48\xc7\x00"); // mov qword ptr [rax], ????????
+                pp.concat.addU32((uint32_t) val);
+            }
+            else if (offset <= 0x7F)
+            {
+                pp.concat.addString3("\x48\xc7\x40"); // mov qword ptr [rax + ??], ????????
+                pp.concat.addU8((uint8_t) offset);
+                pp.concat.addU32((uint32_t) val);
+            }
+            else
+            {
+                pp.concat.addString3("\x48\xc7\x80"); // mov qword ptr [rax + ????????], ????????
+                pp.concat.addU32(offset);
+                pp.concat.addU32((uint32_t) val);
+            }
         }
         else
+        {
             SWAG_ASSERT(false);
+        }
     }
 
     // clang-format off
@@ -1121,5 +1099,4 @@ namespace BackendX64Inst
         label.patch = pp.concat.getSeekPtr() - 4;
         pp.labelsToSolve.push_back(label);
     }
-
 }; // namespace BackendX64Inst

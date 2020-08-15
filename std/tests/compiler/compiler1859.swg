@@ -43,17 +43,23 @@ struct A
     x, y: s64 = 5
     z: s64
 }
+
 //#[swag.printbc]
 #test
 {
-    {
-        var x: A
-        @print(x.x)
-        @print(x.z)
-    }
-
     if true
     {
+        {
+            var y: u32
+            @print(cast(s64) y)
+        }
+
+        {
+            var x: A
+            @print(x.x)
+            @print(x.z)
+        }
+
         @print(g1)
         @print(g2)
         {
