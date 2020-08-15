@@ -453,7 +453,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
     {
         funcNode->pendingLambdaJob = context->job;
-        context->result = ContextResult::Pending;
+        context->result            = ContextResult::Pending;
     }
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
@@ -498,9 +498,9 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node      = context->node;
-    auto child     = node->childs.front();
-    node->typeInfo = child->typeInfo;
+    auto node            = context->node;
+    auto child           = node->childs.front();
+    node->typeInfo       = child->typeInfo;
 
     // Force const if necessary
     // func([.., ...]) must be const
@@ -514,6 +514,10 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_PURE);
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+
+    // Inherit the original type in case of computed values, in order to make the cast if necessary
+    if(node->flags & AST_VALUE_COMPUTED)
+        node->castedTypeInfo = child->castedTypeInfo;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done

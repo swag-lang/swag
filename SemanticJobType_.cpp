@@ -413,18 +413,27 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     node->typeInfo = typeNode->typeInfo;
 
-    // Revert the implicit cast informations
-    // Requested type if store in typeInfo of node, and previous type is stored in typeInfo of exprNode
-    // We cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast
-    if (exprNode->castedTypeInfo)
-    {
-        exprNode->typeInfo       = exprNode->castedTypeInfo;
-        exprNode->castedTypeInfo = nullptr;
-    }
-
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
+
+    // Revert the implicit cast informations
+    // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
+    // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
+    if (exprNode->castedTypeInfo)
+    {
+        if (!(node->flags & AST_VALUE_COMPUTED))
+        {
+            exprNode->typeInfo = exprNode->castedTypeInfo;
+            exprNode->castedTypeInfo = nullptr;
+        }
+
+        // In case of a computed value, we need to remember the type we come from to make
+        // last minutes cast in emitLiteral
+        else
+            node->castedTypeInfo = exprNode->castedTypeInfo;
+    }
+
     return true;
 }
 
