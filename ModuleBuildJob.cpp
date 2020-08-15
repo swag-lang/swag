@@ -53,6 +53,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::IncludeSwg)
     {
         // Determine now if we need to recompile
+        module->allocateBackend();
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
@@ -86,7 +87,7 @@ JobResult ModuleBuildJob::execute()
                 dep.second.importDone = true;
 
                 // Now the .swg export file should be in the cache
-                if (!depModule->backend->timeExportFile)
+                if (depModule->backend && !depModule->backend->timeExportFile)
                 {
                     depModule->backend->setupExportFile();
                     if (!depModule->backend->timeExportFile)

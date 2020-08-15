@@ -9,7 +9,21 @@ string Backend::compilerPath;
 string Backend::linkerExe;
 string Backend::linkerPath;
 
-char ___c[20];
+JobResult Backend::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
+{
+    return JobResult::ReleaseJob;
+}
+
+bool Backend::compile(const BuildParameters& backendParameters)
+{
+    return true;
+}
+
+BackendFunctionBodyJob* Backend::newFunctionJob()
+{
+    SWAG_ASSERT(false);
+    return nullptr;
+}
 
 void Backend::setup()
 {

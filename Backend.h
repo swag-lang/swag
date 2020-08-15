@@ -30,9 +30,9 @@ struct Backend
     {
     }
 
-    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) = 0;
-    virtual bool                    compile(const BuildParameters& backendParameters)                 = 0;
-    virtual BackendFunctionBodyJob* newFunctionJob()                                                  = 0;
+    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob);
+    virtual bool                    compile(const BuildParameters& backendParameters);
+    virtual BackendFunctionBodyJob* newFunctionJob();
 
     void setMustCompile();
     bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);

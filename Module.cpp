@@ -67,6 +67,14 @@ bool Module::setup(const Utf8& moduleName)
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
 
+    return true;
+}
+
+void Module::allocateBackend()
+{
+    if (backend)
+        return;
+
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
     if (!hasUnittestError)
@@ -87,8 +95,11 @@ bool Module::setup(const Utf8& moduleName)
             break;
         }
     }
-
-    return true;
+    else
+    {
+        // Dummy backend which does nothing, as unittest errors have no output
+        backend = new Backend(this);
+    }
 }
 
 void Module::addFile(SourceFile* file)
