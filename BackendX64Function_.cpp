@@ -959,10 +959,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::SetZeroAtPointer8:
+            //CONCAT_STR_2(concat, "*(__u8_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst8_At_RAX(pp, ip->b.u32, 0);
+            break;
+        case ByteCodeOp::SetZeroAtPointer16:
+            //CONCAT_STR_2(concat, "*(__u16_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst16_At_RAX(pp, ip->b.u32, 0);
+            break;
+        case ByteCodeOp::SetZeroAtPointer32:
+            //CONCAT_STR_2(concat, "*(__u32_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst32_At_RAX(pp, ip->b.u32, 0);
+            break;
         case ByteCodeOp::SetZeroAtPointer64:
             //CONCAT_STR_2(concat, "*(__u64_t*)(r[", ip->a.u32, "].pointer + ", ip->b.u32, ") = 0;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Cst64_At_RAX(pp, ip->b.u32, 0);
+            break;
+        case ByteCodeOp::SetZeroAtPointerX:
+            //concat.addStringFormat("memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Clear_RDX(pp);
+            BackendX64Inst::emit_Move_Cst64_In_R8(pp, ip->b.u32);
+            emitCall(pp, "memset");
             break;
 
         case ByteCodeOp::SetZeroStack8:

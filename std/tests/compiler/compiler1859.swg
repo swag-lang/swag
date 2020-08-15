@@ -44,27 +44,37 @@ struct A
     z: s64
 }
 
+struct B
+{
+    z: s64 = 5
+    y: s32
+}
+
 //#[swag.printbc]
 #test
 {
     {
-        x := @[1's64, 2]
-        ptr := &x[0]
-        @print(ptr[1])
-        ptr[1] = 33
-        @print(ptr[1])
+        var x: B
+        @print(cast(s64) x.y)
     }
 
+    if true
     {
-        x := @[1's64]
-        ptr := &x[0]
-        @print(ptr[0])
-        ptr[0] = 10
-        @print(ptr[0])
-    }
+        {
+            x := @[1's64, 2]
+            ptr := &x[0]
+            @print(ptr[1])
+            ptr[1] = 33
+            @print(ptr[1])
+        }
 
-    if false
-    {
+        {
+            x := @[1's64]
+            ptr := &x[0]
+            @print(ptr[0])
+            ptr[0] = 10
+            @print(ptr[0])
+        }
         {
             var y: u32
             @print(cast(s64) y)

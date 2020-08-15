@@ -657,7 +657,7 @@ namespace BackendX64Inst
         if (offset == 0)
         {
             pp.concat.addString2("\xc7\x00"); // mov dword ptr [rax], ????????
-            pp.concat.addU32((uint8_t) val);
+            pp.concat.addU32(val);
         }
         else if (offset <= 0x7F)
         {
