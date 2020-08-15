@@ -53,19 +53,18 @@ struct B
 //#[swag.printbc]
 #test
 {
+    if false
     {
-        x := @[1's64, 2, 3]
-        ptr := &x[2]
-        ptr = ptr - 1
-        @print(deref ptr)
-        ptr -= 1
-        @print(deref ptr)
-        ptr += 2
-        @print(deref ptr)
-    }
-
-    if true
-    {
+        {
+            x := @[1's64, 2, 3]
+            ptr := &x[2]
+            ptr = ptr - 1
+            @print(deref ptr)
+            ptr -= 1
+            @print(deref ptr)
+            ptr += 2
+            @print(deref ptr)
+        }
         {
             ptr := &tt3
             @print(ptr(5))

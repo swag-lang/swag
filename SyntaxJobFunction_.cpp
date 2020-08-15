@@ -102,12 +102,24 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, "'self' can only be used in an 'impl' block"));
-        auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
-        typeNode->ptrCount   = 1;
-        typeNode->isConst    = isConst;
-        typeNode->isSelf     = true;
-        typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
-        paramNode->type      = typeNode;
+        if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
+        {
+            auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->isConst    = true;
+            typeNode->isSelf     = true;
+            typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
+            paramNode->type      = typeNode;
+        }
+        else
+        {
+            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, "'self' can only be used in an 'impl' block"));
+            auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->ptrCount   = 1;
+            typeNode->isConst    = isConst;
+            typeNode->isSelf     = true;
+            typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
+            paramNode->type      = typeNode;
+        }
     }
     else
     {

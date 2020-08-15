@@ -212,9 +212,9 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
     {
-        Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct or an enum", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
