@@ -38,9 +38,18 @@ func tt5()->[..] s64
     return @[10, 20, 30, 40]
 }
 
+struct A
+{
+    x, y: s64 = 5
+}
 //#[swag.printbc]
 #test
 {
+    {
+        var x: A
+        @print(x.y)
+    }
+
     if false
     {
         @print(g1)

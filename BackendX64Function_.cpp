@@ -972,6 +972,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Clear_RBX(pp);
             BackendX64Inst::emit_Move_RBX_At_RAX(pp);
             break;
+        case ByteCodeOp::SetZeroStackX:
+            //concat.addStringFormat("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Lea_Stack_In_RCX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_Clear_RDX(pp);
+            BackendX64Inst::emit_Move_Cst64_In_R8(pp, ip->b.u32);
+            emitCall(pp, "memset");
+            break;
 
         case ByteCodeOp::SetAtPointer8:
             //concat.addStringFormat("*(__u8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);

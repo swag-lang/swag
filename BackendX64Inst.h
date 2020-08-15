@@ -631,10 +631,26 @@ namespace BackendX64Inst
     inline void emit_Clear_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc0"); } // xor rax, rax
     inline void emit_Clear_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xdb"); } // xor rbx, rbx
     inline void emit_Clear_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc9"); } // xor rcx, rcx
+    inline void emit_Clear_R8(X64PerThread& pp) { pp.concat.addString3("\x4d\x31\xc0"); } // xor r8, r8
     inline void emit_Clear_DX(X64PerThread& pp) { pp.concat.addString3("\x66\x31\xd2"); } // xor dx, dx
     inline void emit_Clear_EDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor edx, edx
     inline void emit_Clear_RDX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xd2"); } // xor rdx, rdx
     // clang-format on
+
+    inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
+    {
+        if (val == 0)
+            emit_Clear_R8(pp);
+        else if (val <= 0x7FFFFFFF)
+        {
+            pp.concat.addString3("\x49\xc7\xc0"); // mov r8, ????????
+            pp.concat.addU32((uint32_t) val);
+        }
+        {
+            pp.concat.addString2("\x49\xb8"); // mov r8, ????????_????????
+            pp.concat.addU64(val);
+        }
+    }
 
     inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
     {
