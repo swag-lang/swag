@@ -622,16 +622,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
             concat.addString3("\x48\x01\x03"); // add [rbx], rax
             break;
-        case ByteCodeOp::AffectOpPlusEqPointer:
-            //CONCAT_STR_2(concat, "*(__u8_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
-            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
-            BackendX64Inst::emit_DeRef64_RBX(pp);
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
-            BackendX64Inst::emit_SignedExtend_EAX_To_RAX(pp);
-            concat.addString3("\x48\x01\xc3"); // add rbx, rax
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_RBX_At_RAX(pp);
-            break;
         case ByteCodeOp::AffectOpPlusEqF32:
             //CONCAT_STR_2(concat, "*(__f32_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].f32;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
@@ -647,6 +637,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, ip->b.u32);
             concat.addString4("\xf2\x0f\x58\xc1"); // addss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F64(pp);
+            break;
+        case ByteCodeOp::AffectOpPlusEqPointer:
+            //CONCAT_STR_2(concat, "*(__u8_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->b.u32);
+            concat.addString3("\x48\x01\x03"); // add [rbx], rax
             break;
 
         case ByteCodeOp::CompareOpGreaterU32:
