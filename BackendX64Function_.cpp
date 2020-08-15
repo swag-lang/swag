@@ -993,7 +993,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->b.u32);
             concat.addString2("\x69\xc0"); // imul eax, ????????
             concat.addU32(ip->c.u32);
-            concat.addString3("\x49\x89\xc0"); // mov r8, rax           
+            concat.addString3("\x49\x89\xc0"); // mov r8, rax
             emitCall(pp, "memset");
             break;
 
@@ -1146,6 +1146,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "swag_runtime_assert");
             break;
 
+        case ByteCodeOp::IntrinsicAlloc:
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            emitCall(pp, "malloc");
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::IntrinsicRealloc:
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EDX(pp, ip->c.u32);
+            emitCall(pp, "realloc");
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::IntrinsicFree:
+            //concat.addStringFormat("free(r[%u].pointer);", ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            emitCall(pp, "free");
+            break;
+
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
@@ -1230,7 +1249,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         default:
             if (bc->name == "compiler1859___test0")
-            moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
+                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }

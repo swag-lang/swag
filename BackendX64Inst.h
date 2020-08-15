@@ -380,6 +380,24 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Move_Stack_In_EDX(X64PerThread& pp, uint32_t stackOffset)
+    {
+        if (stackOffset == 0)
+        {
+            pp.concat.addString2("\x8b\x17"); // mov edx, dword ptr [rdi]
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            pp.concat.addString2("\x8b\x57"); // mov edx, dword ptr [rdi + ??]
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            pp.concat.addString2("\x8b\x97"); // mov edx, dword ptr [rdi + ????????]
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
     inline void emit_Move_Stack_In_RDX(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -802,6 +820,7 @@ namespace BackendX64Inst
     inline void emit_Move_Reg_In_RBX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RBX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_ECX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_ECX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RCX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RCX(pp, r * sizeof(Register)); }
+    inline void emit_Move_Reg_In_EDX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_EDX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RDX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RDX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R8D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8D(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R8(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8(pp, r * sizeof(Register)); }

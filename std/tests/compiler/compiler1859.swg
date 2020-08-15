@@ -56,6 +56,11 @@ struct B
     if false
     {
         {
+            ptr := @alloc(10)
+            ptr = @realloc(ptr, 20)
+            @free(ptr)
+        }
+        {
             var x: [4] s64
             x[1] = 666
             @print(x[1])
