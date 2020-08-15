@@ -39,6 +39,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
     auto  typeFunc        = bc->callType();
+    bool  ok              = true;
 
     pp.labels.clear();
     pp.labelsToSolve.clear();
@@ -1248,8 +1249,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         default:
-            if (bc->name == "compiler1859___test0")
-                moduleToGen->error(format("!!!!!% s\n", g_ByteCodeOpNames[(int) ip->op]));
+            ok = false;
+            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }
@@ -1264,7 +1265,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         *(uint32_t*) toSolve.patch = relOffset;
     }
 
-    return true;
+    return ok;
 }
 
 void BackendX64::emitGetParameter(X64PerThread& pp, uint32_t r, uint32_t idx)
