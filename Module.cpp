@@ -69,20 +69,23 @@ bool Module::setup(const Utf8& moduleName)
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    switch (g_CommandLine.backendType)
+    if (!hasUnittestError)
     {
-    case BackendType::C:
-        backend = new BackendC(this);
-        break;
-    case BackendType::LLVM:
-        backend = new BackendLLVM(this);
-        break;
-    case BackendType::X64:
-        backend = new BackendX64(this);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        switch (g_CommandLine.backendType)
+        {
+        case BackendType::C:
+            backend = new BackendC(this);
+            break;
+        case BackendType::LLVM:
+            backend = new BackendLLVM(this);
+            break;
+        case BackendType::X64:
+            backend = new BackendX64(this);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
     }
 
     return true;
