@@ -6,3 +6,5 @@ shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant
 -------------------------------------
 utf8 et petites strings (pas d'alloc!)
 -------------------------------------
+slice/cstrings &foreign
+-------------------------------------
