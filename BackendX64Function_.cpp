@@ -1309,7 +1309,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
 
         case ByteCodeOp::ForeignCall:
-            emitForeignCall(pp, offsetRT, ip, pushRAParams);
+            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
             break;
 
         case ByteCodeOp::Ret:
@@ -1342,7 +1342,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-void BackendX64::emitForeignCall(X64PerThread& pp, uint32_t offsetRT, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
@@ -1355,15 +1355,36 @@ void BackendX64::emitForeignCall(X64PerThread& pp, uint32_t offsetRT, ByteCodeIn
     else
         funcName = nodeFunc->name;
 
-    emitCallParameters(pp, offsetRT, typeFuncBC, pushRAParams);
+    uint32_t exceededStack = 0;
+    SWAG_CHECK(emitCallParameters(pp, exceededStack, moduleToGen, ip, offsetRT, typeFuncBC, pushRAParams));
     emitCall(pp, funcName);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, exceededStack);
+
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr.typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else
+        {
+            pp.concat.addString3("\x48\x89\xc1"); // copy rcx, rax
+        }
+    }
 
     pushRAParams.clear();
+    return true;
 }
 
-void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
-    int numCallParams = (int) typeFuncBC->parameters.size();
+    auto& concat        = pp.concat;
+    int   numCallParams = (int) typeFuncBC->parameters.size();
 
     VectorNative<uint32_t>  paramsRegisters;
     VectorNative<TypeInfo*> paramsTypes;
@@ -1422,7 +1443,8 @@ void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInf
         }
         else
         {
-            SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
+            if (typeParam->sizeOf > sizeof(void*))
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
             paramsRegisters.push_back(index);
             paramsTypes.push_back(typeParam);
         }
@@ -1482,11 +1504,50 @@ void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInf
         }
     }
 
+    exceededStack = 0;
     if (paramsRegisters.size() > 4)
     {
-        SWAG_ASSERT(false);
-        for (int i = (int) paramsRegisters.size() - 1; i >= 0; i--)
+        // Need to reserve additional room in the stack for all other parameters
+        for (int i = 4; i < (int) paramsRegisters.size(); i++)
+            exceededStack += paramsTypes[i]->sizeOf;
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
+
+        // Then we store all the parameters on the stack, with an offset of 4 * sizeof(uint64_t)
+        // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
+        // registers, this is the x64 cdecl convention...)
+        uint32_t offsetStack = 4 * sizeof(uint64_t);
+        for (int i = 4; i < (int) paramsRegisters.size(); i++)
         {
+            auto sizeOf = paramsTypes[i]->sizeOf;
+            switch (sizeOf)
+            {
+            case 1:
+                BackendX64Inst::emit_Move_Reg_In_AL(pp, paramsRegisters[i]);
+                concat.addString3("\x88\x84\x24"); // mov [rsp + ????????], al
+                concat.addU32(offsetStack);
+                break;
+            case 2:
+                BackendX64Inst::emit_Move_Reg_In_AX(pp, paramsRegisters[i]);
+                concat.addString4("\x66\x89\x84\x24"); // mov [rsp + ????????], ax
+                concat.addU32(offsetStack);
+                break;
+            case 4:
+                BackendX64Inst::emit_Move_Reg_In_EAX(pp, paramsRegisters[i]);
+                concat.addString3("\x89\x84\x24"); // mov [rsp + ????????], eax
+                concat.addU32(offsetStack);
+                break;
+            case 8:
+                BackendX64Inst::emit_Move_Reg_In_RAX(pp, paramsRegisters[i]);
+                concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
+                concat.addU32(offsetStack);
+                break;
+            default:
+                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
+            }
+
+            offsetStack += sizeOf;
         }
     }
+
+    return true;
 }
