@@ -82,6 +82,10 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 
+    // Before making the type concrete
+    if (node->typeInfo->kind == TypeInfoKind::Enum)
+        identifierRef->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Reference:
@@ -305,6 +309,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::EnumValue:
+        SWAG_CHECK(setupIdentifierRef(context, identifier, TypeManager::concreteType(identifier->typeInfo)));
         identifier->setFlagsValueIsComputed();
         identifier->flags |= AST_R_VALUE;
         identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
@@ -1391,7 +1396,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        if (identifierRef->resolvedSymbolName &&
+            (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
+             identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue))
         {
             // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
             if (!node->callParameters)

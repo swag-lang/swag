@@ -54,4 +54,6 @@ impl RGB
     using RGB
     @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))
+    @assert(R.isRedOrBlue())
+    @assert(!RGB.G.isRedOrBlue())
 }

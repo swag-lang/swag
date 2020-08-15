@@ -1,0 +1,25 @@
+public enum RGBRGB
+{
+    R = 10
+    G
+    B
+}
+
+impl RGBRGB
+{
+    var GLOBAL = 0
+    public func isRed(self)->bool
+    {
+        GLOBAL += cast(s32) self
+        return self == R
+    }
+}
+
+#test
+{
+    let xyz = RGBRGB.R
+    @assert(xyz.isRed())
+    //@assert(RGBRGB.isRed())
+    @assert(RGBRGB.R.isRed())
+    @assert(RGBRGB.GLOBAL == 20)
+}
