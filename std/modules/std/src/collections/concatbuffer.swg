@@ -118,7 +118,7 @@ namespace std.collections
             /// Release the content of the buffer
             func free(using self)
             {
-                drop(self)
+                @drop(self)
                 curCount, usedBuckets, totalBuckets = 0
                 firstBucket, curBucket = null
             }

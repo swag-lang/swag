@@ -5,6 +5,6 @@
 {
 	x := 1
 	ptr := &x
-	init(ptr)
+	@init(ptr)
 	@assert(x == 0)
 }

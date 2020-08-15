@@ -5,16 +5,16 @@ func(T, N: u32) new()->*T
 	var req : swag.AllocatorRequest
 	req.size = @sizeof(T) * N
 	@getcontext().allocator.alloc(&req)
-	
-	init(cast(*T) req.address, N)
-	
+
+	@init(cast(*T) req.address, N)
+
 	return acast req.address
 }
 
 func(T, N: u32) delete(addr: *T)
 {
-	drop(addr, N)
-	
+	@drop(addr, N)
+
 	var req : swag.AllocatorRequest
 	req.size = @sizeof(T) * N
 	req.address = addr

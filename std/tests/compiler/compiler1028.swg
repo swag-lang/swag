@@ -12,7 +12,7 @@ struct Point
 	pt[0].x = 0
 	pt[1].x = 0
 	ptr := &pt
-	init(ptr, 2)
+	@init(ptr, 2)
 	@assert(pt[0].x == 10)
 	@assert(pt[1].x == 10)
 }

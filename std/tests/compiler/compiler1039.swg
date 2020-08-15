@@ -12,12 +12,12 @@ impl Point
 		x = 100
 	}
 }
-	
+
 //#[swag.printbc]
 #test
 {
 	var pt : Point
 	ptr := &pt
-	drop(ptr)
+	@drop(ptr)
 	@assert(pt.x == 100)
 }

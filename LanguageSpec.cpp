@@ -80,8 +80,6 @@ void LanguageSpec::setup()
     keywords["default"]     = TokenId::KwdDefault;
     keywords["for"]         = TokenId::KwdFor;
     keywords["defer"]       = TokenId::KwdDefer;
-    keywords["init"]        = TokenId::KwdInit;
-    keywords["drop"]        = TokenId::KwdDrop;
     keywords["deref"]       = TokenId::KwdDeRef;
     keywords["code"]        = TokenId::KwdCode;
     keywords["label"]       = TokenId::KwdLabel;
@@ -102,6 +100,8 @@ void LanguageSpec::setup()
     keywords["any"]    = TokenId::NativeType;
     keywords["void"]   = TokenId::NativeType;
 
+    keywords["@init"]        = TokenId::KwdInit;
+    keywords["@drop"]        = TokenId::KwdDrop;
     keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
     keywords["@typeof"]      = TokenId::IntrinsicTypeOf;
     keywords["@kindof"]      = TokenId::IntrinsicKindOf;

@@ -60,7 +60,7 @@ struct B
             x[1] = 666
             @print(x[1])
             cpt := 2
-            init(&x[0], cpt)
+            @init(&x[0], cpt)
             @print(x[1])
         }
 
