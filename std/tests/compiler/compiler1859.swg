@@ -50,21 +50,30 @@ struct B
     y: s32
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func variadic(x: ...)
 {
     @print(cast(s64) @countof(x))
+}
+
+func variadic1(x: ...)
+{
+    @print(cast(s64) x[0])
+    @print(cast(s64) x[1])
 }
 
 //#[swag.printbc]
 #test
 {
     {
-        variadic(10's64,10's64)
+        variadic1(666's64, 555's64)
     }
 
-    if true
+    if false
     {
+        variadic(666's64)
+        variadic(10's64,10's64)
+
         {
             x := @[1's64, 2, 3]
             ptr := &x[2]

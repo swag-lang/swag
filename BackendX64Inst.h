@@ -464,7 +464,7 @@ namespace BackendX64Inst
             pp.concat.addU8((uint8_t) stackOffset);
         }
         else
-        {                        
+        {
             pp.concat.addString3("\x44\x8b\x8f"); // mov r9d, dword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
@@ -824,6 +824,21 @@ namespace BackendX64Inst
         }
         {
             pp.concat.addString2("\x48\xbb"); // mov rbx, ????????_????????
+            pp.concat.addU64(val);
+        }
+    }
+
+    inline void emit_Move_Cst64_In_RCX(X64PerThread& pp, uint64_t val)
+    {
+        if (val == 0)
+            emit_Clear_RCX(pp);
+        else if (val <= 0x7FFFFFFF)
+        {
+            pp.concat.addString3("\x48\xc7\xc1"); // mov rcx, ????????
+            pp.concat.addU32((uint32_t) val);
+        }
+        {
+            pp.concat.addString2("\x48\xb9"); // mov rcx, ????????_????????
             pp.concat.addU64(val);
         }
     }
