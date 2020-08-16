@@ -60,10 +60,10 @@ func variadic(x: ...)
 #test
 {
     {
-        //variadic(10's64)
+        variadic(10's64,10's64)
     }
 
-    if false
+    if true
     {
         {
             x := @[1's64, 2, 3]

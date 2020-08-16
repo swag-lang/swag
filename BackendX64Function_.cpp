@@ -80,7 +80,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
-    bool                   isVariadic = false;
+    uint32_t               isVariadic = 0;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -1244,21 +1244,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //    concat.addStringFormat("r[%u], ", pushRAParams[idxParam]);
             //    idxParam--;
             //}
-            concat.addString3("\x48\x89\xe0"); // mov rax, rsp
-            BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 8 + ((int) pushRAParams.size() * sizeof(Register)));
+            isVariadic = 8 + ((int) pushRAParams.size() * sizeof(Register));
+            BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, isVariadic);
             for (int idxParam = (int) pushRAParams.size() - 1, offset = 8; idxParam >= 0; idxParam--, offset += 8)
             {
-                concat.addString4("\x48\xc7\x84\x24"); // mov [rsp + ????????], ????????
+                BackendX64Inst::emit_Move_Reg_In_RAX(pp, pushRAParams[idxParam]);
+                concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
                 concat.addU32(offset);
-                concat.addU32(pushRAParams[idxParam]);
             }
 
             //concat.addStringFormat("r[%u].pointer = sizeof(__r_t) + (__u8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
+            concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
+            concat.addU8(8);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
 
             //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
             concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
-            isVariadic = true;
             break;
 
         case ByteCodeOp::PushRAParam:
@@ -1270,7 +1271,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
             concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
-            BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
@@ -1312,7 +1312,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             uint32_t sizeCallStack = emitCallParameters(pp, typeFuncBC, pushRAParams);
             concat.addString2("\xff\xd0"); // call rax
 
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             auto jumpToAfterAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
@@ -1326,6 +1326,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // End
             //////////////////
             *jumpToAfterAddr = concat.totalCount() - jumpToAfterOffset;
+
+            isVariadic = 0;
             pushRAParams.clear();
             break;
         }
@@ -1338,11 +1340,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             uint32_t sizeCallStack = emitCallParameters(pp, typeFuncBC, pushRAParams);
             emitCall(pp, funcBC->callName());
 
-            if (isVariadic)
-                sizeCallStack += 8 + ((int) pushRAParams.size() * sizeof(Register));
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
-
-            isVariadic = false;
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
+            isVariadic = 0;
             pushRAParams.clear();
             break;
         }
@@ -1401,9 +1400,8 @@ uint32_t BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* type
     uint32_t sizeStack = 0;
     for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
     {
-        concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
+        concat.addString2("\xff\xb7"); // push [rdi + ????????]
         concat.addU32(pushRAParams[iParam] * sizeof(Register));
-        concat.addString1("\x52"); // push rdx
         sizeStack += 8;
     }
 
