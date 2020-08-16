@@ -35,9 +35,9 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     auto symbol = findNoLock(*aliasName);
     if (!symbol)
     {
-        symbol                       = g_Allocator.alloc<SymbolName>();
-        symbol->name                 = *aliasName;
-        symbol->fullName             = Scope::makeFullName(scope->fullname, *aliasName);
+        symbol       = g_Allocator.alloc<SymbolName>();
+        symbol->name = *aliasName;
+        Scope::makeFullName(symbol->fullName, scope->getFullName(), *aliasName);
         symbol->kind                 = kind;
         symbol->defaultOverload.node = node;
         symbol->ownerTable           = this;

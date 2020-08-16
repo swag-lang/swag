@@ -1062,7 +1062,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
             isValid = false;
             for (auto& dep : scopeHierarchyVars)
             {
-                if (dep.scope->fullname == oneSymbol->ownerTable->scope->fullname)
+                if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
                 {
                     isValid = true;
                     break;
@@ -1327,7 +1327,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (identifierRef->startScope)
                 {
-                    auto displayName = identifierRef->startScope->fullname;
+                    auto displayName = identifierRef->startScope->getFullName();
                     if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                         displayName = identifierRef->typeInfo->name;
                     if (!displayName.empty())
@@ -1427,7 +1427,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         if (identifierRef->startScope)
         {
-            auto displayName = identifierRef->startScope->fullname;
+            auto displayName = identifierRef->startScope->getFullName();
             if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                 displayName = identifierRef->typeInfo->name;
             if (!displayName.empty())
@@ -1589,7 +1589,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     AstNode* dependentVar = nullptr;
     for (auto& dep : scopeHierarchyVars)
     {
-        if (dep.scope->fullname == symbol->ownerTable->scope->fullname)
+        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
         {
             if (dependentVar)
             {

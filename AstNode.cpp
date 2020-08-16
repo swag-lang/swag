@@ -36,9 +36,10 @@ void AstNode::inheritLocationFromChilds()
 
 Utf8 AstNode::computeScopedName()
 {
-    if (ownerScope->fullname.empty())
+    auto& fullName = ownerScope->getFullName();
+    if (fullName.empty())
         return name;
-    return ownerScope->fullname + "." + name.c_str();
+    return fullName + "." + name.c_str();
 }
 
 Utf8 AstNode::getKindName(AstNode* node)

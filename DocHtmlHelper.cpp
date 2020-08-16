@@ -486,7 +486,7 @@ namespace DocHtmlHelper
             if (node->attributeFlags & ATTRIBUTE_NODOC)
                 continue;
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + "." + node->name.c_str() + ".html";
+            auto refName = scope->getFullName() + "." + node->name.c_str() + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
             DocHtmlHelper::tableDescCell(outFile, node->docContent ? node->docContent->docSummary : Utf8(""));
             DocHtmlHelper::endTableRow(outFile);
@@ -511,7 +511,7 @@ namespace DocHtmlHelper
         for (auto param : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname;
+            auto refName = scope->getFullName();
             if (specificRefFile)
                 refName += "." + param->namedParam;
             refName += ".html";
@@ -525,11 +525,12 @@ namespace DocHtmlHelper
 
     void origin(Concat& outFile, Scope* scope)
     {
-        if (!scope->fullname.empty())
+        auto fullName = scope->getFullName();
+        if (!fullName.empty())
         {
             CONCAT_FIXED_STR(outFile, "<br/><div class=\"origin\">\n");
-            auto parentRef = scope->fullname + ".html";
-            outFile.addStringFormat("<strong>Namespace: </strong><a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), scope->fullname.c_str());
+            auto parentRef = fullName + ".html";
+            outFile.addStringFormat("<strong>Namespace: </strong><a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), fullName.c_str());
             CONCAT_FIXED_STR(outFile, "</div>\n");
         }
     }

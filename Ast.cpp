@@ -194,14 +194,11 @@ namespace Ast
             }
         }
 
-        auto newScope = g_Allocator.alloc<Scope>();
-
-        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : (const Utf8&) name;
+        auto newScope         = g_Allocator.alloc<Scope>();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->owner       = owner;
         newScope->name        = name;
-        newScope->fullname    = move(fullname);
 
         if (parentScope)
         {

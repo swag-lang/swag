@@ -16,7 +16,7 @@ void TypeInfo::computeScopedNameNoLock()
 
     if (declNode && declNode->ownerScope)
     {
-        newName += declNode->ownerScope->fullname;
+        newName += declNode->ownerScope->getFullName();
         if (!newName.empty())
             newName += ".";
     }

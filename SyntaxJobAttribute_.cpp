@@ -217,7 +217,7 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
     {
         Utf8 code;
         code = "#test {\n";
-        code += format("using %s\n", attrBlockNode->ownerScope->fullname.c_str());
+        code += format("using %s\n", attrBlockNode->ownerScope->getFullName().c_str());
         code += oneCode;
         code += "}\n";
 

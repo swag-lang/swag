@@ -52,9 +52,27 @@ const char* Scope::getArticleKindName(ScopeKind kind)
     }
 }
 
-Utf8 Scope::makeFullName(const Utf8& parentName, const Utf8& name)
+const Utf8& Scope::getFullName()
 {
-    return parentName.empty() ? name : parentName + "." + name;
+    unique_lock lk(lockChilds);
+    if (!fullname.empty())
+        return fullname;
+    if (parentScope)
+        makeFullName(fullname, parentScope->fullname, name);
+    else
+        fullname = name;
+    return fullname;
+}
+
+void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
+{
+    if (parentName.empty())
+        result = name;
+    else
+    {
+        result.reserve(parentName.length() + name.length() + 2);
+        result = parentName + "." + name;
+    }
 }
 
 void Scope::collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result)
