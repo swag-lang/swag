@@ -42,7 +42,7 @@ JobResult ModuleOutputJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforePrepareOutput = chrono::high_resolution_clock::now();
+            timerPrepareOutput.start();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
                 g_Log.verbose(format("## module %s prep output pass begin", module->name.c_str()));
         }
@@ -135,14 +135,13 @@ JobResult ModuleOutputJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeGenOutput              = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed = timeBeforeGenOutput - timeBeforePrepareOutput;
-            g_Stats.prepOutputTimeJob        = g_Stats.prepOutputTimeJob + elapsed.count();
+            timerPrepareOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbose(format(" # module %s prep output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format(" # module %s prep output pass end in %.3fs", module->name.c_str(), timerPrepareOutput.elapsed.count()));
                 g_Log.verbose(format("## module %s gen output pass begin", module->name.c_str()));
             }
+            timerGenOutput.start();
         }
 
         pass = ModuleOutputJobPass::Done;
@@ -191,11 +190,9 @@ JobResult ModuleOutputJob::execute()
     // Timing...
     if (g_CommandLine.stats || g_CommandLine.verbose)
     {
-        auto                     timeAfterOutput = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeGenOutput;
-        g_Stats.genOutputTime                    = g_Stats.genOutputTime + elapsed.count();
+        timerGenOutput.stop();
         if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format(" # module %s gen output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+            g_Log.verbose(format(" # module %s gen output pass end in %.3fs", module->name.c_str(), timerGenOutput.elapsed.count()));
     }
 
     return JobResult::ReleaseJob;

@@ -59,8 +59,8 @@ JobResult ModuleBuildJob::execute()
         // If we do not need to compile, then exit, we're done with that module
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
-            timeBeforeSemanticModule = chrono::high_resolution_clock::now();
-            pass                     = ModuleBuildPass::RunByteCode;
+            timerSemanticModule.start();
+            pass = ModuleBuildPass::RunByteCode;
         }
         else
         {
@@ -191,7 +191,7 @@ JobResult ModuleBuildJob::execute()
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeSemanticCompiler = chrono::high_resolution_clock::now();
+            timerSemanticCompiler.start();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
                 g_Log.verbose(format("## module %s semantic compiler pass begin", module->name.c_str()));
         }
@@ -226,14 +226,13 @@ JobResult ModuleBuildJob::execute()
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeSemanticModule         = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed = timeBeforeSemanticModule - timeBeforeSemanticCompiler;
-            g_Stats.semanticCompilerTime     = g_Stats.semanticCompilerTime + elapsed.count();
+            timerSemanticCompiler.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbose(format(" # module %s semantic compiler pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format(" # module %s semantic compiler pass end in %.3fs", module->name.c_str(), timerSemanticCompiler.elapsed.count()));
                 g_Log.verbose(format("## module %s semantic module pass begin", module->name.c_str()));
             }
+            timerSemanticModule.start();
         }
 
         if (module->numErrors)
@@ -253,11 +252,10 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeRun                    = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed = timeBeforeRun - timeBeforeSemanticModule;
-            g_Stats.semanticModuleTime       = g_Stats.semanticModuleTime + elapsed.count();
+            timerSemanticModule.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
+            timerRun.start();
         }
 
         if (module->numErrors)
@@ -391,11 +389,10 @@ JobResult ModuleBuildJob::execute()
         // TIming...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timeBeforeOutput                 = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed = timeBeforeOutput - timeBeforeRun;
-            g_Stats.runTime                  = g_Stats.runTime + elapsed.count();
+            timerRun.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
                 g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
+            timerOutput.start();
         }
 
         if (module->numErrors)
@@ -447,11 +444,9 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            auto                     timeAfterOutput = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeOutput;
-            g_Stats.outputTime                       = g_Stats.outputTime + elapsed.count();
+            timerOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), timerOutput.elapsed.count()));
         }
 
         if (module->numErrors)

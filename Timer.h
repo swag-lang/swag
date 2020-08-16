@@ -3,25 +3,28 @@
 
 struct Timer
 {
-    Timer(atomic<double>& dest, bool force = false)
+    Timer(atomic<double>& dest)
         : destValue{dest}
-        , wasForced{force}
+    {
+    }
+
+    void start(bool force = false)
     {
         if (g_CommandLine.stats || force)
             timeBefore = chrono::high_resolution_clock::now();
     }
 
-    ~Timer()
+    void stop(bool force = false)
     {
-        if (g_CommandLine.stats || wasForced)
+        if (g_CommandLine.stats || force)
         {
-            auto                     timeAfter = chrono::high_resolution_clock::now();
-            chrono::duration<double> elapsed   = timeAfter - timeBefore;
-            destValue                          = destValue + elapsed.count();
+            auto timeAfter = chrono::high_resolution_clock::now();
+            elapsed        = timeAfter - timeBefore;
+            destValue      = destValue + elapsed.count();
         }
     }
 
+    chrono::duration<double>                  elapsed;
     chrono::high_resolution_clock::time_point timeBefore;
     atomic<double>&                           destValue;
-    bool                                      wasForced = false;
 };

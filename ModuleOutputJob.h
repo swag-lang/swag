@@ -1,5 +1,7 @@
 #pragma once
 #include "Job.h"
+#include "Timer.h"
+#include "Stats.h"
 struct Module;
 
 enum class ModuleOutputJobPass
@@ -12,11 +14,17 @@ enum class ModuleOutputJobPass
 
 struct ModuleOutputJob : public Job
 {
+    ModuleOutputJob()
+        : timerPrepareOutput{g_Stats.prepOutputTimeJob}
+        , timerGenOutput{g_Stats.genOutputTime}
+    {
+    }
+
     JobResult           execute() override;
     ModuleOutputJobPass pass = ModuleOutputJobPass::Init;
 
-    chrono::high_resolution_clock::time_point timeBeforePrepareOutput;
-    chrono::high_resolution_clock::time_point timeBeforeGenOutput;
+    Timer timerPrepareOutput;
+    Timer timerGenOutput;
 };
 
 extern thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;

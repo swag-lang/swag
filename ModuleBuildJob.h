@@ -1,5 +1,7 @@
 #pragma once
 #include "Job.h"
+#include "Timer.h"
+#include "Stats.h"
 struct Module;
 
 enum class ModuleBuildPass
@@ -19,17 +21,21 @@ enum class ModuleBuildPass
 struct ModuleBuildJob : public Job
 {
     ModuleBuildJob()
+        : timerSemanticCompiler{g_Stats.semanticCompilerTime}
+        , timerSemanticModule{g_Stats.semanticModuleTime}
+        , timerRun{g_Stats.runTime}
+        , timerOutput{g_Stats.outputTime}
     {
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
 
     JobResult execute() override;
 
-    ModuleBuildPass                           pass = ModuleBuildPass::Dependencies;
-    chrono::high_resolution_clock::time_point timeBeforeSemanticModule;
-    chrono::high_resolution_clock::time_point timeBeforeSemanticCompiler;
-    chrono::high_resolution_clock::time_point timeBeforeRun;
-    chrono::high_resolution_clock::time_point timeBeforeOutput;
+    ModuleBuildPass pass = ModuleBuildPass::Dependencies;
+    Timer           timerSemanticCompiler;
+    Timer           timerSemanticModule;
+    Timer           timerRun;
+    Timer           timerOutput;
 };
 
 extern thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;

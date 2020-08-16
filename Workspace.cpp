@@ -378,9 +378,11 @@ bool Workspace::buildTarget()
 
     {
         Timer timer(g_Stats.syntaxTime);
-        auto  enumJob = new EnumerateModuleJob;
+        timer.start();
+        auto enumJob = new EnumerateModuleJob;
         g_ThreadMgr.addJob(enumJob);
         g_ThreadMgr.waitEndJobs();
+        timer.stop();
     }
 
     if (g_CommandLine.verbose)
@@ -461,7 +463,8 @@ bool Workspace::buildTarget()
 bool Workspace::build()
 {
     {
-        Timer timer(g_Stats.totalTime, true);
+        Timer timer(g_Stats.totalTime);
+        timer.start(true);
 
         setup();
 
@@ -474,6 +477,8 @@ bool Workspace::build()
         addBootstrap();
         setupTarget();
         SWAG_CHECK(buildTarget());
+
+        timer.stop(true);
     }
 
     if (g_Workspace.numErrors)

@@ -113,20 +113,24 @@ char SourceFile::getPrivateChar()
 
         // First time, open and read in sync. This is faster to open files in jobs that letting
         // the loading thread open files one by one
-        Timer read(g_Stats.readFiles);
-        if (!openedOnce)
         {
-            if (!openRead())
-                return 0;
-            bufferSize = readTo();
-            if (!checkFormat())
-                return false;
-            fileSeek = BUF_SIZE;
-        }
-        else
-        {
-            loadRequest();
-            bufferCurSeek = 0;
+            Timer read(g_Stats.readFiles);
+            read.start();
+            if (!openedOnce)
+            {
+                if (!openRead())
+                    return 0;
+                bufferSize = readTo();
+                if (!checkFormat())
+                    return false;
+                fileSeek = BUF_SIZE;
+            }
+            else
+            {
+                loadRequest();
+                bufferCurSeek = 0;
+            }
+            read.stop();
         }
 
         // Be sure there's something in the current buffer
