@@ -42,6 +42,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                             auto file       = g_Allocator.alloc<SourceFile>();
                             job->sourceFile = file;
                             file->fromTests = theModule->fromTestsFolder;
+                            file->name      = cFileName;
                             file->path      = tmp + "\\" + cFileName;
                             file->writeTime = writeTime;
                             theModule->addFile(file);

@@ -103,6 +103,7 @@ JobResult ModuleBuildJob::execute()
                 syntaxJob->sourceFile   = file;
                 syntaxJob->module       = module;
                 syntaxJob->dependentJob = this;
+                file->name              = depModule->backend->bufferSwg.name;
                 file->path              = depModule->backend->bufferSwg.path;
                 file->generated         = true;
                 dep.second.generated    = depModule->backend->exportFileGenerated;

@@ -432,17 +432,20 @@ void Backend::setupExportFile()
     if (bufferSwg.path.empty())
     {
         exportFileGenerated = true;
-        Utf8 targetPath     = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
+        Utf8 targetName     = module->name + ".generated.swg";
+        Utf8 targetPath     = g_Workspace.cachePath.string() + "\\" + targetName;
         bool exists         = fs::exists(targetPath.c_str());
         if (!exists)
         {
             exportFileGenerated = false;
+            targetName          = module->name + ".swg";
             targetPath          = g_Workspace.targetPath.string() + "\\" + module->name + ".swg";
             exists              = fs::exists(targetPath.c_str());
         }
 
         if (exists)
         {
+            bufferSwg.name = targetName;
             bufferSwg.path = targetPath;
             timeExportFile = OS::getFileWriteTime(targetPath.c_str());
         }

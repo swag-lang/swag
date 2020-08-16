@@ -73,6 +73,7 @@ void Workspace::addBootstrap()
     auto     file         = g_Allocator.alloc<SourceFile>();
     auto     job          = g_Pool_syntaxJob.alloc();
     fs::path p            = g_CommandLine.exePath;
+    file->name            = "bootstrap.swg";
     file->path            = p.parent_path().string() + "/bootstrap.swg";
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
