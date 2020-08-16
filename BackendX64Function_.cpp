@@ -1270,6 +1270,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
             concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
+            BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
@@ -1400,8 +1401,9 @@ uint32_t BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* type
     uint32_t sizeStack = 0;
     for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
     {
-        concat.addString2("\xff\xb7"); // push [rdi + ????????]
+        concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
         concat.addU32(pushRAParams[iParam] * sizeof(Register));
+        concat.addString1("\x52"); // push rdx
         sizeStack += 8;
     }
 

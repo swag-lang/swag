@@ -63,7 +63,7 @@ func variadic(x: ...)
         //variadic(10's64)
     }
 
-    if true
+    if false
     {
         {
             x := @[1's64, 2, 3]
