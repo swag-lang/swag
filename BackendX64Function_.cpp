@@ -105,6 +105,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
+        case ByteCodeOp::AddVBtoRA32:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
+            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            concat.addString2("\x01\x18"); // add dword ptr [rax], ebx
+            break;
+
         case ByteCodeOp::ClearRA:
             BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Cst64_In_RBX(pp, 0);
@@ -1296,6 +1303,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRCtoRR:
+        case ByteCodeOp::CopyRCtoRRCall:
             //registersRR[ip->a.u32] = registersRC[ip->b.u32];
             SWAG_ASSERT(ip->a.u32 <= 1); // Can only return 2 registers
             if (ip->a.u32 == 0)
@@ -1303,6 +1311,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
             break;
+        case ByteCodeOp::CopyRRtoRC:
         case ByteCodeOp::CopyRRtoRCCall:
             //registersRC[ip->a.u32] = registersRR[ip->b.u32];
             SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers

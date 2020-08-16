@@ -62,11 +62,33 @@ func variadic1(x: ...)
     @print(cast(s64) x[1])
 }
 
+func variadic2(z: s32, x: ...)
+{
+    @print(cast(s64) x[0])
+    @print(cast(s64) x[1])
+    @print(cast(s64) z)
+}
+
+#[swag.printbc]
+func retS()->B
+{
+    var x: B = @{666,777}
+    return x
+}
+
 //#[swag.printbc]
 #test
 {
-    if true
     {
+        x := retS()
+        @print(cast(s64) x.y)
+        @print(cast(s64) x.z)
+    }
+
+    if false
+    {
+        variadic2(555, 666's64, 777's64)
+
         {
             x := 10'u64
             x <<= 1
