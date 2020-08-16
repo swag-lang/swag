@@ -13,7 +13,13 @@ struct Concat
 {
     void init(int size = 32 * 1024);
     void clear();
+    bool hasEnoughtSpace(uint32_t numBytes);
     void ensureSpace(int numBytes);
+
+    void addU8_safe(uint8_t v);
+    void addU16_safe(uint16_t v);
+    void addU32_safe(uint32_t v);
+    void addU64_safe(uint64_t v);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);
@@ -35,14 +41,15 @@ struct Concat
     void      addString4(const char* v);
     void      addString(const char* v, int len);
     void      addString(const char* v);
-    void      addString(const Utf8& v);
-    void      addEolIndent(int num);
-    void      addIndent(int num);
-    void      addChar(char c);
-    void      addEol();
-    void      addStringFormat(const char* format, ...);
-    void      addU32Str(uint32_t value);
-    void      addS32Str8(int value);
+
+    void addString(const Utf8& v);
+    void addEolIndent(int num);
+    void addIndent(int num);
+    void addChar(char c);
+    void addEol();
+    void addStringFormat(const char* format, ...);
+    void addU32Str(uint32_t value);
+    void addS32Str8(int value);
 
     uint8_t* getSeekPtr()
     {
