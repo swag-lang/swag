@@ -338,7 +338,6 @@ struct AstNode
 
     Token         token;
     Utf8Crc       name;
-    Utf8          scopedName1;
     shared_mutex  mutex;
     ComputedValue computedValue;
     RegisterList  resultRegisterRC;
