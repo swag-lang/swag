@@ -344,7 +344,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     }
     else
     {
-        auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+        auto typeInfo        = g_Allocator.alloc0<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->name;
@@ -686,7 +686,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_GENERIC;
         if (genericType && node->assignment)
         {
-            auto typeGeneric       = g_Allocator.alloc<TypeInfoGeneric>();
+            auto typeGeneric       = g_Allocator.alloc0<TypeInfoGeneric>();
             typeGeneric->name      = node->name;
             typeGeneric->nakedName = node->name;
             typeGeneric->rawType   = node->typeInfo;
@@ -694,7 +694,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (!node->typeInfo)
         {
-            node->typeInfo            = g_Allocator.alloc<TypeInfoGeneric>();
+            node->typeInfo            = g_Allocator.alloc0<TypeInfoGeneric>();
             node->typeInfo->name      = node->name;
             node->typeInfo->nakedName = node->name;
         }
@@ -848,7 +848,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
             {
-                auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
+                auto typeRef         = g_Allocator.alloc0<TypeInfoReference>();
                 typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
                 typeRef->pointedType = typeInfo;
                 typeRef->computeName();

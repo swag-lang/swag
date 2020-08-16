@@ -235,7 +235,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 
 TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto      typeArray    = g_Allocator.alloc<TypeInfoArray>();
+    auto      typeArray    = g_Allocator.alloc0<TypeInfoArray>();
     auto      orgTypeArray = typeArray;
     TypeInfo* finalType    = nullptr;
 
@@ -251,7 +251,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
             break;
         typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
-        typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
+        typeArray->pointedType = g_Allocator.alloc0<TypeInfoArray>();
         typeArray              = (TypeInfoArray*) typeArray->pointedType;
     }
 
@@ -272,7 +272,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct       = g_Allocator.alloc<TypeInfoStruct>();
+    auto typeStruct       = g_Allocator.alloc0<TypeInfoStruct>();
     typeStruct->nakedName = typeList->computeTupleName(context);
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());

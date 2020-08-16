@@ -42,7 +42,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
+    auto typeInfo      = g_Allocator.alloc0<TypeInfoFuncAttr>();
     typeInfo->kind     = TypeInfoKind::Lambda;
     typeInfo->declNode = node;
 
@@ -61,7 +61,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     {
         for (auto param : node->parameters->childs)
         {
-            auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+            auto typeParam      = g_Allocator.alloc0<TypeInfoParam>();
             typeParam->typeInfo = param->typeInfo;
             typeParam->node     = param;
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
@@ -157,7 +157,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     {
         typeNode->resolvedSymbolName     = typeNode->identifier->resolvedSymbolName;
         typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
-        typeNode->typeInfo               = g_Allocator.alloc<TypeInfoGeneric>();
+        typeNode->typeInfo               = g_Allocator.alloc0<TypeInfoGeneric>();
         typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
         typeNode->typeInfo->nakedName    = typeNode->resolvedSymbolName->name;
         typeNode->typeInfo               = typeNode->typeInfo;
@@ -190,7 +190,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a pointer
     if (typeNode->ptrCount)
     {
-        auto ptrPointer       = g_Allocator.alloc<TypeInfoPointer>();
+        auto ptrPointer       = g_Allocator.alloc0<TypeInfoPointer>();
         ptrPointer->ptrCount  = typeNode->ptrCount;
         ptrPointer->finalType = typeNode->typeInfo;
         ptrPointer->sizeOf    = sizeof(void*);
@@ -207,7 +207,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a reference
     else if (typeNode->isRef)
     {
-        auto ptrRef         = g_Allocator.alloc<TypeInfoReference>();
+        auto ptrRef         = g_Allocator.alloc0<TypeInfoReference>();
         ptrRef->pointedType = typeNode->typeInfo;
         SWAG_VERIFY(typeNode->isConst, context->report({typeNode, "a reference must be declared as 'const'"}));
         if (typeNode->isConst)
@@ -229,7 +229,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         // Array without a specified size
         if (typeNode->arrayDim == UINT32_MAX)
         {
-            auto ptrArray         = g_Allocator.alloc<TypeInfoArray>();
+            auto ptrArray         = g_Allocator.alloc0<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
@@ -253,7 +253,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
 
-                auto ptrArray   = g_Allocator.alloc<TypeInfoArray>();
+                auto ptrArray   = g_Allocator.alloc0<TypeInfoArray>();
                 ptrArray->count = child->computedValue.reg.u32;
                 totalCount *= ptrArray->count;
                 ptrArray->totalCount  = totalCount;
@@ -270,7 +270,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
     else if (typeNode->isSlice)
     {
-        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+        auto ptrSlice         = g_Allocator.alloc0<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
         if (typeNode->isConst)
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -353,7 +353,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto typeInfo      = g_Allocator.alloc<TypeInfoAlias>();
+    auto typeInfo      = g_Allocator.alloc0<TypeInfoAlias>();
     typeInfo->declNode = node;
     typeInfo->rawType  = node->childs.front()->typeInfo;
     typeInfo->name     = node->name;
@@ -404,7 +404,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // When we cast to a structure, in fact we cast to a const reference
     if (typeNode->typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
+        auto typeRef         = g_Allocator.alloc0<TypeInfoReference>();
         typeRef->flags       = typeNode->typeInfo->flags | TYPEINFO_CONST;
         typeRef->pointedType = typeNode->typeInfo;
         typeRef->computeName();

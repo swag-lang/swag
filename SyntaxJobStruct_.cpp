@@ -47,7 +47,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
-            auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
+            auto typeStruct           = g_Allocator.alloc0<TypeInfoStruct>();
             typeStruct->scope         = newScope;
             typeStruct->nakedName     = structName;
             typeStruct->name          = structName;
@@ -129,7 +129,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             TypeInfoStruct* typeInfo = (TypeInfoStruct*) newScope->owner->typeInfo;
             if (!typeInfo)
             {
-                typeInfo                  = g_Allocator.alloc<TypeInfoStruct>();
+                typeInfo                  = g_Allocator.alloc0<TypeInfoStruct>();
                 newScope->owner->typeInfo = typeInfo;
             }
 

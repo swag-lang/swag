@@ -351,7 +351,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        typeInfo = g_Allocator.alloc<TypeInfoFuncAttr>();
+        auto        typeInfo = g_Allocator.alloc0<TypeInfoFuncAttr>();
         typeInfo->declNode   = funcNode;
 
         newScope           = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
@@ -366,7 +366,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (currentScope->kind == ScopeKind::Struct)
     {
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
-        auto typeParam        = g_Allocator.alloc<TypeInfoParam>();
+        auto typeParam        = g_Allocator.alloc0<TypeInfoParam>();
         typeParam->namedParam = funcNode->name;
         typeParam->typeInfo   = funcNode->typeInfo;
         typeParam->node       = funcNode;
@@ -503,7 +503,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     int id         = g_Global.uniqueID.fetch_add(1);
     funcNode->name = "__lambda" + to_string(id);
 
-    auto typeInfo      = g_Allocator.alloc<TypeInfoFuncAttr>();
+    auto typeInfo      = g_Allocator.alloc0<TypeInfoFuncAttr>();
     typeInfo->declNode = funcNode;
 
     auto newScope      = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);

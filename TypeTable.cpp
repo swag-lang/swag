@@ -293,7 +293,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr = g_Allocator.alloc<TypeInfoPointer>();
+    auto typePtr = g_Allocator.alloc0<TypeInfoPointer>();
     if (cflags & CONCRETE_FOR_COMPILER)
         concreteTypesCompiler[typeName] = {typePtr, storageOffset};
     else

@@ -349,11 +349,11 @@ struct TypeInfoFuncAttr : public TypeInfo
     VectorNative<TypeInfoParam*> parameters;
     SymbolAttributes             attributes;
 
-    TypeInfo* returnType = nullptr;
+    TypeInfo* returnType;
 
     int      firstDefaultValueIdx = -1;
-    int      stackSize            = 0;
-    uint32_t attributeUsage       = 0xFFFFFFFF; // All by default
+    int      stackSize;
+    uint32_t attributeUsage = 0xFFFFFFFF; // All by default
 };
 
 struct TypeInfoPointer : public TypeInfo
@@ -369,10 +369,10 @@ struct TypeInfoPointer : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* finalType   = nullptr;
-    TypeInfo* pointedType = nullptr;
+    TypeInfo* finalType;
+    TypeInfo* pointedType;
 
-    uint32_t ptrCount = 0;
+    uint32_t ptrCount;
 };
 
 struct TypeInfoReference : public TypeInfo
@@ -388,7 +388,7 @@ struct TypeInfoReference : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType = nullptr;
+    TypeInfo* pointedType;
 };
 
 struct TypeInfoArray : public TypeInfo
@@ -408,11 +408,11 @@ struct TypeInfoArray : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType = nullptr;
-    TypeInfo* finalType   = nullptr;
+    TypeInfo* pointedType;
+    TypeInfo* finalType;
 
-    uint32_t count      = 0;
-    uint32_t totalCount = 0;
+    uint32_t count;
+    uint32_t totalCount;
 };
 
 struct TypeInfoSlice : public TypeInfo
@@ -427,7 +427,7 @@ struct TypeInfoSlice : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType = nullptr;
+    TypeInfo* pointedType;
 };
 
 struct TypeInfoList : public TypeInfo
@@ -448,7 +448,7 @@ struct TypeInfoList : public TypeInfo
 
     VectorNative<TypeInfoParam*> subTypes;
 
-    Scope* scope = nullptr;
+    Scope* scope;
 };
 
 struct TypeInfoVariadic : public TypeInfo
@@ -461,7 +461,7 @@ struct TypeInfoVariadic : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType = nullptr;
+    TypeInfo* rawType;
 };
 
 struct TypeInfoGeneric : public TypeInfo
@@ -475,7 +475,7 @@ struct TypeInfoGeneric : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType = nullptr;
+    TypeInfo* rawType;
 };
 
 struct TypeInfoStruct : public TypeInfo
@@ -506,20 +506,20 @@ struct TypeInfoStruct : public TypeInfo
     SymbolAttributes             attributes;
     Utf8                         structName;
 
-    TypeInfoStruct* itable            = nullptr;
-    TypeInfoStruct* fromGeneric       = nullptr;
-    Scope*          scope             = nullptr;
-    ByteCode*       opInit            = nullptr;
-    AstFuncDecl*    opUserPostCopyFct = nullptr;
-    ByteCode*       opPostCopy        = nullptr;
-    AstFuncDecl*    opUserPostMoveFct = nullptr;
-    ByteCode*       opPostMove        = nullptr;
-    AstFuncDecl*    opUserDropFct     = nullptr;
-    ByteCode*       opDrop            = nullptr;
+    TypeInfoStruct* itable;
+    TypeInfoStruct* fromGeneric;
+    Scope*          scope;
+    ByteCode*       opInit;
+    AstFuncDecl*    opUserPostCopyFct;
+    ByteCode*       opPostCopy;
+    AstFuncDecl*    opUserPostMoveFct;
+    ByteCode*       opPostMove;
+    AstFuncDecl*    opUserDropFct;
+    ByteCode*       opDrop;
 
-    uint32_t maxPaddingSize         = 0;
-    uint32_t cptRemainingInterfaces = 0;
-    uint32_t cptRemainingMethods    = 0;
+    uint32_t maxPaddingSize;
+    uint32_t cptRemainingInterfaces;
+    uint32_t cptRemainingMethods;
 };
 
 struct TypeInfoAlias : public TypeInfo
@@ -534,7 +534,7 @@ struct TypeInfoAlias : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType = nullptr;
+    TypeInfo* rawType;
 };
 
 struct TypeInfoCode : public TypeInfo
@@ -549,5 +549,5 @@ struct TypeInfoCode : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    AstNode* content = nullptr;
+    AstNode* content;
 };

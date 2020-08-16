@@ -28,7 +28,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable.findNoLock(enumNode->name);
         if (!symbol)
         {
-            auto typeInfo       = g_Allocator.alloc<TypeInfoEnum>();
+            auto typeInfo       = g_Allocator.alloc0<TypeInfoEnum>();
             typeInfo->declNode  = enumNode;
             typeInfo->name      = enumNode->name;
             typeInfo->nakedName = enumNode->name;

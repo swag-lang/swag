@@ -21,7 +21,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     // Register attribute
     scoped_lock lk(currentScope->symTable.mutex);
-    auto        typeInfo = g_Allocator.alloc<TypeInfoFuncAttr>();
+    auto        typeInfo = g_Allocator.alloc0<TypeInfoFuncAttr>();
     typeInfo->declNode   = attrNode;
 
     auto newScope      = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
