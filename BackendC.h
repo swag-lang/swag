@@ -21,8 +21,8 @@ struct BackendC : public Backend
     {
     }
 
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                    compile(const BuildParameters& backendParameters) override;
+    JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool                    generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
     bool emitRuntime(OutputFile& bufferC, int precompileIndex);

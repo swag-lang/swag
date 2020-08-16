@@ -5,7 +5,7 @@
 #include "Workspace.h"
 #include "OS.h"
 
-JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult BackendC::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     // Do we need to generate the file ?
     if (!mustCompile)
@@ -61,7 +61,7 @@ JobResult BackendC::preCompile(const BuildParameters& buildParameters, Job* owne
     return JobResult::ReleaseJob;
 }
 
-bool BackendC::compile(const BuildParameters& buildParameters)
+bool BackendC::generateOutput(const BuildParameters& buildParameters)
 {
     module->printUserMessage(buildParameters);
 

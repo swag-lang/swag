@@ -105,8 +105,8 @@ struct BackendLLVM : public Backend
     {
     }
 
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                    compile(const BuildParameters& backendParameters) override;
+    JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool                    generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
     bool                createRuntime(const BuildParameters& buildParameters);

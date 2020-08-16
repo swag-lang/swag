@@ -218,7 +218,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendLLVM::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -373,7 +373,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::compile(const BuildParameters& buildParameters)
+bool BackendLLVM::generateOutput(const BuildParameters& buildParameters)
 {
     // Do we need to generate the file ?
     if (!mustCompile)

@@ -8,9 +8,9 @@ thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
-    Timer timer(g_Stats.compileTime);
+    Timer timer(g_Stats.genOutputTime);
 
-    module->backend->compile(buildParameters);
+    module->backend->generateOutput(buildParameters);
     g_Stats.numGenModules++;
 
     // Notify we are done

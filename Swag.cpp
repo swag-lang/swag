@@ -20,8 +20,8 @@ void printStats()
     g_Log.messageHeaderDot("semantic mod time", format("%.3fs", g_Stats.semanticModuleTime.load()));
     g_Log.messageHeaderDot("run time", format("%.3fs", g_Stats.runTime.load()));
     g_Log.messageHeaderDot("output time", format("%.3fs", g_Stats.outputTime.load()));
-    g_Log.messageHeaderDot("precompile time", format("%.3fs", g_Stats.precompileTimeJob.load()));
-    g_Log.messageHeaderDot("compile time", format("%.3fs", g_Stats.compileTime.load()));
+    g_Log.messageHeaderDot("prep out time", format("%.3fs", g_Stats.prepOutputTimeJob.load()));
+    g_Log.messageHeaderDot("gen out time", format("%.3fs", g_Stats.genOutputTime.load()));
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
     g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));

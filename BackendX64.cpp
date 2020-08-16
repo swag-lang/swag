@@ -29,7 +29,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendX64::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -565,7 +565,7 @@ bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::compile(const BuildParameters& buildParameters)
+bool BackendX64::generateOutput(const BuildParameters& buildParameters)
 {
     // Do we need to generate the file ?
     if (!mustCompile)

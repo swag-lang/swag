@@ -9,12 +9,12 @@ string Backend::compilerPath;
 string Backend::linkerExe;
 string Backend::linkerPath;
 
-JobResult Backend::preCompile(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
 }
 
-bool Backend::compile(const BuildParameters& backendParameters)
+bool Backend::generateOutput(const BuildParameters& backendParameters)
 {
     return true;
 }

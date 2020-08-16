@@ -30,8 +30,8 @@ struct Backend
     {
     }
 
-    virtual JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob);
-    virtual bool                    compile(const BuildParameters& backendParameters);
+    virtual JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob);
+    virtual bool                    generateOutput(const BuildParameters& backendParameters);
     virtual BackendFunctionBodyJob* newFunctionJob();
 
     void setMustCompile();

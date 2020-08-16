@@ -119,8 +119,8 @@ struct BackendX64 : public Backend
     }
 
     bool                    createRuntime(const BuildParameters& buildParameters);
-    JobResult               preCompile(const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                    compile(const BuildParameters& backendParameters) override;
+    JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool                    generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);

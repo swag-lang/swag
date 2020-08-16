@@ -9,6 +9,6 @@ thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
 
 JobResult ModulePreCompileJob::execute()
 {
-    Timer timer(g_Stats.precompileTimeJob);
-    return module->backend->preCompile(buildParameters, this);
+    Timer timer(g_Stats.prepOutputTimeJob);
+    return module->backend->prepareOutput(buildParameters, this);
 }

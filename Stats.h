@@ -20,8 +20,8 @@ struct Stats
     atomic<double> semanticModuleTime   = 0;
     atomic<double> runTime              = 0;
     atomic<double> outputTime           = 0;
-    atomic<double> precompileTimeJob    = 0;
-    atomic<double> compileTime          = 0;
+    atomic<double> prepOutputTimeJob    = 0;
+    atomic<double> genOutputTime          = 0;
 };
 
 extern Stats g_Stats;

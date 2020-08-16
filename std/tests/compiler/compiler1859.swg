@@ -69,7 +69,7 @@ func variadic2(z: s32, x: ...)
     @print(cast(s64) z)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func retS()->B
 {
     var x: B = @{666,777}
