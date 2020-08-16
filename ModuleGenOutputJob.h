@@ -3,7 +3,7 @@
 #include "BuildParameters.h"
 struct Module;
 
-struct ModuleCompileJob : public Job
+struct ModuleGenOutputJob : public Job
 {
     JobResult execute() override;
 
@@ -12,4 +12,4 @@ struct ModuleCompileJob : public Job
     mutex*              mutexDone = nullptr;
 };
 
-extern thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
+extern thread_local Pool<ModuleGenOutputJob> g_Pool_moduleGenOutputJob;

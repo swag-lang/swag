@@ -206,9 +206,6 @@
     <ClCompile Include="BackendCRuntime_.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleCompileJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="OutputFile.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -425,6 +422,9 @@
     <ClCompile Include="ModuleExportJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleGenOutputJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -538,9 +538,6 @@
     </ClInclude>
     <ClInclude Include="Attribute.h">
       <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleCompileJob.h">
-      <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="Backend.h">
       <Filter>Backend</Filter>
@@ -711,6 +708,9 @@
       <Filter>Backend\X64</Filter>
     </ClInclude>
     <ClInclude Include="ModuleExportJob.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGenOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>

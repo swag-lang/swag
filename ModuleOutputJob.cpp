@@ -2,7 +2,7 @@
 #include "ModuleOutputJob.h"
 #include "ModuleExportJob.h"
 #include "ModulePreCompileJob.h"
-#include "ModuleCompileJob.h"
+#include "ModuleGenOutputJob.h"
 #include "DocModuleJob.h"
 #include "Backend.h"
 #include "ThreadManager.h"
@@ -132,7 +132,7 @@ JobResult ModuleOutputJob::execute()
             // Do not generate test on dependencies if we want to compile only one specific module
             if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
             {
-                auto compileJob                            = g_Pool_moduleCompileJob.alloc();
+                auto compileJob                            = g_Pool_moduleGenOutputJob.alloc();
                 compileJob->module                         = module;
                 compileJob->dependentJob                   = this;
                 compileJob->buildParameters                = module->buildParameters;
@@ -149,7 +149,7 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (!module->fromTestsFolder && g_CommandLine.outputLegit)
         {
-            auto compileJob                         = g_Pool_moduleCompileJob.alloc();
+            auto compileJob                         = g_Pool_moduleGenOutputJob.alloc();
             compileJob->module                      = module;
             compileJob->dependentJob                = this;
             compileJob->buildParameters             = module->buildParameters;

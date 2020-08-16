@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ModuleCompileJob.h"
+#include "ModuleGenOutputJob.h"
 #include "Backend.h"
 #include "Module.h"
 #include "Timer.h"
 
-thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
+thread_local Pool<ModuleGenOutputJob> g_Pool_moduleGenOutputJob;
 
-JobResult ModuleCompileJob::execute()
+JobResult ModuleGenOutputJob::execute()
 {
     Timer timer(g_Stats.genOutputTime);
 

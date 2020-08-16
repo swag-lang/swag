@@ -210,7 +210,7 @@
     <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleRunJob.h" />
     <ClInclude Include="Os.h" />
-    <ClInclude Include="ModuleCompileJob.h" />
+    <ClInclude Include="ModuleGenOutputJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />
     <ClInclude Include="RaceCondition.h" />
@@ -340,7 +340,7 @@
     <ClCompile Include="LanguageSpec.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleBuildJob.cpp" />
-    <ClCompile Include="ModuleCompileJob.cpp" />
+    <ClCompile Include="ModuleGenOutputJob.cpp" />
     <ClCompile Include="DocModuleJob.cpp" />
     <ClCompile Include="ModuleLoadJob.cpp" />
     <ClCompile Include="ModuleExportJob.cpp" />

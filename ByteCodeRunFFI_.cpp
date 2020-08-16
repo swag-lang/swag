@@ -5,7 +5,7 @@
 #include "ModuleManager.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "ModuleCompileJob.h"
+#include "ModuleGenOutputJob.h"
 #include "TypeManager.h"
 #include "OS.h"
 #include "DiagnosticInfos.h"
