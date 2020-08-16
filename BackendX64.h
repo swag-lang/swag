@@ -54,17 +54,17 @@ struct X64PerThread
     Concat concat;
     Concat postConcat;
 
-    vector<const Utf8*>    stringTable;
-    CoffRelocationTable    relocTableTextSection;
-    CoffRelocationTable    relocTableCSSection;
-    CoffRelocationTable    relocTableMSSection;
-    CoffRelocationTable    relocTableTSSection;
-    vector<CoffSymbol>     allSymbols;
-    map<Utf8Crc, uint32_t> mapSymbols;
-    map<Utf8Crc, uint32_t> globalStrings;
-    map<uint32_t, int32_t> labels;
-    DataSegment            stringSegment;
-    vector<LabelToSolve>   labelsToSolve;
+    VectorNative<const Utf8*>  stringTable;
+    CoffRelocationTable        relocTableTextSection;
+    CoffRelocationTable        relocTableCSSection;
+    CoffRelocationTable        relocTableMSSection;
+    CoffRelocationTable        relocTableTSSection;
+    vector<CoffSymbol>         allSymbols;
+    map<Utf8Crc, uint32_t>     mapSymbols;
+    map<Utf8Crc, uint32_t>     globalStrings;
+    map<uint32_t, int32_t>     labels;
+    DataSegment                stringSegment;
+    VectorNative<LabelToSolve> labelsToSolve;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;

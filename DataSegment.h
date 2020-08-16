@@ -31,14 +31,14 @@ struct DataSegmentRef
 
 struct DataSegment
 {
-    uint32_t                  reserve(uint32_t size);
-    uint32_t                  reserveNoLock(uint32_t size);
-    uint32_t                  offset(uint8_t* location);
-    uint8_t*                  address(uint32_t location);
-    uint8_t*                  addressNoLock(uint32_t location);
-    void                      release();
-    vector<DataSegmentHeader> buckets;
-    shared_mutex              mutex;
+    uint32_t                        reserve(uint32_t size);
+    uint32_t                        reserveNoLock(uint32_t size);
+    uint32_t                        offset(uint8_t* location);
+    uint8_t*                        address(uint32_t location);
+    uint8_t*                        addressNoLock(uint32_t location);
+    void                            release();
+    VectorNative<DataSegmentHeader> buckets;
+    shared_mutex                    mutex;
 
     uint32_t                addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue);
     map<uint8_t, uint32_t>  storedValues8;
@@ -46,15 +46,15 @@ struct DataSegment
     map<uint32_t, uint32_t> storedValues32;
     map<uint64_t, uint32_t> storedValues64;
 
-    uint32_t                 addString(const Utf8& str);
-    uint32_t                 addStringNoLock(const Utf8& str);
-    void                     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
-    void                     addInitPtrFunc(uint32_t offset, ByteCode* bc);
-    shared_mutex             mutexPtr;
-    map<Utf8, uint32_t>      mapString;
-    map<uint32_t, ByteCode*> initFuncPtr;
-    vector<DataSegmentRef>   initPtr;
-    uint32_t                 totalCount = 0;
+    uint32_t                     addString(const Utf8& str);
+    uint32_t                     addStringNoLock(const Utf8& str);
+    void                         addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
+    void                         addInitPtrFunc(uint32_t offset, ByteCode* bc);
+    shared_mutex                 mutexPtr;
+    map<Utf8, uint32_t>          mapString;
+    map<uint32_t, ByteCode*>     initFuncPtr;
+    VectorNative<DataSegmentRef> initPtr;
+    uint32_t                     totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
     typedef struct Seek

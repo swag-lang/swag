@@ -132,8 +132,8 @@ struct Module
     TypeTable typeTable;
     void*     compilerItf[2];
 
-    shared_mutex     mutexGlobalVars;
-    vector<AstNode*> globalVarsBss;
-    vector<AstNode*> globalVarsMutable;
-    void             addGlobalVar(AstNode* node, bool bss);
+    shared_mutex           mutexGlobalVars;
+    VectorNative<AstNode*> globalVarsBss;
+    VectorNative<AstNode*> globalVarsMutable;
+    void                   addGlobalVar(AstNode* node, bool bss);
 };

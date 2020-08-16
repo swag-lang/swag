@@ -330,11 +330,11 @@ struct AstNode
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 
-    VectorNative<Scope*>     alternativeScopes;
-    vector<AlternativeScope> alternativeScopesVars;
-    VectorNative<AstNode*>   childs;
-    set<Scope*>              doneLeaveScopeDefer;
-    set<Scope*>              doneLeaveScopeDrop;
+    VectorNative<Scope*>           alternativeScopes;
+    VectorNative<AlternativeScope> alternativeScopesVars;
+    VectorNative<AstNode*>         childs;
+    set<Scope*>                    doneLeaveScopeDefer;
+    set<Scope*>                    doneLeaveScopeDrop;
 
     Token         token;
     Utf8Crc       name;

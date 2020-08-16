@@ -1292,7 +1292,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 {
                     for (auto s : startScope->owner->alternativeScopes)
                         scopeHierarchy.insert(s);
-                    scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
+                    scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
                 }
             }
 
@@ -1646,7 +1646,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -1664,7 +1664,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
                 }
             }
 
-            scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
+            scopesVars.append(startNode->alternativeScopesVars);
         }
     }
 
@@ -1681,7 +1681,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, vector<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, VectorNative<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;

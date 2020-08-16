@@ -73,8 +73,8 @@ struct SemanticJob : public Job
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-    static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
-    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, vector<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
+    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, VectorNative<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
@@ -224,19 +224,19 @@ struct SemanticJob : public Job
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
-    VectorNative<AstNode*>        tmpNodes;
-    set<SymbolName*>              cacheDependentSymbols;
-    set<Scope*>                   cacheScopeHierarchy;
-    vector<AlternativeScope>      cacheScopeHierarchyVars;
-    vector<Scope*>                cacheScopeEmbedded;
-    VectorNative<Scope*>          scopesHere;
-    vector<OneMatch>              cacheMatches;
-    vector<OneGenericMatch>       cacheGenericMatches;
-    VectorNative<SymbolOverload*> cacheBadSignature;
-    VectorNative<SymbolOverload*> cacheBadGenericSignature;
-    SymbolMatchContext            symMatch;
-    SemanticContext               context;
-    Concat                        tmpConcat;
+    VectorNative<AstNode*>         tmpNodes;
+    set<SymbolName*>               cacheDependentSymbols;
+    set<Scope*>                    cacheScopeHierarchy;
+    VectorNative<AlternativeScope> cacheScopeHierarchyVars;
+    VectorNative<Scope*>           cacheScopeEmbedded;
+    VectorNative<Scope*>           scopesHere;
+    vector<OneMatch>               cacheMatches;
+    vector<OneGenericMatch>        cacheGenericMatches;
+    VectorNative<SymbolOverload*>  cacheBadSignature;
+    VectorNative<SymbolOverload*>  cacheBadGenericSignature;
+    SymbolMatchContext             symMatch;
+    SemanticContext                context;
+    Concat                         tmpConcat;
 
     void reset() override
     {
