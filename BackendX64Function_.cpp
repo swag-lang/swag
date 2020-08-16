@@ -157,14 +157,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
-            concat.addString2("\xd3\xe0"); // sal eax, cl
+            concat.addString2("\xd3\xe0"); // shl eax, cl
             BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->c.u32);
             break;
         case ByteCodeOp::BinOpShiftLeftU64:
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
-            concat.addString3("\x48\xd3\xe0"); // sal rax, cl
+            concat.addString3("\x48\xd3\xe0"); // shl rax, cl
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
 
@@ -195,6 +195,55 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
             concat.addString3("\x48\xd3\xe8"); // shr rax, cl
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
+            break;
+
+        case ByteCodeOp::AffectOpShiftRightEqS8:
+            //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString2("\xd2\x38"); // sar byte ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS16:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString3("\x66\xd3\x38"); // sar word ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS32:
+            //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString2("\xd3\x38"); // sar dword ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS64:
+            //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString3("\x48\xd3\x38"); // sar qword ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqU8:
+            //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString2("\xd2\x28"); // shr byte ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqU16:
+            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString3("\x66\xd3\x28"); // shr word ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqU32:
+            //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString2("\xd3\x28"); // shr dword ptr [rax], cl
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqU64:
+            //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            concat.addString3("\x48\xd3\x28"); // shr qword ptr [rax], cl
             break;
 
         case ByteCodeOp::BinOpShiftRightU64VB:

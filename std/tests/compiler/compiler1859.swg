@@ -65,12 +65,51 @@ func variadic1(x: ...)
 //#[swag.printbc]
 #test
 {
-    {
-        variadic1(666's64, 555's64)
-    }
+        {
+            x := 20'u64
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 0xFF'u8
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 20'u16
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 20'u32
+            x >>= 1
+            @print(cast(s64) x)
+        }
 
     if false
     {
+        {
+            x := 10's64
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 10's8
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 10's16
+            x >>= 1
+            @print(cast(s64) x)
+        }
+        {
+            x := 10's32
+            x >>= 1
+            @print(cast(s64) x)
+        }
+
+        variadic1(666's64, 555's64)
         variadic(666's64)
         variadic(10's64,10's64)
 
