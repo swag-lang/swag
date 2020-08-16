@@ -347,8 +347,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         funcNode->inheritTokenName(token);
     }
 
-    funcNode->computeScopedName();
-
     // Register function name
     Scope* newScope = nullptr;
     {

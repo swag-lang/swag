@@ -107,7 +107,7 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
 
 AstNode* AstNode::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstNode>();
+    auto newNode = g_Allocator.alloc0<AstNode>();
 
     if (flags & AST_NEED_SCOPE)
     {
@@ -201,7 +201,7 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 
 AstNode* AstVarDecl::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstVarDecl>();
+    auto newNode = g_Allocator.alloc0<AstVarDecl>();
     newNode->copyFrom(context, this);
 
     newNode->type       = findChildRef(type, newNode);
@@ -217,7 +217,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 
 AstNode* AstIdentifierRef::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstIdentifierRef>();
+    auto newNode = g_Allocator.alloc0<AstIdentifierRef>();
     newNode->copyFrom(context, this);
     return newNode;
 }
@@ -237,7 +237,7 @@ void AstIdentifierRef::computeName()
 
 AstNode* AstIdentifier::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstIdentifier>();
+    auto newNode = g_Allocator.alloc0<AstIdentifier>();
     newNode->copyFrom(context, this);
 
     auto idRef = context.parent;
@@ -279,7 +279,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstFuncDecl>();
+    auto newNode = g_Allocator.alloc0<AstFuncDecl>();
 
     newNode->copyFrom(context, this, false);
     newNode->endToken    = endToken;
@@ -316,7 +316,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
 AstNode* AstAttrDecl::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstAttrDecl>();
+    auto newNode = g_Allocator.alloc0<AstAttrDecl>();
     newNode->copyFrom(context, this);
 
     newNode->parameters = findChildRef(parameters, newNode);
@@ -325,14 +325,14 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
 
 AstNode* AstAttrUse::clone(CloneContext& context)
 {
-    auto newNode        = g_Allocator.alloc<AstAttrUse>();
+    auto newNode        = g_Allocator.alloc0<AstAttrUse>();
     newNode->attributes = attributes;
     return newNode;
 }
 
 AstNode* AstFuncCallParam::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstFuncCallParam>();
+    auto newNode = g_Allocator.alloc0<AstFuncCallParam>();
     newNode->copyFrom(context, this);
 
     newNode->namedParam         = namedParam;
@@ -345,7 +345,7 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
 
 AstNode* AstIf::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstIf>();
+    auto newNode = g_Allocator.alloc0<AstIf>();
     newNode->copyFrom(context, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
@@ -371,7 +371,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         return it->second->clone(cloneContext);
     }
 
-    auto newNode = g_Allocator.alloc<AstBreakContinue>();
+    auto newNode = g_Allocator.alloc0<AstBreakContinue>();
     newNode->copyFrom(context, this);
     newNode->label = label;
 
@@ -388,7 +388,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
 
 AstNode* AstLabelBreakable::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstLabelBreakable>();
+    auto newNode = g_Allocator.alloc0<AstLabelBreakable>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -401,7 +401,7 @@ AstNode* AstLabelBreakable::clone(CloneContext& context)
 
 AstNode* AstWhile::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstWhile>();
+    auto newNode = g_Allocator.alloc0<AstWhile>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -415,7 +415,7 @@ AstNode* AstWhile::clone(CloneContext& context)
 
 AstNode* AstFor::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstFor>();
+    auto newNode = g_Allocator.alloc0<AstFor>();
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -433,7 +433,7 @@ AstNode* AstFor::clone(CloneContext& context)
 
 AstNode* AstLoop::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstLoop>();
+    auto newNode = g_Allocator.alloc0<AstLoop>();
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -450,7 +450,7 @@ AstNode* AstLoop::clone(CloneContext& context)
 
 AstNode* AstVisit::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstVisit>();
+    auto newNode = g_Allocator.alloc0<AstVisit>();
     newNode->copyFrom(context, this);
 
     newNode->extraNameToken   = extraNameToken;
@@ -466,7 +466,7 @@ AstNode* AstVisit::clone(CloneContext& context)
 
 AstNode* AstSwitch::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstSwitch>();
+    auto newNode = g_Allocator.alloc0<AstSwitch>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -482,7 +482,7 @@ AstNode* AstSwitch::clone(CloneContext& context)
 
 AstNode* AstSwitchCase::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstSwitchCase>();
+    auto newNode = g_Allocator.alloc0<AstSwitchCase>();
     newNode->copyFrom(context, this);
 
     newNode->block       = findChildRef(block, newNode);
@@ -495,7 +495,7 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
 
 AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstSwitchCaseBlock>();
+    auto newNode = g_Allocator.alloc0<AstSwitchCaseBlock>();
     newNode->copyFrom(context, this);
 
     newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
@@ -505,7 +505,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 
 AstNode* AstTypeExpression::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstTypeExpression>();
+    auto newNode = g_Allocator.alloc0<AstTypeExpression>();
     newNode->copyFrom(context, this);
 
     newNode->identifier     = findChildRef(identifier, newNode);
@@ -523,7 +523,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
 
 AstNode* AstTypeLambda::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstTypeLambda>();
+    auto newNode = g_Allocator.alloc0<AstTypeLambda>();
     newNode->copyFrom(context, this);
 
     newNode->parameters = findChildRef(parameters, newNode);
@@ -533,7 +533,7 @@ AstNode* AstTypeLambda::clone(CloneContext& context)
 
 AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstArrayPointerSlicing>();
+    auto newNode = g_Allocator.alloc0<AstArrayPointerSlicing>();
     newNode->copyFrom(context, this);
 
     newNode->array      = findChildRef(array, newNode);
@@ -544,7 +544,7 @@ AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
 
 AstNode* AstArrayPointerIndex::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstArrayPointerIndex>();
+    auto newNode = g_Allocator.alloc0<AstArrayPointerIndex>();
     newNode->copyFrom(context, this);
 
     newNode->array  = findChildRef(array, newNode);
@@ -554,7 +554,7 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
 
 AstNode* AstProperty::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstProperty>();
+    auto newNode = g_Allocator.alloc0<AstProperty>();
     newNode->copyFrom(context, this);
 
     newNode->typeOfAsType  = typeOfAsType;
@@ -565,7 +565,7 @@ AstNode* AstProperty::clone(CloneContext& context)
 
 AstNode* AstExpressionList::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstExpressionList>();
+    auto newNode = g_Allocator.alloc0<AstExpressionList>();
     newNode->copyFrom(context, this);
 
     newNode->storageOffset        = storageOffset;
@@ -577,7 +577,7 @@ AstNode* AstExpressionList::clone(CloneContext& context)
 
 AstNode* AstStruct::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstStruct>();
+    auto newNode = g_Allocator.alloc0<AstStruct>();
     newNode->copyFrom(context, this, false);
     newNode->packing = packing;
 
@@ -604,7 +604,7 @@ AstNode* AstImpl::clone(CloneContext& context)
 
 AstNode* AstInit::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstInit>();
+    auto newNode = g_Allocator.alloc0<AstInit>();
     newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
@@ -615,7 +615,7 @@ AstNode* AstInit::clone(CloneContext& context)
 
 AstNode* AstDrop::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstDrop>();
+    auto newNode = g_Allocator.alloc0<AstDrop>();
     newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
@@ -625,14 +625,14 @@ AstNode* AstDrop::clone(CloneContext& context)
 
 AstNode* AstReturn::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstReturn>();
+    auto newNode = g_Allocator.alloc0<AstReturn>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstCompilerInline::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstCompilerInline>();
+    auto newNode = g_Allocator.alloc0<AstCompilerInline>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext        = context;
@@ -645,7 +645,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
 
 AstNode* AstCompilerMacro::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstCompilerMacro>();
+    auto newNode = g_Allocator.alloc0<AstCompilerMacro>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext        = context;
@@ -658,7 +658,7 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
 
 AstNode* AstCompilerMixin::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstCompilerMixin>();
+    auto newNode = g_Allocator.alloc0<AstCompilerMixin>();
     newNode->copyFrom(context, this);
     newNode->replaceTokens = replaceTokens;
     return newNode;
@@ -666,7 +666,7 @@ AstNode* AstCompilerMixin::clone(CloneContext& context)
 
 AstNode* AstInline::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstInline>();
+    auto newNode = g_Allocator.alloc0<AstInline>();
     newNode->copyFrom(context, this, false);
     newNode->func = func;
 
@@ -682,14 +682,14 @@ AstNode* AstInline::clone(CloneContext& context)
 
 AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstCompilerIfBlock>();
+    auto newNode = g_Allocator.alloc0<AstCompilerIfBlock>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstCompilerAst::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc<AstCompilerAst>();
+    auto newNode = g_Allocator.alloc0<AstCompilerAst>();
     newNode->copyFrom(context, this);
     newNode->embeddedKind = embeddedKind;
     return newNode;

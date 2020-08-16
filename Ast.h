@@ -15,11 +15,9 @@ namespace Ast
     template<typename T>
     T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
     {
-        auto node        = g_Allocator.alloc<T>();
+        auto node        = g_Allocator.alloc0<T>();
         node->kind       = kind;
         node->parent     = parent;
-        node->ownerScope = nullptr;
-        node->ownerFct   = nullptr;
         node->sourceFile = sourceFile;
 
         if (job)
