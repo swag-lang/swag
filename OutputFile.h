@@ -9,7 +9,7 @@ struct OutputFile : public Concat, public File
     void save(ConcatBucket* bucket, uint32_t count, const function<bool(Job*)>& execAsync = nullptr);
     bool openWrite();
 
-    HANDLE               winHandle = INVALID_HANDLE_VALUE;
-    vector<LPOVERLAPPED> overlappeds;
-    int                  seekSave = 0;
+    HANDLE                     winHandle = INVALID_HANDLE_VALUE;
+    VectorNative<LPOVERLAPPED> overlappeds;
+    int                        seekSave = 0;
 };

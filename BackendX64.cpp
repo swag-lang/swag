@@ -200,7 +200,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     sym.sectionIdx = sectionIdx;
     SWAG_ASSERT(pp.allSymbols.size() < UINT32_MAX);
     sym.index = (uint32_t) pp.allSymbols.size();
-    pp.allSymbols.emplace_back(sym);
+    pp.allSymbols.push_back(sym);
     pp.mapSymbols[name] = (uint32_t) pp.allSymbols.size() - 1;
     return &pp.allSymbols.back();
 }

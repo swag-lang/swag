@@ -40,7 +40,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     memset(bucket.buffer, 0, bucket.size);
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
-    buckets.emplace_back(bucket);
+    buckets.push_back(bucket);
     totalCount += size;
 
     return bucket.totalCountBefore;
