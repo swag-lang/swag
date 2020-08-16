@@ -6,7 +6,7 @@
 #include "SourceFile.h"
 
 const char* g_TokenNames[] =
-{
+    {
 #undef DEFINE_TOKEN_ID
 #define DEFINE_TOKEN_ID(__id) #__id,
 #include "TokenizerIds.h"
@@ -14,7 +14,6 @@ const char* g_TokenNames[] =
 
 void Tokenizer::setFile(SourceFile* file)
 {
-    seek            = 0;
     location.column = 0;
     location.line   = 0;
     endReached      = false;
@@ -36,7 +35,6 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
         cacheCharOffset[1] = 0;
     }
 
-    seek += offset;
     location.column++;
 
     // End of line

@@ -34,7 +34,6 @@ bool SourceFile::checkFormat()
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
-        textFormat    = TextFormat::UTF8;
         bufferCurSeek = 3;
         headerSize    = 3;
         return true;
@@ -148,59 +147,56 @@ char32_t SourceFile::getChar(unsigned& offset)
     offset = 1;
 
     // utf8
-    if (textFormat == TextFormat::UTF8)
+    if ((c & 0x80) == 0)
+        return c;
+
+    char32_t wc;
+    if ((c & 0xE0) == 0xC0)
     {
-        if ((c & 0x80) == 0)
-            return c;
+        wc = (c & 0x1F) << 6;
+        wc |= (getPrivateChar() & 0x3F);
+        offset += 1;
+        return wc;
+    }
 
-        char32_t wc;
-        if ((c & 0xE0) == 0xC0)
-        {
-            wc = (c & 0x1F) << 6;
-            wc |= (getPrivateChar() & 0x3F);
-            offset += 1;
-            return wc;
-        }
+    if ((c & 0xF0) == 0xE0)
+    {
+        wc = (c & 0xF) << 12;
+        wc |= (getPrivateChar() & 0x3F) << 6;
+        wc |= (getPrivateChar() & 0x3F);
+        offset += 2;
+        return wc;
+    }
 
-        if ((c & 0xF0) == 0xE0)
-        {
-            wc = (c & 0xF) << 12;
-            wc |= (getPrivateChar() & 0x3F) << 6;
-            wc |= (getPrivateChar() & 0x3F);
-            offset += 2;
-            return wc;
-        }
+    if ((c & 0xF8) == 0xF0)
+    {
+        wc = (c & 0x7) << 18;
+        wc |= (getPrivateChar() & 0x3F) << 12;
+        wc |= (getPrivateChar() & 0x3F) << 6;
+        wc |= (getPrivateChar() & 0x3F);
+        offset += 3;
+        return wc;
+    }
 
-        if ((c & 0xF8) == 0xF0)
-        {
-            wc = (c & 0x7) << 18;
-            wc |= (getPrivateChar() & 0x3F) << 12;
-            wc |= (getPrivateChar() & 0x3F) << 6;
-            wc |= (getPrivateChar() & 0x3F);
-            offset += 3;
-            return wc;
-        }
+    if ((c & 0xFC) == 0xF8)
+    {
+        wc = (c & 0x3) << 24;
+        wc |= (c & 0x3F) << 18;
+        wc |= (c & 0x3F) << 12;
+        wc |= (c & 0x3F) << 6;
+        wc |= (c & 0x3F);
+        return wc;
+    }
 
-        if ((c & 0xFC) == 0xF8)
-        {
-            wc = (c & 0x3) << 24;
-            wc |= (c & 0x3F) << 18;
-            wc |= (c & 0x3F) << 12;
-            wc |= (c & 0x3F) << 6;
-            wc |= (c & 0x3F);
-            return wc;
-        }
-
-        if ((c & 0xFE) == 0xFC)
-        {
-            wc = (c & 0x1) << 30;
-            wc |= (c & 0x3F) << 24;
-            wc |= (c & 0x3F) << 18;
-            wc |= (c & 0x3F) << 12;
-            wc |= (c & 0x3F) << 6;
-            wc |= (c & 0x3F);
-            return wc;
-        }
+    if ((c & 0xFE) == 0xFC)
+    {
+        wc = (c & 0x1) << 30;
+        wc |= (c & 0x3F) << 24;
+        wc |= (c & 0x3F) << 18;
+        wc |= (c & 0x3F) << 12;
+        wc |= (c & 0x3F) << 6;
+        wc |= (c & 0x3F);
+        return wc;
     }
 
     return '?';
@@ -222,7 +218,7 @@ Utf8 SourceFile::getLine(long lineNo)
         if (!fle.is_open())
             return "?";
 
-        string   line;
+        string line;
         line.reserve(1024);
         while (std::getline(fle, line))
         {

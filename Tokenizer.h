@@ -62,7 +62,6 @@ struct Tokenizer
     SourceFile*    sourceFile         = nullptr;
     char32_t       cacheChar[2]       = {0};
     unsigned       cacheCharOffset[2] = {0};
-    int            seek               = 0;
     uint32_t       parseFlags         = 0;
     SourceLocation location;
     bool           endReached          = false;

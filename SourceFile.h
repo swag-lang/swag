@@ -16,11 +16,6 @@ struct LoadRequest
     long loadedSize = 0;
 };
 
-enum class TextFormat
-{
-    UTF8,
-};
-
 struct SourceFile : public File
 {
     SourceFile();
@@ -64,7 +59,6 @@ struct SourceFile : public File
     shared_mutex           mutexCompilerPass;
     void                   addCompilerPassNode(AstNode* node);
 
-    TextFormat   textFormat    = TextFormat::UTF8;
     int          headerSize    = 0;
     long         fileSeek      = 0;
     long         bufferCurSeek = 0;
