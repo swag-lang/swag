@@ -15,7 +15,7 @@ JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
     {
-        pass = ModuleOutputJobPass::PreCompile;
+        pass = ModuleOutputJobPass::PrepareOutput;
 
         // Generate .swg file with public definitions
         if (g_CommandLine.output)
@@ -37,8 +37,16 @@ JobResult ModuleOutputJob::execute()
         }
     }
 
-    if (pass == ModuleOutputJobPass::PreCompile)
+    if (pass == ModuleOutputJobPass::PrepareOutput)
     {
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            timeBeforePrepareOutput = chrono::high_resolution_clock::now();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format("## module %s prep output pass begin", module->name.c_str()));
+        }
+
         // Compute the number of sub modules (i.e the number of output temporary files)
         int minPerFile = 1024;
         int maxPerFile = 1024;
@@ -66,7 +74,7 @@ JobResult ModuleOutputJob::execute()
         module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
         module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
-        pass = ModuleOutputJobPass::Compile;
+        pass = ModuleOutputJobPass::GenOutput;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
             // For C backend, only one pass (test/normal), because only one C file is generated with every cases (the difference is made
@@ -117,12 +125,25 @@ JobResult ModuleOutputJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    if (pass == ModuleOutputJobPass::Compile)
+    if (pass == ModuleOutputJobPass::GenOutput)
     {
         if (module->buildPass < BuildPass::Full)
             return JobResult::ReleaseJob;
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            timeBeforeGenOutput              = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsed = timeBeforeGenOutput - timeBeforePrepareOutput;
+            g_Stats.prepOutputTimeJob        = g_Stats.prepOutputTimeJob + elapsed.count();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            {
+                g_Log.verbose(format(" # module %s prep output pass end in %.3fs", module->name.c_str(), elapsed.count()));
+                g_Log.verbose(format("## module %s gen output pass begin", module->name.c_str()));
+            }
+        }
 
         pass = ModuleOutputJobPass::Done;
 
@@ -165,6 +186,16 @@ JobResult ModuleOutputJob::execute()
         }
 
         return JobResult::KeepJobAlive;
+    }
+
+    // Timing...
+    if (g_CommandLine.stats || g_CommandLine.verbose)
+    {
+        auto                     timeAfterOutput = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed         = timeAfterOutput - timeBeforeGenOutput;
+        g_Stats.genOutputTime                    = g_Stats.genOutputTime + elapsed.count();
+        if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+            g_Log.verbose(format(" # module %s gen output pass end in %.3fs", module->name.c_str(), elapsed.count()));
     }
 
     return JobResult::ReleaseJob;
