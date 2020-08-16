@@ -4,10 +4,10 @@
 #include "Backend.h"
 struct Module;
 
-struct ModulePreCompileJob : public Job
+struct ModulePrepOutputJob : public Job
 {
     JobResult       execute() override;
     BuildParameters buildParameters;
 };
 
-extern thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
+extern thread_local Pool<ModulePrepOutputJob> g_Pool_modulePrepOutputJob;

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModuleOutputJob.h"
 #include "ModuleExportJob.h"
-#include "ModulePreCompileJob.h"
+#include "ModulePrepOutputJob.h"
 #include "ModuleGenOutputJob.h"
 #include "DocModuleJob.h"
 #include "Backend.h"
@@ -79,7 +79,7 @@ JobResult ModuleOutputJob::execute()
                     // Do not generate test on dependencies if we want to compile only one specific module
                     if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
                     {
-                        auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                        auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
                         preCompileJob->module                          = module;
                         preCompileJob->dependentJob                    = this;
                         preCompileJob->buildParameters                 = module->buildParameters;
@@ -94,7 +94,7 @@ JobResult ModuleOutputJob::execute()
                 // Precompile the normal version
                 if (!module->fromTestsFolder && g_CommandLine.outputLegit)
                 {
-                    auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                    auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
                     preCompileJob->module                          = module;
                     preCompileJob->dependentJob                    = this;
                     preCompileJob->buildParameters                 = module->buildParameters;
@@ -105,7 +105,7 @@ JobResult ModuleOutputJob::execute()
             }
             else
             {
-                auto preCompileJob                             = g_Pool_modulePreCompileJob.alloc();
+                auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;

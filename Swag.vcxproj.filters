@@ -341,9 +341,6 @@
     <ClCompile Include="LLVMSetup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePrecompileJob.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="BackendLLVMDbg.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
@@ -423,6 +420,9 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="ModuleGenOutputJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePrepOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
   </ItemGroup>
@@ -638,9 +638,6 @@
     <ClInclude Include="LLVMSetup.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="ModulePrecompileJob.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
@@ -711,6 +708,9 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="ModuleGenOutputJob.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
