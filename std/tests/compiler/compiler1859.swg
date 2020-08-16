@@ -79,14 +79,14 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
-    {
-        x := retS()
-        @print(cast(s64) x.y)
-        @print(cast(s64) x.z)
-    }
-
     if false
     {
+        {
+            x := retS()
+            @print(cast(s64) x.y)
+            @print(cast(s64) x.z)
+        }
+
         variadic2(555, 666's64, 777's64)
 
         {
