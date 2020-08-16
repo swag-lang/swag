@@ -35,9 +35,8 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     auto symbol = findNoLock(*aliasName);
     if (!symbol)
     {
-        symbol       = g_Allocator.alloc<SymbolName>();
-        symbol->name = *aliasName;
-        Scope::makeFullName(symbol->fullName, scope->getFullName(), *aliasName);
+        symbol                       = g_Allocator.alloc<SymbolName>();
+        symbol->name                 = *aliasName;
         symbol->kind                 = kind;
         symbol->defaultOverload.node = node;
         symbol->ownerTable           = this;
@@ -376,4 +375,13 @@ void SymbolName::addDependentJob(Job* job)
 void SymbolName::addDependentJobNoLock(Job* job)
 {
     dependentJobs.add(job);
+}
+
+const Utf8& SymbolName::getFullName()
+{
+    unique_lock lk(mutex);
+    if (!fullName.empty())
+        return fullName;
+    Scope::makeFullName(fullName, ownerTable->scope->getFullName(), name);
+    return fullName;
 }

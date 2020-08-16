@@ -378,7 +378,7 @@ namespace Ast
             }
 
             if (symbol && symbol->ownerTable->scope->isGlobal())
-                concat.addString(symbol->fullName);
+                concat.addString(symbol->getFullName());
             else
                 concat.addString(node->name);
 

@@ -68,6 +68,7 @@ struct SymbolName
     SymbolOverload* findOverload(TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
+    const Utf8&     getFullName();
 
     shared_mutex                  mutex;
     VectorNative<SymbolOverload*> overloads;

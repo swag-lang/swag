@@ -58,7 +58,7 @@ const Utf8& Scope::getFullName()
     if (!fullname.empty())
         return fullname;
     if (parentScope)
-        makeFullName(fullname, parentScope->fullname, name);
+        makeFullName(fullname, parentScope->getFullName(), name);
     else
         fullname = name;
     return fullname;

@@ -284,7 +284,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
 
         // Register attribute itself
         OneAttribute oneAttribute;
-        oneAttribute.name = resolvedName->fullName;
+        oneAttribute.name = resolvedName->getFullName();
         oneAttribute.node = node;
 
         // Register all call parameters, and their value
