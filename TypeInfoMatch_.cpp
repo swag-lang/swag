@@ -74,10 +74,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
             {
                 // Need to register inside types when the generic type is a compound
-                VectorNative<TypeInfo*> symbolTypeInfos;
-                symbolTypeInfos.push_back(symbolTypeInfo);
-                VectorNative<TypeInfo*> typeInfos;
-                typeInfos.push_back(typeInfo);
+                vector<TypeInfo*> symbolTypeInfos{symbolTypeInfo};
+                vector<TypeInfo*> typeInfos{typeInfo};
                 while (symbolTypeInfos.size())
                 {
                     symbolTypeInfo = symbolTypeInfos.back();

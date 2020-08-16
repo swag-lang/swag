@@ -24,19 +24,19 @@ struct Workspace
 
     bool watch();
 
-    fs::path              workspacePath;
-    fs::path              targetPath;
-    fs::path              cachePath;
-    fs::path              testsPath;
-    fs::path              modulesPath;
-    fs::path              dependenciesPath;
-    shared_mutex          mutexModules;
-    atomic<int>           numErrors = 0;
-    VectorNative<Module*> modules;
-    map<Utf8, Module*>    mapModulesNames;
-    Module*               filteredModule = nullptr;
-    Module*               bootstrapModule;
-    SwagScope             swagScope;
+    fs::path           workspacePath;
+    fs::path           targetPath;
+    fs::path           cachePath;
+    fs::path           testsPath;
+    fs::path           modulesPath;
+    fs::path           dependenciesPath;
+    shared_mutex       mutexModules;
+    atomic<int>        numErrors = 0;
+    vector<Module*>    modules;
+    map<Utf8, Module*> mapModulesNames;
+    Module*            filteredModule = nullptr;
+    Module*            bootstrapModule;
+    SwagScope          swagScope;
 };
 
 extern Workspace g_Workspace;

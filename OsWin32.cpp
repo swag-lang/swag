@@ -586,8 +586,8 @@ namespace OS
 
     bool watch(function<void(const string&)> cb)
     {
-        VectorNative<HANDLE> allHandles;
-        vector<string>       allModules;
+        vector<HANDLE> allHandles;
+        vector<string> allModules;
 
         // Tests modules
         for (auto& p : fs::directory_iterator(g_Workspace.testsPath))

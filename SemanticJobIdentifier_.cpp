@@ -722,7 +722,7 @@ anotherTry:
                     match.genericParametersCallTypes = move(job->symMatch.genericParametersCallTypes);
                     match.genericParametersGenTypes  = move(job->symMatch.genericParametersGenTypes);
                     match.genericReplaceTypes        = move(job->symMatch.genericReplaceTypes);
-                    genericMatches.push_back(match);
+                    genericMatches.emplace_back(match);
                 }
                 else
                 {
@@ -730,7 +730,7 @@ anotherTry:
                     match.symbolName       = symbol;
                     match.symbolOverload   = overload;
                     match.solvedParameters = move(job->symMatch.solvedParameters);
-                    matches.push_back(match);
+                    matches.emplace_back(match);
                 }
                 break;
 
@@ -787,7 +787,7 @@ anotherTry:
                 OneMatch oneMatch;
                 oneMatch.symbolName     = firstMatch.symbolName;
                 oneMatch.symbolOverload = firstMatch.symbolOverload;
-                matches.push_back(oneMatch);
+                matches.emplace_back(oneMatch);
                 node->flags |= AST_IS_GENERIC;
                 if (firstMatch.flags & SymbolMatchContext::MATCH_WAS_PARTIAL)
                     node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
@@ -1292,7 +1292,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 {
                     for (auto s : startScope->owner->alternativeScopes)
                         scopeHierarchy.insert(s);
-                    scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
+                    scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
                 }
             }
 
@@ -1646,7 +1646,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -1664,7 +1664,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
                 }
             }
 
-            scopesVars.append(startNode->alternativeScopesVars);
+            scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
         }
     }
 
@@ -1681,7 +1681,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, VectorNative<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, vector<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;

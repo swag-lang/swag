@@ -409,8 +409,8 @@ bool Workspace::buildTarget()
         }
     }
 
-    VectorNative<Module*>  toBuild;
-    VectorNative<Module*>* modulesToBuild = &modules;
+    vector<Module*>  toBuild;
+    vector<Module*>* modulesToBuild = &modules;
 
     // Filter modules to build
     //////////////////////////////////////////////////

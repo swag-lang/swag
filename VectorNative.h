@@ -151,13 +151,7 @@ struct VectorNative
         count = 0;
     }
 
-    const T& back() const
-    {
-        SWAG_ASSERT(count);
-        return buffer[count - 1];
-    }
-
-    T& back()
+    const T& back()
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
