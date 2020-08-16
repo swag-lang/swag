@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "SwagRuntime.h"
 
 struct Utf8Crc : public Utf8
 {
@@ -66,23 +67,42 @@ struct Utf8Crc : public Utf8
 
     void operator=(Utf8Crc&& from)
     {
-        buffer    = from.buffer;
         count     = from.count;
         allocated = from.allocated;
-        crc       = from.crc;
 
-        from.buffer = nullptr;
-        from.count = from.allocated = 0;
+        if (from.allocated == UTF8_SMALL_SIZE)
+        {
+            static_assert(UTF8_SMALL_SIZE == 8);
+            buffer              = padding;
+            *(uint64_t*) buffer = *(uint64_t*) from.buffer;
+        }
+        else
+        {
+            buffer      = from.buffer;
+            from.buffer = nullptr;
+            from.reset();
+        }
+
+        crc = from.crc;
     }
 
     void operator=(Utf8&& from)
     {
-        buffer    = from.buffer;
         count     = from.count;
         allocated = from.allocated;
 
-        from.buffer = nullptr;
-        from.count = from.allocated = 0;
+        if (from.allocated == UTF8_SMALL_SIZE)
+        {
+            static_assert(UTF8_SMALL_SIZE == 8);
+            buffer              = padding;
+            *(uint64_t*) buffer = *(uint64_t*) from.buffer;
+        }
+        else
+        {
+            buffer      = from.buffer;
+            from.buffer = nullptr;
+            from.reset();
+        }
 
         computeCrc();
     }

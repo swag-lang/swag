@@ -3,18 +3,22 @@
 #include "VectorNative.h"
 #define UTF8_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
 
+static const int UTF8_SMALL_SIZE = 8;
 struct Utf8
 {
-    char* buffer    = nullptr;
-    int   count     = 0;
-    int   allocated = 0;
+    char* buffer;
+    int   count;
+    int   allocated;
+    char  padding[UTF8_SMALL_SIZE];
 
-    ~Utf8();
     Utf8();
     Utf8(const char* from);
     Utf8(const string& from);
     Utf8(const Utf8& from);
     Utf8(Utf8&& from);
+    ~Utf8();
+
+    void        reset();
     void        reserve(int newSize);
     bool        empty() const;
     int         length() const;

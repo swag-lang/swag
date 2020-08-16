@@ -8,6 +8,11 @@ void Utf8::reserve(int newSize)
     if (newSize <= allocated)
         return;
 
+    // No need to to something, because we are sure to have at least UTF8_SMALL_SIZE
+    // available room
+    if (newSize <= UTF8_SMALL_SIZE)
+        return;
+
     auto lastAllocated = allocated;
     allocated *= 2;
     allocated      = max(allocated, newSize);
@@ -15,28 +20,43 @@ void Utf8::reserve(int newSize)
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         swag_runtime_memcpy(newBuffer, buffer, count + 1);
-    g_Allocator.free(buffer, lastAllocated);
-    buffer = newBuffer;
-}
 
-Utf8::~Utf8()
-{
-    g_Allocator.free(buffer, allocated);
+    if (lastAllocated != UTF8_SMALL_SIZE)
+        g_Allocator.free(buffer, lastAllocated);
+    buffer = newBuffer;
 }
 
 Utf8::Utf8()
 {
+    buffer    = padding;
+    count     = 0;
+    allocated = UTF8_SMALL_SIZE;
+}
+
+Utf8::~Utf8()
+{
+    if (allocated > UTF8_SMALL_SIZE)
+        g_Allocator.free(buffer, allocated);
+}
+
+void Utf8::reset()
+{
+    if (allocated > UTF8_SMALL_SIZE)
+        g_Allocator.free(buffer, allocated);
+    buffer    = padding;
+    count     = 0;
+    allocated = UTF8_SMALL_SIZE;
 }
 
 Utf8::Utf8(const char* from)
 {
+    buffer    = padding;
+    count     = 0;
+    allocated = UTF8_SMALL_SIZE;
+
     int len = from ? (int) strlen(from) : 0;
     if (!len)
-    {
-        buffer = nullptr;
-        count = allocated = 0;
         return;
-    }
 
     reserve(len + 1);
     swag_runtime_memcpy(buffer, from, len + 1);
@@ -45,13 +65,13 @@ Utf8::Utf8(const char* from)
 
 Utf8::Utf8(const string& from)
 {
+    buffer    = padding;
+    count     = 0;
+    allocated = UTF8_SMALL_SIZE;
+
     int len = (int) from.length();
     if (!len)
-    {
-        buffer = nullptr;
-        count = allocated = 0;
         return;
-    }
 
     reserve(len + 1);
     swag_runtime_memcpy(buffer, from.c_str(), len + 1);
@@ -60,13 +80,13 @@ Utf8::Utf8(const string& from)
 
 Utf8::Utf8(const Utf8& from)
 {
+    buffer    = padding;
+    count     = 0;
+    allocated = UTF8_SMALL_SIZE;
+
     int len = from.count;
     if (!len)
-    {
-        buffer = nullptr;
-        count = allocated = 0;
         return;
-    }
 
     reserve(len + 1);
     swag_runtime_memcpy(buffer, from.buffer, len + 1);
@@ -75,11 +95,41 @@ Utf8::Utf8(const Utf8& from)
 
 Utf8::Utf8(Utf8&& from)
 {
-    buffer      = from.buffer;
-    count       = from.count;
-    allocated   = from.allocated;
-    from.buffer = nullptr;
-    from.count = from.allocated = 0;
+    count     = from.count;
+    allocated = from.allocated;
+
+    if (from.allocated == UTF8_SMALL_SIZE)
+    {
+        static_assert(UTF8_SMALL_SIZE == 8);
+        buffer              = padding;
+        *(uint64_t*) buffer = *(uint64_t*) from.buffer;
+    }
+    else
+    {
+        buffer      = from.buffer;
+        from.buffer = nullptr;
+        from.reset();
+    }
+}
+
+void Utf8::operator=(Utf8&& from)
+{
+    reset();
+    count     = from.count;
+    allocated = from.allocated;
+
+    if (from.allocated == UTF8_SMALL_SIZE)
+    {
+        static_assert(UTF8_SMALL_SIZE == 8);
+        buffer              = padding;
+        *(uint64_t*) buffer = *(uint64_t*) from.buffer;
+    }
+    else
+    {
+        buffer      = from.buffer;
+        from.buffer = nullptr;
+        from.reset();
+    }
 }
 
 bool Utf8::empty() const
@@ -95,7 +145,7 @@ int Utf8::length() const
 const char* Utf8::c_str() const
 {
     static const char* nullString = "";
-    return buffer ? buffer : nullString;
+    return count ? buffer : nullString;
 }
 
 void Utf8::clear()
@@ -250,15 +300,6 @@ bool operator!=(const Utf8& str1, const Utf8& str2)
     return strcmp(str1.buffer, str2.buffer) != 0;
 }
 
-void Utf8::operator=(Utf8&& from)
-{
-    buffer      = from.buffer;
-    count       = from.count;
-    allocated   = from.allocated;
-    from.buffer = nullptr;
-    from.count = from.allocated = 0;
-}
-
 void Utf8::operator=(char32_t c)
 {
     clear();
@@ -295,7 +336,7 @@ void Utf8::replaceAll(char src, char dst)
 
 void Utf8::trimLeft()
 {
-    if (!buffer)
+    if (!count)
         return;
     auto pz       = buffer;
     auto newCount = count;
@@ -312,7 +353,7 @@ void Utf8::trimLeft()
 
 void Utf8::trimRight()
 {
-    if (!buffer)
+    if (!count)
         return;
     while (count && UTF8_IS_BLANK(buffer[count]))
         count--;
@@ -340,7 +381,7 @@ void Utf8::pop_back()
 
 int Utf8::find(const char* str) const
 {
-    if (!buffer)
+    if (!count)
         return -1;
     auto pz = strstr(buffer, str);
     if (!pz)
@@ -431,24 +472,27 @@ void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
 
 void Utf8::append(char32_t utf)
 {
-    reserve(count + 5);
     if (utf <= 0x7F)
     {
+        reserve(count + 2);
         buffer[count++] = (uint8_t) utf;
     }
     else if (utf <= 0x07FF)
     {
+        reserve(count + 3);
         buffer[count++] = (uint8_t)(((utf >> 6) & 0x1F) | 0xC0);
         buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0xFFFF)
     {
+        reserve(count + 4);
         buffer[count++] = (uint8_t)(((utf >> 12) & 0x0F) | 0xE0);
         buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
         buffer[count++] = (uint8_t)(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0x10FFFF)
     {
+        reserve(count + 5);
         buffer[count++] = (uint8_t)(((utf >> 18) & 0x07) | 0xF0);
         buffer[count++] = (uint8_t)(((utf >> 12) & 0x3F) | 0x80);
         buffer[count++] = (uint8_t)(((utf >> 6) & 0x3F) | 0x80);
@@ -456,6 +500,7 @@ void Utf8::append(char32_t utf)
     }
     else
     {
+        reserve(count + 4);
         buffer[count++] = (uint8_t) 0xEF;
         buffer[count++] = (uint8_t) 0xBF;
         buffer[count++] = (uint8_t) 0xBD;
