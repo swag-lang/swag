@@ -50,10 +50,20 @@ struct B
     y: s32
 }
 
+#[swag.printbc]
+func variadic(x: ...)
+{
+    @print(cast(s64) @countof(x))
+}
+
 //#[swag.printbc]
 #test
 {
-    if false
+    {
+        //variadic(10's64)
+    }
+
+    if true
     {
         {
             x := @[1's64, 2, 3]
