@@ -86,6 +86,8 @@ struct Scope
     set<AstNode*>          publicConst;
     set<AstNode*>          publicAlias;
     set<AstNode*>          publicNamespace;
+    set<AstNode*>          doneLeaveScopeDefer;
+    set<AstNode*>          doneLeaveScopeDrop;
     RegisterList           registersToRelease;
     DependentJobs          dependentJobs;
     shared_mutex           lockChilds;

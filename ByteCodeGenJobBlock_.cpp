@@ -624,22 +624,22 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, S
     auto node = context->node;
 
     // Emit all 'defer' statements
-    if (node->doneLeaveScopeDefer.find(scope) == node->doneLeaveScopeDefer.end())
+    if (scope->doneLeaveScopeDefer.find(node) == scope->doneLeaveScopeDefer.end())
     {
         SWAG_CHECK(emitDeferredStatements(context, scope));
         SWAG_ASSERT(context->result != ContextResult::Pending);
-        node->doneLeaveScopeDefer.insert(scope);
+        scope->doneLeaveScopeDefer.insert(node);
         if (context->result == ContextResult::NewChilds)
             return true;
     }
 
     // Emit all drops
-    if (node->doneLeaveScopeDrop.find(scope) == node->doneLeaveScopeDrop.end())
+    if (scope->doneLeaveScopeDrop.find(node) == scope->doneLeaveScopeDrop.end())
     {
         SWAG_CHECK(emitLeaveScopeDrop(context, scope, forceNoDrop));
         if (context->result == ContextResult::Pending)
             return true;
-        node->doneLeaveScopeDrop.insert(scope);
+        scope->doneLeaveScopeDrop.insert(node);
     }
 
     return true;
