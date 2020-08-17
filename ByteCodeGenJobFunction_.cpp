@@ -194,8 +194,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
-        if (!child0->isConstantTrue())
-            emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
         freeRegisterRC(context, child0);
         break;
     }

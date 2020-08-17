@@ -297,16 +297,6 @@ struct AstNode
         return (flags & AST_VALUE_COMPUTED);
     }
 
-    bool isConstantTrue()
-    {
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == true;
-    }
-
-    bool isConstantFalse()
-    {
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == false;
-    }
-
     bool isConstantInt0()
     {
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;

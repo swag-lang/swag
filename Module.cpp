@@ -37,6 +37,7 @@ bool Module::setup(const Utf8& moduleName)
     // Setup build configuration
     if (g_CommandLine.buildCfg == "debug")
     {
+        buildCfg.byteCodeOptimize         = 1;
         buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;
@@ -44,6 +45,7 @@ bool Module::setup(const Utf8& moduleName)
     }
     else if (g_CommandLine.buildCfg == "release")
     {
+        buildCfg.byteCodeOptimize         = 3;
         buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
@@ -51,6 +53,7 @@ bool Module::setup(const Utf8& moduleName)
     }
     else if (g_CommandLine.buildCfg == "final")
     {
+        buildCfg.byteCodeOptimize         = 3;
         buildCfg.safetyGuards             = false;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
@@ -58,6 +61,8 @@ bool Module::setup(const Utf8& moduleName)
     }
 
     // Overwrite with command line
+    if (g_CommandLine.buildCfgOptimBC != "default")
+        buildCfg.byteCodeOptimize = g_CommandLine.buildCfgOptimBC[0] - '0';
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
     if (g_CommandLine.buildCfgOptimSpeed != "default")

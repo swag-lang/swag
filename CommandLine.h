@@ -70,6 +70,7 @@ struct CommandLine
     string      buildCfg           = "debug";
     string      buildCfgDebug      = "default";
     string      buildCfgSafety     = "default";
+    string      buildCfgOptimBC    = "default";
     string      buildCfgOptimSpeed = "default";
     string      buildCfgOptimSize  = "default";
     BackendOs   os                 = BackendOs::Windows;

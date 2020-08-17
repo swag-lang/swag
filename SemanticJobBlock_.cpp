@@ -3,16 +3,18 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "Module.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
-    auto node = CastAst<AstIf>(context->node, AstNodeKind::If);
+    auto module = context->sourceFile->module;
+    auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
-    if (node->boolExpression->flags & AST_VALUE_COMPUTED)
+    if (module->buildCfg.byteCodeOptimize > 0 && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
         node->boolExpression->flags |= AST_NO_BYTECODE;
         if (node->boolExpression->computedValue.reg.b)
@@ -24,26 +26,27 @@ bool SemanticJob::resolveIf(SemanticContext* context)
         {
             node->ifBlock->flags |= AST_NO_BYTECODE;
         }
+
+        return true;
     }
-    else
-    {
-        node->byteCodeFct                      = ByteCodeGenJob::emitIf;
-        node->boolExpression->byteCodeAfterFct = ByteCodeGenJob::emitIfAfterExpr;
-        node->ifBlock->byteCodeAfterFct        = ByteCodeGenJob::emitIfAfterIf;
-    }
+
+    node->byteCodeFct                      = ByteCodeGenJob::emitIf;
+    node->boolExpression->byteCodeAfterFct = ByteCodeGenJob::emitIfAfterExpr;
+    node->ifBlock->byteCodeAfterFct        = ByteCodeGenJob::emitIfAfterIf;
 
     return true;
 }
 
 bool SemanticJob::resolveWhile(SemanticContext* context)
 {
-    auto node = CastAst<AstWhile>(context->node, AstNodeKind::While);
+    auto module = context->sourceFile->module;
+    auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
-    if (node->boolExpression->flags & AST_VALUE_COMPUTED)
+    if (module->buildCfg.byteCodeOptimize > 0 && (node->boolExpression->flags & AST_VALUE_COMPUTED))
     {
         if (!node->boolExpression->computedValue.reg.b)
         {

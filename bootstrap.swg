@@ -404,6 +404,7 @@ namespace swag
         // Bytecode
         byteCodeMaxRecurse: u32 = 1024
         byteCodeStackSize: u32  = 16 * 1024
+        byteCodeOptimize: u32 = 1
 
         // Backend common
         backendDebugInformations: bool  = false

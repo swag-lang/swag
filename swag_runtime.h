@@ -84,6 +84,7 @@ struct BuildCfg
     // Bytecode
     swag_runtime_uint32_t byteCodeMaxRecurse = 1024;
     swag_runtime_uint32_t byteCodeStackSize  = 16 * 1024;
+    swag_runtime_uint32_t byteCodeOptimize   = 1;
 
     // Backend common
     bool backendDebugInformations = false;
