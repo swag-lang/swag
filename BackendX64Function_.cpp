@@ -1056,6 +1056,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::ClearMaskU32:
+            //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            concat.addString2("\x21\xd8"); // and eax, ebx
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::ClearMaskU64:
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
@@ -1452,8 +1459,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         default:
-            //ok = false;
-            //moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+            ok = false;
+            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
     }
