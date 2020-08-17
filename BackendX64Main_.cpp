@@ -31,6 +31,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     // Call to global init of this module
+    concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     emitCall(pp, thisInit);
 
@@ -45,7 +47,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
         if (dep.second.generated)
         {
-            //processInfos
+            concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+            BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
             auto initFunc = format("%s_globalInit", nameDown.c_str());
             emitCall(pp, initFunc);
         }
@@ -99,6 +102,14 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
+
+    // __process_infos = *processInfos;
+    concat.addString3("\x48\x89\xca"); // mov rdx, rcx
+    concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
+    BackendX64Inst::emit_Move_Cst64_In_R8(pp, sizeof(swag_process_infos_t));
+    emitCall(pp, "memcpy");
 
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
@@ -109,6 +120,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, bc->callName());
     }
 
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
     concat.addU8(0xC3); // ret
 
     return true;
@@ -123,6 +135,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
     getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
 
     // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)
@@ -133,6 +146,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         emitCall(pp, bc->callName());
     }
 
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
     concat.addU8(0xC3); // ret
 
     return true;
