@@ -18,7 +18,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
 
-        // This should match the structure swag_process_infos_t declared in SwagRhntime.h
+        // This should match the structure swag_process_infos_t declared in SwagRuntime.h
         auto offset             = module->mutableSegment.reserve(8, true);
         pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
