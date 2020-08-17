@@ -79,8 +79,24 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
-        if false
+    if false
+    {
         {
+            x := 66.6'f64
+            y := cast(f32) x
+            @print(cast(f64) x)
+        }
+
+        {
+            x := 66.6'f32
+            y := cast(s32) x
+            @print(cast(s64) x)
+        }
+        {
+            x := 125's32
+            y := cast(f32) x
+            @print(cast(f64) x)
+        }
         {
             x := 1'u8
             if(x)
