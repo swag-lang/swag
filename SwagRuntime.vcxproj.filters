@@ -22,8 +22,8 @@
     <ClCompile Include="swag_runtime_interfaceof.cpp" />
     <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
     <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
-    <ClCompile Include="swag_runtime_comparestring1.cpp" />
-    <ClCompile Include="swag_runtime_comparetype1.cpp" />
+    <ClCompile Include="swag_runtime_compareString.cpp" />
+    <ClCompile Include="swag_runtime_compareType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">
