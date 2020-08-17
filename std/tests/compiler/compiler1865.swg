@@ -1,6 +1,5 @@
 #[swag.printbc]
 #test
 {
-    if false
-        @print("a")
+    a := @cos(0'f32)
 }

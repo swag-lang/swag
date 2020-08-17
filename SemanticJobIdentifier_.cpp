@@ -173,6 +173,26 @@ void SemanticJob::sortParameters(AstNode* allParams)
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
 
+void SemanticJob::optimIntrinsic(SemanticContext* context, AstIdentifier* identifier)
+{
+    auto module = context->sourceFile->module;
+    if (module->buildCfg.byteCodeOptimize == 0)
+        return;
+
+    switch (identifier->token.id)
+    {
+    case TokenId::IntrinsicAssert:
+    {
+        // Remove assert(true)
+        SWAG_ASSERT(identifier->callParameters);
+        auto param = identifier->callParameters->childs.front();
+        if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue.reg.b)
+            identifier->flags |= AST_NO_BYTECODE;
+        break;
+    }
+    }
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
@@ -559,7 +579,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         if (identifier->name[0] == '@')
+        {
+            optimIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
+        }
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
         else
