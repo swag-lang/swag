@@ -19,11 +19,11 @@
     <ClCompile Include="swag_runtime_print.cpp" />
     <ClCompile Include="swag_runtime_assert.cpp" />
     <ClCompile Include="swag_runtime_tls.cpp" />
-    <ClCompile Include="swag_runtime_comparestring.cpp" />
-    <ClCompile Include="swag_runtime_comparetype.cpp" />
     <ClCompile Include="swag_runtime_interfaceof.cpp" />
     <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
     <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
+    <ClCompile Include="swag_runtime_comparestring1.cpp" />
+    <ClCompile Include="swag_runtime_comparetype1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">
