@@ -223,11 +223,23 @@ bool SemanticJob::resolveCase(SemanticContext* context)
 
 bool SemanticJob::resolveLoop(SemanticContext* context)
 {
-    auto node = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    auto module = context->sourceFile->module;
+    auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     auto expression = node->expression;
     SWAG_CHECK(resolveIntrinsicCountOf(context, expression, expression->typeInfo));
+
+    // Do not evaluate loop if it's constant and 0
+    if (module->buildCfg.byteCodeOptimize > 0 && (node->expression->flags & AST_VALUE_COMPUTED))
+    {
+        if (!node->expression->computedValue.reg.u32)
+        {
+            node->expression->flags |= AST_NO_BYTECODE;
+            node->block->flags |= AST_NO_BYTECODE;
+            return true;
+        }
+    }
 
     node->typeInfo                     = g_TypeMgr.typeInfoU32;
     node->byteCodeFct                  = ByteCodeGenJob::emitLoop;

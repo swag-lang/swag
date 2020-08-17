@@ -1,5 +1,6 @@
 #[swag.printbc]
 #test
 {
-    a := @cos(0'f32)
+    loop 0
+        @print("toto")
 }
