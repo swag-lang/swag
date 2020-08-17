@@ -79,6 +79,29 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
+    if false
+    {
+        {
+            x := 8's8
+            x = ~x
+            @print(cast(s64)x)
+        }
+        {
+            x := 0xFFFF's16
+            x = ~x
+            @print(cast(s64)x)
+        }
+        {
+            x := 0's32
+            x = ~x
+            @print(cast(s64)x)
+        }
+        {
+            x := 0's64
+            x = ~x
+            @print(cast(s64)x)
+        }
+
         {
             x := 8'u64
             x %= 3
@@ -100,8 +123,6 @@ func retS()->B
             @print(cast(s64)x)
         }
 
-    if false
-    {
         {
             x := 8's64
             x %= 3

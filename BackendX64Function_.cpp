@@ -1071,6 +1071,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::InvertS8:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = ~r[", ip->a.u32, "].s8;");
+            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
+            concat.addString2("\xf6\xd0"); // not al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::InvertS16:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = ~r[", ip->a.u32, "].s16;");
+            BackendX64Inst::emit_Move_Reg_In_AX(pp, ip->a.u32);
+            concat.addString3("\x66\xf7\xd0"); // not ax
+            BackendX64Inst::emit_Move_AX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::InvertS32:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = ~r[", ip->a.u32, "].s32;");
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            concat.addString2("\xf7\xd0"); // not eax
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::InvertS64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            concat.addString3("\x48\xf7\xd0"); // not rax
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::JumpIfTrue:
             //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
