@@ -39,6 +39,7 @@ struct Concat
     void      addString2(const char* v);
     void      addString3(const char* v);
     void      addString4(const char* v);
+    void      addString5(const char* v);
     void      addString(const char* v, int len);
     void      addString(const char* v);
 

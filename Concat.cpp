@@ -31,7 +31,7 @@ void Concat::clear()
 bool Concat::hasEnoughtSpace(uint32_t numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);
-    return bucketSize - count >= numBytes;
+    return bucketSize - count >= (int) numBytes;
 }
 
 void Concat::ensureSpace(int numBytes)
@@ -225,6 +225,14 @@ void Concat::addString4(const char* v)
     ensureSpace(4);
     *(uint32_t*) currentSP = *(uint32_t*) v;
     currentSP += 4;
+}
+
+void Concat::addString5(const char* v)
+{
+    ensureSpace(5);
+    *(uint32_t*) currentSP = *(uint32_t*) v;
+    currentSP[4] = v[4];
+    currentSP += 5;
 }
 
 void Concat::addString(const char* v, int len)

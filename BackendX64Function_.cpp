@@ -199,6 +199,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString4("\xf2\x0f\x5a\xc0"); // cvtsd2ss xmm0, xmm0
             BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->a.u32);
             break;
+        case ByteCodeOp::CastS64F64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (__f64_t) r[", ip->a.u32, "].s64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2sd xmm0, rax
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
+            break;
 
         case ByteCodeOp::BinOpShiftLeftU32:
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);

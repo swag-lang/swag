@@ -80,14 +80,19 @@ func retS()->B
 #test
 {
     {
-        x := @[0, 0]
-        @init(&x[0], 2)(1)
-        @print(cast(s64) x[0])
-        @print(cast(s64) x[1])
+        x := 12's64
+        @print(cast(f64) x)
     }
 
     if false
     {
+        {
+            x := @[0, 0]
+            @init(&x[0], 2)(1)
+            @print(cast(s64) x[0])
+            @print(cast(s64) x[1])
+        }
+
         {
             x := 8's8
             x = ~x
