@@ -76,11 +76,42 @@ func retS()->B
     return x
 }
 
+struct TT
+{
+    x: s32
+}
+
+impl TT
+{
+	func opCmp(self, other: TT)->s32
+	{
+		if self.x < other.x
+			return -1
+		if self.x > other.x
+			return 1
+		return 0
+	}
+}
+
 //#[swag.printbc]
 #test
 {
-    if true
+    if false
     {
+        {
+            var a, b: TT
+            a.x = 0; b.x = 1;
+            @print(a < b ? "-1" : "?")
+            a.x = 1; b.x = 0;
+            @print(a < b ? "-1" : "?")
+
+            a.x = 1; b.x = 1;
+            @print(a <= b ? "-1" : "?")
+            a.x = 2; b.x = 1;
+            @print(a > b ? "-1" : "?")
+            @print(a >= b ? "-1" : "?")
+        }
+
         {
             x := @[1, 2, 3]
             y := @[1, 3, 3]

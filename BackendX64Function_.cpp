@@ -864,6 +864,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\x01\x03"); // add [rbx], rax
             break;
 
+        case ByteCodeOp::LowerZeroToTrue:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            concat.addString3("\xc1\xe8\x1f"); // shr eax, 31
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::LowerEqZeroToTrue:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_EAX_With_EAX(pp);
+            concat.addString3("\x0f\x9e\xc0"); // setle al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::GreaterZeroToTrue:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_EAX_With_EAX(pp);
+            concat.addString3("\x0f\x9f\xc0"); // setg al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::GreaterEqZeroToTrue:
+            //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
+            concat.addString2("\xf7\xd0"); // not eax            
+            concat.addString3("\xc1\xe8\x1f"); // shr eax, 31
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::CompareOpGreaterU32:
             //concat.addStringFormat("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
