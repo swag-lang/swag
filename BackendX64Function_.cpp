@@ -624,6 +624,47 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_RDX_At_RBX(pp);
             break;
+        case ByteCodeOp::AffectOpModuloEqU8:
+            //CONCAT_STR_2(concat, "*(__u8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u8;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef8_RAX(pp);
+            BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString2("\xf6\xf3"); // idiv al, bl
+            concat.addString2("\x88\xe0"); // mov al, ah
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_AL_At_RBX(pp);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU16:
+            //CONCAT_STR_2(concat, "*(__u16_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u16;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef16_RAX(pp);
+            BackendX64Inst::emit_Clear_DX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString3("\x66\xf7\xf3"); // idiv ax, bx
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_DX_At_RBX(pp);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU32:
+            //CONCAT_STR_2(concat, "*(__u32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u32;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef32_RAX(pp);
+            BackendX64Inst::emit_Clear_EDX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString2("\xf7\xf3"); // idiv eax, ebx
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_EDX_At_RBX(pp);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU64:
+            //CONCAT_STR_2(concat, "*(__u64_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].u64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_DeRef64_RAX(pp);
+            BackendX64Inst::emit_Clear_RDX(pp);
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString3("\x48\xf7\xf3"); // idiv rax, rbx
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_RDX_At_RBX(pp);
+            break;
 
         case ByteCodeOp::AffectOpDivEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].s8;");
