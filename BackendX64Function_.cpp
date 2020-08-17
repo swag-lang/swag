@@ -1415,6 +1415,29 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "memcpy");
             break;
 
+        case ByteCodeOp::MemCpy:
+            //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
+            emitCall(pp, "memcpy");
+            break;
+        case ByteCodeOp::MemSet:
+            //concat.addStringFormat("memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
+            emitCall(pp, "memset");
+            break;
+        case ByteCodeOp::MemCmp:
+            //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->c.u32);
+            BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->d.u32);
+            emitCall(pp, "memcmp");
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);

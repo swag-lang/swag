@@ -79,13 +79,40 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
+    if true
     {
-        x := 12's64
-        @print(cast(f64) x)
-    }
+        {
+            x := @[1, 2, 3]
+            y := @[1, 3, 3]
+            @print(cast(s64) @memcmp(&x[0], &y[0], 3 * 4'u32))
+            z := @[1, 2, 3]
+            @print(cast(s64) @memcmp(&x[0], &z[0], 3 * 4'u32))
+        }
 
-    if false
-    {
+        {
+            x := @[1, 2, 3]
+            @print(cast(s64) x[0])
+            @print(cast(s64) x[1])
+            @print(cast(s64) x[2])
+            @memset(&x[0], 0, 3 * @sizeof(u32))
+            @print(cast(s64) x[0])
+            @print(cast(s64) x[1])
+            @print(cast(s64) x[2])
+        }
+
+        {
+            x := @[1, 2, 3]
+            y := @[10, 20, 30]
+            @memcpy(&x[0], &y[0], 3 * @sizeof(u32))
+            @print(cast(s64) x[0])
+            @print(cast(s64) x[1])
+            @print(cast(s64) x[2])
+        }
+        {
+            x := 12's64
+            @print(cast(f64) x)
+        }
+
         {
             x := @[0, 0]
             @init(&x[0], 2)(1)
