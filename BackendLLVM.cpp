@@ -134,7 +134,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt32Ty(context),
             llvm::Type::getInt32Ty(context),
         };
-        modu.getOrInsertFunction("swag_runtime_comparestring", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
+        modu.getOrInsertFunction("swag_runtime_compareString", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
     }
 
     {
@@ -142,7 +142,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt8PtrTy(context),
         };
-        modu.getOrInsertFunction("swag_runtime_comparetype", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
+        modu.getOrInsertFunction("swag_runtime_compareType", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
     }
 
     {

@@ -286,7 +286,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Is this a const pointer to a typeinfo ?
     // We need to detect that special kind of pointer to set TYPEINFO_TYPEINFO_PTR.
     // TYPEINFO_TYPEINFO_PTR is used to do specific testing between pointers (when we compare two typeinfo pointers,
-    // we do not just compare the pointers, but call swag_runtime_comparetype instead)
+    // we do not just compare the pointers, but call swag_runtime_compareType instead)
     auto typeInfo = typeNode->typeInfo;
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {

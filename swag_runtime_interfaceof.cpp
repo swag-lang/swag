@@ -9,7 +9,7 @@ EXTERN_C void* swag_runtime_interfaceof(const void* structType, const void* itfT
 
     for (swag_runtime_int32_t i = 0; i < ctype->interfaces.count; i++)
     {
-        if (swag_runtime_comparestring(buffer[i].name.buffer, itype->base.name.buffer, (swag_runtime_uint32_t) buffer[i].name.count, (swag_runtime_uint32_t) itype->base.name.count))
+        if (swag_runtime_compareString(buffer[i].name.buffer, itype->base.name.buffer, (swag_runtime_uint32_t) buffer[i].name.count, (swag_runtime_uint32_t) itype->base.name.count))
             return buffer[i].value;
     }
 

@@ -12,7 +12,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto leftTypeInfo = left->typeInfo;
 
     // Compile time compare of two types
-    // We need to use swag_runtime_comparetype to be coherent with runtime !
+    // We need to use swag_runtime_compareType to be coherent with runtime !
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
@@ -26,7 +26,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             auto module               = context->sourceFile->module;
             auto ptr1                 = module->typeSegment.address(left->computedValue.reg.u32);
             auto ptr2                 = module->typeSegment.address(right->computedValue.reg.u32);
-            node->computedValue.reg.b = swag_runtime_comparetype(ptr1, ptr2);
+            node->computedValue.reg.b = swag_runtime_compareType(ptr1, ptr2);
         }
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
