@@ -7,7 +7,7 @@
 #include "Context.h"
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
-#include "SwagRuntime.h"
+#include "swag_runtime.h"
 #include "Module.h"
 #include "CompilerItf.h"
 

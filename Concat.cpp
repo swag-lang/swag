@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Concat.h"
 #include "Allocator.h"
-#include "SwagRuntime.h"
+#include "swag_runtime.h"
 
 void Concat::init(int size)
 {

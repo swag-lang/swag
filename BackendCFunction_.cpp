@@ -6,7 +6,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "BackendCFunctionBodyJob.h"
-#include "SwagRuntime.h"
+#include "swag_runtime.h"
 #include "Module.h"
 
 BackendFunctionBodyJob* BackendC::newFunctionJob()

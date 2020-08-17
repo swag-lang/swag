@@ -1,6 +1,6 @@
 #pragma once
 #include "Os.h"
-#include "SwagRuntime.h"
+#include "swag_runtime.h"
 union Register;
 struct ByteCode;
 

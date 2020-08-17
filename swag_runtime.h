@@ -15,9 +15,9 @@ extern "C" void*                 swag_runtime_interfaceof(const void* structType
 extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
 extern "C" void*                 swag_runtime_memcpy(void* destination, const void* source, size_t size);
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match every backends !
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+// SHOULD MATCH EVERY BACKENDS
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 typedef struct swag_interface_t
 {
@@ -46,9 +46,9 @@ typedef struct swag_process_infos_t
     swag_bytecoderun_t    byteCodeRun;
 } swag_process_infos_t;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct BuildCfgBackendC
 {
@@ -72,9 +72,9 @@ struct BuildCfgBackendX64
     swag_runtime_uint32_t maxFunctionPerFile = 1024;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct BuildCfg
 {
@@ -96,9 +96,9 @@ struct BuildCfg
     BuildCfgBackendX64  backendX64;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class TypeInfoKind
 {
@@ -125,9 +125,9 @@ enum class TypeInfoKind
     Count,
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class NativeTypeKind
 {
@@ -150,9 +150,9 @@ enum class NativeTypeKind
     Count,
 };
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match bootstrap.swg
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct ConcreteSlice
 {
@@ -262,9 +262,9 @@ struct ConcreteTypeInfoSlice
     ConcreteTypeInfo* pointedType;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class CompilerMsgKind
 {
@@ -285,9 +285,9 @@ enum class CompilerMsgKindMask : swag_runtime_uint64_t
     All                = 0xFFFFFFFFFFFFFFFF,
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct ConcreteCompilerMessage
 {

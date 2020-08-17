@@ -1,0 +1,16 @@
+#include "swag_runtime.h"
+#include "libc/libc.h"
+
+EXTERN_C bool swag_runtime_comparetype(const void* type1, const void* type2)
+{
+    if (type1 == type2)
+        return true;
+    if (!type1 && !type2)
+        return true;
+    if (!type1 || !type2)
+        return false;
+
+    auto ctype1 = (ConcreteTypeInfo*) type1;
+    auto ctype2 = (ConcreteTypeInfo*) type2;
+    return swag_runtime_comparestring(ctype1->name.buffer, ctype2->name.buffer, (swag_runtime_uint32_t) ctype1->name.count, (swag_runtime_uint32_t) ctype2->name.count);
+}

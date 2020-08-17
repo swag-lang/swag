@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Utf8.h"
 #include "Allocator.h"
-#include "SwagRuntime.h"
+#include "swag_runtime.h"
 
 void Utf8::reserve(int newSize)
 {

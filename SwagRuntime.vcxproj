@@ -24,13 +24,20 @@
     <ClCompile Include="libc\win32\fabsf.cpp" />
     <ClCompile Include="libc\win32\memcmp.cpp" />
     <ClCompile Include="libc\win32\memcpy.cpp" />
-    <ClCompile Include="SwagRuntime.cpp" />
+    <ClCompile Include="swag_runtime_assert.cpp" />
+    <ClCompile Include="swag_runtime_comparestring.cpp" />
+    <ClCompile Include="swag_runtime_comparetype.cpp" />
+    <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
+    <ClCompile Include="swag_runtime_interfaceof.cpp" />
+    <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
+    <ClCompile Include="swag_runtime_print.cpp" />
+    <ClCompile Include="swag_runtime_tls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h" />
     <ClInclude Include="libc\stdint.h" />
     <ClInclude Include="libc\win32\win32.h" />
-    <ClInclude Include="SwagRuntime.h" />
+    <ClInclude Include="swag_runtime.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
