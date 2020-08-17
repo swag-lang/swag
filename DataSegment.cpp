@@ -9,13 +9,13 @@
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
-uint32_t DataSegment::reserve(uint32_t size)
+uint32_t DataSegment::reserve(uint32_t size, bool setZero)
 {
     scoped_lock lock(mutex);
-    return reserveNoLock(size);
+    return reserveNoLock(size, setZero);
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size)
+uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
 {
     SWAG_ASSERT(size);
     SWAG_RACE_CONDITION_WRITE(raceCondition);
@@ -28,6 +28,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         if (last->count + size <= last->size)
         {
             uint32_t result = last->totalCountBefore + last->count;
+            if (setZero)
+                memset(last->buffer + last->count, 0, size);
             last->count += size;
             totalCount += size;
             return result;
@@ -42,6 +44,12 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.push_back(bucket);
     totalCount += size;
+
+    if (setZero)
+    {
+        last = &buckets.back();
+        memset(last->buffer, 0, size);
+    }
 
     return bucket.totalCountBefore;
 }
