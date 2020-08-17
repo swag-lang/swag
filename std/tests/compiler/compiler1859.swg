@@ -96,8 +96,26 @@ impl TT
 //#[swag.printbc]
 #test
 {
-    if false
+    if true
     {
+        {
+            x := 0xFFFFFFFF_FFFFFFFF'u64
+            y := cast(u32) x
+            z := cast(u64) y
+            @print(cast(s64) z)
+        }
+
+        {
+            x := 1'u64
+            y := cast(f32) x
+            @print(cast(f64) y)
+        }
+        {
+            x := 1'u32
+            y := cast(f32) x
+            @print(cast(f64) y)
+        }
+
         {
             var a, b: TT
             a.x = 0; b.x = 1;

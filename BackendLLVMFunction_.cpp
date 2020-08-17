@@ -2544,15 +2544,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CastU64F32:
-        {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = (__f32_t) r[", ip->a.u32, "].u64;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
-            break;
-        }
         case ByteCodeOp::CastU64F64:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (__f64_t) r[", ip->a.u32, "].u64;");

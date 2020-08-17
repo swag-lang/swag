@@ -436,7 +436,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
         emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::CastU64F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S8:
         emitInstruction(context, ByteCodeOp::CastS8S16, exprNode->resultRegisterRC);

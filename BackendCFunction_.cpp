@@ -1526,9 +1526,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CastU32F32:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32=(__f32_t)r[", ip->a.u32, "].u32;");
             break;
-        case ByteCodeOp::CastU64F32:
-            CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32=(__f32_t)r[", ip->a.u32, "].u64;");
-            break;
         case ByteCodeOp::CastU64F64:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64=(__f64_t)r[", ip->a.u32, "].u64;");
             break;
