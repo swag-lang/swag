@@ -14,6 +14,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
+
+    //swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, (void**)argv);
+    concat.addString3("\x49\x89\xd0"); // mov r8, rdx -- argv
+    concat.addString3("\x48\x89\xca"); // mov rdx, rcx -- argc
+    concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_args_addr);
+    emitCall(pp, "swag_runtime_convertArgcArgv");
 
     // Call to global init of this module
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
@@ -70,6 +78,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     BackendX64Inst::emit_Clear_RAX(pp);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
     concat.addU8(0xC3); // ret
     return true;
 }

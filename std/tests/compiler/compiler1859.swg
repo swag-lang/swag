@@ -103,6 +103,10 @@ func aaa(ptr: *s64)
 {
     if false
     {
+        @print(cast(s64) @countof(@args()))
+        @print(@args()[0])
+        @print("\n")
+
         {
             x := 666's64
             aaa(&x)

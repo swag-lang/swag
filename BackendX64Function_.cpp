@@ -1510,6 +1510,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "swag_runtime_assert");
             break;
 
+        case ByteCodeOp::IntrinsicArguments:
+            //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
+            //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symPI_args_addr);
+            BackendX64Inst::emit_DeRef64_RAX(pp);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            BackendX64Inst::emit_Symbol_In_RAX(pp, pp.symPI_args_count);
+            BackendX64Inst::emit_DeRef64_RAX(pp);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->b.u32);
+            break;
+
         case ByteCodeOp::IntrinsicAlloc:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);

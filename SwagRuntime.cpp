@@ -151,7 +151,7 @@ EXTERN_C void* swag_runtime_tlsGetValue(swag_runtime_uint32_t id)
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc, void* argv[])
 {
-    swag_runtime_uint64_t argumentsStr[MAX_COMMAND_ARGUMENTS];
+    static swag_runtime_uint64_t argumentsStr[MAX_COMMAND_ARGUMENTS];
     swag_runtime_assert(argc <= MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
 
     for (swag_runtime_int32_t i = 0; i < argc; i++)

@@ -11,18 +11,22 @@ namespace BackendX64Inst
         JUMP,
     };
 
-    inline void emit_Symbol_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
+    inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
     {
         auto& concat = pp.concat;
-
-        concat.addString3("\x48\x8D\x05");
-
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
         reloc.symbolIndex    = symbolIndex;
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
         concat.addU32(0);
+    }
+
+    inline void emit_Symbol_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
+    {
+        auto& concat = pp.concat;
+        concat.addString3("\x48\x8D\x05"); // mov rax, qword ptr ????????[rip]
+        emit_Symbol_Relocation(pp, symbolIndex);
     }
 
     inline void emit_Sub_Cst32_To_RSP(X64PerThread& pp, uint32_t value)
