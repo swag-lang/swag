@@ -724,7 +724,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_DeRef8_RAX(pp);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString2("\xf6\xf3"); // idiv al, bl
+            concat.addString2("\xf6\xf3"); // div al, bl
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_AL_At_RBX(pp);
             break;
@@ -734,7 +734,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_DeRef16_RAX(pp);
             BackendX64Inst::emit_Clear_DX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString3("\x66\xf7\xf3"); // idiv ax, bx
+            concat.addString3("\x66\xf7\xf3"); // div ax, bx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_AX_At_RBX(pp);
             break;
@@ -744,7 +744,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_DeRef32_RAX(pp);
             BackendX64Inst::emit_Clear_EDX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString2("\xf7\xf3"); // idiv eax, ebx
+            concat.addString2("\xf7\xf3"); // div eax, ebx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_EAX_At_RBX(pp);
             break;
@@ -754,7 +754,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Clear_RDX(pp);
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
-            concat.addString3("\x48\xf7\xf3"); // idiv rax, rbx
+            concat.addString3("\x48\xf7\xf3"); // div rax, rbx
             BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->a.u32);
             BackendX64Inst::emit_Move_RAX_At_RBX(pp);
             break;
@@ -1425,6 +1425,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
             concat.addString3("\x48\x69\xC0"); // imul rax, rax, ????????
             concat.addU32(ip->b.u32);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::Div64byVB32:
+            //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Clear_RDX(pp);
+            concat.addString3("\x48\xf7\xfb"); // idiv rax, rbx
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 

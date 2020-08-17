@@ -99,6 +99,12 @@ impl TT
     if true
     {
         {
+            x, y := 0
+            var diff: s64 = &y - &x
+            @print(diff)
+        }
+
+        {
             x := 0xFFFFFFFF_FFFFFFFF'u64
             y := cast(u32) x
             z := cast(u64) y
