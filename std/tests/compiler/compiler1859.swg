@@ -79,13 +79,36 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
-    {
-        x := 0x12'u8
-        y := cast(u16) x
-        @print(cast(s64) y)
-    }
-    if false
-    {
+        if false
+        {
+        {
+            x := 1'u8
+            if(x)
+                @print("t")
+            else
+                @print("f")
+        }
+        {
+            x := 0'u16
+            if(x)
+                @print("t")
+            else
+                @print("f")
+        }
+        {
+            x := 0'u64
+            if(x)
+                @print("t")
+            else
+                @print("f")
+        }
+
+        {
+            x := 0x12'u32
+            y := cast(u16) x
+            @print(cast(s64) y)
+        }
+
         {
             x := retS()
             @print(cast(s64) x.y)

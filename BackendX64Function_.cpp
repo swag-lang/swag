@@ -128,13 +128,35 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
+        case ByteCodeOp::CastBool8:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
+            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_AL_With_AL(pp);
+            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::CastBool16:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
+            BackendX64Inst::emit_Move_Reg_In_AX(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_AX_With_AX(pp);
+            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
         case ByteCodeOp::CastBool32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
             concat.addString3("\x0F\x95\xC0"); // setne al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::CastBool64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::CastS8S16:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = (__s16_t) r[", ip->a.u32, "].s8;");
             BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
