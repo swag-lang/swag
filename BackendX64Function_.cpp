@@ -893,7 +893,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GreaterEqZeroToTrue:
             //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
-            concat.addString2("\xf7\xd0"); // not eax            
+            concat.addString2("\xf7\xd0");     // not eax
             concat.addString3("\xc1\xe8\x1f"); // shr eax, 31
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->a.u32);
             break;
@@ -1540,6 +1540,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString4("\xF2\x0F\x10\x87"); // movsd xmm0, [rdi + ?]
             concat.addU32(offsetFLT);
             emitCall(pp, "swag_runtime_print_f64");
+            break;
+        case ByteCodeOp::IntrinsicInterfaceOf:
+            //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            emitCall(pp, "swag_runtime_interfaceof");
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
 
         case ByteCodeOp::CopyRCtoRR:
