@@ -203,6 +203,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
+    // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)
     {
         auto node = bc->node;
