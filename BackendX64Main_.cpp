@@ -17,11 +17,18 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
 
     //swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, (void**)argv);
+    // Must be done first ! We need to have rcx (argc) and rdx (argv) valid
     concat.addString3("\x49\x89\xd0"); // mov r8, rdx -- argv
     concat.addString3("\x48\x89\xca"); // mov rdx, rcx -- argc
     concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
     BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_args_addr);
     emitCall(pp, "swag_runtime_convertArgcArgv");
+
+    //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
+    emitCall(pp, "swag_runtime_tlsAlloc");
+    concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_contextTlsId);
+    concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     // Call to global init of this module
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());

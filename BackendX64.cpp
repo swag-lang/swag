@@ -18,10 +18,12 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
 
-        auto offset         = module->mutableSegment.reserve(8, true);
-        pp.symPI_args_addr  = getOrAddSymbol(pp, "__process_infos_args_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
-        offset              = module->mutableSegment.reserve(8, true);
-        pp.symPI_args_count = getOrAddSymbol(pp, "__process_infos_args_count", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+        auto offset           = module->mutableSegment.reserve(8, true);
+        pp.symPI_args_addr    = getOrAddSymbol(pp, "__process_infos_args_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+        offset                = module->mutableSegment.reserve(8, true);
+        pp.symPI_args_count   = getOrAddSymbol(pp, "__process_infos_args_count", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+        offset                = module->mutableSegment.reserve(8, true);
+        pp.symPI_contextTlsId = getOrAddSymbol(pp, "__process_infos_contextTlsId", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
     }
     else
     {
@@ -30,8 +32,9 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
 
-        pp.symPI_args_addr  = getOrAddSymbol(pp, "__process_infos_args_addr", CoffSymbolKind::Extern)->index;
-        pp.symPI_args_count = getOrAddSymbol(pp, "__process_infos_args_count", CoffSymbolKind::Extern)->index;
+        pp.symPI_args_addr    = getOrAddSymbol(pp, "__process_infos_args_addr", CoffSymbolKind::Extern)->index;
+        pp.symPI_args_count   = getOrAddSymbol(pp, "__process_infos_args_count", CoffSymbolKind::Extern)->index;
+        pp.symPI_contextTlsId = getOrAddSymbol(pp, "__process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
     }
 
     return true;

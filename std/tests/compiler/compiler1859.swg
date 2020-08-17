@@ -101,7 +101,7 @@ func aaa(ptr: *s64)
 //#[swag.printbc]
 #test
 {
-    if true
+    if false
     {
         @print(cast(s64) @countof(@args()))
         @print(@args()[0])
