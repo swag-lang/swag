@@ -15,6 +15,37 @@ extern "C" void*                 swag_runtime_interfaceof(const void* structType
 extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
 extern "C" void*                 swag_runtime_memcpy(void* destination, const void* source, size_t size);
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match every backends !
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+typedef struct swag_interface_t
+{
+    void* data;
+    void* itable;
+} swag_interface_t;
+
+typedef struct swag_context_t
+{
+    swag_interface_t allocator;
+} swag_context_t;
+
+typedef struct swag_slice_t
+{
+    void*                 addr;
+    swag_runtime_uint64_t count;
+} swag_slice_t;
+
+typedef void (*swag_bytecoderun_t)(void*, ...);
+
+typedef struct swag_process_infos_t
+{
+    swag_slice_t          arguments;
+    swag_runtime_uint64_t contextTlsId;
+    swag_context_t*       defaultContext;
+    swag_bytecoderun_t    byteCodeRun;
+} swag_process_infos_t;
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
