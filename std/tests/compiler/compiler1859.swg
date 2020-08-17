@@ -79,6 +79,13 @@ func retS()->B
 //#[swag.printbc]
 #test
 {
+    {
+        x := @[0, 0]
+        @init(&x[0], 2)(1)
+        @print(cast(s64) x[0])
+        @print(cast(s64) x[1])
+    }
+
     if false
     {
         {
