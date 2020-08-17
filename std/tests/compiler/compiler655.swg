@@ -1,7 +1,5 @@
 #module compiler655
 
-
-
 //#[swag.printbc]
 #unittest error
 #test

@@ -403,6 +403,7 @@ bool Workspace::buildTarget()
         job->module = bootstrapModule;
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
+        checkPendingJobs();
 
         // Errors in swag.swg !!!
         if (bootstrapModule->numErrors)

@@ -479,7 +479,7 @@ JobResult ByteCodeGenJob::execute()
             emitInstruction(&context, ByteCodeOp::End);
 
         // Print resulting bytecode
-        if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+        if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
             context.bc->print();
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)

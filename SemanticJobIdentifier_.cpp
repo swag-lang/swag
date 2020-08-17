@@ -184,7 +184,7 @@ void SemanticJob::optimIntrinsic(SemanticContext* context, AstIdentifier* identi
     case TokenId::IntrinsicAssert:
     {
         // Remove assert(true)
-        SWAG_ASSERT(identifier->callParameters);
+        SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
         auto param = identifier->callParameters->childs.front();
         if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue.reg.b)
             identifier->flags |= AST_NO_BYTECODE;
