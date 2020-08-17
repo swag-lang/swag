@@ -248,7 +248,6 @@
     <ClInclude Include="Version.h" />
     <ClInclude Include="ComWin32.hpp" />
     <ClInclude Include="Workspace.h" />
-    <ClInclude Include="OsWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Allocator .cpp" />

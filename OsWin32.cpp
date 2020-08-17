@@ -296,19 +296,19 @@ namespace OS
         return message;
     }
 
-    swag_tls_id_t tlsAlloc()
+    uint64_t tlsAlloc()
     {
         return TlsAlloc();
     }
 
-    void tlsSetValue(swag_tls_id_t id, void* value)
+    void tlsSetValue(uint64_t id, void* value)
     {
-        TlsSetValue(id, value);
+        TlsSetValue((uint32_t) id, value);
     }
 
-    void* tlsGetValue(swag_tls_id_t id)
+    void* tlsGetValue(uint64_t id)
     {
-        return TlsGetValue(id);
+        return TlsGetValue((uint32_t) id);
     }
 
     void* loadLibrary(const char* name)

@@ -125,7 +125,7 @@ EXTERN_C void* swag_runtime_loadDynamicLibrary(const void* name)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C swag_runtime_uint32_t swag_runtime_tlsAlloc()
+EXTERN_C swag_runtime_uint64_t swag_runtime_tlsAlloc()
 {
 #ifdef _WIN32
     return TlsAlloc();
@@ -133,18 +133,18 @@ EXTERN_C swag_runtime_uint32_t swag_runtime_tlsAlloc()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_tlsSetValue(swag_runtime_uint32_t id, void* value)
+EXTERN_C void swag_runtime_tlsSetValue(swag_runtime_uint64_t id, void* value)
 {
 #ifdef _WIN32
-    TlsSetValue(id, value);
+    TlsSetValue((swag_runtime_uint32_t) id, value);
 #endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void* swag_runtime_tlsGetValue(swag_runtime_uint32_t id)
+EXTERN_C void* swag_runtime_tlsGetValue(swag_runtime_uint64_t id)
 {
 #ifdef _WIN32
-    return TlsGetValue(id);
+    return TlsGetValue((swag_runtime_uint32_t) id);
 #endif
 }
 

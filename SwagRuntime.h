@@ -6,9 +6,9 @@ extern "C" void                  swag_runtime_print_i64(swag_runtime_int64_t val
 extern "C" void                  swag_runtime_print_f64(double value);
 extern "C" bool                  swag_runtime_comparestring(const void* str1, const void* str2, swag_runtime_uint32_t num1, swag_runtime_uint32_t num2);
 extern "C" void*                 swag_runtime_loadDynamicLibrary(const void* name);
-extern "C" swag_runtime_uint32_t swag_runtime_tlsAlloc();
-extern "C" void                  swag_runtime_tlsSetValue(swag_runtime_uint32_t id, void* value);
-extern "C" void*                 swag_runtime_tlsGetValue(swag_runtime_uint32_t id);
+extern "C" swag_runtime_uint64_t swag_runtime_tlsAlloc();
+extern "C" void                  swag_runtime_tlsSetValue(swag_runtime_uint64_t id, void* value);
+extern "C" void*                 swag_runtime_tlsGetValue(swag_runtime_uint64_t id);
 extern "C" void                  swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc, void* argv[]);
 extern "C" bool                  swag_runtime_comparetype(const void* type1, const void* type2);
 extern "C" void*                 swag_runtime_interfaceof(const void* structType, const void* itfType);

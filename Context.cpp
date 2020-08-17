@@ -8,7 +8,7 @@
 #include "Global.h"
 #include "Module.h"
 
-swag_tls_id_t        g_tlsContextId = 0;
+uint64_t             g_tlsContextId = 0;
 swag_context_t       g_defaultContext;
 swag_process_infos_t g_processInfos = {0};
 

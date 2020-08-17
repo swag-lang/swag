@@ -650,9 +650,6 @@
     <ClInclude Include="BackendSetupWin32.h">
       <Filter>Win32</Filter>
     </ClInclude>
-    <ClInclude Include="OsWin32.h">
-      <Filter>Win32</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleRunJob.h">
       <Filter>Backend</Filter>
     </ClInclude>

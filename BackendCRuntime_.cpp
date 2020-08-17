@@ -23,10 +23,6 @@ typedef unsigned long long __u64_t;
 typedef float __f32_t;
 typedef double __f64_t;
 
-#ifdef _WIN32
-typedef __u32_t swag_tls_id_t;
-#endif
-
 typedef union __r_t {
 __u8_t* p;
 __u64_t u64;
@@ -63,7 +59,7 @@ __u64_t count;
 
 typedef struct swag_process_infos_t {
 swag_slice_t arguments;
-swag_tls_id_t contextTlsId;
+__u64_t contextTlsId;
 swag_context_t* defaultContext;
 swag_bytecoderun_t byteCodeRun;
 } swag_process_infos_t;
@@ -80,9 +76,9 @@ static constexpr const char* g_SwagRuntime = R"(
 #endif
 
 void* swag_runtime_loadDynamicLibrary(const void*);
-__u32_t swag_runtime_tlsAlloc();
-void swag_runtime_tlsSetValue(__u32_t,void*);
-void*swag_runtime_tlsGetValue(__u32_t);
+__u64_t swag_runtime_tlsAlloc();
+void swag_runtime_tlsSetValue(__u64_t,void*);
+void*swag_runtime_tlsGetValue(__u64_t);
 void swag_runtime_print_n(const void*,int);
 void swag_runtime_print_i64(__s64_t);
 void swag_runtime_print_f64(__f64_t);

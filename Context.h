@@ -29,12 +29,12 @@ typedef void (*swag_bytecoderun_t)(void*, ...);
 typedef struct swag_process_infos_t
 {
     swag_slice_t       arguments;
-    swag_tls_id_t      contextTlsId;
+    uint64_t           contextTlsId;
     swag_context_t*    defaultContext;
     swag_bytecoderun_t byteCodeRun;
 } swag_process_infos_t;
 
-extern swag_tls_id_t        g_tlsContextId;
+extern uint64_t             g_tlsContextId;
 extern swag_context_t       g_defaultContext;
 extern swag_process_infos_t g_processInfos;
 
