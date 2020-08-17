@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="libc\main.cpp" />
     <ClCompile Include="libc\win32\crt.cpp" />
+    <ClCompile Include="libc\win32\fabsf.cpp" />
     <ClCompile Include="libc\win32\memcmp.cpp" />
     <ClCompile Include="libc\win32\memcpy.cpp" />
     <ClCompile Include="SwagRuntime.cpp" />

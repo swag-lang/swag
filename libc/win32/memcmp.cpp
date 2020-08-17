@@ -1,4 +1,5 @@
 #ifdef _WIN32
+#ifndef SWAG_RUNTIME_COMPILER
 #include "../libc.h"
 
 EXTERN_C int memcmp(const void* b1, const void* b2, size_t n)
@@ -16,4 +17,5 @@ EXTERN_C int memcmp(const void* b1, const void* b2, size_t n)
     return 0;
 }
 
+#endif
 #endif

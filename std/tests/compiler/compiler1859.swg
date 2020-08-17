@@ -96,7 +96,7 @@ impl TT
 //#[swag.printbc]
 #test
 {
-    if true
+    if false
     {
         {
             x, y := 0

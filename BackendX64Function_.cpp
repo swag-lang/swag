@@ -1691,6 +1691,228 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU8(0xc3); // ret
             break;
 
+        case ByteCodeOp::IntrinsicS8x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_AL(pp, ip->b.u32);
+            BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
+            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
+            concat.addString2("\x89\xc1"); // mov ecx, eax
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "abs");
+                break;
+            }
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+        }
+        case ByteCodeOp::IntrinsicS16x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_AX(pp, ip->b.u32);
+            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
+            concat.addString2("\x89\xc1"); // mov ecx, eax
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "abs");
+                break;
+            }
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+        }
+        case ByteCodeOp::IntrinsicS32x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_ECX(pp, ip->b.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "abs");
+                break;
+            }
+            BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
+            break;
+        }
+        case ByteCodeOp::IntrinsicS64x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->b.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "llabs");
+                break;
+            }
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        }
+        case ByteCodeOp::IntrinsicF32x2:
+        {
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->c.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicPow:
+                emitCall(pp, "powf");
+                break;
+            }
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->a.u32);
+            break;
+        }
+        case ByteCodeOp::IntrinsicF64x2:
+        {
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_XMM1_F64(pp, ip->c.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicPow:
+                emitCall(pp, "pow");
+                break;
+            }
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicF32x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->b.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt:
+                emitCall(pp, "sqrtf");
+                break;
+            case TokenId::IntrinsicSin:
+                emitCall(pp, "sinf");
+                break;
+            case TokenId::IntrinsicCos:
+                emitCall(pp, "cosf");
+                break;
+            case TokenId::IntrinsicTan:
+                emitCall(pp, "tanf");
+                break;
+            case TokenId::IntrinsicSinh:
+                emitCall(pp, "sinhf");
+                break;
+            case TokenId::IntrinsicCosh:
+                emitCall(pp, "coshf");
+                break;
+            case TokenId::IntrinsicTanh:
+                emitCall(pp, "tanhf");
+                break;
+            case TokenId::IntrinsicASin:
+                emitCall(pp, "asinf");
+                break;
+            case TokenId::IntrinsicACos:
+                emitCall(pp, "acosf");
+                break;
+            case TokenId::IntrinsicATan:
+                emitCall(pp, "atanf");
+                break;
+            case TokenId::IntrinsicLog:
+                emitCall(pp, "logf");
+                break;
+            case TokenId::IntrinsicLog2:
+                emitCall(pp, "log2f");
+                break;
+            case TokenId::IntrinsicLog10:
+                emitCall(pp, "log10f");
+                break;
+            case TokenId::IntrinsicFloor:
+                emitCall(pp, "floorf");
+                break;
+            case TokenId::IntrinsicCeil:
+                emitCall(pp, "ceilf");
+                break;
+            case TokenId::IntrinsicTrunc:
+                emitCall(pp, "truncf");
+                break;
+            case TokenId::IntrinsicRound:
+                emitCall(pp, "roundf");
+                break;
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "fabsf");
+                break;
+            case TokenId::IntrinsicExp:
+                emitCall(pp, "expf");
+                break;
+            case TokenId::IntrinsicExp2:
+                emitCall(pp, "exp2f");
+                break;
+            }
+
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->a.u32);
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicF64x1:
+        {
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->b.u32);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicSqrt:
+                emitCall(pp, "sqrt");
+                break;
+            case TokenId::IntrinsicSin:
+                emitCall(pp, "sin");
+                break;
+            case TokenId::IntrinsicCos:
+                emitCall(pp, "cos");
+                break;
+            case TokenId::IntrinsicTan:
+                emitCall(pp, "tan");
+                break;
+            case TokenId::IntrinsicSinh:
+                emitCall(pp, "sinh");
+                break;
+            case TokenId::IntrinsicCosh:
+                emitCall(pp, "cosh");
+                break;
+            case TokenId::IntrinsicTanh:
+                emitCall(pp, "tanh");
+                break;
+            case TokenId::IntrinsicASin:
+                emitCall(pp, "asin");
+                break;
+            case TokenId::IntrinsicACos:
+                emitCall(pp, "acos");
+                break;
+            case TokenId::IntrinsicATan:
+                emitCall(pp, "atan");
+                break;
+            case TokenId::IntrinsicLog:
+                emitCall(pp, "log");
+                break;
+            case TokenId::IntrinsicLog2:
+                emitCall(pp, "log2");
+                break;
+            case TokenId::IntrinsicLog10:
+                emitCall(pp, "log10");
+                break;
+            case TokenId::IntrinsicFloor:
+                emitCall(pp, "floor");
+                break;
+            case TokenId::IntrinsicCeil:
+                emitCall(pp, "ceil");
+                break;
+            case TokenId::IntrinsicTrunc:
+                emitCall(pp, "trunc");
+                break;
+            case TokenId::IntrinsicRound:
+                emitCall(pp, "round");
+                break;
+            case TokenId::IntrinsicAbs:
+                emitCall(pp, "fabs");
+                break;
+            case TokenId::IntrinsicExp:
+                emitCall(pp, "exp");
+                break;
+            case TokenId::IntrinsicExp2:
+                emitCall(pp, "exp2");
+                break;
+            }
+
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
+            break;
+        }
+
         default:
             ok = false;
             moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
