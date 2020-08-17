@@ -132,7 +132,7 @@ __f32_t truncf(__f32_t);
 __f64_t trunc(__f64_t);
 __f32_t roundf(__f32_t);
 __f64_t round(__f64_t);
-#define fabsf(__v) (__f32_t)fabs((__f64_t)__v)
+__f32_t fabsf(__f32_t );
 __f64_t fabs(__f64_t);
 __f32_t expf(__f32_t);
 __f64_t exp(__f64_t);
