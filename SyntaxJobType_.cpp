@@ -178,7 +178,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     auto        symbol = rootScope->symTable.findNoLock(structNode->name);
     if (!symbol)
     {
-        auto typeInfo        = g_Allocator.alloc0<TypeInfoStruct>();
+        auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->name;

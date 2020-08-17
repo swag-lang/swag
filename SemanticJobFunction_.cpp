@@ -30,7 +30,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     for (auto param : parameters->childs)
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
-        auto funcParam        = g_Allocator.alloc0<TypeInfoParam>();
+        auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
         funcParam->namedParam = param->name;
         funcParam->name       = param->typeInfo->name;
         funcParam->typeInfo   = param->typeInfo;
@@ -75,7 +75,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // A struct/interface is forced to be a const reference
         else if (paramType->kind == TypeInfoKind::Struct || paramType->kind == TypeInfoKind::Interface)
         {
-            auto typeRef         = g_Allocator.alloc0<TypeInfoReference>();
+            auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
             typeRef->flags       = paramType->flags | TYPEINFO_CONST;
             typeRef->pointedType = paramType;
             typeRef->computeName();
