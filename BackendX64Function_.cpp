@@ -1596,8 +1596,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
+
         case ByteCodeOp::GetFromStackParam64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
             concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::MakeStackPointerParam:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &rp", ip->c.u32, "->pointer;");
+            concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack

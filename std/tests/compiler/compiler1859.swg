@@ -93,11 +93,24 @@ impl TT
 	}
 }
 
+func aaa(ptr: *s64)
+{
+    ptr[0] = 555
+}
+
 //#[swag.printbc]
 #test
 {
     if false
     {
+        {
+            x := 666's64
+            aaa(&x)
+            @print(x)
+            y := 666's64
+            aaa(&y)
+            @print(y)
+        }
         {
             x, y := 0
             var diff: s64 = &y - &x
