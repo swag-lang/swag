@@ -325,7 +325,8 @@ struct ByteCodeGenJob : public Job
         WaitForDependenciesResolved,
     };
 
-    Pass                   pass = Pass::Generate;
+    AstNode*               allParamsTmp = nullptr;
+    Pass                   pass         = Pass::Generate;
     VectorNative<AstNode*> dependentNodesTmp;
 };
 

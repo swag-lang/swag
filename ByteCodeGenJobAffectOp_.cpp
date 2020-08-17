@@ -537,6 +537,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
+    auto     job       = context->job;
     AstNode* node      = context->node;
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
@@ -558,10 +559,11 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     {
         if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
         {
-            auto    arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
-            AstNode allParams;
-            allParams.childs = arrayNode->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, &allParams));
+            auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
+            if (!job->allParamsTmp)
+                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            job->allParamsTmp->childs = arrayNode->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
             if (context->result == ContextResult::Pending)
                 return true;
         }

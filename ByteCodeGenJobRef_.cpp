@@ -168,6 +168,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
+    auto job      = context->job;
     auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeInfo = TypeManager::concreteType(node->array->typeInfo);
 
@@ -318,9 +319,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
-            AstNode allParams;
-            allParams.childs = node->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, &allParams));
+            if (!job->allParamsTmp)
+                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            job->allParamsTmp->childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
             if (context->result == ContextResult::Pending)
                 return true;
         }

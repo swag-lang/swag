@@ -53,6 +53,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t offsetFLT   = 0;
     uint32_t offsetStack = 0;
     uint32_t offsetRT    = 0;
+    uint32_t offsetRR    = 0;
 
     // For float load
     // (should be reserved only if we have floating point operations in that function)
@@ -63,7 +64,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // FLT
     offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
     offsetStack = offsetRT + bc->maxCallResults * sizeof(Register);
-    offsetFLT   = offsetStack + typeFunc->stackSize;
+    offsetRR    = offsetStack + typeFunc->stackSize;
+    offsetFLT   = offsetRR + 2 * sizeof(Register);
     sizeStack   = offsetFLT + 8;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
@@ -77,6 +79,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // C calling convention, space for at least 4 parameters when calling a function
     // (should be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 4 * sizeof(uint64_t));
+
+    // Save RR to stack
+    auto returnType = typeFunc->returnType;
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String) ||
+        returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        BackendX64Inst::emit_Move_RCX_At_Stack(pp, offsetRR);
+        BackendX64Inst::emit_Move_RDX_At_Stack(pp, offsetRR + 8);
+    }
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -1558,7 +1571,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
             break;
+
         case ByteCodeOp::CopyRRtoRC:
+            SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
+            if (ip->b.u32 == 0)
+                BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRR);
+            else
+                BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRR + 8);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+
         case ByteCodeOp::CopyRRtoRCCall:
             //registersRC[ip->a.u32] = registersRR[ip->b.u32];
             SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
@@ -1658,7 +1680,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            uint32_t sizeCallStack = emitCallParameters(pp, typeFuncBC, pushRAParams);
+            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, pushRAParams);
             concat.addString2("\xff\xd0"); // call rax
 
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
@@ -1686,7 +1708,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            uint32_t sizeCallStack = emitCallParameters(pp, typeFuncBC, pushRAParams);
+            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, pushRAParams);
             emitCall(pp, funcBC->callName());
 
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
@@ -1951,7 +1973,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat = pp.concat;
 
@@ -1993,7 +2015,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
         funcName = nodeFunc->name;
 
     uint32_t exceededStack = 0;
-    SWAG_CHECK(emitCallParameters(pp, exceededStack, moduleToGen, ip, offsetRT, typeFuncBC, pushRAParams));
+    SWAG_CHECK(emitForeignCallParameters(pp, exceededStack, moduleToGen, ip, offsetRT, typeFuncBC, pushRAParams));
     emitCall(pp, funcName);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, exceededStack);
 
@@ -2019,7 +2041,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     return true;
 }
 
-bool BackendX64::emitCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat        = pp.concat;
     int   numCallParams = (int) typeFuncBC->parameters.size();
