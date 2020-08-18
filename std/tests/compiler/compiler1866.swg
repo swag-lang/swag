@@ -1,3 +1,8 @@
+public func toto()
+{
+
+}
+
 //#[swag.printbc]
 #test
 {

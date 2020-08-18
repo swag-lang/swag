@@ -93,6 +93,8 @@ struct X64PerThread
     uint32_t* patchMSCount  = nullptr;
     uint32_t* patchTSOffset = nullptr;
     uint32_t* patchTSCount  = nullptr;
+    uint32_t* patchDRCount  = nullptr;
+    uint32_t* patchDROffset = nullptr;
 
     uint32_t symBSIndex = 0;
     uint32_t symMSIndex = 0;
@@ -118,6 +120,7 @@ struct X64PerThread
     uint16_t sectionIndexMS   = 0;
     uint16_t sectionIndexCS   = 0;
     uint16_t sectionIndexTS   = 0;
+    uint16_t sectionIndexDR   = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };

@@ -276,9 +276,9 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.init();
     concat.addU16(IMAGE_FILE_MACHINE_AMD64); // .Machine
     if (precompileIndex == 0)
-        concat.addU16(5); // .NumberOfSections
+        concat.addU16(6); // .NumberOfSections
     else
-        concat.addU16(2); // .NumberOfSections
+        concat.addU16(3); // .NumberOfSections
 
     time_t now;
     time(&now);
@@ -322,11 +322,24 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0);                                         // .NumberOfLinenumbers
     pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
 
+    // directive section (to register dll exported symbols)
+    pp.sectionIndexDR = 3;
+    concat.addString(".drectve", 8);         // .Name
+    concat.addU32(0);                        // .VirtualSize
+    concat.addU32(0);                        // .VirtualAddress
+    pp.patchDRCount  = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchDROffset = concat.addU32Addr(0); // .PointerToRawData
+    concat.addU32(0);                        // .PointerToRelocations
+    concat.addU32(0);                        // .PointerToLinenumbers
+    concat.addU16(0);                        // .NumberOfRelocations
+    concat.addU16(0);                        // .NumberOfLinenumbers
+    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES | IMAGE_SCN_LNK_INFO);
+
     if (precompileIndex == 0)
     {
         // bss section
         /////////////////////////////////////////////
-        pp.sectionIndexBS = 3;
+        pp.sectionIndexBS = 4;
         concat.addString(".bss\0\0\0\0", 8);          // .Name
         concat.addU32(0);                             // .VirtualSize
         concat.addU32(0);                             // .VirtualAddress
@@ -340,7 +353,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // mutable section
         /////////////////////////////////////////////
-        pp.sectionIndexMS = 4;
+        pp.sectionIndexMS = 5;
         concat.addString(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
@@ -354,7 +367,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // type section
         /////////////////////////////////////////////
-        pp.sectionIndexTS = 5;
+        pp.sectionIndexTS = 6;
         concat.addString(".rdata\0\0\0", 8);                      // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
