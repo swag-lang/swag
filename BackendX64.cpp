@@ -18,8 +18,19 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
 
+        // This should match the structure swag_context_t  declared in SwagRuntime.h
+        auto offset                           = module->mutableSegment.reserve(8, true);
+        pp.symMC_mainContext                  = getOrAddSymbol(pp, "swag_main_context", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+        pp.symMC_mainContext_allocator_addr   = getOrAddSymbol(pp, "swag_main_context_allocator_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+        offset                                = module->mutableSegment.reserve(8, true);
+        pp.symMC_mainContext_allocator_itable = getOrAddSymbol(pp, "swag_main_context_allocator_itable", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+
+        // defaultAllocTable, an interface itable that contains only one entry
+        offset                  = module->mutableSegment.reserve(8, true);
+        pp.symDefaultAllocTable = getOrAddSymbol(pp, "swag_default_alloc_table", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
+
         // This should match the structure swag_process_infos_t declared in SwagRuntime.h
-        auto offset             = module->mutableSegment.reserve(8, true);
+        offset                  = module->mutableSegment.reserve(8, true);
         pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexMS)->index;
         offset                  = module->mutableSegment.reserve(8, true);
@@ -471,14 +482,10 @@ bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& coffta
     return true;
 }
 
-void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
+void BackendX64::emitSymbolRelocation(X64PerThread& pp, const Utf8& name)
 {
-    auto& concat = pp.concat;
-
-    // call
-    concat.addU8(0xE8);
-
-    auto callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
+    auto& concat  = pp.concat;
+    auto  callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
     if (callSym->kind == CoffSymbolKind::Function)
     {
         concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
@@ -493,6 +500,13 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
 
         concat.addU32(0);
     }
+}
+
+void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
+{
+    auto& concat = pp.concat;
+    concat.addU8(0xE8); // call
+    emitSymbolRelocation(pp, name);
 }
 
 bool BackendX64::generateObjFile(const BuildParameters& buildParameters)

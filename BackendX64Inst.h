@@ -22,7 +22,7 @@ namespace BackendX64Inst
         concat.addU32(0);
     }
 
-    inline void emit_Symbol_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
+    inline void emit_SymbolAddr_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
     {
         auto& concat = pp.concat;
         concat.addString3("\x48\x8D\x05"); // mov rax, qword ptr ????????[rip]

@@ -99,12 +99,16 @@ struct X64PerThread
     uint32_t symCSIndex = 0;
     uint32_t symTSIndex = 0;
 
-    uint32_t symPI_processInfos   = 0;
-    uint32_t symPI_args_addr      = 0;
-    uint32_t symPI_args_count     = 0;
-    uint32_t symPI_contextTlsId   = 0;
-    uint32_t symPI_defaultContext = 0;
-    uint32_t symPI_byteCodeRun    = 0;
+    uint32_t symMC_mainContext                  = 0;
+    uint32_t symMC_mainContext_allocator_addr   = 0;
+    uint32_t symMC_mainContext_allocator_itable = 0;
+    uint32_t symDefaultAllocTable               = 0;
+    uint32_t symPI_processInfos                 = 0;
+    uint32_t symPI_args_addr                    = 0;
+    uint32_t symPI_args_count                   = 0;
+    uint32_t symPI_contextTlsId                 = 0;
+    uint32_t symPI_defaultContext               = 0;
+    uint32_t symPI_byteCodeRun                  = 0;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
@@ -153,6 +157,7 @@ struct BackendX64 : public Backend
     bool emitMain(const BuildParameters& buildParameters);
 
     uint32_t emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
+    void     emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void     emitCall(X64PerThread& pp, const Utf8& name);
 
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
