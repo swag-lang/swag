@@ -2023,8 +2023,10 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
         }
     }
 
-    uint32_t sizeStack = (pushRAParams.size() - popRAidx ) * sizeof(Register);
+    uint32_t sizeStack = (uint32_t)((pushRAParams.size() - popRAidx) * sizeof(Register));
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
+
+    // Be sure stack remains align to 16 bytes
     if (sizeStack % 16 == 8)
     {
         sizeStack += 8;
