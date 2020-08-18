@@ -1517,6 +1517,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "swag_runtime_tlsGetValue");
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
+        case ByteCodeOp::IntrinsicSetContext:
+            //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
+            concat.addString3("\x48\x8b\x0d"); // mov rcx, qword ptr ????????[rip]
+            BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_contextTlsId);
+            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->a.u32);
+            emitCall(pp, "swag_runtime_tlsSetValue");
+            break;
 
         case ByteCodeOp::IntrinsicArguments:
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
