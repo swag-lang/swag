@@ -2023,12 +2023,19 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
         }
     }
 
-    uint32_t sizeStack = 0;
+    uint32_t sizeStack = (pushRAParams.size() - popRAidx ) * sizeof(Register);
+    sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
+    if (sizeStack % 16 == 8)
+    {
+        sizeStack += 8;
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 8);
+    }
+
     for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
     {
         concat.addString2("\xff\xb7"); // push [rdi + ????????]
         concat.addU32(pushRAParams[iParam] * sizeof(Register));
-        sizeStack += 8;
+        //sizeStack += 8;
     }
 
     // Return registers are push first
@@ -2037,7 +2044,7 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
         concat.addString3("\x4c\x8d\xb7"); // lea r14, [rdi + ????????]
         concat.addU32(stackRR + (j * sizeof(Register)));
         concat.addString2("\x41\x56"); // push r14
-        sizeStack += 8;
+        //sizeStack += 8;
     }
 
     return sizeStack;
