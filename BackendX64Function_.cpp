@@ -1067,7 +1067,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpEqualString:
             //concat.addStringFormat("r[%u].b = swag_runtime_compareString(r[%u].pointer, r[%u].pointer, r[%u].u32, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
             BackendX64Inst::emit_Move_Reg_In_R9D(pp, ip->d.u32);
             emitCall(pp, "swag_runtime_compareString");
@@ -1076,7 +1076,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpEqualTypeInfo:
             //concat.addStringFormat("r[%u].b = swag_runtime_compareType(r[%u].pointer, r[%u].pointer);", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             emitCall(pp, "swag_runtime_compareType");
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
             break;
@@ -1487,7 +1487,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemCpyVC32:
             //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             concat.addString3("\x49\xC7\xC0"); // mov r8, ????????
             concat.addU32(ip->c.u32);
             emitCall(pp, "memcpy");
@@ -1496,7 +1496,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemCpy:
             //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
             emitCall(pp, "memcpy");
             break;
@@ -1510,7 +1510,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemCmp:
             //concat.addStringFormat("r[%u].s32 = swag_runtime_memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->c.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->d.u32);
             emitCall(pp, "memcmp");
             BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
@@ -1544,7 +1544,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             concat.addString3("\x48\x8b\x0d"); // mov rcx, qword ptr ????????[rip]
             BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_contextTlsId);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             emitCall(pp, "swag_runtime_tlsSetValue");
             break;
 
@@ -1611,7 +1611,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicInterfaceOf:
             //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             emitCall(pp, "swag_runtime_interfaceof");
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->c.u32);
             break;
@@ -2215,10 +2215,10 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             switch (i)
             {
             case 0:
-                BackendX64Inst::emit_Move_Reg_In_RCX(pp, r);
+                BackendX64Inst::emit_Move64_Indirect(pp, regOffset(r), RCX, RDI);
                 break;
             case 1:
-                BackendX64Inst::emit_Move_Reg_In_RDX(pp, r);
+                BackendX64Inst::emit_Move64_Indirect(pp, regOffset(r), RDX, RDI);
                 break;
             case 2:
                 BackendX64Inst::emit_Move_Reg_In_R8(pp, r);
