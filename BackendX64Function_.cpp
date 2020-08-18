@@ -215,6 +215,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2sd xmm0, rax
             BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
             break;
+        case ByteCodeOp::CastF64S64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = (__s32_t) r[", ip->a.u32, "].f64;");
+            BackendX64Inst::emit_Move_Reg_In_XMM0_F64(pp, ip->a.u32);
+            concat.addString5("\xf2\x48\x0f\x2c\xc0"); // cvttss2si rax, xmm0
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
+            break;
+        case ByteCodeOp::CastU64F64:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = (__f32_t) r[", ip->a.u32, "].f64;");
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2ss xmm0, rax
+            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
+            break;
 
         case ByteCodeOp::BinOpShiftLeftU32:
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
