@@ -359,24 +359,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString3("\x48\x8B\x07"); // mov rax, qword ptr [rdi]
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString3("\x48\x8b\x47"); // mov rax, qword ptr [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString3("\x48\x8B\x87"); // mov rax, qword ptr [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     inline void emit_Move_Stack_In_EBX(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)

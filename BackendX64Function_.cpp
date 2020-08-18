@@ -1649,7 +1649,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRTtoRC:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
-            BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRT + (ip->b.u32 * sizeof(Register)));
+            BackendX64Inst::emit_Move64_Indirect(pp, offsetRT + regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
