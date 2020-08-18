@@ -463,42 +463,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Stack_In_XMM0_F32(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x07"); // movss xmm0, dword ptr [rdi]
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x47"); // movss xmm0, dword ptr [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x87"); // movss xmm0, dword ptr [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
-    inline void emit_Move_Stack_In_XMM1_F32(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x0f"); // movss xmm1, dword ptr [rdi]
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x4f"); // movss xmm1, dword ptr [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString4("\xf3\x0f\x10\x8f"); // movss xmm1, dword ptr [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     inline void emit_Move_Stack_In_XMM0_F64(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -879,8 +843,6 @@ namespace BackendX64Inst
     inline void emit_Move_Reg_In_R9(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R9D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9D(pp, r * sizeof(Register)); }
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
-    inline void emit_Move_Reg_In_XMM0_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F32(pp, r * sizeof(Register)); }
-    inline void emit_Move_Reg_In_XMM1_F32(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM0_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM0_F64(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM1_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM1_F64(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_XMM2_F64(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_XMM2_F64(pp, r * sizeof(Register)); }

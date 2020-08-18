@@ -1133,7 +1133,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0x80000000);
             BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetFLT);
-            BackendX64Inst::emit_Move_Stack_In_XMM1_F32(pp, offsetFLT);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, offsetFLT, XMM1, RDI);
             concat.addString3("\x0f\x57\xc1"); // xorps xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->a.u32);
             break;
@@ -1852,7 +1852,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicF32x2:
         {
             BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->c.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
