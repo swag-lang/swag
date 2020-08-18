@@ -4,32 +4,32 @@
 
 #define regOffset(__r) __r * sizeof(Register)
 
+enum Reg
+{
+    RAX = 0b0000,
+    RCX = 0b0001,
+    RDX = 0b0010,
+    RBX = 0b0011,
+    RSP = 0b0100,
+    RBP = 0b0101,
+    RSI = 0b0110,
+    RDI = 0b0111,
+    R8  = 0b1000,
+    R9  = 0b1001,
+    R10 = 0b1010,
+    R11 = 0b1011,
+    R12 = 0b1100,
+    R13 = 0b1101,
+    R14 = 0b1110,
+    R15 = 0b1111,
+};
+
 namespace BackendX64Inst
 {
     enum Disp
     {
         DISP8  = 0b01,
         DISP32 = 0b10,
-    };
-
-    enum Reg
-    {
-        RAX = 0b0000,
-        RCX = 0b0001,
-        RDX = 0b0010,
-        RBX = 0b0011,
-        RSP = 0b0100,
-        RBP = 0b0101,
-        RSI = 0b0110,
-        RDI = 0b0111,
-        R8  = 0b1000,
-        R9  = 0b1001,
-        R10 = 0b1010,
-        R11 = 0b1011,
-        R12 = 0b1100,
-        R13 = 0b1101,
-        R14 = 0b1110,
-        R15 = 0b1111,
     };
 
     inline uint8_t modRM(uint8_t mod, uint8_t r, uint8_t m)
@@ -84,6 +84,29 @@ namespace BackendX64Inst
         else
         {
             // mov ax, word ptr [rdi + ????????]
+            pp.concat.addU8(modRM(DISP32, reg, memReg));
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_Move64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x8B);
+        if (stackOffset == 0)
+        {
+            // mov rax, qword ptr [rdi]
+            pp.concat.addU8(modRM(0, reg, memReg));
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            // mov rax, qword ptr [rdi + ??]
+            pp.concat.addU8(modRM(DISP8, reg, memReg));
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            // mov rax, qword ptr [rdi + ????????]
             pp.concat.addU8(modRM(DISP32, reg, memReg));
             pp.concat.addU32(stackOffset);
         }
@@ -946,7 +969,6 @@ namespace BackendX64Inst
     inline void emit_Move_EDX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_EDX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_RDX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_RDX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_EAX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_EAX(pp, r * sizeof(Register)); }
-    inline void emit_Move_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_EBX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_EBX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_RBX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_RBX(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_ECX(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_ECX(pp, r * sizeof(Register)); }
@@ -1025,10 +1047,10 @@ namespace BackendX64Inst
         switch (bits)
         {
         case 8:
-            BackendX64Inst::emit_Move8_Indirect(pp, regOffset(ip->a.u32), BackendX64Inst::RAX, BackendX64Inst::RDI);
+            BackendX64Inst::emit_Move8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case 16:
-            BackendX64Inst::emit_Move16_Indirect(pp, regOffset(ip->b.u32), BackendX64Inst::RAX, BackendX64Inst::RDI);
+            BackendX64Inst::emit_Move16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             break;
         case 32:
             BackendX64Inst::emit_Move_Reg_In_EAX(pp, ip->a.u32);
@@ -1036,7 +1058,7 @@ namespace BackendX64Inst
                 pp.concat.addString1("\x99"); // cdq
             break;
         case 64:
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (op == 0xF7)                       // idiv
                 pp.concat.addString2("\x48\x99"); // cqo
             pp.concat.addU8(0x48);
@@ -1108,7 +1130,7 @@ namespace BackendX64Inst
                 emit_Clear_EDX(pp);
             break;
         case 64:
-            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (isSigned)
                 pp.concat.addString2("\x48\x99"); // cqo
             else
