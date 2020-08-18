@@ -51,6 +51,12 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
     auto node       = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
+
+    // If we are inside a generic structure, do not evaluate the #ast. Will be done during
+    // instantiation of the struct
+    if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+        return true;
+
     auto job        = context->job;
     auto expression = context->node->childs.front();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);

@@ -327,6 +327,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         case AstNodeKind::DocComment:
         case AstNodeKind::Alias:
             continue;
+        case AstNodeKind::IdentifierRef:
+            continue;
         }
 
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -336,7 +338,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->name.c_str())});
 
         TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_STRUCT_REGISTERED))
         {
             typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->name;
@@ -350,6 +352,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfo->fields.push_back(typeParam);
         }
 
+        child->flags |= AST_STRUCT_REGISTERED;
         typeParam           = typeInfo->fields[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
@@ -504,15 +507,15 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             node->ownerScope->addPublicStruct(node);
     }
 
-    if (!(node->flags & AST_FROM_GENERIC))
+    // Need to recompute it if it's from generic
+    if (node->flags & AST_FROM_GENERIC)
     {
-        typeInfo->flags |= structFlags;
+        typeInfo->flags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+        typeInfo->flags &= ~TYPEINFO_STRUCT_HAS_INIT_VALUES;
     }
-    else
-    {
-        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
-        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
-    }
+
+    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
 
     // Register symbol with its type
     node->typeInfo               = typeInfo;

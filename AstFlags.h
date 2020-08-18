@@ -58,6 +58,7 @@ static const uint64_t AST_IS_NAMED                   = 0x00800000'00000000;
 static const uint64_t AST_PENDING_LAMBDA_TYPING      = 0x01000000'00000000;
 static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x02000000'00000000;
 static const uint64_t AST_PURE                       = 0x04000000'00000000;
+static const uint64_t AST_STRUCT_REGISTERED          = 0x08000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
