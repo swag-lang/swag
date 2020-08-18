@@ -1503,7 +1503,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemSet:
             //concat.addStringFormat("memset(r[%u].pointer, r[%u].u8, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_EDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move32_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Move_Reg_In_R8D(pp, ip->c.u32);
             emitCall(pp, "memset");
             break;
@@ -1568,7 +1568,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicRealloc:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Move_Reg_In_EDX(pp, ip->c.u32);
+            BackendX64Inst::emit_Move32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             emitCall(pp, "realloc");
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
@@ -2277,7 +2277,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 concat.addU32(offsetStack);
                 break;
             case 4:
-                BackendX64Inst::emit_Move_Reg_In_EAX(pp, paramsRegisters[i]);
+                BackendX64Inst::emit_Move32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
                 concat.addString3("\x89\x84\x24"); // mov [rsp + ????????], eax
                 concat.addU32(offsetStack);
                 break;
