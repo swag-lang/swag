@@ -2762,7 +2762,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
 
             VectorNative<llvm::Value*> fctParams;
-            getCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
+            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
 
             //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
             {
@@ -2807,7 +2807,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
-            getCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
+            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
 
             pushRAParams.clear();
@@ -3045,7 +3045,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-void BackendLLVM::getCallParameters(const BuildParameters&      buildParameters,
+void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParameters,
                                     llvm::AllocaInst*           allocR,
                                     llvm::AllocaInst*           allocRR,
                                     VectorNative<llvm::Value*>& params,
