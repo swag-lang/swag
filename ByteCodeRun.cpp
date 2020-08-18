@@ -534,13 +534,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::CopyRCtoRR:
-    case ByteCodeOp::CopyRCtoRRCall:
+    case ByteCodeOp::CopyRCtoRT:
     {
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
     case ByteCodeOp::CopyRRtoRC:
-    case ByteCodeOp::CopyRRtoRCCall:
+    case ByteCodeOp::CopyRTtoRC:
     {
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;

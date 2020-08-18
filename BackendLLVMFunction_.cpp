@@ -2597,6 +2597,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, func->getArg(ip->a.u32));
             break;
         }
+        case ByteCodeOp::CopyRCtoRT:
+        {
+            // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
+            auto r0 = GEP_I32(allocRR, ip->a.u32);
+            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, r0);
+            break;
+        }
         case ByteCodeOp::CopyRRtoRC:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
@@ -2605,15 +2613,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::CopyRCtoRRCall:
-        {
-            // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
-            auto r0 = GEP_I32(allocRR, ip->a.u32);
-            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(r1, r0);
-            break;
-        }
-        case ByteCodeOp::CopyRRtoRCCall:
+
+        case ByteCodeOp::CopyRTtoRC:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
             auto r0 = GEP_I32(allocR, ip->a.u32);
@@ -3046,11 +3047,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 }
 
 void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParameters,
-                                    llvm::AllocaInst*           allocR,
-                                    llvm::AllocaInst*           allocRR,
-                                    VectorNative<llvm::Value*>& params,
-                                    TypeInfoFuncAttr*           typeFuncBC,
-                                    VectorNative<uint32_t>&     pushRAParams)
+                                         llvm::AllocaInst*           allocR,
+                                         llvm::AllocaInst*           allocRR,
+                                         VectorNative<llvm::Value*>& params,
+                                         TypeInfoFuncAttr*           typeFuncBC,
+                                         VectorNative<uint32_t>&     pushRAParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

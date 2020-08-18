@@ -80,17 +80,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // (should be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 4 * sizeof(uint64_t));
 
-    // Save RR to stack
-    auto returnType = typeFunc->returnType;
-    if (returnType->kind == TypeInfoKind::Slice ||
-        returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String) ||
-        returnType->flags & TYPEINFO_RETURN_BY_COPY)
-    {
-        BackendX64Inst::emit_Move_RCX_At_Stack(pp, offsetRR);
-        BackendX64Inst::emit_Move_RDX_At_Stack(pp, offsetRR + 8);
-    }
-
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
     uint32_t               isVariadic = 0;
@@ -1596,31 +1585,40 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRCtoRR:
-        case ByteCodeOp::CopyRCtoRRCall:
-            //registersRR[ip->a.u32] = registersRC[ip->b.u32];
+            //CONCAT_STR_2(concat, "*rr", ip->a.u32, " = r[", ip->b.u32, "];");
+            concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            concat.addU32(16 + sizeStack + ip->a.u32 * sizeof(Register));
+            BackendX64Inst::emit_Move_Reg_In_RBX(pp, ip->b.u32);
+            concat.addString3("\x48\x89\x18"); // mov [rax], rbx
+
+            break;
+
+        case ByteCodeOp::CopyRCtoRT:
+            // CONCAT_STR_2(concat, "rt[", ip->a.u32, "] = r[", ip->b.u32, "];");
             SWAG_ASSERT(ip->a.u32 <= 1); // Can only return 2 registers
-            if (ip->a.u32 == 0)
-                BackendX64Inst::emit_Move_Reg_In_RCX(pp, ip->b.u32);
-            else
-                BackendX64Inst::emit_Move_Reg_In_RDX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_Reg_In_RAX(pp, ip->b.u32);
+            BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetRT + (ip->a.u32 * sizeof(Register)));
             break;
 
         case ByteCodeOp::CopyRRtoRC:
             SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
-            if (ip->b.u32 == 0)
-                BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRR);
-            else
-                BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRR + 8);
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
+            concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            concat.addU32(16 + sizeStack + ip->b.u32 * sizeof(Register));
+            BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
-        case ByteCodeOp::CopyRRtoRCCall:
-            //registersRC[ip->a.u32] = registersRR[ip->b.u32];
-            SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
-            if (ip->b.u32 == 0)
-                BackendX64Inst::emit_Move_RCX_At_Reg(pp, ip->a.u32);
-            else
-                BackendX64Inst::emit_Move_RDX_At_Reg(pp, ip->a.u32);
+        case ByteCodeOp::CopyRTtoRC:
+            //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = rt[", ip->b.u32, "];");
+            BackendX64Inst::emit_Move_Stack_In_RAX(pp, offsetRT + (ip->b.u32 * sizeof(Register)));
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
         case ByteCodeOp::CopySP:
@@ -1665,7 +1663,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
-            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
+            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register) + typeFunc->numReturnRegisters() * sizeof(Register));
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::MakeStackPointerParam:
@@ -1674,7 +1672,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
-            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register));
+            concat.addU32(16 + sizeStack + ip->c.u32 * sizeof(Register) + typeFunc->numReturnRegisters() * sizeof(Register));
             BackendX64Inst::emit_Move_RAX_At_Reg(pp, ip->a.u32);
             break;
 
@@ -1714,10 +1712,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, pushRAParams);
+            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             concat.addString2("\xff\xd0"); // call rax
-
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
+
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             auto jumpToAfterAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
@@ -1741,8 +1739,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
-            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, pushRAParams);
+            if (funcBC->name.find("variadic2") != -1)
+                funcBC = funcBC;
+            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             emitCall(pp, funcBC->callName());
 
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
@@ -2007,7 +2006,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat = pp.concat;
 
@@ -2029,6 +2028,15 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
     {
         concat.addString2("\xff\xb7"); // push [rdi + ????????]
         concat.addU32(pushRAParams[iParam] * sizeof(Register));
+        sizeStack += 8;
+    }
+
+    // Return registers are push first
+    for (int j = (int) typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
+    {
+        concat.addString3("\x4c\x8d\xb7"); // lea r14, [rdi + ????????]
+        concat.addU32(stackRR + (j * sizeof(Register)));
+        concat.addString2("\x41\x56"); // push r14
         sizeStack += 8;
     }
 

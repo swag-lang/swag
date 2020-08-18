@@ -16,8 +16,16 @@ func toto()->Point
 //#[swag.printbc]
 #test
 {
-	x := &toto
-	c := x()
-	@assert(c.x == 10)
-	@assert(c.y == 20)
+    {
+        x := &toto
+        c := x()
+        @assert(c.x == 10)
+        @assert(c.y == 20)
+    }
+
+    {
+        c := toto()
+        @assert(c.x == 10)
+        @assert(c.y == 20)
+    }
 }

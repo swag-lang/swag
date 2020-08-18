@@ -101,7 +101,7 @@ func aaa(ptr: *s64)
 //#[swag.printbc]
 #test
 {
-    if false
+    if true
     {
         {
             ptr := @getcontext()

@@ -499,7 +499,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         node->resultRegisterRC = reserveRegisterRC(context);
         auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u32            = node->fctCallStorageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRCtoRRCall, 0, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
     }
 
@@ -745,7 +745,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
             for (int idx = 0; idx < numRegs; idx++)
-                emitInstruction(context, ByteCodeOp::CopyRRtoRCCall, node->resultRegisterRC[idx], idx);
+                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[idx], idx);
         }
     }
 

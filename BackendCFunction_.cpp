@@ -1548,10 +1548,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::CopyRRtoRC:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "]=*rr", ip->b.u32, ";");
             break;
-        case ByteCodeOp::CopyRCtoRRCall:
+        case ByteCodeOp::CopyRCtoRT:
             CONCAT_STR_2(concat, "rt[", ip->a.u32, "]=r[", ip->b.u32, "];");
             break;
-        case ByteCodeOp::CopyRRtoRCCall:
+        case ByteCodeOp::CopyRTtoRC:
             CONCAT_STR_2(concat, "r[", ip->a.u32, "]=rt[", ip->b.u32, "];");
             break;
         case ByteCodeOp::GetFromStackParam64:
