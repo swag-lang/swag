@@ -115,6 +115,29 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Move64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x8B);
+        if (stackOffset == 0)
+        {
+            // mov rax, qword ptr [rdi]
+            pp.concat.addU8(modRM(0, reg, memReg));
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            // mov rax, qword ptr [rdi + ??]
+            pp.concat.addU8(modRM(DISP8, reg, memReg));
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            // mov rax, qword ptr [rdi + ????????]
+            pp.concat.addU8(modRM(DISP32, reg, memReg));
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
     inline void emit_MoveF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         pp.concat.addU8(0xF3);
@@ -134,29 +157,6 @@ namespace BackendX64Inst
         else
         {
             // movss xmm0, dword ptr [rdi + ????????]
-            pp.concat.addU8(modRM(DISP32, reg, memReg));
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
-    inline void emit_Move64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        pp.concat.addU8(0x48);
-        pp.concat.addU8(0x8B);
-        if (stackOffset == 0)
-        {
-            // mov rax, qword ptr [rdi]
-            pp.concat.addU8(modRM(0, reg, memReg));
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            // mov rax, qword ptr [rdi + ??]
-            pp.concat.addU8(modRM(DISP8, reg, memReg));
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            // mov rax, qword ptr [rdi + ????????]
             pp.concat.addU8(modRM(DISP32, reg, memReg));
             pp.concat.addU32(stackOffset);
         }
