@@ -692,5 +692,15 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstCompilerAst>();
     newNode->copyFrom(context, this);
     newNode->embeddedKind = embeddedKind;
+
+    if (newNode->childs.size() > 1)
+    {
+        newNode->childs[0]->flags &= ~AST_NO_SEMANTIC;
+        newNode->childs[1]->flags &= ~AST_NO_SEMANTIC;
+        auto func = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        func->flags &= ~AST_NO_SEMANTIC;
+        func->content->flags &= ~AST_NO_SEMANTIC;
+    }
+
     return newNode;
 }

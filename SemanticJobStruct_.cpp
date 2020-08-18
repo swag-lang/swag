@@ -328,6 +328,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         case AstNodeKind::Alias:
             continue;
         case AstNodeKind::IdentifierRef:
+        case AstNodeKind::FuncDecl:
             continue;
         }
 

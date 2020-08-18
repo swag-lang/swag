@@ -48,18 +48,33 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::preResolveCompilerAstExpression(SemanticContext* context)
+{
+    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
+
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        // If we are inside a generic structure, do not evaluate the #ast. Will be done during
+        // instantiation of the struct
+        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+            node->flags |= AST_IS_GENERIC;
+    }
+
+    if (node->flags & AST_IS_GENERIC)
+        node->childs.back()->flags |= AST_NO_SEMANTIC;
+
+    return true;
+}
+
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
-    auto node       = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
-
-    // If we are inside a generic structure, do not evaluate the #ast. Will be done during
-    // instantiation of the struct
-    if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
+    if (node->flags & AST_IS_GENERIC)
         return true;
 
     auto job        = context->job;
-    auto expression = context->node->childs.front();
-    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    auto expression = context->node->childs.back();
+    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
     SWAG_CHECK(executeNode(context, expression, true));

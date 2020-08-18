@@ -363,7 +363,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     }
 
     // Count number of methods to resolve
-    if (currentScope->kind == ScopeKind::Struct)
+    if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
     {
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
         auto typeParam        = g_Allocator.alloc<TypeInfoParam>();

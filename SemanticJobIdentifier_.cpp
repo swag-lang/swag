@@ -1080,7 +1080,10 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
-        if (oneSymbol->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
+        if (oneSymbol->kind != SymbolKind::Function &&
+            oneSymbol->kind != SymbolKind::GenericType &&
+            oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
+            !identifierRef->startScope)
         {
             isValid = false;
             for (auto& dep : scopeHierarchyVars)
@@ -1411,6 +1414,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     AstNode* ufcsParam = nullptr;
     bool     canDoUfcs = false;
+    SWAG_ASSERT(symbol);
     if (symbol->kind == SymbolKind::Function)
         canDoUfcs = true;
     if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)

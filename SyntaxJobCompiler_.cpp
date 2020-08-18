@@ -169,20 +169,21 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
-    node->embeddedKind = kind;
-    node->semanticFct  = SemanticJob::resolveCompilerAstExpression;
+    node->embeddedKind      = kind;
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerAstExpression;
+    node->semanticFct       = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
-        SWAG_CHECK(doFuncDecl(sourceFile->astRoot, &funcNode, TokenId::CompilerAst));
-        auto idRef                 = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
-        idRef->token.startLocation = node->token.startLocation;
-        idRef->token.endLocation   = node->token.endLocation;
-        auto identifier            = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
-        identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        idRef->token.startLocation      = node->token.startLocation;
+        idRef->token.endLocation        = node->token.endLocation;
+        auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;
     }
@@ -245,7 +246,7 @@ bool SyntaxJob::doCompilerModule()
     SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
     moduleSpecified = true;
 
-    auto newModule       = g_Workspace.createOrUseModule(token.text);
+    auto newModule             = g_Workspace.createOrUseModule(token.text);
     newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);

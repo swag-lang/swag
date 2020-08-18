@@ -214,7 +214,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
     }
 
-    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC && !(node->attributeFlags & ATTRIBUTE_AST_FUNC))
     {
         SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
         SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
@@ -477,7 +477,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // Register method
-    if (!(symbolFlags & OVERLOAD_INCOMPLETE) && funcNode->ownerStructScope && !(funcNode->flags & AST_FROM_GENERIC) && (funcNode->ownerScope->kind == ScopeKind::Struct))
+    if (!(symbolFlags & OVERLOAD_INCOMPLETE) &&
+        funcNode->ownerStructScope &&
+        funcNode->parent->kind != AstNodeKind::CompilerAst &&
+        !(funcNode->flags & AST_FROM_GENERIC) && (funcNode->ownerScope->kind == ScopeKind::Struct))
     {
         SWAG_ASSERT(funcNode->methodParam);
         funcNode->methodParam->attributes = typeFunc->attributes;
@@ -498,9 +501,9 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node            = context->node;
-    auto child           = node->childs.front();
-    node->typeInfo       = child->typeInfo;
+    auto node      = context->node;
+    auto child     = node->childs.front();
+    node->typeInfo = child->typeInfo;
 
     // Force const if necessary
     // func([.., ...]) must be const
@@ -516,7 +519,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if(node->flags & AST_VALUE_COMPUTED)
+    if (node->flags & AST_VALUE_COMPUTED)
         node->castedTypeInfo = child->castedTypeInfo;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
