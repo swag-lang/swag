@@ -896,7 +896,7 @@ namespace BackendX64Inst
         switch (bits)
         {
         case 32:
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             pp.concat.addU8(0xF3);
             break;
         case 64:

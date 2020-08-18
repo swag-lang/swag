@@ -213,13 +213,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CastF32S32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = (__s32_t) r[", ip->a.u32, "].f32;");
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             concat.addString4("\xf3\x0f\x2c\xc0"); // cvttss2si eax, xmm0
             BackendX64Inst::emit_Move_EAX_At_Reg(pp, ip->a.u32);
             break;
         case ByteCodeOp::CastF32F64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = (__f64_t) r[", ip->a.u32, "].f32;");
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             concat.addString4("\xf3\x0f\x5a\xc0"); // cvtss2sd xmm0, xmm0
             BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->a.u32);
             break;
@@ -618,7 +618,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) *= r[", ip->b.u32, "].f32;");
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_DeRef_RAX_In_XMM0_F32(pp);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf3\x0f\x59\xc1"); // mulss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
             break;
@@ -798,7 +798,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) /= r[", ip->b.u32, "].f32;");
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_DeRef_RAX_In_XMM0_F32(pp);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf3\x0f\x5e\xc1"); // divss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
             break;
@@ -839,7 +839,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].f32;");
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_DeRef_RAX_In_XMM0_F32(pp);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf3\x0f\x5c\xc1"); // subss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
             break;
@@ -887,7 +887,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__f32_t**)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].f32;");
             BackendX64Inst::emit_Move64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_DeRef_RAX_In_XMM0_F32(pp);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf3\x0f\x58\xc1"); // addss xmm0, xmm1
             BackendX64Inst::emit_Move_XMM0_At_RAX_F32(pp);
             break;
@@ -968,8 +968,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOpGreaterF32:
             //concat.addStringFormat("r[%u].b = r[%u].f32 > r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F32(pp);
             concat.addString3("\x0f\x97\xc0"); // seta al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
@@ -1017,8 +1017,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOpLowerF32:
             //concat.addStringFormat("r[%u].b = r[%u].f32 < r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F32(pp);
             concat.addString3("\x0f\x97\xc0"); // seta al
             BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
@@ -1130,7 +1130,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegF32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->a.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0x80000000);
             BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetFLT);
             BackendX64Inst::emit_Move_Stack_In_XMM1_F32(pp, offsetFLT);
@@ -1851,7 +1851,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicF32x2:
         {
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
             BackendX64Inst::emit_Move_Reg_In_XMM1_F32(pp, ip->c.u32);
             switch ((TokenId) ip->d.u32)
             {
@@ -1878,7 +1878,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            BackendX64Inst::emit_Move_Reg_In_XMM0_F32(pp, ip->b.u32);
+            BackendX64Inst::emit_MoveF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
