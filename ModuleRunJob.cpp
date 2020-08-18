@@ -4,6 +4,7 @@
 #include "Os.h"
 #include "DiagnosticInfos.h"
 #include "Module.h"
+#include "Timer.h"
 
 thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
@@ -13,6 +14,10 @@ JobResult ModuleRunJob::execute()
     path += OS::getOutputFileExtension(BackendOutputType::Binary);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
+
+    // Timing...
+    Timer timer(g_Stats.runTestTime);
+    timer.start();
 
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
@@ -34,5 +39,6 @@ JobResult ModuleRunJob::execute()
     g_Workspace.numErrors += numErrors;
     module->numErrors += numErrors;
 
+    timer.stop();
     return JobResult::ReleaseJob;
 }
