@@ -65,6 +65,7 @@ struct X64PerThread
     map<uint32_t, int32_t>     labels;
     DataSegment                stringSegment;
     VectorNative<LabelToSolve> labelsToSolve;
+    Utf8                       directives;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -144,6 +145,7 @@ struct BackendX64 : public Backend
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str);
 
+    bool emitDirectives(const BuildParameters& buildParameters);
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);

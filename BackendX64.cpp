@@ -122,6 +122,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         // Tables
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
+        emitDirectives(buildParameters);
 
         if (!pp.relocTableTextSection.table.empty())
         {
@@ -380,6 +381,21 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
     }
 
+    return true;
+}
+
+bool BackendX64::emitDirectives(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    if (pp.directives.empty())
+        return true;
+    *pp.patchDROffset = concat.totalCount();
+    *pp.patchDRCount  = pp.directives.length();
+    concat.addString(pp.directives);
     return true;
 }
 
