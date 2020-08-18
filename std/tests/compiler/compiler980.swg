@@ -15,4 +15,3 @@ const nullPoint: Point(10, 50)
 {
 	nullPoint.x = 10
 }
-

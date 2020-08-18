@@ -592,7 +592,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Be sure array without a size have an initializer, to deduce the size
+    // Be sure that an array without a size has an initializer, to deduce its size
     if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
@@ -654,6 +654,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
 
         node->typeInfo = node->type->typeInfo;
+
+        // A slice initialized with an expression list must be immutable
+        if (leftConcreteType->kind == TypeInfoKind::Slice && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
+        {
+            SWAG_VERIFY(leftConcreteType->isConst(), context->report({ node->type, "'slice' must de declared as immutable with 'const'" }));
+        }
     }
     else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {

@@ -1,5 +1,3 @@
-
-
 struct Point
 {
 	x: s32 = 666

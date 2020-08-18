@@ -105,6 +105,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);
 
+        concat.addU8(0x90); // NOP TO REMOVE
+
         switch (ip->op)
         {
         case ByteCodeOp::End:

@@ -15,7 +15,7 @@ func toto(x: string)
     let buffer: const [..] u8 = @[65, 66, 67]
     toto(cast(string) buffer)
 
-    let buffer1: [..] u8 = @[65, 66, 67]
+    let buffer1: const [..] u8 = @[65, 66, 67]
     toto(cast(string) buffer1)
 
     let buffer2: [] u8 = @[65, 66, 67]

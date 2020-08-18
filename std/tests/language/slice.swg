@@ -8,7 +8,7 @@
 
     // You can initialize a slice like an array
     {
-        var a: [..] u32 = @[10, 20, 30, 40, 50]
+        var a: const [..] u32 = @[10, 20, 30, 40, 50]
         @assert(@countof(a) == 5)
         @assert(a[0] == 10)
         @assert(a[4] == 50)
