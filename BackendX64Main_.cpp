@@ -130,6 +130,8 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    pp.directives += format("/EXPORT:%s ", thisInit.c_str());
+
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     // __process_infos = *processInfos;
@@ -163,6 +165,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
     getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    pp.directives += format("/EXPORT:%s ", thisDrop.c_str());
+
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     // Call to #drop functions

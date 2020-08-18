@@ -202,13 +202,12 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
 
 bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    auto& pp      = perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
 
     // Function type
     llvm::FunctionType* funcType = nullptr;

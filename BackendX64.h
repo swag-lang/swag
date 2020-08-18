@@ -139,6 +139,7 @@ struct BackendX64 : public Backend
     BackendFunctionBodyJob* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
+    bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);

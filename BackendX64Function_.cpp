@@ -28,6 +28,26 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
     return it->second;
 }
 
+bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    node->computeFullNameForeign(true);
+
+    // Symbol
+    getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
+
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
+    concat.addU8(0xC3); // ret
+
+    return true;
+}
+
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
