@@ -101,12 +101,12 @@ func aaa(ptr: *s64)
 //#[swag.printbc]
 #test
 {
-    {
-        ptr := @getcontext()
-    }
-
     if false
     {
+        {
+            ptr := @getcontext()
+        }
+
         @print(cast(s64) @countof(@args()))
         @print(@args()[0])
         @print("\n")

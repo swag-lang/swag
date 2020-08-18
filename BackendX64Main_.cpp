@@ -14,7 +14,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     //swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, (void**)argv);
     // Must be done first ! We need to have rcx (argc) and rdx (argv) valid
@@ -116,7 +116,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     BackendX64Inst::emit_Clear_RAX(pp);
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     concat.addU8(0xC3); // ret
     return true;
 }
@@ -130,7 +130,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     // __process_infos = *processInfos;
     concat.addString3("\x48\x89\xca"); // mov rdx, rcx
@@ -148,7 +148,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, bc->callName());
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     concat.addU8(0xC3); // ret
 
     return true;
@@ -163,7 +163,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
     getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)
@@ -174,7 +174,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         emitCall(pp, bc->callName());
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 32);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     concat.addU8(0xC3); // ret
 
     return true;

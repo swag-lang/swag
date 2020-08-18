@@ -827,12 +827,15 @@ namespace BackendX64Inst
     inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
     {
         if (val == 0)
+        {
             emit_Clear_R8(pp);
+        }
         else if (val <= 0x7FFFFFFF)
         {
             pp.concat.addString3("\x49\xc7\xc0"); // mov r8, ????????
             pp.concat.addU32((uint32_t) val);
         }
+        else
         {
             pp.concat.addString2("\x49\xb8"); // mov r8, ????????_????????
             pp.concat.addU64(val);
@@ -842,12 +845,15 @@ namespace BackendX64Inst
     inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
     {
         if (val == 0)
+        {
             emit_Clear_RAX(pp);
+        }
         else if (val <= 0x7FFFFFFF)
         {
             pp.concat.addString3("\x48\xc7\xc0"); // mov rax, ????????
             pp.concat.addU32((uint32_t) val);
         }
+        else
         {
             pp.concat.addString2("\x48\xb8"); // mov rax, ????????_????????
             pp.concat.addU64(val);
@@ -857,12 +863,15 @@ namespace BackendX64Inst
     inline void emit_Move_Cst64_In_RBX(X64PerThread& pp, uint64_t val)
     {
         if (val == 0)
+        {
             emit_Clear_RBX(pp);
+        }
         else if (val <= 0x7FFFFFFF)
         {
             pp.concat.addString3("\x48\xc7\xc3"); // mov rbx, ????????
             pp.concat.addU32((uint32_t) val);
         }
+        else
         {
             pp.concat.addString2("\x48\xbb"); // mov rbx, ????????_????????
             pp.concat.addU64(val);
@@ -872,12 +881,15 @@ namespace BackendX64Inst
     inline void emit_Move_Cst64_In_RCX(X64PerThread& pp, uint64_t val)
     {
         if (val == 0)
+        {
             emit_Clear_RCX(pp);
+        }
         else if (val <= 0x7FFFFFFF)
         {
             pp.concat.addString3("\x48\xc7\xc1"); // mov rcx, ????????
             pp.concat.addU32((uint32_t) val);
         }
+        else
         {
             pp.concat.addString2("\x48\xb9"); // mov rcx, ????????_????????
             pp.concat.addU64(val);

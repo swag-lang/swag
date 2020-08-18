@@ -71,8 +71,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     concat.addU8(0x57); // push rdi
-    while ((sizeStack % 16) != 8)
-        sizeStack++; // Align to 16 bytes (we have a push just before, that's already 8 bytes)
+    while (sizeStack % 16)
+        sizeStack++; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
     concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
@@ -105,7 +105,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);
 
-        concat.addU8(0x90); // NOP TO REMOVE
+        //concat.addU8(0x90); // NOP TO REMOVE
 
         switch (ip->op)
         {
@@ -1683,7 +1683,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
             auto funcBC = (ByteCode*) ip->b.pointer;
             SWAG_ASSERT(funcBC);
-            BackendX64Inst::emit_Move_Cst64_In_RAX(pp, 0);
+            concat.addString2("\x48\xb8"); // mov rax, ????????_????????
+            concat.addU64(0);
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
