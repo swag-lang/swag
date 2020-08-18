@@ -6,22 +6,26 @@
 
 enum Reg
 {
-    RAX = 0b0000,
-    RCX = 0b0001,
-    RDX = 0b0010,
-    RBX = 0b0011,
-    RSP = 0b0100,
-    RBP = 0b0101,
-    RSI = 0b0110,
-    RDI = 0b0111,
-    R8  = 0b1000,
-    R9  = 0b1001,
-    R10 = 0b1010,
-    R11 = 0b1011,
-    R12 = 0b1100,
-    R13 = 0b1101,
-    R14 = 0b1110,
-    R15 = 0b1111,
+    RAX  = 0b0000,
+    XMM0 = 0b0000,
+    RCX  = 0b0001,
+    XMM1 = 0b0001,
+    RDX  = 0b0010,
+    XMM2 = 0b0010,
+    RBX  = 0b0011,
+    XMM3 = 0b0011,
+    RSP  = 0b0100,
+    RBP  = 0b0101,
+    RSI  = 0b0110,
+    RDI  = 0b0111,
+    R8   = 0b1000,
+    R9   = 0b1001,
+    R10  = 0b1010,
+    R11  = 0b1011,
+    R12  = 0b1100,
+    R13  = 0b1101,
+    R14  = 0b1110,
+    R15  = 0b1111,
 };
 
 namespace BackendX64Inst
@@ -106,6 +110,30 @@ namespace BackendX64Inst
         else
         {
             // mov eax, dword ptr [rdi + ????????]
+            pp.concat.addU8(modRM(DISP32, reg, memReg));
+            pp.concat.addU32(stackOffset);
+        }
+    }
+
+    inline void emit_MoveF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        pp.concat.addU8(0xF3);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x10);
+        if (stackOffset == 0)
+        {
+            // movss xmm0, dword ptr [rdi]
+            pp.concat.addU8(modRM(0, reg, memReg));
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            // movss xmm0, dword ptr [rdi + ??]
+            pp.concat.addU8(modRM(DISP8, reg, memReg));
+            pp.concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            // movss xmm0, dword ptr [rdi + ????????]
             pp.concat.addU8(modRM(DISP32, reg, memReg));
             pp.concat.addU32(stackOffset);
         }
