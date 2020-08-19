@@ -35,7 +35,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "std_toto8")
+    if (bc->name == "std_toto9")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -175,6 +175,14 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         case 2:
             concat.addString3("\x49\x89\x00");     // mov [r8], rax
             concat.addString4("\x49\x89\x58\x08"); // mov [r8 + 8], rbx
+            break;
+        default:
+            offset *= sizeof(Register);
+            offset += sizeStack;
+            offset += 16;
+            BackendX64Inst::emit_Move64_Indirect(pp, offset, RCX, RDI);
+            concat.addString3("\x48\x89\x01");     // mov [rcx], rax
+            concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
             break;
         }
     }
@@ -2334,12 +2342,8 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String))
-    {
-        paramsRegisters.push_back(offsetRT);
-        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
-    }
-    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+        returnType->isNative(NativeTypeKind::String) ||
+        (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         paramsRegisters.push_back(offsetRT);
         paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
@@ -2364,6 +2368,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             case 2:
                 concat.addString3("\x4c\x8d\x87"); // lea r8, [rdi + ????????]
                 concat.addU32(r);
+                break;
             case 3:
                 concat.addString3("\x4c\x8d\x8f"); // lea r9, [rdi + ????????]
                 concat.addU32(r);
@@ -2417,7 +2422,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         // Need to reserve additional room in the stack for all other parameters
         // (remember: we already have reserved 4 x uint64_t for the first four parameters)
         for (int i = 4; i < (int) paramsRegisters.size(); i++)
-            exceededStack += paramsTypes[i]->sizeOf;
+            exceededStack += 8;
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
 
         // Then we store all the parameters on the stack, with an offset of 4 * sizeof(uint64_t)
@@ -2426,31 +2431,40 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         uint32_t offsetStack = 4 * sizeof(uint64_t);
         for (int i = 4; i < (int) paramsRegisters.size(); i++)
         {
-            auto sizeOf = paramsTypes[i]->sizeOf;
-            switch (sizeOf)
+            if (paramsTypes[i] == g_TypeMgr.typeInfoUndefined)
             {
-            case 1:
-                BackendX64Inst::emit_Move8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                concat.addString3("\x88\x84\x24"); // mov [rsp + ????????], al
-                concat.addU32(offsetStack);
-                break;
-            case 2:
-                BackendX64Inst::emit_Move16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                concat.addString4("\x66\x89\x84\x24"); // mov [rsp + ????????], ax
-                concat.addU32(offsetStack);
-                break;
-            case 4:
-                BackendX64Inst::emit_Move32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                concat.addString3("\x89\x84\x24"); // mov [rsp + ????????], eax
-                concat.addU32(offsetStack);
-                break;
-            case 8:
-                BackendX64Inst::emit_Move64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                BackendX64Inst::emit_Lea_Stack_In_RAX(pp, paramsRegisters[i]);
                 concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
                 concat.addU32(offsetStack);
-                break;
-            default:
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
+            }
+            else
+            {
+                auto sizeOf = paramsTypes[i]->sizeOf;
+                switch (sizeOf)
+                {
+                case 1:
+                    BackendX64Inst::emit_Move8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    concat.addString3("\x88\x84\x24"); // mov [rsp + ????????], al
+                    concat.addU32(offsetStack);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_Move16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    concat.addString4("\x66\x89\x84\x24"); // mov [rsp + ????????], ax
+                    concat.addU32(offsetStack);
+                    break;
+                case 4:
+                    BackendX64Inst::emit_Move32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    concat.addString3("\x89\x84\x24"); // mov [rsp + ????????], eax
+                    concat.addU32(offsetStack);
+                    break;
+                case 8:
+                    BackendX64Inst::emit_Move64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
+                    concat.addU32(offsetStack);
+                    break;
+                default:
+                    return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
+                }
             }
 
             // Push is always aligned

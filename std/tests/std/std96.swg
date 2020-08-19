@@ -3,10 +3,11 @@
 //#[swag.printbc]
 #test
 {
-    @print(cast(s64) std.toto8(1,2,3,4,5,6))
+    @print(std.toto9(1,2,3,4,5,6))
 
     if true
     {
+        @print(cast(s64) std.toto8(1,2,3,4,5,6))
         @print(std.toto7(1,2,3,4))
         @print(std.toto6("666"))
         @print(std.toto5(666))

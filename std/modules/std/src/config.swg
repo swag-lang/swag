@@ -55,6 +55,10 @@ namespace std
         @print(" -- ");
         return x
     }
+    public func toto9(a, b, c, d, e, f: s32)->string
+    {
+        return "toto"
+    }
 
     //////////////// TO REMOVE ////////////////
 
