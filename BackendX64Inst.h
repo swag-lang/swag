@@ -90,9 +90,9 @@ namespace BackendX64Inst
 
     inline void emit_Move64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
         pp.concat.addU8(0x8B);
-        emit_ModRM(pp, stackOffset, reg, memReg);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), (memReg & 0b111));
     }
 
     inline void emit_MoveF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
@@ -358,24 +358,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Stack_In_R8(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString3("\x4c\x8b\x07"); // mov r8, qword ptr [rdi]
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString3("\x4c\x8b\x47"); // mov r8, qword ptr [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString3("\x4c\x8b\x87"); // mov r8, qword ptr [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     inline void emit_Move_Stack_In_R9D(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -390,24 +372,6 @@ namespace BackendX64Inst
         else
         {
             pp.concat.addString3("\x44\x8b\x8f"); // mov r9d, dword ptr [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
-    inline void emit_Move_Stack_In_R9(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString3("\x4c\x8b\x0f"); // mov r9, qword ptr [rdi]
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString3("\x4c\x8b\x4f"); // mov r9, qword ptr [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString3("\x4c\x8b\x8f"); // mov r9, qword ptr [rdi + ????????]
             pp.concat.addU32(stackOffset);
         }
     }
@@ -716,8 +680,6 @@ namespace BackendX64Inst
     inline void emit_Move_EDX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_EDX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_RDX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_RDX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R8D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8D(pp, r * sizeof(Register)); }
-    inline void emit_Move_Reg_In_R8(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R8(pp, r * sizeof(Register)); }
-    inline void emit_Move_Reg_In_R9(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9(pp, r * sizeof(Register)); }
     inline void emit_Move_Reg_In_R9D(X64PerThread& pp, uint32_t r) { emit_Move_Stack_In_R9D(pp, r * sizeof(Register)); }
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }

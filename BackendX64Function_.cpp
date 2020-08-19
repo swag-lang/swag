@@ -2389,10 +2389,10 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 BackendX64Inst::emit_Move64_Indirect(pp, regOffset(r), RDX, RDI);
                 break;
             case 2:
-                BackendX64Inst::emit_Move_Reg_In_R8(pp, r);
+                BackendX64Inst::emit_Move64_Indirect(pp, regOffset(r), R8, RDI);
                 break;
             case 3:
-                BackendX64Inst::emit_Move_Reg_In_R9(pp, r);
+                BackendX64Inst::emit_Move64_Indirect(pp, regOffset(r), R9, RDI);
                 break;
             }
         }
