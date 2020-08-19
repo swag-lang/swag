@@ -306,11 +306,6 @@ namespace BackendX64Inst
         }
     }
 
-    // clang-format off
-    inline void emit_Move_XMM0_At_RAX_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x11\x00"); } // movss dword ptr [rax], xmm0
-    inline void emit_Move_XMM0_At_RAX_F64(X64PerThread& pp) { pp.concat.addString4("\xf2\x0f\x11\x00"); } // movsd qword ptr [rax], xmm0
-    // clang-format on
-
     inline void emit_Move_Cst8_At_RAX(X64PerThread& pp, uint32_t offset, uint8_t val)
     {
         if (offset == 0)
