@@ -513,12 +513,8 @@ namespace BackendX64Inst
     }
 
     // clang-format off
-    inline void emit_Move_BL_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x88\x18"); } // mov [rax], bl
     inline void emit_Move_BX_At_RAX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x18"); } // mov [rax], bx
-    inline void emit_Move_EBX_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x89\x18"); } // mov [rax], ebx
-    inline void emit_Move_AL_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x88\x03"); } // mov [rbx], al
     inline void emit_Move_AX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x03"); } // mov [rbx], ax
-    inline void emit_Move_DL_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x88\x13"); } // mov [rbx], dl
     inline void emit_Move_DX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x13"); } // mov [rbx], dx
 
     inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
