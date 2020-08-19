@@ -74,6 +74,7 @@ JobResult ModuleBuildJob::execute()
                 if (!depModule)
                 {
                     depModule = g_Workspace.getModuleByName(dep.first);
+                    depModule->allocateBackend();
                     if (!depModule)
                     {
                         module->error(format("unknown module dependency '%s'", dep.first.c_str()));

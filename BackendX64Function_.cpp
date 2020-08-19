@@ -42,9 +42,50 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
 
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+
+    // Compute number of registers
+    auto n = typeFunc->numReturnRegisters();
+    for (auto param : typeFunc->parameters)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        n += typeParam->numRegisters();
+    }
+
+    auto numParams = typeFunc->parameters.size();
+
+    // Affect registers
+    int idx = typeFunc->numReturnRegisters();
+
+    // Return by copy
+    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    if (returnByCopy)
+    {
+        //CONCAT_FIXED_STR(concat, "rr0.p=result;\n");
+    }
+
+    // Variadic must be pushed first
+    if (numParams)
+    {
+        auto param     = typeFunc->parameters.back();
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            //concat.addStringFormat("rr%d.p=(__u8_t*)%s;\n", idx, param->namedParam.c_str());
+            //concat.addStringFormat("rr%d.u32=%s_count;\n", idx + 1, param->namedParam.c_str());
+            idx += 2;
+            numParams--;
+        }
+    }
+
+    for (int i = 0; i < numParams; i++)
+    {
+        auto param = typeFunc->parameters[i];
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+    }
+
+
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     concat.addU8(0xC3); // ret
-
     return true;
 }
 

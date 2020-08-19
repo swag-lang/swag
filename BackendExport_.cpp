@@ -459,7 +459,8 @@ void Backend::setupExportFile()
 bool Backend::generateExportFile()
 {
     exportFileGenerated = true;
-    bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + module->name + ".generated.swg";
+    bufferSwg.name      = module->name + ".generated.swg";
+    bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + bufferSwg.name;
     if (!mustCompile)
         return true;
 

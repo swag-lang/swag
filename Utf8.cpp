@@ -31,6 +31,7 @@ Utf8::Utf8()
     buffer    = padding;
     count     = 0;
     allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
 }
 
 Utf8::~Utf8()
@@ -46,6 +47,7 @@ void Utf8::reset()
     buffer    = padding;
     count     = 0;
     allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
 }
 
 Utf8::Utf8(const char* from)
@@ -53,6 +55,7 @@ Utf8::Utf8(const char* from)
     buffer    = padding;
     count     = 0;
     allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
 
     int len = from ? (int) strlen(from) : 0;
     if (!len)
@@ -68,6 +71,7 @@ Utf8::Utf8(const string& from)
     buffer    = padding;
     count     = 0;
     allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
 
     int len = (int) from.length();
     if (!len)
@@ -83,6 +87,7 @@ Utf8::Utf8(const Utf8& from)
     buffer    = padding;
     count     = 0;
     allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
 
     int len = from.count;
     if (!len)

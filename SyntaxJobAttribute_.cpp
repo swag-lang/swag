@@ -212,17 +212,20 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
     attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->computeScopedName(), embeddedCode);
 
     // Construct a #test per embedded code to be able to run examples
-    SyntaxJob embeddedJob;
-    for (auto& oneCode : embeddedCode)
+    if (g_CommandLine.runDocTests)
     {
-        Utf8 code;
-        code = "#test {\n";
-        code += format("using %s\n", attrBlockNode->ownerScope->getFullName().c_str());
-        code += oneCode;
-        code += "}\n";
+        SyntaxJob embeddedJob;
+        for (auto& oneCode : embeddedCode)
+        {
+            Utf8 code;
+            code = "#test {\n";
+            code += format("using %s\n", attrBlockNode->ownerScope->getFullName().c_str());
+            code += oneCode;
+            code += "}\n";
 
-        SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, attrBlockNode, CompilerAstKind::TopLevelInstruction));
-        //sourceFile->astRoot->childs.back()->attributeFlags |= ATTRIBUTE_PRINTBYTECODE;
+            SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, attrBlockNode, CompilerAstKind::TopLevelInstruction));
+            //sourceFile->astRoot->childs.back()->attributeFlags |= ATTRIBUTE_PRINTBYTECODE;
+        }
     }
 
     return true;

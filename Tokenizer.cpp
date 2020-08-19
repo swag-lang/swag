@@ -259,7 +259,7 @@ bool Tokenizer::getToken(Token& token)
                 }
 
                 // This is a '///' doc comment
-                if (nc == '/' && (g_CommandLine.generateDoc || g_CommandLine.test))
+                if (nc == '/' && (g_CommandLine.generateDoc || (g_CommandLine.test && g_CommandLine.runDocTests)))
                 {
                     getChar();
                     doDocComment(token);

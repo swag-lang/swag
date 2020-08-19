@@ -22,8 +22,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
 
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "test mode (compile the ./tests folder and run all #test)");
-    addArg("--run-test-bytecode", "-rtb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
-    addArg("--run-test-native", "-rtn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
+    addArg("--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
+    addArg("--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
+    addArg("--test-doc", "-td", CommandLineType::Bool, &cmdLine->runDocTests, nullptr, "run documentation code");
 
     addArg("--clean", nullptr, CommandLineType::Bool, &cmdLine->clean, nullptr, "clean the cache and target folder");
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");

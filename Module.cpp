@@ -77,6 +77,7 @@ bool Module::setup(const Utf8& moduleName)
 
 void Module::allocateBackend()
 {
+    scoped_lock lk(mutexFile);
     if (backend)
         return;
 

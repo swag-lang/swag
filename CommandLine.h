@@ -40,6 +40,7 @@ struct CommandLine
     bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
+    bool runDocTests      = true;
     bool devMode          = false;
 
     // Language options
