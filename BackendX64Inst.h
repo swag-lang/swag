@@ -522,7 +522,6 @@ namespace BackendX64Inst
     inline void emit_Move_DL_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x88\x13"); } // mov [rbx], dl
     inline void emit_Move_DX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x13"); } // mov [rbx], dx
     inline void emit_Move_EDX_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x89\x13"); } // mov [rbx], edx
-    inline void emit_Move_RDX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x89\x13"); } // mov [rbx], rdx
 
     inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
     inline void emit_Cmp_AX_With_BX(X64PerThread& pp) { pp.concat.addString3("\x66\x39\xd8"); } // cmp ax, bx
