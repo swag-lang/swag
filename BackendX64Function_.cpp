@@ -35,7 +35,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "std_toto4")
+    if (bc->name == "std_toto6")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -164,9 +164,19 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         BackendX64Inst::emit_Move64_Indirect(pp, regOffset(1), RBX, RDI);
 
         // Get the pointer to store the result
-        // TODO
-        concat.addString3("\x48\x89\x01");     // mov [rcx], rax
-        concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
+        SWAG_ASSERT(pushRAParams.size() >= 2);
+        int offset = (int) pushRAParams.size() - 2;
+        switch (offset)
+        {
+        case 0:
+            concat.addString3("\x48\x89\x01");     // mov [rcx], rax
+            concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
+            break;
+        case 2:
+            concat.addString3("\x49\x89\x00");     // mov [r8], rax
+            concat.addString4("\x49\x89\x58\x08"); // mov [r8 + 8], rbx
+            break;
+        }
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
@@ -2327,8 +2337,6 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         returnType->isNative(NativeTypeKind::String))
     {
         paramsRegisters.push_back(offsetRT);
-        paramsRegisters.push_back(offsetRT + 8);
-        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
         paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
@@ -2351,6 +2359,13 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 break;
             case 1:
                 concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
+                concat.addU32(r);
+                break;
+            case 2:
+                concat.addString3("\x4c\x8d\x87"); // lea r8, [rdi + ????????]
+                concat.addU32(r);
+            case 3:
+                concat.addString3("\x4c\x8d\x8f"); // lea r9, [rdi + ????????]
                 concat.addU32(r);
                 break;
             default:

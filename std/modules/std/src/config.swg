@@ -35,6 +35,14 @@ namespace std
     {
         return "toto"
     }
+    public func toto5(x: s64)->s64
+    {
+        return x
+    }
+    public func toto6(x: string)->string
+    {
+        return x
+    }
 
     //////////////// TO REMOVE ////////////////
 
