@@ -283,11 +283,6 @@ namespace BackendX64Inst
         }
     }
 
-    // clang-format off
-    inline void emit_DeRef_RAX_In_XMM0_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x10\x00"); } // movss xmm0, dword ptr [rax]
-    inline void emit_DeRef_RAX_In_XMM0_F64(X64PerThread& pp) { pp.concat.addString4("\xf2\x0f\x10\x00"); } // movsd xmm0, qword ptr [rax]
-    // clang-format on
-
     inline void emit_Lea_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
