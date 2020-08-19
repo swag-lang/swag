@@ -48,6 +48,8 @@ struct Module
     bool internalError(const Utf8& msg);
     bool internalError(AstNode* node, Token& token, const Utf8& msg);
     bool mustEmitSafety(AstNode* node);
+    bool mustGenerateTestExe();
+    bool canGenerateLegit();
 
     string                    path;
     fs::path                  documentPath;

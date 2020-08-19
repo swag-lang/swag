@@ -1,12 +1,11 @@
 #import "std"
-
+/*
 //#[swag.printbc]
 #test
 {
-    @print(std.toto9(1,2,3,4,5,6))
-
-    if true
+    if false
     {
+        @print(std.toto9(1,2,3,4,5,6))
         @print(cast(s64) std.toto8(1,2,3,4,5,6))
         @print(std.toto7(1,2,3,4))
         @print(std.toto6("666"))
@@ -17,4 +16,4 @@
         std.toto1(64)
         std.toto2(1,2,3,4)
     }
-}
+}*/

@@ -454,20 +454,17 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (g_CommandLine.test && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0) && g_CommandLine.runBackendTests)
+        if (module->mustGenerateTestExe())
         {
-            if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
-            {
-                auto job                            = g_Pool_moduleRunJob.alloc();
-                job->module                         = module;
-                job->dependentJob                   = this;
-                job->buildParameters                = module->buildParameters;
-                job->buildParameters.outputFileName = module->name;
-                job->buildParameters.compileType    = BackendCompileType::Test;
-                if (!module->fromTestsFolder)
-                    job->buildParameters.postFix = ".test";
-                g_ThreadMgr.addJob(job);
-            }
+            auto job                            = g_Pool_moduleRunJob.alloc();
+            job->module                         = module;
+            job->dependentJob                   = this;
+            job->buildParameters                = module->buildParameters;
+            job->buildParameters.outputFileName = module->name;
+            job->buildParameters.compileType    = BackendCompileType::Test;
+            if (!module->fromTestsFolder)
+                job->buildParameters.postFix = ".test";
+            g_ThreadMgr.addJob(job);
         }
 
         // Run command

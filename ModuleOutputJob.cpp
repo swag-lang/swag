@@ -82,25 +82,21 @@ JobResult ModuleOutputJob::execute()
             if (g_CommandLine.backendType != BackendType::C)
             {
                 // Precompile a specific version, to test it
-                if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0) && !g_CommandLine.script)
+                if (module->mustGenerateTestExe())
                 {
-                    // Do not generate test on dependencies if we want to compile only one specific module
-                    if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
-                    {
-                        auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
-                        preCompileJob->module                          = module;
-                        preCompileJob->dependentJob                    = this;
-                        preCompileJob->buildParameters                 = module->buildParameters;
-                        preCompileJob->buildParameters.precompileIndex = i;
-                        preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
-                        if (!module->fromTestsFolder)
-                            preCompileJob->buildParameters.postFix = ".test";
-                        jobsToAdd.push_back(preCompileJob);
-                    }
+                    auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
+                    preCompileJob->module                          = module;
+                    preCompileJob->dependentJob                    = this;
+                    preCompileJob->buildParameters                 = module->buildParameters;
+                    preCompileJob->buildParameters.precompileIndex = i;
+                    preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
+                    if (!module->fromTestsFolder)
+                        preCompileJob->buildParameters.postFix = ".test";
+                    jobsToAdd.push_back(preCompileJob);
                 }
 
                 // Precompile the normal version
-                if (!module->fromTestsFolder && g_CommandLine.outputLegit)
+                if (module->canGenerateLegit())
                 {
                     auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
                     preCompileJob->module                          = module;
@@ -147,27 +143,23 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::Done;
 
         // Compile a specific version, to test it
-        if (g_CommandLine.test && g_CommandLine.outputTest && (module->fromTestsFolder || module->byteCodeTestFunc.size() > 0) && !g_CommandLine.script)
+        if (module->mustGenerateTestExe())
         {
-            // Do not generate test on dependencies if we want to compile only one specific module
-            if (!g_Workspace.filteredModule || g_Workspace.filteredModule == module)
-            {
-                auto compileJob                            = g_Pool_moduleGenOutputJob.alloc();
-                compileJob->module                         = module;
-                compileJob->dependentJob                   = this;
-                compileJob->buildParameters                = module->buildParameters;
-                compileJob->buildParameters.outputFileName = module->name;
-                compileJob->buildParameters.outputType     = BackendOutputType::Binary;
-                compileJob->buildParameters.compileType    = BackendCompileType::Test;
-                if (!module->fromTestsFolder)
-                    compileJob->buildParameters.postFix = ".test";
-                jobsToAdd.push_back(compileJob);
-            }
+            auto compileJob                            = g_Pool_moduleGenOutputJob.alloc();
+            compileJob->module                         = module;
+            compileJob->dependentJob                   = this;
+            compileJob->buildParameters                = module->buildParameters;
+            compileJob->buildParameters.outputFileName = module->name;
+            compileJob->buildParameters.outputType     = BackendOutputType::Binary;
+            compileJob->buildParameters.compileType    = BackendCompileType::Test;
+            if (!module->fromTestsFolder)
+                compileJob->buildParameters.postFix = ".test";
+            jobsToAdd.push_back(compileJob);
         }
 
         // Compile the official normal version, except if it comes from the test folder (because
         // there's no official version for the test folder, only a test executable)
-        if (!module->fromTestsFolder && g_CommandLine.outputLegit)
+        if (module->canGenerateLegit())
         {
             auto compileJob                         = g_Pool_moduleGenOutputJob.alloc();
             compileJob->module                      = module;

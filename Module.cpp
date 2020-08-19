@@ -12,6 +12,49 @@
 #include "BackendX64.h"
 #include "ThreadManager.h"
 
+bool Module::mustGenerateTestExe()
+{
+    if (!g_CommandLine.test)
+        return false;
+    if (!g_CommandLine.outputTest)
+        return false;
+    if (byteCodeTestFunc.empty())
+        return false;
+    if ((g_CommandLine.script))
+        return false;
+    if (g_Workspace.filteredModule && g_Workspace.filteredModule != this)
+        return false;
+
+    return true;
+}
+
+bool Module::canGenerateLegit()
+{
+    // Normal module
+    if (!fromTestsFolder)
+    {
+        if (!g_CommandLine.outputLegit)
+            return false;
+    }
+
+    // The test folder could generate normal modules (libraries) too
+    else
+    {
+        if (!g_CommandLine.test)
+            return false;
+        if (!g_CommandLine.outputTest)
+            return false;
+        if (!byteCodeTestFunc.empty())
+            return false;
+        if (g_CommandLine.script)
+            return false;
+//        if (g_Workspace.filteredModule && g_Workspace.filteredModule != this)
+//            return false;
+    }
+
+    return true;
+}
+
 bool Module::setup(const Utf8& moduleName)
 {
     unique_lock lk(mutexFile);
