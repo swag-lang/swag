@@ -327,27 +327,13 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Cst16_At_RAX(X64PerThread& pp, uint32_t offset, uint16_t val)
+    inline void emit_Store16_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
     {
-        if (offset == 0)
-        {
-            pp.concat.addString3("\x66\xc7\x00"); // mov word ptr [rax], ????
-            pp.concat.addU16(val);
-        }
-        else if (offset <= 0x7F)
-        {
-            pp.concat.addString3("\x66\xc7\x40"); // mov word ptr [rax + ??], ????
-            pp.concat.addU8((uint8_t) offset);
-            pp.concat.addU16(val);
-        }
-        else
-        {
-            pp.concat.addString3("\x66\xc7\x80"); // mov word ptr [rax + ????????], ????
-            pp.concat.addU32(offset);
-            pp.concat.addU16(val);
-        }
-
-    } // namespace BackendX64Inst
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t) val);
+    }
 
     inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
     {
