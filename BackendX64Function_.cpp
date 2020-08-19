@@ -1618,9 +1618,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyVBtoRA32:
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
-            concat.addString2("\xC7\x87"); // mov [rdi + ?] = ????????
-            concat.addU32(ip->a.u32 * sizeof(Register));
-            concat.addU32(ip->b.u32);
+            BackendX64Inst::emit_Store32_Immediate(pp, regOffset(ip->a.u32), ip->b.u32, RDI);
             break;
         case ByteCodeOp::CopyVBtoRA64:
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
