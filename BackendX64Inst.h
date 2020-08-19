@@ -516,7 +516,6 @@ namespace BackendX64Inst
     inline void emit_Move_BL_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x88\x18"); } // mov [rax], bl
     inline void emit_Move_BX_At_RAX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x18"); } // mov [rax], bx
     inline void emit_Move_EBX_At_RAX(X64PerThread& pp) { pp.concat.addString2("\x89\x18"); } // mov [rax], ebx
-    inline void emit_Move_RBX_At_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x89\x18"); } // mov [rax], rbx
     inline void emit_Move_AL_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x88\x03"); } // mov [rbx], al
     inline void emit_Move_AX_At_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x89\x03"); } // mov [rbx], ax
     inline void emit_Move_EAX_At_RBX(X64PerThread& pp) { pp.concat.addString2("\x89\x03"); } // mov [rbx], eax

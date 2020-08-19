@@ -282,9 +282,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::ClearRA:
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, 0);
-            BackendX64Inst::emit_Move_RBX_At_RAX(pp);
+            BackendX64Inst::emit_Clear_RAX(pp);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::CopyRBtoRA:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = r[", ip->b.u32, "];");
@@ -1546,7 +1545,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Add_Cst32_To_RAX(pp, ip->c.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            BackendX64Inst::emit_Move_RBX_At_RAX(pp);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RBX, RAX);
             break;
 
         case ByteCodeOp::MakeStackPointer:
