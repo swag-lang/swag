@@ -1745,9 +1745,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::IntrinsicPrintF64:
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetFLT, RAX, RDI);
-            BackendX64Inst::emit_LoadF64_Indirect(pp, offsetFLT, XMM0, RDI);
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             emitCall(pp, "swag_runtime_print_f64");
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:
