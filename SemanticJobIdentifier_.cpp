@@ -1727,13 +1727,10 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         here.push_back(startScope);
     }
 
-    // Can be null because of g_CommandLine.addRuntimeModule to false
-    if (g_Workspace.bootstrapModule)
-    {
-        auto runTime = g_Workspace.bootstrapModule->scopeRoot;
-        scopes.insert(runTime);
-        here.push_back(runTime);
-    }
+    SWAG_ASSERT(g_Workspace.bootstrapModule);
+    auto runTime = g_Workspace.bootstrapModule->scopeRoot;
+    scopes.insert(runTime);
+    here.push_back(runTime);
 
     for (int i = 0; i < here.size(); i++)
     {

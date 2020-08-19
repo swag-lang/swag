@@ -1,6 +1,6 @@
-#import "tests_compiler_foreign"
+#import "tests.compiler.foreign"
 
-using tests_compiler_foreign
+using tcf
 #test
 {
     @print(toto9(1,2,3,4,5,6))

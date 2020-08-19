@@ -48,8 +48,6 @@ bool Module::canGenerateLegit()
             return false;
         if (g_CommandLine.script)
             return false;
-//        if (g_Workspace.filteredModule && g_Workspace.filteredModule != this)
-//            return false;
     }
 
     return true;
