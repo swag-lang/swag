@@ -3,30 +3,30 @@ namespace tcf
 {
     public func toto()
     {
-        @print("toto")
+
     }
 
     public func toto1(x: s64)
     {
-        @print(x)
+        @assert(x == 64)
     }
 
     public func toto2(x, y, z, w: s64)
     {
-        @print(x)
-        @print(y)
-        @print(z)
-        @print(w)
+        @assert(x == 1)
+        @assert(y == 2)
+        @assert(z == 3)
+        @assert(w == 4)
     }
 
     public func toto3(a, b, c, d, e, f: s8)
     {
-        @print(cast(s64) a)
-        @print(cast(s64) b)
-        @print(cast(s64) c)
-        @print(cast(s64) d)
-        @print(cast(s64) e)
-        @print(cast(s64) f)
+        @assert(a == 1)
+        @assert(b == 2)
+        @assert(c == 3)
+        @assert(d == 4)
+        @assert(e == 5)
+        @assert(f == 6)
     }
 
     public func toto4()->string
@@ -52,9 +52,7 @@ namespace tcf
     public func toto8(a, b, c, d, e, f: s32)->s32
     {
         x := a+b+c+d+e+f
-        @print("theorie: ");
-        @print(cast(s64) x)
-        @print(" -- ");
+        @assert(x == 21)
         return x
     }
 
