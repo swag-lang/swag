@@ -349,53 +349,20 @@ namespace BackendX64Inst
 
     } // namespace BackendX64Inst
 
-    inline void emit_Move_Cst32_At_RAX(X64PerThread& pp, uint32_t offset, uint32_t val)
+    inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
     {
-        if (offset == 0)
-        {
-            pp.concat.addString2("\xc7\x00"); // mov dword ptr [rax], ????????
-            pp.concat.addU32(val);
-        }
-        else if (offset <= 0x7F)
-        {
-            pp.concat.addString2("\xc7\x40"); // mov dword ptr [rax + ??], ????????
-            pp.concat.addU8((uint8_t) offset);
-            pp.concat.addU32(val);
-        }
-        else
-        {
-            pp.concat.addString2("\xc7\x80"); // mov dword ptr [rax + ????????], ????????
-            pp.concat.addU32(offset);
-            pp.concat.addU32(val);
-        }
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t) val);
     }
 
-    inline void emit_Move_Cst64_At_RAX(X64PerThread& pp, uint32_t offset, uint64_t val)
+    inline void emit_Store64_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
     {
-        if (val <= 0x7FFFFFFF)
-        {
-            if (offset == 0)
-            {
-                pp.concat.addString3("\x48\xc7\x00"); // mov qword ptr [rax], ????????
-                pp.concat.addU32((uint32_t) val);
-            }
-            else if (offset <= 0x7F)
-            {
-                pp.concat.addString3("\x48\xc7\x40"); // mov qword ptr [rax + ??], ????????
-                pp.concat.addU8((uint8_t) offset);
-                pp.concat.addU32((uint32_t) val);
-            }
-            else
-            {
-                pp.concat.addString3("\x48\xc7\x80"); // mov qword ptr [rax + ????????], ????????
-                pp.concat.addU32(offset);
-                pp.concat.addU32((uint32_t) val);
-            }
-        }
-        else
-        {
-            SWAG_ASSERT(false);
-        }
+        SWAG_ASSERT(val <= 0x7FFFFFFF);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t)val);
     }
 
     // clang-format off
