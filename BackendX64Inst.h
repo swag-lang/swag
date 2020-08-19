@@ -273,24 +273,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_EDX_At_Stack(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString2("\x89\x17"); // mov dword ptr [rdi], edx
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString2("\x89\x57"); // mov dword ptr [rdi + ??], edx
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString2("\x89\x97"); // mov dword ptr [rdi + ????????], edx
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     inline void emit_Move_XMM0_At_Stack_F32(X64PerThread& pp, uint32_t stackOffset)
     {
         if (stackOffset == 0)
@@ -589,7 +571,6 @@ namespace BackendX64Inst
     // clang-format off
     inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r) {emit_Move_AL_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Move_AX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_AX_At_Stack(pp, r * sizeof(Register)); }
-    inline void emit_Move_EDX_At_Reg(X64PerThread& pp, uint32_t r) { emit_Move_EDX_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
@@ -779,7 +760,7 @@ namespace BackendX64Inst
             switch (bits)
             {
             case 32:
-                BackendX64Inst::emit_Move_EDX_At_Reg(pp, ip->c.u32);
+                BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
                 break;
             case 64:
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
