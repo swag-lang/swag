@@ -1,4 +1,4 @@
-#module compiler1635
+#module "compiler1635"
 #unittest error
 
 readonly struct A

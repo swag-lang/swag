@@ -1,4 +1,4 @@
-#module compiler85
+#module "compiler85"
 #unittest pass syntax;
 
 var a: A.myType;

@@ -1,4 +1,4 @@
-#module compiler421
+#module "compiler421"
 
 
 //#[swag.printbc]

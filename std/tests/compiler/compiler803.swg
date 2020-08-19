@@ -1,4 +1,4 @@
-#module compiler803
+#module "compiler803"
 
 struct Point
 {

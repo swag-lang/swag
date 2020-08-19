@@ -1,4 +1,4 @@
-#module compiler1102
+#module "compiler1102"
 
 //#[swag.flags]
 enum Days

@@ -1,4 +1,4 @@
-#module compiler232
+#module "compiler232"
 using swag
 
 #unittest error;

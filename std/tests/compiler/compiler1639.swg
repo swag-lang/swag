@@ -1,4 +1,4 @@
-#module compiler1639
+#module "compiler1639"
 #unittest error
 
 internal struct A

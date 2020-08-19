@@ -1,4 +1,4 @@
-#module compiler663
+#module "compiler663"
 
 
 enum OT

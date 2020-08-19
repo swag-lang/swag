@@ -1,4 +1,4 @@
-#module compiler434
+#module "compiler434"
 
 
 #unittest error

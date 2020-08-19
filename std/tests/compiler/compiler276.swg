@@ -1,5 +1,5 @@
 /*
-#module compiler276
+#module "compiler276"
 #unittest pass syntax;
 
 #version(toto)

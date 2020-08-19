@@ -1,4 +1,4 @@
-#module compiler274
+#module "compiler274"
 #unittest error;
 
 attr toto(v: string) -> func;

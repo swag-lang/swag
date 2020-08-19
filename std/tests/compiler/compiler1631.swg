@@ -1,4 +1,4 @@
-#module compiler1631
+#module "compiler1631"
 #unittest error
 
 struct A

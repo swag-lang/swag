@@ -1,4 +1,4 @@
-#module compiler1646
+#module "compiler1646"
 #unittest error
 
 //#[swag.printbc]

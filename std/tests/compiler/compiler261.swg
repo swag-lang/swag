@@ -1,4 +1,4 @@
-#module compiler261
+#module "compiler261"
 ;
 using swag;
 

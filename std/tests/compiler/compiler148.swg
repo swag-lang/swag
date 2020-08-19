@@ -1,4 +1,4 @@
-#module compiler148
+#module "compiler148"
 ;
 
 func main (){}

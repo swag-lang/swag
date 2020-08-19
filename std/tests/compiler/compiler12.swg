@@ -1,4 +1,4 @@
-#module compiler12
+#module "compiler12"
 #unittest error;
 0xFFFFFFFF_FFFFFFFF_F
 	

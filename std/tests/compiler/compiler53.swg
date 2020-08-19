@@ -1,4 +1,4 @@
-﻿#module compiler53
+﻿#module "compiler53"
 ;
 
 var a: u16 = 256;

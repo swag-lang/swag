@@ -1,4 +1,4 @@
-#module compiler5
+#module "compiler5"
 #unittest error;
 #toto error
 	

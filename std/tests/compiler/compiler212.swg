@@ -1,4 +1,4 @@
-#module compiler212
+#module "compiler212"
 #unittest pass syntax;
 
 #run

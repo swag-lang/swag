@@ -1,4 +1,4 @@
-﻿#module compiler18
+﻿#module "compiler18"
 #unittest pass lexer;
 #unittest error;
 È

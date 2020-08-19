@@ -1,4 +1,4 @@
-#module compiler154
+#module "compiler154"
 #unittest error
 
 func main () -> bool

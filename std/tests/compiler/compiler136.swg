@@ -1,4 +1,4 @@
-#module compiler136
+#module "compiler136"
 #unittest pass syntax;
 
 #unittest error;

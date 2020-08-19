@@ -1,4 +1,4 @@
-#module compiler6
+#module "compiler6"
 #unittest error
 #unittest error
 aaaa	¤

@@ -1,4 +1,4 @@
-/*#module compiler1012
+/*#module "compiler1012"
 
 using swag
 

@@ -1,4 +1,4 @@
-#module compiler1864
+#module "compiler1864"
 #unittest error
 
 public enum RGBRGB

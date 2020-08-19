@@ -1,4 +1,4 @@
-#module compiler1075
+#module "compiler1075"
 
 #unittest error
 #main

@@ -1,4 +1,4 @@
-#module compiler980
+#module "compiler980"
 
 
 struct Point

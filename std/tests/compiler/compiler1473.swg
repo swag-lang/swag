@@ -1,4 +1,4 @@
-#module compiler1473
+#module "compiler1473"
 #unittest error
 
 struct S

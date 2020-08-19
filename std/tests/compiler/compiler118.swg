@@ -1,4 +1,4 @@
-#module compiler118
+#module "compiler118"
 #unittest pass syntax;
 
 func main ()

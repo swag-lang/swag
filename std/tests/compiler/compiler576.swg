@@ -1,4 +1,4 @@
-#module compiler576
+#module "compiler576"
 
 
 struct Point

@@ -1,4 +1,4 @@
-#module compiler1300
+#module "compiler1300"
 #unittest error
 
 #[swag.inline]

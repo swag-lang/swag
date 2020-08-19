@@ -1,4 +1,4 @@
-#module compiler1046
+#module "compiler1046"
 
 struct Point
 {

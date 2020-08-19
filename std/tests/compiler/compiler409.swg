@@ -1,4 +1,4 @@
-#module compiler409
+#module "compiler409"
 
 #[swag.printbc]
 #unittest error;

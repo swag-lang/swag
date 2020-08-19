@@ -1,4 +1,4 @@
-#module compiler1525
+#module "compiler1525"
 #unittest error
 
 func titi()

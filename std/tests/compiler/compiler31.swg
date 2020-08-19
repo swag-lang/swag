@@ -1,3 +1,3 @@
-﻿#module compiler31
+﻿#module "compiler31"
 #unittest error;
 #unittest 

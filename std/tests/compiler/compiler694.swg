@@ -1,4 +1,4 @@
-#module compiler694
+#module "compiler694"
 
 
 struct(T) Point

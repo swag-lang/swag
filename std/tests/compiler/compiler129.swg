@@ -1,4 +1,4 @@
-#module compiler129
+#module "compiler129"
 using swag
 
 #[attributeUsage(AttributeUsage.Field)]

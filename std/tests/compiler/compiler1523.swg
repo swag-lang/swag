@@ -1,4 +1,4 @@
-#module compiler1523
+#module "compiler1523"
 #unittest error
 
 struct X

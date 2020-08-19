@@ -1,4 +1,4 @@
-#module compiler1018
+#module "compiler1018"
 
 using swag
 

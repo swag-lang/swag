@@ -1,4 +1,4 @@
-#module compiler1316
+#module "compiler1316"
 #unittest error
 
 //#[swag.printbc]

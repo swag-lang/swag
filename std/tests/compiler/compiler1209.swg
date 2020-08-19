@@ -1,4 +1,4 @@
-#module compiler1209
+#module "compiler1209"
 #unittest error
 
 public

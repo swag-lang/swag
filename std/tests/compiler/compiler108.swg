@@ -1,4 +1,4 @@
-#module compiler108
+#module "compiler108"
 
 ;
 

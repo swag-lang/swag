@@ -13,11 +13,12 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "#foreignlib invalid string"));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "'#foreignlib' must be followed by a string"));
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_VERIFY(literal->token.literalType->isNative(NativeTypeKind::String), syntaxError(literal->token, "#foreignlib invalid string"));
+    SWAG_VERIFY(literal->token.literalType->isNative(NativeTypeKind::String), syntaxError(literal->token, "'#foreignlib' must be followed by a string"));
+
     return true;
 }
 
@@ -238,25 +239,6 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerModule()
-{
-    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
-    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
-    moduleSpecified = true;
-
-    auto newModule             = g_Workspace.createOrUseModule(token.text);
-    newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
-    sourceFile->module->removeFile(sourceFile);
-    newModule->addFile(sourceFile);
-    currentScope = sourceFile->scopeRoot;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatSemiCol("after module name"));
-    return true;
-}
-
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
@@ -314,6 +296,25 @@ bool SyntaxJob::doCompilerUnitTest()
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatSemiCol("after unittest expression"));
+    return true;
+}
+
+bool SyntaxJob::doCompilerModule()
+{
+    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
+    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#module' must be followed by a string"}));
+
+    moduleSpecified            = true;
+    auto newModule             = g_Workspace.createOrUseModule(token.text);
+    newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
+    sourceFile->module->removeFile(sourceFile);
+    newModule->addFile(sourceFile);
+    currentScope = sourceFile->scopeRoot;
+
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after module name"));
     return true;
 }
 

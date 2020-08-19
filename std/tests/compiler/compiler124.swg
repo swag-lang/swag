@@ -1,4 +1,4 @@
-#module compiler124
+#module "compiler124"
 #unittest pass syntax;
 
 #[toto]

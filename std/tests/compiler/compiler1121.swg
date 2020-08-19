@@ -1,4 +1,4 @@
-#module compiler1121
+#module "compiler1121"
 
 #unittest error
 namespace A.B

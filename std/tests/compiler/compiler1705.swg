@@ -1,4 +1,4 @@
- #module compiler1705
+ #module "compiler1705"
  #unittest error
 
 #test

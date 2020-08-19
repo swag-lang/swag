@@ -1,4 +1,4 @@
-#module compiler1401
+#module "compiler1401"
 #unittest error
 
 public struct A

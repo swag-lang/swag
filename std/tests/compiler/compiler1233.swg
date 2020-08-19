@@ -1,4 +1,4 @@
-#module compiler1233
+#module "compiler1233"
 #unittest error
 
 func toto(x, y: s64)

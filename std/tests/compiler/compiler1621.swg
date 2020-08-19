@@ -1,4 +1,4 @@
-#module compiler1621
+#module "compiler1621"
 #unittest error
 
 #[swag.mixin]

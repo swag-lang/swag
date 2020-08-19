@@ -1,4 +1,4 @@
-#module compiler1358
+#module "compiler1358"
 #unittest error
 
 interface TOTO

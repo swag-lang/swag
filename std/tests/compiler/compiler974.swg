@@ -1,4 +1,4 @@
-#module compiler974
+#module "compiler974"
 
 
 #unittest error

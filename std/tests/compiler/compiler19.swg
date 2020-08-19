@@ -1,4 +1,4 @@
-#module compiler19
+#module "compiler19"
 #unittest pass lexer;
 
 .

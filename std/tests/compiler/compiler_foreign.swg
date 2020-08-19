@@ -1,4 +1,4 @@
-#module tests_compiler_foreign
+#module "tests_compiler_foreign"
 namespace tests_compiler_foreign {
 
 public func toto()

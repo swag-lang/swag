@@ -1,4 +1,4 @@
-#module compiler240
+#module "compiler240"
 ;
 using swag;
 

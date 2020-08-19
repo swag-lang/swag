@@ -1,4 +1,4 @@
-#module compiler993
+#module "compiler993"
 
 
 #unittest error

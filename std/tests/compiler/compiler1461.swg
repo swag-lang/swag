@@ -1,4 +1,4 @@
-#module compiler1461
+#module "compiler1461"
 #unittest pass syntax
 
 struct S

@@ -1,4 +1,4 @@
-#module compiler152
+#module "compiler152"
 ;
 
 #unittest error;

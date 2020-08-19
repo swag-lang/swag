@@ -1,4 +1,4 @@
-#module compiler729
+#module "compiler729"
 
 struct Array
 {

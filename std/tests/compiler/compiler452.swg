@@ -1,4 +1,4 @@
-#module compiler452
+#module "compiler452"
 #unittest error;
 
 //#[swag.printbc]

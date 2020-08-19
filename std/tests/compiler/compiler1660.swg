@@ -1,4 +1,4 @@
-/*#module compiler1660
+/*#module "compiler1660"
 #unittest error
 
 struct TT

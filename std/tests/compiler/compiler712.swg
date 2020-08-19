@@ -1,4 +1,4 @@
-#module compiler712
+#module "compiler712"
 
 //#[swag.printbc]
 #unittest error

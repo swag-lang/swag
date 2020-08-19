@@ -1,4 +1,4 @@
-#module compiler1190
+#module "compiler1190"
 #unittest error
 
 struct Color
