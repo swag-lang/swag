@@ -284,10 +284,6 @@ namespace BackendX64Inst
     }
 
     // clang-format off
-    inline void emit_DeRef8_RBX(X64PerThread& pp) { pp.concat.addString2("\x8a\x1b"); } // mov bl, [rbx]
-    inline void emit_DeRef16_RBX(X64PerThread& pp) { pp.concat.addString3("\x66\x8b\x1b"); } // mov bx, [rbx]
-    inline void emit_DeRef32_RBX(X64PerThread& pp) { pp.concat.addString2("\x8b\x1b"); } // mov ebx, [rbx]
-    inline void emit_DeRef64_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x8B\x1B"); } // mov rbx, [rbx]
     inline void emit_DeRef_RAX_In_XMM0_F32(X64PerThread& pp) { pp.concat.addString4("\xf3\x0f\x10\x00"); } // movss xmm0, dword ptr [rax]
     inline void emit_DeRef_RAX_In_XMM0_F64(X64PerThread& pp) { pp.concat.addString4("\xf2\x0f\x10\x00"); } // movsd xmm0, qword ptr [rax]
     // clang-format on
