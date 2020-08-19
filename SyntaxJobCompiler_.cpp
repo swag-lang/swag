@@ -324,12 +324,12 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
 
     SWAG_CHECK(tokenizer.getToken(token));
-    AstNode* identifier;
-    SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
-    auto moduleName         = identifier->childs.back()->name;
-    node->name              = moduleName;
-    node->token.endLocation = identifier->childs.back()->token.endLocation;
-    SWAG_CHECK(eatSemiCol("after import expression"));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#import' must be followed by a string"}));
+    node->inheritTokenName(token);
+    node->inheritTokenLocation(token);
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after '#import' expression"));
     sourceFile->module->addDependency(node);
+
     return true;
 }

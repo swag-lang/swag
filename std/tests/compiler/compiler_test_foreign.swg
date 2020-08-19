@@ -1,4 +1,4 @@
-#import tests_compiler_foreign
+#import "tests_compiler_foreign"
 
 using tests_compiler_foreign
 #test
