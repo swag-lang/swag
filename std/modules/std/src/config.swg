@@ -6,6 +6,13 @@
 
 namespace std
 {
+    public func toto(a, b, c, d, e, f: f32)
+    {
+        @print(cast(s64) d)
+        @print(cast(s64) e)
+        @print(cast(s64) f)
+    }
+
     // Setup
     #if #arch == "x64"
     {

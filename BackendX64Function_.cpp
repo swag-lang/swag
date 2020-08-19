@@ -35,6 +35,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
+    if (bc->name == "std_toto")
+        bc = bc;
+
     node->computeFullNameForeign(true);
 
     // Symbol
@@ -137,7 +140,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
         else
         {
-            // TODO
+            // Get parameter from the stack (aligned to 8 bytes)
+            auto offset = (i - 4) * (int) sizeof(Register);
+            offset += 4 * sizeof(Register); // The first 4 arguments
+            offset += sizeStack;
+            offset += 16;
+            BackendX64Inst::emit_Move64_Indirect(pp, offset, RAX, RDI);
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, i);
         }
     }
 
@@ -2415,7 +2424,8 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
             }
 
-            offsetStack += sizeOf;
+            // Push is always aligned
+            offsetStack += 8;
         }
     }
 
