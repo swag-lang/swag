@@ -35,7 +35,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "std_toto6")
+    if (bc->name == "std_toto8")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -141,7 +141,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         else
         {
             // Get parameter from the stack (aligned to 8 bytes)
-            auto offset = (i - 4) * (int) sizeof(Register);
+            auto offset = (i - 4 - numReturnRegs) * (int) sizeof(Register);
             offset += 4 * sizeof(Register); // The first 4 arguments
             offset += sizeStack;
             offset += 16;

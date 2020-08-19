@@ -43,6 +43,18 @@ namespace std
     {
         return x
     }
+    public func toto7(a, b, c, d: s64)->s64
+    {
+        return a+b+c+d;
+    }
+    public func toto8(a, b, c, d, e, f: s32)->s32
+    {
+        x := a+b+c+d+e+f
+        @print("theorie: ");
+        @print(cast(s64) x)
+        @print(" -- ");
+        return x
+    }
 
     //////////////// TO REMOVE ////////////////
 
