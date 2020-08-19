@@ -1734,8 +1734,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::IntrinsicPrintString:
             //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
-            concat.addString2("\x8B\x97"); // mov edx, [rdi + ?]
-            concat.addU32(ip->b.u32 * sizeof(Register));
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitCall(pp, "swag_runtime_print_n");
             break;
@@ -1748,8 +1747,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, offsetFLT, RAX, RDI);
-            concat.addString4("\xF2\x0F\x10\x87"); // movsd xmm0, [rdi + ?]
-            concat.addU32(offsetFLT);
+            BackendX64Inst::emit_LoadF64_Indirect(pp, offsetFLT, XMM0, RDI);
             emitCall(pp, "swag_runtime_print_f64");
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:

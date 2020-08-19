@@ -13,4 +13,6 @@ using tcf
     toto()
     toto1(64)
     toto2(1,2,3,4)
+    @print("toto")
+    @print(6.5'f64)
 }
