@@ -149,6 +149,24 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
+    inline void emit_StoreF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0xF3);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x11);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_StoreF64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0xF2);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x11);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
     {
         auto&          concat = pp.concat;
@@ -249,37 +267,6 @@ namespace BackendX64Inst
                 pp.concat.addString2("\x48\x05"); // add rax, ????????
                 pp.concat.addU32(value);
             }
-        }
-    }
-
-    inline void emit_Move_XMM0_At_Stack_F32(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString4("\xf3\x0f\x11\x07"); // movss dword ptr [rdi], xmm0
-        }
-        else
-        {
-            pp.concat.addString4("\xf3\x0f\x11\x87"); // movss dword ptr [rdi + ?], xmm0
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
-    inline void emit_Move_XMM0_At_Stack_F64(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString4("\xf2\x0f\x11\x07"); // movsd qword ptr [rdi], xmm0
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString4("\xf2\x0f\x11\x47"); // movsd qword ptr [rdi + ??], xmm0
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString4("\xf2\x0f\x11\x87"); // movsd qword ptr [rdi + ????????], xmm0
-            pp.concat.addU32(stackOffset);
         }
     }
 
@@ -517,14 +504,8 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
     inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
-    // clang-format on
 
-    //////////////////////////////////////////////////
-
-    // clang-format off
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
-    inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
-    inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
     // clang-format on
 
     //////////////////////////////////////////////////
@@ -568,10 +549,10 @@ namespace BackendX64Inst
         switch (bits)
         {
         case 32:
-            BackendX64Inst::emit_Move_XMM0_At_Reg_F32(pp, ip->c.u32);
+            BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
             break;
         case 64:
-            BackendX64Inst::emit_Move_XMM0_At_Reg_F64(pp, ip->c.u32);
+            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
             break;
         default:
             SWAG_ASSERT(false);
