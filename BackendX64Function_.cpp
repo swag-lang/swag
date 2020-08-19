@@ -35,7 +35,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "std_toto")
+    if (bc->name == "std_toto4")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -49,8 +49,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // First we have return values
     if (typeFunc->returnType->numRegisters() == 2)
     {
-        pushRAParams.push_back(g_TypeMgr.typeInfoU64);
-        pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
     }
     else if (typeFunc->returnType->numRegisters() == 1)
     {
@@ -153,27 +153,20 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     emitCall(pp, bc->callName());
 
     // Return
-    if (typeFunc->numReturnRegisters())
+    if (typeFunc->numReturnRegisters() == 1)
     {
-        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
-        if (returnType->kind == TypeInfoKind::Slice ||
-            returnType->isNative(NativeTypeKind::Any) ||
-            returnType->isNative(NativeTypeKind::String))
-        {
-            //SWAG_ASSERT(false);
-        }
-        else if (returnType->kind == TypeInfoKind::Interface)
-        {
-            //SWAG_ASSERT(false);
-        }
-        else if (returnType->kind == TypeInfoKind::Pointer)
-        {
-            //SWAG_ASSERT(false);
-        }
-        else if (returnType->kind == TypeInfoKind::Native)
-        {
-            BackendX64Inst::emit_Move64_Indirect(pp, 0, RAX, RDI);
-        }
+        BackendX64Inst::emit_Move64_Indirect(pp, 0, RAX, RDI);
+    }
+    else if (typeFunc->numReturnRegisters() == 2)
+    {
+        // Get the results in rax & rbx
+        BackendX64Inst::emit_Move64_Indirect(pp, 0, RAX, RDI);
+        BackendX64Inst::emit_Move64_Indirect(pp, regOffset(1), RBX, RDI);
+
+        // Get the pointer to store the result
+        // TODO
+        concat.addString3("\x48\x89\x01");     // mov [rcx], rax
+        concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
@@ -2333,18 +2326,39 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
     {
-        return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+        paramsRegisters.push_back(offsetRT);
+        paramsRegisters.push_back(offsetRT + 8);
+        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
+        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+        paramsRegisters.push_back(offsetRT);
+        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
     }
 
     for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
     {
         auto type = paramsTypes[i];
         auto r    = paramsRegisters[i];
-        if (type->flags & TYPEINFO_INTEGER)
+        if (type == g_TypeMgr.typeInfoUndefined)
+        {
+            switch (i)
+            {
+            case 0:
+                concat.addString3("\x48\x8d\x8f"); // lea rcx, [rdi + ????????]
+                concat.addU32(r);
+                break;
+            case 1:
+                concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
+                concat.addU32(r);
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+        }
+        else if (type->flags & TYPEINFO_INTEGER)
         {
             switch (i)
             {

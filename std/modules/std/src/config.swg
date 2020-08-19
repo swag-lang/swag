@@ -6,12 +6,37 @@
 
 namespace std
 {
-    public func toto(a, b, c, d, e, f: f32)
+    //////////////// TO REMOVE ////////////////
+    public func toto()
     {
+        @print("toto")
+    }
+    public func toto1(x: s64)
+    {
+        @print(x)
+    }
+    public func toto2(x, y, z, w: s64)
+    {
+        @print(x)
+        @print(y)
+        @print(z)
+        @print(w)
+    }
+    public func toto3(a, b, c, d, e, f: s8)
+    {
+        @print(cast(s64) a)
+        @print(cast(s64) b)
+        @print(cast(s64) c)
         @print(cast(s64) d)
         @print(cast(s64) e)
         @print(cast(s64) f)
     }
+    public func toto4()->string
+    {
+        return "toto"
+    }
+
+    //////////////// TO REMOVE ////////////////
 
     // Setup
     #if #arch == "x64"
