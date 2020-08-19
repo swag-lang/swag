@@ -306,28 +306,14 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Cst8_At_RAX(X64PerThread& pp, uint32_t offset, uint8_t val)
+    inline void emit_Store8_Immediate(X64PerThread& pp, uint32_t offset, uint8_t val, uint8_t reg)
     {
-        if (offset == 0)
-        {
-            pp.concat.addString2("\xc6\x00"); // mov byte ptr [rax], ??
-            pp.concat.addU8(val);
-        }
-        else if (offset <= 0x7F)
-        {
-            pp.concat.addString2("\xc6\x40"); // mov byte ptr [rax + ??], ??
-            pp.concat.addU8((uint8_t) offset);
-            pp.concat.addU8(val);
-        }
-        else
-        {
-            pp.concat.addString2("\xc6\x80"); // mov byte ptr [rax + ????????], ??
-            pp.concat.addU32(offset);
-            pp.concat.addU8(val);
-        }
+        pp.concat.addU8(0xC6);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU8(val);
     }
 
-    inline void emit_Store16_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
+    inline void emit_Store16_Immediate(X64PerThread& pp, uint32_t offset, uint16_t val, uint8_t reg)
     {
         pp.concat.addU8(0x66);
         pp.concat.addU8(0xC7);
@@ -335,7 +321,7 @@ namespace BackendX64Inst
         pp.concat.addU32((uint32_t) val);
     }
 
-    inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
+    inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint32_t val, uint8_t reg)
     {
         pp.concat.addU8(0xC7);
         emit_ModRM(pp, offset, 0, reg);
