@@ -119,6 +119,13 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
+    inline void emit_Store8_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x88);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     inline void emit_Store16_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
@@ -242,24 +249,6 @@ namespace BackendX64Inst
                 pp.concat.addString2("\x48\x05"); // add rax, ????????
                 pp.concat.addU32(value);
             }
-        }
-    }
-
-    inline void emit_Move_AL_At_Stack(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString2("\x88\x07"); // mov byte ptr [rdi], al
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString2("\x88\x47"); // mov byte ptr [rdi + ??], al
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString2("\x88\x87"); // mov byte ptr [rdi + ????????], al
-            pp.concat.addU32(stackOffset);
         }
     }
 
@@ -559,7 +548,6 @@ namespace BackendX64Inst
     //////////////////////////////////////////////////
 
     // clang-format off
-    inline void emit_Move_AL_At_Reg(X64PerThread& pp, uint32_t r) {emit_Move_AL_At_Stack(pp, r * sizeof(Register)); }
     inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F32(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F32(pp, r * sizeof(Register)); }
     inline void emit_Move_XMM0_At_Reg_F64(X64PerThread& pp, uint32_t r) { emit_Move_XMM0_At_Stack_F64(pp, r * sizeof(Register)); }
@@ -676,7 +664,7 @@ namespace BackendX64Inst
         switch (bits)
         {
         case 8:
-            BackendX64Inst::emit_Move_AL_At_Reg(pp, ip->c.u32);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case 16:
             BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
