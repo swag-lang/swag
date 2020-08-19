@@ -41,50 +41,134 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
     pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
 
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    VectorNative<TypeInfo*> pushRAParams;
 
-    // Compute number of registers
-    auto n = typeFunc->numReturnRegisters();
-    for (auto param : typeFunc->parameters)
+    // First we have return values
+    if (typeFunc->returnType->numRegisters() == 2)
     {
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        n += typeParam->numRegisters();
+        pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+        pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+    }
+    else if (typeFunc->returnType->numRegisters() == 1)
+    {
+        pushRAParams.push_back(typeFunc->returnType);
     }
 
-    auto numParams = typeFunc->parameters.size();
-
-    // Affect registers
-    int idx = typeFunc->numReturnRegisters();
-
-    // Return by copy
-    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
-    if (returnByCopy)
-    {
-        //CONCAT_FIXED_STR(concat, "rr0.p=result;\n");
-    }
-
-    // Variadic must be pushed first
+    // Then variadic
+    int numParams = (int) typeFunc->parameters.size();
     if (numParams)
     {
         auto param     = typeFunc->parameters.back();
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            //concat.addStringFormat("rr%d.p=(__u8_t*)%s;\n", idx, param->namedParam.c_str());
-            //concat.addStringFormat("rr%d.u32=%s_count;\n", idx + 1, param->namedParam.c_str());
-            idx += 2;
+            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
             numParams--;
         }
     }
 
-    for (int i = 0; i < numParams; i++)
+    // Then parameters
+    for (int i = numParams - 1; i >= 0; i--)
     {
-        auto param = typeFunc->parameters[i];
+        auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        if (typeParam->numRegisters() == 1)
+            pushRAParams.push_back(typeParam);
+        else
+        {
+            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+            pushRAParams.push_back(g_TypeMgr.typeInfoU64);
+        }
     }
 
+    uint32_t sizeStack = (uint32_t) pushRAParams.size() * sizeof(Register);
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
+    concat.addU8(0x57); // push rdi
+    while (sizeStack % 16)
+        sizeStack++; // Align to 16 bytes
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
+    concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
+
+    // Push all
+    auto numReturnRegs = typeFunc->numReturnRegisters();
+    for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
+    {
+        auto typeParam = pushRAParams[i];
+        if (i < numReturnRegs)
+        {
+            concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+            concat.addU32(regOffset(i));
+            BackendX64Inst::emit_Move_RAX_At_Reg(pp, i);
+        }
+        else if (i < 4 + numReturnRegs)
+        {
+            switch (i - numReturnRegs)
+            {
+            case 0:
+                if (typeParam->flags & TYPEINFO_FLOAT)
+                    concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
+                else
+                    concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
+                concat.addU32(regOffset(i));
+                break;
+            case 1:
+                if (typeParam->flags & TYPEINFO_FLOAT)
+                    concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
+                else
+                    concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
+                concat.addU32(regOffset(i));
+                break;
+            case 2:
+                if (typeParam->flags & TYPEINFO_FLOAT)
+                    concat.addString4("\xf3\x0f\x11\x97"); // movss [rdi + ????????], xmm2
+                else
+                    concat.addString3("\x4c\x89\x87"); // mov [rdi + ????????], r8
+                concat.addU32(regOffset(i));
+                break;
+            case 3:
+                if (typeParam->flags & TYPEINFO_FLOAT)
+                    concat.addString4("\xf3\x0f\x11\x9f"); // movss [rdi + ????????], xmm3
+                else
+                    concat.addString3("\x4c\x89\x8f"); // mov [rdi + ????????], r9
+                concat.addU32(regOffset(i));
+                break;
+            }
+        }
+        else
+        {
+            // TODO
+        }
+    }
+
+    emitCall(pp, bc->callName());
+
+    // Return
+    if (typeFunc->numReturnRegisters())
+    {
+        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
+        if (returnType->kind == TypeInfoKind::Slice ||
+            returnType->isNative(NativeTypeKind::Any) ||
+            returnType->isNative(NativeTypeKind::String))
+        {
+            //SWAG_ASSERT(false);
+        }
+        else if (returnType->kind == TypeInfoKind::Interface)
+        {
+            //SWAG_ASSERT(false);
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
+        {
+            //SWAG_ASSERT(false);
+        }
+        else if (returnType->kind == TypeInfoKind::Native)
+        {
+            BackendX64Inst::emit_Move64_Indirect(pp, 0, RAX, RDI);
+        }
+    }
+
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
+    concat.addU8(0x5F); // pop rdi
     concat.addU8(0xC3); // ret
     return true;
 }
@@ -2156,8 +2240,8 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
         }
         else
         {
-            // rr[0] is rcx, rr[1] is rdx, this is the convention for local calls
-            pp.concat.addString3("\x48\x89\xc1"); // copy rcx, rax
+            //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
+            BackendX64Inst::emit_Move_RAX_At_Stack(pp, offsetRT);
         }
     }
 
