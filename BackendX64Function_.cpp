@@ -1413,7 +1413,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].pointer = *(__u8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString4("\x48\x8b\x50\x08"); // mov rdx, [rax + 8]
-            BackendX64Inst::emit_Move_RDX_At_Reg(pp, ip->b.u32);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_DeRef64_RAX(pp);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
