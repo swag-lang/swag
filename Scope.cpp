@@ -158,3 +158,45 @@ bool Scope::isParentOf(Scope* child)
 
     return false;
 }
+
+void Scope::addChildNoLock(Scope* child)
+{
+    child->indexInParent = (uint32_t) childScopes.size();
+    childScopes.push_back(child);
+    child->parentScope = this;
+}
+
+void Scope::removeChildNoLock(Scope* child)
+{
+    SWAG_ASSERT(childScopes[child->indexInParent] == child);
+    childScopes[child->indexInParent]                = childScopes.back();
+    childScopes[child->indexInParent]->indexInParent = child->indexInParent;
+    child->indexInParent                             = UINT32_MAX;
+}
+
+Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName)
+{
+    unique_lock lk(mutex);
+
+    // Do not create a scope if a scope with the same name already exists
+    if (matchName)
+    {
+        for (auto child : childScopes)
+        {
+            if (child->name.compare(scopeName))
+            {
+                return child;
+            }
+        }
+    }
+
+    auto newScope         = g_Allocator.alloc<Scope>();
+    newScope->kind        = scopeKind;
+    newScope->parentScope = this;
+    newScope->owner       = nodeOwner;
+    newScope->name        = scopeName;
+
+    addChildNoLock(newScope);
+
+    return newScope;
+}

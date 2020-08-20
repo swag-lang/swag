@@ -156,11 +156,7 @@ void Module::addFile(SourceFile* file)
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
     if (file->scopePrivate)
-    {
-        file->scopePrivate->indexInParent = (uint32_t) scopeRoot->childScopes.size();
-        scopeRoot->childScopes.push_back(file->scopePrivate);
-        file->scopePrivate->parentScope = scopeRoot;
-    }
+        scopeRoot->addChildNoLock(file->scopePrivate);
 
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
@@ -190,12 +186,7 @@ void Module::removeFile(SourceFile* file)
     files.pop_back();
     file->module        = nullptr;
     file->indexInModule = UINT32_MAX;
-
-    auto indexInParent = file->scopePrivate->indexInParent;
-    SWAG_ASSERT(scopeRoot->childScopes[indexInParent] == file->scopePrivate);
-    scopeRoot->childScopes[indexInParent]                = scopeRoot->childScopes.back();
-    scopeRoot->childScopes[indexInParent]->indexInParent = indexInParent;
-    file->scopePrivate->indexInParent                    = UINT32_MAX;
+    scopeRoot->removeChildNoLock(file->scopePrivate);
 
     // If the file has compiler functions, then we need to unregister it from the module
     {

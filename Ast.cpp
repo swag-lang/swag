@@ -178,34 +178,13 @@ namespace Ast
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
-            parentScope->mutex.lock();
-
-        // Do not create a scope if a scope with the same name already exists
-        if (matchName)
-        {
-            SWAG_ASSERT(parentScope);
-            for (auto child : parentScope->childScopes)
-            {
-                if (child->name.compare(name))
-                {
-                    parentScope->mutex.unlock();
-                    return child;
-                }
-            }
-        }
+            return parentScope->getOrAddChild(owner, name, kind, matchName);
 
         auto newScope         = g_Allocator.alloc<Scope>();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->owner       = owner;
         newScope->name        = name;
-
-        if (parentScope)
-        {
-            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
-            parentScope->childScopes.push_back(newScope);
-            parentScope->mutex.unlock();
-        }
 
         return newScope;
     }

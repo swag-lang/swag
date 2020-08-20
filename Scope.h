@@ -99,4 +99,8 @@ struct Scope
     uint32_t  indexInParent  = UINT32_MAX;
     uint32_t  flags          = 0;
     uint32_t  startStackSize = 0;
+
+    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName);
+    void   addChildNoLock(Scope* child);
+    void   removeChildNoLock(Scope* child);
 };
