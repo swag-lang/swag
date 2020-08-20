@@ -34,8 +34,8 @@ struct AlternativeScope
     Scope*   scope;
 };
 
-static const uint32_t SCOPE_FLAG_HAS_EXPORTS      = 0x00000001;
-static const uint32_t SCOPE_FLAG_MODULE_FROM_TEST = 0x00000002;
+static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 
 struct Scope
 {
@@ -90,14 +90,7 @@ struct Scope
     set<AstNode*>          doneLeaveScopeDrop;
     RegisterList           registersToRelease;
     DependentJobs          dependentJobs;
-    shared_mutex           lockChilds;
-    mutex                  mutexPublicFunc;
-    mutex                  mutexPublicGenericFunc;
-    mutex                  mutexPublicStruct;
-    mutex                  mutexPublicEnum;
-    mutex                  mutexPublicConst;
-    mutex                  mutexPublicAlias;
-    mutex                  mutexPublicNamespace;
+    shared_mutex           mutex;
 
     AstNode* owner       = nullptr;
     Scope*   parentScope = nullptr;

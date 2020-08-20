@@ -179,7 +179,7 @@ void Module::addFile(SourceFile* file)
 void Module::removeFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
-    scoped_lock lk1(scopeRoot->lockChilds);
+    scoped_lock lk1(scopeRoot->mutex);
 
     SWAG_ASSERT(file->module == this);
 

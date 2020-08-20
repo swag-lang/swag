@@ -69,7 +69,6 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // Create theModule
     auto theModule             = g_Workspace.createOrUseModule(moduleName);
     theModule->fromTestsFolder = parent == "tests";
-    theModule->scopeRoot->flags |= SCOPE_FLAG_MODULE_FROM_TEST;
 
     // Parse all files in the "src" sub folder, except for tests where all the source code
     // is at the root folder

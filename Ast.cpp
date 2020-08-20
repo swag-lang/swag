@@ -178,7 +178,7 @@ namespace Ast
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
-            parentScope->lockChilds.lock();
+            parentScope->mutex.lock();
 
         // Do not create a scope if a scope with the same name already exists
         if (matchName)
@@ -188,7 +188,7 @@ namespace Ast
             {
                 if (child->name.compare(name))
                 {
-                    parentScope->lockChilds.unlock();
+                    parentScope->mutex.unlock();
                     return child;
                 }
             }
@@ -204,7 +204,7 @@ namespace Ast
         {
             newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
-            parentScope->lockChilds.unlock();
+            parentScope->mutex.unlock();
         }
 
         return newScope;

@@ -54,7 +54,7 @@ const char* Scope::getArticleKindName(ScopeKind kind)
 
 const Utf8& Scope::getFullName()
 {
-    unique_lock lk(lockChilds);
+    unique_lock lk(mutex);
     if (!fullname.empty())
         return fullname;
     if (parentScope)
@@ -100,55 +100,55 @@ void Scope::setHasExports()
 
 void Scope::addPublicFunc(AstNode* node)
 {
-    unique_lock lk(mutexPublicFunc);
+    unique_lock lk(mutex);
     publicFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicGenericFunc(AstNode* node)
 {
-    unique_lock lk(mutexPublicGenericFunc);
+    unique_lock lk(mutex);
     publicGenericFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicStruct(AstNode* node)
 {
-    unique_lock lk(mutexPublicStruct);
+    unique_lock lk(mutex);
     publicStruct.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicEnum(AstNode* node)
 {
-    unique_lock lk(mutexPublicEnum);
+    unique_lock lk(mutex);
     publicEnum.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicConst(AstNode* node)
 {
-    unique_lock lk(mutexPublicConst);
+    unique_lock lk(mutex);
     publicConst.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicAlias(AstNode* node)
 {
-    unique_lock lk(mutexPublicAlias);
+    unique_lock lk(mutex);
     publicAlias.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicNamespace(AstNode* node)
 {
-    unique_lock lk(mutexPublicNamespace);
+    unique_lock lk(mutex);
     publicNamespace.insert(node);
 }
 
 bool Scope::isParentOf(Scope* child)
 {
-    unique_lock lk(lockChilds);
+    unique_lock lk(mutex);
     while (child)
     {
         if (child == this)
