@@ -286,7 +286,7 @@ JobResult SyntaxJob::execute()
     scopeName.count -= 4;
     Ast::normalizeIdentifierName(scopeName);
 
-    auto module              = sourceFile->module;
+    module                   = sourceFile->module;
     sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, module->scopeRoot);
 
     // By default, everything is private if it comes from the test folder
