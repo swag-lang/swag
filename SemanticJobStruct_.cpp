@@ -212,14 +212,14 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
     {
         if (scopeImpl->flags & SCOPE_PRIVATE)
         {
-            Diagnostic diag{node->identifier, format("impl block for '%s' is private but the corresponding identifier is not", node->identifier->name.c_str())};
+            Diagnostic diag{node->identifier, format("the implementation block for '%s' is private but the corresponding identifier is not", node->identifier->name.c_str())};
             Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         if (scope->flags & SCOPE_PRIVATE)
         {
-            Diagnostic diag{node->identifier, format("'%s' is private but the impl block is not", node->identifier->name.c_str())};
+            Diagnostic diag{node->identifier, format("'%s' is private but the implementaion block is not", node->identifier->name.c_str())};
             Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
