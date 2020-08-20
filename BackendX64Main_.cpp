@@ -115,7 +115,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, funcDrop);
     }
 
-    BackendX64Inst::emit_Clear_RAX(pp);
+    BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     concat.addU8(0xC3); // ret
     return true;

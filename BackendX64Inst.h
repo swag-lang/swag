@@ -334,18 +334,22 @@ namespace BackendX64Inst
         pp.concat.addU8(0x48);
         pp.concat.addU8(0xC7);
         emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU32((uint32_t)val);
+        pp.concat.addU32((uint32_t) val);
+    }
+
+    inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
     }
 
     // clang-format off
-    inline void emit_Clear_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc0"); } // xor rax, rax
-    inline void emit_Clear_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xdb"); } // xor rbx, rbx
-    inline void emit_Clear_ECX(X64PerThread& pp) { pp.concat.addString2("\x31\xc9"); } // xor ecx, ecx
-    inline void emit_Clear_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xc9"); } // xor rcx, rcx
     inline void emit_Clear_R8(X64PerThread& pp) { pp.concat.addString3("\x4d\x31\xc0"); } // xor r8, r8
+    inline void emit_Clear_ECX(X64PerThread& pp) { pp.concat.addString2("\x31\xc9"); } // xor ecx, ecx
     inline void emit_Clear_DX(X64PerThread& pp) { pp.concat.addString3("\x66\x31\xd2"); } // xor dx, dx
     inline void emit_Clear_EDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor edx, edx
-    inline void emit_Clear_RDX(X64PerThread& pp) { pp.concat.addString3("\x48\x31\xd2"); } // xor rdx, rdx
     // clang-format on
 
     inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
@@ -370,7 +374,7 @@ namespace BackendX64Inst
     {
         if (val == 0)
         {
-            emit_Clear_RAX(pp);
+            emit_Clear64(pp, RAX);
         }
         else if (val <= 0x7FFFFFFF)
         {
@@ -388,7 +392,7 @@ namespace BackendX64Inst
     {
         if (val == 0)
         {
-            emit_Clear_RBX(pp);
+            emit_Clear64(pp, RBX);
         }
         else if (val <= 0x7FFFFFFF)
         {
@@ -406,7 +410,7 @@ namespace BackendX64Inst
     {
         if (val == 0)
         {
-            emit_Clear_RCX(pp);
+            emit_Clear64(pp, RCX);
         }
         else if (val <= 0x7FFFFFFF)
         {
@@ -586,7 +590,7 @@ namespace BackendX64Inst
             if (isSigned)
                 pp.concat.addString2("\x48\x99"); // cqo
             else
-                emit_Clear_RDX(pp);
+                emit_Clear64(pp, RDX);
             pp.concat.addU8(0x48);
             break;
         default:
