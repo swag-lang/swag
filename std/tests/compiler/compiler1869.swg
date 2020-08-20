@@ -3,14 +3,14 @@
 //using tcf
 #test
 {
-    /*@assert(toto9(1,2,3,4,5,6) == "toto")
-    @assert(toto8(1,2,3,4,5,6) == 21)
-    @assert(toto7(1,2,3,4) == 10)
-    @assert(toto6("666") == "666")
-    @assert(toto5(666) == 666)
-    @assert(toto4() == "toto")
-    toto3(1,2,3,4,5,6)
-    toto()
-    toto1(64)
-    toto2(1,2,3,4)*/
+    @assert(tcf_toto9(1,2,3,4,5,6) == "toto")
+    @assert(tcf_toto8(1,2,3,4,5,6) == 21)
+    @assert(tcf_toto7(1,2,3,4) == 10)
+    @assert(tcf_toto6("666") == "666")
+    @assert(tcf_toto5(666) == 666)
+    @assert(tcf_toto4() == "toto")
+    tcf_toto3(1,2,3,4,5,6)
+    tcf_toto()
+    tcf_toto1(64)
+    tcf_toto2(1,2,3,4)
 }
