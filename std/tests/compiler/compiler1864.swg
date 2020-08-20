@@ -1,7 +1,7 @@
 #module "compiler1864"
 #unittest error
 
-public enum RGBRGB
+enum RGBRGB
 {
     R = 10
     G
@@ -11,7 +11,7 @@ public enum RGBRGB
 impl RGBRGB
 {
     var GLOBAL = 0
-    public func isRed(self)->bool
+    func isRed(self)->bool
     {
         GLOBAL += cast(s32) self
         return self == R

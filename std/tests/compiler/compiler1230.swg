@@ -6,7 +6,7 @@ func toto1()
 }
 
 #[swag.inline]
-public func toto()
+func toto()
 {
 	toto1()
 }*/

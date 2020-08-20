@@ -1,4 +1,4 @@
-public interface toto
+interface toto
 {
     print: func(self)
 }

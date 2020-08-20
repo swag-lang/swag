@@ -1,3 +1,3 @@
-public func aa(x: u32, y: ...)
+func aa(x: u32, y: ...)
 {
 }

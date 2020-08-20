@@ -1,4 +1,4 @@
-public struct Vector2
+struct Vector2
 {
 	x, y: f32
 }

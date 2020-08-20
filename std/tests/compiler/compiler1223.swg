@@ -1,12 +1,12 @@
-public struct Vector2
+struct Vector2
 {
 	x, y: f32
 }
 
 impl Vector2
 {
-	public const Null: Vector2(0, 0)
-	/*public 
+	const Null: Vector2(0, 0)
+	/*
 	{
 		const Null:  Vector2(0, 0)
 		const Unit:  Vector2(1, 1)

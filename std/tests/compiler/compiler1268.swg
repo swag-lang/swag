@@ -1,1 +1,1 @@
-public const EndLine = "\r\n"
+const EndLine = "\r\n"

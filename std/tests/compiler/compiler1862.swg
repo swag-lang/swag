@@ -1,4 +1,4 @@
-public enum RGB
+enum RGB
 {
     R
     G
@@ -7,7 +7,7 @@ public enum RGB
 
 impl RGB
 {
-    public func isRed(self)->bool
+    func isRed(self)->bool
     {
         return self == R
     }

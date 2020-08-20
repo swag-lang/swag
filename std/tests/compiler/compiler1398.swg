@@ -1,4 +1,4 @@
-public struct A
+struct A
 {
     x: s32
 }

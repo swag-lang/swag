@@ -1,4 +1,4 @@
-public struct A
+struct A
 {
     readonly x: s32
 }

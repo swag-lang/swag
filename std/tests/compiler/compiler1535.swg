@@ -1,5 +1,5 @@
 #[swag.inline]
-public func tototata()
+func tototata()
 {
     x := "a"'char
     y := cast(char) "b"

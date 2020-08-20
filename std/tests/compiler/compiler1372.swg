@@ -5,7 +5,7 @@ namespace std
     private const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
     #assert @sizeof(String) == 40
 
-    public struct String
+    struct String
     {
         buffer:     *u8
         length:     u32

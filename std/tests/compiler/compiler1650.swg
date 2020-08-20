@@ -1,4 +1,4 @@
-public func aa(x: u32, y: any)
+func aa(x: u32, y: any)
 {
     
 }

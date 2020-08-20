@@ -1,4 +1,4 @@
-public struct DateTime
+struct DateTime
 {
     day:			u16     
     dayOfWeek:		u16
@@ -12,7 +12,7 @@ public struct DateTime
 
 impl DateTime
 {
-    public func opEquals(self, other: Self)->bool
+    func opEquals(self, other: Self)->bool
     {
         return @memcmp(self, other, @sizeof(Self)) == 0
     }

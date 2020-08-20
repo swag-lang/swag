@@ -2,7 +2,7 @@ func toto()
 {
 }
 
-public func toto1() => toto()
+func toto1() => toto()
 
 #test
 {

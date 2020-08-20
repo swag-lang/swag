@@ -1,7 +1,7 @@
 #module "compiler1635"
 #unittest error
 
-public readonly struct A
+readonly struct A
 {
     x: u32    
     y: u32

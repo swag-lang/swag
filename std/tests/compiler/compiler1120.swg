@@ -1,6 +1,6 @@
 namespace A.B
 {
-	public struct(T) Random
+	struct(T) Random
 	{
 		x: s32
 	}

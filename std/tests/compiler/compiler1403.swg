@@ -1,10 +1,10 @@
-public struct A
+struct A
 {
 }
 
 impl A
 {
-    public func(op: string) opBinary(self, other: Self)->Self
+    func(op: string) opBinary(self, other: Self)->Self
     {
         return A()
     }

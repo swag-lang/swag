@@ -1,7 +1,7 @@
 #module "compiler1400"
 #unittest error
 
-public struct A
+struct A
 {
     readonly 
     {

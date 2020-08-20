@@ -1,4 +1,4 @@
-public func toto()
+func toto()
 {
 	func titi()
 	{
