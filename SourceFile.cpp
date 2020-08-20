@@ -210,23 +210,40 @@ Utf8 SourceFile::getLine(long lineNo)
 {
     scoped_lock lk(mutexGetLine);
     if (externalBuffer)
-        return "?";
-
-    close();
-
-    // Put all lines in a cache, the first time
-    // This is slow, but this is ok, as getLine is not called in normal situations
-    if (allLines.empty())
     {
-        ifstream fle(path, ios::binary);
-        if (!fle.is_open())
-            return "?";
-
-        string line;
-        line.reserve(1024);
-        while (std::getline(fle, line))
+        if (allLines.empty())
         {
-            allLines.push_back(line);
+            const char* pz = (const char*) externalBuffer;
+            string      line;
+            while (*pz)
+            {
+                while (*pz && *pz != '\n')
+                    line += *pz++;
+                allLines.push_back(line);
+                line.clear();
+                if (*pz)
+                    pz++;
+            }
+        }
+    }
+    else
+    {
+        close();
+
+        // Put all lines in a cache, the first time
+        // This is slow, but this is ok, as getLine is not called in normal situations
+        if (allLines.empty())
+        {
+            ifstream fle(path, ios::binary);
+            if (!fle.is_open())
+                return "?";
+
+            string line;
+            line.reserve(1024);
+            while (std::getline(fle, line))
+            {
+                allLines.push_back(line);
+            }
         }
     }
 
