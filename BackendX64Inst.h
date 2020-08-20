@@ -337,19 +337,29 @@ namespace BackendX64Inst
         pp.concat.addU32((uint32_t) val);
     }
 
+    inline void emit_Clear16(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, reg, reg));
+    }
+
+    inline void emit_Clear32(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, reg, reg));
+    }
+
     inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
     {
         pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
-        pp.concat.addU8(0x48);
         pp.concat.addU8(0x31);
         pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
     }
 
-    // clang-format off
-    inline void emit_Clear_ECX(X64PerThread& pp) { pp.concat.addString2("\x31\xc9"); } // xor ecx, ecx
-    inline void emit_Clear_DX(X64PerThread& pp) { pp.concat.addString3("\x66\x31\xd2"); } // xor dx, dx
-    inline void emit_Clear_EDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor edx, edx
-    // clang-format on
+    //////////////////////////////////////////////////////
 
     inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
     {
@@ -582,7 +592,7 @@ namespace BackendX64Inst
             if (isSigned)
                 pp.concat.addString1("\x99"); // cdq
             else
-                emit_Clear_EDX(pp);
+                emit_Clear32(pp, RDX);
             break;
         case 64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
