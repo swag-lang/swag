@@ -12,13 +12,13 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         *result = implNode;
 
     auto scopeKind = ScopeKind::Struct;
-    bool forEnum   = false;
     SWAG_CHECK(tokenizer.getToken(token));
-    if (token.id == TokenId::KwdEnum)
+    switch (token.id)
     {
-        forEnum   = true;
+    case TokenId::KwdEnum:
         scopeKind = ScopeKind::Enum;
         SWAG_CHECK(tokenizer.getToken(token));
+        break;
     }
 
     // Identifier
@@ -33,6 +33,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
+        SWAG_VERIFY(scopeKind == ScopeKind::Struct, sourceFile->report({implNode, token, "this is invalid for an enum implementation block"}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
@@ -64,7 +65,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
-            if (forEnum)
+            if (scopeKind == ScopeKind::Enum)
             {
                 auto typeEnum             = g_Allocator.alloc<TypeInfoEnum>();
                 typeEnum->scope           = newScope;
@@ -86,7 +87,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     // Count number of interfaces
     if (implInterface)
     {
-        SWAG_ASSERT(!forEnum);
+        SWAG_ASSERT(scopeKind == ScopeKind::Struct);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfaces++;
         if (implNode->ownerCompilerIfBlock)
