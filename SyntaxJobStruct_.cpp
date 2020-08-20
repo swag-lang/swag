@@ -33,7 +33,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
-        SWAG_VERIFY(scopeKind == ScopeKind::Struct, sourceFile->report({implNode, token, "this is invalid for an enum implementation block"}));
+        SWAG_VERIFY(scopeKind == ScopeKind::Struct, sourceFile->report({implNode, token, "'for' is invalid for an enum implementation block"}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
