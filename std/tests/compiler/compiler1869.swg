@@ -1,9 +1,9 @@
 #import "tests.compiler.foreign"
 
-using tcf
+//using tcf
 #test
 {
-    @assert(toto9(1,2,3,4,5,6) == "toto")
+    /*@assert(toto9(1,2,3,4,5,6) == "toto")
     @assert(toto8(1,2,3,4,5,6) == 21)
     @assert(toto7(1,2,3,4) == 10)
     @assert(toto6("666") == "666")
@@ -12,7 +12,5 @@ using tcf
     toto3(1,2,3,4,5,6)
     toto()
     toto1(64)
-    toto2(1,2,3,4)
-    //@print("toto")
-    //@print(6.5'f64)
+    toto2(1,2,3,4)*/
 }

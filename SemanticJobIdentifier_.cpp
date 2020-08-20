@@ -1731,6 +1731,8 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
     auto runTime = g_Workspace.bootstrapModule->scopeRoot;
     scopes.insert(runTime);
     here.push_back(runTime);
+    scopes.insert(sourceFile->scopePrivate);
+    here.push_back(sourceFile->scopePrivate);
 
     for (int i = 0; i < here.size(); i++)
     {
@@ -1772,30 +1774,6 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
             {
                 scopes.insert(scope->parentScope);
                 here.push_back(scope->parentScope);
-            }
-        }
-
-        // If we are on a module, add all files, except if this is a test module, because for
-        // a test module, all file scopes are private
-        if (scope->kind == ScopeKind::Module)
-        {
-            if (!(scope->flags & SCOPE_FLAG_MODULE_FROM_TEST))
-            {
-                for (auto child : scope->childScopes)
-                {
-                    if (child->name.empty() || child == sourceFile->scopePrivate)
-                    {
-                        scopes.insert(child);
-                        here.push_back(child);
-                    }
-                }
-            }
-            else
-            {
-                scopes.insert(sourceFile->scopePrivate);
-                here.push_back(sourceFile->scopePrivate);
-                scopes.insert(sourceFile->scopeRoot);
-                here.push_back(sourceFile->scopeRoot);
             }
         }
     }

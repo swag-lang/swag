@@ -50,7 +50,6 @@ struct SourceFile : public File
     bool      isBootstrapFile = false;
 
     char*    buffer       = nullptr;
-    Scope*   scopeRoot    = nullptr;
     Scope*   scopePrivate = nullptr;
     AstNode* sourceNode   = nullptr;
 

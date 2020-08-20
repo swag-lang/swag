@@ -335,7 +335,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     structNode->name = move(typeList->computeTupleName(context));
 
     // Add struct type and scope
-    auto        rootScope = sourceFile->scopeRoot;
+    Scope* rootScope;
+    if (sourceFile->module->fromTestsFolder)
+        rootScope = sourceFile->scopePrivate;
+    else
+        rootScope = sourceFile->module->scopeRoot;
     scoped_lock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->name);
     if (symbol)
@@ -658,7 +662,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A slice initialized with an expression list must be immutable
         if (leftConcreteType->kind == TypeInfoKind::Slice && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
         {
-            SWAG_VERIFY(leftConcreteType->isConst(), context->report({ node->type, "'slice' must de declared as immutable with 'const'" }));
+            SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, "'slice' must de declared as immutable with 'const'"}));
         }
     }
     else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))

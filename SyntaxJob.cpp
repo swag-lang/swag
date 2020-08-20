@@ -279,26 +279,25 @@ JobResult SyntaxJob::execute()
 
     tokenizer.setFile(sourceFile);
 
-    // One unnamed scope per file
-    // Not that if the file comes from the /tests folder, this scope has a name because each test has its own
-    // namespace to avoid collisions with other files
+    // One named scope per file
     Utf8 scopeName = sourceFile->name;
     SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
     scopeName.buffer[scopeName.length() - 4] = 0;
     scopeName.count -= 4;
+    Ast::normalizeIdentifierName(scopeName);
 
-    sourceFile->scopeRoot = Ast::newScope(nullptr, sourceFile->fromTests ? scopeName : Utf8(""), ScopeKind::File, sourceFile->module->scopeRoot);
-    currentScope          = sourceFile->scopeRoot;
+    auto module              = sourceFile->module;
+    sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, module->scopeRoot);
 
-    // One private scope
+    // By default, everything is private if it comes from the test folder
     if (sourceFile->fromTests)
-        sourceFile->scopePrivate = sourceFile->scopeRoot;
+        currentScope = sourceFile->scopePrivate;
     else
-        sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
+        currentScope = module->scopeRoot;
 
     // Setup root ast for file
-    sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
-    sourceFile->scopeRoot->owner    = sourceFile->astRoot;
+    sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
+    sourceFile->scopePrivate->owner = sourceFile->astRoot;
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
 
     bool result = true;

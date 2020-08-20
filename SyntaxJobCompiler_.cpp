@@ -311,7 +311,11 @@ bool SyntaxJob::doCompilerModule()
     newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
-    currentScope = sourceFile->scopeRoot;
+
+    if(newModule->fromTestsFolder)
+        currentScope = sourceFile->scopePrivate;
+    else
+        currentScope = newModule->scopeRoot;
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatSemiCol("after module name"));
