@@ -1,11 +1,4 @@
-enum RGB
-{
-    R
-    G
-    B
-}
-
-impl RGB
+impl enum RGB
 {
     func isRed(self)->bool
     {
@@ -20,4 +13,11 @@ impl RGB
     @assert(RGB.isRed(RGB.R))
     @assert(!RGB.isRed(RGB.B))
     @assert(RGB.isBlue(RGB.B))
+}
+
+enum RGB
+{
+    R
+    G
+    B
 }

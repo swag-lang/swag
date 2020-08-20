@@ -12,7 +12,7 @@
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
-    auto enumNode = Ast::newNode<AstNode>(this, AstNodeKind::EnumDecl, sourceFile, parent);
+    auto enumNode = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     if (result)
         *result = enumNode;
     enumNode->semanticFct = SemanticJob::resolveEnum;
@@ -28,11 +28,30 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable.findNoLock(enumNode->name);
         if (!symbol)
         {
-            auto typeInfo       = g_Allocator.alloc<TypeInfoEnum>();
+            newScope = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope, true);
+            if (newScope->kind != ScopeKind::Enum)
+            {
+                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->name.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+                Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+
+            enumNode->scope = newScope;
+
+            // If an 'impl' came first, then typeinfo has already been defined
+            scoped_lock   lk1(newScope->owner->mutex);
+            TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
+            if (!typeInfo)
+            {
+                typeInfo                  = g_Allocator.alloc<TypeInfoEnum>();
+                newScope->owner->typeInfo = typeInfo;
+            }
+
+            SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
             typeInfo->declNode  = enumNode;
             typeInfo->name      = enumNode->name;
             typeInfo->nakedName = enumNode->name;
-            newScope            = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
             typeInfo->scope     = newScope;
             enumNode->typeInfo  = typeInfo;
             typeInfo->computeName();

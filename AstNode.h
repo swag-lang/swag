@@ -667,6 +667,12 @@ struct AstStruct : public AstNode
     uint32_t packing = sizeof(uint64_t);
 };
 
+struct AstEnum : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+    Scope*   scope;
+};
+
 struct AstImpl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;

@@ -5,7 +5,7 @@ enum RGBRGB
     B
 }
 
-impl RGBRGB
+impl enum RGBRGB
 {
     var GLOBAL = 0
     func isRed(self)->bool

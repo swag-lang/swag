@@ -11,10 +11,19 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (result)
         *result = implNode;
 
+    auto scopeKind = ScopeKind::Struct;
+    bool forEnum   = false;
+    SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id == TokenId::KwdEnum)
+    {
+        forEnum   = true;
+        scopeKind = ScopeKind::Enum;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
     // Identifier
     {
         ScopedMainNode scopedMainNode(this, implNode);
-        SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
         implNode->flags |= AST_NO_BYTECODE;
     }
@@ -36,9 +45,17 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto& structName      = identifierStruct->childs.front()->name;
-    implNode->name        = structName;
-    auto newScope         = Ast::newScope(implNode, structName, ScopeKind::Struct, currentScope, true);
+    auto& structName = identifierStruct->childs.front()->name;
+    implNode->name   = structName;
+    auto newScope    = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
+
+    if (scopeKind != newScope->kind)
+    {
+        Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(scopeKind), implNode->name.c_str(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic note{newScope->owner, newScope->owner->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
+    }
+
     implNode->structScope = newScope;
 
     // Be sure we have associated a struct typeinfo (we can parse an impl block before the corresponding struct)
@@ -47,17 +64,29 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         auto        typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
-            auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
-            typeStruct->scope         = newScope;
-            typeStruct->nakedName     = structName;
-            typeStruct->name          = structName;
-            newScope->owner->typeInfo = typeStruct;
+            if (forEnum)
+            {
+                auto typeEnum             = g_Allocator.alloc<TypeInfoEnum>();
+                typeEnum->scope           = newScope;
+                typeEnum->nakedName       = structName;
+                typeEnum->name            = structName;
+                newScope->owner->typeInfo = typeEnum;
+            }
+            else
+            {
+                auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
+                typeStruct->scope         = newScope;
+                typeStruct->nakedName     = structName;
+                typeStruct->name          = structName;
+                newScope->owner->typeInfo = typeStruct;
+            }
         }
     }
 
     // Count number of interfaces
     if (implInterface)
     {
+        SWAG_ASSERT(!forEnum);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfaces++;
         if (implNode->ownerCompilerIfBlock)
@@ -123,6 +152,15 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
+            if (newScope->kind != ScopeKind::Struct)
+            {
+                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->name.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+                Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+
+            structNode->scope = newScope;
 
             // If an 'impl' came first, then typeinfo has already been defined
             scoped_lock     lk1(newScope->owner->mutex);
@@ -133,6 +171,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
                 newScope->owner->typeInfo = typeInfo;
             }
 
+            SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);
             structNode->typeInfo           = newScope->owner->typeInfo;
             typeInfo->declNode             = structNode;
             newScope->owner                = structNode;
@@ -140,7 +179,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->nakedName            = structNode->name;
             typeInfo->structName           = structNode->name;
             typeInfo->scope                = newScope;
-            structNode->scope              = newScope;
             auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
             structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
         }

@@ -206,6 +206,30 @@ void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
     }
 }
 
+bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
+{
+    if (scopeImpl != scope)
+    {
+        if (scopeImpl->flags & SCOPE_PRIVATE)
+        {
+            Diagnostic diag{node->identifier, format("impl block for '%s' is private but the corresponding identifier is not", node->identifier->name.c_str())};
+            Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        if (scope->flags & SCOPE_PRIVATE)
+        {
+            Diagnostic diag{node->identifier, format("'%s' is private but the impl block is not", node->identifier->name.c_str())};
+            Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        SWAG_ASSERT(false);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -217,6 +241,18 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
         Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct or an enum", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto enumNode = CastAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
+        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, enumNode->scope));
     }
 
     return true;

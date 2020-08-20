@@ -41,7 +41,7 @@ impl MyStruct
 
 // 'impl' can also be used for an enum
 enum RGB { R; G; B; }
-impl RGB
+impl enum RGB
 {
     func isRed(self) => self == R
     func isRedOrBlue(self) => self == R || self == B

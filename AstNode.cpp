@@ -596,6 +596,22 @@ AstNode* AstStruct::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstEnum::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc0<AstEnum>();
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext             = context;
+    cloneContext.parent           = newNode;
+    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Enum, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.ownerStructScope = cloneContext.parentScope;
+    cloneContext.ownerMainNode    = newNode;
+
+    newNode->scope = cloneContext.parentScope;
+
+    return newNode;
+}
+
 AstNode* AstImpl::clone(CloneContext& context)
 {
     SWAG_ASSERT(false);
