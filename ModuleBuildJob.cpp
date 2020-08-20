@@ -454,7 +454,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (module->mustGenerateTestExe())
+        if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
         {
             auto job                            = g_Pool_moduleRunJob.alloc();
             job->module                         = module;
