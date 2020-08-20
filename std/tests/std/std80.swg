@@ -1,7 +1,7 @@
 #import "std"
 using std.collections
 
-public struct BB11
+struct BB11
 {
      g: std.collections.Array'(*u8)
 }
@@ -9,5 +9,5 @@ public struct BB11
 //#[swag.printbc]
 #test
 {
-    //g.addBack(0)    
+    //g.addBack(0)
 }

@@ -59,6 +59,12 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
         attr = ATTRIBUTE_PUBLIC;
         SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PRIVATE), error(token, "attribute 'private' and attribute 'public' are mutually exclusive"));
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
+        if (currentScope->name == "SS")
+            currentScope = currentScope;
+        if (currentScope->kind == ScopeKind::File)
+            newScope = currentScope->parentScope;
+        else
+            SWAG_VERIFY(!(currentScope->flags & SCOPE_PRIVATE), error(token, "cannot declare a public symbol in a private scope"));
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     default:

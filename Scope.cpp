@@ -161,9 +161,12 @@ bool Scope::isParentOf(Scope* child)
 
 void Scope::addChildNoLock(Scope* child)
 {
+    if (!child)
+        return;
     child->indexInParent = (uint32_t) childScopes.size();
     childScopes.push_back(child);
     child->parentScope = this;
+    child->flags |= flags & SCOPE_PRIVATE;
 }
 
 void Scope::removeChildNoLock(Scope* child)

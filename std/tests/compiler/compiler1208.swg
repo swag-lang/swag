@@ -1,5 +1,5 @@
 #[swag.inline]
-public
+//public
 {
     func toto()
     {

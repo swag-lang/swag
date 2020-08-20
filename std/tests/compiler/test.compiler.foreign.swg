@@ -60,7 +60,7 @@ public func tcf_toto9(a, b, c, d, e, f: s32)->string
     return "toto"
 }
 
-/*public struct tcf_Point
+public struct tcf_Point
 {
     x, y: s32
 }
@@ -68,4 +68,4 @@ public func tcf_toto9(a, b, c, d, e, f: s32)->string
 public func tcf_toto1()->tcf_Point
 {
     return @{10, 20}
-}*/
+}

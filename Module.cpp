@@ -155,8 +155,7 @@ void Module::addFile(SourceFile* file)
     file->module        = this;
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
-    if (file->scopePrivate)
-        scopeRoot->addChildNoLock(file->scopePrivate);
+    scopeRoot->addChildNoLock(file->scopePrivate);
 
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);

@@ -288,6 +288,7 @@ JobResult SyntaxJob::execute()
 
     module                   = sourceFile->module;
     sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, module->scopeRoot);
+    sourceFile->scopePrivate->flags |= SCOPE_PRIVATE;
 
     // By default, everything is private if it comes from the test folder
     if (sourceFile->fromTests)
