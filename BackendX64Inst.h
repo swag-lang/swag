@@ -339,14 +339,13 @@ namespace BackendX64Inst
 
     inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
     {
-        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
         pp.concat.addU8(0x48);
         pp.concat.addU8(0x31);
         pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
     }
 
     // clang-format off
-    inline void emit_Clear_R8(X64PerThread& pp) { pp.concat.addString3("\x4d\x31\xc0"); } // xor r8, r8
     inline void emit_Clear_ECX(X64PerThread& pp) { pp.concat.addString2("\x31\xc9"); } // xor ecx, ecx
     inline void emit_Clear_DX(X64PerThread& pp) { pp.concat.addString3("\x66\x31\xd2"); } // xor dx, dx
     inline void emit_Clear_EDX(X64PerThread& pp) { pp.concat.addString2("\x31\xd2"); } // xor edx, edx
@@ -356,7 +355,7 @@ namespace BackendX64Inst
     {
         if (val == 0)
         {
-            emit_Clear_R8(pp);
+            emit_Clear64(pp, R8);
         }
         else if (val <= 0x7FFFFFFF)
         {
