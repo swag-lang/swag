@@ -28,7 +28,12 @@ namespace Ast
             result = format("%u", reg.u32);
             break;
         case NativeTypeKind::Char:
-            result += reg.ch;
+            if (reg.ch < 32)
+                result += format("\\x%02x", reg.ch);
+            else if (reg.ch > 127 && reg.ch <= 255)
+                result += format("\\x%02x", reg.ch);
+            else
+                result += reg.ch;
             break;
         case NativeTypeKind::U64:
             result = format("%llu", reg.u64);
@@ -58,17 +63,12 @@ namespace Ast
         {
             for (auto c : text)
             {
-                switch (c)
-                {
-                case '\r':
-                    result += "\\r";
-                    break;
-                case '\n':
-                    result += "\\n";
-                    break;
-                default:
+                if (c < 32)
+                    result += format("\\x%02x", c);
+                else if (c > 127)
+                    result += format("\\x%02x", c);
+                else
                     result += c;
-                }
             }
 
             return result;
