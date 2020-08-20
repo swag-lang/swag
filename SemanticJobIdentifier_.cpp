@@ -1411,10 +1411,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // If we have multiple symbols, we need to choose one
     SymbolName* symbol = nullptr;
     SWAG_CHECK(pickSymbol(context, node, &symbol));
+    if (!symbol)
+        return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
     AstNode* ufcsParam = nullptr;
     bool     canDoUfcs = false;
-    SWAG_ASSERT(symbol);
     if (symbol->kind == SymbolKind::Function)
         canDoUfcs = true;
     if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
