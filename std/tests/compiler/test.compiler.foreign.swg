@@ -109,9 +109,8 @@ public func tcf_toto15(xx, yy, zz: s32, x: string)->string
     return x
 }
 
-#[swag.printbc]
 public func tcf_toto16(x: s32, y: f64)
 {
-    @print(cast(s64) x)
-    @print(y)
+    @assert(x == 456)
+    @assert(y == 3.14)
 }

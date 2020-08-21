@@ -38,34 +38,26 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
         case 0:
             if (typeParam->flags & TYPEINFO_FLOAT)
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM0, RDI);
-                //concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RCX, RDI);
-                //concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
-            //concat.addU32(stackOffset);
             break;
         case 1:
             if (typeParam->flags & TYPEINFO_FLOAT)
                 BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM1, RDI);
-                //concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
             else
                 BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RDX, RDI);
-                //concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
-            //concat.addU32(stackOffset);
             break;
         case 2:
             if (typeParam->flags & TYPEINFO_FLOAT)
-                concat.addString4("\xf3\x0f\x11\x97"); // movss [rdi + ????????], xmm2
+                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM2, RDI);
             else
-                concat.addString3("\x4c\x89\x87"); // mov [rdi + ????????], r8
-            concat.addU32(stackOffset);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R8, RDI);
             break;
         case 3:
             if (typeParam->flags & TYPEINFO_FLOAT)
-                concat.addString4("\xf3\x0f\x11\x9f"); // movss [rdi + ????????], xmm3
+                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM3, RDI);
             else
-                concat.addString3("\x4c\x89\x8f"); // mov [rdi + ????????], r9
-            concat.addU32(stackOffset);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, R9, RDI);
             break;
         }
     }
