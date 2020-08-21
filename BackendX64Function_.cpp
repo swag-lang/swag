@@ -37,17 +37,21 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
         {
         case 0:
             if (typeParam->flags & TYPEINFO_FLOAT)
-                concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
+                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM0, RDI);
+                //concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
             else
-                concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
-            concat.addU32(stackOffset);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RCX, RDI);
+                //concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
+            //concat.addU32(stackOffset);
             break;
         case 1:
             if (typeParam->flags & TYPEINFO_FLOAT)
-                concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
+                BackendX64Inst::emit_StoreF64_Indirect(pp, stackOffset, XMM1, RDI);
+                //concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
             else
-                concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
-            concat.addU32(stackOffset);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RDX, RDI);
+                //concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
+            //concat.addU32(stackOffset);
             break;
         case 2:
             if (typeParam->flags & TYPEINFO_FLOAT)
@@ -83,7 +87,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "_tcf_toto13")
+    if (bc->node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -133,7 +137,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     // Then parameters
-    for (int i = numParams - 1; i >= 0; i--)
+    for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);

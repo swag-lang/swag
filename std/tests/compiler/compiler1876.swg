@@ -1,6 +1,8 @@
 //#[swag.printbc]
 #test
 {
+    tcf_toto16(456,3.14)
+
     {
         x := tcf_toto10()
         @assert(x.x == 10)
