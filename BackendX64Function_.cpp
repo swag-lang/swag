@@ -1129,7 +1129,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpGreaterU64:
@@ -1137,7 +1137,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpGreaterS32:
@@ -1161,7 +1161,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
             BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F32(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpGreaterF64:
@@ -1169,7 +1169,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F64(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
@@ -1210,7 +1210,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F32(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpLowerF64:
@@ -1218,7 +1218,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
             BackendX64Inst::emit_Cmp_XMM0_With_XMM1_F64(pp);
-            concat.addString3("\x0f\x97\xc0"); // seta al
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
