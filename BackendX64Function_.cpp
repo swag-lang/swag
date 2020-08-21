@@ -1533,7 +1533,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             concat.addString2("\x69\xc0"); // imul eax, ????????
             concat.addU32(ip->c.u32);
-            concat.addString3("\x49\x89\xc0"); // mov r8, rax
+            BackendX64Inst::emit_Copy64(pp, R8, RAX);
             emitCall(pp, "memset");
             break;
 
