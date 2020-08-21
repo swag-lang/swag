@@ -8,6 +8,6 @@
     }
 
     {
-        //x := tcf_toto11(0)
+        x := tcf_toto11(0)
     }
 }

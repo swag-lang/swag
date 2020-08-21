@@ -94,6 +94,14 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
     VectorNative<TypeInfo*> pushRAParams;
 
+    // Total number of registers
+    auto numCallRegisters = 0;
+    for (auto param : typeFunc->parameters)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        numCallRegisters += typeParam->numRegisters();
+    }
+
     // First we have return values
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
@@ -131,7 +139,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (typeParam->numRegisters() == 1)
+        {
             pushRAParams.push_back(typeParam);
+        }
         else
         {
             pushRAParams.push_back(g_TypeMgr.typeInfoU64);
@@ -152,13 +162,20 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     for (int i = 0; i < (int) pushRAParams.size(); i++)
     {
         auto typeParam = pushRAParams[i];
-        if (i < numReturnRegs)
+        if ((!returnByCopy && i < numReturnRegs) || (returnByCopy && i < 2))
         {
             if (returnByCopy)
             {
-                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-                concat.addU32(regOffset(i + 1));
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                if (i == 0)
+                {
+                    concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+                    concat.addU32(regOffset(i + 1));
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                }
+                else
+                {
+                    setCalleeParameter(pp, typeParam, numCallRegisters, regOffset(i), sizeStack);
+                }
             }
             else
             {
