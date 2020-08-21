@@ -30,7 +30,6 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
 
 void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
 {
-    auto& concat = pp.concat;
     if (calleeIndex < 4)
     {
         switch (calleeIndex)
@@ -2332,11 +2331,12 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             pushRAParams.pop_back();
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU32);
+            numCallParams--;
         }
     }
 
     // All parameters
-    for (int i = 0; i < (int) typeFuncBC->parameters.size(); i++)
+    for (int i = 0; i < (int) numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
 
