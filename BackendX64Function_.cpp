@@ -1802,8 +1802,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Se we add 16 in total to get the offset of the parameter in the stack
             concat.addU32(16 + sizeStack + ip->a.u32 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x48\x89\x18"); // mov [rax], rbx
-
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RBX, RAX);
             break;
 
         case ByteCodeOp::CopyRCtoRT:
