@@ -259,7 +259,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, context->ffiArgs.empty() ? nullptr : &context->ffiArgs[0]);
 
     void* resultPtr = nullptr;
-    if (typeResult != &ffi_type_void && !(returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    if (typeResult != &ffi_type_void)
     {
         SWAG_ASSERT(context->registersRR);
         switch (returnType->sizeOf)

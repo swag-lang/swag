@@ -327,8 +327,11 @@ JobResult ModuleBuildJob::execute()
 
                     for (auto func : module->byteCodeTestFunc)
                     {
-                        g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
+                        if (g_CommandLine.testFilter.empty() || strstr(func->node->sourceFile->name, g_CommandLine.testFilter.c_str()))
+                        {
+                            g_Stats.testFunctions++;
+                            module->executeNode(func->node->sourceFile, func->node);
+                        }
                     }
 
                     module->bssSegment.restoreAllValues();

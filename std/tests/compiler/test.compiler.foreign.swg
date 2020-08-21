@@ -28,6 +28,7 @@ public func tcf_toto3(a, b, c, d, e, f: s8)
     @assert(f == 6)
 }
 
+//#[swag.printbc]
 public func tcf_toto4()->string
 {
     return "toto"
@@ -62,10 +63,11 @@ public func tcf_toto9(a, b, c, d, e, f: s32)->string
 
 public struct tcf_Point
 {
-    x, y: s32
+    x, y, z: s32
 }
 
-public func tcf_toto1()->tcf_Point
+//#[swag.printbc]
+public func tcf_toto10()->tcf_Point
 {
     return @{10, 20}
 }

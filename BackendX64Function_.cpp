@@ -47,7 +47,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     VectorNative<TypeInfo*> pushRAParams;
 
     // First we have return values
-    if (typeFunc->returnType->numRegisters() == 2)
+    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    if (returnByCopy)
     {
         pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
         pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
@@ -55,6 +56,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     else if (typeFunc->returnType->numRegisters() == 1)
     {
         pushRAParams.push_back(typeFunc->returnType);
+    }
+    else if (typeFunc->returnType->numRegisters() == 2)
+    {
+        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
+        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
     }
 
     // Then variadic
@@ -89,20 +95,36 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
     concat.addU8(0x57); // push rdi
     while (sizeStack % 16)
-        sizeStack++; // Align to 16 bytes
+        sizeStack += 8; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
     concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
     // Push all
     auto numReturnRegs = typeFunc->numReturnRegisters();
-    for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
+    for (int i = 0; i < (int) pushRAParams.size(); i++)
     {
         auto typeParam = pushRAParams[i];
         if (i < numReturnRegs)
         {
-            concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-            concat.addU32(regOffset(i));
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+            if (returnByCopy)
+            {
+                if (i == 0)
+                {
+                    concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+                    concat.addU32(regOffset(i + 1));
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                }
+                else
+                {
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RCX, RDI);
+                }
+            }
+            else
+            {
+                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+                concat.addU32(regOffset(i));
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+            }
         }
         else if (i < 4 + numReturnRegs)
         {
@@ -153,7 +175,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     emitCall(pp, bc->callName());
 
     // Return
-    if (typeFunc->numReturnRegisters() == 1)
+    if (returnByCopy)
+    {
+        // Done
+    }
+    else if (typeFunc->numReturnRegisters() == 1)
     {
         BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
     }
@@ -2333,10 +2359,15 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
 
     // Return by parameter
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String) ||
-        (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        returnType->isNative(NativeTypeKind::String))
+    {
+        paramsRegisters.push_back(offsetRT);
+        paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
+    }
+    else if (returnByCopy)
     {
         paramsRegisters.push_back(offsetRT);
         paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
@@ -2348,30 +2379,57 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         auto r    = paramsRegisters[i];
         if (type == g_TypeMgr.typeInfoUndefined)
         {
-            switch (i)
+            if (returnByCopy)
             {
-            case 0:
-                concat.addString3("\x48\x8d\x8f"); // lea rcx, [rdi + ????????]
-                concat.addU32(r);
-                break;
-            case 1:
-                concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
-                concat.addU32(r);
-                break;
-            case 2:
-                concat.addString3("\x4c\x8d\x87"); // lea r8, [rdi + ????????]
-                concat.addU32(r);
-                break;
-            case 3:
-                concat.addString3("\x4c\x8d\x8f"); // lea r9, [rdi + ????????]
-                concat.addU32(r);
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
+                switch (i)
+                {
+                case 0:
+                    BackendX64Inst::emit_Load64_Indirect(pp, r, RCX, RDI);
+                    break;
+                case 1:
+                    BackendX64Inst::emit_Load64_Indirect(pp, r, RDX, RDI);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_Load64_Indirect(pp, r, R8, RDI);
+                    break;
+                case 3:
+                    BackendX64Inst::emit_Load64_Indirect(pp, r, R9, RDI);
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
+                }
             }
+            else
+            {
+                switch (i)
+                {
+                case 0:
+                    concat.addString3("\x48\x8d\x8f"); // lea rcx, [rdi + ????????]
+                    concat.addU32(r);
+                    break;
+                case 1:
+                    concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
+                    concat.addU32(r);
+                    break;
+                case 2:
+                    concat.addString3("\x4c\x8d\x87"); // lea r8, [rdi + ????????]
+                    concat.addU32(r);
+                    break;
+                case 3:
+                    concat.addString3("\x4c\x8d\x8f"); // lea r9, [rdi + ????????]
+                    concat.addU32(r);
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
+                }
+            }
+
+            continue;
         }
-        else if (type->flags & TYPEINFO_INTEGER)
+
+        if (type->flags & TYPEINFO_INTEGER)
         {
             switch (i)
             {
@@ -2388,8 +2446,11 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
                 break;
             }
+
+            continue;
         }
-        else if (type->flags & TYPEINFO_FLOAT)
+
+        if (type->flags & TYPEINFO_FLOAT)
         {
             switch (i)
             {
@@ -2406,6 +2467,8 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM3, RDI);
                 break;
             }
+
+            continue;
         }
     }
 

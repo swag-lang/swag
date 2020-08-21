@@ -351,7 +351,10 @@ void Module::addByteCodeFunc(ByteCode* bc)
             bc->node->ownerScope->addPublicFunc(bc->node);
 
         if (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
-            byteCodeTestFunc.push_back(bc);
+        {
+            if (g_CommandLine.testFilter.empty() || strstr(bc->node->sourceFile->name, g_CommandLine.testFilter.c_str()))
+                byteCodeTestFunc.push_back(bc);
+        }
         else if (bc->node->attributeFlags & ATTRIBUTE_INIT_FUNC)
             byteCodeInitFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_DROP_FUNC)
