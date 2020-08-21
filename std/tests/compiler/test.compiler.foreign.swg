@@ -71,3 +71,8 @@ public func tcf_toto10()->tcf_Point
 {
     return @{10, 20}
 }
+
+public func tcf_toto11(x: s32)->tcf_Point
+{
+    return @{10, 20}
+}

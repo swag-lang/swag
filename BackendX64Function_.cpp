@@ -28,6 +28,54 @@ uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
     return it->second;
 }
 
+void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack)
+{
+    auto& concat = pp.concat;
+    if (calleeIndex < 4)
+    {
+        switch (calleeIndex)
+        {
+        case 0:
+            if (typeParam->flags & TYPEINFO_FLOAT)
+                concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
+            else
+                concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
+            concat.addU32(stackOffset);
+            break;
+        case 1:
+            if (typeParam->flags & TYPEINFO_FLOAT)
+                concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
+            else
+                concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
+            concat.addU32(stackOffset);
+            break;
+        case 2:
+            if (typeParam->flags & TYPEINFO_FLOAT)
+                concat.addString4("\xf3\x0f\x11\x97"); // movss [rdi + ????????], xmm2
+            else
+                concat.addString3("\x4c\x89\x87"); // mov [rdi + ????????], r8
+            concat.addU32(stackOffset);
+            break;
+        case 3:
+            if (typeParam->flags & TYPEINFO_FLOAT)
+                concat.addString4("\xf3\x0f\x11\x9f"); // movss [rdi + ????????], xmm3
+            else
+                concat.addString3("\x4c\x89\x8f"); // mov [rdi + ????????], r9
+            concat.addU32(stackOffset);
+            break;
+        }
+    }
+    else
+    {
+        // Get parameter from the stack (aligned to 8 bytes)
+        auto offset = calleeIndex * (int) sizeof(Register);
+        offset += sizeStack;
+        offset += 16;
+        BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
+    }
+}
+
 bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
     int   ct              = buildParameters.compileType;
@@ -35,7 +83,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "std_toto9")
+    if (bc->name == "_tcf_toto11")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -119,48 +167,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
             }
         }
-        else if (i < 4 + numReturnRegs)
-        {
-            switch (i - numReturnRegs)
-            {
-            case 0:
-                if (typeParam->flags & TYPEINFO_FLOAT)
-                    concat.addString4("\xf3\x0f\x11\x87"); // movss [rdi + ????????], xmm0
-                else
-                    concat.addString3("\x48\x89\x8f"); // mov [rdi + ????????], rcx
-                concat.addU32(regOffset(i));
-                break;
-            case 1:
-                if (typeParam->flags & TYPEINFO_FLOAT)
-                    concat.addString4("\xf3\x0f\x11\x8f"); // movss [rdi + ????????], xmm1
-                else
-                    concat.addString3("\x48\x89\x97"); // mov [rdi + ????????], rdx
-                concat.addU32(regOffset(i));
-                break;
-            case 2:
-                if (typeParam->flags & TYPEINFO_FLOAT)
-                    concat.addString4("\xf3\x0f\x11\x97"); // movss [rdi + ????????], xmm2
-                else
-                    concat.addString3("\x4c\x89\x87"); // mov [rdi + ????????], r8
-                concat.addU32(regOffset(i));
-                break;
-            case 3:
-                if (typeParam->flags & TYPEINFO_FLOAT)
-                    concat.addString4("\xf3\x0f\x11\x9f"); // movss [rdi + ????????], xmm3
-                else
-                    concat.addString3("\x4c\x89\x8f"); // mov [rdi + ????????], r9
-                concat.addU32(regOffset(i));
-                break;
-            }
-        }
         else
         {
-            // Get parameter from the stack (aligned to 8 bytes)
-            auto offset = (i - numReturnRegs) * (int) sizeof(Register);
-            offset += sizeStack;
-            offset += 16;
-            BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+            setCalleeParameter(pp, typeParam, i - numReturnRegs, regOffset(i), sizeStack);
         }
     }
 
