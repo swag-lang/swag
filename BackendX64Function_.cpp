@@ -1796,11 +1796,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRCtoRR:
             //CONCAT_STR_2(concat, "*rr", ip->a.u32, " = r[", ip->b.u32, "];");
-            concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
-            concat.addU32(16 + sizeStack + ip->a.u32 * sizeof(Register));
+            BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RBX, RAX);
             break;
@@ -1815,11 +1814,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CopyRRtoRC:
             SWAG_ASSERT(ip->b.u32 <= 1); // Can only return 2 registers
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rr", ip->b.u32, ";");
-            concat.addString3("\x48\x8b\x87"); // mov rax, [rdi + ????????]
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
-            concat.addU32(16 + sizeStack + ip->b.u32 * sizeof(Register));
+            BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
