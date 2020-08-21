@@ -256,6 +256,13 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
+    inline void emit_SetNE(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x95);
+        pp.concat.addU8(0xC0);
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)

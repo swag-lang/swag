@@ -346,28 +346,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u8 ? 1 : 0;");
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::CastBool16:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test_AX_With_AX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::CastBool32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u32 ? 1 : 0;");
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::CastBool64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test_RAX_With_RAX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -1275,28 +1275,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Test_AL_With_AL(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero16:
             //concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Test_AX_With_AX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero32:
             //concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Test_EAX_With_EAX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero64:
             //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Test_RAX_With_RAX(pp);
-            concat.addString3("\x0F\x95\xC0"); // setne al
+            BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -1668,7 +1668,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CopyVBtoRA64:
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
-            if(ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->b.u64 <= 0x7FFFFFFF)
                 BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), ip->b.u64, RDI);
             else
             {
