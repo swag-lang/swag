@@ -277,6 +277,13 @@ namespace BackendX64Inst
         pp.concat.addU8(0xC0);
     }
 
+    inline void emit_SetE(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x94);
+        pp.concat.addU8(0xC0);
+    }
+
     inline void emit_SetG(X64PerThread& pp)
     {
         pp.concat.addU8(0x0F);

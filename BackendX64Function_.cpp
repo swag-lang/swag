@@ -1227,7 +1227,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_AL_With_BL(pp);
-            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpEqual16:
@@ -1235,7 +1235,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_AX_With_BX(pp);
-            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpEqual32:
@@ -1243,7 +1243,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_EAX_With_EBX(pp);
-            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpEqual64:
@@ -1251,7 +1251,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             BackendX64Inst::emit_Cmp_RAX_With_RBX(pp);
-            concat.addString3("\x0F\x94\xC0"); // sete al
+            BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpEqualString:
