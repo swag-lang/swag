@@ -224,14 +224,14 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
     else if (typeFunc->numReturnRegisters() == 2)
     {
-        // Get the results in rax & rbx
+        // Get the results in rax & rcx
         BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RDI);
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(1), RCX, RDI);
 
         // Get the pointer to store the result
         SWAG_ASSERT(pushRAParams.size() >= 2);
         int offset = (int) pushRAParams.size() - 2;
-                offset *= sizeof(Register);
+        offset *= sizeof(Register);
         offset += sizeStack + 16;
         BackendX64Inst::emit_Load64_Indirect(pp, offset, RDX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RDX);

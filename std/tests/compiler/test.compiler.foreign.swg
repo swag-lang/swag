@@ -100,3 +100,11 @@ public func tcf_toto14(xx, yy: s32, x: string)->string
     @assert(yy == 2)
     return x
 }
+
+public func tcf_toto15(xx, yy, zz: s32, x: string)->string
+{
+    @assert(xx == 1)
+    @assert(yy == 2)
+    @assert(zz == 3)
+    return x
+}

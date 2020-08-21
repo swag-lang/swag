@@ -19,7 +19,7 @@
         @assert(x.y == 20)
     }
 
-    {
-        @assert(tcf_toto13(1,"toto") == "toto")
-    }
+    @assert(tcf_toto13(1,"toto") == "toto")
+    @assert(tcf_toto14(1,2,"toto") == "toto")
+    @assert(tcf_toto15(1,2,3,"toto") == "toto")
 }
