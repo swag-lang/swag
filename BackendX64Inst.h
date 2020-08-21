@@ -166,6 +166,83 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
+    inline void emit_Store8_Immediate(X64PerThread& pp, uint32_t offset, uint8_t val, uint8_t reg)
+    {
+        pp.concat.addU8(0xC6);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU8(val);
+    }
+
+    inline void emit_Store16_Immediate(X64PerThread& pp, uint32_t offset, uint16_t val, uint8_t reg)
+    {
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t) val);
+    }
+
+    inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint32_t val, uint8_t reg)
+    {
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t) val);
+    }
+
+    inline void emit_Store64_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
+    {
+        SWAG_ASSERT(val <= 0x7FFFFFFF);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0xC7);
+        emit_ModRM(pp, offset, 0, reg);
+        pp.concat.addU32((uint32_t) val);
+    }
+
+    inline void emit_Clear16(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, reg, reg));
+    }
+
+    inline void emit_Clear32(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, reg, reg));
+    }
+
+    inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
+    {
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        pp.concat.addU8(0x31);
+        pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
+    }
+
+    inline void emit_Load64_Immediate(X64PerThread& pp, uint64_t val, uint8_t reg)
+    {
+        if (val == 0)
+        {
+            emit_Clear64(pp, reg);
+            return;
+        }
+
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        if (val <= 0x7FFFFFFF)
+        {
+            pp.concat.addU8(0xC7);
+            pp.concat.addU8(0xC0 | (reg & 0b111));
+            pp.concat.addU32((uint32_t) val);
+        }
+        else
+        {
+            pp.concat.addU8(0xB8 | reg);
+            pp.concat.addU64(val);
+        }
+    }
+
+    ///////////////////////////////////////////////////////
+
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
     {
         auto&          concat = pp.concat;
@@ -305,59 +382,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Store8_Immediate(X64PerThread& pp, uint32_t offset, uint8_t val, uint8_t reg)
-    {
-        pp.concat.addU8(0xC6);
-        emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU8(val);
-    }
-
-    inline void emit_Store16_Immediate(X64PerThread& pp, uint32_t offset, uint16_t val, uint8_t reg)
-    {
-        pp.concat.addU8(0x66);
-        pp.concat.addU8(0xC7);
-        emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU32((uint32_t) val);
-    }
-
-    inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint32_t val, uint8_t reg)
-    {
-        pp.concat.addU8(0xC7);
-        emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU32((uint32_t) val);
-    }
-
-    inline void emit_Store64_Immediate(X64PerThread& pp, uint32_t offset, uint64_t val, uint8_t reg)
-    {
-        SWAG_ASSERT(val <= 0x7FFFFFFF);
-        pp.concat.addU8(0x48);
-        pp.concat.addU8(0xC7);
-        emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU32((uint32_t) val);
-    }
-
-    inline void emit_Clear16(X64PerThread& pp, uint8_t reg)
-    {
-        SWAG_ASSERT(reg < R8);
-        pp.concat.addU8(0x66);
-        pp.concat.addU8(0x31);
-        pp.concat.addU8(modRM(3, reg, reg));
-    }
-
-    inline void emit_Clear32(X64PerThread& pp, uint8_t reg)
-    {
-        SWAG_ASSERT(reg < R8);
-        pp.concat.addU8(0x31);
-        pp.concat.addU8(modRM(3, reg, reg));
-    }
-
-    inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
-    {
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
-        pp.concat.addU8(0x31);
-        pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
-    }
-
     //////////////////////////////////////////////////////
 
     inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
@@ -374,24 +398,6 @@ namespace BackendX64Inst
         else
         {
             pp.concat.addString2("\x49\xb8"); // mov r8, ????????_????????
-            pp.concat.addU64(val);
-        }
-    }
-
-    inline void emit_Move_Cst64_In_RAX(X64PerThread& pp, uint64_t val)
-    {
-        if (val == 0)
-        {
-            emit_Clear64(pp, RAX);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            pp.concat.addString3("\x48\xc7\xc0"); // mov rax, ????????
-            pp.concat.addU32((uint32_t) val);
-        }
-        else
-        {
-            pp.concat.addString2("\x48\xb8"); // mov rax, ????????_????????
             pp.concat.addU64(val);
         }
     }
