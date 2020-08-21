@@ -1668,8 +1668,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CopyVBtoRA64:
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if(ip->b.u64 <= 0x7FFFFFFF)
+                BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), ip->b.u64, RDI);
+            else
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            }
             break;
 
         case ByteCodeOp::MemCpyVC32:
