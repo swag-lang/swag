@@ -108,16 +108,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         {
             if (returnByCopy)
             {
-                if (i == 0)
-                {
-                    concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-                    concat.addU32(regOffset(i + 1));
-                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
-                }
-                else
-                {
-                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RCX, RDI);
-                }
+                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+                concat.addU32(regOffset(i + 1));
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
             }
             else
             {
@@ -163,8 +156,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         else
         {
             // Get parameter from the stack (aligned to 8 bytes)
-            auto offset = (i - 4 - numReturnRegs) * (int) sizeof(Register);
-            offset += 4 * sizeof(Register); // The first 4 arguments
+            auto offset = (i - numReturnRegs) * (int) sizeof(Register);
             offset += sizeStack;
             offset += 16;
             BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
@@ -2358,7 +2350,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
     }
 
     // Return by parameter
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->isNative(NativeTypeKind::Any) ||
