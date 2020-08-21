@@ -18,4 +18,8 @@
         @assert(x.x == 10)
         @assert(x.y == 20)
     }
+
+    {
+        @assert(tcf_toto13(1,"toto") == "toto")
+    }
 }

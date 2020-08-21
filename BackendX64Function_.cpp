@@ -83,7 +83,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->name == "_tcf_toto11")
+    if (bc->name == "_tcf_toto13")
         bc = bc;
 
     node->computeFullNameForeign(true);
@@ -162,6 +162,28 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
     concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
 
+    // Need to save return register if needed
+    if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
+    {
+        SWAG_ASSERT(pushRAParams.size() >= 2);
+        int offset = (int) pushRAParams.size() - 2;
+        switch (offset)
+        {
+        case 0:
+            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16, RCX, RDI);
+            break;
+        case 1:
+            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 8, RDX, RDI);
+            break;
+        case 2:
+            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 16, R8, RDI);
+            break;
+        case 3:
+            BackendX64Inst::emit_Store64_Indirect(pp, sizeStack + 16 + 24, R9, RDI);
+            break;
+        }
+    }
+
     // Push all
     auto numReturnRegs = typeFunc->numReturnRegisters();
     for (int i = 0; i < (int) pushRAParams.size(); i++)
@@ -209,25 +231,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         // Get the pointer to store the result
         SWAG_ASSERT(pushRAParams.size() >= 2);
         int offset = (int) pushRAParams.size() - 2;
-        switch (offset)
-        {
-        case 0:
-            concat.addString3("\x48\x89\x01");     // mov [rcx], rax
-            concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
-            break;
-        case 2:
-            concat.addString3("\x49\x89\x00");     // mov [r8], rax
-            concat.addString4("\x49\x89\x58\x08"); // mov [r8 + 8], rbx
-            break;
-        default:
-            offset *= sizeof(Register);
-            offset += sizeStack;
-            offset += 16;
-            BackendX64Inst::emit_Load64_Indirect(pp, offset, RCX, RDI);
-            concat.addString3("\x48\x89\x01");     // mov [rcx], rax
-            concat.addString4("\x48\x89\x59\x08"); // mov [rcx + 8], rbx
-            break;
-        }
+                offset *= sizeof(Register);
+        offset += sizeStack + 16;
+        BackendX64Inst::emit_Load64_Indirect(pp, offset, RCX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+        BackendX64Inst::emit_Store64_Indirect(pp, 8, RBX, RCX);
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);

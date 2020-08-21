@@ -87,3 +87,16 @@ public func tcf_toto12(a, b, c, d, e, f: s32)->tcf_Point
     @assert(a+b+c+d+e+f == 21)
     return @{10, 20}
 }
+
+public func tcf_toto13(xx: s32, x: string)->string
+{
+    @assert(xx == 1)
+    return x
+}
+
+public func tcf_toto14(xx, yy: s32, x: string)->string
+{
+    @assert(xx == 1)
+    @assert(yy == 2)
+    return x
+}

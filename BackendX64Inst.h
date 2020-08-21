@@ -143,10 +143,9 @@ namespace BackendX64Inst
 
     inline void emit_Store64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(memReg < R8);
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1) | ((memReg & 0b1000) >> 3));
         pp.concat.addU8(0x89);
-        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), (memReg & 0b111));
     }
 
     inline void emit_StoreF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
