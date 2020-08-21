@@ -107,7 +107,6 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     if (returnByCopy)
     {
         pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
-        pushRAParams.push_back(g_TypeMgr.typeInfoPVoid);
     }
     else if (typeFunc->returnType->numRegisters() == 1)
     {
@@ -149,7 +148,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         }
     }
 
-    uint32_t sizeStack = (uint32_t) pushRAParams.size() * sizeof(Register);
+    uint32_t offsetRetCopy = 0;
+    uint32_t sizeStack     = (uint32_t) pushRAParams.size() * sizeof(Register);
+    if (returnByCopy)
+    {
+        offsetRetCopy = sizeStack;
+        sizeStack += sizeof(Register);
+    }
 
     concat.addU8(0x57); // push rdi
     while (sizeStack % 16)
@@ -162,20 +167,14 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     for (int i = 0; i < (int) pushRAParams.size(); i++)
     {
         auto typeParam = pushRAParams[i];
-        if ((!returnByCopy && i < numReturnRegs) || (returnByCopy && i < 2))
+        if (i < numReturnRegs)
         {
             if (returnByCopy)
             {
-                if (i == 0)
-                {
-                    concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-                    concat.addU32(regOffset(i + 1));
-                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
-                }
-                else
-                {
-                    setCalleeParameter(pp, typeParam, numCallRegisters, regOffset(i), sizeStack);
-                }
+                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
+                concat.addU32(offsetRetCopy);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
+                setCalleeParameter(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
             }
             else
             {

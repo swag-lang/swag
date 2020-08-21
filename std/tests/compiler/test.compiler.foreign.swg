@@ -51,6 +51,8 @@ public func tcf_toto7(a, b, c, d: s64)->s64
 
 public func tcf_toto8(a, b, c, d, e, f: s32)->s32
 {
+    @assert(a == 1)
+    @assert(f == 6)
     x := a+b+c+d+e+f
     @assert(x == 21)
     return x
@@ -58,6 +60,8 @@ public func tcf_toto8(a, b, c, d, e, f: s32)->s32
 
 public func tcf_toto9(a, b, c, d, e, f: s32)->string
 {
+    @assert(a == 1)
+    @assert(f == 6)
     return "toto"
 }
 
@@ -74,5 +78,16 @@ public func tcf_toto10()->tcf_Point
 
 public func tcf_toto11(x: s32)->tcf_Point
 {
+    @print("tcf_toto11: ")
+    @print(cast(s64)(x))
+    @print("\n")
+    return @{10, 20}
+}
+
+public func tcf_toto12(a, b, c, d, e, f: s32)->tcf_Point
+{
+    @print("tcf_toto12: ")
+    @print(cast(s64)(a+b+c+d+e+f))
+    @print("\n")
     return @{10, 20}
 }
