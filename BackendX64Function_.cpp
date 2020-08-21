@@ -1523,7 +1523,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Clear64(pp, RDX);
-            BackendX64Inst::emit_Move_Cst64_In_R8(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
             emitCall(pp, "memset");
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -1561,7 +1561,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Lea_Stack_In_RCX(pp, offsetStack + ip->a.u32);
             BackendX64Inst::emit_Clear64(pp, RDX);
-            BackendX64Inst::emit_Move_Cst64_In_R8(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
             emitCall(pp, "memset");
             break;
 

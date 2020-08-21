@@ -227,7 +227,7 @@ namespace BackendX64Inst
             return;
         }
 
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 3));
         if (val <= 0x7FFFFFFF)
         {
             pp.concat.addU8(0xC7);
@@ -383,24 +383,6 @@ namespace BackendX64Inst
     }
 
     //////////////////////////////////////////////////////
-
-    inline void emit_Move_Cst64_In_R8(X64PerThread& pp, uint64_t val)
-    {
-        if (val == 0)
-        {
-            emit_Clear64(pp, R8);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            pp.concat.addString3("\x49\xc7\xc0"); // mov r8, ????????
-            pp.concat.addU32((uint32_t) val);
-        }
-        else
-        {
-            pp.concat.addString2("\x49\xb8"); // mov r8, ????????_????????
-            pp.concat.addU64(val);
-        }
-    }
 
     // clang-format off
     inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
