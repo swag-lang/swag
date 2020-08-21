@@ -15,8 +15,7 @@
 
     {
         x := tcf_toto12(1,2,3,4,5,6)
-        @print(cast(s64)x.x)
-        //@assert(x.x == 10)
-        //@assert(x.y == 20)
+        @assert(x.x == 10)
+        @assert(x.y == 20)
     }
 }

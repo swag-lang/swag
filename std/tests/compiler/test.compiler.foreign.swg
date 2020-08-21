@@ -78,16 +78,12 @@ public func tcf_toto10()->tcf_Point
 
 public func tcf_toto11(x: s32)->tcf_Point
 {
-    @print("tcf_toto11: ")
-    @print(cast(s64)(x))
-    @print("\n")
+    @assert(x == 666)
     return @{10, 20}
 }
 
 public func tcf_toto12(a, b, c, d, e, f: s32)->tcf_Point
 {
-    @print("tcf_toto12: ")
-    @print(cast(s64)(a+b+c+d+e+f))
-    @print("\n")
+    @assert(a+b+c+d+e+f == 21)
     return @{10, 20}
 }

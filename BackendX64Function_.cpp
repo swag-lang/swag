@@ -2506,7 +2506,10 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         {
             if (paramsTypes[i] == g_TypeMgr.typeInfoUndefined)
             {
-                BackendX64Inst::emit_Lea_Stack_In_RAX(pp, paramsRegisters[i]);
+                if (returnByCopy)
+                    BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
+                else
+                    BackendX64Inst::emit_Lea_Stack_In_RAX(pp, paramsRegisters[i]);
                 concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
                 concat.addU32(offsetStack);
             }
