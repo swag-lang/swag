@@ -402,42 +402,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Move_Cst64_In_RBX(X64PerThread& pp, uint64_t val)
-    {
-        if (val == 0)
-        {
-            emit_Clear64(pp, RBX);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            pp.concat.addString3("\x48\xc7\xc3"); // mov rbx, ????????
-            pp.concat.addU32((uint32_t) val);
-        }
-        else
-        {
-            pp.concat.addString2("\x48\xbb"); // mov rbx, ????????_????????
-            pp.concat.addU64(val);
-        }
-    }
-
-    inline void emit_Move_Cst64_In_RCX(X64PerThread& pp, uint64_t val)
-    {
-        if (val == 0)
-        {
-            emit_Clear64(pp, RCX);
-        }
-        else if (val <= 0x7FFFFFFF)
-        {
-            pp.concat.addString3("\x48\xc7\xc1"); // mov rcx, ????????
-            pp.concat.addU32((uint32_t) val);
-        }
-        else
-        {
-            pp.concat.addString2("\x48\xb9"); // mov rcx, ????????_????????
-            pp.concat.addU64(val);
-        }
-    }
-
     // clang-format off
     inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
     inline void emit_Cmp_AX_With_BX(X64PerThread& pp) { pp.concat.addString3("\x66\x39\xd8"); } // cmp ax, bx

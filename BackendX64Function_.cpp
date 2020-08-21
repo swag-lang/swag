@@ -323,7 +323,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AddVBtoRA32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
             concat.addString2("\x01\x18"); // add dword ptr [rax], ebx
             break;
 
@@ -559,7 +559,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpShiftRightU64VB:
             //concat.addStringFormat("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RCX(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             concat.addString3("\x48\xd3\xe8"); // shr rax, cl
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1448,7 +1448,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::DeRefPointer:
             //concat.addStringFormat("r[%u].pointer = *(__u8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->c.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, RBX);
             concat.addString3("\x48\x01\xD8"); // add rax, rbx
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
@@ -1487,14 +1487,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ClearMaskU32:
             //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
             concat.addString2("\x21\xd8"); // and eax, ebx
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::ClearMaskU64:
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u64);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RBX);
             concat.addString3("\x48\x21\xd8"); // and rax, rbx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1656,7 +1656,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Div64byVB32:
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, ip->b.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
             BackendX64Inst::emit_Clear64(pp, RDX);
             concat.addString3("\x48\xf7\xfb"); // idiv rax, rbx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -1918,7 +1918,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Test if it's a native lambda or a bytecode one
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Move_Cst64_In_RBX(pp, SWAG_LAMBDA_MARKER);
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test_RBX_With_RBX(pp);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
