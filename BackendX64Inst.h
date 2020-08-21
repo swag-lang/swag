@@ -241,6 +241,13 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Copy64(X64PerThread& pp, uint32_t regDst, uint32_t regSrc)
+    {
+        pp.concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
+        pp.concat.addU8(0x89);
+        pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
@@ -344,13 +351,6 @@ namespace BackendX64Inst
                 pp.concat.addU32(value);
             }
         }
-    }
-
-    inline void emit_Copy64(X64PerThread& pp, uint32_t regDst, uint32_t regSrc)
-    {
-        pp.concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
-        pp.concat.addU8(0x89);
-        pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
     inline void emit_Lea_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)

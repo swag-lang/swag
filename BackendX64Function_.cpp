@@ -155,7 +155,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     while (sizeStack % 16)
         sizeStack += 8; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
+    BackendX64Inst::emit_Copy64(pp, RDI, RSP);
 
     // Need to save return register if needed
     if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
@@ -285,7 +285,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     while (sizeStack % 16)
         sizeStack++; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    concat.addString3("\x48\x89\xE7"); // mov rdi, rsp
+    BackendX64Inst::emit_Copy64(pp, RDI, RSP);
 
     // C calling convention, space for at least 4 parameters when calling a function
     // (should be reserved only if we have a call)
