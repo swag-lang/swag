@@ -1676,8 +1676,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            concat.addString3("\x49\xC7\xC0"); // mov r8, ????????
-            concat.addU32(ip->c.u32);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, R8);
             emitCall(pp, "memcpy");
             break;
 
@@ -1707,17 +1706,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            concat.addString2("\x48\xBA"); // mov rdx, ????????
-            emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path));
-            concat.addString3("\x49\xC7\xC0"); // mov r8, ????????
-            concat.addU32(ip->node->token.startLocation.line + 1);
+            emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RDX);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line + 1, R8);
             if (ip->d.pointer)
-            {
-                concat.addString2("\x49\xB9"); // mov r9, ????????
-                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer);
-            }
+                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, R9);
             else
-                concat.addString3("\x4D\x31\xC9"); // xor r9, r9
+                BackendX64Inst::emit_Clear64(pp, R9);
             emitCall(pp, "swag_runtime_assert");
             break;
 

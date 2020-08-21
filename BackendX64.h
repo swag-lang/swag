@@ -145,7 +145,7 @@ struct BackendX64 : public Backend
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str);
+    void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str, uint8_t reg);
 
     bool emitDirectives(const BuildParameters& buildParameters);
     bool emitSymbolTable(const BuildParameters& buildParameters);

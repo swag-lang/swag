@@ -69,8 +69,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     {
         auto nameDown = dep.first;
         nameDown.replaceAll('.', '_');
-        concat.addString2("\x48\xb9"); // mov rcx, ????????_????????
-        emitGlobalString(pp, precompileIndex, nameDown);
+        emitGlobalString(pp, precompileIndex, nameDown, RCX);
         emitCall(pp, "swag_runtime_loadDynamicLibrary");
 
         if (dep.second.generated)

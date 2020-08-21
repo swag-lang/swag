@@ -214,13 +214,21 @@ namespace BackendX64Inst
 
     inline void emit_Clear64(X64PerThread& pp, uint8_t reg)
     {
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1) | ((reg & 0b1000) >> 3));
         pp.concat.addU8(0x31);
         pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
     }
 
-    inline void emit_Load64_Immediate(X64PerThread& pp, uint64_t val, uint8_t reg)
+    inline void emit_Load64_Immediate(X64PerThread& pp, uint64_t val, uint8_t reg, bool force64bits = false)
     {
+        if (force64bits)
+        {
+            pp.concat.addU8(0x48 | ((reg & 0b1000) >> 3));
+            pp.concat.addU8(0xB8 | reg);
+            pp.concat.addU64(val);
+            return;
+        }
+
         if (val == 0)
         {
             emit_Clear64(pp, reg);

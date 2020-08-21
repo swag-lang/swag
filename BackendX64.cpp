@@ -236,8 +236,10 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str)
+void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str, uint8_t reg)
 {
+    BackendX64Inst::emit_Load64_Immediate(pp, 0, reg, true);
+
     auto&       concat = pp.concat;
     auto        it     = pp.globalStrings.find(str);
     CoffSymbol* sym    = nullptr;
@@ -257,12 +259,10 @@ void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const U
     }
 
     CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
+    reloc.virtualAddress = (concat.totalCount() - 8) - pp.textSectionOffset;
     reloc.symbolIndex    = sym->index;
     reloc.type           = IMAGE_REL_AMD64_ADDR64;
     pp.relocTableTextSection.table.push_back(reloc);
-
-    concat.addU64(0);
 }
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
