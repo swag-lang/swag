@@ -524,11 +524,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::PushRR:
     {
+        SWAG_ASSERT(ip->a.u32 < 4);
         context->push(registersRR[ip->a.u32].u64);
         break;
     }
     case ByteCodeOp::PopRR:
     {
+        SWAG_ASSERT(ip->a.u32 < 4);
         registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
@@ -536,12 +538,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::CopyRCtoRR:
     case ByteCodeOp::CopyRCtoRT:
     {
+        SWAG_ASSERT(ip->a.u32 < 4);
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
     case ByteCodeOp::CopyRRtoRC:
     case ByteCodeOp::CopyRTtoRC:
     {
+        SWAG_ASSERT(ip->b.u32 < 4);
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;
     }
@@ -853,7 +857,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicCompiler:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) getCompilerItf(context->sourceFile->module);
-        //(uint8_t*) context->sourceFile->module->currentCompilerMessage;
         break;
     }
     case ByteCodeOp::IntrinsicIsByteCode:

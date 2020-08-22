@@ -194,13 +194,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     node->byteCodeFct   = ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
-    // Reserve one RR register for each return value
-    int countRR = 0;
-    if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
-        countRR += typeInfo->returnType->numRegisters();
-    countRR += (int) typeInfo->parameters.size();
-    context->sourceFile->module->reserveRegisterRR(countRR);
-
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
         return context->report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});

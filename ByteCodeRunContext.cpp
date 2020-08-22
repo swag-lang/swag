@@ -3,14 +3,13 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 
-void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRR, uint32_t stackS)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
 {
-    if (numRegistersRR < numRR)
+    if (!registersRR)
     {
-        numRegistersRR = numRR;
-        registersRR    = (Register*) realloc(registersRR, numRR * sizeof(Register));
+        registersRR = (Register*) malloc(4 * sizeof(Register));
         if (g_CommandLine.devMode)
-            memset(registersRR, 0xFE, numRR * sizeof(Register));
+            memset(registersRR, 0xFE, 4 * sizeof(Register));
     }
 
     if (stackSize < stackS)

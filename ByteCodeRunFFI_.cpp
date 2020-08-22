@@ -265,16 +265,16 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         switch (returnType->sizeOf)
         {
         case 1:
-            resultPtr = &context->registersRR->u8;
+            resultPtr = &context->registersRR[0].u8;
             break;
         case 2:
-            resultPtr = &context->registersRR->u16;
+            resultPtr = &context->registersRR[0].u16;
             break;
         case 4:
-            resultPtr = &context->registersRR->u32;
+            resultPtr = &context->registersRR[0].u32;
             break;
         case 8:
-            resultPtr = &context->registersRR->u64;
+            resultPtr = &context->registersRR[0].u64;
             break;
         default:
             context->hasError = true;

@@ -19,7 +19,7 @@ struct StackValue
 
 struct ByteCodeRunContext : public JobContext
 {
-    void setup(SourceFile* sf, AstNode* node, uint32_t numRR, uint32_t stackS);
+    void setup(SourceFile* sf, AstNode* node, uint32_t stackS);
     void error(const Utf8& msg);
 
     template<typename T>
@@ -66,8 +66,7 @@ struct ByteCodeRunContext : public JobContext
     ByteCodeInstruction* ip          = nullptr;
     Register*            registersRR = nullptr;
 
-    uint32_t stackSize      = 0;
-    uint32_t numRegistersRR = 0;
+    uint32_t stackSize = 0;
 
     bool hasError = false;
 };

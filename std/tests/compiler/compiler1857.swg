@@ -19,10 +19,10 @@ func testInline(type: const* TypeInfoFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
-    @assert(msg != null)
+    //@assert(msg != null)
 
-    if(msg.type.kind == TypeInfoKind.FuncAttr)
-        testInline(cast(const* TypeInfoFunc) msg.type)
+    //if(msg.type.kind == TypeInfoKind.FuncAttr)
+    //    testInline(cast(const* TypeInfoFunc) msg.type)
 
     cpt += 1
 }

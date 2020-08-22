@@ -196,12 +196,6 @@ void Module::removeFile(SourceFile* file)
     }
 }
 
-void Module::reserveRegisterRR(uint32_t count)
-{
-    scoped_lock lk(mutexRegisterRR);
-    maxReservedRegisterRR = max(maxReservedRegisterRR, count);
-}
-
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
@@ -230,11 +224,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
 #endif
 
     // Global setup
-    {
-        scoped_lock lkRR(mutexRegisterRR);
-        runContext.setup(sourceFile, node, maxReservedRegisterRR, buildParameters.buildCfg->byteCodeStackSize);
-        node->bc->enterByteCode(&runContext);
-    }
+    runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);
+    node->bc->enterByteCode(&runContext);
 
     auto module = sourceFile->module;
     bool result = module->runner.run(&runContext);

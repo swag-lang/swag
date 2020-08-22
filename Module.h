@@ -71,13 +71,9 @@ struct Module
     bool                      saveMutableValues    = false;
     bool                      bssCannotChange      = false;
 
-    void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);
     bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node);
     void printUserMessage(const BuildParameters& bp);
-
-    shared_mutex mutexRegisterRR;
-    uint32_t     maxReservedRegisterRR = 0;
 
     DataSegment mutableSegment;
     DataSegment typeSegment;
