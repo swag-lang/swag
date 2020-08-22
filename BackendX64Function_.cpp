@@ -1412,13 +1412,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IncrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32++;");
-            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Add_Cst32_At_RAX(pp, 1);
+            BackendX64Inst::emit_Inc32_Indirect(pp, regOffset(ip->a.u32), RDI);
             break;
         case ByteCodeOp::DecrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
-            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Sub_Cst32_At_RAX(pp, 1);
+            BackendX64Inst::emit_Dec32_Indirect(pp, regOffset(ip->a.u32), RDI);
             break;
 
         case ByteCodeOp::DeRef8:

@@ -394,6 +394,20 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
+    inline void emit_Inc32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0xFF);
+        emit_ModRM(pp, stackOffset, 0, reg);
+    }
+
+    inline void emit_Dec32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0xFF);
+        emit_ModRM(pp, stackOffset, 1, reg);
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
@@ -443,40 +457,6 @@ namespace BackendX64Inst
             else
             {
                 pp.concat.addString3("\x48\x81\xC4"); // add rsp, ????????
-                pp.concat.addU32(value);
-            }
-        }
-    }
-
-    inline void emit_Add_Cst32_At_RAX(X64PerThread& pp, uint32_t value)
-    {
-        if (value)
-        {
-            if (value <= 0x7F)
-            {
-                pp.concat.addString2("\x83\x00"); // add dword ptr [rax], ??
-                pp.concat.addU8((uint8_t) value);
-            }
-            else
-            {
-                pp.concat.addString2("\x81\x00"); // add dword ptr [rax], ????????
-                pp.concat.addU32(value);
-            }
-        }
-    }
-
-    inline void emit_Sub_Cst32_At_RAX(X64PerThread& pp, uint32_t value)
-    {
-        if (value)
-        {
-            if (value <= 0x7F)
-            {
-                pp.concat.addString2("\x83\x28"); // sub dword ptr [rax], ??
-                pp.concat.addU8((uint8_t) value);
-            }
-            else
-            {
-                pp.concat.addString2("\x81\x28"); // sub dword ptr [rax], ????????
                 pp.concat.addU32(value);
             }
         }
