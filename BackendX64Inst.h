@@ -396,7 +396,7 @@ namespace BackendX64Inst
 
     ///////////////////////////////////////////////////////
 
-    inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
+    inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
     {
         auto&          concat = pp.concat;
         CoffRelocation reloc;
@@ -404,14 +404,14 @@ namespace BackendX64Inst
         reloc.symbolIndex    = symbolIndex;
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
-        concat.addU32(0);
+        concat.addU32(offset);
     }
 
-    inline void emit_SymbolAddr_In_RAX(X64PerThread& pp, uint32_t symbolIndex)
+    inline void emit_SymbolAddr_In_RAX(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
     {
         auto& concat = pp.concat;
         concat.addString3("\x48\x8D\x05"); // mov rax, qword ptr ????????[rip]
-        emit_Symbol_Relocation(pp, symbolIndex);
+        emit_Symbol_Relocation(pp, symbolIndex, offset);
     }
 
     inline void emit_Sub_Cst32_To_RSP(X64PerThread& pp, uint32_t value)
@@ -477,23 +477,6 @@ namespace BackendX64Inst
             else
             {
                 pp.concat.addString2("\x81\x28"); // sub dword ptr [rax], ????????
-                pp.concat.addU32(value);
-            }
-        }
-    }
-
-    inline void emit_Add_Cst32_To_RAX(X64PerThread& pp, uint32_t value)
-    {
-        if (value)
-        {
-            if (value <= 0x7F)
-            {
-                pp.concat.addString3("\x48\x83\xc0"); // add rax, ??
-                pp.concat.addU8((uint8_t) value);
-            }
-            else
-            {
-                pp.concat.addString2("\x48\x05"); // add rax, ????????
                 pp.concat.addU32(value);
             }
         }
