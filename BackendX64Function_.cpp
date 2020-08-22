@@ -1952,7 +1952,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test_RBX_With_RBX(pp);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+            concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
             auto jumpToForeignAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
             auto jumpToForeignOffset = concat.totalCount();
@@ -2004,13 +2004,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::LocalCall:
         {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            if (funcBC->name.find("variadic2") != -1)
-                funcBC = funcBC;
-            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
+            auto              funcBC        = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC    = (TypeInfoFuncAttr*) ip->b.pointer;
+            uint32_t          sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             emitCall(pp, funcBC->callName());
-
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
             isVariadic = 0;
             pushRAParams.clear();
