@@ -366,7 +366,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CastBool64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u64 ? 1 : 0;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1295,7 +1295,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::TestNotZero64:
             //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1387,7 +1387,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emitJump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero32:
@@ -1401,7 +1401,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Test_RAX_With_RAX(pp);
+            BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::Jump:
@@ -1942,7 +1942,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
-            BackendX64Inst::emit_Test_RBX_With_RBX(pp);
+            BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
             auto jumpToBCAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
@@ -1951,7 +1951,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Test if it's a foreign lambda
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
-            BackendX64Inst::emit_Test_RBX_With_RBX(pp);
+            BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
             auto jumpToForeignAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);

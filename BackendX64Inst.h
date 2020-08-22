@@ -298,6 +298,13 @@ namespace BackendX64Inst
         pp.concat.addU8(0xC0);
     }
 
+    inline void emit_Test64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        pp.concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
+        pp.concat.addU8(0x85);
+        pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
@@ -452,8 +459,6 @@ namespace BackendX64Inst
     inline void emit_Test_AL_With_AL(X64PerThread& pp) { pp.concat.addString2("\x84\xC0"); } // test al, al
     inline void emit_Test_AX_With_AX(X64PerThread& pp) { pp.concat.addString3("\x66\x85\xc0"); } // test ax, ax
     inline void emit_Test_EAX_With_EAX(X64PerThread& pp) { pp.concat.addString2("\x85\xC0"); } // test eax, eax
-    inline void emit_Test_RAX_With_RAX(X64PerThread& pp) { pp.concat.addString3("\x48\x85\xc0"); } // test rax, rax
-    inline void emit_Test_RBX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x85\xdb"); } // test rbx, rbx
 
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
