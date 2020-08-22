@@ -336,7 +336,7 @@ namespace BackendX64Inst
 
     inline void emit_Cmp32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
-        SWAG_ASSERT(reg1 < R8&& reg2 < R8);
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x39);
         pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
     }
@@ -353,6 +353,23 @@ namespace BackendX64Inst
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x38);
+        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+    }
+
+    inline void emit_CmpF32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x2F);
+        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+    }
+
+    inline void emit_CmpF64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x2F);
         pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
     }
 
@@ -500,9 +517,6 @@ namespace BackendX64Inst
     //////////////////////////////////////////////////////
 
     // clang-format off
-    inline void emit_Cmp_XMM0_With_XMM1_F32(X64PerThread& pp) { pp.concat.addString3("\x0f\x2f\xc8"); } // comiss xmm1, xmm0 (inverted !)
-    inline void emit_Cmp_XMM0_With_XMM1_F64(X64PerThread& pp) { pp.concat.addString4("\x66\x0f\x2f\xc8"); } // comisd xmm1, xmm0 (inverted !)
-
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
     inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
