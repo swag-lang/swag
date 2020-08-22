@@ -2031,7 +2031,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            concat.addString2("\x89\xc1"); // mov ecx, eax
+            BackendX64Inst::emit_Copy32(pp, RCX, RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2045,7 +2045,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            concat.addString2("\x89\xc1"); // mov ecx, eax
+            BackendX64Inst::emit_Copy32(pp, RCX, RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:

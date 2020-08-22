@@ -256,6 +256,13 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
+    inline void emit_Copy32(X64PerThread& pp, uint32_t regDst, uint32_t regSrc)
+    {
+        SWAG_ASSERT(regDst < R8 && regSrc < R8);
+        pp.concat.addU8(0x89);
+        pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
+    }
+
     inline void emit_SetNE(X64PerThread& pp)
     {
         pp.concat.addU8(0x0F);
