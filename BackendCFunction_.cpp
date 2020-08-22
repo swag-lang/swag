@@ -126,11 +126,8 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
     return moduleToGen->internalError(format("swagTypeToCType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
-bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, VectorNative<uint32_t>& pushParams)
+bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, AstFuncDecl* nodeFunc, VectorNative<uint32_t>& pushParams)
 {
-    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
     emitForeignFuncSignature(concat, moduleToGen, typeFuncBC, nodeFunc, false);
     CONCAT_FIXED_STR(concat, ";\n");
 
@@ -187,20 +184,22 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
                 CONCAT_FIXED_STR(concat, "rt[0].f64=(double)");
                 break;
             default:
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+                return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid return type");
             }
         }
         else
         {
-            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
+            return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid return type");
         }
     }
 
+    // Namee
     ComputedValue foreignValue;
     if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         concat.addString(foreignValue.text);
     else
         concat.addString(nodeFunc->name);
+
     concat.addChar('(');
 
     int numCallParams = (int) typeFuncBC->parameters.size();
@@ -297,12 +296,12 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInst
                 CONCAT_FIXED_STR(concat, ".ch");
                 break;
             default:
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param native type");
+                return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid param native type");
             }
         }
         else
         {
-            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param type");
+            return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid param type");
         }
     }
 
@@ -1699,7 +1698,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::ForeignCall:
         {
-            SWAG_CHECK(emitForeignCall(concat, moduleToGen, ip, pushRAParams));
+            auto              nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            TypeInfoFuncAttr* typeFuncNode = (TypeInfoFuncAttr*) ip->b.pointer;
+            SWAG_CHECK(emitForeignCall(concat, moduleToGen, typeFuncNode, nodeFunc, pushRAParams));
             break;
         }
 
