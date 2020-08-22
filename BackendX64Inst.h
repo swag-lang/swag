@@ -305,6 +305,28 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
     }
 
+    inline void emit_Test32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x85);
+        pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
+    }
+
+    inline void emit_Test16(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x85);
+        pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
+    }
+
+    inline void emit_Test8(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x84);
+        pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
@@ -455,10 +477,6 @@ namespace BackendX64Inst
     inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x39\xD8"); } // cmp rax, rbx
     inline void emit_Cmp_XMM0_With_XMM1_F32(X64PerThread& pp) { pp.concat.addString3("\x0f\x2f\xc8"); } // comiss xmm1, xmm0 (inverted !)
     inline void emit_Cmp_XMM0_With_XMM1_F64(X64PerThread& pp) { pp.concat.addString4("\x66\x0f\x2f\xc8"); } // comisd xmm1, xmm0 (inverted !)
-
-    inline void emit_Test_AL_With_AL(X64PerThread& pp) { pp.concat.addString2("\x84\xC0"); } // test al, al
-    inline void emit_Test_AX_With_AX(X64PerThread& pp) { pp.concat.addString3("\x66\x85\xc0"); } // test ax, ax
-    inline void emit_Test_EAX_With_EAX(X64PerThread& pp) { pp.concat.addString2("\x85\xC0"); } // test eax, eax
 
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
