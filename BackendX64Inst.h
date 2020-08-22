@@ -327,6 +327,26 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(3, reg1 & 0b111, reg2 & 0b111));
     }
 
+    inline void emit_Cmp64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        pp.concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
+        pp.concat.addU8(0x39);
+        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+    }
+
+    inline void emit_Cmp_AL_With_BL(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x38\xd8");
+    } // cmp al, bl
+    inline void emit_Cmp_AX_With_BX(X64PerThread& pp)
+    {
+        pp.concat.addString3("\x66\x39\xd8");
+    } // cmp ax, bx
+    inline void emit_Cmp_EAX_With_EBX(X64PerThread& pp)
+    {
+        pp.concat.addString2("\x39\xD8");
+    } // cmp eax, ebx
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
@@ -471,10 +491,6 @@ namespace BackendX64Inst
     //////////////////////////////////////////////////////
 
     // clang-format off
-    inline void emit_Cmp_AL_With_BL(X64PerThread& pp) { pp.concat.addString2("\x38\xd8"); } // cmp al, bl
-    inline void emit_Cmp_AX_With_BX(X64PerThread& pp) { pp.concat.addString3("\x66\x39\xd8"); } // cmp ax, bx
-    inline void emit_Cmp_EAX_With_EBX(X64PerThread& pp) { pp.concat.addString2("\x39\xD8"); } // cmp eax, ebx
-    inline void emit_Cmp_RAX_With_RBX(X64PerThread& pp) { pp.concat.addString3("\x48\x39\xD8"); } // cmp rax, rbx
     inline void emit_Cmp_XMM0_With_XMM1_F32(X64PerThread& pp) { pp.concat.addString3("\x0f\x2f\xc8"); } // comiss xmm1, xmm0 (inverted !)
     inline void emit_Cmp_XMM0_With_XMM1_F64(X64PerThread& pp) { pp.concat.addString4("\x66\x0f\x2f\xc8"); } // comisd xmm1, xmm0 (inverted !)
 
