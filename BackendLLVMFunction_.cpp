@@ -2795,7 +2795,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto                       r1 = builder.CreateIntToPtr(v1, PT);
                 VectorNative<llvm::Value*> fctParams;
                 getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams);
-                builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                auto result = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
                 builder.CreateBr(blockNext);
             }
 
@@ -3330,6 +3331,48 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
     return true;
 }
 
+bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParameters,
+                                            llvm::AllocaInst*      allocRR,
+                                            Module*                moduleToGen,
+                                            TypeInfoFuncAttr*      typeFuncBC,
+                                            llvm::Value*           callResult)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr.typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
+        {
+            //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
+            builder.CreateStore(callResult, TO_PTR_PTR_I8(allocRR));
+        }
+        else if (returnType->kind == TypeInfoKind::Native)
+        {
+            auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
+            if (!r)
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid return type");
+            builder.CreateStore(callResult, r);
+        }
+        else
+        {
+            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid return type");
+        }
+    }
+    return true;
+}
+
 bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
                                   llvm::AllocaInst*             allocR,
                                   llvm::AllocaInst*             allocRR,
@@ -3340,7 +3383,6 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
@@ -3365,33 +3407,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), {params.begin(), params.end()});
 
     // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr.typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (returnType->kind == TypeInfoKind::Pointer)
-        {
-            //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
-            builder.CreateStore(result, TO_PTR_PTR_I8(allocRR));
-        }
-        else if (returnType->kind == TypeInfoKind::Native)
-        {
-            auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
-            if (!r)
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
-            builder.CreateStore(result, r);
-        }
-        else
-        {
-            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid return type");
-        }
-    }
+    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
 
     return true;
 }

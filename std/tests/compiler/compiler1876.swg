@@ -5,7 +5,10 @@
     ptr := &tcf_toto16
     ptr(456,3.14)
 
-    /*{
+    ptr1 := &tcf_toto5
+    @assert(ptr1(10) == 10)
+
+    {
         x := tcf_toto10()
         @assert(x.x == 10)
         @assert(x.y == 20)
@@ -25,5 +28,5 @@
 
     @assert(tcf_toto13(1,"toto") == "toto")
     @assert(tcf_toto14(1,2,"toto") == "toto")
-    @assert(tcf_toto15(1,2,3,"toto") == "toto")*/
+    @assert(tcf_toto15(1,2,3,"toto") == "toto")
 }
