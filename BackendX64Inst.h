@@ -309,14 +309,14 @@ namespace BackendX64Inst
     {
         pp.concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
         pp.concat.addU8(0x85);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Test32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x85);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Test16(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
@@ -324,21 +324,21 @@ namespace BackendX64Inst
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x85);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Test8(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x84);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Cmp8(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x38);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Cmp16(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
@@ -346,21 +346,38 @@ namespace BackendX64Inst
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x39);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Cmp32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
         pp.concat.addU8(0x39);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Cmp64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         pp.concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
         pp.concat.addU8(0x39);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    }
+
+    inline void emit_CmpF32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x2F);
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    }
+
+    inline void emit_CmpF64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x2F);
+        pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
     inline void emit_Cmp32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
@@ -378,21 +395,21 @@ namespace BackendX64Inst
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
-    inline void emit_CmpF32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    inline void emit_CmpF32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x2F);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0, reg & 0b111, memReg & 0b111));
     }
 
-    inline void emit_CmpF64(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
+    inline void emit_CmpF64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x2F);
-        pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
+        pp.concat.addU8(modRM(0, reg & 0b111, memReg & 0b111));
     }
 
     inline void emit_LoadAddress_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
