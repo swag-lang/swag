@@ -167,8 +167,9 @@ struct BackendX64 : public Backend
     void     emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void     emitCall(X64PerThread& pp, const Utf8& name);
 
+    void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
-    bool emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
+    bool emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

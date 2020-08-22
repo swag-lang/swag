@@ -1909,10 +1909,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
 
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+            concat.addString3("\x48\x09\xC8"); // or rax, rcx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
-         
+
         case ByteCodeOp::MakeLambda:
         {
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
@@ -1936,7 +1938,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
             //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
 
-            // Test if it's a native lambda or a bytecode one
+            // Test if it's a bytecode lambda
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
@@ -1946,25 +1948,54 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(0);
             auto jumpToBCOffset = concat.totalCount();
 
-            // Native lambda
+            // Test if it's a foreign lambda
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
+            concat.addString3("\x48\x21\xc3"); // and rbx, rax
+            BackendX64Inst::emit_Test_RBX_With_RBX(pp);
+            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+            auto jumpToForeignAddr = (uint32_t*) concat.getSeekPtr();
+            concat.addU32(0);
+            auto jumpToForeignOffset = concat.totalCount();
+
+            // Local lambda
             //////////////////
             uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             concat.addString2("\xff\xd0"); // call rax
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            auto jumpToAfterAddr = (uint32_t*) concat.getSeekPtr();
+            auto jumpBCToAfterAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
-            auto jumpToAfterOffset = concat.totalCount();
+            auto jumpBCToAfterOffset = concat.totalCount();
+
+            // Foreign lambda
+            //////////////////
+            *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
+
+            BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+            concat.addString3("\x48\x21\xC8"); // and rax, rcx
+            BackendX64Inst::emit_Copy64(pp, R12, RAX);
+
+            SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+            concat.addString3("\x41\xFF\xD4"); // call r12
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
+            emitForeignCallResult(pp, typeFuncBC, offsetRT);
+
+            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
+            auto jumpForeignToAfterAddr = (uint32_t*) concat.getSeekPtr();
+            concat.addU32(0);
+            auto jumpForeignToAfterOffset = concat.totalCount();
 
             // ByteCode lambda
             //////////////////
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
-            concat.addString1("\x90");
+
+            concat.addString1("\x90"); // @TODO
 
             // End
             //////////////////
-            *jumpToAfterAddr = concat.totalCount() - jumpToAfterOffset;
+            *jumpBCToAfterAddr      = concat.totalCount() - jumpBCToAfterOffset;
+            *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
 
             isVariadic = 0;
             pushRAParams.clear();
@@ -2288,24 +2319,8 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
     return sizeStack;
 }
 
-bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
 {
-    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
-    // Get function name
-    ComputedValue foreignValue;
-    Utf8          funcName;
-    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
-        funcName = foreignValue.text;
-    else
-        funcName = nodeFunc->name;
-
-    uint32_t exceededStack = 0;
-    SWAG_CHECK(emitForeignCallParameters(pp, exceededStack, moduleToGen, ip, offsetRT, typeFuncBC, pushRAParams));
-    emitCall(pp, funcName);
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, exceededStack);
-
     // Store result to rt0
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
@@ -2323,12 +2338,35 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
             BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
         }
     }
+}
+
+bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+{
+    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+
+    // Get function name
+    ComputedValue foreignValue;
+    Utf8          funcName;
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        funcName = foreignValue.text;
+    else
+        funcName = nodeFunc->name;
+
+    // Push parameters
+    uint32_t exceededStack = 0;
+    SWAG_CHECK(emitForeignCallParameters(pp, exceededStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+    emitCall(pp, funcName);
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, exceededStack);
+
+    // Store result
+    emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
     pushRAParams.clear();
     return true;
 }
 
-bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat        = pp.concat;
     int   numCallParams = (int) typeFuncBC->parameters.size();
@@ -2392,7 +2430,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         else
         {
             if (typeParam->sizeOf > sizeof(void*))
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
             paramsRegisters.push_back(index);
             paramsTypes.push_back(typeParam);
         }
@@ -2563,7 +2601,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                     concat.addU32(offsetStack);
                     break;
                 default:
-                    return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid parameter type");
+                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
                 }
             }
 

@@ -113,4 +113,6 @@ public func tcf_toto16(x: s32, y: f64)
 {
     @assert(x == 456)
     @assert(y == 3.14)
+    //@print(cast(s64) x)
+    //@print(cast(f64) y)
 }
