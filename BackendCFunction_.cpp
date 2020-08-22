@@ -1663,17 +1663,17 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
             // Bytecode lambda call
             ///////////////////////////
-            concat.addStringFormat("if(r[%u].u64&0x%llx)\n{\n", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
+            concat.addStringFormat("if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
 
             CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].p");
             if (typeFuncNode->numReturnRegisters() + typeFuncNode->numParamsRegisters())
                 concat.addChar(',');
             addCallParameters(concat, typeFuncNode, pushRAParams);
-            CONCAT_FIXED_STR(concat, ");\n");
+            CONCAT_FIXED_STR(concat, ");");
 
             // Foreign lambda call
             ///////////////////////////
-            concat.addStringFormat("}\nelse if(r[%u].u64&0x%llx)\n{\n", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
+            concat.addStringFormat("}else if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
             concat.addStringFormat("r[%u].u64&=~0x%llx;", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
             SWAG_CHECK(emitForeignCallReturn(concat, moduleToGen, typeFuncNode));
             CONCAT_FIXED_STR(concat, "((");
@@ -1681,11 +1681,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_FIXED_STR(concat, ")");
             concat.addStringFormat("r[%u].p)", ip->a.u32);
             emitForeignCallParameters(concat, moduleToGen, typeFuncNode, pushRAParams);
-            CONCAT_FIXED_STR(concat, ";\n");
+            CONCAT_FIXED_STR(concat, ";");
 
             // Local lambda call
             ///////////////////////////
-            CONCAT_FIXED_STR(concat, "}\nelse\n{\n");
+            CONCAT_FIXED_STR(concat, "}else{");
 
             CONCAT_FIXED_STR(concat, "((");
             emitLocalFuncSignature(concat, typeFuncNode, "(*)", false);
@@ -1694,7 +1694,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].p)");
             concat.addChar('(');
             addCallParameters(concat, typeFuncNode, pushRAParams);
-            CONCAT_FIXED_STR(concat, ");\n}\n");
+            CONCAT_FIXED_STR(concat, ");}");
             pushRAParams.clear();
             break;
         }
