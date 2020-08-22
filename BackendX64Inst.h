@@ -380,7 +380,7 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
     }
 
-    inline void emit_LoadAddress(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    inline void emit_LoadAddress_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
         if (stackOffset == 0)
