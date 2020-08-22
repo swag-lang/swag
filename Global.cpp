@@ -97,20 +97,20 @@ Utf8 toStringF64(double v)
 void* doByteCodeLambda(void* ptr)
 {
     uint64_t u = (uint64_t) ptr;
-    u |= SWAG_LAMBDA_MARKER;
+    u |= SWAG_LAMBDA_BC_MARKER;
     return (void*) u;
 }
 
 void* undoByteCodeLambda(void* ptr)
 {
     uint64_t u = (uint64_t) ptr;
-    SWAG_ASSERT(u & SWAG_LAMBDA_MARKER);
-    u ^= SWAG_LAMBDA_MARKER;
+    SWAG_ASSERT(u & SWAG_LAMBDA_BC_MARKER);
+    u ^= SWAG_LAMBDA_BC_MARKER;
     return (void*) u;
 }
 
 bool isByteCodeLambda(void* ptr)
 {
     uint64_t u = (uint64_t) ptr;
-    return u & SWAG_LAMBDA_MARKER;
+    return u & SWAG_LAMBDA_BC_MARKER;
 }

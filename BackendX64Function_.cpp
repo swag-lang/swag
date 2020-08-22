@@ -1888,13 +1888,37 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::MakeLambdaForeign:
+        {
+            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
+
+            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            SWAG_ASSERT(funcNode);
+            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
+            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            ComputedValue     foreignValue;
+            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+            SWAG_ASSERT(!foreignValue.text.empty());
+
+            BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
+
+            CoffRelocation reloc;
+            reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+            auto callSym         = getOrAddSymbol(pp, foreignValue.text, CoffSymbolKind::Extern);
+            reloc.symbolIndex    = callSym->index;
+            reloc.type           = IMAGE_REL_AMD64_ADDR64;
+            pp.relocTableTextSection.table.push_back(reloc);
+
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+         
         case ByteCodeOp::MakeLambda:
         {
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
             auto funcBC = (ByteCode*) ip->b.pointer;
             SWAG_ASSERT(funcBC);
-            concat.addString2("\x48\xb8"); // mov rax, ????????_????????
-            concat.addU64(0);
+            BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
@@ -1914,7 +1938,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Test if it's a native lambda or a bytecode one
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_MARKER, RBX);
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test_RBX_With_RBX(pp);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda

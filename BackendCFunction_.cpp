@@ -554,6 +554,7 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     Utf8 returnType;
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
+    // Return type
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnType));
     if (returnByCopy)
         CONCAT_FIXED_STR(buffer, "void");
@@ -562,56 +563,74 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
     else
         CONCAT_FIXED_STR(buffer, "void");
     buffer.addChar(' ');
-    node->computeFullNameForeign(forWrapper);
-    buffer.addString(node->fullnameForeign);
+
+    // Name
+    if (node)
+    {
+        node->computeFullNameForeign(forWrapper);
+        buffer.addString(node->fullnameForeign);
+    }
+    else
+    {
+        // A type cast
+        CONCAT_FIXED_STR(buffer, "(*)");
+    }
+
+    // Parameters
     buffer.addChar('(');
 
-    bool first = true;
-    if (node->parameters)
+    bool first     = true;
+    auto numParams = typeFunc->parameters.size();
+
+    // Variadic parameters are always first
+    if (numParams)
     {
-        // Variadic parameters are always first
-        auto numParams = node->parameters->childs.size();
-        if (numParams)
+        auto param = typeFunc->parameters.back();
+        if (param->typeInfo->kind == TypeInfoKind::Variadic)
         {
-            auto param = node->parameters->childs.back();
-            if (param->typeInfo->kind == TypeInfoKind::Variadic)
-            {
-                CONCAT_FIXED_STR(buffer, "void*");
-                buffer.addString(param->name);
-                CONCAT_FIXED_STR(buffer, ",__u32_t ");
-                buffer.addString(param->name);
-                CONCAT_FIXED_STR(buffer, "_count");
-                numParams--;
-                first = false;
-            }
-        }
-
-        Utf8 cType;
-        for (int i = 0; i < numParams; i++)
-        {
-            auto param = node->parameters->childs[i];
-            if (!first)
-                buffer.addChar(',');
-            first = false;
-
-            SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
-            buffer.addString(cType);
+            CONCAT_FIXED_STR(buffer, "void*");
+            if (forWrapper)
+                buffer.addString(param->namedParam);
+            CONCAT_FIXED_STR(buffer, ",__u32_t ");
             if (forWrapper)
             {
-                buffer.addChar(' ');
-                buffer.addString(param->name);
-            }
-
-            if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
-            {
-                CONCAT_FIXED_STR(buffer, ",__u32_t ");
-                buffer.addString(param->name);
+                buffer.addString(param->namedParam);
                 CONCAT_FIXED_STR(buffer, "_count");
             }
-            else if (param->typeInfo->isNative(NativeTypeKind::Any))
+            numParams--;
+            first = false;
+        }
+    }
+
+    Utf8 cType;
+    for (int i = 0; i < numParams; i++)
+    {
+        auto param = typeFunc->parameters[i];
+        if (!first)
+            buffer.addChar(',');
+        first = false;
+
+        SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
+        buffer.addString(cType);
+        buffer.addChar(' ');
+        if (forWrapper)
+            buffer.addString(param->namedParam);
+
+        if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
+        {
+            CONCAT_FIXED_STR(buffer, ",__u32_t ");
+            if (forWrapper)
             {
-                CONCAT_FIXED_STR(buffer, "_value,void*");
-                buffer.addString(param->name);
+                buffer.addString(param->namedParam);
+                CONCAT_FIXED_STR(buffer, "_count");
+            }
+        }
+        else if (param->typeInfo->isNative(NativeTypeKind::Any))
+        {
+            CONCAT_FIXED_STR(buffer, "_value,void*");
+            if (forWrapper)
+            {
+                buffer.addString(param->namedParam);
                 CONCAT_FIXED_STR(buffer, "_type");
             }
         }
@@ -623,18 +642,16 @@ bool BackendC::emitForeignFuncSignature(Concat& buffer, Module* moduleToGen, Typ
         if (!first)
             buffer.addChar(',');
         buffer.addString(returnType);
-        CONCAT_FIXED_STR(buffer, " result");
+        if (forWrapper)
+            CONCAT_FIXED_STR(buffer, " result");
     }
 
     CONCAT_FIXED_STR(buffer, ")");
     return true;
 }
 
-void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool forDecl)
+void BackendC::emitLocalFuncSignature(Concat& concat, TypeInfoFuncAttr* typeFunc, const Utf8& name, bool withNames)
 {
-    auto typeFunc = bc->callType();
-    auto name     = bc->callName();
-
     CONCAT_FIXED_STR(concat, "void ");
     concat.addString(name);
     concat.addChar('(');
@@ -644,7 +661,7 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool for
     {
         if (i)
             concat.addChar(',');
-        if (forDecl)
+        if (withNames)
             concat.addStringFormat("__r_t*rr%d", i);
         else
             concat.addStringFormat("__r_t*", i);
@@ -659,7 +676,7 @@ void BackendC::emitFuncSignatureInternalC(Concat& concat, ByteCode* bc, bool for
         {
             if (index || i || typeFunc->numReturnRegisters())
                 concat.addChar(',');
-            if (forDecl)
+            if (withNames)
                 concat.addStringFormat("__r_t*rp%u", index++);
             else
                 concat.addStringFormat("__r_t*", index++);
@@ -680,7 +697,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         CONCAT_FIXED_STR(concat, "#ifdef SWAG_HAS_TEST\n");
 
     // Signature
-    emitFuncSignatureInternalC(concat, bc, true);
+    emitLocalFuncSignature(concat, bc->callType(), bc->callName(), true);
     CONCAT_FIXED_STR(concat, " {\n");
 
     // Generate one local variable per used register
@@ -1574,35 +1591,6 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=r[%u].s32>=0?1:0;", ip->a.u32, ip->a.u32);
             break;
 
-        case ByteCodeOp::MakeLambda:
-        {
-            auto funcBC = (ByteCode*) ip->b.pointer;
-            SWAG_ASSERT(funcBC);
-
-            emitFuncSignatureInternalC(concat, funcBC, false);
-            CONCAT_FIXED_STR(concat, ";\n");
-
-            concat.addStringFormat("r[%u].p=(__u8_t*)&%s;", ip->a.u32, funcBC->callName().c_str());
-        }
-        break;
-
-        case ByteCodeOp::MakeLambdaForeign:
-        {
-            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(funcNode);
-            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
-            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue     foreignValue;
-            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
-            SWAG_ASSERT(!foreignValue.text.empty());
-
-            emitForeignFuncSignature(concat, moduleToGen, typeFuncNode, funcNode, false);
-            CONCAT_FIXED_STR(concat, ";\n");
-
-            concat.addStringFormat("r[%u].p=(__u8_t*)&%s;", ip->a.u32, foreignValue.text.c_str());
-            break;
-        }
-
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)
@@ -1629,44 +1617,75 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         }
 
+        case ByteCodeOp::MakeLambda:
+        {
+            auto funcBC = (ByteCode*) ip->b.pointer;
+            SWAG_ASSERT(funcBC);
+
+            emitLocalFuncSignature(concat, funcBC->callType(), funcBC->callName(), false);
+            CONCAT_FIXED_STR(concat, ";\n");
+
+            concat.addStringFormat("r[%u].p=(__u8_t*)&%s;", ip->a.u32, funcBC->callName().c_str());
+            break;
+        }
+        case ByteCodeOp::MakeLambdaForeign:
+        {
+            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            SWAG_ASSERT(funcNode);
+            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
+            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            ComputedValue     foreignValue;
+            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+            SWAG_ASSERT(!foreignValue.text.empty());
+
+            emitForeignFuncSignature(concat, moduleToGen, typeFuncNode, funcNode, false);
+            CONCAT_FIXED_STR(concat, ";\n");
+
+            concat.addStringFormat("r[%u].u64=((__u64_t)&%s)|%llu;", ip->a.u32, foreignValue.text.c_str(), SWAG_LAMBDA_FOREIGN_MARKER);
+            break;
+        }
         case ByteCodeOp::LambdaCall:
         {
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            concat.addStringFormat("if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_MARKER);
+            TypeInfoFuncAttr* typeFuncNode = (TypeInfoFuncAttr*) ip->b.pointer;
+
+            // Bytecode lambda call
+            ///////////////////////////
+            concat.addStringFormat("if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
 
             CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].p");
-            if (typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters())
+            if (typeFuncNode->numReturnRegisters() + typeFuncNode->numParamsRegisters())
                 concat.addChar(',');
-            addCallParameters(concat, typeFuncBC, pushRAParams);
+            addCallParameters(concat, typeFuncNode, pushRAParams);
             CONCAT_FIXED_STR(concat, ");");
 
-            // Need to output the function prototype too
-            CONCAT_FIXED_STR(concat, "}else{((void(*)(");
-            for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
-            {
-                if (j)
-                    concat.addChar(',');
-                CONCAT_FIXED_STR(concat, "__r_t*");
-            }
+            // Foreign lambda call
+            ///////////////////////////
+            concat.addStringFormat("} else if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
+            /*CONCAT_FIXED_STR(concat, "((");
+            emitForeignFuncSignature(concat, moduleToGen, typeFuncNode, nullptr, false);
+            CONCAT_FIXED_STR(concat, ")");*/
 
-            CONCAT_FIXED_STR(concat, "))");
+            // Local lambda call
+            ///////////////////////////
+            CONCAT_FIXED_STR(concat, "}else{");
 
-            // Then the call
+            CONCAT_FIXED_STR(concat, "((");
+            emitLocalFuncSignature(concat, typeFuncNode, "(*)", false);
+            CONCAT_FIXED_STR(concat, ")");
+
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].p)");
-
-            // Then the parameters
             concat.addChar('(');
-            addCallParameters(concat, typeFuncBC, pushRAParams);
+            addCallParameters(concat, typeFuncNode, pushRAParams);
             CONCAT_FIXED_STR(concat, ");}");
             pushRAParams.clear();
+            break;
         }
-        break;
 
         case ByteCodeOp::LocalCall:
         {
             auto funcBC = (ByteCode*) ip->a.pointer;
 
-            emitFuncSignatureInternalC(concat, funcBC, false);
+            emitLocalFuncSignature(concat, funcBC->callType(), funcBC->callName(), false);
             CONCAT_FIXED_STR(concat, ";\n");
 
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;

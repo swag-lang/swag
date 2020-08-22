@@ -184,7 +184,7 @@ bool BackendC::emitInitConstantSeg(OutputFile& bufferC)
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
-        emitFuncSignatureInternalC(bufferC, k.second, false);
+        emitLocalFuncSignature(bufferC, k.second->callType(), k.second->callName(), false);
         CONCAT_FIXED_STR(bufferC, ";\n");
 
         if (firstCS)

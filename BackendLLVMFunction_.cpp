@@ -2767,7 +2767,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_MARKER));
+                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
                 auto v2 = builder.CreateIsNull(v1);
                 builder.CreateCondBr(v2, blockLambdaNT, blockLambdaBC);
             }
