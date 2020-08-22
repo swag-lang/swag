@@ -373,6 +373,20 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(3, reg2 & 0b111, reg1 & 0b111));
     }
 
+    inline void emit_LoadAddress(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        if (stackOffset == 0)
+        {
+            emit_Copy64(pp, reg, memReg);
+            return;
+        }
+
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x8D);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     ///////////////////////////////////////////////////////
 
     inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex)
@@ -478,42 +492,6 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Lea_Stack_In_RAX(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            emit_Copy64(pp, RAX, RDI);
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString3("\x48\x8D\x47"); // lea rax, [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString3("\x48\x8D\x87"); // lea rax, [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
-    inline void emit_Lea_Stack_In_RCX(X64PerThread& pp, uint32_t stackOffset)
-    {
-        if (stackOffset == 0)
-        {
-            pp.concat.addString3("\x48\x89\xf9"); // mov rcx, rdi
-        }
-        else if (stackOffset <= 0x7F)
-        {
-            pp.concat.addString3("\x48\x8d\x4f"); // lea rcx, [rdi + ??]
-            pp.concat.addU8((uint8_t) stackOffset);
-        }
-        else
-        {
-            pp.concat.addString3("\x48\x8d\x8f"); // lea rcx, [rdi + ????????]
-            pp.concat.addU32(stackOffset);
-        }
-    }
-
     //////////////////////////////////////////////////////
 
     // clang-format off
@@ -521,8 +499,6 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
     inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
-
-    inline void emit_Lea_Reg_In_RAX(X64PerThread& pp, uint32_t r) { emit_Lea_Stack_In_RAX(pp, r * sizeof(Register)); }
     // clang-format on
 
     //////////////////////////////////////////////////

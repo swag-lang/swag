@@ -322,7 +322,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
         case ByteCodeOp::AddVBtoRA32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
             concat.addString2("\x01\x18"); // add dword ptr [rax], ebx
             break;
@@ -338,7 +338,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CopyRBAddrToRA:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &r[", ip->b.u32, "];");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->b.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -1412,12 +1412,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IncrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32++;");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Add_Cst32_At_RAX(pp, 1);
             break;
         case ByteCodeOp::DecrementRA32:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].u32--;");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Sub_Cst32_At_RAX(pp, 1);
             break;
 
@@ -1479,7 +1479,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::GetFromStack64:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u64 = *(__u64_t*) (stack + ", ip->b.u32, ");");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->b.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1539,27 +1539,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::SetZeroStack8:
             //CONCAT_STR_1(concat, "*(__u8_t*)(s+", ip->a.u32, ")=0;");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->a.u32, RAX, RDI);
             BackendX64Inst::emit_Store8_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::SetZeroStack16:
             //CONCAT_STR_1(concat, "*(__u16_t*)(s+", ip->a.u32, ")=0;");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->a.u32, RAX, RDI);
             BackendX64Inst::emit_Store16_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::SetZeroStack32:
             //CONCAT_STR_1(concat, "*(__u32_t*)(s+", ip->a.u32, ")=0;");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->a.u32, RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::SetZeroStack64:
             //CONCAT_STR_1(concat, "*(__u64_t*)(s+", ip->a.u32, ")=0;");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->a.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::SetZeroStackX:
             //concat.addStringFormat("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Lea_Stack_In_RCX(pp, offsetStack + ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->a.u32, RCX, RDI);
             BackendX64Inst::emit_Clear64(pp, RDX);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
             emitCall(pp, "memset");
@@ -1596,7 +1596,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::MakeStackPointer:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = stack + ", ip->b.u32, ";");
-            BackendX64Inst::emit_Lea_Stack_In_RAX(pp, offsetStack + ip->b.u32);
+            BackendX64Inst::emit_LoadAddress(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeTypeSegPointer:
@@ -1626,7 +1626,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IncPointerVB32:
             //concat.addStringFormat("r[%u].pointer += %u;", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString3("\x48\x81\x00"); // add [rax], ????????
             concat.addU32(ip->b.s32);
             break;
@@ -1767,12 +1767,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicCompiler:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].p = 0;");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicIsByteCode:
             //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->a.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicPrintString:
@@ -1835,7 +1835,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopySP:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &r[%u];", ip->a.u32, ip->c.u32);
-            BackendX64Inst::emit_Lea_Reg_In_RAX(pp, ip->c.u32);
+            BackendX64Inst::emit_LoadAddress(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -2568,7 +2568,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 if (returnByCopy)
                     BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
                 else
-                    BackendX64Inst::emit_Lea_Stack_In_RAX(pp, paramsRegisters[i]);
+                    BackendX64Inst::emit_LoadAddress(pp, paramsRegisters[i], RAX, RDI);
                 concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
                 concat.addU32(offsetStack);
             }
