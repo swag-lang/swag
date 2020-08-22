@@ -2750,6 +2750,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(TO_PTR_I8(F), r0);
+
+            auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+            builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
             break;
         }
 
@@ -2757,28 +2761,53 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            llvm::BasicBlock* blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaNT = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaBC             = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaLocalOrForeign = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaForeign        = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaLocal          = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext                 = llvm::BasicBlock::Create(context, "", func);
 
-            VectorNative<llvm::Value*> fctParams;
-            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
-
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
+            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
-                auto v2 = builder.CreateIsNull(v1);
-                builder.CreateCondBr(v2, blockLambdaNT, blockLambdaBC);
+                auto v2 = builder.CreateIsNotNull(v1);
+                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaLocalOrForeign);
             }
 
-            builder.SetInsertPoint(blockLambdaNT);
+            builder.SetInsertPoint(blockLambdaLocalOrForeign);
+            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
+            {
+                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+                auto v2 = builder.CreateIsNotNull(v1);
+                builder.CreateCondBr(v2, blockLambdaForeign, blockLambdaLocal);
+            }
+
+            builder.SetInsertPoint(blockLambdaForeign);
             //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
             {
-                auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                auto FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
-                auto PT = llvm::PointerType::getUnqual(FT);
-                auto r1 = builder.CreatePointerCast(r0, PT);
+                auto                v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto                v1 = builder.CreateAnd(v0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
+                llvm::FunctionType* FT;
+                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
+                auto                       PT = llvm::PointerType::getUnqual(FT);
+                auto                       r1 = builder.CreateIntToPtr(v1, PT);
+                VectorNative<llvm::Value*> fctParams;
+                getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams);
+                builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                builder.CreateBr(blockNext);
+            }
+
+            builder.SetInsertPoint(blockLambdaLocal);
+            //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
+            {
+                auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
+                auto                       PT = llvm::PointerType::getUnqual(FT);
+                auto                       r1 = builder.CreatePointerCast(r0, PT);
+                VectorNative<llvm::Value*> fctParams;
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
                 builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
@@ -2786,11 +2815,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockLambdaBC);
             //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
             {
-                auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                auto                       v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                VectorNative<llvm::Value*> fctParams;
                 fctParams.push_front(v0);
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
                 builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
@@ -3166,12 +3197,145 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     return true;
 }
 
-bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
-                                  llvm::AllocaInst*       allocR,
-                                  llvm::AllocaInst*       allocRR,
-                                  Module*                 moduleToGen,
-                                  ByteCodeInstruction*    ip,
-                                  VectorNative<uint32_t>& pushParams)
+bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildParameters,
+                                           llvm::AllocaInst*             allocR,
+                                           llvm::AllocaInst*             allocRR,
+                                           Module*                       moduleToGen,
+                                           TypeInfoFuncAttr*             typeFuncBC,
+                                           VectorNative<llvm::Value*>&   params,
+                                           const VectorNative<uint32_t>& pushParams)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    int numCallParams = (int) typeFuncBC->parameters.size();
+    int idxParam      = (int) pushParams.size() - 1;
+
+    // Variadic are first
+    if (numCallParams)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic)
+        {
+            auto index = pushParams[idxParam--];
+            auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams[idxParam--];
+            //CONCAT_STR_1(concat, ", r[", index, "].u32");
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+            numCallParams--;
+        }
+    }
+
+    // All parameters
+    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
+
+        auto index = pushParams[idxParam--];
+
+        if (typeParam->kind == TypeInfoKind::Pointer)
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
+            if (typePtr->ptrCount != 1)
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid pointer count");
+            auto finalType = TypeManager::concreteType(typePtr->finalType);
+            if (finalType->kind == TypeInfoKind::Native)
+            {
+                auto r0 = GEP_I32(allocR, index);
+                auto r  = TO_PTR_PTR_NATIVE(r0, finalType->nativeType);
+                if (!r)
+                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid pointer param type");
+                params.push_back(builder.CreateLoad(r));
+            }
+            else if (finalType->kind == TypeInfoKind::Struct ||
+                     finalType->kind == TypeInfoKind::Interface ||
+                     finalType->kind == TypeInfoKind::Array)
+            {
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+                params.push_back(builder.CreateLoad(r0));
+            }
+            else
+            {
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid pointer param type");
+            }
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct ||
+                 typeParam->kind == TypeInfoKind::Interface ||
+                 typeParam->kind == TypeInfoKind::Array)
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams[idxParam--];
+            //CONCAT_STR_1(concat, ", r[", index, "].u32");
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any))
+        {
+            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+
+            index = pushParams[idxParam--];
+            //CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r1));
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
+        {
+            //CONCAT_STR_1(concat, "r[", index, "]");
+            auto r0 = GEP_I32(allocR, index);
+            auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
+            if (!r)
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid param native type");
+            params.push_back(builder.CreateLoad(r));
+        }
+        else
+        {
+            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid param type");
+        }
+    }
+
+    // Return by parameter
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String))
+    {
+        //CONCAT_FIXED_STR(concat, "&rt[0]");
+        params.push_back(TO_PTR_I8(allocRR));
+    }
+    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        //CONCAT_FIXED_STR(concat, "rt[0].pointer");
+        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
+    }
+
+    return true;
+}
+
+bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
+                                  llvm::AllocaInst*             allocR,
+                                  llvm::AllocaInst*             allocRR,
+                                  Module*                       moduleToGen,
+                                  ByteCodeInstruction*          ip,
+                                  const VectorNative<uint32_t>& pushParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -3191,126 +3355,9 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
     else
         funcName = nodeFunc->name;
 
-    int                        numCallParams = (int) typeFuncBC->parameters.size();
+    // Get parameters
     VectorNative<llvm::Value*> params;
-
-    // Variadic are first
-    if (numCallParams)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic)
-        {
-            auto index = pushParams.back();
-            pushParams.pop_back();
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            params.push_back(builder.CreateLoad(r0));
-
-            index = pushParams.back();
-            pushParams.pop_back();
-            //CONCAT_STR_1(concat, ", r[", index, "].u32");
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r1));
-            numCallParams--;
-        }
-    }
-
-    // All parameters
-    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
-
-        auto index = pushParams.back();
-        pushParams.pop_back();
-
-        if (typeParam->kind == TypeInfoKind::Pointer)
-        {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            if (typePtr->ptrCount != 1)
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer count");
-            auto finalType = TypeManager::concreteType(typePtr->finalType);
-            if (finalType->kind == TypeInfoKind::Native)
-            {
-                auto r0 = GEP_I32(allocR, index);
-                auto r  = TO_PTR_PTR_NATIVE(r0, finalType->nativeType);
-                if (!r)
-                    return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer param type");
-                params.push_back(builder.CreateLoad(r));
-            }
-            else if (finalType->kind == TypeInfoKind::Struct ||
-                     finalType->kind == TypeInfoKind::Interface ||
-                     finalType->kind == TypeInfoKind::Array)
-            {
-                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-                params.push_back(builder.CreateLoad(r0));
-            }
-            else
-            {
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid pointer param type");
-            }
-        }
-        else if (typeParam->kind == TypeInfoKind::Struct ||
-                 typeParam->kind == TypeInfoKind::Interface ||
-                 typeParam->kind == TypeInfoKind::Array)
-        {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
-        {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-
-            index = pushParams.back();
-            pushParams.pop_back();
-            //CONCAT_STR_1(concat, ", r[", index, "].u32");
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r1));
-        }
-        else if (typeParam->isNative(NativeTypeKind::Any))
-        {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-
-            index = pushParams.back();
-            pushParams.pop_back();
-            //CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r1));
-        }
-        else if (typeParam->kind == TypeInfoKind::Native)
-        {
-            //CONCAT_STR_1(concat, "r[", index, "]");
-            auto r0 = GEP_I32(allocR, index);
-            auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
-            if (!r)
-                return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param native type");
-            params.push_back(builder.CreateLoad(r));
-        }
-        else
-        {
-            return moduleToGen->internalError(ip->node, ip->node->token, "emitForeignCall, invalid param type");
-        }
-    }
-
-    // Return by parameter
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType->kind == TypeInfoKind::Slice ||
-        returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String))
-    {
-        //CONCAT_FIXED_STR(concat, "&rt[0]");
-        params.push_back(TO_PTR_I8(allocRR));
-    }
-    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-    {
-        //CONCAT_FIXED_STR(concat, "rt[0].pointer");
-        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
-    }
+    getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, params, pushParams);
 
     // Make the call
     llvm::FunctionType* typeF;
@@ -3318,6 +3365,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&  buildParameters,
     auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), {params.begin(), params.end()});
 
     // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
