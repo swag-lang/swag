@@ -380,6 +380,21 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
+    inline void emit_Cmp8_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x3A);
+        emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
+    }
+
+    inline void emit_Cmp16_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x3B);
+        emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
+    }
+
     inline void emit_Cmp32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);

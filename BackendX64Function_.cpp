@@ -1213,16 +1213,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpEqual8:
             //concat.addStringFormat("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            BackendX64Inst::emit_Cmp8(pp, RAX, RBX);
+            BackendX64Inst::emit_Cmp8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpEqual16:
             //concat.addStringFormat("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            BackendX64Inst::emit_Cmp16(pp, RAX, RBX);
+            BackendX64Inst::emit_Cmp16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SetE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
