@@ -126,11 +126,8 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
     return moduleToGen->internalError(format("swagTypeToCType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
-bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, AstFuncDecl* nodeFunc, VectorNative<uint32_t>& pushParams)
+bool BackendC::emitForeignCallReturn(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC)
 {
-    emitForeignFuncSignature(concat, moduleToGen, typeFuncBC, nodeFunc, false);
-    CONCAT_FIXED_STR(concat, ";\n");
-
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
@@ -184,22 +181,20 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFunc
                 CONCAT_FIXED_STR(concat, "rt[0].f64=(double)");
                 break;
             default:
-                return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid return type");
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid return type");
             }
         }
         else
         {
-            return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid return type");
+            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid return type");
         }
     }
 
-    // Namee
-    ComputedValue foreignValue;
-    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
-        concat.addString(foreignValue.text);
-    else
-        concat.addString(nodeFunc->name);
+    return true;
+}
 
+bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushParams)
+{
     concat.addChar('(');
 
     int numCallParams = (int) typeFuncBC->parameters.size();
@@ -296,16 +291,17 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFunc
                 CONCAT_FIXED_STR(concat, ".ch");
                 break;
             default:
-                return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid param native type");
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid param native type");
             }
         }
         else
         {
-            return moduleToGen->internalError(nodeFunc, nodeFunc->token, "emitForeignCall, invalid param type");
+            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid param type");
         }
     }
 
     // Return by parameter
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
@@ -322,6 +318,28 @@ bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFunc
     }
 
     CONCAT_FIXED_STR(concat, ");");
+    return true;
+}
+
+bool BackendC::emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, AstFuncDecl* nodeFunc, VectorNative<uint32_t>& pushParams)
+{
+    // Signature
+    emitForeignFuncSignature(concat, moduleToGen, typeFuncBC, nodeFunc, false);
+    CONCAT_FIXED_STR(concat, ";\n");
+
+    // Return value
+    SWAG_CHECK(emitForeignCallReturn(concat, moduleToGen, typeFuncBC));
+
+    // Name
+    ComputedValue foreignValue;
+    if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        concat.addString(foreignValue.text);
+    else
+        concat.addString(nodeFunc->name);
+
+    // Parameters
+    SWAG_CHECK(emitForeignCallParameters(concat, moduleToGen, typeFuncBC, pushParams));
+    CONCAT_FIXED_STR(concat, ";");
 
     return true;
 }
