@@ -3356,7 +3356,7 @@ bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParamete
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
             //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
-            builder.CreateStore(callResult, TO_PTR_PTR_I8(allocRR));
+            builder.CreateStore(TO_PTR_I8(callResult), TO_PTR_PTR_I8(allocRR));
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
