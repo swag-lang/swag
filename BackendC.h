@@ -38,7 +38,7 @@ struct BackendC : public Backend
     static void addCallParameters(Concat& concat, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
     static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
     static bool emitForeignCallReturn(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC);
-    static bool emitForeignCallParameters(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushParams);
+    static bool emitForeignCallParameters(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushParams);
     static bool emitForeignCall(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, AstFuncDecl* nodeFunc, VectorNative<uint32_t>& pushParams);
     static bool emitForeignFuncSignature(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forWrapper);
     static void emitLocalFuncSignature(Concat& concat, TypeInfoFuncAttr* typeFunc, const Utf8& name, bool withNames);

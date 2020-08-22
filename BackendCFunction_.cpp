@@ -193,24 +193,23 @@ bool BackendC::emitForeignCallReturn(Concat& concat, Module* moduleToGen, TypeIn
     return true;
 }
 
-bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushParams)
+bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushParams)
 {
     concat.addChar('(');
 
     int numCallParams = (int) typeFuncBC->parameters.size();
 
     // Variadic are first
-    bool first = true;
+    bool first    = true;
+    int  idxParam = (int) pushParams.size() - 1;
     if (numCallParams)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto index = pushParams.back();
-            pushParams.pop_back();
+            auto index = pushParams[idxParam--];
             CONCAT_STR_1(concat, "(void*)r[", index, "].p");
-            index = pushParams.back();
-            pushParams.pop_back();
+            index = pushParams[idxParam--];
             CONCAT_STR_1(concat, ",r[", index, "].u32");
             numCallParams--;
             first = false;
@@ -224,8 +223,7 @@ bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, Ty
             concat.addChar(',');
         first = false;
 
-        auto index = pushParams.back();
-        pushParams.pop_back();
+        auto index = pushParams[idxParam--];
 
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Struct ||
@@ -238,15 +236,13 @@ bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, Ty
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].p");
-            index = pushParams.back();
-            pushParams.pop_back();
+            index = pushParams[idxParam--];
             CONCAT_STR_1(concat, ",r[", index, "].u32");
         }
         else if (typeParam->isNative(NativeTypeKind::Any))
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].p");
-            index = pushParams.back();
-            pushParams.pop_back();
+            index = pushParams[idxParam--];
             CONCAT_STR_1(concat, ",(void*)r[", index, "].p");
         }
         else if (typeParam->kind == TypeInfoKind::Native)
@@ -317,7 +313,7 @@ bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, Ty
         CONCAT_FIXED_STR(concat, "rt[0].p");
     }
 
-    CONCAT_FIXED_STR(concat, ");");
+    CONCAT_FIXED_STR(concat, ")");
     return true;
 }
 
@@ -1667,24 +1663,29 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
             // Bytecode lambda call
             ///////////////////////////
-            concat.addStringFormat("if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
+            concat.addStringFormat("if(r[%u].u64&0x%llx)\n{\n", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
 
             CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].p");
             if (typeFuncNode->numReturnRegisters() + typeFuncNode->numParamsRegisters())
                 concat.addChar(',');
             addCallParameters(concat, typeFuncNode, pushRAParams);
-            CONCAT_FIXED_STR(concat, ");");
+            CONCAT_FIXED_STR(concat, ");\n");
 
             // Foreign lambda call
             ///////////////////////////
-            concat.addStringFormat("} else if(r[%u].u64&0x%llx){", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
-            /*CONCAT_FIXED_STR(concat, "((");
+            concat.addStringFormat("}\nelse if(r[%u].u64&0x%llx)\n{\n", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
+            concat.addStringFormat("r[%u].u64&=~0x%llx;", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
+            SWAG_CHECK(emitForeignCallReturn(concat, moduleToGen, typeFuncNode));
+            CONCAT_FIXED_STR(concat, "((");
             emitForeignFuncSignature(concat, moduleToGen, typeFuncNode, nullptr, false);
-            CONCAT_FIXED_STR(concat, ")");*/
+            CONCAT_FIXED_STR(concat, ")");
+            concat.addStringFormat("r[%u].p)", ip->a.u32);
+            emitForeignCallParameters(concat, moduleToGen, typeFuncNode, pushRAParams);
+            CONCAT_FIXED_STR(concat, ";\n");
 
             // Local lambda call
             ///////////////////////////
-            CONCAT_FIXED_STR(concat, "}else{");
+            CONCAT_FIXED_STR(concat, "}\nelse\n{\n");
 
             CONCAT_FIXED_STR(concat, "((");
             emitLocalFuncSignature(concat, typeFuncNode, "(*)", false);
@@ -1693,7 +1694,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_STR_1(concat, "r[", ip->a.u32, "].p)");
             concat.addChar('(');
             addCallParameters(concat, typeFuncNode, pushRAParams);
-            CONCAT_FIXED_STR(concat, ");}");
+            CONCAT_FIXED_STR(concat, ");\n}\n");
             pushRAParams.clear();
             break;
         }
