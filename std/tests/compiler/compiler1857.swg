@@ -15,10 +15,11 @@ func testInline(type: const* TypeInfoFunc)
     }
 }
 
+//#[swag.printbc]
 #compiler(swag.CompilerMsgKindMask.SemanticFunc)
 {
     itf := @compiler()
-    msg := itf.getMessage()
+    //msg := itf.getMessage()
     //@assert(msg != null)
 
     //if(msg.type.kind == TypeInfoKind.FuncAttr)

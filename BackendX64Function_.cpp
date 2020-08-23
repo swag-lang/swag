@@ -78,9 +78,6 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    if (bc->node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-        bc = bc;
-
     node->computeFullNameForeign(true);
 
     // Symbol

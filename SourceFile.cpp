@@ -338,6 +338,12 @@ void SourceFile::addCompilerPassNode(AstNode* node)
     {
     case AstNodeKind::FuncDecl:
         compilerPassFunctions.push_back(node);
+        for (int i = node->childParentIdx - 1; i >= 0; i--)
+        {
+            if (node->parent->childs[i]->kind != AstNodeKind::AttrUse)
+                break;
+            compilerPassFunctions.push_back(node->parent->childs[i]);
+        }
         break;
     case AstNodeKind::Using:
         compilerPassUsing.push_back(node);
