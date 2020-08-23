@@ -716,6 +716,9 @@
     <ClInclude Include="ProfileWin32.h">
       <Filter>Win32</Filter>
     </ClInclude>
+    <ClInclude Include="Profile.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

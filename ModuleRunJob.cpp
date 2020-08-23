@@ -5,12 +5,13 @@
 #include "DiagnosticInfos.h"
 #include "Module.h"
 #include "Timer.h"
+#include "Profile.h"
 
 thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
 JobResult ModuleRunJob::execute()
 {
-    SWAG_PROFILE(1, format("run %s", module->name.c_str()));
+    SWAG_PROFILE(PRF_RUN, format("run %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
 
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
     path += OS::getOutputFileExtension(BackendOutputType::Binary);

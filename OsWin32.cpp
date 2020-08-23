@@ -9,6 +9,7 @@
 #include "Utf8.h"
 #include "BuildParameters.h"
 #include "Workspace.h"
+#include "ProfileWin32.h"
 
 namespace OS
 {

@@ -6,13 +6,13 @@
 #include "Ast.h"
 #include "ThreadManager.h"
 #include "Module.h"
-#include "OS.h"
+#include "Profile.h"
 
 thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
-    SWAG_PROFILE(1, "x64 emit functions");
+    SWAG_PROFILE(PRF_GFCT, "x64 emit functions");
 
     BackendX64* bachendX64 = (BackendX64*) backend;
 
@@ -28,13 +28,12 @@ JobResult BackendX64FunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        if(!bachendX64->emitFunctionBody(buildParameters, module, one))
+        if (!bachendX64->emitFunctionBody(buildParameters, module, one))
             return JobResult::ReleaseJob;
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
             bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one);
-
     }
 
     return JobResult::ReleaseJob;
