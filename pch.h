@@ -63,9 +63,9 @@ namespace fs = std::experimental::filesystem;
 
 #ifndef SWAG_IS_FINAL
 #define SWAG_HAS_ASSERT
+#define SWAG_HAS_PROFILE
 #endif
 
-#define SWAG_HAS_PROFILE
 #define FFI_BUILDING
 
 #endif
