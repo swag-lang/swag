@@ -4,9 +4,9 @@
 // LLVM stuff
 // Before the rest, or it does not compile (yeahhh)
 #pragma warning(push, 0)
-#pragma warning(disable:4996)
-#pragma warning(disable:4244)
-#pragma warning(disable:4702)
+#pragma warning(disable : 4996)
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4702)
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"
@@ -59,10 +59,15 @@
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 
 #ifndef SWAG_IS_FINAL
 #define SWAG_HAS_ASSERT
+#endif
+
+#define SWAG_HAS_PROFILE
+#ifdef SWAG_HAS_PROFILE
+#include "cvmarkersobj.h"
 #endif
 
 #define FFI_BUILDING

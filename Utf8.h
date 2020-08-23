@@ -59,6 +59,8 @@ struct Utf8
     void        operator=(char32_t c);
     void        operator+=(char32_t c);
 
-    void toUni32(VectorNative<char32_t>& uni, int maxChars = -1);
-    bool toChar32(char32_t& ch);
+    void               toUni16(VectorNative<char16_t>& uni, int maxChars = -1);
+    void               toUni32(VectorNative<char32_t>& uni, int maxChars = -1);
+    static const char* transformUtf8ToChar32(const char* pz, char32_t& c);
+    bool               toChar32(char32_t& ch);
 };

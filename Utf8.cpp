@@ -405,6 +405,65 @@ bool Utf8::toChar32(char32_t& ch)
     return true;
 }
 
+const char* Utf8::transformUtf8ToChar32(const char* pz, char32_t& wc)
+{
+    auto c = *pz++;
+
+    if ((c & 0x80) == 0)
+    {
+        wc = c;
+        return pz;
+    }
+
+    if ((c & 0xE0) == 0xC0)
+    {
+        wc = (c & 0x1F) << 6;
+        wc |= (*pz++ & 0x3F);
+        return pz;
+    }
+
+    if ((c & 0xF0) == 0xE0)
+    {
+        wc = (c & 0xF) << 12;
+        wc |= (*pz++ & 0x3F) << 6;
+        wc |= (*pz++ & 0x3F);
+        return pz;
+    }
+
+    if ((c & 0xF8) == 0xF0)
+    {
+        wc = (c & 0x7) << 18;
+        wc |= (*pz++ & 0x3F) << 12;
+        wc |= (*pz++ & 0x3F) << 6;
+        wc |= (*pz++ & 0x3F);
+        return pz;
+    }
+
+    if ((c & 0xFC) == 0xF8)
+    {
+        wc = (c & 0x3) << 24;
+        wc |= (c & 0x3F) << 18;
+        wc |= (c & 0x3F) << 12;
+        wc |= (c & 0x3F) << 6;
+        wc |= (c & 0x3F);
+        return pz;
+    }
+
+    if ((c & 0xFE) == 0xFC)
+    {
+        wc = (c & 0x1) << 30;
+        wc |= (c & 0x3F) << 24;
+        wc |= (c & 0x3F) << 18;
+        wc |= (c & 0x3F) << 12;
+        wc |= (c & 0x3F) << 6;
+        wc |= (c & 0x3F);
+        return pz;
+    }
+
+    wc = c;
+    return pz;
+}
+
 void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
 {
     uni.clear();
@@ -413,65 +472,23 @@ void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
     {
         if (maxChars != -1 && uni.size() >= maxChars)
             return;
+        char32_t c;
+        pz = transformUtf8ToChar32(pz, c);
+        uni.push_back(c);
+    }
+}
 
-        auto c = *pz++;
-
-        if ((c & 0x80) == 0)
-        {
-            uni.push_back(c);
-            continue;
-        }
-
-        char32_t wc;
-        if ((c & 0xE0) == 0xC0)
-        {
-            wc = (c & 0x1F) << 6;
-            wc |= (*pz++ & 0x3F);
-            uni.push_back(wc);
-            continue;
-        }
-
-        if ((c & 0xF0) == 0xE0)
-        {
-            wc = (c & 0xF) << 12;
-            wc |= (*pz++ & 0x3F) << 6;
-            wc |= (*pz++ & 0x3F);
-            uni.push_back(wc);
-            continue;
-        }
-
-        if ((c & 0xF8) == 0xF0)
-        {
-            wc = (c & 0x7) << 18;
-            wc |= (*pz++ & 0x3F) << 12;
-            wc |= (*pz++ & 0x3F) << 6;
-            wc |= (*pz++ & 0x3F);
-            uni.push_back(wc);
-            continue;
-        }
-
-        if ((c & 0xFC) == 0xF8)
-        {
-            wc = (c & 0x3) << 24;
-            wc |= (c & 0x3F) << 18;
-            wc |= (c & 0x3F) << 12;
-            wc |= (c & 0x3F) << 6;
-            wc |= (c & 0x3F);
-            uni.push_back(wc);
-            continue;
-        }
-
-        if ((c & 0xFE) == 0xFC)
-        {
-            wc = (c & 0x1) << 30;
-            wc |= (c & 0x3F) << 24;
-            wc |= (c & 0x3F) << 18;
-            wc |= (c & 0x3F) << 12;
-            wc |= (c & 0x3F) << 6;
-            wc |= (c & 0x3F);
-            uni.push_back(wc);
-            continue;
-        }
+void Utf8::toUni16(VectorNative<char16_t>& uni, int maxChars)
+{
+    uni.clear();
+    const char* pz = buffer;
+    while (*pz)
+    {
+        if (maxChars != -1 && uni.size() >= maxChars)
+            return;
+        char32_t c;
+        pz = transformUtf8ToChar32(pz, c);
+        uni.push_back((char16_t) c);
     }
 }
 

@@ -425,6 +425,9 @@
     <ClCompile Include="ModulePrepOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="Profile.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -709,6 +712,9 @@
     </ClInclude>
     <ClInclude Include="ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Profile.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

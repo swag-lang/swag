@@ -5,6 +5,7 @@
 #include "OS.h"
 #include "BackendSetupWin32.h"
 #include "Module.h"
+#include "Profile.h"
 
 namespace BackendLinkerWin32
 {
@@ -103,6 +104,8 @@ namespace OS
 {
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
+        SWAG_PROFILE(format("link %s", module->name.c_str()));
+
         Utf8 linkArguments;
         BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
 

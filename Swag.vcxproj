@@ -89,7 +89,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,7 +114,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,7 +141,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;llvm/llvm/include;llvm/llvm/build/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -213,6 +213,7 @@
     <ClInclude Include="ModuleGenOutputJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />
+    <ClInclude Include="Profile.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
     <ClInclude Include="resource.h" />
@@ -349,6 +350,7 @@
     <ClCompile Include="ModuleRunJob.cpp" />
     <ClCompile Include="OsWin32.cpp" />
     <ClCompile Include="OutputFile.cpp" />
+    <ClCompile Include="Profile.cpp" />
     <ClCompile Include="RaceCondition.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAffectExpression_.cpp" />
