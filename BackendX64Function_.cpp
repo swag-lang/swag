@@ -2237,7 +2237,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, VectorNative<uint32_t>& pushRAParams)
+uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat = pp.concat;
 
@@ -2330,7 +2330,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     return true;
 }
 
-bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
 {
     auto& concat        = pp.concat;
     int   numCallParams = (int) typeFuncBC->parameters.size();
@@ -2338,19 +2338,19 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
     VectorNative<uint32_t>  paramsRegisters;
     VectorNative<TypeInfo*> paramsTypes;
 
+    int indexParam = (int) pushRAParams.size() - 1;
+
     // Variadic are first
     if (numCallParams)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
         if (typeParam->kind == TypeInfoKind::Variadic)
         {
-            auto index = pushRAParams.back();
-            pushRAParams.pop_back();
+            auto index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
 
-            index = pushRAParams.back();
-            pushRAParams.pop_back();
+            index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU32);
             numCallParams--;
@@ -2362,12 +2362,12 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
 
-        auto index = pushRAParams.back();
-        pushRAParams.pop_back();
+        auto index = pushRAParams[indexParam--];
 
         if (typeParam->kind == TypeInfoKind::Pointer ||
             typeParam->kind == TypeInfoKind::Struct ||
             typeParam->kind == TypeInfoKind::Interface ||
+            typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Array)
         {
             paramsRegisters.push_back(index);
@@ -2377,8 +2377,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
-            index = pushRAParams.back();
-            pushRAParams.pop_back();
+            index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU32);
         }
@@ -2386,8 +2385,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
-            index = pushRAParams.back();
-            pushRAParams.pop_back();
+            index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
         }
@@ -2472,27 +2470,6 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             continue;
         }
 
-        if (type->flags & TYPEINFO_INTEGER)
-        {
-            switch (i)
-            {
-            case 0:
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RCX, RDI);
-                break;
-            case 1:
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RDX, RDI);
-                break;
-            case 2:
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R8, RDI);
-                break;
-            case 3:
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
-                break;
-            }
-
-            continue;
-        }
-
         if (type->flags & TYPEINFO_FLOAT)
         {
             switch (i)
@@ -2512,6 +2489,22 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             }
 
             continue;
+        }
+
+        switch (i)
+        {
+        case 0:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RCX, RDI);
+            break;
+        case 1:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RDX, RDI);
+            break;
+        case 2:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R8, RDI);
+            break;
+        case 3:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
+            break;
         }
     }
 
