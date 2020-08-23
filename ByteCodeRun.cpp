@@ -351,8 +351,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         else
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
-            if (context->sourceFile->name == "compiler1877.swg") // @remove
-                context = context;
             ffiCall(context, registersRC[ip->a.u32].pointer, typeInfoFunc);
         }
 
