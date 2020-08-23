@@ -2,6 +2,7 @@
 #include "ModuleManager.h"
 #include "Workspace.h"
 #include "Context.h"
+#include "Ast.h"
 
 ModuleManager g_ModuleMgr;
 
@@ -58,7 +59,9 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
     // Should initialize the module the first time
     // Note that the allocator function of the default context is not set, so the module
     // will initialize it with its internal function
-    Utf8 funcName = format("%s_globalInit", name.c_str());
+    auto callName = name;
+    Ast::normalizeIdentifierName(callName);
+    Utf8 funcName = format("%s_globalInit", callName.c_str());
     auto ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {

@@ -69,6 +69,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Struct ||
         typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->kind == TypeInfoKind::Reference)
@@ -229,6 +230,7 @@ bool BackendC::emitForeignCallParameters(Concat& concat, Module* moduleToGen, Ty
         if (typeParam->kind == TypeInfoKind::Struct ||
             typeParam->kind == TypeInfoKind::Interface ||
             typeParam->kind == TypeInfoKind::Array ||
+            typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Pointer)
         {
             CONCAT_STR_1(concat, "(void*)r[", index, "].p");
@@ -399,7 +401,7 @@ bool BackendC::emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeIn
     {
         auto param     = typeFunc->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Pointer)
+        if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Lambda)
         {
             concat.addStringFormat("rr%d.p=(__u8_t*)%s;\n", idx, param->namedParam.c_str());
         }

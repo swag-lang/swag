@@ -16,14 +16,17 @@ void TypeInfo::computeScopedNameNoLock()
 
     if (declNode && declNode->ownerScope)
     {
-        newName += declNode->ownerScope->getFullName();
-        if (!newName.empty())
-            newName += ".";
+        if (declNode->ownerScope->kind != ScopeKind::Function)
+        {
+            newName += declNode->ownerScope->getFullName();
+            if (!newName.empty())
+                newName += ".";
+        }
     }
 
     SWAG_ASSERT(!nakedName.empty());
 
-    // Function types are scoped with the name, because too functions of the exact same type
+    // Function types are scoped with the name, because two functions of the exact same type
     // (parameters and return value) should have a different concrete type info, because of attributes
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
     {

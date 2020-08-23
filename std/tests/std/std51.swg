@@ -1,6 +1,7 @@
 #import "std"
 using std.collections
 
+//#[swag.printbc]
 #test
 {
     var x: BitArray = @[true, false, true, false]
