@@ -10,10 +10,10 @@ extern thread_local int                        g_ProfileStackIndex;
 
 struct Profile
 {
-    Profile(const Utf8& name)
+    Profile(int categ, const Utf8& name)
     {
         SWAG_ASSERT(g_ProfileStackIndex < MAX_PROFILE_STACK);
-        CvEnterSpanExA(*(PCV_MARKERSERIES*) g_Profile[g_ProfileStackIndex++], CvImportanceNormal, CvDefaultCategory, &_Span, name.buffer);
+        CvEnterSpanExA(*(PCV_MARKERSERIES*) g_Profile[g_ProfileStackIndex++], CvImportanceNormal, categ, &_Span, name.buffer);
     }
 
     ~Profile()
@@ -25,9 +25,9 @@ struct Profile
     PCV_SPAN _Span;
 };
 
-#define SWAG_PROFILE(__name) Profile __prf(__name)
+#define SWAG_PROFILE(__categ, __name) Profile __prf(__categ, __name)
 
 #else
-#define SWAG_PROFILE(__name)
+#define SWAG_PROFILE(__categ, __name)
 #endif
 #endif

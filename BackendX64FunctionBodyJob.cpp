@@ -6,11 +6,14 @@
 #include "Ast.h"
 #include "ThreadManager.h"
 #include "Module.h"
+#include "OS.h"
 
 thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
+    SWAG_PROFILE(1, "x64 emit functions");
+
     BackendX64* bachendX64 = (BackendX64*) backend;
 
     for (auto one : byteCodeFunc)

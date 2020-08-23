@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
+#include "OS.h"
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {

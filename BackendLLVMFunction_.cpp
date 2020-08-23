@@ -7,6 +7,7 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "OS.h"
 
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
