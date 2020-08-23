@@ -153,6 +153,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Struct ||
         typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->kind == TypeInfoKind::Reference)
@@ -272,7 +273,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         auto rr0       = GEP_I32(allocRR, idx);
 
-        if (typeParam->kind == TypeInfoKind::Pointer)
+        if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Lambda)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
@@ -3270,6 +3271,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
                  typeParam->kind == TypeInfoKind::Interface ||
+                 typeParam->kind == TypeInfoKind::Lambda ||
                  typeParam->kind == TypeInfoKind::Array)
         {
             //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
