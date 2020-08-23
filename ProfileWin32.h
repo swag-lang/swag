@@ -1,16 +1,32 @@
 #pragma once
 #ifdef _WIN32
 #ifdef SWAG_HAS_PROFILE
+#include "Utf8.h"
 #include "cvmarkersobj.h"
 
-#define SWAG_PROFILE(___name)               \
-    Utf8                   __name(___name); \
-    VectorNative<char16_t> __uni16;         \
-    __name.toUni16(__uni16);                \
-    __uni16.push_back(0);                   \
-    Concurrency::diagnostic::span s(g_Profiler, 2, (LPCTSTR) __uni16.buffer);
+#define MAX_PROFILE_STACK 8
+extern Concurrency::diagnostic::marker_series* g_Profile[MAX_PROFILE_STACK];
+extern thread_local int                        g_ProfileStackIndex;
 
-extern Concurrency::diagnostic::marker_series g_Profiler;
+struct Profile
+{
+    Profile(const Utf8& name)
+    {
+        SWAG_ASSERT(g_ProfileStackIndex < MAX_PROFILE_STACK);
+        CvEnterSpanExA(*(PCV_MARKERSERIES*) g_Profile[g_ProfileStackIndex++], CvImportanceNormal, CvDefaultCategory, &_Span, name.buffer);
+    }
+
+    ~Profile()
+    {
+        g_ProfileStackIndex--;
+        CvLeaveSpan(_Span);
+    }
+
+    PCV_SPAN _Span;
+};
+
+#define SWAG_PROFILE(__name) Profile __prf(__name)
+
 #else
 #define SWAG_PROFILE(__name)
 #endif

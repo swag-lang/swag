@@ -18,11 +18,21 @@ namespace OS
     void setup()
     {
         // We do not want assert, but just reports of the CRT
-#if !defined(SWAG_HAS_ASSERT)
+#ifndef SWAG_HAS_ASSERT
         if (!IsDebuggerPresent())
         {
             _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
             _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+        }
+#endif
+
+#ifdef SWAG_HAS_PROFILE
+        for (int i = 0; i < MAX_PROFILE_STACK; i++)
+        {
+            Utf8                   name = format("%d", i);
+            VectorNative<char16_t> uni16;
+            name.toUni16(uni16);
+            g_Profile[i] = new Concurrency::diagnostic::marker_series((LPCTSTR) uni16.buffer);
         }
 #endif
     }

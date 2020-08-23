@@ -123,7 +123,6 @@ namespace OS
 
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;
-
         return result;
     }
 
