@@ -247,6 +247,8 @@ Utf8 SourceFile::getLine(long lineNo)
         }
     }
 
+    if (lineNo >= allLines.size())
+        return "";
     return allLines[lineNo];
 }
 

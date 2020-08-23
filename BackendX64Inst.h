@@ -435,7 +435,7 @@ namespace BackendX64Inst
             return;
         }
 
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 3) | ((memReg & 0b1000) >> 1));
+        pp.concat.addU8(0x48 | ((memReg & 0b1000) >> 3) | ((reg & 0b1000) >> 1));
         pp.concat.addU8(0x8D);
         emit_ModRM(pp, stackOffset, reg & 0b111, memReg & 0b111);
     }

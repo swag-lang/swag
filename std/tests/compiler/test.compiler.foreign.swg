@@ -122,3 +122,16 @@ public func tcf_toto17(x: s64, fct: func(s64))
     @assert(x == 555)
     fct(x)
 }
+
+public func tcf_toto18(x, y: s64, fct: func(s64, s64))
+{
+    /*@print("toto18: ")
+    @print(cast(s64) x)
+    @print(" ")
+    @print(cast(s64) y)
+    @print("\n")*/
+
+    @assert(x == 555)
+    @assert(y == 666)
+    fct(x,y)
+}

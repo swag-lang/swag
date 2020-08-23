@@ -21,7 +21,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
     VectorNative<Register*> paramRegisters;
     va_list                 valist;
 
-    // Todo, unsupported yet
+    // @todo, unsupported yet
     SWAG_ASSERT(!typeFunc->numReturnRegisters());
 
     va_start(valist, byteCodePtr);
