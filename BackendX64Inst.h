@@ -429,16 +429,15 @@ namespace BackendX64Inst
 
     inline void emit_LoadAddress_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
         if (stackOffset == 0)
         {
             emit_Copy64(pp, reg, memReg);
             return;
         }
 
-        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 3) | ((memReg & 0b1000) >> 1));
         pp.concat.addU8(0x8D);
-        emit_ModRM(pp, stackOffset, reg, memReg);
+        emit_ModRM(pp, stackOffset, reg & 0b111, memReg & 0b111);
     }
 
     inline void emit_Inc32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg)

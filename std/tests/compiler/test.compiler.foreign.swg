@@ -119,5 +119,6 @@ public func tcf_toto16(x: s32, y: f64)
 
 public func tcf_toto17(x: s64, fct: func(s64))
 {
+    @assert(x == 555)
     fct(x)
 }

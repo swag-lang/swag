@@ -1,6 +1,6 @@
 func thisFunc(x: s64)
 {
-    @print(x)
+    //@print(x)
     @assert(x == 555)
 }
 

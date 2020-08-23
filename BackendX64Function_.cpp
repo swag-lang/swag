@@ -1941,8 +1941,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
             concat.addString3("\x48\x21\xC8"); // and rax, rcx
-            BackendX64Inst::emit_Copy64(pp, R12, RAX);
 
+            BackendX64Inst::emit_Copy64(pp, R12, RAX);
             SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD4"); // call r12
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + isVariadic);
@@ -1957,7 +1957,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-            concat.addString1("\x90"); // @TODO
+            BackendX64Inst::emit_Copy64(pp, RCX, RAX);
+
+            sizeCallStack = 0;
+            for(int idxParam = 0; idxParam < pushRAParams.size(); idxParam++)
+            {
+                switch (idxParam)
+                {
+                case 0:
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RDX, RDI);
+                    break;
+                case 1:
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R8, RDI);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R9, RDI);
+                    break;
+                default:
+                    sizeCallStack += 8;
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                    concat.addString1("\x50"); // push rax
+                    break;
+                }
+            }
+
+            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_byteCodeRun);
+            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            concat.addString2("\xff\xd0"); // call rax
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
 
             // End
             //////////////////
