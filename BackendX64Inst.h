@@ -415,7 +415,7 @@ namespace BackendX64Inst
         SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x2F);
-        pp.concat.addU8(modRM(0, reg & 0b111, memReg & 0b111));
+        emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
     inline void emit_CmpF64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
@@ -424,7 +424,7 @@ namespace BackendX64Inst
         pp.concat.addU8(0x66);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x2F);
-        pp.concat.addU8(modRM(0, reg & 0b111, memReg & 0b111));
+        emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
     inline void emit_LoadAddress_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)

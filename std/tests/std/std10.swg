@@ -1,7 +1,7 @@
 #import "std"
 using std
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	x := math.cos(1.0'f32)
@@ -9,5 +9,6 @@ using std
 	@assert(y == 2)
 
 	x = math.clamp(2'f32, 0, 1)
+    //@print(cast(f64) x)
 	@assert(cast(f64) x == 1)
 }
