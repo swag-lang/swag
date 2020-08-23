@@ -127,6 +127,14 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
+    // Filter what we send
+    if (!node->ownerScope->isGlobalOrImpl())
+        return true;
+    if (node->attributeFlags & ATTRIBUTE_AST_FUNC)
+        return true;
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
     ConcreteCompilerMessage msg;
     msg.kind        = CompilerMsgKind::SemanticFunc;
     msg.name.buffer = (void*) node->name.c_str();
