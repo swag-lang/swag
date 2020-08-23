@@ -5,7 +5,6 @@
 #include "DiagnosticInfos.h"
 #include "Module.h"
 #include "Timer.h"
-#include "Profile.h"
 
 thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 

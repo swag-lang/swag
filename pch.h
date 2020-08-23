@@ -66,10 +66,6 @@ namespace fs = std::experimental::filesystem;
 #endif
 
 #define SWAG_HAS_PROFILE
-#ifdef SWAG_HAS_PROFILE
-#include "cvmarkersobj.h"
-#endif
-
 #define FFI_BUILDING
 
 #endif

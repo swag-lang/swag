@@ -6,6 +6,10 @@ enum class BackendOutputType;
 struct BuildParameters;
 struct Module;
 
+#ifdef _WIN32
+#include "ProfileWin32.h"
+#endif
+
 namespace OS
 {
     extern void     setup();

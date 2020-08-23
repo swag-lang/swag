@@ -425,8 +425,8 @@
     <ClCompile Include="ModulePrepOutputJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="Profile.cpp">
-      <Filter>Main</Filter>
+    <ClCompile Include="ProfileWin32.cpp">
+      <Filter>Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -713,8 +713,8 @@
     <ClInclude Include="ModulePrepOutputJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="Profile.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="ProfileWin32.h">
+      <Filter>Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
