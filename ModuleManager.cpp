@@ -3,6 +3,7 @@
 #include "Workspace.h"
 #include "Context.h"
 #include "Ast.h"
+#include "Profile.h"
 
 ModuleManager g_ModuleMgr;
 
@@ -14,6 +15,8 @@ bool ModuleManager::isModuleLoaded(const Utf8& name)
 
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNotHere)
 {
+    SWAG_PROFILE(PRF_LOAD, format("load module %s", name.c_str()));
+
     if (isModuleLoaded(name))
         return true;
 

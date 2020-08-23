@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "Os.h"
 #include "Module.h"
+#include "Profile.h"
 
 bool Backend::emitAttributes(AstNode* node)
 {
@@ -458,6 +459,8 @@ void Backend::setupExportFile()
 
 bool Backend::generateExportFile()
 {
+    SWAG_PROFILE(PRF_SAVE, format("export %s", module->name.c_str()));
+
     exportFileGenerated = true;
     bufferSwg.name      = module->name + ".generated.swg";
     bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + bufferSwg.name;

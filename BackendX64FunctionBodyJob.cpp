@@ -12,7 +12,7 @@ thread_local Pool<BackendX64FunctionBodyJob> g_Pool_backendX64FunctionBodyJob;
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
-    SWAG_PROFILE(PRF_GFCT, "x64 emit functions");
+    SWAG_PROFILE(PRF_GFCT, format("x64 emit functions %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
 
     BackendX64* bachendX64 = (BackendX64*) backend;
 

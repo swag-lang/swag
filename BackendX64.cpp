@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "OS.h"
 #include "Module.h"
+#include "Profile.h"
 
 bool BackendX64::createRuntime(const BuildParameters& buildParameters)
 {
@@ -540,6 +541,8 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
 
 bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
 {
+    SWAG_PROFILE(PRF_SAVE, format("x64 save obj %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
