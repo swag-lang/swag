@@ -63,6 +63,7 @@ struct X64PerThread
     map<Utf8Crc, uint32_t>     mapSymbols;
     map<Utf8Crc, uint32_t>     globalStrings;
     map<uint32_t, int32_t>     labels;
+    DataSegment                globalSegment;
     DataSegment                stringSegment;
     VectorNative<LabelToSolve> labelsToSolve;
     Utf8                       directives;
@@ -90,6 +91,10 @@ struct X64PerThread
 
     uint32_t* patchCSOffset = nullptr;
     uint32_t* patchCSCount  = nullptr;
+    uint32_t* patchSSOffset = nullptr;
+    uint32_t* patchSSCount  = nullptr;
+    uint32_t* patchGSOffset = nullptr;
+    uint32_t* patchGSCount  = nullptr;
     uint32_t* patchMSOffset = nullptr;
     uint32_t* patchMSCount  = nullptr;
     uint32_t* patchTSOffset = nullptr;
@@ -119,7 +124,9 @@ struct X64PerThread
     uint16_t sectionIndexText = 0;
     uint16_t sectionIndexBS   = 0;
     uint16_t sectionIndexMS   = 0;
+    uint16_t sectionIndexGS   = 0;
     uint16_t sectionIndexCS   = 0;
+    uint16_t sectionIndexSS   = 0;
     uint16_t sectionIndexTS   = 0;
     uint16_t sectionIndexDR   = 0;
 

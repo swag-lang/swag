@@ -55,6 +55,7 @@ struct DataSegment
     map<uint32_t, ByteCode*>     initFuncPtr;
     VectorNative<DataSegmentRef> initPtr;
     uint32_t                     totalCount = 0;
+    bool                         lock       = false;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
     typedef struct Seek
