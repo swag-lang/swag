@@ -59,6 +59,8 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
     if (!fn)
     {
+        if (g_CommandLine.devMode)
+            SWAG_ASSERT(false);
         context->error(format("cannot resolve foreign function call to '%s'", funcName.c_str()));
         return nullptr;
     }
@@ -222,7 +224,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         }
     }
 
-    numParameters = (int)context->ffiArgs.size();
+    numParameters = (int) context->ffiArgs.size();
 
     // Function return type
     ffi_type* typeResult = &ffi_type_void;

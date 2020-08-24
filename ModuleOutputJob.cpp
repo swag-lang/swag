@@ -74,7 +74,7 @@ JobResult ModuleOutputJob::execute()
         module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
         module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
-        pass = ModuleOutputJobPass::GenOutput;
+        pass = ModuleOutputJobPass::WaitForDependencies;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
             // For C backend, only one pass (test/normal), because only one C file is generated with every cases (the difference is made
@@ -121,10 +121,34 @@ JobResult ModuleOutputJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    if (pass == ModuleOutputJobPass::GenOutput)
+    if (pass == ModuleOutputJobPass::WaitForDependencies)
     {
         if (module->buildPass < BuildPass::Full)
             return JobResult::ReleaseJob;
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        for (auto& dep : module->moduleDependencies)
+        {
+            auto depModule = dep.second.module;
+            SWAG_ASSERT(depModule);
+
+            if (depModule->numErrors)
+                return JobResult::ReleaseJob;
+
+            unique_lock lk(depModule->mutexDependency);
+            if (depModule->hasBeenBuilt != BUILDRES_FULL)
+            {
+                depModule->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
+        pass = ModuleOutputJobPass::GenOutput;
+    }
+
+    if (pass == ModuleOutputJobPass::GenOutput)
+    {
         if (module->numErrors)
             return JobResult::ReleaseJob;
 

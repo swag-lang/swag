@@ -222,13 +222,13 @@ void Utf8::operator=(const char* txt)
 
 bool operator<(const Utf8& txt1, const Utf8& txt2)
 {
-    if (txt1.buffer && !txt2.buffer)
-        return false;
-    if (!txt1.buffer && txt2.buffer)
-        return true;
     if (txt1.buffer == txt2.buffer)
         return false;
-    return strcmp(txt1.buffer, txt2.buffer) < 0;
+    if (txt1.count < txt2.count)
+        return true;
+    if (txt1.count > txt2.count)
+        return false;
+    return strncmp(txt1.buffer, txt2.buffer, txt1.count) < 0;
 }
 
 void Utf8::operator+=(const Utf8& txt)

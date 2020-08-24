@@ -8,6 +8,7 @@ enum class ModuleOutputJobPass
 {
     Init,
     PrepareOutput,
+    WaitForDependencies,
     GenOutput,
     Done,
 };
