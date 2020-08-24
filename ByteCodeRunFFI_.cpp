@@ -26,8 +26,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
     // Load module if specified
     ComputedValue moduleName;
-    bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
-    SWAG_ASSERT(hasModuleName);
+    typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
     SWAG_ASSERT(!moduleName.text.empty());
 
     if (!g_ModuleMgr.loadModule(moduleName.text))
