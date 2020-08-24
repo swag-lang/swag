@@ -83,6 +83,7 @@ namespace Ast
     extern AstNode* clone(AstNode* source, AstNode* parent);
     extern Utf8     computeTypeDisplay(const Utf8& name, TypeInfo* typeInfo);
     extern Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
+    extern void     releaseNode(AstNode* node);
 
     extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);

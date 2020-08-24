@@ -410,4 +410,8 @@ namespace Ast
         return result;
     }
 
+    void releaseNode(AstNode* node)
+    {
+    }
+
 }; // namespace Ast

@@ -4,6 +4,8 @@
 #include "ByteCodeGenJob.h"
 #include "Concat.h"
 #include "Ast.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -972,9 +974,10 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
 bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    auto node   = context->node;
+    auto left   = node->childs[0];
+    auto right  = node->childs[1];
+    auto module = context->sourceFile->module;
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
@@ -1017,33 +1020,66 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
-    // something && false => false
     else if (node->token.id == TokenId::SymAmpersandAmpersand)
     {
-        if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+        if (module->buildCfg.byteCodeOptimize > 0)
         {
-            node->computedValue.reg.b = false;
-            node->setFlagsValueIsComputed();
-        }
-        else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
-        {
-            node->computedValue.reg.b = false;
-            node->setFlagsValueIsComputed();
+            // something && false => false
+            if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+            {
+                node->computedValue.reg.b = false;
+                node->setFlagsValueIsComputed();
+            }
+            else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
+            {
+                node->computedValue.reg.b = false;
+                node->setFlagsValueIsComputed();
+            }
+
+            // something && true => something
+            else if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(left);
+                Ast::releaseNode(left);
+            }
+            else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(right);
+                Ast::releaseNode(right);
+            }
         }
     }
 
-    // something || true => true
     else if (node->token.id == TokenId::SymVerticalVertical)
     {
-        if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+        if (module->buildCfg.byteCodeOptimize > 0)
         {
-            node->computedValue.reg.b = true;
-            node->setFlagsValueIsComputed();
-        }
-        else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
-        {
-            node->computedValue.reg.b = true;
-            node->setFlagsValueIsComputed();
+            // something || true => true
+            if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+            {
+                node->computedValue.reg.b = true;
+                node->setFlagsValueIsComputed();
+            }
+            else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
+            {
+                node->computedValue.reg.b = true;
+                node->setFlagsValueIsComputed();
+            }
+            // something || false => something
+            else if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(left);
+                Ast::releaseNode(left);
+            }
+            else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(right);
+                Ast::releaseNode(right);
+            }
         }
     }
 
