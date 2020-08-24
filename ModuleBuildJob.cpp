@@ -233,22 +233,8 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
-            for (auto& dep : module->moduleDependencies)
-            {
-                auto depModule = dep.second.module;
-                SWAG_ASSERT(depModule);
-
-                if (depModule->numErrors)
-                    return JobResult::ReleaseJob;
-
-                unique_lock lk(depModule->mutexDependency);
-                if (depModule->hasBeenBuilt != BUILDRES_FULL)
-                {
-                    depModule->dependentJobs.add(this);
-                    return JobResult::KeepJobAlive;
-                }
-            }
-
+            if (!module->WaitForDependenciesDone(this))
+                return JobResult::KeepJobAlive;
             pass = ModuleBuildPass::RunByteCode;
         }
     }

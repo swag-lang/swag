@@ -99,6 +99,7 @@ struct Module
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
     bool hasBytecodeToRun();
+    bool WaitForDependenciesDone(Job* job);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;

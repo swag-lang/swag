@@ -29,27 +29,17 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     }
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
+    auto module = sourceFile->module;
     if (node->flags & AST_HAS_FOREIGN_CALLS)
     {
-        for (auto& dep : sourceFile->module->moduleDependencies)
+        if (!module->WaitForDependenciesDone(context->job))
         {
-            auto depModule = dep.second.module;
-            SWAG_ASSERT(depModule);
-
-            if (depModule->numErrors)
-                return true;
-
-            unique_lock lk(depModule->mutexDependency);
-            if (depModule->hasBeenBuilt != BUILDRES_FULL)
-            {
-                context->result = ContextResult::Pending;
-                depModule->dependentJobs.add(context->job);
-                return true;
-            }
+            context->result = ContextResult::Pending;
+            return true;
         }
     }
 
-    SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
+    SWAG_CHECK(module->executeNode(sourceFile, node));
     return true;
 }
 

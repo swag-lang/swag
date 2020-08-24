@@ -487,3 +487,24 @@ bool Module::hasBytecodeToRun()
         runByteCode = true;
     return runByteCode;
 }
+
+bool Module::WaitForDependenciesDone(Job* job)
+{
+    for (auto& dep : moduleDependencies)
+    {
+        auto depModule = dep.second.module;
+        SWAG_ASSERT(depModule);
+
+        if (depModule->numErrors)
+            continue;
+
+        unique_lock lk(depModule->mutexDependency);
+        if (depModule->hasBeenBuilt != BUILDRES_FULL)
+        {
+            depModule->dependentJobs.add(job);
+            return false;
+        }
+    }
+
+    return true;
+}
