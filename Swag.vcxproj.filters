@@ -713,6 +713,9 @@
     <ClInclude Include="Profile.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="SourceLocation.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
