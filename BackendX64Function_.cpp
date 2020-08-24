@@ -1914,8 +1914,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
-            auto jumpToBCAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
+            auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToBCOffset = concat.totalCount();
 
             // Test if it's a foreign lambda
@@ -1923,8 +1923,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\x21\xc3"); // and rbx, rax
             BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
-            auto jumpToForeignAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
+            auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToForeignOffset = concat.totalCount();
 
             // Local lambda
@@ -1934,8 +1934,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            auto jumpBCToAfterAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
+            auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpBCToAfterOffset = concat.totalCount();
 
             // Foreign lambda
@@ -1952,8 +1952,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            auto jumpForeignToAfterAddr = (uint32_t*) concat.getSeekPtr();
             concat.addU32(0);
+            auto jumpForeignToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpForeignToAfterOffset = concat.totalCount();
 
             // ByteCode lambda
