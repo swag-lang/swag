@@ -9,21 +9,15 @@ ModuleManager g_ModuleMgr;
 
 bool ModuleManager::isModuleLoaded(const Utf8& name)
 {
-    shared_lock lk(mutex);
+    shared_lock lk(mutexLoaded);
     return loadedModules.find(name) != loadedModules.end();
 }
 
-bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNotHere)
+bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 {
     SWAG_PROFILE(PRF_LOAD, format("load module %s", name.c_str()));
 
     if (isModuleLoaded(name))
-        return true;
-
-    unique_lock lk(mutex);
-
-    // In case it is now loaded, after the lock
-    if (loadedModules.find(name) != loadedModules.end())
         return true;
 
     bool verbose = g_CommandLine.verbose;
@@ -46,8 +40,6 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
 
         if (h == NULL)
         {
-            if (acceptNotHere)
-                return true;
             if (verbose)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
@@ -57,7 +49,11 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
     if (verbose)
         g_Log.verbose(format("   load module '%s': success\n", name.c_str()), false);
 
-    loadedModules[name] = h;
+    unique_lock lk(mutex);
+
+    // In case it is now loaded, after the lock
+    if (isModuleLoaded(name))
+        return true;
 
     // Should initialize the module the first time
     // Note that the allocator function of the default context is not set, so the module
@@ -71,6 +67,9 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem, bool acceptNo
         typedef void (*funcCall)(void*);
         ((funcCall) ptr)(&g_processInfos);
     }
+
+    unique_lock lk1(mutexLoaded);
+    loadedModules[name] = h;
 
     return true;
 }

@@ -8,7 +8,7 @@ enum class ModuleBuildPass
 {
     Dependencies,
     IncludeSwg,
-    LoadDependencies,
+    WaitForDependencies,
     Publish,
     SemanticCompilerPass,
     SemanticModulePass,

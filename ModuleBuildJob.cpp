@@ -3,7 +3,6 @@
 #include "Workspace.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
-#include "ModuleLoadJob.h"
 #include "ModuleManager.h"
 #include "Os.h"
 #include "ByteCode.h"
@@ -61,7 +60,7 @@ JobResult ModuleBuildJob::execute()
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
             timerSemanticModule.start();
-            pass = ModuleBuildPass::LoadDependencies;
+            pass = ModuleBuildPass::WaitForDependencies;
         }
         else
         {
@@ -111,15 +110,6 @@ JobResult ModuleBuildJob::execute()
                 dep.second.generated    = depModule->backend->exportFileGenerated;
                 module->addFile(file);
                 jobsToAdd.push_back(syntaxJob);
-
-                // If the dependency is completely done, then we can load it during the syntax pass
-                if (depModule->getHasBeenBuilt() == BUILDRES_FULL)
-                {
-                    auto loadJob          = g_Pool_moduleLoadJob.alloc();
-                    loadJob->module       = depModule;
-                    loadJob->dependentJob = this;
-                    jobsToAdd.push_back(loadJob);
-                }
             }
 
             // Sync with all jobs
@@ -194,7 +184,7 @@ JobResult ModuleBuildJob::execute()
     {
         // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = true;
-        pass                            = ModuleBuildPass::LoadDependencies;
+        pass                            = ModuleBuildPass::WaitForDependencies;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -219,7 +209,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::LoadDependencies)
+    if (pass == ModuleBuildPass::WaitForDependencies)
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
@@ -260,14 +250,6 @@ JobResult ModuleBuildJob::execute()
             }
 
             pass = ModuleBuildPass::RunByteCode;
-            for (const auto& dep : module->moduleDependencies)
-            {
-                if (!g_ModuleMgr.loadModule(dep.first, false, true))
-                {
-                    module->error(format("failed to load dependency '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
-                    return JobResult::ReleaseJob;
-                }
-            }
         }
     }
 
