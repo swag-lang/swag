@@ -4,7 +4,10 @@
 
 TypeManager g_TypeMgr;
 
-static TypeInfo* g_LiteralTypeToType[(int) LiteralType::TT_MAX];
+static TypeInfo*                            g_LiteralTypeToType[(int) LiteralType::TT_MAX];
+thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesI;
+thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesB;
+thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesF;
 
 void TypeManager::setup()
 {
@@ -317,26 +320,62 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     return typeStruct;
 }
 
+TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
+{
+    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    {
+        auto it = mapUntypedValuesI.find(value);
+        if (it != mapUntypedValuesI.end())
+        {
+            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_INTEGER);
+            SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
+            return it->second;
+        }
+
+        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
+        newType->valueInteger    = *(int32_t*) &value;
+        typeInfo                 = newType;
+        mapUntypedValuesI[value] = newType;
+    }
+    else if (typeInfo->flags & TYPEINFO_UNTYPED_BINHEXA)
+    {
+        auto it = mapUntypedValuesB.find(value);
+        if (it != mapUntypedValuesB.end())
+        {
+            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_BINHEXA);
+            SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
+            return it->second;
+        }
+
+        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
+        newType->valueInteger    = *(int32_t*) &value;
+        typeInfo                 = newType;
+        mapUntypedValuesB[value] = newType;
+    }
+    else if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    {
+        auto it = mapUntypedValuesF.find(value);
+        if (it != mapUntypedValuesF.end())
+        {
+            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_FLOAT);
+            SWAG_ASSERT(it->second->valueFloat == *(float*) &value);
+            return it->second;
+        }
+
+        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
+        newType->valueFloat      = *(float*) &value;
+        typeInfo                 = newType;
+        mapUntypedValuesF[value] = newType;
+    }
+
+    return typeInfo;
+}
+
 TypeInfo* TypeManager::literalTypeToType(const Token& token)
 {
     SWAG_ASSERT(token.literalType < LiteralType::TT_MAX);
-
     auto result = g_LiteralTypeToType[(int) token.literalType];
     SWAG_ASSERT(result);
-
-    // Untyped ?
-    if (result->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_BINHEXA))
-    {
-        TypeInfoNative* newType = (TypeInfoNative*) result->clone();
-        newType->valueInteger   = token.literalValue.s32;
-        result                  = newType;
-    }
-    else if (result->flags & TYPEINFO_UNTYPED_FLOAT)
-    {
-        TypeInfoNative* newType = (TypeInfoNative*) result->clone();
-        newType->valueFloat     = token.literalValue.f32;
-        result                  = newType;
-    }
-
+    result = makeUntypedType(result, token.literalValue.u32);
     return result;
 }
