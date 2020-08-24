@@ -27,35 +27,34 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     // Load module if specified
     ComputedValue moduleName;
     bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
-    if (hasModuleName)
-    {
-        if (!g_ModuleMgr.loadModule(moduleName.text))
-        {
-            // Sometimes it fails, don't know why. With another attempt just after, it's fine !
-            int attempt = 5;
-            while (attempt > 0)
-            {
-                this_thread::sleep_for(100ms);
-                if (g_ModuleMgr.loadModule(moduleName.text))
-                    break;
-                attempt--;
-            }
+    SWAG_ASSERT(hasModuleName);
+    SWAG_ASSERT(!moduleName.text.empty());
 
-            if (attempt == 0)
-            {
-                context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
-                return nullptr;
-            }
+    if (!g_ModuleMgr.loadModule(moduleName.text))
+    {
+        // Sometimes it fails, don't know why. With another attempt just after, it's fine !
+        int attempt = 5;
+        while (attempt > 0)
+        {
+            this_thread::sleep_for(100ms);
+            if (g_ModuleMgr.loadModule(moduleName.text))
+                break;
+            attempt--;
+        }
+
+        if (attempt == 0)
+        {
+            context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
+            return nullptr;
         }
     }
 
-    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), funcName);
-    if (!fn)
-    {
-        ComputedValue foreignValue;
-        if (typeFunc->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
-            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : Utf8(""), foreignValue.text);
-    }
+    ComputedValue foreignValue;
+    void*         fn = nullptr;
+    if (typeFunc->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
+        fn = g_ModuleMgr.getFnPointer(context, moduleName.text, foreignValue.text);
+    else
+        fn = g_ModuleMgr.getFnPointer(context, moduleName.text, funcName);
 
     if (!fn)
     {

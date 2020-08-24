@@ -76,10 +76,10 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
 void* ModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
 {
-    shared_lock lk(mutex);
-
     SWAG_ASSERT(!moduleName.empty());
-    auto here = loadedModules.find(moduleName);
+
+    shared_lock lk(mutexLoaded);
+    auto        here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
         return OS::getProcAddress(here->second, funcName.c_str());
     return nullptr;
