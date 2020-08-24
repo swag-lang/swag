@@ -17,7 +17,6 @@ uint32_t DataSegment::reserve(uint32_t size, bool setZero)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
 {
-    SWAG_ASSERT(!lock);
     SWAG_ASSERT(size);
     SWAG_RACE_CONDITION_WRITE(raceCondition);
     DataSegmentHeader* last = nullptr;

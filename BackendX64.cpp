@@ -292,10 +292,6 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             uint32_t msOffset = csOffset + module->constantSegment.totalCount;
             uint32_t tsOffset = msOffset + module->mutableSegment.totalCount;
 
-            module->constantSegment.lock = true;
-            module->mutableSegment.lock  = true;
-            module->typeSegment.lock     = true;
-
             // We do not use concat to avoid dummy copies. We will save the segments as they are
             if (pp.globalSegment.totalCount)
             {
