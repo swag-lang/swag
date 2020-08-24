@@ -643,13 +643,6 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             }
             else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
-                if (!fromNode)
-                {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                    if (value > UINT32_MAX)
-                        return false;
-                }
-
                 return true;
             }
 
@@ -1042,13 +1035,6 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                if (!fromNode)
-                {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                    if (value < INT32_MIN || value > INT32_MAX)
-                        return false;
-                }
-
                 return true;
             }
 
@@ -1132,13 +1118,6 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                if (!fromNode)
-                {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                    if (value < INT64_MIN || value > INT64_MAX)
-                        return false;
-                }
-
                 return true;
             }
 
