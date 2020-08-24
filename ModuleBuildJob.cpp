@@ -60,7 +60,7 @@ JobResult ModuleBuildJob::execute()
         if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
             timerSemanticModule.start();
-            pass = ModuleBuildPass::RunByteCode;
+            pass = ModuleBuildPass::LoadDependencies;
         }
         else
         {
@@ -125,37 +125,7 @@ JobResult ModuleBuildJob::execute()
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
 
-            pass = ModuleBuildPass::LoadDependencies;
-        }
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::LoadDependencies)
-    {
-        for (auto& dep : module->moduleDependencies)
-        {
-            auto depModule = dep.second.module;
-            SWAG_ASSERT(depModule);
-
-            if (depModule->numErrors)
-                return JobResult::ReleaseJob;
-
-            unique_lock lk(depModule->mutexDependency);
-            if (depModule->hasBeenBuilt != BUILDRES_FULL)
-            {
-                depModule->dependentJobs.add(this);
-                return JobResult::KeepJobAlive;
-            }
-        }
-
-        pass = ModuleBuildPass::Publish;
-        for (const auto& dep : module->moduleDependencies)
-        {
-            if (!g_ModuleMgr.loadModule(dep.first, false, true))
-            {
-                module->error(format("failed to load dependency '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
-                return JobResult::ReleaseJob;
-            }
+            pass = ModuleBuildPass::Publish;
         }
     }
 
@@ -223,7 +193,7 @@ JobResult ModuleBuildJob::execute()
     {
         // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = true;
-        pass                            = ModuleBuildPass::RunByteCode;
+        pass                            = ModuleBuildPass::LoadDependencies;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -245,6 +215,36 @@ JobResult ModuleBuildJob::execute()
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
         return JobResult::KeepJobAlive;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::LoadDependencies)
+    {
+        for (auto& dep : module->moduleDependencies)
+        {
+            auto depModule = dep.second.module;
+            SWAG_ASSERT(depModule);
+
+            if (depModule->numErrors)
+                return JobResult::ReleaseJob;
+
+            unique_lock lk(depModule->mutexDependency);
+            if (depModule->hasBeenBuilt != BUILDRES_FULL)
+            {
+                depModule->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
+        pass = ModuleBuildPass::RunByteCode;
+        for (const auto& dep : module->moduleDependencies)
+        {
+            if (!g_ModuleMgr.loadModule(dep.first, false, true))
+            {
+                module->error(format("failed to load dependency '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
+                return JobResult::ReleaseJob;
+            }
+        }
     }
 
     //////////////////////////////////////////////////

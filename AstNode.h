@@ -317,6 +317,7 @@ struct AstNode
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
     void             computeScopedNameNoLock();
     Utf8             computeScopedName();
+    void             setHasForeignCall();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 

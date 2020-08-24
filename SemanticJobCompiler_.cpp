@@ -21,10 +21,32 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
         SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, "expression cannot be evaluated at compile time"}));
     }
 
+    // Request to generate the corresponding bytecode
     {
         ByteCodeGenJob::askForByteCode(context->job->dependentJob, context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         if (context->result == ContextResult::Pending)
             return true;
+    }
+
+    // Before executing the node, we need to be sure that our dependencies have generated their dll
+    if (node->flags & AST_HAS_FOREIGN_CALLS)
+    {
+        for (auto& dep : sourceFile->module->moduleDependencies)
+        {
+            auto depModule = dep.second.module;
+            SWAG_ASSERT(depModule);
+
+            if (depModule->numErrors)
+                return true;
+
+            unique_lock lk(depModule->mutexDependency);
+            if (depModule->hasBeenBuilt != BUILDRES_FULL)
+            {
+                context->result = ContextResult::Pending;
+                depModule->dependentJobs.add(context->job);
+                return true;
+            }
+        }
     }
 
     SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
@@ -74,7 +96,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 
     auto job        = context->job;
     auto expression = context->node->childs.back();
-    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
+    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
     SWAG_CHECK(executeNode(context, expression, true));

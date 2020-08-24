@@ -6,6 +6,16 @@
 #include "Allocator.h"
 #include "Generic.h"
 
+void AstNode::setHasForeignCall()
+{
+    unique_lock lk(mutex);
+    if (flags & AST_HAS_FOREIGN_CALLS)
+        return;
+    flags |= AST_HAS_FOREIGN_CALLS;
+    if (parent)
+        parent->setHasForeignCall();
+}
+
 void AstNode::setPassThrough()
 {
     semanticAfterFct  = nullptr;
