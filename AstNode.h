@@ -13,6 +13,7 @@
 #include "RaceCondition.h"
 #include "VectorNative.h"
 
+struct AstTypeExpression;
 struct DocContent;
 struct AstSwitchCase;
 struct SemanticContext;
@@ -595,7 +596,8 @@ struct AstTypeExpression : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* identifier = nullptr;
+    AstNode*  identifier  = nullptr;
+    TypeInfo* literalType = nullptr;
 
     int ptrCount;
     int arrayDim;

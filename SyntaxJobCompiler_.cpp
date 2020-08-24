@@ -17,7 +17,7 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_VERIFY(literal->token.literalType->isNative(NativeTypeKind::String), syntaxError(literal->token, "'#foreignlib' must be followed by a string"));
+    SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#foreignlib' must be followed by a string"));
 
     return true;
 }

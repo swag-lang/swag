@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "TypeManager.h"
+#include "Tokenizer.h"
 
 TypeManager g_TypeMgr;
+
+static TypeInfo* g_LiteralTypeToType[(int) LiteralType::TT_MAX];
 
 void TypeManager::setup()
 {
@@ -22,8 +25,12 @@ void TypeManager::setup()
     typeInfoAny       = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
     typeInfoUndefined = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
 
-    typeInfoUntypedU64 = (TypeInfoNative*) typeInfoU64->clone();
-    typeInfoUntypedU64->flags |= TYPEINFO_UNTYPED_INTEGER;
+    typeInfoUntypedInt = (TypeInfoNative*) typeInfoS32->clone();
+    typeInfoUntypedInt->flags |= TYPEINFO_UNTYPED_INTEGER;
+    typeInfoUntypedBinHexa = (TypeInfoNative*) typeInfoU32->clone();
+    typeInfoUntypedBinHexa->flags |= TYPEINFO_UNTYPED_BINHEXA;
+    typeInfoUntypedFloat = (TypeInfoNative*) typeInfoF32->clone();
+    typeInfoUntypedFloat->flags |= TYPEINFO_UNTYPED_FLOAT;
 
     typeInfoVariadic            = new TypeInfoVariadic();
     typeInfoVariadic->nakedName = "...";
@@ -63,6 +70,27 @@ void TypeManager::setup()
     typePtr->computeName();
     typeInfoOpCall->parameters[0]->typeInfo = typePtr;
     typeInfoOpCall->computeName();
+
+    memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
+    g_LiteralTypeToType[(int) LiteralType::TT_U8]              = typeInfoU8;
+    g_LiteralTypeToType[(int) LiteralType::TT_U16]             = typeInfoU16;
+    g_LiteralTypeToType[(int) LiteralType::TT_U32]             = typeInfoU32;
+    g_LiteralTypeToType[(int) LiteralType::TT_U64]             = typeInfoU64;
+    g_LiteralTypeToType[(int) LiteralType::TT_S8]              = typeInfoS8;
+    g_LiteralTypeToType[(int) LiteralType::TT_S16]             = typeInfoS16;
+    g_LiteralTypeToType[(int) LiteralType::TT_S32]             = typeInfoS32;
+    g_LiteralTypeToType[(int) LiteralType::TT_S64]             = typeInfoS64;
+    g_LiteralTypeToType[(int) LiteralType::TT_F32]             = typeInfoF32;
+    g_LiteralTypeToType[(int) LiteralType::TT_F64]             = typeInfoF64;
+    g_LiteralTypeToType[(int) LiteralType::TT_BOOL]            = typeInfoBool;
+    g_LiteralTypeToType[(int) LiteralType::TT_CHAR]            = typeInfoChar;
+    g_LiteralTypeToType[(int) LiteralType::TT_STRING]          = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_VOID]            = typeInfoVoid;
+    g_LiteralTypeToType[(int) LiteralType::TT_NULL]            = typeInfoNull;
+    g_LiteralTypeToType[(int) LiteralType::TT_ANY]             = typeInfoAny;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]     = typeInfoUntypedInt;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]   = typeInfoUntypedFloat;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA] = typeInfoUntypedBinHexa;
 
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U8]  = typeInfoU32;
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U16] = typeInfoU32;
@@ -287,4 +315,28 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->name = typeStruct->nakedName;
 
     return typeStruct;
+}
+
+TypeInfo* TypeManager::literalTypeToType(const Token& token)
+{
+    SWAG_ASSERT(token.literalType < LiteralType::TT_MAX);
+
+    auto result = g_LiteralTypeToType[(int) token.literalType];
+    SWAG_ASSERT(result);
+
+    // Untyped ?
+    if (result->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_BINHEXA))
+    {
+        TypeInfoNative* newType = (TypeInfoNative*) result->clone();
+        newType->valueInteger   = token.literalValue.s32;
+        result                  = newType;
+    }
+    else if (result->flags & TYPEINFO_UNTYPED_FLOAT)
+    {
+        TypeInfoNative* newType = (TypeInfoNative*) result->clone();
+        newType->valueFloat     = token.literalValue.f32;
+        result                  = newType;
+    }
+
+    return result;
 }

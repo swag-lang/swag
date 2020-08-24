@@ -293,8 +293,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         {
         case TypeInfoKind::Native:
         {
-            typeExpression->token.id          = TokenId::NativeType;
-            typeExpression->token.literalType = childType;
+            typeExpression->token.id    = TokenId::NativeType;
+            typeExpression->literalType = childType;
             break;
         }
         case TypeInfoKind::Pointer:
@@ -304,8 +304,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             typeExpression->isConst  = typeInfoPointer->isConst();
             if (typeInfoPointer->finalType->kind != TypeInfoKind::Native)
                 return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->finalType->name.c_str()).c_str(), assignment->childs[idx]);
-            typeExpression->token.id          = TokenId::NativeType;
-            typeExpression->token.literalType = typeInfoPointer->finalType;
+            typeExpression->token.id    = TokenId::NativeType;
+            typeExpression->literalType = typeInfoPointer->finalType;
             break;
         }
         case TypeInfoKind::Enum:

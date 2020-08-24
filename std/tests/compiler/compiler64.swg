@@ -1,5 +1,4 @@
 ﻿#module "compiler64"
-;
 
 #unittest error;
 #test

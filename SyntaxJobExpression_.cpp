@@ -267,7 +267,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 
         auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
         literal->computedValue.reg.u64 = 0;
-        literal->token.literalType     = g_TypeMgr.typeInfoS32;
+        literal->token.literalType     = LiteralType::TT_S32;
         literal->setFlagsValueIsComputed();
         literal->semanticFct = SemanticJob::resolveLiteral;
         arrayNode->access    = literal;

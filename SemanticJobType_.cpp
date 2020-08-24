@@ -140,7 +140,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
     else
     {
-        typeNode->typeInfo = typeNode->token.literalType;
+        if (!typeNode->literalType)
+            typeNode->literalType = TypeManager::literalTypeToType(typeNode->token);
+        typeNode->typeInfo = typeNode->literalType;
 
         // Typed variadic ?
         if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
@@ -424,7 +426,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     {
         if (!(node->flags & AST_VALUE_COMPUTED))
         {
-            exprNode->typeInfo = exprNode->castedTypeInfo;
+            exprNode->typeInfo       = exprNode->castedTypeInfo;
             exprNode->castedTypeInfo = nullptr;
         }
 

@@ -214,7 +214,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstVarDecl>();
     newNode->copyFrom(context, this);
 
-    newNode->type       = findChildRef(type, newNode);
+    newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);
 
     // Is there an alias ?
@@ -519,6 +519,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->identifier     = findChildRef(identifier, newNode);
+    newNode->literalType    = literalType;
     newNode->ptrCount       = ptrCount;
     newNode->arrayDim       = arrayDim;
     newNode->isRef          = isRef;

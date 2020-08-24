@@ -13,16 +13,38 @@ enum class TokenId
 
 extern const char* g_TokenNames[];
 
+enum class LiteralType
+{
+    TT_U8,
+    TT_U16,
+    TT_U32,
+    TT_U64,
+    TT_S8,
+    TT_S16,
+    TT_S32,
+    TT_S64,
+    TT_BOOL,
+    TT_STRING,
+    TT_CHAR,
+    TT_F32,
+    TT_F64,
+    TT_NULL,
+    TT_ANY,
+    TT_VOID,
+    TT_UNTYPED_BINHEXA,
+    TT_UNTYPED_INT,
+    TT_UNTYPED_FLOAT,
+    TT_MAX,
+};
+
 struct Token
 {
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
-
-    TypeInfo* literalType;
-
-    TokenId id = TokenId::Invalid;
+    LiteralType    literalType;
+    TokenId        id = TokenId::Invalid;
 };
 
 static const uint32_t TOKENIZER_KEEP_EOL              = 0x00000001;

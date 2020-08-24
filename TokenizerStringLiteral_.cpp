@@ -157,7 +157,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 {
     unsigned offset;
     token.id            = TokenId::LiteralString;
-    token.literalType   = g_TypeMgr.typeInfoString;
+    token.literalType   = LiteralType::TT_STRING;
     token.startLocation = location;
 
     while (true)
@@ -257,37 +257,37 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         token.text.toUni32(uni);
         SWAG_VERIFY(uni.size() == 1, sourceFile->report({sourceFile, token, format("invalid character literal '%s', this is a string, not a character", token.text.c_str())}));
 
-        switch (tokenSuffix.literalType->nativeType)
+        switch (tokenSuffix.literalType)
         {
-        case NativeTypeKind::Char:
+        case LiteralType::TT_CHAR:
             token.id              = TokenId::LiteralCharacter;
-            token.literalType     = g_TypeMgr.typeInfoChar;
+            token.literalType     = LiteralType::TT_CHAR;
             token.literalValue.ch = uni[0];
             break;
 
-        case NativeTypeKind::U8:
+        case LiteralType::TT_U8:
             SWAG_VERIFY(uni[0] <= UINT8_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u8', value '%d' is too big", token.text.c_str(), uni[0])}));
             token.id              = TokenId::LiteralNumber;
-            token.literalType     = g_TypeMgr.typeInfoU8;
+            token.literalType     = LiteralType::TT_U8;
             token.literalValue.u8 = (uint8_t) uni[0];
             break;
 
-        case NativeTypeKind::U16:
+        case LiteralType::TT_U16:
             SWAG_VERIFY(uni[0] <= UINT16_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u16', value '%d' is too big", token.text.c_str(), uni[0])}));
             token.id               = TokenId::LiteralNumber;
-            token.literalType      = g_TypeMgr.typeInfoU16;
+            token.literalType      = LiteralType::TT_U16;
             token.literalValue.u16 = (uint16_t) uni[0];
             break;
 
-        case NativeTypeKind::U32:
+        case LiteralType::TT_U32:
             token.id               = TokenId::LiteralNumber;
-            token.literalType      = g_TypeMgr.typeInfoU32;
+            token.literalType      = LiteralType::TT_U32;
             token.literalValue.u32 = uni[0];
             break;
 
-        case NativeTypeKind::U64:
+        case LiteralType::TT_U64:
             token.id               = TokenId::LiteralNumber;
-            token.literalType      = g_TypeMgr.typeInfoU64;
+            token.literalType      = LiteralType::TT_U64;
             token.literalValue.u64 = uni[0];
             break;
 
@@ -308,7 +308,7 @@ bool Tokenizer::doCharLiteral(Token& token)
 
     auto c              = getCharNoSeek(offset);
     token.startLocation = location;
-    token.literalType   = g_TypeMgr.typeInfoChar;
+    token.literalType   = LiteralType::TT_CHAR;
 
     // Can't have a newline inside a character
     if (c == '\n')

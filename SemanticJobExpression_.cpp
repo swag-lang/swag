@@ -10,7 +10,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
     node->setFlagsValueIsComputed();
     node->flags |= AST_R_VALUE;
-    node->typeInfo           = node->token.literalType;
+    node->typeInfo           = TypeManager::literalTypeToType(node->token);
     node->computedValue.reg  = node->token.literalValue;
     node->computedValue.text = node->token.text;
     return true;

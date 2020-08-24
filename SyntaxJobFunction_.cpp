@@ -144,8 +144,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                paramNode->type                    = Ast::newTypeExpression(sourceFile, paramNode);
-                paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
+                auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                = newTypeExpression;
+                newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
                 SWAG_CHECK(tokenizer.getToken(token));
             }
             else
@@ -156,8 +157,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
                 {
-                    paramNode->type                    = Ast::newTypeExpression(sourceFile, paramNode);
-                    paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
+                    auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                    paramNode->type                = newTypeExpression;
+                    newTypeExpression->literalType = g_TypeMgr.typeInfoVariadic;
                     SWAG_CHECK(tokenizer.getToken(token));
                     Ast::addChildBack(paramNode->type, typeExpression);
                 }
@@ -182,7 +184,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             CloneContext cloneContext;
             cloneContext.parent = one;
             if (paramNode->type)
-                one->type = paramNode->type->clone(cloneContext);
+                one->type = (AstTypeExpression*) paramNode->type->clone(cloneContext);
             if (paramNode->assignment)
                 one->assignment = paramNode->assignment->clone(cloneContext);
         }
@@ -431,8 +433,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped      scoped(this, newScope);
         ScopedFct   scopedFct(this, funcNode);
         ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
-        auto        typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
-        typeExpression->token.literalType = g_TypeMgr.typeInfoString;
+        auto        typeExpression  = Ast::newTypeExpression(sourceFile, typeNode, this);
+        typeExpression->literalType = g_TypeMgr.typeInfoString;
     }
 
     funcNode->typeInfo->computeName();

@@ -26,49 +26,49 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
     case TokenId::KwdTrue:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType    = g_TypeMgr.typeInfoBool;
+        token.literalType    = LiteralType::TT_BOOL;
         token.literalValue.b = true;
         return;
     case TokenId::KwdFalse:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType    = g_TypeMgr.typeInfoBool;
+        token.literalType    = LiteralType::TT_BOOL;
         token.literalValue.b = false;
         return;
     case TokenId::KwdNull:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType          = g_TypeMgr.typeInfoNull;
+        token.literalType          = LiteralType::TT_NULL;
         token.literalValue.pointer = nullptr;
         return;
     case TokenId::CompilerFile:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralString;
-        token.literalType = g_TypeMgr.typeInfoString;
+        token.literalType = LiteralType::TT_STRING;
         token.text        = sourceFile->path;
         return;
     case TokenId::CompilerLine:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType      = g_TypeMgr.typeInfoUntypedU64;
-        token.literalValue.u64 = location.line + 1;
+        token.literalType      = LiteralType::TT_UNTYPED_INT;
+        token.literalValue.u32 = location.line + 1;
         return;
     case TokenId::CompilerBuildVersion:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalType      = LiteralType::TT_S32;
         token.literalValue.s32 = SWAG_BUILD_VERSION;
         return;
     case TokenId::CompilerBuildRevision:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalType      = LiteralType::TT_S32;
         token.literalValue.s32 = SWAG_BUILD_REVISION;
         return;
     case TokenId::CompilerBuildNum:
         if (!(parseFlags & TOKENIZER_NO_LITERAL_CONVERSION))
             token.id = TokenId::LiteralNumber;
-        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalType      = LiteralType::TT_S32;
         token.literalValue.s32 = SWAG_BUILD_NUM;
         return;
     case TokenId::NativeType:

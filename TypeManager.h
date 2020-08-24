@@ -6,6 +6,8 @@ struct TypeInfo;
 struct TypeInfoNative;
 struct TypeInfoVariadic;
 struct SemanticContext;
+enum class LiteralType;
+struct Token;
 
 static const uint32_t CASTFLAG_NO_ERROR      = 0x00000001;
 static const uint32_t CASTFLAG_EXPLICIT      = 0x00000002;
@@ -63,6 +65,7 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
+    static TypeInfo* literalTypeToType(const Token& token);
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
@@ -90,7 +93,9 @@ struct TypeManager
     TypeInfoPointer*  typeInfoPVoid;
     TypeInfoPointer*  typeInfoConstPVoid;
     TypeInfoVariadic* typeInfoVariadic;
-    TypeInfoNative*   typeInfoUntypedU64;
+    TypeInfoNative*   typeInfoUntypedInt;
+    TypeInfoNative*   typeInfoUntypedBinHexa;
+    TypeInfoNative*   typeInfoUntypedFloat;
     TypeInfoFuncAttr* typeInfoOpCall;
     TypeInfoCode*     typeInfoCode;
 

@@ -195,7 +195,7 @@ bool Tokenizer::getToken(Token& token)
     while (true)
     {
         token.startLocation = location;
-        token.literalType   = nullptr;
+        token.literalType   = LiteralType::TT_MAX;
         token.text.clear();
 
         auto c = getChar();

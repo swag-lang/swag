@@ -507,8 +507,12 @@ namespace Ast
             }
             else
             {
-                SWAG_ASSERT(!node->token.literalType->name.empty());
-                concat.addString(node->token.literalType->name);
+                auto literalType = typeNode->literalType;
+                if (!literalType)
+                    literalType = TypeManager::literalTypeToType(typeNode->token);
+                SWAG_ASSERT(literalType);
+                SWAG_ASSERT(!literalType->name.empty());
+                concat.addString(literalType->name);
             }
 
             break;
@@ -527,7 +531,7 @@ namespace Ast
             break;
 
         case AstNodeKind::Literal:
-            SWAG_CHECK(outputLiteral(concat, node, node->token.literalType, node->token.text, node->token.literalValue));
+            SWAG_CHECK(outputLiteral(concat, node, TypeManager::literalTypeToType(node->token), node->token.text, node->token.literalValue));
             break;
 
         default:

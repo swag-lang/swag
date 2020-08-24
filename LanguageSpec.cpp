@@ -146,21 +146,21 @@ void LanguageSpec::setup()
     keywords["@exp2"]  = TokenId::IntrinsicExp2;
     keywords["@pow"]   = TokenId::IntrinsicPow;
 
-    nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
-    nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
-    nativeTypes["u16"]    = g_TypeMgr.typeInfoU16;
-    nativeTypes["u8"]     = g_TypeMgr.typeInfoU8;
-    nativeTypes["s64"]    = g_TypeMgr.typeInfoS64;
-    nativeTypes["s32"]    = g_TypeMgr.typeInfoS32;
-    nativeTypes["s16"]    = g_TypeMgr.typeInfoS16;
-    nativeTypes["s8"]     = g_TypeMgr.typeInfoS8;
-    nativeTypes["f32"]    = g_TypeMgr.typeInfoF32;
-    nativeTypes["f64"]    = g_TypeMgr.typeInfoF64;
-    nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
-    nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
-    nativeTypes["string"] = g_TypeMgr.typeInfoString;
-    nativeTypes["any"]    = g_TypeMgr.typeInfoAny;
-    nativeTypes["void"]   = g_TypeMgr.typeInfoVoid;
+    nativeTypes["u64"]    = LiteralType::TT_U64;
+    nativeTypes["u32"]    = LiteralType::TT_U32;
+    nativeTypes["u16"]    = LiteralType::TT_U16;
+    nativeTypes["u8"]     = LiteralType::TT_U8;
+    nativeTypes["s64"]    = LiteralType::TT_S64;
+    nativeTypes["s32"]    = LiteralType::TT_S32;
+    nativeTypes["s16"]    = LiteralType::TT_S16;
+    nativeTypes["s8"]     = LiteralType::TT_S8;
+    nativeTypes["f32"]    = LiteralType::TT_F32;
+    nativeTypes["f64"]    = LiteralType::TT_F64;
+    nativeTypes["bool"]   = LiteralType::TT_BOOL;
+    nativeTypes["char"]   = LiteralType::TT_CHAR;
+    nativeTypes["string"] = LiteralType::TT_STRING;
+    nativeTypes["any"]    = LiteralType::TT_ANY;
+    nativeTypes["void"]   = LiteralType::TT_VOID;
 }
 
 string LanguageSpec::tokenToName(TokenId id)
