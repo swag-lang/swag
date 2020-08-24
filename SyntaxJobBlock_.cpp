@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent);
+    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveIf;
     if (result)
         *result = node;
@@ -28,7 +28,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent);
+    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveWhile;
     if (result)
         *result = node;
@@ -47,7 +47,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
-    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent);
+    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent, 4);
     switchNode->semanticFct = SemanticJob::resolveSwitch;
     if (result)
         *result = switchNode;
@@ -143,7 +143,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent);
+    auto node               = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
     node->semanticBeforeFct = SemanticJob::resolveForBefore;
     node->semanticFct       = SemanticJob::resolveFor;
     if (result)
@@ -185,7 +185,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent);
+    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent, 3);
     node->semanticFct = SemanticJob::resolveVisit;
     if (result)
         *result = node;
@@ -255,7 +255,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent);
+    auto node               = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);
     node->semanticBeforeFct = SemanticJob::resolveLoopBefore;
     node->semanticFct       = SemanticJob::resolveLoop;
     if (result)

@@ -13,12 +13,14 @@ namespace Ast
     extern thread_local AstNode* lastGeneratedNode;
 
     template<typename T>
-    T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
+    T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
         auto node        = g_Allocator.alloc0<T>();
         node->kind       = kind;
         node->parent     = parent;
         node->sourceFile = sourceFile;
+        if (allocChilds)
+            node->childs.reserve(allocChilds);
 
         if (job)
         {

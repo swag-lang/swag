@@ -259,7 +259,7 @@ namespace Ast
 
     AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent);
+        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
         node->flags |= AST_REVERSE_SEMANTIC;
         return node;
@@ -288,7 +288,7 @@ namespace Ast
 
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
-        AstVarDecl* node = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent);
+        AstVarDecl* node = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent, 2);
 
         // We need to evaluate assignment first, then type, in order to be able to generate the type depending on the
         // assignment if necessary

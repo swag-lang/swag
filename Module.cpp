@@ -69,7 +69,7 @@ bool Module::setup(const Utf8& moduleName)
     nameUp.makeUpper();
 
     scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr);
+    astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
     scopeRoot->owner               = astRoot;
     buildPass                      = g_CommandLine.buildPass;
     buildParameters.buildCfg       = &buildCfg;

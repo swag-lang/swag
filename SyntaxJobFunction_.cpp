@@ -258,7 +258,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
-    auto funcNode              = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    auto funcNode              = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct      = SemanticJob::resolveFuncDecl;
     funcNode->semanticAfterFct = SemanticJob::resolveAfterFuncDecl;
     if (result)
@@ -498,7 +498,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 {
-    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
