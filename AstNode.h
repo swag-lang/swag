@@ -308,8 +308,7 @@ struct AstNode
         return (flags & AST_VALUE_COMPUTED) && !computedValue.reg.b;
     }
 
-    bool isConstantInt0();
-    bool isConstantInt1();
+    bool isConstant0();
 
     void             setPassThrough();
     void             inheritLocationFromChilds();

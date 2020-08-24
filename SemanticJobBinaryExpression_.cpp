@@ -13,6 +13,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     auto sourceFile    = context->sourceFile;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -125,6 +126,22 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             return internalError(context, "resolveBinaryOpPlus, type not supported");
         }
     }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something + 0 => something
+        if (left->isConstant0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(left);
+            Ast::releaseNode(left);
+        }
+        else if (right->isConstant0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
+        }
+    }
 
     return true;
 }
@@ -135,6 +152,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     auto sourceFile    = context->sourceFile;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -258,6 +276,16 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             break;
         default:
             return internalError(context, "resolveBinaryOpMinus, type not supported");
+        }
+    }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something - 0 => something
+        if (right->isConstant0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
         }
     }
 
@@ -575,7 +603,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
         // something | 0 => something
-        if (right->isConstantInt0())
+        if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
@@ -641,7 +669,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
         // something & 0 => 0
-        if (left->isConstantInt0() || right->isConstantInt0())
+        if (left->isConstant0() || right->isConstant0())
         {
             node->setFlagsValueIsComputed();
             node->computedValue.reg.s64 = 0;
@@ -884,7 +912,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
         // something << 0 => something
-        if (right->isConstantInt0())
+        if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
@@ -892,7 +920,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         }
 
         // 0 << something => 0
-        else if (left->isConstantInt0())
+        else if (left->isConstant0())
         {
             node->setFlagsValueIsComputed();
             node->computedValue.reg.s64 = 0;
@@ -962,7 +990,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
         // something >> 0 => something
-        if (right->isConstantInt0())
+        if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
@@ -970,7 +998,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         }
 
         // 0 >> something => 0
-        else if (left->isConstantInt0())
+        else if (left->isConstant0())
         {
             node->setFlagsValueIsComputed();
             node->computedValue.reg.s64 = 0;

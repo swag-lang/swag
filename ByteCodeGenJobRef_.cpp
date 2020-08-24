@@ -194,7 +194,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf        = typeInfoSlice->pointedType->sizeOf;
 
         // Increment pointer (if increment is not 0)
-        if (!node->access->isConstantInt0())
+        if (!node->access->isConstant0())
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
@@ -219,7 +219,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitSafetyNullPointer(context, node->array->resultRegisterRC);
 
         // Increment pointer (if increment is not 0)
-        if (!node->access->isConstantInt0())
+        if (!node->access->isConstant0())
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
@@ -246,7 +246,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         truncRegisterRC(context, node->array->resultRegisterRC, 1);
 
         // Increment pointer (if increment is not 0)
-        if (!node->access->isConstantInt0())
+        if (!node->access->isConstant0())
         {
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;

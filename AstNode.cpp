@@ -6,7 +6,7 @@
 #include "Allocator.h"
 #include "Generic.h"
 
-bool AstNode::isConstantInt0()
+bool AstNode::isConstant0()
 {
     SWAG_ASSERT(typeInfo);
     switch (typeInfo->sizeOf)
@@ -19,24 +19,6 @@ bool AstNode::isConstantInt0()
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u32 == 0;
     case 8:
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;
-    }
-
-    return false;
-}
-
-bool AstNode::isConstantInt1()
-{
-    SWAG_ASSERT(typeInfo);
-    switch (typeInfo->sizeOf)
-    {
-    case 1:
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u8 == 1;
-    case 2:
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u16 == 1;
-    case 4:
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u32 == 1;
-    case 8:
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
     return false;
