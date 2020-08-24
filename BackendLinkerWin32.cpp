@@ -6,6 +6,7 @@
 #include "BackendSetupWin32.h"
 #include "Module.h"
 #include "Profile.h"
+#include "lld/Common/Driver.h"
 
 namespace BackendLinkerWin32
 {
@@ -22,8 +23,8 @@ namespace BackendLinkerWin32
     void getLibPaths(vector<Utf8>& libPath)
     {
         // Windows sdk library paths
-        libPath.push_back(format(R"(%s\lib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
-        libPath.push_back(format(R"(%s\lib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
+        libPath.push_back(format(R"(%slib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
+        libPath.push_back(format(R"(%slib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
 
         // Modules
         libPath.push_back(g_Workspace.targetPath.string());
@@ -32,7 +33,7 @@ namespace BackendLinkerWin32
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
     }
 
-    void getArguments(const BuildParameters& buildParameters, Module* module, Utf8& arguments)
+    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool addQuote)
     {
         vector<Utf8> libPath;
         getLibPaths(libPath);
@@ -41,14 +42,14 @@ namespace BackendLinkerWin32
         // As this is defined by the user, the consider the library must exists
         for (auto fl : buildParameters.foreignLibs)
         {
-            arguments += fl;
-            arguments += ".lib ";
+            Utf8 one = fl + ".lib";
+            arguments.push_back(one);
         }
 
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
         {
-            auto libName  = dep.first + ".lib ";
+            auto libName  = dep.first + ".lib";
             auto fullName = g_Workspace.targetPath.string(); // oneLibPath;
             fullName += "/";
             fullName += libName;
@@ -56,44 +57,46 @@ namespace BackendLinkerWin32
             // Be sure that the library exits. Some modules rely on external libraries, and do not have their
             // own one
             if (fs::exists(fs::path(fullName.c_str())))
-                arguments += libName;
+                arguments.push_back(libName);
         }
 
         // External libraries from windows sdk
-        arguments += "kernel32.lib ";
-        arguments += "ucrt.lib ";
+        arguments.push_back("kernel32.lib");
+        arguments.push_back("ucrt.lib");
 
         //if (g_CommandLine.devMode)
         //arguments += "user32.lib "; // MessageBox
 
         // Add swag.runtime
         if (buildParameters.buildCfg->backendDebugInformations)
-            arguments += "swag.runtime_d.lib ";
+            arguments.push_back("swag.runtime_d.lib");
         else
-            arguments += "swag.runtime.lib ";
+            arguments.push_back("swag.runtime.lib");
 
         for (const auto& oneLibPath : libPath)
-            arguments += "/LIBPATH:\"" + oneLibPath + "\" ";
+        {
+            if (addQuote)
+                arguments.push_back("/LIBPATH:\"" + oneLibPath + "\"");
+            else
+                arguments.push_back("/LIBPATH:" + oneLibPath);
+        }
 
-        arguments += "/INCREMENTAL:NO ";
-        arguments += "/NOLOGO ";
-        arguments += "/SUBSYSTEM:CONSOLE ";
-        arguments += "/NODEFAULTLIB ";
-        arguments += format("/MACHINE:%s ", target);
+        arguments.push_back("/INCREMENTAL:NO");
+        arguments.push_back("/NOLOGO");
+        arguments.push_back("/SUBSYSTEM:CONSOLE");
+        arguments.push_back("/NODEFAULTLIB");
+        arguments.push_back(format("/MACHINE:%s", target));
 
         if (buildParameters.buildCfg->backendDebugInformations)
-            arguments += "/DEBUG ";
+            arguments.push_back("/DEBUG");
 
         auto resultFile = Backend::getOutputFileName(buildParameters);
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
-        {
-            arguments += "/DLL ";
-            arguments += "/OUT:\"" + resultFile + "\" ";
-        }
+            arguments.push_back("/DLL");
+        if (addQuote)
+            arguments.push_back("/OUT:\"" + resultFile + "\"");
         else
-        {
-            arguments += "/OUT:\"" + resultFile + "\" ";
-        }
+            arguments.push_back("/OUT:" + resultFile);
 
         //printf(arguments.c_str());
         //printf("\n");
@@ -102,12 +105,69 @@ namespace BackendLinkerWin32
 
 namespace OS
 {
+    /*
+    class MyOStream : public llvm::raw_ostream
+    {
+    public:
+        MyOStream()
+            : raw_ostream(true)
+            , pos(0)
+        {
+        }
+        void write_impl(const char* ptr, size_t len) override
+        {
+            g_Log.print(ptr);
+            pos += len;
+        }
+
+        uint64_t current_pos() const override
+        {
+            return pos;
+        }
+
+        size_t pos;
+    };
+
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         SWAG_PROFILE(PRF_LINK, format("link %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
 
+        vector<Utf8> linkArguments;
+        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments, false);
+
+        // Add all object files
+        auto targetPath = Backend::getCacheFolder(buildParameters);
+        for (auto& file : objectFiles)
+        {
+            auto path = targetPath + "/" + file.c_str();
+            linkArguments.push_back(path);
+        }
+
+        VectorNative<const char*> linkArgumentsPtr;
+        linkArgumentsPtr.push_back("lld");
+        for (auto& one : linkArguments)
+            linkArgumentsPtr.push_back(one.c_str());
+
+        llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
+
+        MyOStream diag_stdout;
+        MyOStream diag_stderr;
+
+        static mutex oo;
+        unique_lock  lk(oo);
+        auto         result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
+        return result;
+    }*/
+
+    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    {
+        SWAG_PROFILE(PRF_LINK, format("link %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+
+        vector<Utf8> linkArgumentsList;
+        BackendLinkerWin32::getArguments(buildParameters, module, linkArgumentsList, true);
         Utf8 linkArguments;
-        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+        for (auto& one : linkArgumentsList)
+            linkArguments += one + " ";
 
         // Add all object files
         auto targetPath = Backend::getCacheFolder(buildParameters);

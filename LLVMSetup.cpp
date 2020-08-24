@@ -12,7 +12,11 @@
 #pragma comment(lib, "LLVMX86Desc.lib")
 #pragma comment(lib, "LLVMX86Disassembler.lib")
 #pragma comment(lib, "LLVMX86Info.lib")
-#pragma comment(lib, "LLVM-C.lib")
+#pragma comment(lib, "LLVMAVRAsmParser.lib")
+#pragma comment(lib, "LLVMAVRCodeGen.lib")
+#pragma comment(lib, "LLVMAVRDesc.lib")
+#pragma comment(lib, "LLVMAVRDisassembler.lib")
+#pragma comment(lib, "LLVMAVRInfo.lib")
 #pragma comment(lib, "LLVMAArch64AsmParser.lib")
 #pragma comment(lib, "LLVMAArch64CodeGen.lib")
 #pragma comment(lib, "LLVMAArch64Desc.lib")
@@ -147,11 +151,27 @@
 #pragma comment(lib, "LLVMXRay.lib")
 #pragma comment(lib, "LLVMipo.lib")
 
+// #pragma comment(lib, "lldCOFF.lib")
+// #pragma comment(lib, "lldCommon.lib")
+// #pragma comment(lib, "lldCore.lib")
+// #pragma comment(lib, "lldDriver.lib")
+// #pragma comment(lib, "lldELF.lib")
+// #pragma comment(lib, "lldMachO.lib")
+// #pragma comment(lib, "lldMachO2.lib")
+// #pragma comment(lib, "lldMinGW.lib")
+// #pragma comment(lib, "lldReaderWriter.lib")
+// #pragma comment(lib, "lldWasm.lib")
+
 namespace LLVM
 {
-	void setup()
-	{
+    void setup()
+    {
+//         llvm::InitializeAllTargets();
+//         llvm::InitializeAllTargetInfos();
+//         llvm::InitializeAllTargetMCs();
+//         llvm::InitializeAllAsmPrinters();
+//         llvm::InitializeAllAsmParsers();
         llvm::InitializeNativeTarget();
         llvm::InitializeNativeTargetAsmPrinter();
-	}
-}
+    }
+} // namespace LLVM

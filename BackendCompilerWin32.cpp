@@ -81,8 +81,11 @@ namespace OS
         case BackendOutputType::DynamicLib:
         case BackendOutputType::Binary:
         {
+            vector<Utf8> listLinkArguments;
+            BackendLinkerWin32::getArguments(buildParameters, module, listLinkArguments, true);
             Utf8 linkArguments;
-            BackendLinkerWin32::getArguments(buildParameters, module, linkArguments);
+            for (auto& one : listLinkArguments)
+                linkArguments += one + " ";
 
             if (buildParameters.outputType == BackendOutputType::DynamicLib)
                 clArguments += "/DSWAG_IS_DYNAMICLIB ";
