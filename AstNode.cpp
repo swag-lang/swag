@@ -6,6 +6,42 @@
 #include "Allocator.h"
 #include "Generic.h"
 
+bool AstNode::isConstantInt0()
+{
+    SWAG_ASSERT(typeInfo);
+    switch (typeInfo->sizeOf)
+    {
+    case 8:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u8 == 0;
+    case 16:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u16 == 0;
+    case 32:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u32 == 0;
+    case 64:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;
+    }
+
+    return false;
+}
+
+bool AstNode::isConstantInt1()
+{
+    SWAG_ASSERT(typeInfo);
+    switch (typeInfo->sizeOf)
+    {
+    case 8:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u8 == 1;
+    case 16:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u16 == 1;
+    case 32:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u32 == 1;
+    case 64:
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
+    }
+
+    return false;
+}
+
 void AstNode::setHasForeignCall()
 {
     unique_lock lk(mutex);

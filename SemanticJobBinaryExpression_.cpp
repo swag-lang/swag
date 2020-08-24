@@ -630,122 +630,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
-bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
-{
-    auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
-    {
-        SWAG_CHECK(resolveUserOp(context, "opBinary", "<<", nullptr, left, right, false));
-        node->typeInfo = leftTypeInfo;
-        return true;
-    }
-
-    switch (leftTypeInfo->nativeType)
-    {
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Char:
-        break;
-    default:
-        return context->report({left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
-    }
-
-    switch (rightTypeInfo->nativeType)
-    {
-    case NativeTypeKind::U32:
-        break;
-    default:
-        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
-    }
-
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
-    {
-        node->setFlagsValueIsComputed();
-
-        switch (leftTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
-            break;
-        default:
-            return internalError(context, "resolveShiftLeft, type not supported");
-        }
-    }
-
-    return true;
-}
-
-bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
-{
-    auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
-    {
-        SWAG_CHECK(resolveUserOp(context, "opBinary", ">>", nullptr, left, right, false));
-        node->typeInfo = leftTypeInfo;
-        return true;
-    }
-
-    switch (leftTypeInfo->nativeType)
-    {
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Char:
-        break;
-    default:
-        return context->report({left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
-    }
-
-    switch (rightTypeInfo->nativeType)
-    {
-    case NativeTypeKind::U32:
-        break;
-    default:
-        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
-    }
-
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
-    {
-        node->setFlagsValueIsComputed();
-
-        switch (leftTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S32:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
-            break;
-        default:
-            return internalError(context, "resolveShiftRight, type not supported");
-        }
-    }
-
-    return true;
-}
-
 bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
@@ -923,6 +807,158 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
+
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "<<", nullptr, left, right, false));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::Char:
+        break;
+    default:
+        return context->report({left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
+
+    switch (rightTypeInfo->nativeType)
+    {
+    case NativeTypeKind::U32:
+        break;
+    default:
+        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->setFlagsValueIsComputed();
+
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
+            break;
+        default:
+            return internalError(context, "resolveShiftLeft, type not supported");
+        }
+    }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something << 0 => something
+        if (right->isConstantInt0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
+        }
+
+        // 0 << something => 0
+        else if (left->isConstantInt0())
+        {
+            node->setFlagsValueIsComputed();
+            node->computedValue.reg.s64 = 0;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
+
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opBinary", ">>", nullptr, left, right, false));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::Char:
+        break;
+    default:
+        return context->report({left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
+
+    switch (rightTypeInfo->nativeType)
+    {
+    case NativeTypeKind::U32:
+        break;
+    default:
+        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->setFlagsValueIsComputed();
+
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeTypeKind::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
+            break;
+        case NativeTypeKind::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
+            break;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            break;
+        case NativeTypeKind::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
+            break;
+        default:
+            return internalError(context, "resolveShiftRight, type not supported");
+        }
+    }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something >> 0 => something
+        if (right->isConstantInt0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
+        }
+
+        // 0 >> something => 0
+        else if (left->isConstantInt0())
+        {
+            node->setFlagsValueIsComputed();
+            node->computedValue.reg.s64 = 0;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 {
     auto node  = context->node;
@@ -1025,25 +1061,25 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         if (module->buildCfg.byteCodeOptimize > 0)
         {
             // something && false => false
-            if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+            if (left->isConstantFalse())
             {
                 node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
             }
-            else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
+            else if (right->isConstantFalse())
             {
                 node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
             }
 
             // something && true => something
-            else if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+            else if (left->isConstantTrue())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
                 Ast::releaseNode(left);
             }
-            else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
+            else if (right->isConstantTrue())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);
@@ -1057,24 +1093,24 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         if (module->buildCfg.byteCodeOptimize > 0)
         {
             // something || true => true
-            if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+            if (left->isConstantTrue())
             {
                 node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
             }
-            else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
+            else if (right->isConstantTrue())
             {
                 node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
             }
             // something || false => something
-            else if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+            else if (left->isConstantFalse())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
                 Ast::releaseNode(left);
             }
-            else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
+            else if (right->isConstantFalse())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(right);

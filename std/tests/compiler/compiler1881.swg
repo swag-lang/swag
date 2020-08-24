@@ -1,9 +1,6 @@
 //#[swag.printbc]
 #test
 {
-    a := 0
-    if(true && a == 1)
-    {
-        @print("toto")
-    }
+    a := 0'u32
+    b := 0 >> a
 }

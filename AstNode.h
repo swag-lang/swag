@@ -238,23 +238,6 @@ struct AstNode
         }
     }
 
-    void setFlagsValueIsComputed()
-    {
-        flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE | AST_R_VALUE;
-    }
-
-    void inheritComputedValue(AstNode* from)
-    {
-        if (!from)
-            return;
-        inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
-        if (flags & AST_VALUE_COMPUTED)
-        {
-            flags |= AST_CONST_EXPR | AST_PURE | AST_R_VALUE;
-            computedValue = move(from->computedValue);
-        }
-    }
-
     void inheritTokenName(Token& tkn)
     {
         SWAG_ASSERT(!tkn.text.empty());
@@ -298,15 +281,35 @@ struct AstNode
         return (flags & AST_VALUE_COMPUTED);
     }
 
-    bool isConstantInt0()
+    void setFlagsValueIsComputed()
     {
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;
+        flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE | AST_R_VALUE;
     }
 
-    bool isConstantInt1()
+    void inheritComputedValue(AstNode* from)
     {
-        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
+        if (!from)
+            return;
+        inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
+        if (flags & AST_VALUE_COMPUTED)
+        {
+            flags |= AST_CONST_EXPR | AST_PURE | AST_R_VALUE;
+            computedValue = move(from->computedValue);
+        }
     }
+
+    bool isConstantTrue()
+    {
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b;
+    }
+
+    bool isConstantFalse()
+    {
+        return (flags & AST_VALUE_COMPUTED) && !computedValue.reg.b;
+    }
+
+    bool isConstantInt0();
+    bool isConstantInt1();
 
     void             setPassThrough();
     void             inheritLocationFromChilds();
