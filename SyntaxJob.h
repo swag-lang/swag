@@ -22,6 +22,7 @@ enum class InvalidTokenError
     TopLevelInstruction,
     PrimaryExpression,
     LeftExpression,
+    LeftExpressionVar,
 };
 
 struct SyntaxContext : public JobContext
@@ -132,6 +133,7 @@ struct SyntaxJob : public Job
     bool doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
+    bool doLeftExpressionVar(AstNode** result);
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDrop(AstNode* parent, AstNode** result = nullptr);

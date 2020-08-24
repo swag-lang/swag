@@ -99,6 +99,9 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     case InvalidTokenError::LeftExpression:
         msg += "is invalid as a left expression";
         break;
+    case InvalidTokenError::LeftExpressionVar:
+        msg += "is invalid as a left expression for variable declaration";
+        break;
     case InvalidTokenError::PrimaryExpression:
         msg += "is invalid as an expression";
         break;

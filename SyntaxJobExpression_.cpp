@@ -681,19 +681,10 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpression(AstNode** result)
+bool SyntaxJob::doLeftExpressionVar(AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicAssert:
-    case TokenId::IntrinsicFree:
-    case TokenId::IntrinsicMemCpy:
-    case TokenId::IntrinsicMemSet:
-    case TokenId::IntrinsicSetContext:
-    case TokenId::IntrinsicGetContext:
-        SWAG_CHECK(doIdentifierRef(nullptr, result));
-        return true;
     case TokenId::SymLeftParen:
     {
         auto multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
@@ -735,10 +726,33 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 
     default:
-        return invalidTokenError(InvalidTokenError::LeftExpression);
+        return invalidTokenError(InvalidTokenError::LeftExpressionVar);
     }
 
     return true;
+}
+
+bool SyntaxJob::doLeftExpression(AstNode** result)
+{
+    switch (token.id)
+    {
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicFree:
+    case TokenId::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemSet:
+    case TokenId::IntrinsicSetContext:
+    case TokenId::IntrinsicGetContext:
+        SWAG_CHECK(doIdentifierRef(nullptr, result));
+        return true;
+    case TokenId::SymLeftParen:
+    case TokenId::Identifier:
+    case TokenId::SymBackTick:
+        SWAG_CHECK(doLeftExpressionVar(result));
+        return true;
+    default:
+        return invalidTokenError(InvalidTokenError::LeftExpression);
+    }
 }
 
 bool SyntaxJob::isValidVarName(AstNode* node)
