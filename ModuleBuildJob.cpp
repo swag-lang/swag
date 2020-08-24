@@ -13,6 +13,7 @@
 #include "Module.h"
 #include "ModuleRunJob.h"
 #include "ThreadManager.h"
+#include "Profile.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -220,29 +221,52 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::LoadDependencies)
     {
-        for (auto& dep : module->moduleDependencies)
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            auto depModule = dep.second.module;
-            SWAG_ASSERT(depModule);
-
-            if (depModule->numErrors)
-                return JobResult::ReleaseJob;
-
-            unique_lock lk(depModule->mutexDependency);
-            if (depModule->hasBeenBuilt != BUILDRES_FULL)
-            {
-                depModule->dependentJobs.add(this);
-                return JobResult::KeepJobAlive;
-            }
+            timerSemanticModule.stop();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
         }
 
-        pass = ModuleBuildPass::RunByteCode;
-        for (const auto& dep : module->moduleDependencies)
+        // If we will not run some stuff, then no need to wait for dependencies, because we do not
+        // have to load the dlls
+        if (!module->hasBytecodeToRun())
         {
-            if (!g_ModuleMgr.loadModule(dep.first, false, true))
+            // Timing...
+            if (g_CommandLine.stats || g_CommandLine.verbose)
+                timerRun.start();
+            pass = ModuleBuildPass::Output;
+        }
+        else
+        {
+            for (auto& dep : module->moduleDependencies)
             {
-                module->error(format("failed to load dependency '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
-                return JobResult::ReleaseJob;
+                auto depModule = dep.second.module;
+                SWAG_ASSERT(depModule);
+
+                if (depModule->numErrors)
+                    return JobResult::ReleaseJob;
+
+                unique_lock lk(depModule->mutexDependency);
+                if (depModule->hasBeenBuilt != BUILDRES_FULL)
+                {
+                    depModule->dependentJobs.add(this);
+                    return JobResult::KeepJobAlive;
+                }
+            }
+
+            pass = ModuleBuildPass::RunByteCode;
+            for (const auto& dep : module->moduleDependencies)
+            {
+                if (!g_ModuleMgr.loadModule(dep.first, false, true))
+                {
+                    module->error(format("failed to load dependency '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
+                    return JobResult::ReleaseJob;
+                }
             }
         }
     }
@@ -252,29 +276,15 @@ JobResult ModuleBuildJob::execute()
     {
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
-        {
-            timerSemanticModule.stop();
-            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
             timerRun.start();
-        }
 
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        bool runByteCode = false;
-        // If we have some #test functions, and we are in test mode
-        if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty())
-            runByteCode = true;
-        // If we have #run functions
-        else if (!module->byteCodeRunFunc.empty())
-            runByteCode = true;
-        // If we need to run in bytecode mode
-        else if (g_CommandLine.run && g_CommandLine.script)
-            runByteCode = true;
-
-        if (runByteCode)
+        if (module->hasBytecodeToRun())
         {
+            SWAG_PROFILE(PRF_GFCT, format("run bc %s%s", module->name.c_str(), module->buildParameters.postFix.c_str()));
+
             module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun);
 
             // #init functions are only executed in script mode, if the module has a #main

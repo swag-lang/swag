@@ -472,3 +472,18 @@ bool Module::mustEmitSafety(AstNode* node)
         safety = false;
     return safety;
 }
+
+bool Module::hasBytecodeToRun()
+{
+    bool runByteCode = false;
+    // If we have some #test functions, and we are in test mode
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !byteCodeTestFunc.empty())
+        runByteCode = true;
+    // If we have #run functions
+    else if (!byteCodeRunFunc.empty())
+        runByteCode = true;
+    // If we need to run in bytecode mode
+    else if (g_CommandLine.run && g_CommandLine.script)
+        runByteCode = true;
+    return runByteCode;
+}

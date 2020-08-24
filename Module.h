@@ -98,6 +98,7 @@ struct Module
     bool hasCompilerFuncFor(CompilerMsgKind kind);
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
+    bool hasBytecodeToRun();
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;
