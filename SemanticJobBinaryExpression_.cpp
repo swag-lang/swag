@@ -524,6 +524,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 {
     auto node         = context->node;
     auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto module       = node->sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -569,6 +570,16 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             break;
         default:
             return internalError(context, "resolveBitmaskOr, type not supported");
+        }
+    }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something | 0 => something
+        if (right->isConstantInt0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
         }
     }
 

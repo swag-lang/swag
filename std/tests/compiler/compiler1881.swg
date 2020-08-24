@@ -1,6 +1,6 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     a := 0'u32
-    b := 0 >> a
+    b := a | 0
 }
