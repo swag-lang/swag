@@ -1017,5 +1017,35 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
+    // something && false => false
+    else if (node->token.id == TokenId::SymAmpersandAmpersand)
+    {
+        if ((left->flags & AST_VALUE_COMPUTED) && !left->computedValue.reg.b)
+        {
+            node->computedValue.reg.b = false;
+            node->setFlagsValueIsComputed();
+        }
+        else if ((right->flags & AST_VALUE_COMPUTED) && !right->computedValue.reg.b)
+        {
+            node->computedValue.reg.b = false;
+            node->setFlagsValueIsComputed();
+        }
+    }
+
+    // something || true => true
+    else if (node->token.id == TokenId::SymVerticalVertical)
+    {
+        if ((left->flags & AST_VALUE_COMPUTED) && left->computedValue.reg.b)
+        {
+            node->computedValue.reg.b = true;
+            node->setFlagsValueIsComputed();
+        }
+        else if ((right->flags & AST_VALUE_COMPUTED) && right->computedValue.reg.b)
+        {
+            node->computedValue.reg.b = true;
+            node->setFlagsValueIsComputed();
+        }
+    }
+
     return true;
 }

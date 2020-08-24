@@ -1,14 +1,9 @@
-func(T) AA()
-{
-    #run
-    {
-        ptr := @typeof(T)
-        if(ptr == s32)
-            @assert(false)
-    }
-}
-
+//#[swag.printbc]
 #test
 {
-    AA's32()
+    a := 0
+    if(a == 1 || true)
+    {
+        @print("toto")
+    }
 }
