@@ -446,10 +446,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
-        {
-            SWAG_ASSERT(!(ip->flags & BCI_JUMP_DEST));
             continue;
-        }
 
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)

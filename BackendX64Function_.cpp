@@ -295,10 +295,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
-        {
-            SWAG_ASSERT(!(ip->flags & BCI_JUMP_DEST));
             continue;
-        }
 
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);
