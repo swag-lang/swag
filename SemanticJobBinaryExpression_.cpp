@@ -13,7 +13,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     auto sourceFile    = context->sourceFile;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -128,13 +128,14 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
-        // something + 0 => something
+        // 0 + something => something
         if (left->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(left);
             Ast::releaseNode(left);
         }
+        // something + 0 => something
         else if (right->isConstant0())
         {
             node->setPassThrough();
@@ -152,7 +153,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     auto sourceFile    = context->sourceFile;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -297,6 +298,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     auto node         = context->node;
     auto sourceFile   = context->sourceFile;
     auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto module       = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -383,6 +385,29 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             break;
         default:
             return internalError(context, "resolveBinaryOpMul, type not supported");
+        }
+    }
+    else if (module->buildCfg.byteCodeOptimize > 0)
+    {
+        // something * 0 => 0
+        if (left->isConstant0() || right->isConstant0())
+        {
+            node->setFlagsValueIsComputed();
+            node->computedValue.reg.s64 = 0;
+        }
+        // 1 * something => something
+        else if (left->isConstant1())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(left);
+            Ast::releaseNode(left);
+        }
+        // something * 1 => something
+        else if (right->isConstant1())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+            Ast::releaseNode(right);
         }
     }
 
@@ -602,8 +627,15 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     }
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
+        // 0 | something => something
+        if (left->isConstant0())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(left);
+            Ast::releaseNode(left);
+        }
         // something | 0 => something
-        if (right->isConstant0())
+        else if (right->isConstant0())
         {
             node->setPassThrough();
             Ast::removeFromParent(right);
@@ -668,6 +700,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     }
     else if (module->buildCfg.byteCodeOptimize > 0)
     {
+        // 0 & something => 0
         // something & 0 => 0
         if (left->isConstant0() || right->isConstant0())
         {
@@ -918,7 +951,6 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             Ast::removeFromParent(right);
             Ast::releaseNode(right);
         }
-
         // 0 << something => 0
         else if (left->isConstant0())
         {
@@ -996,7 +1028,6 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             Ast::removeFromParent(right);
             Ast::releaseNode(right);
         }
-
         // 0 >> something => 0
         else if (left->isConstant0())
         {
@@ -1109,25 +1140,26 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     {
         if (module->buildCfg.byteCodeOptimize > 0)
         {
-            // something && false => false
+            // false && something => false
             if (left->isConstantFalse())
             {
                 node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
             }
+            // something && false => false
             else if (right->isConstantFalse())
             {
                 node->computedValue.reg.b = false;
                 node->setFlagsValueIsComputed();
             }
-
-            // something && true => something
+            // true && something => something
             else if (left->isConstantTrue())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
                 Ast::releaseNode(left);
             }
+            // something && true => something
             else if (right->isConstantTrue())
             {
                 node->setPassThrough();
@@ -1141,24 +1173,26 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     {
         if (module->buildCfg.byteCodeOptimize > 0)
         {
-            // something || true => true
+            // true || something => true
             if (left->isConstantTrue())
             {
                 node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
             }
+            // something || true => true
             else if (right->isConstantTrue())
             {
                 node->computedValue.reg.b = true;
                 node->setFlagsValueIsComputed();
             }
-            // something || false => something
+            // false || something => something
             else if (left->isConstantFalse())
             {
                 node->setPassThrough();
                 Ast::removeFromParent(left);
                 Ast::releaseNode(left);
             }
+            // something || false => something
             else if (right->isConstantFalse())
             {
                 node->setPassThrough();

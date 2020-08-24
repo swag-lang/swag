@@ -309,6 +309,7 @@ struct AstNode
     }
 
     bool isConstant0();
+    bool isConstant1();
 
     void             setPassThrough();
     void             inheritLocationFromChilds();
