@@ -2495,40 +2495,31 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             continue;
         }
 
-        if (type->flags & TYPEINFO_FLOAT)
-        {
-            switch (i)
-            {
-            case 0:
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM0, RDI);
-                break;
-            case 1:
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM1, RDI);
-                break;
-            case 2:
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM2, RDI);
-                break;
-            case 3:
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM3, RDI);
-                break;
-            }
-
-            continue;
-        }
-
         switch (i)
         {
         case 0:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RCX, RDI);
+            if (type->flags & TYPEINFO_FLOAT)
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM0, RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RCX, RDI);
             break;
         case 1:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RDX, RDI);
+            if (type->flags & TYPEINFO_FLOAT)
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM1, RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RDX, RDI);
             break;
         case 2:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R8, RDI);
+            if (type->flags & TYPEINFO_FLOAT)
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM2, RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R8, RDI);
             break;
         case 3:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
+            if (type->flags & TYPEINFO_FLOAT)
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM3, RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
             break;
         }
     }
