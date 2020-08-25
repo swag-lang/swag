@@ -935,10 +935,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].s32=memcmp(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
 
-        case ByteCodeOp::CopyVBtoRA32:
+        case ByteCodeOp::CopyRAVB32:
             concat.addStringFormat("r[%u].u32=0x%x;", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::CopyVBtoRA64:
+        case ByteCodeOp::CopyRAVB64:
             concat.addStringFormat("r[%u].u64=0x%I64x;", ip->a.u32, ip->b.u64);
             break;
         case ByteCodeOp::CopyRBtoRA:

@@ -587,7 +587,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
 
             if (numToInit != 1)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u32 = typeExpression->pointedType->sizeOf;
                 emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);

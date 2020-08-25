@@ -788,14 +788,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CopyVBtoRA32:
+        case ByteCodeOp::CopyRAVB32:
         {
             //concat.addStringFormat("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(CST_RB32, r0);
             break;
         }
-        case ByteCodeOp::CopyVBtoRA64:
+        case ByteCodeOp::CopyRAVB64:
         {
             //concat.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             auto r0 = GEP_I32(allocR, ip->a.u32);
