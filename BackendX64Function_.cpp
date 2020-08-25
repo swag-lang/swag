@@ -149,8 +149,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         sizeStack += sizeof(Register);
     }
 
-    concat.addU8(0x57); // push rdi
-    while (sizeStack % 16)
+    BackendX64Inst::emit_Push(pp, RDI);
+    if (sizeStack % 16)
         sizeStack += 8; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
     BackendX64Inst::emit_Copy64(pp, RSP, RDI);
@@ -279,7 +279,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
-    concat.addU8(0x57); // push rdi
+    BackendX64Inst::emit_Push(pp, RDI);
     while (sizeStack % 16)
         sizeStack++; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
@@ -1979,7 +1979,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 default:
                     sizeCallStack += 8;
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    concat.addString1("\x50"); // push rax
+                    BackendX64Inst::emit_Push(pp, RAX);
                     break;
                 }
             }
@@ -2306,7 +2306,7 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
     for (int j = (int) typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
     {
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RBX, RDI);
-        concat.addU8(0x53); // push rbx
+        BackendX64Inst::emit_Push(pp, RBX);
     }
 
     return sizeStack;

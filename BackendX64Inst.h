@@ -258,14 +258,21 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Copy64(X64PerThread& pp, uint32_t regSrc, uint32_t regDst)
+    inline void emit_Push(X64PerThread& pp, uint8_t reg)
+    {
+        if (reg > R9)
+            pp.concat.addU8(0x41);
+        pp.concat.addU8(0x50 | reg & 0b111);
+    }
+
+    inline void emit_Copy64(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
         pp.concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
         pp.concat.addU8(0x89);
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
-    inline void emit_Copy32(X64PerThread& pp, uint32_t regSrc, uint32_t regDst)
+    inline void emit_Copy32(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)
     {
         SWAG_ASSERT(regDst < R8 && regSrc < R8);
         pp.concat.addU8(0x89);
