@@ -2305,9 +2305,8 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
     // Return registers are push first
     for (int j = (int) typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
     {
-        concat.addString3("\x4c\x8d\xb7"); // lea r14, [rdi + ????????]
-        concat.addU32(stackRR + (j * sizeof(Register)));
-        concat.addString2("\x41\x56"); // push r14
+        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RBX, RDI);
+        concat.addU8(0x53); // push rbx
     }
 
     return sizeStack;
