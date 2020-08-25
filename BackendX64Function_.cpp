@@ -186,15 +186,13 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         {
             if (returnByCopy)
             {
-                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-                concat.addU32(offsetRetCopy);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRetCopy, RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
                 setCalleeParameter(pp, typeParam, numCallRegisters, offsetRetCopy, sizeStack);
             }
             else
             {
-                concat.addString3("\x48\x8d\x87"); // lea rax, [rdi + ????????]
-                concat.addU32(regOffset(i));
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(i), RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(i), RAX, RDI);
             }
         }
