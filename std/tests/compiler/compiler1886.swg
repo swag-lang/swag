@@ -1,4 +1,4 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     a, b, c := 5

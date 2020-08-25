@@ -832,8 +832,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         }
 
         // Declare first variable, and affect it
-        auto savedtoken = token;
-        auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+        auto front = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
 
         // Then declare all other variables, and assign them to the first one
         bool firstDone = false;
@@ -843,9 +842,11 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
-            AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-            varNode->kind       = kind;
-            varNode->token      = identifier->token;
+
+            ScopedLocation scopedLoc(this, &identifier->token);
+            AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->kind          = kind;
+            varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE;
 
             if (!firstDone)
@@ -866,8 +867,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
             else
             {
-                varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
-                varNode->assignment->token = savedtoken;
+                varNode->assignment = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
             }
 
             if (varNode->assignment)
