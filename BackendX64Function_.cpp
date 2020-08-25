@@ -1598,20 +1598,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             if (ip->a.u32 == ip->c.u32)
-                BackendX64Inst::emit_Add64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
+                BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI, X64Op::ADD);
             else
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Add64(pp, RBX, RAX);
+                BackendX64Inst::emit_Op64(pp, RBX, RAX, X64Op::ADD);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             }
             break;
         case ByteCodeOp::DecPointer32:
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x48\x29\xd8"); // sub rax, rbx
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            if (ip->a.u32 == ip->c.u32)
+                BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI, X64Op::SUB);
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Op64(pp, RBX, RAX, X64Op::SUB);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            }
             break;
 
         case ByteCodeOp::Mul64byVB32:
@@ -1873,7 +1878,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.relocTableTextSection.table.push_back(reloc);
 
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            concat.addString3("\x48\x09\xC8"); // or rax, rcx
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
@@ -1904,7 +1909,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Test if it's a bytecode lambda
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
-            concat.addString3("\x48\x21\xc3"); // and rbx, rax
+            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
             BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
             concat.addU32(0);
@@ -1913,7 +1918,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Test if it's a foreign lambda
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
-            concat.addString3("\x48\x21\xc3"); // and rbx, rax
+            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
             BackendX64Inst::emit_Test64(pp, RBX, RBX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
             concat.addU32(0);
@@ -1936,8 +1941,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
 
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            concat.addString3("\x48\x21\xC8"); // and rax, rcx
-
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Copy64(pp, R12, RAX);
             SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD4"); // call r12

@@ -28,6 +28,14 @@ enum Reg
     R15  = 0b1111,
 };
 
+enum class X64Op : uint8_t
+{
+    ADD = 0x01,
+    OR  = 0x09,
+    AND = 0x21,
+    SUB = 0x29,
+};
+
 namespace BackendX64Inst
 {
     enum Disp
@@ -454,19 +462,19 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, 1, reg);
     }
 
-    inline void emit_Add64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
+    inline void emit_Op64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x48 | ((memReg & 0b1000) >> 3) | ((reg & 0b1000) >> 1));
-        pp.concat.addU8(0x01);
+        pp.concat.addU8((uint8_t) instruction);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
-    inline void emit_Add64(X64PerThread& pp, uint8_t reg, uint8_t memReg)
+    inline void emit_Op64(X64PerThread& pp, uint8_t reg, uint8_t memReg, X64Op instruction)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x48 | ((memReg & 0b1000) >> 3) | ((reg & 0b1000) >> 1));
-        pp.concat.addU8(0x01);
+        pp.concat.addU8((uint8_t) instruction);
         pp.concat.addU8(modRM(0b11, reg & 0b111, memReg & 0b111));
     }
 
