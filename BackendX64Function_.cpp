@@ -1018,7 +1018,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s64;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x48\x29\x03"); // sub [rbx], rax
+            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RBX, X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
             //CONCAT_STR_2(concat, "*(__f32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].f32;");
