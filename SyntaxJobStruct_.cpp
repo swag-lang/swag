@@ -251,19 +251,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::StructVarDecl));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
-
-        case TokenId::SymRightCurly:
-            SWAG_CHECK(eatToken());
-            return true;
-
-        case TokenId::SymAttrStart:
-            SWAG_CHECK(doAttrUse(parent));
-            break;
-
-        case TokenId::DocComment:
-            SWAG_CHECK(doDocComment(parent));
-            break;
-
         case TokenId::CompilerIf:
             SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::StructDecl));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
@@ -276,11 +263,20 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
         }
+        case TokenId::SymRightCurly:
+            SWAG_CHECK(eatToken());
+            return true;
+
+        case TokenId::SymAttrStart:
+            SWAG_CHECK(doAttrUse(parent));
+            break;
+        case TokenId::DocComment:
+            SWAG_CHECK(doDocComment(parent));
+            break;
 
         case TokenId::KwdAlias:
             SWAG_CHECK(doAlias(parent));
             break;
-
         case TokenId::KwdUsing:
         {
             SWAG_CHECK(eatToken());

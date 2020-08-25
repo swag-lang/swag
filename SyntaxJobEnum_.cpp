@@ -115,25 +115,25 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
         case TokenId::CompilerAst:
             SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::EnumValue));
             break;
+        case TokenId::CompilerAssert:
+            SWAG_CHECK(doCompilerAssert(parent, nullptr));
+            break;
+        case TokenId::CompilerIf:
+            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::EnumDecl));
+            break;
 
         case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
             break;
-
         case TokenId::DocComment:
             SWAG_CHECK(doDocComment(parent));
             break;
-
         case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
             break;
         }
-
-        case TokenId::CompilerIf:
-            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::EnumDecl));
-            break;
 
         default:
             SWAG_CHECK(doEnumValue(parent));
