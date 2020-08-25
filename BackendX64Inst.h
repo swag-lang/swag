@@ -34,6 +34,7 @@ enum class X64Op : uint8_t
     OR  = 0x09,
     AND = 0x21,
     SUB = 0x29,
+    XOR = 0x31,
 };
 
 namespace BackendX64Inst

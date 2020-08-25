@@ -696,19 +696,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x66\x31\x03"); // xor [rbx], ax
+            BackendX64Inst::emit_Op16_Indirect(pp, 0, RAX, RBX, X64Op::XOR);
             break;
         case ByteCodeOp::AffectOpXOrEqS32:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x31\x03"); // xor [rbx], eax
+            BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RBX, X64Op::XOR);
             break;
         case ByteCodeOp::AffectOpXOrEqS64:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x48\x31\x03"); // xor [rbx], rax
+            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RBX, X64Op::XOR);
             break;
 
         case ByteCodeOp::AffectOpOrEqS8:
@@ -721,19 +721,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x66\x09\x03"); // or [rbx], ax
+            BackendX64Inst::emit_Op16_Indirect(pp, 0, RAX, RBX, X64Op::OR);
             break;
         case ByteCodeOp::AffectOpOrEqS32:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x09\x03"); // or [rbx], eax
+            BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RBX, X64Op::OR);
             break;
         case ByteCodeOp::AffectOpOrEqS64:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x48\x09\x03"); // or [rbx], rax
+            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RBX, X64Op::OR);
             break;
 
         case ByteCodeOp::AffectOpAndEqS8:
@@ -746,19 +746,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x66\x21\x03"); // and [rbx], ax
+            BackendX64Inst::emit_Op16_Indirect(pp, 0, RAX, RBX, X64Op::AND);
             break;
         case ByteCodeOp::AffectOpAndEqS32:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x21\x03"); // and [rbx], eax
+            BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RBX, X64Op::AND);
             break;
         case ByteCodeOp::AffectOpAndEqS64:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString3("\x48\x21\x03"); // and [rbx], rax
+            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RBX, X64Op::AND);
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
