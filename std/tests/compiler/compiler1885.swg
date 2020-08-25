@@ -22,6 +22,8 @@ struct(T) AA
         buf[idx] = 0
         return cast(string) buf
     }
+
+    enPlus: bool
 }
 
 //#[swag.printbc]
@@ -36,4 +38,5 @@ struct(T) AA
     var str: AA'BB
     @assert(str.val1 == 555)
     @assert(str.val2 == 555)
+    @assert(str.enPlus == false)
 }
