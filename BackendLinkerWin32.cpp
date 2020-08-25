@@ -49,7 +49,7 @@ namespace BackendLinkerWin32
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
         {
-            auto libName  = dep.first + ".lib";
+            auto libName  = dep->name + ".lib";
             auto fullName = g_Workspace.targetPath.string(); // oneLibPath;
             fullName += "/";
             fullName += libName;

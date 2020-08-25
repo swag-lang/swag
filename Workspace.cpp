@@ -433,7 +433,7 @@ bool Workspace::buildTarget()
         {
             for (auto& dep : toBuild[i]->moduleDependencies)
             {
-                auto it = g_Workspace.mapModulesNames.find(dep.first);
+                auto it = g_Workspace.mapModulesNames.find(dep->name);
                 SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
 
                 auto depModule = it->second;

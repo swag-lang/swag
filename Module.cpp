@@ -378,13 +378,16 @@ void Module::addForeignLib(const Utf8& text)
 void Module::addDependency(AstNode* importNode)
 {
     scoped_lock lk(mutexDependency);
-    if (moduleDependencies.find(importNode->name) == moduleDependencies.end())
+    for (auto& dep : moduleDependencies)
     {
-        ModuleDependency dep;
-        dep.node                             = importNode;
-        dep.name                             = importNode->name;
-        moduleDependencies[importNode->name] = dep;
+        if (dep->name == importNode->name)
+            return;
     }
+
+    ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
+    dep->node             = importNode;
+    dep->name             = importNode->name;
+    moduleDependencies.push_front(dep);
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)
@@ -504,7 +507,7 @@ bool Module::WaitForDependenciesDone(Job* job)
 {
     for (auto& dep : moduleDependencies)
     {
-        auto depModule = dep.second.module;
+        auto depModule = dep->module;
         SWAG_ASSERT(depModule);
 
         if (depModule->numErrors)

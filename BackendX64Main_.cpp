@@ -67,12 +67,12 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = dep.first;
+        auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         emitGlobalString(pp, precompileIndex, nameDown, RCX);
         emitCall(pp, "swag_runtime_loadDynamicLibrary");
 
-        if (dep.second.generated)
+        if (dep->generated)
         {
             concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
             BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
@@ -106,9 +106,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep.second.generated)
+        if (!dep->generated)
             continue;
-        auto nameDown = dep.first;
+        auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         auto funcDrop = format("%s_globalDrop", nameDown.c_str());
         emitCall(pp, funcDrop);

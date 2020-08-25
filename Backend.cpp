@@ -108,7 +108,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // If one of my dependency is more recent than me, then need to rebuild
     for (auto dep : module->moduleDependencies)
     {
-        auto it = g_Workspace.mapModulesNames.find(dep.first);
+        auto it = g_Workspace.mapModulesNames.find(dep->name);
         SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
         auto depModule = it->second;
         if (!depModule->backend->isUpToDate(timeExportFile, true))

@@ -28,10 +28,10 @@ bool BackendC::emitMain(OutputFile& bufferC)
     bufferC.addStringFormat("%s_globalInit(&__process_infos);\n", module->nameDown.c_str());
     for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = dep.first;
+        Utf8 nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         bufferC.addStringFormat("swag_runtime_loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
-        if (dep.second.generated)
+        if (dep->generated)
         {
             bufferC.addStringFormat("extern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t*);\n", nameDown.c_str());
             bufferC.addStringFormat("%s_globalInit(&__process_infos);\n", nameDown.c_str());
@@ -71,9 +71,9 @@ bool BackendC::emitMain(OutputFile& bufferC)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep.second.generated)
+        if (!dep->generated)
             continue;
-        auto nameDown = dep.first;
+        Utf8 nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         bufferC.addStringFormat("extern SWAG_IMPORT void %s_globalDrop();\n", nameDown.c_str());
         bufferC.addStringFormat("%s_globalDrop();\n", nameDown.c_str());

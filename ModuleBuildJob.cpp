@@ -24,14 +24,14 @@ JobResult ModuleBuildJob::execute()
     {
         for (auto& dep : module->moduleDependencies)
         {
-            auto depModule = g_Workspace.getModuleByName(dep.first);
+            auto depModule = g_Workspace.getModuleByName(dep->name);
             if (!depModule)
             {
-                module->error(format("unknown module dependency '%s'", dep.first.c_str()));
+                module->error(format("unknown module dependency '%s'", dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
-            dep.second.module = depModule;
+            dep->module = depModule;
 
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;
@@ -66,26 +66,26 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto& dep : module->moduleDependencies)
             {
-                auto depModule = dep.second.module;
-                if (dep.second.importDone)
+                auto depModule = dep->module;
+                if (dep->importDone)
                     continue;
 
                 // Some dependencies can have been added by the this stage
                 if (!depModule)
                 {
-                    depModule = g_Workspace.getModuleByName(dep.first);
+                    depModule = g_Workspace.getModuleByName(dep->name);
                     depModule->allocateBackend();
                     if (!depModule)
                     {
-                        module->error(format("unknown module dependency '%s'", dep.first.c_str()));
+                        module->error(format("unknown module dependency '%s'", dep->name.c_str()));
                         return JobResult::ReleaseJob;
                     }
 
-                    dep.second.module = depModule;
+                    dep->module = depModule;
                 }
 
-                auto node             = dep.second.node;
-                dep.second.importDone = true;
+                auto node       = dep->node;
+                dep->importDone = true;
 
                 // Now the .swg export file should be in the cache
                 if (depModule->backend && !depModule->backend->timeExportFile)
@@ -93,7 +93,7 @@ JobResult ModuleBuildJob::execute()
                     depModule->backend->setupExportFile();
                     if (!depModule->backend->timeExportFile)
                     {
-                        node->sourceFile->report({node, format("cannot find module export file for '%s'", dep.first.c_str())});
+                        node->sourceFile->report({node, format("cannot find module export file for '%s'", dep->name.c_str())});
                         continue;
                     }
                 }
@@ -107,7 +107,7 @@ JobResult ModuleBuildJob::execute()
                 file->name              = depModule->backend->bufferSwg.name;
                 file->path              = depModule->backend->bufferSwg.path;
                 file->generated         = true;
-                dep.second.generated    = depModule->backend->exportFileGenerated;
+                dep->generated          = depModule->backend->exportFileGenerated;
                 module->addFile(file);
                 jobsToAdd.push_back(syntaxJob);
             }
@@ -233,6 +233,8 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
+            if (module->name == "tests.std.math")
+                module = module;
             if (!module->WaitForDependenciesDone(this))
                 return JobResult::KeepJobAlive;
             pass = ModuleBuildPass::RunByteCode;

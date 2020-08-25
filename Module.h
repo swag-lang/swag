@@ -26,7 +26,7 @@ struct Module;
 
 struct ModuleDependency
 {
-    string   name;
+    Utf8     name;
     AstNode* node       = nullptr;
     Module*  module     = nullptr;
     bool     generated  = false;
@@ -126,9 +126,9 @@ struct Module
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
 
-    shared_mutex                mutexDependency;
-    map<Utf8, ModuleDependency> moduleDependencies;
-    uint32_t                    hasBeenBuilt = BUILDRES_NONE;
+    shared_mutex                    mutexDependency;
+    VectorNative<ModuleDependency*> moduleDependencies;
+    uint32_t                        hasBeenBuilt = BUILDRES_NONE;
 
     TypeTable typeTable;
     void*     compilerItf[2];

@@ -31,17 +31,14 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
     if (!g_ModuleMgr.loadModule(moduleName.text))
     {
-        // Sometimes it fails, don't know why. With another attempt just after, it's fine !
-        int attempt = 5;
-        while (attempt > 0)
-        {
-            this_thread::sleep_for(100ms);
-            if (g_ModuleMgr.loadModule(moduleName.text))
-                break;
-            attempt--;
-        }
+        // Perhaps the module is dependent on another module, so we need to be sure that our dependencies are
+        // all loaded : load all, from last to first (dependencies are added in reverse order, latest first)
+        auto module = context->sourceFile->module;
+        for (auto& dep : module->moduleDependencies)
+            g_ModuleMgr.loadModule(dep->name);
 
-        if (attempt == 0)
+        // Then try again
+        if (!g_ModuleMgr.loadModule(moduleName.text))
         {
             if (g_CommandLine.devMode)
                 SWAG_ASSERT(false);

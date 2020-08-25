@@ -79,12 +79,12 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = dep.first;
+        auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         auto ptrStr = builder.CreateGlobalStringPtr(nameDown.c_str());
         builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
 
-        if (dep.second.generated)
+        if (dep->generated)
         {
             auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
             auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
@@ -122,9 +122,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep.second.generated)
+        if (!dep->generated)
             continue;
-        auto nameDown = dep.first;
+        auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
         funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);

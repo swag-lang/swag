@@ -471,7 +471,7 @@ bool Backend::generateExportFile()
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
     for (const auto& dep : module->moduleDependencies)
-        bufferSwg.addStringFormat("#import \"%s\"\n", dep.first.c_str());
+        bufferSwg.addStringFormat("#import \"%s\"\n", dep->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
     // Emit everything that's public
