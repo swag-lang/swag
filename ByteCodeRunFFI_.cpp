@@ -43,6 +43,8 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
 
         if (attempt == 0)
         {
+            if (g_CommandLine.devMode)
+                SWAG_ASSERT(false);
             context->error(format("failed to load module '%s' while resolving foreign function '%s' => %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str()));
             return nullptr;
         }
