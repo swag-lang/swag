@@ -79,6 +79,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
 
         prevBlock = tryBlock;
         tryBlock  = tryBlock->next;
+        SWAG_ASSERT(tryBlock != firstFreeBlock);
     }
 
     return nullptr;
@@ -109,7 +110,8 @@ void* Allocator::alloc(int size)
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
     {
-        result = tryFreeBlock(UINT32_MAX, size);
+        // Magic number
+        result = tryFreeBlock(8, size);
         if (result)
             return result;
 
