@@ -241,7 +241,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Visit statement code block
-    SWAG_CHECK(doEmbeddedStatement(nullptr, &node->block));
+    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined

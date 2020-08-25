@@ -257,7 +257,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         {
             if (kind == AstNodeKind::CompilerAssert || kind == AstNodeKind::CompilerAst)
             {
-                Ast::visit(this, [](AstNode* x) { x->flags &= ~AST_NO_SEMANTIC; });
+                for (auto one : childs)
+                    one->flags &= ~AST_NO_SEMANTIC;
             }
         }
     }

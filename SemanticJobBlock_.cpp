@@ -278,7 +278,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
         newExpression              = identifierRef;
 
-        SWAG_ASSERT(!node->block->parent);
+        Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);
         node->expression->flags |= AST_NO_BYTECODE;
 
@@ -324,6 +324,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         // First child is the let in the statement, and first child of this is the loop node
         auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+        Ast::removeFromParent(node->block);
         Ast::addChildBack(loopNode->block, node->block);
         Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
         node->block->flags &= ~AST_NO_SEMANTIC;
@@ -356,7 +357,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         // First child is the let in the statement, and first child of this is the loop node
         auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+        Ast::removeFromParent(node->block);
         Ast::addChildBack(loopNode->block, node->block);
+        SWAG_ASSERT(node->block);
         Ast::visit(node->block, [&](AstNode* x) { if(!x->ownerBreakable) x->ownerBreakable = loopNode; });
         node->block->flags &= ~AST_NO_SEMANTIC;
 

@@ -1,5 +1,39 @@
+using swag
+
+struct(T) AA
+{
+    #ast
+    {
+        #assert(@typeof(T).kind == TypeInfoKind.Struct)
+
+        var buf: [100] u8
+        idx := 0'u32
+
+        ptr := @typeof(T)
+        visit it: ptr.fields
+        {
+            @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))
+            idx += @countof(it.name)
+            const val = ": s32 = 555;"
+            @memcpy(&buf[idx], @dataof(val), @countof(val))
+            idx += @countof(val)
+        }
+
+        buf[idx] = 0
+        return cast(string) buf
+    }
+}
+
 //#[swag.printbc]
 #test
 {
-    a := @[1, 2, 3]
+    struct BB
+    {
+        val1: f32
+        val2: f32
+    }
+
+    var str: AA'BB
+    @assert(str.val1 == 555)
+    @assert(str.val2 == 555)
 }
