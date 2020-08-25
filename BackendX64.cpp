@@ -685,5 +685,6 @@ bool BackendX64::generateOutput(const BuildParameters& buildParameters)
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i].filename);
-    return OS::link(buildParameters, module, files);
+    auto result = OS::link(buildParameters, module, files);
+    return result;
 }
