@@ -19,6 +19,7 @@ const char* Scope::getNakedKindName(ScopeKind kind)
     case ScopeKind::Module:
         return "global";
     case ScopeKind::Statement:
+    case ScopeKind::EmptyStatement:
         return "statement";
     case ScopeKind::Inline:
         return "inline";
@@ -44,6 +45,7 @@ const char* Scope::getArticleKindName(ScopeKind kind)
     case ScopeKind::Module:
         return "a module";
     case ScopeKind::Statement:
+    case ScopeKind::EmptyStatement:
         return "a statement";
     case ScopeKind::Inline:
         return "an inline";

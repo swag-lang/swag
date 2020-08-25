@@ -22,6 +22,7 @@ enum class ScopeKind
     FunctionBody,
     Attribute,
     Statement,
+    EmptyStatement,
     Breakable,
     TypeList,
     Inline,

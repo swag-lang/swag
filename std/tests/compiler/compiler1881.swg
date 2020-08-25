@@ -1,6 +1,6 @@
 using swag
 
-#[printbc]
+//#[printbc]
 #[optimizebc(1)]
 #test
 {
@@ -8,6 +8,10 @@ using swag
     b := a + 0
     @assert(b == a)
     b = 0 + a
+    @assert(b == a)
+    b = a - 0
+    @assert(b == a)
+    b = a / 1
     @assert(b == a)
 }
 

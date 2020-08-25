@@ -183,9 +183,9 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result, Token* endTo
     return true;
 }
 
-bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
+bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
 {
-    auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    auto     newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     AstNode* statement;
 
     {
@@ -272,7 +272,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doEnum(parent));
         break;
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doScopedCurlyStatement(parent, result));
+        SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
         break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));

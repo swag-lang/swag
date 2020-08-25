@@ -181,6 +181,15 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     auto node = context->node;
     auto expr = node->childs[0];
 
+    // Be sure statement is correct
+    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
+    {
+        auto scope = node->ownerScope;
+        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
+            scope = scope->parentScope;
+        SWAG_VERIFY(scope->isGlobalOrImpl() || scope->kind == ScopeKind::FunctionBody, context->report({node, node->token, "'#assert' cannot be used here"}));
+    }
+
     if (node->childs.size() > 1)
     {
         auto msg = node->childs[1];

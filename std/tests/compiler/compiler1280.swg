@@ -1,3 +1,6 @@
+#module "compiler1280"
+#unittest error
+
 //#[swag.printbc]
 #test
 {

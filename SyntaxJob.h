@@ -2,6 +2,7 @@
 #include "Tokenizer.h"
 #include "Job.h"
 #include "AstFlags.h"
+#include "Scope.h"
 struct SourceFile;
 struct AstVarDecl;
 struct AstNode;
@@ -117,7 +118,7 @@ struct SyntaxJob : public Job
     bool doStatement(AstNode* parent, AstNode** result = nullptr);
     bool doGlobalCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr, Token* endToken = nullptr);
-    bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
+    bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr, ScopeKind scopeKind = ScopeKind::Statement);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
