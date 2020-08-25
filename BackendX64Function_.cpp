@@ -2560,8 +2560,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                     break;
                 case 8:
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
-                    concat.addU32(offsetStack);
+                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
                     break;
                 default:
                     return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");

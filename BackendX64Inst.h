@@ -62,17 +62,23 @@ namespace BackendX64Inst
         {
             // mov al, byte ptr [rdi]
             pp.concat.addU8(modRM(0, reg, memReg));
+            if (memReg == RSP)
+                pp.concat.addU8(0x24);
         }
         else if (stackOffset <= 0x7F)
         {
             // mov al, byte ptr [rdi + ??]
             pp.concat.addU8(modRM(DISP8, reg, memReg));
+            if (memReg == RSP)
+                pp.concat.addU8(0x24);
             pp.concat.addU8((uint8_t) stackOffset);
         }
         else
         {
             // mov al, byte ptr [rdi + ????????]
             pp.concat.addU8(modRM(DISP32, reg, memReg));
+            if (memReg == RSP)
+                pp.concat.addU8(0x24);
             pp.concat.addU32(stackOffset);
         }
     }
