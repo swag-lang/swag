@@ -736,25 +736,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MemCpyVC32:
-        {
-            //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateLoad(r1);
-            builder.CreateMemCpy(r0, llvm::MaybeAlign(0), r1, llvm::MaybeAlign(0), ip->c.u32);
-            break;
-        }
         case ByteCodeOp::MemCpy:
         {
             //concat.addStringFormat("memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
             r0      = builder.CreateLoad(r0);
             r1      = builder.CreateLoad(r1);
-            r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
+
+            llvm::Value* r2;
+            if (ip->flags & BCI_IMM_C)
+                r2 = builder.getInt64(ip->c.u32);
+            else
+            {
+                r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
+                r2 = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
+            }
+
             builder.CreateMemCpy(r0, llvm::MaybeAlign(0), r1, llvm::MaybeAlign(0), r2);
             break;
         }

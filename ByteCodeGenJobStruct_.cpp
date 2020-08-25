@@ -83,7 +83,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = exprList->storageOffsetSegment;
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u32 = (uint32_t) typeList->subTypes.size();
-                emitInstruction(&cxt, ByteCodeOp::MemCpyVC32, 0, 1)->c.u32 = typeVar->sizeOf;
+
+                auto inst = emitInstruction(&cxt, ByteCodeOp::MemCpy, 0, 1);
+                inst->flags |= BCI_IMM_C;
+                inst->c.u32 = typeVar->sizeOf;
             }
             else if (typeVar->isNative(NativeTypeKind::String))
             {
@@ -547,7 +550,9 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     }
 
     // Shallow copy
-    emitInstruction(context, ByteCodeOp::MemCpyVC32, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
+    auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, r1);
+    inst->flags |= BCI_IMM_C;
+    inst->c.u32 = typeInfoStruct->sizeOf;
 
     // A copy
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;

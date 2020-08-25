@@ -11,6 +11,8 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
+#define IMMC_U32(ip) (ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32
+
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->bc->registersRC[context->bc->curRC];
@@ -448,19 +450,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->decSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::MemCpyVC32:
-    {
-        void*    dst  = registersRC[ip->a.u32].pointer;
-        void*    src  = registersRC[ip->b.u32].pointer;
-        uint32_t size = ip->c.u32;
-        memcpy(dst, src, size);
-        break;
-    }
     case ByteCodeOp::MemCpy:
     {
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
-        uint32_t size = registersRC[ip->c.u32].u32;
+        uint32_t size = IMMC_U32(ip);
         memcpy(dst, src, size);
         break;
     }

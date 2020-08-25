@@ -922,11 +922,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 CONCAT_STR_1(concat, "r[", ip->a.u32, "].u64=*(__u64_t*)s;");
             break;
 
-        case ByteCodeOp::MemCpyVC32:
-            concat.addStringFormat("memcpy(r[%u].p,r[%u].p,%u);", ip->a.u32, ip->b.u32, ip->c.u32);
-            break;
         case ByteCodeOp::MemCpy:
-            concat.addStringFormat("memcpy(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            if (ip->flags & BCI_IMM_C)
+                concat.addStringFormat("memcpy(r[%u].p,r[%u].p,%u);", ip->a.u32, ip->b.u32, ip->c.u32);
+            else
+                concat.addStringFormat("memcpy(r[%u].p,r[%u].p,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemSet:
             concat.addStringFormat("memset(r[%u].p,r[%u].u8,r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);

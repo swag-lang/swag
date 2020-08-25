@@ -88,7 +88,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 {
                     auto r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
-                    emitInstruction(context, ByteCodeOp::MemCpyVC32, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
+                    auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, returnExpression->resultRegisterRC);
+                    inst->flags |= BCI_IMM_C;
+                    inst->c.u32 = returnExpression->typeInfo->sizeOf;
                     freeRegisterRC(context, r0);
                 }
                 else if (returnType->isNative(NativeTypeKind::String))
