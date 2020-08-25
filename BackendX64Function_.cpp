@@ -1425,8 +1425,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::DeRefPointer:
             //concat.addStringFormat("r[%u].pointer = *(__u8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, RBX);
-            concat.addString3("\x48\x01\xD8"); // add rax, rbx
+            if (ip->c.u32)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, RBX);
+                BackendX64Inst::emit_Op64(pp, RBX, RAX, X64Op::ADD);
+            }
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             break;
