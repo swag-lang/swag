@@ -1,5 +1,7 @@
-#[swag.printbc]
-#[swag.optimizebc(0)]
+using swag
+
+#[printbc]
+#[optimizebc(1)]
 #test
 {
     a := 10
@@ -9,6 +11,7 @@
     @assert(b == a)
 }
 
+#[optimizebc(1)]
 #test
 {
     a := 10

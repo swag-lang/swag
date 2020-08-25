@@ -200,6 +200,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.optimizebc", "level", attrValue);
+                if (attrValue.reg.u32 > 2)
+                    return context->report({child, format("invalid 'optimizebc' level of optimization (maximum is 2, '%d was provided)", attrValue.reg.u32)});
                 flags |= ATTRIBUTE_OPTIMIZEBC_0 << attrValue.reg.u32;
             }
         }
