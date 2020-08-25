@@ -1598,14 +1598,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
             if (ip->a.u32 == ip->c.u32)
-            {
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                concat.addString3("\x48\x01\x18"); // add [rax], rbx
-            }
+                BackendX64Inst::emit_Add64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             else
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                concat.addString3("\x48\x01\xD8"); // add rax, rbx
+                BackendX64Inst::emit_Add64(pp, RBX, RAX);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             }
             break;
