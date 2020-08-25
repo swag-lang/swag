@@ -95,6 +95,8 @@ namespace Ast
     void removeFromParent(AstNode* child)
     {
         auto        parent = child->parent;
+        if (!parent)
+            return;
         scoped_lock lk(parent->mutex);
         for (int i = 0; i < parent->childs.size(); i++)
         {

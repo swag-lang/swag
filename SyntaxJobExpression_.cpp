@@ -375,7 +375,6 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(nullptr, &leftNode));
 
-    bool isBinary = false;
     if ((token.id == TokenId::SymEqualEqual) ||
         (token.id == TokenId::SymExclamEqual) ||
         (token.id == TokenId::SymLowerEqual) ||
@@ -383,23 +382,55 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymLower) ||
         (token.id == TokenId::SymGreater))
     {
-        auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
-        binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
-        binaryNode->token       = move(token);
+        AstNode* leftBinary = nullptr;
+        while ((token.id == TokenId::SymEqualEqual) ||
+               (token.id == TokenId::SymExclamEqual) ||
+               (token.id == TokenId::SymLowerEqual) ||
+               (token.id == TokenId::SymGreaterEqual) ||
+               (token.id == TokenId::SymLower) ||
+               (token.id == TokenId::SymGreater))
+        {
+            auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+            binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
+            binaryNode->token       = move(token);
 
-        Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFactorExpression(binaryNode));
-        leftNode = binaryNode;
-        isBinary = true;
+            Ast::addChildBack(binaryNode, leftNode);
+            SWAG_CHECK(tokenizer.getToken(token));
+            AstNode* rightNode;
+            SWAG_CHECK(doFactorExpression(binaryNode, &rightNode));
+
+            if (leftBinary)
+            {
+                auto andNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+                andNode->semanticFct = SemanticJob::resolveBoolExpression;
+                andNode->token       = rightNode->token;
+                andNode->token.id    = TokenId::SymAmpersandAmpersand;
+                Ast::removeFromParent(leftBinary);
+                Ast::addChildBack(andNode, leftBinary);
+                Ast::addChildBack(andNode, binaryNode);
+                leftBinary = andNode;
+                if (result)
+                    *result = andNode;
+            }
+            else
+            {
+                leftBinary = binaryNode;
+                if (result)
+                    *result = binaryNode;
+            }
+
+            leftNode = rightNode;
+        }
+
+        return true;
     }
-    else if (token.id == TokenId::SymEqual)
+
+    if (token.id == TokenId::SymEqual)
     {
-        return syntaxError(token, "invalid affect operator '=', do you mean '==' ?");
+        return syntaxError(token, "invalid compare operator '=', do you mean '==' ?");
     }
 
-    if (!isBinary)
-        Ast::addChildBack(parent, leftNode);
+    Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
 
