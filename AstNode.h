@@ -364,13 +364,13 @@ struct AstNode
     ByteCode*           bc;
 
     uint64_t flags;
+    uint64_t attributeFlags;
 
     uint32_t doneFlags;
     uint32_t fctCallStorageOffset;
     uint32_t castOffset;
     uint32_t concreteTypeInfoStorage = UINT32_MAX;
     uint32_t childParentIdx;
-    uint32_t attributeFlags;
 
     AstNodeResolveState semanticState = AstNodeResolveState::Enter;
     AstNodeResolveState bytecodeState = AstNodeResolveState::Enter;

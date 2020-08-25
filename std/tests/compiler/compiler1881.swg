@@ -1,4 +1,5 @@
-//#[swag.printbc]
+#[swag.printbc]
+#[swag.optimizebc(0)]
 #test
 {
     a := 10

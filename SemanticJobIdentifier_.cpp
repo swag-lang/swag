@@ -176,7 +176,7 @@ void SemanticJob::sortParameters(AstNode* allParams)
 void SemanticJob::optimIntrinsic(SemanticContext* context, AstIdentifier* identifier)
 {
     auto module = context->sourceFile->module;
-    if (module->buildCfg.byteCodeOptimize == 0)
+    if (module->mustOptimizeBC(context->node) == 0)
         return;
 
     switch (identifier->token.id)

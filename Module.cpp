@@ -86,7 +86,7 @@ bool Module::setup(const Utf8& moduleName)
     }
     else if (g_CommandLine.buildCfg == "release")
     {
-        buildCfg.byteCodeOptimize         = 3;
+        buildCfg.byteCodeOptimize         = 2;
         buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
@@ -94,7 +94,7 @@ bool Module::setup(const Utf8& moduleName)
     }
     else if (g_CommandLine.buildCfg == "final")
     {
-        buildCfg.byteCodeOptimize         = 3;
+        buildCfg.byteCodeOptimize         = 2;
         buildCfg.safetyGuards             = false;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
@@ -471,6 +471,18 @@ bool Module::mustEmitSafety(AstNode* node)
     else if (node->attributeFlags & ATTRIBUTE_SAFETY_OFF)
         safety = false;
     return safety;
+}
+
+uint32_t Module::mustOptimizeBC(AstNode* node)
+{
+    uint32_t level = buildCfg.byteCodeOptimize;
+    if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_0)
+        level = 0;
+    else if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_1)
+        level = 1;
+    else if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_2)
+        level = 2;
+    return level;
 }
 
 bool Module::hasBytecodeToRun()

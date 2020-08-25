@@ -100,7 +100,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
+bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
 {
     // Predefined attributes
     if (kind == AstNodeKind::AttrDecl && context->sourceFile->isBootstrapFile)
@@ -195,6 +195,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
+            }
+            else if (child->name == "optimizebc")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.optimizebc", "level", attrValue);
+                flags |= ATTRIBUTE_OPTIMIZEBC_0 << attrValue.reg.u32;
             }
         }
 

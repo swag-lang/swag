@@ -95,6 +95,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.All)]
     attr safety(value: bool)
 
+    #[attributeUsage(AttributeUsage.All)]
+    attr optimizebc(level: u32)
+
     // #########################################################
     // Constants
     // #########################################################

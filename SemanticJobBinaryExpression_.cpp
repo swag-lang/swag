@@ -126,7 +126,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             return internalError(context, "resolveBinaryOpPlus, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // 0 + something => something
         if (left->isConstant0())
@@ -279,7 +279,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             return internalError(context, "resolveBinaryOpMinus, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // something - 0 => something
         if (right->isConstant0())
@@ -387,7 +387,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             return internalError(context, "resolveBinaryOpMul, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // something * 0 => 0
         if (left->isConstant0() || right->isConstant0())
@@ -486,6 +486,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
             return internalError(context, "resolveBinaryOpDiv, type not supported");
         }
     }
+    else if (right->isConstant0())
+        return context->report({right, right->token, "division by zero"});
 
     return true;
 }
@@ -569,6 +571,8 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
             return internalError(context, "resolveBinaryOpModulo, type not supported");
         }
     }
+    else if (right->isConstant0())
+        return context->report({right, right->token, "division by zero"});
 
     return true;
 }
@@ -625,7 +629,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             return internalError(context, "resolveBitmaskOr, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // 0 | something => something
         if (left->isConstant0())
@@ -698,7 +702,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             return internalError(context, "resolveBitmaskAnd, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // 0 & something => 0
         // something & 0 => 0
@@ -942,7 +946,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             return internalError(context, "resolveShiftLeft, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // something << 0 => something
         if (right->isConstant0())
@@ -1019,7 +1023,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             return internalError(context, "resolveShiftRight, type not supported");
         }
     }
-    else if (module->buildCfg.byteCodeOptimize > 0)
+    else if (module->mustOptimizeBC(node) > 0)
     {
         // something >> 0 => something
         if (right->isConstant0())
@@ -1138,7 +1142,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     else if (node->token.id == TokenId::SymAmpersandAmpersand)
     {
-        if (module->buildCfg.byteCodeOptimize > 0)
+        if (module->mustOptimizeBC(node) > 0)
         {
             // false && something => false
             if (left->isConstantFalse())
@@ -1171,7 +1175,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     else if (node->token.id == TokenId::SymVerticalVertical)
     {
-        if (module->buildCfg.byteCodeOptimize > 0)
+        if (module->mustOptimizeBC(node) > 0)
         {
             // true || something => true
             if (left->isConstantTrue())

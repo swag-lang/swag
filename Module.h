@@ -40,16 +40,17 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    bool setup(const Utf8& moduleName);
-    void allocateBackend();
-    void addFile(SourceFile* file);
-    void removeFile(SourceFile* file);
-    void error(const Utf8& msg);
-    bool internalError(const Utf8& msg);
-    bool internalError(AstNode* node, Token& token, const Utf8& msg);
-    bool mustEmitSafety(AstNode* node);
-    bool mustGenerateTestExe();
-    bool canGenerateLegit();
+    bool     setup(const Utf8& moduleName);
+    void     allocateBackend();
+    void     addFile(SourceFile* file);
+    void     removeFile(SourceFile* file);
+    void     error(const Utf8& msg);
+    bool     internalError(const Utf8& msg);
+    bool     internalError(AstNode* node, Token& token, const Utf8& msg);
+    uint32_t mustOptimizeBC(AstNode* node);
+    bool     mustEmitSafety(AstNode* node);
+    bool     mustGenerateTestExe();
+    bool     canGenerateLegit();
 
     string                    path;
     fs::path                  documentPath;
