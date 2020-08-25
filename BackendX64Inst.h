@@ -58,27 +58,22 @@ namespace BackendX64Inst
 
     inline void emit_ModRM(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
+        SWAG_ASSERT(memReg != RSP);
         if (stackOffset == 0)
         {
             // mov al, byte ptr [rdi]
             pp.concat.addU8(modRM(0, reg, memReg));
-            if (memReg == RSP)
-                pp.concat.addU8(0x24);
         }
         else if (stackOffset <= 0x7F)
         {
             // mov al, byte ptr [rdi + ??]
             pp.concat.addU8(modRM(DISP8, reg, memReg));
-            if (memReg == RSP)
-                pp.concat.addU8(0x24);
             pp.concat.addU8((uint8_t) stackOffset);
         }
         else
         {
             // mov al, byte ptr [rdi + ????????]
             pp.concat.addU8(modRM(DISP32, reg, memReg));
-            if (memReg == RSP)
-                pp.concat.addU8(0x24);
             pp.concat.addU32(stackOffset);
         }
     }
@@ -263,14 +258,14 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Copy64(X64PerThread& pp, uint32_t regDst, uint32_t regSrc)
+    inline void emit_Copy64(X64PerThread& pp, uint32_t regSrc, uint32_t regDst)
     {
         pp.concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
         pp.concat.addU8(0x89);
         pp.concat.addU8(modRM(0b11, regSrc & 0b111, regDst & 0b111));
     }
 
-    inline void emit_Copy32(X64PerThread& pp, uint32_t regDst, uint32_t regSrc)
+    inline void emit_Copy32(X64PerThread& pp, uint32_t regSrc, uint32_t regDst)
     {
         SWAG_ASSERT(regDst < R8 && regSrc < R8);
         pp.concat.addU8(0x89);
@@ -445,7 +440,7 @@ namespace BackendX64Inst
     {
         if (stackOffset == 0)
         {
-            emit_Copy64(pp, reg, memReg);
+            emit_Copy64(pp, memReg, reg);
             return;
         }
 

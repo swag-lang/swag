@@ -153,7 +153,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     while (sizeStack % 16)
         sizeStack += 8; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    BackendX64Inst::emit_Copy64(pp, RDI, RSP);
+    BackendX64Inst::emit_Copy64(pp, RSP, RDI);
 
     // Need to save return register if needed
     if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
@@ -283,7 +283,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     while (sizeStack % 16)
         sizeStack++; // Align to 16 bytes
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    BackendX64Inst::emit_Copy64(pp, RDI, RSP);
+    BackendX64Inst::emit_Copy64(pp, RSP, RDI);
 
     // C calling convention, space for at least 4 parameters when calling a function
     // (should be reserved only if we have a call)
@@ -1511,7 +1511,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             concat.addString2("\x69\xc0"); // imul eax, ????????
             concat.addU32(ip->c.u32);
-            BackendX64Inst::emit_Copy64(pp, R8, RAX);
+            BackendX64Inst::emit_Copy64(pp, RAX, R8);
             emitCall(pp, "memset");
             break;
 
@@ -1945,7 +1945,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
             BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
-            BackendX64Inst::emit_Copy64(pp, R12, RAX);
+            BackendX64Inst::emit_Copy64(pp, RAX, R12);
             SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD4"); // call r12
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
@@ -1960,7 +1960,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-            BackendX64Inst::emit_Copy64(pp, RCX, RAX);
+            BackendX64Inst::emit_Copy64(pp, RAX, RCX);
 
             sizeCallStack = 0;
             for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
@@ -2032,7 +2032,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RCX, RAX);
+            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2046,7 +2046,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RCX, RAX);
+            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2361,8 +2361,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
 
 bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
 {
-    auto& concat        = pp.concat;
-    int   numCallParams = (int) typeFuncBC->parameters.size();
+    int numCallParams = (int) typeFuncBC->parameters.size();
 
     VectorNative<uint32_t>  paramsRegisters;
     VectorNative<TypeInfo*> paramsTypes;
@@ -2522,6 +2521,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         if (exceededStack % 16)
             exceededStack += 8;
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
+        BackendX64Inst::emit_Copy64(pp, RSP, RBX);
 
         // Then we store all the parameters on the stack, with an offset of 4 * sizeof(uint64_t)
         // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
@@ -2535,8 +2535,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                     BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
                 else
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, paramsRegisters[i], RAX, RDI);
-                concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
-                concat.addU32(offsetStack);
+                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RBX);
             }
             else
             {
@@ -2545,22 +2544,19 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 {
                 case 1:
                     BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    concat.addString3("\x88\x84\x24"); // mov [rsp + ????????], al
-                    concat.addU32(offsetStack);
+                    BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RBX);
                     break;
                 case 2:
                     BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    concat.addString4("\x66\x89\x84\x24"); // mov [rsp + ????????], ax
-                    concat.addU32(offsetStack);
+                    BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RBX);
                     break;
                 case 4:
                     BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    concat.addString3("\x89\x84\x24"); // mov [rsp + ????????], eax
-                    concat.addU32(offsetStack);
+                    BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RBX);
                     break;
                 case 8:
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RBX);
                     break;
                 default:
                     return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
