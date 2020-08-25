@@ -2475,20 +2475,16 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
                 switch (i)
                 {
                 case 0:
-                    concat.addString3("\x48\x8d\x8f"); // lea rcx, [rdi + ????????]
-                    concat.addU32(r);
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, RCX, RDI);
                     break;
                 case 1:
-                    concat.addString3("\x48\x8d\x97"); // lea rdx, [rdi + ????????]
-                    concat.addU32(r);
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, RDX, RDI);
                     break;
                 case 2:
-                    concat.addString3("\x4c\x8d\x87"); // lea r8, [rdi + ????????]
-                    concat.addU32(r);
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, R8, RDI);
                     break;
                 case 3:
-                    concat.addString3("\x4c\x8d\x8f"); // lea r9, [rdi + ????????]
-                    concat.addU32(r);
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, R9, RDI);
                     break;
                 default:
                     SWAG_ASSERT(false);
