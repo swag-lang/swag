@@ -28,3 +28,13 @@ using swag
     b = a * 0
     @assert(b == 0)
 }
+
+#[optimizebc(1)]
+#test
+{
+    a := 1
+    if false && a > 0
+        @assert(true)
+    if a > 0 && false
+        @assert(true)
+}
