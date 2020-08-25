@@ -140,8 +140,9 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = SemanticJob::resolveCompilerAssert;
-    node->token       = move(token);
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerAssert;
+    node->semanticFct       = SemanticJob::resolveCompilerAssert;
+    node->token             = move(token);
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
@@ -312,7 +313,7 @@ bool SyntaxJob::doCompilerModule()
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
 
-    if(newModule->fromTestsFolder)
+    if (newModule->fromTestsFolder)
         currentScope = sourceFile->scopePrivate;
     else
         currentScope = newModule->scopeRoot;

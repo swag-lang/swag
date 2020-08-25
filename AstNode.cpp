@@ -251,6 +251,15 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (cloneHie)
     {
         cloneChilds(context, from);
+
+        // Force semantic on specific nodes on generic instantiation
+        if (from->flags & AST_IS_GENERIC)
+        {
+            if (kind == AstNodeKind::CompilerAssert || kind == AstNodeKind::CompilerAst)
+            {
+                Ast::visit(this, [](AstNode* x) { x->flags &= ~AST_NO_SEMANTIC; });
+            }
+        }
     }
 }
 
@@ -775,10 +784,10 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     newNode->embeddedKind = embeddedKind;
 
+    // If #ast has an embedded function, we need to restore the semantic pass on that function
+    // content now
     if (newNode->childs.size() > 1)
     {
-        newNode->childs[0]->flags &= ~AST_NO_SEMANTIC;
-        newNode->childs[1]->flags &= ~AST_NO_SEMANTIC;
         auto func = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;

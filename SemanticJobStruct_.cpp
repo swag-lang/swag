@@ -305,23 +305,27 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     {
         switch (child->kind)
         {
-        case AstNodeKind::AttrUse:
-        case AstNodeKind::DocComment:
-            continue;
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
         case AstNodeKind::CompilerAst:
+        case AstNodeKind::CompilerAssert:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             flattenStructChilds(context, child, result);
             continue;
 
         case AstNodeKind::CompilerIf:
+        {
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
             if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
                 flattenStructChilds(context, compilerIf->ifBlock, result);
             else if (compilerIf->elseBlock)
                 flattenStructChilds(context, compilerIf->elseBlock, result);
+            continue;
+        }
+
+        case AstNodeKind::AttrUse:
+        case AstNodeKind::DocComment:
             continue;
         }
 
@@ -357,16 +361,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        switch (child->kind)
-        {
-        case AstNodeKind::AttrUse:
-        case AstNodeKind::DocComment:
-        case AstNodeKind::Alias:
+        if (child->kind != AstNodeKind::VarDecl)
             continue;
-        case AstNodeKind::IdentifierRef:
-        case AstNodeKind::FuncDecl:
-            continue;
-        }
 
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
