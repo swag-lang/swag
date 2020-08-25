@@ -807,11 +807,11 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                            ip->node->token.startLocation.line + 1,            \
                            __msg);
 
-        case ByteCodeOp::IncPointerVB32:
-            concat.addStringFormat("r[%u].p+=%u;", ip->a.u32, ip->b.u32);
-            break;
         case ByteCodeOp::IncPointer32:
-            concat.addStringFormat("r[%u].p=r[%u].p+r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("r[%u].p=r[%u].p+%u;", ip->c.u32, ip->a.u32, ip->b.u32);
+            else
+                concat.addStringFormat("r[%u].p=r[%u].p+r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::DecPointer32:
             concat.addStringFormat("r[%u].p=r[%u].p-r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);

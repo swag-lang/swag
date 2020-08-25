@@ -1591,19 +1591,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::IncPointerVB32:
-            //concat.addStringFormat("r[%u].pointer += %u;", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString3("\x48\x81\x00"); // add [rax], ????????
-            concat.addU32(ip->b.s32);
-            break;
-
         case ByteCodeOp::IncPointer32:
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x48\x01\xD8"); // add rax, rbx
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
+            if (ip->a.u32 == ip->c.u32)
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                concat.addString3("\x48\x01\x18"); // add [rax], rbx
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                concat.addString3("\x48\x01\xD8"); // add rax, rbx
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            }
             break;
         case ByteCodeOp::DecPointer32:
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);

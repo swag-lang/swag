@@ -11,7 +11,8 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
-#define IMMC_U32(ip) (ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32
+#define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
+#define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
@@ -381,14 +382,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IncPointerVB32:
-    {
-        registersRC[ip->a.u32].pointer += ip->b.s32;
-        break;
-    }
     case ByteCodeOp::IncPointer32:
     {
-        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::DecPointer32:

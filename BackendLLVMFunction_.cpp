@@ -475,21 +475,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         switch (ip->op)
         {
-        case ByteCodeOp::IncPointerVB32:
-        {
-            //concat.addStringFormat("r[%u].pointer += %u;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(r0);
-            auto r2 = builder.CreateInBoundsGEP(r1, CST_RB32);
-            builder.CreateStore(r2, r0);
-            break;
-        }
         case ByteCodeOp::IncPointer32:
         {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            llvm::Value* r2;
+            if (ip->flags & BCI_IMM_B)
+                r2 = builder.getInt32(ip->b.u32);
+            else
+                r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
             auto r3 = builder.CreateInBoundsGEP(r1, r2);
             builder.CreateStore(r3, r0);
             break;

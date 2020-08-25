@@ -71,7 +71,11 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // Reference to the field
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (param->offset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB32, 0)->b.u32 = param->offset;
+        {
+            auto inst = emitInstruction(&cxt, ByteCodeOp::IncPointer32, 0, 0, 0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u32 = param->offset;
+        }
 
         if (varDecl->assignment)
         {
@@ -283,7 +287,12 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     {
         emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (offset)
-            emitInstruction(context, ByteCodeOp::IncPointerVB32, 0)->b.u32 = offset;
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u32 = offset;
+        }
+
         emitInstruction(context, ByteCodeOp::PushRAParam, 0);
     }
 
