@@ -406,7 +406,7 @@ namespace swag
 
     struct CompilerSourceLocation
     {
-        file:                   string
+        fileName:               string
         lineStart, colStart:    u32
         lineEnd, colEnd:        u32
     }

@@ -384,20 +384,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->setFlagsValueIsComputed();
         return true;
 
-    case TokenId::CompilerCallerLine:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerline' can only be set in a function parameter declaration"}));
-        node->typeInfo = g_TypeMgr.typeInfoU32;
-        return true;
-    case TokenId::CompilerCallerFile:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
-        node->typeInfo = g_TypeMgr.typeInfoString;
-        return true;
-    case TokenId::CompilerCallerLoc:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerloc' can only be set in a function parameter declaration"}));
+    case TokenId::CompilerCallerLocation:
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerlocation' can only be set in a function parameter declaration"}));
         node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
         return true;
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfunction' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
 

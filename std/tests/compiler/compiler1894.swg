@@ -3,9 +3,9 @@
     test()
 }
 
-func test(x = #callerloc)
+func test(x = #callerlocation)
 {
-    //@print(x.file)
+    //@print(x.fileName)
     @assert(x.lineStart == 3)
     @assert(x.lineEnd == 3)
     @assert(x.colStart == 5)

@@ -300,7 +300,7 @@ struct ConcreteCompilerMessage
 
 struct ConcreteCompilerSourceLocation
 {
-    ConcreteSlice         file;
+    ConcreteSlice         fileName;
     swag_runtime_uint32_t lineStart, colStart;
     swag_runtime_uint32_t lineEnd, colEnd;
 };

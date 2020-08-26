@@ -1,4 +1,4 @@
-#[swag.inline]
+/*#[swag.inline]
 func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
 {
 	@assert(expr)
@@ -7,4 +7,4 @@ func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
 #test
 {
 	assert(true)
-}
+}*/

@@ -121,10 +121,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::CompilerFunction:
-    case TokenId::CompilerCallerLine:
-    case TokenId::CompilerCallerFile:
     case TokenId::CompilerCallerFunction:
-    case TokenId::CompilerCallerLoc:
+    case TokenId::CompilerCallerLocation:
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:

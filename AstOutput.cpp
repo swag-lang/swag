@@ -223,17 +223,11 @@ namespace Ast
         {
             switch (node->token.id)
             {
-            case TokenId::CompilerCallerFile:
-                CONCAT_FIXED_STR(concat, "#callerfile");
-                break;
-            case TokenId::CompilerCallerLine:
-                CONCAT_FIXED_STR(concat, "#callerline");
-                break;
             case TokenId::CompilerCallerFunction:
                 CONCAT_FIXED_STR(concat, "#callerfunction");
                 break;
-            case TokenId::CompilerCallerLoc:
-                CONCAT_FIXED_STR(concat, "#callerloc");
+            case TokenId::CompilerCallerLocation:
+                CONCAT_FIXED_STR(concat, "#callerlocation");
                 break;
             default:
                 return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});

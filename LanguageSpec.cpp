@@ -19,10 +19,8 @@ void LanguageSpec::setup()
     keywords["#arch"]           = TokenId::CompilerArch;
     keywords["#os"]             = TokenId::CompilerOs;
     keywords["#function"]       = TokenId::CompilerFunction;
-    keywords["#callerfile"]     = TokenId::CompilerCallerFile;
-    keywords["#callerline"]     = TokenId::CompilerCallerLine;
     keywords["#callerfunction"] = TokenId::CompilerCallerFunction;
-    keywords["#callerloc"]      = TokenId::CompilerCallerLoc;
+    keywords["#callerlocation"] = TokenId::CompilerCallerLocation;
     keywords["#swagversion"]    = TokenId::CompilerBuildVersion;
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;
     keywords["#swagbuildnum"]   = TokenId::CompilerBuildNum;

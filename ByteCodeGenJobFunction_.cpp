@@ -421,7 +421,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     {
         switch (defaultParam->assignment->token.id)
         {
-        case TokenId::CompilerCallerLoc:
+        case TokenId::CompilerCallerLocation:
         {
             auto module = context->sourceFile->module;
             reserveLinearRegisterRC(context, regList, 1);
@@ -431,29 +431,13 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto offsetName = module->constantSegment.addString(str);
             auto addrName   = module->constantSegment.address(offsetName);
             module->constantSegment.addInitPtr(offset, offsetName);
-            loc->file.buffer = addrName;
-            loc->file.count  = str.length();
+            loc->fileName.buffer = addrName;
+            loc->fileName.count  = str.length();
             loc->lineStart   = node->token.startLocation.line + 1;
             loc->colStart    = node->token.startLocation.column + 1;
             loc->lineEnd     = node->token.endLocation.line + 1;
             loc->colEnd      = node->token.endLocation.column + 1;
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
-            break;
-        }
-        case TokenId::CompilerCallerLine:
-        {
-            reserveRegisterRC(context, regList, 1);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->token.startLocation.line + 1;
-            break;
-        }
-        case TokenId::CompilerCallerFile:
-        {
-            reserveLinearRegisterRC(context, regList, 2);
-            auto str    = Utf8(node->sourceFile->path);
-            auto offset = context->sourceFile->module->constantSegment.addString(str);
-            SWAG_ASSERT(offset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
             break;
         }
         case TokenId::CompilerCallerFunction:
