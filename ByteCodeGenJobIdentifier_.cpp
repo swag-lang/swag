@@ -25,6 +25,8 @@ bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload*
     // Something inside a run block tries to references a variables outside a run block
     if ((node->flags & AST_RUN_BLOCK) != (nodeVar->flags & AST_RUN_BLOCK))
         canReference = false;
+    if (node->ownerFct != nodeVar->ownerFct)
+        canReference = false;
 
     if (!canReference)
         return context->report({node, node->token, format("cannot reference variable '%s' because it's in another stack frame", overload->symbol->name.c_str())});
@@ -98,6 +100,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
+        SWAG_CHECK(sameStackFrame(context, resolved));
         node->resultRegisterRC = reserveRegisterRC(context);
         if ((node->flags & AST_TAKE_ADDRESS) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
