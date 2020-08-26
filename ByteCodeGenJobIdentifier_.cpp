@@ -7,12 +7,29 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Diagnostic.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     return true;
+}
+
+bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
+{
+    bool canReference = true;
+    auto node         = context->node;
+    auto nodeVar      = overload->node;
+
+    // Something inside a run block tries to references a variables outside a run block
+    if ((node->flags & AST_RUN_BLOCK) != (nodeVar->flags & AST_RUN_BLOCK))
+        canReference = false;
+
+    if (!canReference)
+        return context->report({node, node->token, format("cannot reference variable '%s' because it's in another stack frame", overload->symbol->name.c_str())});
+
+    return canReference;
 }
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
@@ -45,7 +62,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32           = typeArray->count;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32             = typeArray->count;
             return true;
         }
 
@@ -195,6 +212,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the stack
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
+        SWAG_CHECK(sameStackFrame(context, resolved));
         node->resultRegisterRC = reserveRegisterRC(context);
 
         if (resolved->typeInfo->kind == TypeInfoKind::Reference)
@@ -253,7 +271,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->flags |= BCI_IMM_B;
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
         }

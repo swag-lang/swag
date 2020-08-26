@@ -186,6 +186,7 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
+    static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
     static bool emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0);

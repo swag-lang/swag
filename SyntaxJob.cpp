@@ -234,7 +234,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
     tokenizer.setFile(sourceFile);
 
-    ScopedFlags scopedFlags(this, AST_GENERATED);
+    ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
     SWAG_CHECK(tokenizer.getToken(token));
     while (true)
     {
