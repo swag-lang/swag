@@ -135,6 +135,20 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::isValidScopeForCompilerRun(AstNode* node)
+{
+    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
+    {
+        auto scope = node->ownerScope;
+        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
+            scope = scope->parentScope;
+        if (!scope->isGlobalOrImpl() && scope->kind != ScopeKind::FunctionBody)
+            return node->sourceFile->report({node, node->token, format("compile time '%s' cannot be used in a local scope", node->token.text.c_str())});
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
@@ -200,20 +214,6 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     return true;
 }
 
-bool SyntaxJob::isValidScopeForCompilerRun(AstNode* node)
-{
-    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
-    {
-        auto scope = node->ownerScope;
-        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
-            scope = scope->parentScope;
-        if (!scope->isGlobalOrImpl() && scope->kind != ScopeKind::FunctionBody)
-            return node->sourceFile->report({node, node->token, format("compile time '%s' cannot be used in a local scope", node->token.text.c_str())});
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
@@ -240,7 +240,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerRun;
-    node->token = move(token);
+    node->token       = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
@@ -274,11 +274,11 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
+    SWAG_CHECK(isValidScopeForCompilerRun(node));
+    SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#print' expression"));
-
     return true;
 }
 
