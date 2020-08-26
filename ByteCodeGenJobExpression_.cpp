@@ -156,7 +156,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->storageOffsetSegment;
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32 = (uint32_t)typeList->subTypes.size();
+        emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32             = (uint32_t) typeList->subTypes.size();
     }
 
     return true;
@@ -211,7 +211,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
-        node->parent->resultRegisterRC                                                  = node->resultRegisterRC;
+        node->parent->resultRegisterRC                                              = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -283,19 +283,23 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC(context, regList, 2);
-
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1])->b.u32 = typeArray->count;
+        emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1])->b.u32             = typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto inst = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
-        SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+        auto     inst          = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
+        uint32_t storageOffset = UINT32_MAX;
+        // In case of compiler structures (like CompilerSourceLocation), there's no symbol. The storage
+        // offset is stored in the computed value
+        if (node->resolvedSymbolOverload)
+            storageOffset = node->resolvedSymbolOverload->storageOffset;
+        else
+            storageOffset = node->computedValue.reg.u32;
+        SWAG_ASSERT(storageOffset != UINT32_MAX);
+        inst->b.u32 = storageOffset;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {

@@ -16,11 +16,11 @@ void LanguageSpec::setup()
     keywords["#cfg"]            = TokenId::CompilerBuildCfg;
     keywords["#arch"]           = TokenId::CompilerArch;
     keywords["#os"]             = TokenId::CompilerOs;
-    keywords["#function"]       = TokenId::CompilerFunction;
     keywords["#file"]           = TokenId::CompilerFile;
     keywords["#line"]           = TokenId::CompilerLine;
-    keywords["#location"]       = TokenId::CompilerLocation;
+    keywords["#function"]       = TokenId::CompilerFunction;
     keywords["#callerfunction"] = TokenId::CompilerCallerFunction;
+    keywords["#location"]       = TokenId::CompilerLocation;
     keywords["#callerlocation"] = TokenId::CompilerCallerLocation;
     keywords["#swagversion"]    = TokenId::CompilerBuildVersion;
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;
