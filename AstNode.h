@@ -656,9 +656,6 @@ struct AstProperty : public AstNode
 struct AstExpressionList : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-
-    uint32_t storageOffset;
-    uint32_t storageOffsetSegment = UINT32_MAX;
     bool     forTuple;
 };
 

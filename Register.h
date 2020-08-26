@@ -1,7 +1,8 @@
 #pragma once
 #include "Utf8.h"
 
-union Register {
+union Register
+{
     uint8_t* pointer = nullptr;
     uint64_t u64;
     int64_t  s64;
@@ -19,8 +20,9 @@ union Register {
 
 struct ComputedValue
 {
-    Register reg;
     Utf8     text;
+    Register reg;
+    uint32_t storageOffset = UINT32_MAX;
 
     bool operator==(const ComputedValue& from) const
     {

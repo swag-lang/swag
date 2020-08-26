@@ -668,11 +668,7 @@ AstNode* AstExpressionList::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstExpressionList>();
     newNode->copyFrom(context, this);
-
-    newNode->storageOffset        = storageOffset;
-    newNode->storageOffsetSegment = storageOffsetSegment;
-    newNode->forTuple             = forTuple;
-
+    newNode->forTuple = forTuple;
     return newNode;
 }
 
