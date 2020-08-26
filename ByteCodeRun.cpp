@@ -506,7 +506,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u32++;
         break;
     }
-    case ByteCodeOp::AddVBtoRA32:
+    case ByteCodeOp::AddRAVB32:
     {
         registersRC[ip->a.u32].u32 += ip->b.u32;
         break;

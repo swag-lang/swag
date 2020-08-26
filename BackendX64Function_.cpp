@@ -2,14 +2,10 @@
 #include "BackendX64.h"
 #include "BackendX64Inst.h"
 #include "BackendX64FunctionBodyJob.h"
-#include "ByteCode.h"
 #include "ByteCodeOp.h"
 #include "Ast.h"
-#include "TypeInfo.h"
 #include "Module.h"
-#include "TypeInfo.h"
 #include "TypeManager.h"
-#include "OS.h"
 
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
@@ -313,11 +309,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
-        case ByteCodeOp::AddVBtoRA32:
+        case ByteCodeOp::AddRAVB32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
-            concat.addString2("\x01\x18"); // add dword ptr [rax], ebx
+            if (ip->b.u32 <= 0x7F) // add [rax], ?
+            {
+                concat.addU8(0x83);
+                concat.addU8(0x00);
+                concat.addU8((uint8_t) ip->b.u32);
+            }
+            else
+            {
+                concat.addU8(0x81);
+                concat.addU8(0x00);
+                concat.addU32((uint8_t) ip->b.u32);
+            }
             break;
 
         case ByteCodeOp::ClearRA:

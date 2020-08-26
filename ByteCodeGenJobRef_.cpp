@@ -399,7 +399,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     // Compute size of slice
     if (node->lowerBound)
         emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::AddVBtoRA32, node->upperBound->resultRegisterRC)->b.u32 = 1;
+    emitInstruction(context, ByteCodeOp::AddRAVB32, node->upperBound->resultRegisterRC)->b.u32 = 1;
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->upperBound->resultRegisterRC);
 
     // Increment start pointer
@@ -532,7 +532,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, node->expression->resultRegisterRC);
             if (typeParam->offset)
-                emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
+                emitInstruction(context, ByteCodeOp::AddRAVB32, r1)->b.u32 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
         }
 

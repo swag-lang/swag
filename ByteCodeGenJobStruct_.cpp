@@ -151,7 +151,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
 
                 emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
-                emitInstruction(&cxt, ByteCodeOp::AddVBtoRA32, 0)->b.u32      = typeInVarStruct->sizeOf;
+                emitInstruction(&cxt, ByteCodeOp::AddRAVB32, 0)->b.u32      = typeInVarStruct->sizeOf;
                 emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
                 freeRegisterRC(&cxt, r0);
@@ -667,7 +667,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
                 emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, r0);
                 if (typeParam->offset)
-                    emitInstruction(context, ByteCodeOp::AddVBtoRA32, r1)->b.u32 = typeParam->offset;
+                    emitInstruction(context, ByteCodeOp::AddRAVB32, r1)->b.u32 = typeParam->offset;
                 emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
             }
         }
