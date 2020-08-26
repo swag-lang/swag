@@ -1090,6 +1090,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         bool isValid = true;
         if (oneSymbol->kind != SymbolKind::Function &&
             oneSymbol->kind != SymbolKind::GenericType &&
+            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
         {
@@ -1362,10 +1363,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 }
 
                 if (identifierRef->typeInfo)
-                {
                     return context->report({node, node->token, format("identifier '%s' cannot be found in type '%s'", node->name.c_str(), identifierRef->typeInfo->name.c_str())});
-                }
-
                 return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
             }
 
@@ -1396,9 +1394,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
                     if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
                     {
-                        node->resolvedSymbolName = symbol;
+                        node->resolvedSymbolName     = symbol;
                         node->resolvedSymbolOverload = symbol->overloads[0];
-                        node->typeInfo = node->resolvedSymbolOverload->typeInfo;
+                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
                     }
                     else
                     {

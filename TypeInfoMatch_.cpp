@@ -351,7 +351,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     continue;
                 }
 
-                if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && (firstChild->kind != AstNodeKind::Literal))
+                if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && !(firstChild->flags & AST_VALUE_COMPUTED))
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;

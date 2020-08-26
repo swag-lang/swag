@@ -1,5 +1,5 @@
-#module "compiler1588"
-#unittest error
+//#module "compiler1588"
+//#unittest error
 
 struct(T) B
 {
@@ -10,6 +10,7 @@ impl B
     func emplace(using self)
     {
         y := T
+        @assert(@typeof(y) == s32)
     }
 }
 
