@@ -1515,8 +1515,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Clear64(pp, RDX);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x69\xc0"); // imul eax, ????????
-            concat.addU32(ip->c.u32);
+            if (ip->c.u32 <= 0x7F)
+            {
+                concat.addString2("\x6b\xc0"); // imul eax, ??
+                concat.addU8((uint8_t) ip->c.u32);
+            }
+            else
+            {
+                concat.addString2("\x69\xc0"); // imul eax, ????????
+                concat.addU32(ip->c.u32);
+            }
             BackendX64Inst::emit_Copy64(pp, RAX, R8);
             emitCall(pp, "memset");
             break;
