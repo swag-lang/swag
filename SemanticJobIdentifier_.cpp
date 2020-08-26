@@ -8,6 +8,8 @@
 #include "LanguageSpec.h"
 #include "ThreadManager.h"
 #include "Module.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -200,6 +202,8 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
+    auto sourceFile = context->sourceFile;
+
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
@@ -215,10 +219,26 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
-        parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO &&
+        (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefTypeInfo(context, parent, overload))
+        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->typeSegment))
+        {
+            parent->previousResolvedNode = context->node;
+            return true;
+        }
+
+        identifier->flags |= AST_R_VALUE;
+    }
+
+    // Direct reference to a constexpr structure
+    if (parent->previousResolvedNode &&
+        parent->previousResolvedNode->resolvedSymbolOverload &&
+        (parent->previousResolvedNode->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE) &&
+        parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
+        symbol->kind == SymbolKind::Variable)
+    {
+        if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
         {
             parent->previousResolvedNode = context->node;
             return true;
@@ -260,7 +280,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
     }
 
-    auto sourceFile                    = context->sourceFile;
     parent->resolvedSymbolName         = symbol;
     parent->resolvedSymbolOverload     = overload;
     identifier->resolvedSymbolName     = symbol;

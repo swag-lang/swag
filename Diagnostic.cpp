@@ -105,7 +105,7 @@ void Diagnostic::report(bool verboseMode) const
                 g_Log.print(" ");
 
             auto backLine = lines.back();
-            for (int i = 0; i < startLocation.column; i++)
+            for (uint32_t i = 0; i < startLocation.column; i++)
             {
                 if (backLine[i] == '\t')
                     g_Log.print("\t");

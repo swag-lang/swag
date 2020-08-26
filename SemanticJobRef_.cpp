@@ -642,19 +642,25 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
+bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = context->node;
+    auto node = context->node;
 
-    uint8_t* ptr = sourceFile->module->typeSegment.address(parent->previousResolvedNode->computedValue.reg.u32);
+    uint32_t storageOffset = UINT32_MAX;
+    if (parent->previousResolvedNode->resolvedSymbolOverload)
+        storageOffset = parent->previousResolvedNode->resolvedSymbolOverload->storageOffset;
+    else
+        storageOffset = parent->previousResolvedNode->computedValue.reg.u32;
+    SWAG_ASSERT(storageOffset != UINT32_MAX);
+
+    uint8_t* ptr = segment->address(storageOffset);
     ptr += overload->storageOffset;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo              = overload->typeInfo;
-        node->computedValue.reg.u32 = sourceFile->module->typeSegment.offset(*(uint8_t**) ptr);
+        node->computedValue.reg.u32 = segment->offset(*(uint8_t**) ptr);
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
     else if (!derefConstantValue(context, node, concreteType->kind, concreteType->nativeType, ptr))
