@@ -385,8 +385,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerLocation:
-        node->typeInfo              = g_Workspace.swagScope.regTypeInfoSourceLoc;
-        node->computedValue.reg.u32 = ByteCodeGenJob::computeSourceLocation(node);
+        node->typeInfo                 = g_Workspace.swagScope.regTypeInfoSourceLoc;
+        node->computedValue.reg.offset = ByteCodeGenJob::computeSourceLocation(node);
         node->setFlagsValueIsComputed();
         return true;
     case TokenId::CompilerCallerLocation:
