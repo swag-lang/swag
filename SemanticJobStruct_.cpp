@@ -109,7 +109,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // We need to be have a bytecode pointer to be able to reference it in the itable
-        ByteCodeGenJob::askForByteCode(context->job->dependentJob, context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
+        ByteCodeGenJob::askForByteCode(context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
         if (context->result == ContextResult::Pending)
             return true;
 

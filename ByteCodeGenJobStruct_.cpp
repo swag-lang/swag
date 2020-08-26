@@ -215,7 +215,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         needDrop = true;
         if (!(typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN))
         {
-            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
             if (context->result == ContextResult::Pending)
                 return true;
         }
@@ -348,7 +348,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         needPostMove = true;
         if (!(typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN))
         {
-            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
             if (context->result == ContextResult::Pending)
                 return true;
         }
@@ -441,7 +441,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         needPostCopy = true;
         if (!(typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN))
         {
-            askForByteCode(context->job->dependentJob, context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
             if (context->result == ContextResult::Pending)
                 return true;
         }

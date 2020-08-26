@@ -23,7 +23,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
     // Request to generate the corresponding bytecode
     {
-        ByteCodeGenJob::askForByteCode(context->job->dependentJob, context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         if (context->result == ContextResult::Pending)
             return true;
     }

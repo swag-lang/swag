@@ -270,7 +270,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     if (genByteCode)
-        ByteCodeGenJob::askForByteCode(context->job->dependentJob, nullptr, node, 0);
+        ByteCodeGenJob::askForByteCode(context->job, node, 0);
 
     return true;
 }

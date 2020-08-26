@@ -239,7 +239,7 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
     inst->node = node;
 }
 
-void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, uint32_t flags)
+void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 {
     if (!node)
         return;
@@ -312,7 +312,8 @@ void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, 
             if (flags & ASKBC_WAIT_DONE)
                 node->byteCodeJob->dependentJob = job;
             else
-                node->byteCodeJob->dependentJob = dependentJob;
+                node->byteCodeJob->dependentJob = job->dependentJob;
+            node->byteCodeJob->context.expansionNode = job->baseContext->expansionNode;
             node->byteCodeJob->nodes.push_back(node);
             node->bc             = g_Allocator.alloc<ByteCode>();
             node->bc->node       = node;
