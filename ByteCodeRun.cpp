@@ -1644,8 +1644,8 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         {
             if (context->errorLoc)
             {
-                SourceLocation start = {(int) context->errorLoc->lineStart - 1, (int) context->errorLoc->colStart - 1};
-                SourceLocation end   = {(int) context->errorLoc->lineEnd - 1, (int) context->errorLoc->colEnd - 1};
+                SourceLocation start = {context->errorLoc->lineStart, context->errorLoc->colStart};
+                SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
                 diag.criticalError = true;
                 context->report(diag);

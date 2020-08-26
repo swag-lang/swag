@@ -431,10 +431,10 @@ uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
     module->constantSegment.addInitPtr(offset, offsetName);
     loc->fileName.buffer = addrName;
     loc->fileName.count  = str.length();
-    loc->lineStart       = node->token.startLocation.line + 1;
-    loc->colStart        = node->token.startLocation.column + 1;
-    loc->lineEnd         = node->token.endLocation.line + 1;
-    loc->colEnd          = node->token.endLocation.column + 1;
+    loc->lineStart       = node->token.startLocation.line;
+    loc->colStart        = node->token.startLocation.column;
+    loc->lineEnd         = node->token.endLocation.line;
+    loc->colEnd          = node->token.endLocation.column;
     return offset;
 }
 

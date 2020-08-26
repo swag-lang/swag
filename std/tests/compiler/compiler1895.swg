@@ -1,5 +1,5 @@
 #test
 {
     x := #location
-    @assert(x.lineStart == 3)
+    @assert(x.lineStart == 2)
 }

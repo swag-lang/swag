@@ -736,7 +736,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
     // Generate bytecode
     int                    vaargsIdx = 0;
     auto                   ip        = bc->out;
-    int                    lastLine  = -1;
+    uint32_t               lastLine  = UINT32_MAX;
     VectorNative<uint32_t> pushRAParams;
 
     // To write the labels

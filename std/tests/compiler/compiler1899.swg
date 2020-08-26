@@ -1,6 +1,6 @@
 func toto(x = #callerlocation)
 {
-    @error(x, "this is a test man !")
+    //@error(x, "this is a test man !")
 }
 
 #test
