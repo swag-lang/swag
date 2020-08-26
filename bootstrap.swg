@@ -403,6 +403,13 @@ namespace swag
         getMessage:     func(self)->const* CompilerMessage
         getBuildCfg:    func(self)->*BuildCfg
     }
+
+    struct CompilerSourceLocation
+    {
+        file:                   string
+        lineStart, colStart:    u32
+        lineEnd, colEnd:        u32
+    }
 }
 
 // Constant intrinsics

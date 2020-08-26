@@ -297,3 +297,10 @@ struct ConcreteCompilerMessage
     ConcreteSlice     name;
     ConcreteTypeInfo* type;
 };
+
+struct ConcreteCompilerSourceLocation
+{
+    ConcreteSlice         file;
+    swag_runtime_uint32_t lineStart, colStart;
+    swag_runtime_uint32_t lineEnd, colEnd;
+};

@@ -392,6 +392,10 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
+    case TokenId::CompilerCallerLoc:
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerloc' can only be set in a function parameter declaration"}));
+        node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
+        return true;
     case TokenId::CompilerCallerFunction:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;

@@ -232,6 +232,9 @@ namespace Ast
             case TokenId::CompilerCallerFunction:
                 CONCAT_FIXED_STR(concat, "#callerfunction");
                 break;
+            case TokenId::CompilerCallerLoc:
+                CONCAT_FIXED_STR(concat, "#callerloc");
+                break;
             default:
                 return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});
             }

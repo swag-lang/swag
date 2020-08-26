@@ -124,6 +124,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerCallerLine:
     case TokenId::CompilerCallerFile:
     case TokenId::CompilerCallerFunction:
+    case TokenId::CompilerCallerLoc:
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:

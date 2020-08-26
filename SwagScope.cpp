@@ -80,4 +80,10 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoGeneric = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         regTypeInfoGeneric->flags |= TYPEINFO_STRUCT_TYPEINFO;
     }
+    else if (typeInfo->name == "CompilerSourceLocation")
+    {
+        SWAG_ASSERT(!regTypeInfoSourceLoc);
+        regTypeInfoSourceLoc = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeInfoSourceLoc->flags |= TYPEINFO_STRUCT_TYPEINFO;
+    }
 }

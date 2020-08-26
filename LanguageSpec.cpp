@@ -22,6 +22,7 @@ void LanguageSpec::setup()
     keywords["#callerfile"]     = TokenId::CompilerCallerFile;
     keywords["#callerline"]     = TokenId::CompilerCallerLine;
     keywords["#callerfunction"] = TokenId::CompilerCallerFunction;
+    keywords["#callerloc"]      = TokenId::CompilerCallerLoc;
     keywords["#swagversion"]    = TokenId::CompilerBuildVersion;
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;
     keywords["#swagbuildnum"]   = TokenId::CompilerBuildNum;
