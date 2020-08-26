@@ -1392,8 +1392,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::Jump:
             //CONCAT_FIXED_STR(concat, "goto _");
-            //concat.addS32Str8(ip->a.s32 + i + 1);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, ip->a.s32);
+            //concat.addS32Str8(ip->b.s32 + i + 1);
+            BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, ip->b.s32);
             break;
 
         case ByteCodeOp::IncrementRA32:

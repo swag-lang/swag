@@ -209,9 +209,6 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::Jump:
-            g_Log.setColor(LogColor::Cyan);
-            wprintf(bcNum, ip->a.s32 + i + 1);
-            break;
         case ByteCodeOp::JumpIfZero32:
         case ByteCodeOp::JumpIfZero64:
         case ByteCodeOp::JumpIfNotZero32:
@@ -290,9 +287,6 @@ void ByteCode::markLabels()
         switch (ip->op)
         {
         case ByteCodeOp::Jump:
-            ip[ip->a.s32 + 1].flags |= BCI_JUMP_DEST;
-            numJumps--;
-            break;
         case ByteCodeOp::JumpIfTrue:
         case ByteCodeOp::JumpIfFalse:
         case ByteCodeOp::JumpIfNotZero32:

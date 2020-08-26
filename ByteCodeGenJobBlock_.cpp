@@ -125,7 +125,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 
     // Update all returns to jump at the end of the inline block
     for (auto r : node->returnList)
-        context->bc->out[r->seekJump].a.u32 = context->bc->numInstructions - r->seekJump - 1;
+        context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
     // Release persistent list of registers
     freeRegisterRC(context, node->scope->registersToRelease);
@@ -148,7 +148,7 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 
         instruction        = context->bc->out + ifNode->seekJumpAfterIf;
         diff               = context->bc->numInstructions - ifNode->seekJumpAfterIf;
-        instruction->a.s32 = diff - 1;
+        instruction->b.s32 = diff - 1;
     }
     else
         instruction->b.s32 = diff - 1;
@@ -250,7 +250,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::Jump);
         auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
-        inst->a.s32 = diff;
+        inst->b.s32 = diff;
     }
 
     loopNode->seekJumpAfterBlock = context->bc->numInstructions;
@@ -260,7 +260,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         auto inst   = context->bc->out + continueNode->jumpInstruction;
         auto diff   = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
+        inst->b.s32 = diff;
     }
 
     // Resolve all break instructions
@@ -268,7 +268,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         auto inst   = context->bc->out + breakNode->jumpInstruction;
         auto diff   = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
+        inst->b.s32 = diff;
     }
 
     return true;
@@ -358,12 +358,12 @@ bool ByteCodeGenJob::emitForAfterPost(ByteCodeGenContext* context)
 
     // Jump to the test expression
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    inst->a.s32 = forNode->seekJumpBeforeExpression - context->bc->numInstructions;
+    inst->b.s32 = forNode->seekJumpBeforeExpression - context->bc->numInstructions;
 
     // And set the jump to the start of the block
     inst        = context->bc->out + forNode->seekJumpToBlock;
     auto diff   = context->bc->numInstructions - forNode->seekJumpToBlock - 1;
-    inst->a.s32 = diff;
+    inst->b.s32 = diff;
 
     return true;
 }
@@ -378,7 +378,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
     auto diff   = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
-    inst->a.s32 = diff;
+    inst->b.s32 = diff;
 
     // Set location to be the same as the next instructions
     inst->flags |= BCI_LOCATION_IS_BC;
@@ -389,7 +389,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     {
         inst        = context->bc->out + breakNode->jumpInstruction;
         diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
+        inst->b.s32 = diff;
     }
 
     // Resolve all fallthrough instructions
@@ -403,7 +403,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
 
         inst        = context->bc->out + fallNode->jumpInstruction;
         diff        = nextCaseBlock->seekStart - fallNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
+        inst->b.s32 = diff;
     }
 
     return true;
@@ -415,7 +415,7 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
 
     // Jump to the first case
-    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = 1;
+    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = 1;
 
     // Jump to exit the switch
     switchNode->seekJumpExpression = context->bc->numInstructions;
@@ -487,11 +487,11 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 
     // Jump to exit the switch
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    inst->a.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
+    inst->b.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
 
     // Resolve jump from case to case
     inst        = context->bc->out + blockNode->seekJumpNextCase;
-    inst->a.s32 = context->bc->numInstructions - blockNode->seekJumpNextCase - 1;
+    inst->b.s32 = context->bc->numInstructions - blockNode->seekJumpNextCase - 1;
     return true;
 }
 

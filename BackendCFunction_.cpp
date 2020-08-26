@@ -1408,7 +1408,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
         case ByteCodeOp::Jump:
             CONCAT_FIXED_STR(concat, "goto _");
-            concat.addS32Str8(ip->a.s32 + i + 1);
+            concat.addS32Str8(ip->b.s32 + i + 1);
             concat.addChar(';');
             break;
         case ByteCodeOp::JumpIfFalse:

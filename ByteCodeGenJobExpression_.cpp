@@ -39,7 +39,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     // If not null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
-    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = node->resultRegisterRC.size(); // After the if null
+    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = node->resultRegisterRC.size(); // After the if null
 
     // If null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
     // If true
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
-    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = node->resultRegisterRC.size();
+    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = node->resultRegisterRC.size();
 
     // If false
     for (int r = 0; r < node->resultRegisterRC.size(); r++)

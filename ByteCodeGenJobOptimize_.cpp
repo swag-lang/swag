@@ -19,16 +19,16 @@ static bool optimizeJumps(ByteCode* bc)
         if (ip->op == ByteCodeOp::Jump)
         {
             // Jump to another jump
-            auto destIp = ip + ip->a.s32 + 1;
+            auto destIp = ip + ip->b.s32 + 1;
             while (destIp->op == ByteCodeOp::Jump)
             {
-                ip->a.s32 += destIp->a.s32 + 1;
-                destIp += destIp->a.s32 + 1;
+                ip->b.s32 += destIp->b.s32 + 1;
+                destIp += destIp->b.s32 + 1;
                 hasDoneSomething = true;
             }
 
             // Jump to the next instruction
-            if (ip->a.s32 == 0)
+            if (ip->b.s32 == 0)
             {
                 hasDoneSomething = true;
                 ip->op           = ByteCodeOp::Nop;

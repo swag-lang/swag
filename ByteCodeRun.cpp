@@ -309,7 +309,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::Jump:
     {
-        context->ip += ip->a.s32;
+        context->ip += ip->b.s32;
         break;
     }
     case ByteCodeOp::Ret:
