@@ -696,7 +696,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s8;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x30\x03"); // xor [rbx], al
+            BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RBX, X64Op::XOR);
             break;
         case ByteCodeOp::AffectOpXOrEqS16:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
@@ -721,7 +721,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s8;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x08\x03"); // xor [rbx], al
+            BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RBX, X64Op::OR);
             break;
         case ByteCodeOp::AffectOpOrEqS16:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) |= r[", ip->b.u32, "].s16;");
@@ -746,7 +746,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s8;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            concat.addString2("\x20\x03"); // and [rbx], al
+            BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RBX, X64Op::AND);
             break;
         case ByteCodeOp::AffectOpAndEqS16:
             //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) &= r[", ip->b.u32, "].s16;");
