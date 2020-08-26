@@ -479,6 +479,9 @@ JobResult ByteCodeGenJob::execute()
         if (context.bc)
             emitInstruction(&context, ByteCodeOp::End);
 
+        // Optims
+        optimize(&context);
+
         // Print resulting bytecode
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
             context.bc->print();

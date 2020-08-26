@@ -291,6 +291,7 @@
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenJobExpression_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
+    <ClCompile Include="ByteCodeGenJobOptimize_.cpp" />
     <ClCompile Include="ByteCodeGenJobProperty_.cpp" />
     <ClCompile Include="ByteCodeGenJobRef_.cpp" />
     <ClCompile Include="ByteCodeGenJobStruct_.cpp" />

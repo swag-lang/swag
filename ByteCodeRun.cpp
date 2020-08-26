@@ -21,6 +21,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
+    case ByteCodeOp::Nop:
+        break;
+
     case ByteCodeOp::IntrinsicS8x1:
     {
         switch ((TokenId) ip->d.u32)
