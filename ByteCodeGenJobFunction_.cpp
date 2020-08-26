@@ -411,6 +411,24 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     return true;
 }
 
+uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
+{
+    auto module     = node->sourceFile->module;
+    auto str        = Utf8(node->sourceFile->path);
+    auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation));
+    auto loc        = (ConcreteCompilerSourceLocation*) module->constantSegment.address(offset);
+    auto offsetName = module->constantSegment.addString(str);
+    auto addrName   = module->constantSegment.address(offsetName);
+    module->constantSegment.addInitPtr(offset, offsetName);
+    loc->fileName.buffer = addrName;
+    loc->fileName.count  = str.length();
+    loc->lineStart       = node->token.startLocation.line + 1;
+    loc->colStart        = node->token.startLocation.column + 1;
+    loc->lineEnd         = node->token.endLocation.line + 1;
+    loc->colEnd          = node->token.endLocation.column + 1;
+    return offset;
+}
+
 bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
 {
     auto node         = context->node;
@@ -423,20 +441,8 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
         case TokenId::CompilerCallerLocation:
         {
-            auto module = context->sourceFile->module;
             reserveLinearRegisterRC(context, regList, 1);
-            auto str        = Utf8(node->sourceFile->path);
-            auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation));
-            auto loc        = (ConcreteCompilerSourceLocation*) module->constantSegment.address(offset);
-            auto offsetName = module->constantSegment.addString(str);
-            auto addrName   = module->constantSegment.address(offsetName);
-            module->constantSegment.addInitPtr(offset, offsetName);
-            loc->fileName.buffer = addrName;
-            loc->fileName.count  = str.length();
-            loc->lineStart   = node->token.startLocation.line + 1;
-            loc->colStart    = node->token.startLocation.column + 1;
-            loc->lineEnd     = node->token.endLocation.line + 1;
-            loc->colEnd      = node->token.endLocation.column + 1;
+            auto offset = computeSourceLocation(node);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
             break;
         }
@@ -451,7 +457,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             break;
         }
         default:
-            return internalError(context, "emitLocalCall, invalid compiler function", defaultParam->assignment);
+            return internalError(context, "emitDefaultParamValue, invalid compiler function", defaultParam->assignment);
         }
     }
     else

@@ -384,6 +384,9 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->setFlagsValueIsComputed();
         return true;
 
+    case TokenId::CompilerLocation:
+        node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
+        return true;
     case TokenId::CompilerCallerLocation:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerlocation' can only be set in a function parameter declaration"}));
         node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
