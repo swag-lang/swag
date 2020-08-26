@@ -12,7 +12,6 @@
 #include "Scope.h"
 #include "RaceCondition.h"
 #include "VectorNative.h"
-#include "DataSegment.h"
 
 struct AstTypeExpression;
 struct DocContent;
@@ -34,7 +33,6 @@ struct AstInline;
 struct AstStruct;
 struct TypeInfoStruct;
 enum class TypeInfoListKind;
-enum class SegmentKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -371,17 +369,13 @@ struct AstNode
 
     uint32_t doneFlags;
     uint32_t fctCallStorageOffset;
-
     uint32_t castOffset;
+    uint32_t concreteTypeInfoStorage = UINT32_MAX;
     uint32_t childParentIdx;
 
-    uint32_t concreteTypeInfoStorage = UINT32_MAX;
-    uint32_t storageOffset           = UINT32_MAX;
-
-    SegmentKind         storageOffsetKind = SegmentKind::Me;
-    AstNodeResolveState semanticState     = AstNodeResolveState::Enter;
-    AstNodeResolveState bytecodeState     = AstNodeResolveState::Enter;
-    AstNodeKind         kind              = AstNodeKind::Invalid;
+    AstNodeResolveState semanticState = AstNodeResolveState::Enter;
+    AstNodeResolveState bytecodeState = AstNodeResolveState::Enter;
+    AstNodeKind         kind          = AstNodeKind::Invalid;
 };
 
 struct AstVarDecl : public AstNode
@@ -662,6 +656,9 @@ struct AstProperty : public AstNode
 struct AstExpressionList : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+
+    uint32_t storageOffset;
+    uint32_t storageOffsetSegment = UINT32_MAX;
     bool     forTuple;
 };
 

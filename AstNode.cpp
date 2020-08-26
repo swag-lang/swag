@@ -262,9 +262,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     fctCallStorageOffset = from->fctCallStorageOffset;
     castOffset           = from->castOffset;
 
-    storageOffset     = from->storageOffset;
-    storageOffsetKind = from->storageOffsetKind;
-
     parent = context.parent;
     if (parent)
         Ast::addChildBack(parent, this);
@@ -671,7 +668,11 @@ AstNode* AstExpressionList::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstExpressionList>();
     newNode->copyFrom(context, this);
-    newNode->forTuple = forTuple;
+
+    newNode->storageOffset        = storageOffset;
+    newNode->storageOffsetSegment = storageOffsetSegment;
+    newNode->forTuple             = forTuple;
+
     return newNode;
 }
 

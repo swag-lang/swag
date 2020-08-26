@@ -84,9 +84,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-                SWAG_ASSERT(exprList->storageOffset != UINT32_MAX);
-                SWAG_ASSERT(exprList->storageOffsetKind == SegmentKind::Constant);
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = exprList->storageOffset;
+                SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = exprList->storageOffsetSegment;
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u32 = (uint32_t) typeList->subTypes.size();
 
                 auto inst = emitInstruction(&cxt, ByteCodeOp::MemCpy, 0, 1);
@@ -147,7 +146,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 RegisterList r0 = reserveRegisterRC(&cxt);
 
                 emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeArray->totalCount;
-                auto seekJump                                            = cxt.bc->numInstructions;
+                auto seekJump                                              = cxt.bc->numInstructions;
 
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                 emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
@@ -289,7 +288,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (offset)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
             inst->flags |= BCI_IMM_B;
             inst->b.u32 = offset;
         }

@@ -2185,10 +2185,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
                 auto module   = context->sourceFile->module;
                 auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
-                if (exprList && exprList->storageOffset == UINT32_MAX)
+                if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
                 {
-                    exprList->storageOffsetKind = SegmentKind::Constant;
-                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->storageOffset, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
+                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, fromNode->typeInfo, exprList));
                 }
             }
         }
