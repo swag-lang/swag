@@ -30,11 +30,12 @@ enum Reg
 
 enum class X64Op : uint8_t
 {
-    ADD = 0x01,
-    OR  = 0x09,
-    AND = 0x21,
-    SUB = 0x29,
-    XOR = 0x31,
+    ADD  = 0x01,
+    OR   = 0x09,
+    AND  = 0x21,
+    SUB  = 0x29,
+    XOR  = 0x31,
+    IDIV = 0xF7,
 };
 
 namespace BackendX64Inst
@@ -500,6 +501,21 @@ namespace BackendX64Inst
         pp.concat.addU8(0x48 | ((memReg & 0b1000) >> 3) | ((reg & 0b1000) >> 1));
         pp.concat.addU8((uint8_t) instruction);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
+    }
+
+    inline void emit_Op8(X64PerThread& pp, uint8_t reg1, uint8_t reg2, X64Op instruction)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8((uint8_t) instruction & ~1);
+        pp.concat.addU8(modRM(0b11, reg1, reg2));
+    }
+
+    inline void emit_Op16(X64PerThread& pp, uint8_t reg1, uint8_t reg2, X64Op instruction)
+    {
+        SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8((uint8_t) instruction);
+        pp.concat.addU8(modRM(0b11, reg1, reg2));
     }
 
     inline void emit_Op32(X64PerThread& pp, uint8_t reg1, uint8_t reg2, X64Op instruction)
