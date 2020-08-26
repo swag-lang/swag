@@ -1341,8 +1341,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     auto symbol = scope->symTable.find(node->name);
                     if (!symbol)
                         continue;
-                    if (symbol->kind == SymbolKind::Variable)
+
+                    // Do not find variables of the outer functions
+                    if (symbol->kind == SymbolKind::Variable && !(symbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE))
                         continue;
+
                     dependentSymbols.insert(symbol);
                 }
             }

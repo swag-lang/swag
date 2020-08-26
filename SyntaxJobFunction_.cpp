@@ -475,7 +475,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         else
         {
             ScopedAttributeFlags scopedAccess(this, 0);
-            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content, &funcNode->endToken));
+
+            // It's fine to not have curly in some cases
+            if (token.id != TokenId::SymLeftCurly)
+                SWAG_CHECK(doEmbeddedInstruction(funcNode, &funcNode->content));
+            else
+                SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content, &funcNode->endToken));
         }
 
         newScope->owner                     = funcNode->content;

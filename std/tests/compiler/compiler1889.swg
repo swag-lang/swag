@@ -1,3 +1,6 @@
+#module "compiler1889"
+#unittest error
+
 //#[swag.printbc]
 func toto(x: s64)
 {
@@ -7,9 +10,6 @@ func toto(x: s64)
 //#[swag.printbc]
 func titi()
 {
-    const x = 666's64
-    #run
-    {
-        toto(x)
-    }
+    x := 666's64
+    #run toto(x)
 }
