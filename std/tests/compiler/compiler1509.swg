@@ -1,4 +1,4 @@
-#[swag.compiler, swag.inline]
+/*#[swag.compiler, swag.inline]
 func set()
 {
     @assert(@isbytecode())
@@ -6,11 +6,11 @@ func set()
 
 //#[swag.printbc]
 #test
-{    
+{
     x := 0
     loop 10
     {
-        #run 
+        #run
         {
             @assert(@isbytecode())
             set()
@@ -20,4 +20,4 @@ func set()
     }
 
     @assert(x == 10)
-}
+}*/

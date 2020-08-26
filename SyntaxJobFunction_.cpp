@@ -279,6 +279,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeFuncId == TokenId::CompilerFuncMain ||
         typeFuncId == TokenId::CompilerFuncCompiler ||
         typeFuncId == TokenId::CompilerAst ||
+        typeFuncId == TokenId::CompilerGeneratedRun ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
 
@@ -309,6 +310,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->name       = "__run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
+        case TokenId::CompilerGeneratedRun:
+            funcNode->token.text = "#run";
+            funcNode->name       = "__run" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER;
+            break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "#main";
             funcNode->name       = "__main" + to_string(id);
@@ -323,7 +329,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
             funcNode->name       = "__ast" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER;
+            funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
             break;
         }
     }

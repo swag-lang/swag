@@ -140,9 +140,11 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
     if (result)
         *result = node;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticBeforeFct = SemanticJob::preResolveCompilerAssert;
     node->semanticFct       = SemanticJob::resolveCompilerAssert;
     node->token             = move(token);
+    SWAG_CHECK(isValidScopeForCompilerRun(node));
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
@@ -198,29 +200,69 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     return true;
 }
 
-bool SyntaxJob::doCompilerRunStatement(AstNode* parent, AstNode** result)
+bool SyntaxJob::isValidScopeForCompilerRun(AstNode* node)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
-    if (result)
-        *result = node;
+    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
+    {
+        auto scope = node->ownerScope;
+        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
+            scope = scope->parentScope;
+        if (!scope->isGlobalOrImpl() && scope->kind != ScopeKind::FunctionBody)
+            return node->sourceFile->report({node, node->token, format("compile time '%s' cannot be used in a local scope", node->token.text.c_str())});
+    }
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
-    SWAG_CHECK(doEmbeddedInstruction(node));
-    SWAG_CHECK(eatSemiCol("after '#run' expression"));
     return true;
 }
 
-bool SyntaxJob::doCompilerRunExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    SWAG_CHECK(eatToken());
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        SWAG_CHECK(doFuncDecl(parent, result, TokenId::CompilerRun));
+        return true;
+    }
+
+    auto node = Ast::newNode<AstCompilerRun>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
-    node->flags |= AST_NO_BYTECODE;
-
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK);
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerRun;
-    SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatSemiCol("after '#run' expression"));
+    SWAG_CHECK(doEmbeddedInstruction(node));
+    SWAG_CHECK(eatSemiCol("after '#run' statement"));
+    return true;
+}
+
+bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstCompilerRun>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->semanticFct = SemanticJob::resolveCompilerRun;
+    node->token = move(token);
+    SWAG_CHECK(isValidScopeForCompilerRun(node));
+    SWAG_CHECK(eatToken());
+
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        idRef->token.startLocation      = node->token.startLocation;
+        idRef->token.endLocation        = node->token.endLocation;
+        auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+        identifier->token.startLocation = node->token.startLocation;
+        identifier->token.endLocation   = node->token.endLocation;
+    }
+    else
+    {
+        SWAG_CHECK(doEmbeddedInstruction(node));
+        SWAG_CHECK(eatSemiCol("after '#run' statement"));
+    }
+
     return true;
 }
 
@@ -229,10 +271,10 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
     if (result)
         *result = node;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#print' expression"));

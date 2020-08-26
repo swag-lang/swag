@@ -97,10 +97,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 {
                     auto child = node->childs.front();
                     if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
-                    {
                         emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
-                    }
-
                     emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
                     emitInstruction(context, ByteCodeOp::CopyRCtoRR, 1, child->resultRegisterRC[1]);
                 }

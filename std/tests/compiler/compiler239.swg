@@ -1,5 +1,3 @@
-;
-;
 using swag;
 
 func main1 ()->s32 { return 77; }
@@ -18,7 +16,7 @@ func main ()
 	@assert(c == 666);
 }
 
-#run 
+#run
 {
 	main()
 }

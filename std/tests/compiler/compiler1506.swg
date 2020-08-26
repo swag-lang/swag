@@ -7,10 +7,10 @@ func set(x: string)
 
 //#[swag.printbc]
 #test
-{    
-    x := "inside function set"
-    #run 
+{
+    #run
     {
+        x := "inside function set"
         set(x)
     }
 }

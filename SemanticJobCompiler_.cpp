@@ -53,8 +53,15 @@ bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
+    auto node = CastAst<AstCompilerRun>(context->node, AstNodeKind::CompilerRun);
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
     auto expression = context->node->childs.front();
     SWAG_CHECK(executeNode(context, expression, false));
+    if (context->result != ContextResult::Done)
+        return true;
+
     context->node->inheritComputedValue(expression);
     context->node->typeInfo = expression->typeInfo;
     return true;
@@ -105,6 +112,59 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
         for (int i = (int) context->node->childs.size() - 1; i >= 0; i--)
             job->nodes.push_back(context->node->childs[i]);
         job->nodes.push_back(context->node);
+    }
+
+    return true;
+}
+
+bool SemanticJob::preResolveCompilerAssert(SemanticContext* context)
+{
+    auto node = context->node;
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        // If we are inside a generic structure, do not evaluate the #assert. Will be done during
+        // instantiation of the struct
+        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+            node->flags |= AST_IS_GENERIC;
+    }
+
+    if (node->flags & AST_IS_GENERIC)
+        node->childs.back()->flags |= AST_NO_SEMANTIC;
+
+    return true;
+}
+
+bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
+{
+    auto node = context->node;
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
+    auto expr = node->childs[0];
+    if (node->childs.size() > 1)
+    {
+        auto msg = node->childs[1];
+        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, "message expression is not a string"}));
+        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, "message expression cannot be evaluated at compile time"}));
+    }
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(executeNode(context, expr, true));
+    if (context->result == ContextResult::Pending)
+        return true;
+
+    node->flags |= AST_NO_BYTECODE;
+
+    if (!expr->computedValue.reg.b)
+    {
+        if (node->childs.size() > 1)
+        {
+            auto msg = node->childs[1];
+            context->report({expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str())});
+        }
+        else
+            context->report({expr, "compiler assertion failed"});
+        return false;
     }
 
     return true;
@@ -174,69 +234,6 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     }
 
     return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str())});
-}
-
-bool SemanticJob::preResolveCompilerAssert(SemanticContext* context)
-{
-    auto node = context->node;
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        // If we are inside a generic structure, do not evaluate the #assert. Will be done during
-        // instantiation of the struct
-        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
-            node->flags |= AST_IS_GENERIC;
-    }
-
-    if (node->flags & AST_IS_GENERIC)
-        node->childs.back()->flags |= AST_NO_SEMANTIC;
-
-    return true;
-}
-
-bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
-{
-    auto node = context->node;
-    if (node->flags & AST_IS_GENERIC)
-        return true;
-
-    auto expr = node->childs[0];
-
-    // Be sure statement is correct
-    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
-    {
-        auto scope = node->ownerScope;
-        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
-            scope = scope->parentScope;
-        SWAG_VERIFY(scope->isGlobalOrImpl() || scope->kind == ScopeKind::FunctionBody, context->report({node, node->token, "'#assert' cannot be used here"}));
-    }
-
-    if (node->childs.size() > 1)
-    {
-        auto msg = node->childs[1];
-        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, "message expression is not a string"}));
-        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, "message expression cannot be evaluated at compile time"}));
-    }
-
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(executeNode(context, expr, true));
-    if (context->result == ContextResult::Pending)
-        return true;
-
-    node->flags |= AST_NO_BYTECODE;
-
-    if (!expr->computedValue.reg.b)
-    {
-        if (node->childs.size() > 1)
-        {
-            auto msg = node->childs[1];
-            context->report({expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str())});
-        }
-        else
-            context->report({expr, "compiler assertion failed"});
-        return false;
-    }
-
-    return true;
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)

@@ -769,3 +769,8 @@ struct AstCompilerAst : public AstNode
     AstNode*        clone(CloneContext& context) override;
     CompilerAstKind embeddedKind = CompilerAstKind::EmbeddedInstruction;
 };
+
+struct AstCompilerRun : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+};

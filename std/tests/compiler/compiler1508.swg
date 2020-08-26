@@ -1,10 +1,13 @@
+#module "compiler1508"
+#unittest error
+
 //#[swag.printbc]
 #test
-{    
+{
     x := 0
     loop 10
     {
-        #run 
+        #run
         {
             x = x
         }

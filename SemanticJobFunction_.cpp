@@ -130,7 +130,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     // Filter what we send
     if (!node->ownerScope->isGlobalOrImpl())
         return true;
-    if (node->attributeFlags & ATTRIBUTE_AST_FUNC)
+    if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
         return true;
     if (node->flags & AST_IS_GENERIC)
         return true;
@@ -215,7 +215,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
     }
 
-    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC && !(node->attributeFlags & ATTRIBUTE_AST_FUNC))
+    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
         SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));

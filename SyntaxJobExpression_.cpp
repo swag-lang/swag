@@ -498,7 +498,7 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 {
-    AstNode* boolExpression;
+    AstNode* boolExpression = nullptr;
     switch (token.id)
     {
     case TokenId::CompilerRun:

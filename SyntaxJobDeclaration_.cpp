@@ -356,8 +356,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerPrint(parent, result));
         break;
     case TokenId::CompilerRun:
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doCompilerRunStatement(parent, result));
+        SWAG_CHECK(doCompilerRunEmbedded(parent, result));
         break;
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::EmbeddedInstruction));
@@ -486,11 +485,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDecl(parent, result));
         break;
     case TokenId::CompilerRun:
-        SWAG_CHECK(eatToken());
-        if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doFuncDecl(parent, nullptr, TokenId::CompilerRun));
-        else
-            SWAG_CHECK(doCompilerRunExpression(parent));
+        SWAG_CHECK(doCompilerRunTopLevel(parent, result));
         break;
     case TokenId::CompilerForeignLib:
         SWAG_CHECK(doCompilerForeignLib(parent));
