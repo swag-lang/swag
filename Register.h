@@ -7,6 +7,7 @@ union Register
     uint64_t u64;
     int64_t  s64;
     uint32_t u32;
+    uint32_t offset;
     int32_t  s32;
     uint16_t u16;
     int16_t  s16;
@@ -22,7 +23,6 @@ struct ComputedValue
 {
     Utf8     text;
     Register reg;
-    uint32_t storageOffset = UINT32_MAX;
 
     bool operator==(const ComputedValue& from) const
     {

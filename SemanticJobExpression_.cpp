@@ -75,7 +75,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
-        node->computedValue.storageOffset = node->ownerScope->startStackSize;
+        node->computedValue.reg.offset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
@@ -114,7 +114,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
-        node->computedValue.storageOffset = node->ownerScope->startStackSize;
+        node->computedValue.reg.offset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }

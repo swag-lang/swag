@@ -16,16 +16,13 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
-
-        SWAG_ASSERT(left->computedValue.reg.u32 != UINT32_MAX);
-        SWAG_ASSERT(right->computedValue.reg.u32 != UINT32_MAX);
-        if (left->computedValue.reg.u32 == right->computedValue.reg.u32)
+        if (left->computedValue.reg.offset == right->computedValue.reg.offset)
             node->computedValue.reg.b = true;
         else
         {
             auto module               = context->sourceFile->module;
-            auto ptr1                 = module->typeSegment.address(left->computedValue.reg.u32);
-            auto ptr2                 = module->typeSegment.address(right->computedValue.reg.u32);
+            auto ptr1                 = module->typeSegment.address(left->computedValue.reg.offset);
+            auto ptr2                 = module->typeSegment.address(right->computedValue.reg.offset);
             node->computedValue.reg.b = swag_runtime_compareType(ptr1, ptr2);
         }
     }

@@ -76,3 +76,4 @@ static const uint32_t AST_DONE_FLAT_PARAMS               = 0x00000800;
 static const uint32_t AST_DONE_LAST_PARAM_CODE           = 0x00001000;
 static const uint32_t AST_DONE_COMPILER_INSERT           = 0x00002000;
 static const uint32_t AST_DONE_EMIT_BINOP                = 0x00004000;
+static const uint32_t AST_DONE_EXPRLIST_CST              = 0x00008000;

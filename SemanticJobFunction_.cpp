@@ -140,11 +140,9 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.name.buffer = (void*) node->name.c_str();
     msg.name.count  = node->name.length();
 
-    TypeInfo* resultType;
-    uint32_t  storageOffset;
-
-    auto& typeTable = module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
+    uint32_t storageOffset;
+    auto&    typeTable = module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, nullptr, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
     if (context->result != ContextResult::Done)
         return true;
     msg.type = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);

@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // Emit one affectation per child
-        int      offsetIdx = listNode->computedValue.storageOffset;
+        int      offsetIdx = listNode->computedValue.reg.offset;
         uint32_t oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
@@ -149,13 +149,12 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         }
 
         // Reference to the stack, and store the number of element in a register
-        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->computedValue.storageOffset;
+        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->computedValue.reg.offset;
         emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32       = (uint32_t) listNode->childs.size();
     }
     else
     {
-        SWAG_ASSERT(node->computedValue.storageOffset != UINT32_MAX); // Be sure it has been reserved
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.storageOffset;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.offset;
         emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32             = (uint32_t) typeList->subTypes.size();
     }
 
@@ -209,8 +208,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        SWAG_ASSERT(node->computedValue.reg.u32 != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u32 = node->computedValue.reg.u32;
+        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u32 = node->computedValue.reg.offset;
         node->parent->resultRegisterRC                                              = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)

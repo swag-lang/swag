@@ -212,8 +212,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             auto it = concreteTypesCompiler.find(getTypeName(typeInfo, forceNoScope));
             if (it != concreteTypesCompiler.end())
             {
-                *ptrTypeInfo = it->second.first;
-                *storage     = it->second.second;
+                if (ptrTypeInfo)
+                    *ptrTypeInfo = it->second.first;
+                *storage = it->second.second;
                 return true;
             }
         }
@@ -222,8 +223,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             auto it = concreteTypes.find(getTypeName(typeInfo, forceNoScope));
             if (it != concreteTypes.end())
             {
-                *ptrTypeInfo = it->second.first;
-                *storage     = it->second.second;
+                if (ptrTypeInfo)
+                    *ptrTypeInfo = it->second.first;
+                *storage = it->second.second;
                 return true;
             }
             g_Stats.totalConcreteTypes++;
@@ -308,8 +310,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     typePtr->sizeOf = sizeof(void*);
 
     // Register type and value
-    *ptrTypeInfo = typePtr;
-    *storage     = storageOffset;
+    if (ptrTypeInfo)
+        *ptrTypeInfo = typePtr;
+    *storage = storageOffset;
 
     switch (typeInfo->kind)
     {
