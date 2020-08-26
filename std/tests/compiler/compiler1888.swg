@@ -1,15 +1,12 @@
 //#[swag.printbc]
 func toto(x: s64)
 {
-    @assert(x == 666)
+    @print(x)
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 func titi()
 {
-    const x = 666's64
-    #run
-    {
-        toto(x)
-    }
+    x := 666's64
+    #run toto(x)
 }

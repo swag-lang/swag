@@ -245,15 +245,23 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
-    AstNode*    funcNode;
-    SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
-    auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
-    idRef->token.startLocation      = node->token.startLocation;
-    idRef->token.endLocation        = node->token.endLocation;
-    auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
-    identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
-    identifier->token.startLocation = node->token.startLocation;
-    identifier->token.endLocation   = node->token.endLocation;
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        idRef->token.startLocation      = node->token.startLocation;
+        idRef->token.endLocation        = node->token.endLocation;
+        auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+        identifier->token.startLocation = node->token.startLocation;
+        identifier->token.endLocation   = node->token.endLocation;
+    }
+    else
+    {
+        SWAG_CHECK(doEmbeddedInstruction(node));
+        SWAG_CHECK(eatSemiCol("after '#run' statement"));
+    }
 
     return true;
 }
