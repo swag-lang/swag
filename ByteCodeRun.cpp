@@ -854,6 +854,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].b = true;
         break;
     }
+    case ByteCodeOp::IntrinsicError:
+    {
+        Utf8 msg;
+        msg.append((const char*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        context->error(msg, (ConcreteCompilerSourceLocation*) registersRC[ip->a.u32].pointer);
+        break;
+    }
     case ByteCodeOp::IntrinsicAssert:
     {
         if (!registersRC[ip->a.u32].b)
@@ -1635,18 +1642,29 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
-            auto location = ip->getLocation(context->bc);
-            if (location)
+            if (context->errorLoc)
             {
-                Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                SourceLocation start = {(int) context->errorLoc->lineStart - 1, (int) context->errorLoc->colStart - 1};
+                SourceLocation end   = {(int) context->errorLoc->lineEnd - 1, (int) context->errorLoc->colEnd - 1};
+                Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
                 diag.criticalError = true;
                 context->report(diag);
             }
             else
             {
-                Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
-                diag.criticalError = true;
-                context->report(diag);
+                auto location = ip->getLocation(context->bc);
+                if (location)
+                {
+                    Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                    diag.criticalError = true;
+                    context->report(diag);
+                }
+                else
+                {
+                    Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
+                    diag.criticalError = true;
+                    context->report(diag);
+                }
             }
 
             return false;

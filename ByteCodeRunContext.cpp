@@ -31,11 +31,13 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
     SWAG_ASSERT(ip);
 
     hasError = false;
+    errorLoc = nullptr;
     errorMsg.clear();
 }
 
-void ByteCodeRunContext::error(const Utf8& msg)
+void ByteCodeRunContext::error(const Utf8& msg, ConcreteCompilerSourceLocation* loc)
 {
     hasError = true;
+    errorLoc = loc;
     errorMsg = msg;
 }

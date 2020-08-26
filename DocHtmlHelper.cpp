@@ -97,6 +97,7 @@ namespace DocHtmlHelper
             case TokenId::IntrinsicIndex:
             case TokenId::IntrinsicPrint:
             case TokenId::IntrinsicAssert:
+            case TokenId::IntrinsicError:
             case TokenId::IntrinsicAlloc:
             case TokenId::IntrinsicRealloc:
             case TokenId::IntrinsicFree:

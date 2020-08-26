@@ -10,6 +10,7 @@ struct ByteCodeRunContext;
 struct ConcatBucket;
 struct ByteCode;
 struct ByteCodeInstruction;
+struct ConcreteCompilerSourceLocation;
 
 struct StackValue
 {
@@ -20,7 +21,7 @@ struct StackValue
 struct ByteCodeRunContext : public JobContext
 {
     void setup(SourceFile* sf, AstNode* node, uint32_t stackS);
-    void error(const Utf8& msg);
+    void error(const Utf8& msg, ConcreteCompilerSourceLocation* loc = nullptr);
 
     template<typename T>
     inline T pop()
@@ -54,9 +55,10 @@ struct ByteCodeRunContext : public JobContext
         sp -= offset;
     }
 
-    VectorNative<ffi_type*> ffiArgs;
-    VectorNative<void*>     ffiArgsValues;
-    Utf8                    errorMsg;
+    VectorNative<ffi_type*>         ffiArgs;
+    VectorNative<void*>             ffiArgsValues;
+    Utf8                            errorMsg;
+    ConcreteCompilerSourceLocation* errorLoc = nullptr;
 
     AstNode*             node        = nullptr;
     uint8_t*             stack       = nullptr;

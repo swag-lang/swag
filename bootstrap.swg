@@ -18,6 +18,7 @@ func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
+func @error(loc: swag.CompilerSourceLocation, msg: string)->swag.ICompiler;
 
 namespace swag
 {

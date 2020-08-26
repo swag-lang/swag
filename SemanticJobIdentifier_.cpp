@@ -173,23 +173,28 @@ void SemanticJob::sortParameters(AstNode* allParams)
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
 
-void SemanticJob::optimIntrinsic(SemanticContext* context, AstIdentifier* identifier)
+void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier)
 {
     auto module = context->sourceFile->module;
-    if (module->mustOptimizeBC(context->node) == 0)
-        return;
 
     switch (identifier->token.id)
     {
     case TokenId::IntrinsicAssert:
     {
-        // Remove assert(true)
-        SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
-        auto param = identifier->callParameters->childs.front();
-        if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue.reg.b)
-            identifier->flags |= AST_NO_BYTECODE;
+        if (module->mustOptimizeBC(context->node) > 0)
+        {
+            // Remove assert(true)
+            SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
+            auto param = identifier->callParameters->childs.front();
+            if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue.reg.b)
+                identifier->flags |= AST_NO_BYTECODE;
+        }
         break;
     }
+
+    case TokenId::IntrinsicError:
+        Ast::visit(context->node, [](AstNode* x) { x->flags |= AST_NO_BACKEND; });
+        break;
     }
 }
 
@@ -583,7 +588,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         if (identifier->name[0] == '@')
         {
-            optimIntrinsic(context, identifier);
+            dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         }
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)

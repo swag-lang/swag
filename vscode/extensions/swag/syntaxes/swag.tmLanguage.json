@@ -98,7 +98,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|print|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|compiler|isbytecode)\\b"
+          "match": "(@)\\b(init|drop|index|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|print|error|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|compiler|isbytecode)\\b"
         }
       ]
     },
@@ -146,7 +146,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(ast|skip|module|unittest|assert|print|run|file|line|cfg|arch|os|function|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
+          "match": "(#)\\b(ast|skip|module|unittest|assert|print|run|file|line|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
         }
       ]
     },
