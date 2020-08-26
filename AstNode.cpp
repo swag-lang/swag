@@ -346,7 +346,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
 Utf8 AstFuncDecl::getNameForMessage()
 {
-    if(attributeFlags & ATTRIBUTE_AST_FUNC)
+    if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
     return format("function '%s'", name.c_str());
 }

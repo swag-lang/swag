@@ -208,29 +208,25 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         sourceFile->module->registerForeign(node);
 
-    if (node->flags & AST_SPECIAL_COMPILER_FUNC)
+    if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
-    }
+        if (node->flags & AST_SPECIAL_COMPILER_FUNC)
+        {
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
+        }
 
-    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
-    {
-        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
-        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
-    }
-
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (!node->ownerScope->isGlobalOrImpl())
-            return context->report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
-            return context->report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            return context->report({node, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
-        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            return context->report({node, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
+        {
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
+            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
+        }
+
+        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        {
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl() && !(node->flags & AST_SPECIAL_COMPILER_FUNC), context->report({node, node->token, format("%s cannot be public", node->getNameForMessage().c_str())}));
+        }
     }
 
     // Can be null for intrinsics etc...
