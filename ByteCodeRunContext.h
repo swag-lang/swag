@@ -11,6 +11,7 @@ struct ConcatBucket;
 struct ByteCode;
 struct ByteCodeInstruction;
 struct ConcreteCompilerSourceLocation;
+struct JobContext;
 
 struct StackValue
 {
@@ -58,7 +59,8 @@ struct ByteCodeRunContext : public JobContext
     VectorNative<ffi_type*>         ffiArgs;
     VectorNative<void*>             ffiArgsValues;
     Utf8                            errorMsg;
-    ConcreteCompilerSourceLocation* errorLoc = nullptr;
+    ConcreteCompilerSourceLocation* errorLoc      = nullptr;
+    JobContext*                     callerContext = nullptr;
 
     AstNode*             node        = nullptr;
     uint8_t*             stack       = nullptr;

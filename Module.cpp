@@ -196,7 +196,7 @@ void Module::removeFile(SourceFile* file)
     }
 }
 
-bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
+bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
     // Only one run at a time !
     static mutex mutexExecuteNode;
@@ -207,12 +207,12 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     SWAG_ASSERT(node->bc);
     SWAG_ASSERT(node->bc->out);
 
-    bool result = executeNodeNoLock(sourceFile, node);
+    bool result = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
     return result;
 }
 
-bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
+bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
 #ifdef SWAG_HAS_ASSERT
     PushDiagnosticInfos di;
@@ -224,6 +224,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node)
 #endif
 
     // Global setup
+    runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);
     node->bc->enterByteCode(&runContext);
 
@@ -293,7 +294,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
 
     for (auto bc : byteCodeCompiler[index])
     {
-        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node));
+        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, nullptr));
     }
 
     currentCompilerMessage = nullptr;

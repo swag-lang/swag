@@ -118,7 +118,7 @@ void ByteCode::print()
 
     g_Log.eol();
 
-    int lastLine = -1;
+    uint32_t lastLine = UINT32_MAX;
     for (int i = 0; i < (int) numInstructions; i++)
     {
         auto ip = out + i;

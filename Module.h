@@ -72,8 +72,8 @@ struct Module
     bool                      saveMutableValues    = false;
     bool                      bssCannotChange      = false;
 
-    bool executeNode(SourceFile* sourceFile, AstNode* node);
-    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node);
+    bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
+    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     void printUserMessage(const BuildParameters& bp);
 
     DataSegment mutableSegment;

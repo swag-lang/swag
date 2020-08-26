@@ -39,7 +39,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
         }
     }
 
-    SWAG_CHECK(module->executeNode(sourceFile, node));
+    SWAG_CHECK(module->executeNode(sourceFile, node, context));
     return true;
 }
 

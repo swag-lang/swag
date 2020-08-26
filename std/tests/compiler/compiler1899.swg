@@ -1,9 +1,9 @@
-func toto(x = #callerlocation)
+func(T) toto(x = #callerlocation)
 {
-    //@error(x, "this is a test man !")
+    //#run @error(#location, "this is a test man !")
 }
 
 #test
 {
-    toto()
+    toto's32()
 }

@@ -1642,13 +1642,14 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
+            JobContext* errorContext = context->callerContext ? context->callerContext : context;
             if (context->errorLoc)
             {
                 SourceLocation start = {context->errorLoc->lineStart, context->errorLoc->colStart};
                 SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
                 diag.criticalError = true;
-                context->report(diag);
+                errorContext->report(diag);
             }
             else
             {
@@ -1657,13 +1658,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 {
                     Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
                     diag.criticalError = true;
-                    context->report(diag);
+                    errorContext->report(diag);
                 }
                 else
                 {
                     Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
                     diag.criticalError = true;
-                    context->report(diag);
+                    errorContext->report(diag);
                 }
             }
 

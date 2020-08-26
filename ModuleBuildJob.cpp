@@ -265,7 +265,7 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeInitFunc)
                 {
-                    module->executeNode(func->node->sourceFile, func->node);
+                    module->executeNode(func->node->sourceFile, func->node, baseContext);
                 }
             }
 
@@ -284,7 +284,7 @@ JobResult ModuleBuildJob::execute()
                 for (auto func : module->byteCodeRunFunc)
                 {
                     g_Stats.runFunctions++;
-                    module->executeNode(func->node->sourceFile, func->node);
+                    module->executeNode(func->node->sourceFile, func->node, baseContext);
                 }
 
                 module->bssCannotChange = false;
@@ -308,7 +308,7 @@ JobResult ModuleBuildJob::execute()
                     for (auto func : module->byteCodeTestFunc)
                     {
                         g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
+                        module->executeNode(func->node->sourceFile, func->node, baseContext);
                     }
 
                     module->bssSegment.restoreAllValues();
@@ -324,7 +324,7 @@ JobResult ModuleBuildJob::execute()
             // #main function, in script mode
             if (module->byteCodeMainFunc && g_CommandLine.script)
             {
-                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node);
+                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
             }
 
             if (module->numErrors)
@@ -338,7 +338,7 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeDropFunc)
                 {
-                    module->executeNode(func->node->sourceFile, func->node);
+                    module->executeNode(func->node->sourceFile, func->node, baseContext);
                 }
             }
         }
