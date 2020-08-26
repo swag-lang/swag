@@ -1264,7 +1264,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    auto& scopeEmbedded      = job->cacheScopeEmbedded;
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
@@ -1294,7 +1293,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
-        scopeEmbedded.clear();
         dependentSymbols.clear();
     }
 
@@ -1315,7 +1313,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     collectFlags = COLLECT_PASS_INLINE;
 
                 startScope = node->ownerScope;
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, scopeEmbedded, node, collectFlags));
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
 
                 // Be sure this is the last try
                 oneTry++;
@@ -1340,20 +1338,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
                     dependentSymbols.insert(symbol);
-            }
-
-            // Search in embedded scopes if we are inside a function, for just some sort of symbols
-            if (node->ownerFct)
-            {
-                for (auto scope : scopeEmbedded)
-                {
-                    auto symbol = scope->symTable.find(node->name);
-                    if (!symbol)
-                        continue;
-                    if (symbol->kind == SymbolKind::Variable && !(symbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE))
-                        continue;
-                    dependentSymbols.insert(symbol);
-                }
             }
 
             if (!dependentSymbols.empty())
@@ -1721,7 +1705,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, VectorNative<Scope*>& scopesEmbedded, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1750,20 +1734,6 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
     for (int i = 0; i < here.size(); i++)
     {
         auto scope = here[i];
-
-        // For an embedded function, jump right to its parent
-        /*if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
-        {
-            while (scope->owner->ownerFct)
-            {
-                scopesEmbedded.push_back(scope);
-                scope = scope->parentScope;
-            }
-
-            SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
-            scopesEmbedded.push_back(scope);
-            scope = scope->parentScope;
-        }*/
 
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro)
@@ -1807,8 +1777,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
     uint32_t collectFlags = COLLECT_ALL;
     job->cacheScopeHierarchy.clear();
     job->cacheScopeHierarchyVars.clear();
-    job->cacheScopeEmbedded.clear();
-    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, job->cacheScopeEmbedded, node, collectFlags);
+    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)
     {
@@ -1841,30 +1810,6 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
             // raised later during bytecode generation
             if (!node->isSameStackFrame(symbol->overloads[0]))
                 continue;
-        }
-
-        SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
-    }
-
-    // Search in embedded function scopes
-    for (auto scope : job->cacheScopeEmbedded)
-    {
-        auto symbol = scope->symTable.find(node->name);
-        if (!symbol)
-            continue;
-
-        // A local variable cannot be ghosted by another local variable
-        if (kind == SymbolKind::Variable && symbol->kind == SymbolKind::Variable)
-            continue;
-
-        scoped_lock lock(symbol->mutex);
-        if (symbol->cptOverloadsInit != symbol->overloads.size())
-        {
-            if (symbol->cptOverloads)
-            {
-                job->waitForSymbolNoLock(symbol);
-                return true;
-            }
         }
 
         SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
