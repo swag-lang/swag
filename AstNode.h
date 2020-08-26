@@ -426,6 +426,7 @@ struct AstFuncDecl : public AstNode
 
     Utf8 fullnameForeign;
     void computeFullNameForeign(bool forExport);
+    Utf8 getNameForMessage();
 };
 
 struct AstAttrDecl : public AstNode

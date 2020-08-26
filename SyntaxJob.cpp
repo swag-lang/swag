@@ -84,7 +84,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         msg = format("identifier '%s' ", token.text.c_str());
         break;
     default:
-        msg = format("token '%s' ", token.text.c_str());
+        msg = format("'%s' ", token.text.c_str());
         break;
     }
 

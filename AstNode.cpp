@@ -344,6 +344,13 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     return newNode;
 }
 
+Utf8 AstFuncDecl::getNameForMessage()
+{
+    if(attributeFlags & ATTRIBUTE_AST_FUNC)
+        return format("'%s' block", token.text.c_str());
+    return format("function '%s'", name.c_str());
+}
+
 void AstFuncDecl::computeFullNameForeign(bool forExport)
 {
     scoped_lock lk(mutex);

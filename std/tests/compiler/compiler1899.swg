@@ -1,9 +1,12 @@
-func(T) toto(x = #callerlocation)
+public struct(T) TOTO
 {
-    //#run @error(#location, "this is a test man !")
+    #ast
+    {
+        @error(#location, "this is a test man !")
+    }
 }
 
 #test
 {
-    toto's32()
+    var x: TOTO's32()
 }
