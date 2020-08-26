@@ -352,7 +352,6 @@ struct AstNode
     SymbolName*         resolvedUserOpSymbolName;
     SymbolOverload*     resolvedUserOpSymbolOverload;
     ByteCodeGenJob*     byteCodeJob;
-    TypeInfo*           concreteTypeInfo;
     AstNode*            parent;
     AstAttrUse*         parentAttributes;
     SemanticFct         semanticFct;

@@ -9,7 +9,7 @@
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    if (!exprNode->concreteTypeInfo)
+    if (exprNode->concreteTypeInfoStorage == UINT32_MAX)
         return true;
 
     RegisterList r0;

@@ -147,8 +147,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, &resultType, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
     if (context->result != ContextResult::Done)
         return true;
-    node->concreteTypeInfo = resultType;
-    msg.type               = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);
+    msg.type = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);
 
     module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
     return true;
