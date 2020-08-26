@@ -788,7 +788,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             // Value already stored in the node
             if (node->flags & AST_VALUE_COMPUTED)
-                storageOffset = node->computedValue.reg.u32;
+                storageOffset = node->computedValue.reg.offset;
             else
                 SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
         }
