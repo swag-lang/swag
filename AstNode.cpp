@@ -81,6 +81,24 @@ void AstNode::setPassThrough()
     byteCodeFct       = ByteCodeGenJob::emitPassThrough;
 }
 
+bool AstNode::isSameStackFrame(SymbolOverload* overload)
+{
+    if (overload->symbol->kind != SymbolKind::Variable)
+        return true;
+    if (overload->flags & OVERLOAD_COMPUTED_VALUE)
+        return true;
+    if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
+        return true;
+
+    auto nodeVar = overload->node;
+    if ((flags & AST_RUN_BLOCK) != (nodeVar->flags & AST_RUN_BLOCK))
+        return false;
+    if (ownerFct != nodeVar->ownerFct)
+        return false;
+
+    return true;
+}
+
 void AstNode::inheritLocationFromChilds()
 {
     if (childs.empty())

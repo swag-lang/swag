@@ -1073,7 +1073,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         return true;
     }
 
-    SymbolName* symbol = nullptr;
+    SymbolName* pickedSymbol = nullptr;
     for (auto oneSymbol : dependentSymbols)
     {
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
@@ -1102,58 +1102,67 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         if (!isValid)
             continue;
 
-        if (!symbol)
+        if (!pickedSymbol)
         {
-            symbol = oneSymbol;
+            pickedSymbol = oneSymbol;
             continue;
         }
 
         // Priority to a concrete type versus a generic one
-        auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
+        auto lastOverload = pickedSymbol->ownerTable->scope->owner->typeInfo;
         auto newOverload  = oneSymbol->ownerTable->scope->owner->typeInfo;
         if (lastOverload && newOverload)
         {
             if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
-            {
                 continue;
-            }
-
             if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
             {
-                symbol = oneSymbol;
+                pickedSymbol = oneSymbol;
                 continue;
             }
         }
 
-        // Priority to the same inline scope
-        if (node->ownerInline && symbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
+        if (pickedSymbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
         {
-            if ((!oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (symbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+            // Priority to the same inline scope
+            if (node->ownerInline)
             {
-                continue;
+                if ((!oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                    (pickedSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+                {
+                    continue;
+                }
+
+                if ((oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                    (!pickedSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+                {
+                    pickedSymbol = oneSymbol;
+                    continue;
+                }
             }
 
-            if ((oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (!symbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+            // Priority to the same stack frame
+            if (node->isSameStackFrame(pickedSymbol->overloads[0]) && !node->isSameStackFrame(oneSymbol->overloads[0]))
+                continue;
+            if (!node->isSameStackFrame(pickedSymbol->overloads[0]) && node->isSameStackFrame(oneSymbol->overloads[0]))
             {
-                symbol = oneSymbol;
+                pickedSymbol = oneSymbol;
                 continue;
             }
         }
 
         // Error this is ambiguous
-        if (symbol->kind != oneSymbol->kind || oneSymbol->kind != SymbolKind::Function)
+        if (pickedSymbol->kind != oneSymbol->kind || oneSymbol->kind != SymbolKind::Function)
         {
-            Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
-            Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
+            Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", pickedSymbol->name.c_str())};
+            Diagnostic note1{pickedSymbol->overloads[0]->node, pickedSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
             Diagnostic note2{oneSymbol->overloads[0]->node, oneSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
             context->report(diag, &note1, &note2);
             return false;
         }
     }
 
-    *result = symbol;
+    *result = pickedSymbol;
     return true;
 }
 
@@ -1743,7 +1752,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an embedded function, jump right to its parent
-        if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
+        /*if (scope->kind == ScopeKind::Function && scope->owner->ownerFct)
         {
             while (scope->owner->ownerFct)
             {
@@ -1754,7 +1763,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
             SWAG_ASSERT(scope->owner->kind == AstNodeKind::FuncDecl);
             scopesEmbedded.push_back(scope);
             scope = scope->parentScope;
-        }
+        }*/
 
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro)
@@ -1826,6 +1835,12 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
                     return true;
                 }
             }
+
+            // If symbol is not in the same stackframe, we ignore the ghosting, as the priority will be given to the
+            // one in the same stack frame (if any). And if there's no symbol in the same stack frame, then error will be
+            // raised later during bytecode generation
+            if (!node->isSameStackFrame(symbol->overloads[0]))
+                continue;
         }
 
         SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));

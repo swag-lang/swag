@@ -311,6 +311,7 @@ struct AstNode
     bool isConstant0();
     bool isConstant1();
 
+    bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
     void             inheritLocationFromChilds();
     static Utf8      getKindName(AstNode* node);

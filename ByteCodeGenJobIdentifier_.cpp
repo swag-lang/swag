@@ -18,20 +18,9 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
-    bool canReference = true;
-    auto node         = context->node;
-    auto nodeVar      = overload->node;
-
-    // Something inside a run block tries to references a variables outside a run block
-    if ((node->flags & AST_RUN_BLOCK) != (nodeVar->flags & AST_RUN_BLOCK))
-        canReference = false;
-    if (node->ownerFct != nodeVar->ownerFct)
-        canReference = false;
-
-    if (!canReference)
-        return context->report({node, node->token, format("cannot reference variable '%s' because it's in another stack frame", overload->symbol->name.c_str())});
-
-    return canReference;
+    if (!context->node->isSameStackFrame(overload))
+        return context->report({context->node, context->node->token, format("cannot reference variable '%s' because it's in another stack frame", overload->symbol->name.c_str())});
+    return true;
 }
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
