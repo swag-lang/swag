@@ -784,7 +784,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
 
         // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
-        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
+        if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
         {
             // Value already stored in the node
             if (node->flags & AST_VALUE_COMPUTED)
