@@ -154,8 +154,9 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     }
     else
     {
-        SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->storageOffsetSegment;
+        SWAG_ASSERT(node->storageOffset != UINT32_MAX); // Be sure it has been reserved
+        SWAG_ASSERT(node->storageOffsetKind == SegmentKind::Constant);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->storageOffset;
         emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32             = (uint32_t) typeList->subTypes.size();
     }
 
