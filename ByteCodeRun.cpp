@@ -926,26 +926,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::SetAtPointer8:
     {
-        auto ptr                      = registersRC[ip->a.u32].pointer;
-        *(uint8_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u8;
+        auto ptr        = registersRC[ip->a.u32].pointer;
+        *(uint8_t*) ptr = registersRC[ip->b.u32].u8;
         break;
     }
     case ByteCodeOp::SetAtPointer16:
     {
-        auto ptr                       = registersRC[ip->a.u32].pointer;
-        *(uint16_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u16;
+        auto ptr         = registersRC[ip->a.u32].pointer;
+        *(uint16_t*) ptr = registersRC[ip->b.u32].u16;
         break;
     }
     case ByteCodeOp::SetAtPointer32:
     {
-        auto ptr                       = registersRC[ip->a.u32].pointer;
-        *(uint32_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u32;
+        auto ptr         = registersRC[ip->a.u32].pointer;
+        *(uint32_t*) ptr = registersRC[ip->b.u32].u32;
         break;
     }
     case ByteCodeOp::SetAtPointer64:
     {
-        auto ptr                       = registersRC[ip->a.u32].pointer;
-        *(uint64_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u64;
+        auto ptr         = registersRC[ip->a.u32].pointer;
+        *(uint64_t*) ptr = registersRC[ip->b.u32].u64;
         break;
     }
 

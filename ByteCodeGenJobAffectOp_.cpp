@@ -82,16 +82,16 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             auto r2        = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r2);
 
             freeRegisterRC(context, r2);
         }
         else
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r1[1]);
         }
 
         return true;
@@ -130,15 +130,22 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
+            auto r2 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r2)->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r2, r1[1]);
+            freeRegisterRC(context, r2);
         }
         return true;
     case NativeTypeKind::Any:
+    {
+        auto r2 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
+        emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r2)->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r2, r1[1]);
+        freeRegisterRC(context, r2);
         return true;
+    }
     default:
         return internalError(context, "emitAffectEqual, type not supported");
     }

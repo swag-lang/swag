@@ -857,40 +857,36 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetAtPointer8:
         {
-            //concat.addStringFormat("*(__u8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u8_t*)(r[%u].pointer) = r[%u].u8;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
-            r0      = TO_PTR_I8(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
         case ByteCodeOp::SetAtPointer16:
         {
-            //concat.addStringFormat("*(__u16_t*)(r[%u].pointer + %u) = r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u16_t*)(r[%u].pointer) = r[%u].u16;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
-            r0      = TO_PTR_I16(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
         case ByteCodeOp::SetAtPointer32:
         {
-            //concat.addStringFormat("*(__u32_t*)(r[%u].pointer + %u) = r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u32_t*)(r[%u].pointer) = r[%u].u32;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
-            r0      = TO_PTR_I32(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
         case ByteCodeOp::SetAtPointer64:
         {
-            //concat.addStringFormat("*(__u64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u64_t*)(r[%u].pointer) = r[%u].u64;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
-            r0      = TO_PTR_I64(builder.CreateInBoundsGEP(r0, CST_RC32));
             auto r1 = GEP_I32(allocR, ip->b.u32);
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;

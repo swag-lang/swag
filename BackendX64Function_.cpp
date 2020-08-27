@@ -1560,28 +1560,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::SetAtPointer8:
-            //concat.addStringFormat("*(__u8_t*)(r[%u].pointer + %u) = r[%u].u8;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u8_t*)(r[%u].pointer) = r[%u].u8;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store8_Indirect(pp, ip->c.u32, RCX, RAX);
+            BackendX64Inst::emit_Store8_Indirect(pp, 0, RCX, RAX);
             break;
         case ByteCodeOp::SetAtPointer16:
-            //concat.addStringFormat("*(__u16_t*)(r[%u].pointer + %u) = r[%u].u16;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u16_t*)(r[%u].pointer) = r[%u].u16;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store16_Indirect(pp, ip->c.u32, RCX, RAX);
+            BackendX64Inst::emit_Store16_Indirect(pp, 0, RCX, RAX);
             break;
         case ByteCodeOp::SetAtPointer32:
-            //concat.addStringFormat("*(__u32_t*)(r[%u].pointer + %u) = r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u32_t*)(r[%u].pointer) = r[%u].u32;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store32_Indirect(pp, ip->c.u32, RCX, RAX);
+            BackendX64Inst::emit_Store32_Indirect(pp, 0, RCX, RAX);
             break;
         case ByteCodeOp::SetAtPointer64:
-            //concat.addStringFormat("*(__u64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32);
+            //concat.addStringFormat("*(__u64_t*)(r[%u].pointer) = r[%u].u64;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, ip->c.u32, RCX, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
             break;
 
         case ByteCodeOp::MakeStackPointer:
