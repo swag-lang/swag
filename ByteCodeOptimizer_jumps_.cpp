@@ -1,10 +1,5 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
 #include "ByteCodeOptimizer.h"
-#include "ByteCode.h"
-#include "Diagnostic.h"
-#include "ByteCodeOp.h"
-#include "Module.h"
 
 bool optimizeJumps(ByteCodeOptContext* context)
 {
