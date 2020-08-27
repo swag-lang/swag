@@ -13,36 +13,40 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
     context->passHasDoneSomething = true;
 
-    // Adapt all jumps
-    for (int idx = 0; idx < context->jumps.size(); idx++)
-    {
-        auto ip      = context->jumps[idx];
-        auto srcJump = (int) (ip - context->bc->out);
-        auto dstJump = srcJump + ip->b.s32 + 1;
-
-        for (auto nop : context->nops)
-        {
-            auto idxNop = (int) (nop - context->bc->out);
-            if (srcJump < dstJump && idxNop > srcJump && idxNop <= dstJump)
-            {
-                ip->b.s32--;
-            }
-            else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
-            {
-                ip->b.s32++;
-            }
-        }
-    }
-
-    // Remove nops
     auto ip     = context->bc->out;
     auto ipDest = context->bc->out;
     for (uint32_t i = 0; i < context->bc->numInstructions; i++)
     {
         if (ip->op != ByteCodeOp::Nop)
-            *ipDest++ = *ip++;
-        else
-            ip++;
+        {
+            if (ip->op == ByteCodeOp::Jump ||
+                ip->op == ByteCodeOp::JumpIfTrue ||
+                ip->op == ByteCodeOp::JumpIfFalse ||
+                ip->op == ByteCodeOp::JumpIfZero32 ||
+                ip->op == ByteCodeOp::JumpIfZero64 ||
+                ip->op == ByteCodeOp::JumpIfNotZero32 ||
+                ip->op == ByteCodeOp::JumpIfNotZero64)
+            {
+                auto srcJump = (int) (ip - context->bc->out);
+                auto dstJump = srcJump + ip->b.s32 + 1;
+                for (auto nop : context->nops)
+                {
+                    auto idxNop = (int) (nop - context->bc->out);
+                    if (srcJump < dstJump && idxNop > srcJump && idxNop <= dstJump)
+                    {
+                        ip->b.s32--;
+                    }
+                    else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
+                    {
+                        ip->b.s32++;
+                    }
+                }
+            }
+
+            *ipDest++ = *ip;
+        }
+
+        ip++;
     }
 
     context->bc->numInstructions -= (int) context->nops.size();
