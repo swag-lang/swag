@@ -1,5 +1,3 @@
-
-
 //#[swag.printbc]
 func(N: s32) toto()->s32
 {
@@ -10,7 +8,7 @@ func(N: s32) toto()->s32
 		cpt += 1
 		break
 	}
-	
+
 	return cpt
 }
 

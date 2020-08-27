@@ -27,6 +27,18 @@ struct ByteCodeOptimizer
         context->nops.push_back(ip);
     }
 
+    inline static bool isJump(ByteCodeInstruction* inst)
+    {
+        return inst->op == ByteCodeOp::Jump ||
+               inst->op == ByteCodeOp::JumpIfTrue ||
+               inst->op == ByteCodeOp::JumpIfFalse ||
+               inst->op == ByteCodeOp::JumpIfZero64 ||
+               inst->op == ByteCodeOp::JumpIfNotZero64 ||
+               inst->op == ByteCodeOp::JumpIfFalse ||
+               inst->op == ByteCodeOp::JumpIfZero32 ||
+               inst->op == ByteCodeOp::JumpIfNotZero32;
+    }
+
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);

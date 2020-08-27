@@ -7,5 +7,6 @@ func toto(x: ...)
 //#[swag.printbc]
 #test
 {
-    toto(0)
+    loop 10
+        toto(0)
 }

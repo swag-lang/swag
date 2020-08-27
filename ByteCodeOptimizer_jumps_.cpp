@@ -32,5 +32,54 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 context->jumps.erase_unordered(idx);
             }
         }
+
+        // If a conditional jump has a constant value (preceded with a constant assign to the register that
+        // will be tested by the jump condition), then we can evaluate the jump right now
+        if (ip->op != ByteCodeOp::Jump &&
+            !(ip->flags & BCI_START_STMT) &&
+            ip != context->bc->out &&
+            ip[-1].op == ByteCodeOp::CopyRAVB32 &&
+            ip[-1].a.u32 == ip->a.u32)
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::JumpIfFalse:
+                if (ip[-1].b.b)
+                {
+                    setNop(context, ip);
+                    context->jumps.erase_unordered(idx);
+                }
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfTrue:
+                if (!ip[-1].b.b)
+                {
+                    setNop(context, ip);
+                    context->jumps.erase_unordered(idx);
+                }
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfNotZero32:
+                if (!ip[-1].b.u32)
+                {
+                    setNop(context, ip);
+                    context->jumps.erase_unordered(idx);
+                }
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfZero32:
+                if (ip[-1].b.u32)
+                {
+                    setNop(context, ip);
+                    context->jumps.erase_unordered(idx);
+                }
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            }
+        }
     }
 }

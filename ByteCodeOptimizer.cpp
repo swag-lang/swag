@@ -26,13 +26,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             continue;
         }
 
-        if (ip->op == ByteCodeOp::Jump ||
-            ip->op == ByteCodeOp::JumpIfTrue ||
-            ip->op == ByteCodeOp::JumpIfFalse ||
-            ip->op == ByteCodeOp::JumpIfZero32 ||
-            ip->op == ByteCodeOp::JumpIfZero64 ||
-            ip->op == ByteCodeOp::JumpIfNotZero32 ||
-            ip->op == ByteCodeOp::JumpIfNotZero64)
+        if (isJump(ip))
         {
             auto srcJump = (int) (ip - context->bc->out);
             auto dstJump = srcJump + ip->b.s32 + 1;
@@ -63,17 +57,14 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     context->jumps.clear();
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->op == ByteCodeOp::Jump ||
-            ip->op == ByteCodeOp::JumpIfTrue ||
-            ip->op == ByteCodeOp::JumpIfFalse ||
-            ip->op == ByteCodeOp::JumpIfZero32 ||
-            ip->op == ByteCodeOp::JumpIfZero64 ||
-            ip->op == ByteCodeOp::JumpIfNotZero32 ||
-            ip->op == ByteCodeOp::JumpIfNotZero64)
-        {
+        ip->flags &= ~BCI_START_STMT;
+        if (isJump(ip))
             context->jumps.push_back(ip);
-        }
     }
+
+    // Mark all instructions which are a jump destination
+    for (auto jump : context->jumps)
+        jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
 }
 
 void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
