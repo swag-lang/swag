@@ -1,10 +1,13 @@
 #pragma once
 struct ByteCode;
 struct ByteCodeGenContext;
+struct ByteCodeInstruction;
 
 struct ByteCodeOptContext
 {
-    ByteCode* bc;
+    ByteCode*                          bc;
+    VectorNative<ByteCodeInstruction*> jumps;
+    VectorNative<ByteCodeInstruction*> nops;
 };
 
 struct ByteCodeOptimizer
