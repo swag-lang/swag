@@ -4,7 +4,7 @@ func toto(x: ...)
     var xx: [1] s32 = ?
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     a := 0

@@ -878,8 +878,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //concat.addStringFormat("*(__u32_t*)(r[%u].pointer) = r[%u].u32;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt64(ip->b.u32);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::SetAtPointer64:

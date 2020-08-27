@@ -939,7 +939,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::SetAtPointer32:
     {
         auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint32_t*) ptr = registersRC[ip->b.u32].u32;
+        *(uint32_t*) ptr = IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::SetAtPointer64:
