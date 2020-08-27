@@ -10,6 +10,8 @@ struct ByteCodeOptContext
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
+    bool                               allPassesHaveDoneSomething = false;
+    bool                               passHasDoneSomething       = false;
 };
 
 struct ByteCodeOptimizer
@@ -20,10 +22,10 @@ struct ByteCodeOptimizer
         context->nops.push_back(ip);
     }
 
-    static bool optimizeJumps(ByteCodeOptContext* context);
+    static void optimizePassJumps(ByteCodeOptContext* context);
 
-    static bool setJumps(ByteCodeOptContext* context);
-    static bool removeNops(ByteCodeOptContext* context);
+    static void setJumps(ByteCodeOptContext* context);
+    static void removeNops(ByteCodeOptContext* context);
 
     static void optimize(ByteCodeGenContext* context);
 };
