@@ -32,7 +32,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::MemCpy, r0, r1);
+        auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, r1);
         inst->flags |= BCI_IMM_C;
         inst->c.u32 = typeInfo->sizeOf;
         return true;
@@ -82,14 +82,16 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             auto r2        = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2, 8);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2);
 
             freeRegisterRC(context, r2);
         }
         else
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
         }
 
         return true;
@@ -134,7 +136,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     case NativeTypeKind::Any:
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1], 8);
+        emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r0)->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
         return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");

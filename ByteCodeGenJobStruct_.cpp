@@ -97,8 +97,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 SWAG_ASSERT(offset != UINT32_MAX);
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1, offset);
                 emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.length());
-                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1, 0);
-                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2, 8);
+                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
+                emitInstruction(&cxt, ByteCodeOp::IncPointer32, 0, 8, 0)->flags |= BCI_IMM_B;
+                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2);
             }
             else if (typeVar->kind == TypeInfoKind::Native)
             {
