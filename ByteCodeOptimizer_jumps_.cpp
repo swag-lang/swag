@@ -18,19 +18,13 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 
         // Jump to the next instruction
         if (ip->b.s32 == 0)
-        {
             setNop(context, ip);
-            context->jumps.erase_unordered(idx);
-        }
 
         if (ip->op == ByteCodeOp::Jump)
         {
             // Next instruction is a jump to the same target
             if (ip[1].op == ByteCodeOp::Jump && (ip->b.s32 - 1 == ip[1].b.s32))
-            {
                 setNop(context, ip);
-                context->jumps.erase_unordered(idx);
-            }
         }
 
         // If a conditional jump has a constant value (preceded with a constant assign to the register that
@@ -44,38 +38,30 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             switch (ip->op)
             {
             case ByteCodeOp::JumpIfFalse:
+                context->passHasDoneSomething = true;
                 if (ip[-1].b.b)
-                {
                     setNop(context, ip);
-                    context->jumps.erase_unordered(idx);
-                }
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfTrue:
+                context->passHasDoneSomething = true;
                 if (!ip[-1].b.b)
-                {
                     setNop(context, ip);
-                    context->jumps.erase_unordered(idx);
-                }
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfNotZero32:
+                context->passHasDoneSomething = true;
                 if (!ip[-1].b.u32)
-                {
                     setNop(context, ip);
-                    context->jumps.erase_unordered(idx);
-                }
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfZero32:
+                context->passHasDoneSomething = true;
                 if (ip[-1].b.u32)
-                {
                     setNop(context, ip);
-                    context->jumps.erase_unordered(idx);
-                }
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
