@@ -52,6 +52,7 @@ struct ByteCode
     void leaveByteCode();
     void markLabels();
 
+    void              printInstruction(ByteCodeInstruction* ip);
     void              print();
     Utf8              callName();
     TypeInfoFuncAttr* callType();

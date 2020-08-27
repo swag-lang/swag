@@ -95,10 +95,150 @@ void ByteCode::leaveByteCode()
     curRC--;
 }
 
-void ByteCode::print()
+void ByteCode::printInstruction(ByteCodeInstruction* ip)
 {
     static const wchar_t* bcNum = L"%08d ";
+    int                   i     = (int) (ip - out);
 
+    // Instruction rank
+    g_Log.setColor(LogColor::Cyan);
+    wprintf(bcNum, i);
+
+    // Instruction
+    if (ip->flags & BCI_SAFETY)
+        g_Log.setColor(LogColor::DarkGreen);
+    else
+        g_Log.setColor(LogColor::White);
+    int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
+    while (len++ < ALIGN_RIGHT_OPCODE)
+        g_Log.print(" ");
+    g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
+    g_Log.print(" ");
+
+    // Parameters
+    g_Log.setColor(LogColor::Gray);
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_A)
+        g_Log.print(format("A [%u] ", ip->a.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_B)
+        g_Log.print(format("B [%u] ", ip->b.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_C)
+        g_Log.print(format("C [%u] ", ip->c.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_D)
+        g_Log.print(format("D [%u] ", ip->d.u32));
+
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
+        g_Log.print(format("A (%u) ", ip->a.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
+        g_Log.print(format("B (%u) ", ip->b.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
+        g_Log.print(format("C (%u) ", ip->c.u32));
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
+        g_Log.print(format("D (%u) ", ip->d.u32));
+
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_A || (ip->flags & BCI_IMM_A))
+        g_Log.print(format("A {0x%X} ", ip->a.u32));
+    else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_A || (ip->flags & BCI_IMM_A))
+        g_Log.print(format("A {0x%llx} ", ip->a.u32));
+
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_B || (ip->flags & BCI_IMM_B))
+        g_Log.print(format("B {0x%x} ", ip->b.u32));
+    else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_B || (ip->flags & BCI_IMM_B))
+        g_Log.print(format("B {0x%llx} ", ip->b.u32));
+
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_C || (ip->flags & BCI_IMM_C))
+        g_Log.print(format("C {0x%x} ", ip->c.u32));
+    else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_C || (ip->flags & BCI_IMM_C))
+        g_Log.print(format("C {0x%llx} ", ip->c.u32));
+
+    if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_D || (ip->flags & BCI_IMM_D))
+        g_Log.print(format("D {0x%x} ", ip->d.u32));
+    else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
+        g_Log.print(format("D {0x%llx} ", ip->d.u32));
+
+    if (ip->flags & BCI_IMM_A)
+        g_Log.print("IMMA ");
+    if (ip->flags & BCI_IMM_B)
+        g_Log.print("IMMB ");
+    if (ip->flags & BCI_IMM_C)
+        g_Log.print("IMMC ");
+    if (ip->flags & BCI_IMM_D)
+        g_Log.print("IMMD ");
+
+    switch (ip->op)
+    {
+    case ByteCodeOp::IntrinsicAssert:
+        if (ip->d.pointer)
+            g_Log.print((const char*) ip->d.pointer);
+        break;
+
+    case ByteCodeOp::Jump:
+    case ByteCodeOp::JumpIfZero32:
+    case ByteCodeOp::JumpIfZero64:
+    case ByteCodeOp::JumpIfNotZero32:
+    case ByteCodeOp::JumpIfNotZero64:
+    case ByteCodeOp::JumpIfFalse:
+    case ByteCodeOp::JumpIfTrue:
+        g_Log.setColor(LogColor::Cyan);
+        wprintf(bcNum, ip->b.s32 + i + 1);
+        break;
+
+    case ByteCodeOp::MakeLambdaForeign:
+    {
+        auto func = (AstFuncDecl*) ip->b.pointer;
+        SWAG_ASSERT(func);
+        g_Log.print(func->sourceFile->path);
+        g_Log.print(" ");
+        g_Log.print(func->name);
+        break;
+    }
+
+    case ByteCodeOp::MakeLambda:
+    {
+        auto bc = (ByteCode*) ip->b.pointer;
+        SWAG_ASSERT(bc);
+        g_Log.print(bc->sourceFile->path);
+        g_Log.print(" ");
+        g_Log.print(bc->node->name);
+        break;
+    }
+
+    case ByteCodeOp::ForeignCall:
+    {
+        auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        g_Log.print(funcNode->name);
+        break;
+    }
+
+    case ByteCodeOp::LocalCall:
+    {
+        auto bc = (ByteCode*) ip->a.pointer;
+        SWAG_ASSERT(bc);
+        g_Log.print(bc->node ? bc->node->name : bc->name);
+        if (bc->node && bc->node->typeInfo)
+            g_Log.print(bc->node->typeInfo->name);
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS8x1:
+    case ByteCodeOp::IntrinsicS16x1:
+    case ByteCodeOp::IntrinsicS32x1:
+    case ByteCodeOp::IntrinsicS64x1:
+    case ByteCodeOp::IntrinsicF32x1:
+    case ByteCodeOp::IntrinsicF64x1:
+        g_Log.print(g_TokenNames[ip->d.u32]);
+        break;
+
+    case ByteCodeOp::IntrinsicF32x2:
+    case ByteCodeOp::IntrinsicF64x2:
+        g_Log.print(g_TokenNames[ip->d.u32]);
+        break;
+    }
+
+    g_Log.eol();
+}
+
+void ByteCode::print()
+{
     g_Log.lock();
 
     g_Log.setColor(LogColor::Magenta);
@@ -119,10 +259,9 @@ void ByteCode::print()
     g_Log.eol();
 
     uint32_t lastLine = UINT32_MAX;
+    auto     ip       = out;
     for (int i = 0; i < (int) numInstructions; i++)
     {
-        auto ip = out + i;
-
         // Print source code
         auto location = ip->getLocation(this);
         if (location && location->line != lastLine && ip->op != ByteCodeOp::End)
@@ -137,141 +276,7 @@ void ByteCode::print()
             g_Log.print("\n");
         }
 
-        // Instruction rank
-        g_Log.setColor(LogColor::Cyan);
-        wprintf(bcNum, i);
-
-        // Instruction
-        if (ip->flags & BCI_SAFETY)
-            g_Log.setColor(LogColor::DarkGreen);
-        else
-            g_Log.setColor(LogColor::White);
-        int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
-        while (len++ < ALIGN_RIGHT_OPCODE)
-            g_Log.print(" ");
-        g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
-        g_Log.print(" ");
-
-        // Parameters
-        g_Log.setColor(LogColor::Gray);
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_A)
-            g_Log.print(format("A [%u] ", ip->a.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_B)
-            g_Log.print(format("B [%u] ", ip->b.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_C)
-            g_Log.print(format("C [%u] ", ip->c.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_WRITE_D)
-            g_Log.print(format("D [%u] ", ip->d.u32));
-
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
-            g_Log.print(format("A (%u) ", ip->a.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
-            g_Log.print(format("B (%u) ", ip->b.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
-            g_Log.print(format("C (%u) ", ip->c.u32));
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
-            g_Log.print(format("D (%u) ", ip->d.u32));
-
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_A || (ip->flags & BCI_IMM_A))
-            g_Log.print(format("A {0x%X} ", ip->a.u32));
-        else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_A || (ip->flags & BCI_IMM_A))
-            g_Log.print(format("A {0x%llx} ", ip->a.u32));
-
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_B || (ip->flags & BCI_IMM_B))
-            g_Log.print(format("B {0x%x} ", ip->b.u32));
-        else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_B || (ip->flags & BCI_IMM_B))
-            g_Log.print(format("B {0x%llx} ", ip->b.u32));
-
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_C || (ip->flags & BCI_IMM_C))
-            g_Log.print(format("C {0x%x} ", ip->c.u32));
-        else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_C || (ip->flags & BCI_IMM_C))
-            g_Log.print(format("C {0x%llx} ", ip->c.u32));
-
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL32_D || (ip->flags & BCI_IMM_D))
-            g_Log.print(format("D {0x%x} ", ip->d.u32));
-        else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
-            g_Log.print(format("D {0x%llx} ", ip->d.u32));
-
-        if (ip->flags & BCI_IMM_A)
-            g_Log.print("IMMA ");
-        if (ip->flags & BCI_IMM_B)
-            g_Log.print("IMMB ");
-        if (ip->flags & BCI_IMM_C)
-            g_Log.print("IMMC ");
-        if (ip->flags & BCI_IMM_D)
-            g_Log.print("IMMD ");
-
-        switch (ip->op)
-        {
-        case ByteCodeOp::IntrinsicAssert:
-            if (ip->d.pointer)
-                g_Log.print((const char*) ip->d.pointer);
-            break;
-
-        case ByteCodeOp::Jump:
-        case ByteCodeOp::JumpIfZero32:
-        case ByteCodeOp::JumpIfZero64:
-        case ByteCodeOp::JumpIfNotZero32:
-        case ByteCodeOp::JumpIfNotZero64:
-        case ByteCodeOp::JumpIfFalse:
-        case ByteCodeOp::JumpIfTrue:
-            g_Log.setColor(LogColor::Cyan);
-            wprintf(bcNum, ip->b.s32 + i + 1);
-            break;
-
-        case ByteCodeOp::MakeLambdaForeign:
-        {
-            auto func = (AstFuncDecl*) ip->b.pointer;
-            SWAG_ASSERT(func);
-            g_Log.print(func->sourceFile->path);
-            g_Log.print(" ");
-            g_Log.print(func->name);
-            break;
-        }
-
-        case ByteCodeOp::MakeLambda:
-        {
-            auto bc = (ByteCode*) ip->b.pointer;
-            SWAG_ASSERT(bc);
-            g_Log.print(bc->sourceFile->path);
-            g_Log.print(" ");
-            g_Log.print(bc->node->name);
-            break;
-        }
-
-        case ByteCodeOp::ForeignCall:
-        {
-            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            g_Log.print(funcNode->name);
-            break;
-        }
-
-        case ByteCodeOp::LocalCall:
-        {
-            auto bc = (ByteCode*) ip->a.pointer;
-            SWAG_ASSERT(bc);
-            g_Log.print(bc->node ? bc->node->name : bc->name);
-            if (bc->node && bc->node->typeInfo)
-                g_Log.print(bc->node->typeInfo->name);
-            break;
-        }
-
-        case ByteCodeOp::IntrinsicS8x1:
-        case ByteCodeOp::IntrinsicS16x1:
-        case ByteCodeOp::IntrinsicS32x1:
-        case ByteCodeOp::IntrinsicS64x1:
-        case ByteCodeOp::IntrinsicF32x1:
-        case ByteCodeOp::IntrinsicF64x1:
-            g_Log.print(g_TokenNames[ip->d.u32]);
-            break;
-
-        case ByteCodeOp::IntrinsicF32x2:
-        case ByteCodeOp::IntrinsicF64x2:
-            g_Log.print(g_TokenNames[ip->d.u32]);
-            break;
-        }
-
-        g_Log.eol();
+        printInstruction(ip++);
     }
 
     g_Log.setDefaultColor();
