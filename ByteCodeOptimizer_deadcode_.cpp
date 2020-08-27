@@ -5,21 +5,21 @@
 // We parse all the branches to see what can be reached for an execution flow
 void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
 {
-    context->toDo.reserve(context->bc->numInstructions);
-    context->toDo.clear();
+    context->tmpBufInst.reserve(context->bc->numInstructions);
+    context->tmpBufInst.clear();
 
 #define ADD_TODO(__ip)                   \
     if (!((__ip)->flags & BCI_OPT_FLAG)) \
     {                                    \
         (__ip)->flags |= BCI_OPT_FLAG;   \
-        context->toDo.push_back(__ip);            \
+        context->tmpBufInst.push_back(__ip);            \
     }
 
     ADD_TODO(context->bc->out);
-    while (!context->toDo.empty())
+    while (!context->tmpBufInst.empty())
     {
-        auto ip = context->toDo.back();
-        context->toDo.pop_back();
+        auto ip = context->tmpBufInst.back();
+        context->tmpBufInst.pop_back();
 
         if (ip->op == ByteCodeOp::Jump)
         {

@@ -480,12 +480,15 @@ JobResult ByteCodeGenJob::execute()
         if (context.bc)
             emitInstruction(&context, ByteCodeOp::End);
 
-        // Optims
-        ByteCodeOptimizer::optimize(&context);
+        if (originalNode->kind == AstNodeKind::FuncDecl)
+        {
+            // Optims
+            ByteCodeOptimizer::optimize(&context);
 
-        // Print resulting bytecode
-        if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-            context.bc->print();
+            // Print resulting bytecode
+            if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+                context.bc->print();
+        }
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {

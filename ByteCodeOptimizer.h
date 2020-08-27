@@ -10,7 +10,8 @@ struct ByteCodeOptContext
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
-    VectorNative<ByteCodeInstruction*> toDo;
+    VectorNative<ByteCodeInstruction*> tmpBufInst;
+    VectorNative<uint64_t>             tmpBufU64;
     bool                               allPassesHaveDoneSomething = false;
     bool                               passHasDoneSomething       = false;
 };
