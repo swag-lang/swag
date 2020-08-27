@@ -22,7 +22,7 @@ bool ByteCodeGenJob::IntrinsicMkInterface(ByteCodeGenContext* context)
     reserveLinearRegisterRC(context, node->resultRegisterRC, 3);
 
     // Result will be a pointer to two contiguous registers
-    emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, node->resultRegisterRC[0], node->resultRegisterRC[1], node->resultRegisterRC[2]);
 
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];

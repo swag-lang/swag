@@ -814,6 +814,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::CopyRBAddrToRA:
+        case ByteCodeOp::CopyRBAddrToRA2:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &r[", ip->b.u32, "];");
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));

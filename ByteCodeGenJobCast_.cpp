@@ -20,9 +20,16 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     // Make a pointer to the value
     if (fromTypeInfo->kind == TypeInfoKind::Native)
     {
-        // Be sure registers are contiguous, as we address the first of them
-        SWAG_ASSERT(exprNode->resultRegisterRC.size() != 2 || exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-        emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
+        if (exprNode->resultRegisterRC.size() == 2)
+        {
+            // Be sure registers are contiguous, as we address the first of them
+            SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
+        }
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -619,7 +626,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
     SWAG_ASSERT(itf->offset != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0[1])->b.u64 = itf->offset;
-    emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, exprNode->resultRegisterRC, r0[0]);
+    emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, exprNode->resultRegisterRC, r0[0], r0[1]);
 
     node->resultRegisterRC = exprNode->resultRegisterRC;
 

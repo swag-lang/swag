@@ -73,8 +73,7 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 
     // If a register is written to, but never read in the whole function, then we
     // can remove all instructions that write to that register
-
-    /*bool secondPass = false;
+    bool secondPass = false;
     for (uint32_t i = 0; i < maxReg; i++)
     {
         if (regsRW[i] == WRITE)
@@ -99,14 +98,9 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                     SOLO_W(ip->c.u32, OPFLAG_WRITE_C) &&
                     SOLO_W(ip->d.u32, OPFLAG_WRITE_D))
                 {
-                    g_Log.lock();
-                    printf(context->bc->callName().c_str());
-                    printf("\n");
-                    context->bc->printInstruction(ip);
-                    g_Log.unlock();
                     setNop(context, ip);
                 }
             }
         }
-    }*/
+    }
 }

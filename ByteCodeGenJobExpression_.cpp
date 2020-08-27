@@ -198,7 +198,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             reserveLinearRegisterRC(context, regList, 3);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[2]);
-            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, regList[0], regList[1]);
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, regList[0], regList[1], regList[2]);
             node->castedTypeInfo = nullptr;
             return true;
         }

@@ -481,6 +481,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::CopyRBAddrToRA:
+    case ByteCodeOp::CopyRBAddrToRA2:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) (registersRC + ip->b.u32);
         break;
