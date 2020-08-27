@@ -425,7 +425,7 @@
     <ClCompile Include="ProfileWin32.cpp">
       <Filter>Win32</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenJobOptimize_.cpp">
+    <ClCompile Include="ByteCodeOptimizer.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
@@ -718,6 +718,9 @@
     </ClInclude>
     <ClInclude Include="SourceLocation.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeOptimizer.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

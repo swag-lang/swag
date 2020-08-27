@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCodeOptimizer.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
@@ -10,10 +11,10 @@
 #include "Context.h"
 #include "DiagnosticInfos.h"
 
-static bool optimizeJumps(ByteCode* bc)
+bool ByteCodeOptimizer::optimizeJumps(ByteCodeOptContext* context)
 {
     bool hasDoneSomething = false;
-    auto ip               = bc->out;
+    auto ip               = context->bc->out;
     while (ip->op != ByteCodeOp::End)
     {
         if (ip->op == ByteCodeOp::Jump ||
@@ -65,7 +66,7 @@ static bool optimizeJumps(ByteCode* bc)
     return hasDoneSomething;
 }
 
-void ByteCodeGenJob::optimize(ByteCodeGenContext* context)
+void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 {
     if (!context->bc)
         return;
@@ -75,5 +76,8 @@ void ByteCodeGenJob::optimize(ByteCodeGenContext* context)
     //if (module->mustOptimizeBC(job->originalNode) < 2)
     //    return;
 
-    while (optimizeJumps(context->bc)) {}
+    ByteCodeOptContext optContext;
+    optContext.bc = context->bc;
+
+    while (optimizeJumps(&optContext)) {}
 }

@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "Context.h"
 #include "DiagnosticInfos.h"
+#include "ByteCodeOptimizer.h"
 
 thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -480,7 +481,7 @@ JobResult ByteCodeGenJob::execute()
             emitInstruction(&context, ByteCodeOp::End);
 
         // Optims
-        optimize(&context);
+        ByteCodeOptimizer::optimize(&context);
 
         // Print resulting bytecode
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)

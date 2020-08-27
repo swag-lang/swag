@@ -176,6 +176,7 @@
     <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
+    <ClInclude Include="ByteCodeOptimizer.h" />
     <ClInclude Include="CompilerItf.h" />
     <ClInclude Include="LLVMSetup.h" />
     <ClInclude Include="ModuleManager.h" />
@@ -291,7 +292,7 @@
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenJobExpression_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
-    <ClCompile Include="ByteCodeGenJobOptimize_.cpp" />
+    <ClCompile Include="ByteCodeOptimizer.cpp" />
     <ClCompile Include="ByteCodeGenJobProperty_.cpp" />
     <ClCompile Include="ByteCodeGenJobRef_.cpp" />
     <ClCompile Include="ByteCodeGenJobStruct_.cpp" />
