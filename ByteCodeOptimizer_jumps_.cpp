@@ -8,7 +8,7 @@ bool optimizeJumps(ByteCodeOptContext* context)
     {
         auto ip = context->jumps[idx];
 
-        // Jump to another jump
+        // Jump to an unconditional jump
         auto destIp = ip + ip->b.s32 + 1;
         while (destIp->op == ByteCodeOp::Jump)
         {
