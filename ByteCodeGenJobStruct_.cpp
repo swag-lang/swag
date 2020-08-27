@@ -312,7 +312,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         SWAG_ASSERT(inst->a.pointer);
     }
 
-    emitInstruction(context, ByteCodeOp::IncSP, 8);
+    emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 }
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)

@@ -1,10 +1,10 @@
-#[swag.printbc]
+//#[swag.printbc]
 func toto(x: ...)
 {
 
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     toto(0)

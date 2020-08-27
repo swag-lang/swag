@@ -23,7 +23,7 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
             auto destBC = (ByteCode*) ip->a.pointer;
             if (destBC->isEmpty.load() == true)
             {
-                //setNop(context, ip);
+                setNop(context, ip);
             }
         }
     }

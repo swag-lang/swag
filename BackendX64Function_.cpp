@@ -2014,14 +2014,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::IncSPPostCall:
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, variadicStackSize);
+            variadicStackSize = 0;
+            pushRAParams.clear();
+            break;
+
         case ByteCodeOp::LocalCall:
         {
             auto              funcBC        = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC    = (TypeInfoFuncAttr*) ip->b.pointer;
             uint32_t          sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             emitCall(pp, funcBC->callName());
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
-            variadicStackSize = 0;
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
             pushRAParams.clear();
             break;
         }

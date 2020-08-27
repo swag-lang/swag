@@ -440,6 +440,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::IncSP:
+    case ByteCodeOp::IncSPPostCall:
     {
         context->incSP(ip->a.u32);
         break;

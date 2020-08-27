@@ -583,7 +583,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
             auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
             inst->a.pointer = (uint8_t*) typeStruct->opDrop;
             inst->b.pointer = (uint8_t*) typeStruct->opDrop->typeInfoFunc;
-            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 
             if (numToInit != 1)
             {

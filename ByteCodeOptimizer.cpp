@@ -93,8 +93,8 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 
     vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(optimizePassJumps);
-    passes.push_back(optimizePassDeadCode);
     passes.push_back(optimizePassEmptyFct);
+    passes.push_back(optimizePassDeadCode);
 
     // Get all jumps
     setJumps(&optContext);

@@ -770,7 +770,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Restore stack as it was before the call, before the parameters
     if (precallStack)
     {
-        emitInstruction(context, ByteCodeOp::IncSP, precallStack);
+        emitInstruction(context, ByteCodeOp::IncSPPostCall, precallStack);
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to restore it

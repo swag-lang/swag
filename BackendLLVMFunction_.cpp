@@ -468,6 +468,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::Nop:
         case ByteCodeOp::DecSP:
         case ByteCodeOp::IncSP:
+        case ByteCodeOp::IncSPPostCall:
         case ByteCodeOp::CopySPtoBP:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
