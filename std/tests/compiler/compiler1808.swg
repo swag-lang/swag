@@ -1,4 +1,4 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     a := @[1's64, 2, 4]

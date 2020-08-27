@@ -3,6 +3,8 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 
+// Mark all functions that does nothing
+// Elimite all local calls to such functions
 void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
 {
     if (context->bc->numInstructions == 2)

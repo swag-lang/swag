@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
 
+// Eliminate unnecessary jumps
 void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
     for (int idx = 0; idx < context->jumps.size(); idx++)

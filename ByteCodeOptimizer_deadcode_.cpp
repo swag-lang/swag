@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
 
+// Eliminate all the instructions that can never be called
+// We parse all the branches to see what can be reached for an execution flow
 void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
 {
     context->toDo.reserve(context->bc->numInstructions);

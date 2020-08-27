@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 func toto(x: ...)
 {
     var xx: [1] s32 = ?
