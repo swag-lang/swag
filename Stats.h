@@ -8,11 +8,11 @@ struct Stats
     atomic<int>    testFunctions        = 0;
     atomic<int>    runFunctions         = 0;
     atomic<int>    numInstructions      = 0;
+    atomic<int>    totalOptimsBC        = 0;
     atomic<int>    maxOpenFiles         = 0;
     atomic<int>    numOpenFiles         = 0;
     atomic<int>    allocatorMemory      = 0;
     atomic<int>    totalConcreteTypes   = 0;
-    atomic<int>    totalOptimsBC        = 0;
     int            numWorkers           = 0;
     atomic<double> readFiles            = 0;
     atomic<double> totalTime            = 0;

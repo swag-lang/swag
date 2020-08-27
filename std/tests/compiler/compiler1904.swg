@@ -7,6 +7,6 @@ func toto(x: ...)
 #[swag.printbc]
 #test
 {
-    a := 0
+    a := 55
     a = a + 1
 }

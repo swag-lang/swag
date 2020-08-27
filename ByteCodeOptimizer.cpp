@@ -74,11 +74,11 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 
     auto job    = context->job;
     auto module = job->originalNode->sourceFile->module;
-    //if (module->mustOptimizeBC(job->originalNode) < 2)
-    //return;
+    if (module->mustOptimizeBC(job->originalNode) < 2)
+        return;
 
-    //if (job->originalNode->sourceFile->name != "compiler995.swg")
-    //    return;
+    //if (job->originalNode->sourceFile->name != "compiler1904.swg")
+    //   return;
 
     ByteCodeOptContext optContext;
     optContext.bc = context->bc;
@@ -88,6 +88,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     passes.push_back(optimizePassEmptyFct);
     passes.push_back(optimizePassDeadStore);
     passes.push_back(optimizePassDeadCode);
+    passes.push_back(optimizePassImmediate);
 
     // Get all jumps
     setJumps(&optContext);

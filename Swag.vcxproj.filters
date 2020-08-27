@@ -440,6 +440,9 @@
     <ClCompile Include="ByteCodeOptimizer_deadstore_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeOptimizer_imm_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

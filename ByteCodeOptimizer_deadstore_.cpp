@@ -27,25 +27,26 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             memset(regs.buffer, 0, maxReg * sizeof(void*));
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
-        if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
+
+        if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A))
         {
             regs[ip->a.u32] = nullptr;
             regsRW[ip->a.u32] |= READ;
         }
 
-        if (flags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
+        if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B))
         {
             regs[ip->b.u32] = nullptr;
             regsRW[ip->b.u32] |= READ;
         }
 
-        if (flags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
+        if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C))
         {
             regs[ip->c.u32] = nullptr;
             regsRW[ip->c.u32] |= READ;
         }
 
-        if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
+        if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D))
         {
             regs[ip->d.u32] = nullptr;
             regsRW[ip->d.u32] |= READ;

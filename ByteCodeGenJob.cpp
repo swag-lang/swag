@@ -216,9 +216,6 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     else
         ins.location = context->forceLocation ? context->forceLocation : &node->token.startLocation;
 
-    if (g_CommandLine.stats)
-        g_Stats.numInstructions++;
-
     switch (op)
     {
     case ByteCodeOp::Jump:
@@ -478,16 +475,21 @@ JobResult ByteCodeGenJob::execute()
         }
 
         if (context.bc)
+        {
             emitInstruction(&context, ByteCodeOp::End);
 
-        if (originalNode->kind == AstNodeKind::FuncDecl)
-        {
-            // Optims
-            ByteCodeOptimizer::optimize(&context);
+            if (originalNode->kind == AstNodeKind::FuncDecl)
+            {
+                if (g_CommandLine.stats)
+                    g_Stats.numInstructions += context.bc->numInstructions;
 
-            // Print resulting bytecode
-            if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-                context.bc->print();
+                // Optims
+                ByteCodeOptimizer::optimize(&context);
+
+                // Print resulting bytecode
+                if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+                    context.bc->print();
+            }
         }
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
