@@ -18,6 +18,10 @@ struct ByteCodeOptimizer
 {
     inline static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
     {
+        if (ip->op == ByteCodeOp::Nop)
+            return;
+        SWAG_ASSERT(ip->op != ByteCodeOp::End);
+        context->passHasDoneSomething = true;
         ip->op = ByteCodeOp::Nop;
         context->nops.push_back(ip);
     }

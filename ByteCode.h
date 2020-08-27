@@ -5,6 +5,7 @@
 #include "Register.h"
 #include "Assert.h"
 #include "VectorNative.h"
+#include "RaceCondition.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -79,4 +80,6 @@ struct ByteCode
 
     bool compilerGenerated = false;
     bool addedToList       = false;
+
+    SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

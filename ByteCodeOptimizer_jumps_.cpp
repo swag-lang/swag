@@ -53,7 +53,6 @@ bool optimizeJumps(ByteCodeOptContext* context)
 
 void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
-    setJumps(context);
     while (optimizeJumps(context)) {};
     removeNops(context);
 }

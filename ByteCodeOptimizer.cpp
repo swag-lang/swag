@@ -32,11 +32,11 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
                 for (auto nop : context->nops)
                 {
                     auto idxNop = (int) (nop - context->bc->out);
-                    if (srcJump < dstJump && idxNop > srcJump && idxNop <= dstJump)
+                    if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                     {
                         ip->b.s32--;
                     }
-                    else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
+                    else if (srcJump > dstJump && idxNop > dstJump && idxNop < srcJump)
                     {
                         ip->b.s32++;
                     }
@@ -51,6 +51,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
     context->bc->numInstructions -= (int) context->nops.size();
     context->nops.clear();
+    setJumps(context);
 }
 
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
@@ -79,8 +80,8 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     auto job    = context->job;
     auto module = job->originalNode->sourceFile->module;
     //if (module->mustOptimizeBC(job->originalNode) < 2)
-    //   return;
-    if (job->originalNode->sourceFile->name == "compiler241.swg")
+    //return;
+    if (job->originalNode->sourceFile->name == "compiler1847.swg")
         job = job;
 
     ByteCodeOptContext optContext;
@@ -91,11 +92,19 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     passes.push_back(optimizePassDeadCode);
 
     // Get all jumps
-    optContext.allPassesHaveDoneSomething = false;
-    for (auto pass : passes)
+    setJumps(&optContext);
+
+    while (true)
     {
-        optContext.passHasDoneSomething = false;
-        pass(&optContext);
-        optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+        optContext.allPassesHaveDoneSomething = false;
+        for (auto pass : passes)
+        {
+            optContext.passHasDoneSomething = false;
+            pass(&optContext);
+            optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+        }
+
+        if (!optContext.allPassesHaveDoneSomething)
+            break;
     }
 }

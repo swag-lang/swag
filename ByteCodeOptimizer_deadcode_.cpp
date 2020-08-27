@@ -4,6 +4,7 @@
 void optimizeDeadCode(ByteCodeOptContext* context)
 {
     VectorNative<ByteCodeInstruction*> toDo;
+    toDo.reserve(context->bc->numInstructions);
 
 #define ADD_TODO(__ip)                   \
     if (!((__ip)->flags & BCI_OPT_FLAG)) \
@@ -32,7 +33,7 @@ void optimizeDeadCode(ByteCodeOptContext* context)
             ADD_TODO(ip + ip->b.s32 + 1);
             ADD_TODO(ip + 1);
         }
-        else if (ip->op != ByteCodeOp::Ret)
+        else if (ip->op != ByteCodeOp::Ret && ip->op != ByteCodeOp::End)
         {
             ADD_TODO(ip + 1);
         }
@@ -50,6 +51,5 @@ void optimizeDeadCode(ByteCodeOptContext* context)
 void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
 {
     optimizeDeadCode(context);
-    setJumps(context);
     removeNops(context);
 }
