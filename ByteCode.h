@@ -78,8 +78,9 @@ struct ByteCode
     int32_t  curRC                 = -1;
     uint32_t numJumps              = 0;
 
-    bool compilerGenerated = false;
-    bool addedToList       = false;
+    bool         compilerGenerated = false;
+    bool         addedToList       = false;
+    atomic<bool> isEmpty;
 
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

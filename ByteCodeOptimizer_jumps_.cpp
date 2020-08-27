@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
 
-bool optimizeJumps(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
-    bool hasDoneSomething = false;
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
         auto ip = context->jumps[idx];
@@ -14,14 +13,13 @@ bool optimizeJumps(ByteCodeOptContext* context)
         {
             ip->b.s32 += destIp->b.s32 + 1;
             destIp += destIp->b.s32 + 1;
-            hasDoneSomething = true;
+            context->passHasDoneSomething = true;
         }
 
         // Jump to the next instruction
         if (ip->b.s32 == 0)
         {
-            ByteCodeOptimizer::setNop(context, ip);
-            hasDoneSomething = true;
+            setNop(context, ip);
             context->jumps.erase_unordered(idx);
         }
 
@@ -30,19 +28,9 @@ bool optimizeJumps(ByteCodeOptContext* context)
             // Next instruction is a jump to the same target
             if (ip[1].op == ByteCodeOp::Jump && (ip->b.s32 - 1 == ip[1].b.s32))
             {
-                ByteCodeOptimizer::setNop(context, ip);
-                hasDoneSomething = true;
+                setNop(context, ip);
                 context->jumps.erase_unordered(idx);
             }
         }
     }
-
-    context->passHasDoneSomething |= hasDoneSomething;
-    return hasDoneSomething;
-}
-
-void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
-{
-    while (optimizeJumps(context)) {};
-    removeNops(context);
 }

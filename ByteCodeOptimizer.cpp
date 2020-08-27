@@ -12,7 +12,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     if (context->nops.empty())
         return;
 
-    context->passHasDoneSomething = true;
+    context->allPassesHaveDoneSomething = true;
 
     auto ip     = context->bc->out;
     auto ipDest = context->bc->out;
@@ -94,6 +94,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(optimizePassJumps);
     passes.push_back(optimizePassDeadCode);
+    passes.push_back(optimizePassEmptyFct);
 
     // Get all jumps
     setJumps(&optContext);
@@ -108,6 +109,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
             optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
         }
 
+        removeNops(&optContext);
         if (!optContext.allPassesHaveDoneSomething)
             break;
     }

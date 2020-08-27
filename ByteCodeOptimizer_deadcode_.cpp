@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
 
-void optimizeDeadCode(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
 {
     context->toDo.reserve(context->bc->numInstructions);
     context->toDo.clear();
@@ -42,14 +42,8 @@ void optimizeDeadCode(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!(ip->flags & BCI_OPT_FLAG))
-            ByteCodeOptimizer::setNop(context, ip);
+            setNop(context, ip);
         else
             ip->flags &= ~BCI_OPT_FLAG;
     }
-}
-
-void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
-{
-    optimizeDeadCode(context);
-    removeNops(context);
 }
