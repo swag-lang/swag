@@ -25,16 +25,6 @@ bool optimizeJumps(ByteCodeOptContext* context)
             context->jumps.erase_unordered(idx);
         }
 
-        // Next instruction is a nop, move the jump forward if the jump is positive
-        else if (ip[1].op == ByteCodeOp::Nop && ip->b.s32 > 0)
-        {
-            std::swap(ip[0], ip[1]);
-            ip[1].b.s32--;
-
-            context->jumps[idx] = ip + 1;
-            hasDoneSomething    = true;
-        }
-
         if (ip->op == ByteCodeOp::Jump)
         {
             // Next instruction is a jump to the same target
