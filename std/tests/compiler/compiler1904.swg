@@ -1,10 +1,10 @@
-//#[swag.printbc]
+#[swag.printbc]
 func toto(x: ...)
 {
-
+    var xx: [1] s32 = ?
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     loop 10

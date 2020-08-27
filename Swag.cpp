@@ -30,7 +30,8 @@ void printStats()
     g_Log.messageHeaderDot("source lines", format("%d", g_Stats.numLines.load()));
     g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.load())));
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
-    g_Log.messageHeaderDot("optim bc", format("%d", g_Stats.totalOptimsBC.load()));
+    float pc = (g_Stats.totalOptimsBC.load() * 100.0f) / (g_Stats.numInstructions.load());
+    g_Log.messageHeaderDot("optim bc", format("%d %.1f%%", g_Stats.totalOptimsBC.load(), pc));
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
     if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
