@@ -23,6 +23,7 @@ struct ByteCodeOptimizer
     }
 
     static void optimizePassJumps(ByteCodeOptContext* context);
+    static void optimizePassDeadCode(ByteCodeOptContext* context);
 
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);

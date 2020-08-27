@@ -8,7 +8,10 @@
 
 void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
-    bool hasDoneSomething = false;
+    if (context->nops.empty())
+        return;
+
+    context->passHasDoneSomething = true;
 
     // Adapt all jumps
     for (int idx = 0; idx < context->jumps.size(); idx++)
@@ -23,20 +26,15 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             if (srcJump < dstJump && idxNop > srcJump && idxNop <= dstJump)
             {
                 ip->b.s32--;
-                hasDoneSomething = true;
             }
             else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
             {
                 ip->b.s32++;
-                hasDoneSomething = true;
             }
         }
     }
 
-    if (!hasDoneSomething)
-        return;
-    context->passHasDoneSomething = true;
-
+    // Remove nops
     auto ip     = context->bc->out;
     auto ipDest = context->bc->out;
     for (uint32_t i = 0; i < context->bc->numInstructions; i++)
@@ -78,7 +76,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     auto module = job->originalNode->sourceFile->module;
     //if (module->mustOptimizeBC(job->originalNode) < 2)
     //   return;
-    if (job->originalNode->sourceFile->name == "compiler1904.swg")
+    if (job->originalNode->sourceFile->name == "compiler241.swg")
         job = job;
 
     ByteCodeOptContext optContext;
@@ -86,6 +84,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 
     vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(optimizePassJumps);
+    passes.push_back(optimizePassDeadCode);
 
     // Get all jumps
     optContext.allPassesHaveDoneSomething = false;

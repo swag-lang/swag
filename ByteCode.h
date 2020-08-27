@@ -21,6 +21,7 @@ static const uint16_t BCI_IMM_A          = 0x0010;
 static const uint16_t BCI_IMM_B          = 0x0020;
 static const uint16_t BCI_IMM_C          = 0x0040;
 static const uint16_t BCI_IMM_D          = 0x0080;
+static const uint16_t BCI_OPT_FLAG       = 0x0100;
 
 struct ByteCodeInstruction
 {

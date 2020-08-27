@@ -1,5 +1,3 @@
-;
-;
 using swag;
 
 //#[printbc]
@@ -15,7 +13,7 @@ func main ()
 	@assert(a == 5);
 }
 
-#run 
+#run
 {
 	main()
 }
