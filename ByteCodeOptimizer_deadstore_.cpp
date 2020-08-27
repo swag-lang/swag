@@ -25,19 +25,12 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
             regs[ip->d.u32] = nullptr;
 
+        // Optimize only A. This is on purpose because this is what will make relevant changes.
+        // Not that optimizing other registers can create some problems (for example C, with MkInterface);
         if (flags & OPFLAG_WRITE_A)
         {
             if (regs[ip->a.u32])
-            {
                 setNop(context, regs[ip->a.u32]);
-                /*g_Log.lock();
-                printf(context->bc->callName().c_str());
-                printf("\n");
-                context->bc->printInstruction(regs[ip->a.u32]);
-                context->bc->printInstruction(ip);
-                g_Log.unlock();*/
-            }
-
             if (!(flags & (OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
                 regs[ip->a.u32] = ip;
         }

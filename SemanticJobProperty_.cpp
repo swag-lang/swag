@@ -70,7 +70,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
 
-    node->byteCodeFct = ByteCodeGenJob::emitInterfaceOfProperty;
+    node->byteCodeFct = ByteCodeGenJob::IntrinsicMkInterface;
     return true;
 }
 

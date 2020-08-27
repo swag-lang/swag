@@ -778,7 +778,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateCall(pp.fn_memcmp, {r1, r2, r3}), r0);
             break;
         }
-        case ByteCodeOp::IntrinsicInterfaceOf:
+        case ByteCodeOp::IntrinsicMkInterface:
         {
             //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));

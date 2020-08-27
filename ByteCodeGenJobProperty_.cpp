@@ -14,7 +14,7 @@ bool ByteCodeGenJob::emitSliceOfProperty(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitInterfaceOfProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::IntrinsicMkInterface(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
@@ -35,7 +35,7 @@ bool ByteCodeGenJob::emitInterfaceOfProperty(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC);
 
     // Get interface itable pointer in the second result register
-    emitInstruction(context, ByteCodeOp::IntrinsicInterfaceOf, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
+    emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
 
     freeRegisterRC(context, params->childs[0]);
     freeRegisterRC(context, params->childs[1]);

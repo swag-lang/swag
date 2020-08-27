@@ -1446,7 +1446,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             CONCAT_FIXED_STR(concat, "return;");
             break;
 
-        case ByteCodeOp::IntrinsicInterfaceOf:
+        case ByteCodeOp::IntrinsicMkInterface:
         {
             concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
