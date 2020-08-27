@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "ByteCodeOp.h"
 #include "Module.h"
+#include "Stats.h"
 
 void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
@@ -17,36 +18,39 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     auto ipDest = context->bc->out;
     for (uint32_t i = 0; i < context->bc->numInstructions; i++)
     {
-        if (ip->op != ByteCodeOp::Nop)
+        if (ip->op == ByteCodeOp::Nop)
         {
-            if (ip->op == ByteCodeOp::Jump ||
-                ip->op == ByteCodeOp::JumpIfTrue ||
-                ip->op == ByteCodeOp::JumpIfFalse ||
-                ip->op == ByteCodeOp::JumpIfZero32 ||
-                ip->op == ByteCodeOp::JumpIfZero64 ||
-                ip->op == ByteCodeOp::JumpIfNotZero32 ||
-                ip->op == ByteCodeOp::JumpIfNotZero64)
-            {
-                auto srcJump = (int) (ip - context->bc->out);
-                auto dstJump = srcJump + ip->b.s32 + 1;
-                for (auto nop : context->nops)
-                {
-                    auto idxNop = (int) (nop - context->bc->out);
-                    if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
-                    {
-                        ip->b.s32--;
-                    }
-                    else if (srcJump > dstJump && idxNop > dstJump && idxNop < srcJump)
-                    {
-                        ip->b.s32++;
-                    }
-                }
-            }
-
-            *ipDest++ = *ip;
+            if (g_CommandLine.stats)
+                g_Stats.totalOptimsBC = g_Stats.totalOptimsBC + 1;
+            ip++;
+            continue;
         }
 
-        ip++;
+        if (ip->op == ByteCodeOp::Jump ||
+            ip->op == ByteCodeOp::JumpIfTrue ||
+            ip->op == ByteCodeOp::JumpIfFalse ||
+            ip->op == ByteCodeOp::JumpIfZero32 ||
+            ip->op == ByteCodeOp::JumpIfZero64 ||
+            ip->op == ByteCodeOp::JumpIfNotZero32 ||
+            ip->op == ByteCodeOp::JumpIfNotZero64)
+        {
+            auto srcJump = (int) (ip - context->bc->out);
+            auto dstJump = srcJump + ip->b.s32 + 1;
+            for (auto nop : context->nops)
+            {
+                auto idxNop = (int) (nop - context->bc->out);
+                if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
+                {
+                    ip->b.s32--;
+                }
+                else if (srcJump > dstJump && idxNop > dstJump && idxNop < srcJump)
+                {
+                    ip->b.s32++;
+                }
+            }
+        }
+
+        *ipDest++ = *ip++;
     }
 
     context->bc->numInstructions -= (int) context->nops.size();

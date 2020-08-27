@@ -10,6 +10,7 @@ struct ByteCodeOptContext
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
+    VectorNative<ByteCodeInstruction*> toDo;
     bool                               allPassesHaveDoneSomething = false;
     bool                               passHasDoneSomething       = false;
 };
@@ -22,7 +23,7 @@ struct ByteCodeOptimizer
             return;
         SWAG_ASSERT(ip->op != ByteCodeOp::End);
         context->passHasDoneSomething = true;
-        ip->op = ByteCodeOp::Nop;
+        ip->op                        = ByteCodeOp::Nop;
         context->nops.push_back(ip);
     }
 

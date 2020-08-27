@@ -3,21 +3,21 @@
 
 void optimizeDeadCode(ByteCodeOptContext* context)
 {
-    VectorNative<ByteCodeInstruction*> toDo;
-    toDo.reserve(context->bc->numInstructions);
+    context->toDo.reserve(context->bc->numInstructions);
+    context->toDo.clear();
 
 #define ADD_TODO(__ip)                   \
     if (!((__ip)->flags & BCI_OPT_FLAG)) \
     {                                    \
         (__ip)->flags |= BCI_OPT_FLAG;   \
-        toDo.push_back(__ip);            \
+        context->toDo.push_back(__ip);            \
     }
 
     ADD_TODO(context->bc->out);
-    while (!toDo.empty())
+    while (!context->toDo.empty())
     {
-        auto ip = toDo.back();
-        toDo.pop_back();
+        auto ip = context->toDo.back();
+        context->toDo.pop_back();
 
         if (ip->op == ByteCodeOp::Jump)
         {
