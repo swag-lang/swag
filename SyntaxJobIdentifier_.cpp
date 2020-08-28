@@ -77,6 +77,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
+    case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeInterface:
         SWAG_CHECK(doIntrinsicProp(identifierRef));

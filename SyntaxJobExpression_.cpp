@@ -99,7 +99,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->token.id == TokenId::IntrinsicMakeSlice)
+    else if (node->token.id == TokenId::IntrinsicMakeSlice || node->token.id == TokenId::IntrinsicMakeAny)
     {
         SWAG_CHECK(doExpression(node));
         SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -167,6 +167,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
+    case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeInterface:
     case TokenId::IntrinsicAlloc:

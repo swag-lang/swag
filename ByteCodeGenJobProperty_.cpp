@@ -5,7 +5,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
-bool ByteCodeGenJob::emitSliceOfProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
     auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
@@ -14,7 +14,16 @@ bool ByteCodeGenJob::emitSliceOfProperty(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::IntrinsicMkInterface(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
+{
+    auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+    transformResultToLinear2(context, node);
+    return true;
+}
+
+bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
