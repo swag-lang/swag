@@ -407,8 +407,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             for (int i = 0; i < maxParams; i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
+                int  idx      = nodeCall->index;
+                if (idx < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[idx])
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[idx]->typeInfo, nullptr, nodeCall));
             }
         }
 
