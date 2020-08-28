@@ -211,7 +211,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
-        SWAG_CHECK(checkIsConcrete(context, oneExpression));
+        SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
         SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
     }
 
