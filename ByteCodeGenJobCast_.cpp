@@ -9,9 +9,6 @@
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    if (exprNode->concreteTypeInfoStorage == UINT32_MAX)
-        return true;
-
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
 
@@ -28,6 +25,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         }
         else
         {
+            SWAG_ASSERT(exprNode->resultRegisterRC.size() == 1);
             emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
         }
     }

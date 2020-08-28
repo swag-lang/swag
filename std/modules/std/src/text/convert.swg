@@ -41,6 +41,7 @@ namespace std.text
         signed:         bool
     }
 
+    /// Interface to implement a custom conversion function
     public interface IConvert
     {
         convert: func(self, *ConcatBuffer)
@@ -74,37 +75,60 @@ namespace std.text
 
             switch type
             {
-                case @typeof(bool):
+                case bool:
                     convertBool(buf, cast(bool) value)
-                case @typeof(char):
+                case char:
                     convertChar(buf, cast(char) value)
-                case @typeof(s8):
+                case s8:
                     convertInt(buf, cast(s8) value)
-                case @typeof(s16):
+                case s16:
                     convertInt(buf, cast(s16) value)
-                case @typeof(s32):
+                case s32:
                     convertInt(buf, cast(s32) value)
-                case @typeof(s64):
+                case s64:
                     convertInt(buf, cast(s64) value)
-                case @typeof(u8):
+                case u8:
                     convertInt(buf, cast(u8) value)
-                case @typeof(u16):
+                case u16:
                     convertInt(buf, cast(u16) value)
-                case @typeof(u32):
+                case u32:
                     convertInt(buf, cast(u32) value)
-                case @typeof(u64):
+                case u64:
                     convertInt(buf, cast(u64) value)
-                case @typeof(f32):
+                case f32:
                     convertFloat(buf, cast(f32) value)
-                case @typeof(f64):
+                case f64:
                     convertFloat(buf, cast(f64) value)
-                case @typeof(string):
+                case string:
                     buf.addBytes(cast(string) value)
-                case @typeof(ConvertFormatInt):
+                case ConvertFormatInt:
                     convertInt(buf, cast(ConvertFormatInt) value)
-                case @typeof(ConvertFormatFloat):
+                case ConvertFormatFloat:
                     convertFloat(buf, cast(ConvertFormatFloat) value)
+                default:
+                    convertStruct(buf, value)
             }
+        }
+
+        /// Convert a structure content to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        func convertStruct(buf: *ConcatBuffer, value: any)
+        {
+            typeOf := @kindof(value)
+            debug.assert(typeOf.kind == swag.TypeInfoKind.Struct, "this is not a structure")
+
+            buf.addBytes("{")
+
+            ptr := @dataof(value)
+            type := cast(const *swag.TypeInfoStruct) typeOf
+            visit field: type.fields
+            {
+                if(@index != 0)
+                    buf.addBytes(",")
+                buf.addBytes(field.name)
+                buf.addBytes("=")
+            }
+
+            buf.addBytes("}")
         }
 
         /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]

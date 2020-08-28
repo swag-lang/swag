@@ -12,11 +12,11 @@ impl IConvert for TOTO
 {
     func convert(using self, buf: *ConcatBuffer)
     {
-        buf.addBytes("{ x = ");
+        buf.addBytes("! x = ");
         convertInt(buf, x)
         buf.addBytes(", y = ");
         convertInt(buf, y)
-        buf.addBytes(" }");
+        buf.addBytes(" !");
     }
 }
 
@@ -28,5 +28,5 @@ impl IConvert for TOTO
     var x: TOTO
     format(&buf, "%", x)
     //@print(cast(string) buf.toString())
-    @assert(buf.toString() == "{ x = 555, y = 666 }")
+    @assert(buf.toString() == "! x = 555, y = 666 !")
 }
