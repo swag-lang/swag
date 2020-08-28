@@ -6,6 +6,7 @@
 #include "ByteCodeOp.h"
 #include "Module.h"
 #include "Stats.h"
+#include "Timer.h"
 
 void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
@@ -76,10 +77,13 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     auto module = job->originalNode->sourceFile->module;
 
     //if (module->mustOptimizeBC(job->originalNode) < 2)
-     //   return;
+    //   return;
 
     //if (job->originalNode->sourceFile->name != "compiler1904.swg")
     //   return;
+
+    Timer tm(g_Stats.optimBCTime);
+    tm.start();
 
     ByteCodeOptContext optContext;
     optContext.bc = context->bc;
@@ -108,4 +112,6 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
         if (!optContext.allPassesHaveDoneSomething)
             break;
     }
+
+    tm.stop();
 }

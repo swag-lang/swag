@@ -23,6 +23,7 @@ void printStats()
     g_Log.messageHeaderDot("prep out time", format("%.3fs", g_Stats.prepOutputTimeJob.load()));
     g_Log.messageHeaderDot("gen out time", format("%.3fs", g_Stats.genOutputTime.load()));
     g_Log.messageHeaderDot("run test time", format("%.3fs", g_Stats.runTestTime.load()));
+    g_Log.messageHeaderDot("optim bc time", format("%.3fs", g_Stats.optimBCTime.load()));
     g_Log.messageHeaderDot("tmp time", format("%.3fs", g_Stats.tmpTime.load()));
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
