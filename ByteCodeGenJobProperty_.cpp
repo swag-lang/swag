@@ -7,7 +7,7 @@
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node              = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
     node->resultRegisterRC += node->childs.back()->resultRegisterRC;
     transformResultToLinear2(context, node);
@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node              = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
     node->resultRegisterRC += node->childs.back()->resultRegisterRC;
     transformResultToLinear2(context, node);
@@ -25,7 +25,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
 
     reserveLinearRegisterRC(context, node->resultRegisterRC, 3);
@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
-    auto node                      = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node                      = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC         = node->childs.front()->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
     return true;
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
 
     if (node->resolvedUserOpSymbolName)

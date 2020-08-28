@@ -730,8 +730,8 @@ anotherTry:
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
                     grandParent->kind == AstNodeKind::Alias ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
                 {
                     if (callParameters)
                         return context->report({callParameters, "invalid function call (you should remove parenthesis)"});

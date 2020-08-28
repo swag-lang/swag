@@ -309,7 +309,7 @@ namespace Ast
 
         case AstNodeKind::IntrinsicProp:
         {
-            auto propertyNode = CastAst<AstProperty>(node, AstNodeKind::IntrinsicProp);
+            auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
             concat.addString(propertyNode->name);
             concat.addChar('(');
             int idx = 0;

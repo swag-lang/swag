@@ -77,7 +77,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
 
 bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstProperty>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
+    auto node         = Ast::newNode<AstIntrinsicProp>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIntrinsicProperty;
     node->inheritTokenName(token);
     if (result)

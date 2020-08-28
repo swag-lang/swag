@@ -653,9 +653,9 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstProperty::clone(CloneContext& context)
+AstNode* AstIntrinsicProp::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc0<AstProperty>();
+    auto newNode = g_Allocator.alloc0<AstIntrinsicProp>();
     newNode->copyFrom(context, this);
 
     newNode->typeOfAsType  = typeOfAsType;

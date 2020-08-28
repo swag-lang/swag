@@ -20,7 +20,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
 
     if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
-        return context->report({node, "'@mkany' must have a 'swag.TypeInfo' pointer as a second parameter"});
+        return context->report({node, "'@mkany' must have a 'swag.TypeInfo' pointer (i.e. a type) as a second parameter"});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -87,7 +87,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return context->report({node, "'@mkinterface' must have a one dimension pointer as a second parameter"});
 
     if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
-        return context->report({node, "'@mkinterface' must have a 'swag.TypeInfo' pointer as a second parameter"});
+        return context->report({node, "'@mkinterface' must have a 'swag.TypeInfo' pointer (i.e. a type) as a second parameter"});
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
@@ -256,7 +256,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
 
 bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 {
-    auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto  expr       = node->childs.front();
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
@@ -289,7 +289,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 
 bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
 {
-    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
@@ -322,7 +322,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 {
-    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr = node->childs.front();
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
@@ -333,7 +333,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
-    auto node = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 
     switch (node->token.id)
     {

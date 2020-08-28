@@ -644,7 +644,7 @@ struct AstArrayPointerSlicing : public AstNode
     AstNode* upperBound;
 };
 
-struct AstProperty : public AstNode
+struct AstIntrinsicProp : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 

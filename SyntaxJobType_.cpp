@@ -253,7 +253,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         AstNode* typeOfNode = nullptr;
         SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
         node->isTypeOf          = true;
-        auto typeNode           = CastAst<AstProperty>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
+        auto typeNode           = CastAst<AstIntrinsicProp>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
         typeNode->typeOfAsType  = true;
         typeNode->typeOfAsConst = isConst;
         return true;
