@@ -130,6 +130,8 @@ namespace std.text
                     buf.addBytes(",")
                 buf.addBytes(field.name)
                 buf.addBytes("=")
+                val := @mkany(ptr + field.offset, field.pointedType)
+                convertAny(buf, val)
             }
 
             buf.addBytes("}")

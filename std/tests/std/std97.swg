@@ -15,6 +15,6 @@ struct TOTO
 
     var x: TOTO
     format(&buf, "%", x)
-    @print(cast(string) buf.toString())
-    //@assert(buf.toString() == "! x = 555, y = 666 !")
+    //@print(cast(string) buf.toString())
+    @assert(buf.toString() == "{x=555,y=666}")
 }
