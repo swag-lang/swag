@@ -8,7 +8,7 @@ struct ConvertFormatInt
     signed:         bool
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var format: ConvertFormatInt

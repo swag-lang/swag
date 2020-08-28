@@ -5,6 +5,13 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    auto first     = node->childs.front();
+    auto second    = node->childs.back();
+    node->typeInfo = g_TypeMgr.typeInfoAny;
+}
+
 bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
