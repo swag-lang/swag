@@ -52,7 +52,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node                      = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC         = node->childs.front()->resultRegisterRC[1];
@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.back();
@@ -88,7 +88,7 @@ bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
     return internalError(context, "emitCountProperty, type not supported");
 }
 
-bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);

@@ -108,7 +108,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         ptrType->computeName();
         ptrType->setConst();
         node->typeInfo    = ptrType;
-        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
@@ -122,7 +122,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (ptrSlice->isConst())
             ptrType->setConst();
         node->typeInfo    = ptrType;
-        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
@@ -136,7 +136,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (ptrArray->isConst())
             ptrType->setConst();
         node->typeInfo    = ptrType;
-        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isNative(NativeTypeKind::Any))
     {
@@ -147,7 +147,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();
         node->typeInfo    = ptrType;
-        node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -159,7 +159,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             return true;
         node->typeInfo = g_TypeMgr.typeInfoPVoid;
         if (!node->byteCodeFct)
-            node->byteCodeFct = ByteCodeGenJob::emitDataOfProperty;
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else
     {
@@ -181,7 +181,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
@@ -193,7 +193,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
     }
     else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
@@ -204,7 +204,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -216,7 +216,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
             return true;
         node->typeInfo = g_TypeMgr.typeInfoU32;
         if (!node->byteCodeFct)
-            node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
     }
     else
     {
@@ -270,7 +270,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
         if (context->result != ContextResult::Done)
             return true;
-        node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
         node->flags |= AST_R_VALUE;
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
@@ -287,7 +287,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::makeTypeOfProperty(SemanticContext* context)
+bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
 {
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
@@ -327,7 +327,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
     expr->flags |= AST_NO_BYTECODE;
-    SWAG_CHECK(makeTypeOfProperty(context));
+    SWAG_CHECK(makeIntrinsicTypeOf(context));
     return true;
 }
 

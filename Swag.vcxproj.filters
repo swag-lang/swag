@@ -236,9 +236,6 @@
     <ClCompile Include="ByteCodeGenJobProperty_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticJobProperty_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SwagScope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -442,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="ByteCodeOptimizer_imm_.cpp">
       <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobIntrinsic_.cpp">
+      <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
