@@ -71,6 +71,14 @@ namespace std.text
                     itf.convert(buf)
                     return
                 }
+
+                if type == ConvertFormatInt
+                    convertInt(buf, cast(ConvertFormatInt) value)
+                else if type ==  ConvertFormatFloat
+                    convertFloat(buf, cast(ConvertFormatFloat) value)
+                else
+                    convertStruct(buf, value)
+                return
             }
 
             switch type
@@ -101,12 +109,8 @@ namespace std.text
                     convertFloat(buf, cast(f64) value)
                 case string:
                     buf.addBytes(cast(string) value)
-                case ConvertFormatInt:
-                    convertInt(buf, cast(ConvertFormatInt) value)
-                case ConvertFormatFloat:
-                    convertFloat(buf, cast(ConvertFormatFloat) value)
                 default:
-                    convertStruct(buf, value)
+                    buf.addBytes("?")
             }
         }
 
