@@ -1888,6 +1888,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
             break;
 
+        case ByteCodeOp::PushRAParam4:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            pushRAParams.push_back(ip->d.u32);
+            break;
+        case ByteCodeOp::PushRAParam3:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            break;
+        case ByteCodeOp::PushRAParam2:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            break;
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;

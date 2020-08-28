@@ -632,11 +632,35 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
 
                     toFree += regList;
-                    for (int r = regList.size() - 1; r >= 0; r--)
+                    for (int r = regList.size() - 1; r >= 0;)
                     {
-                        emitInstruction(context, ByteCodeOp::PushRAParam, regList[r]);
-                        precallStack += sizeof(Register);
-                        numPushParams++;
+                        if (r >= 4)
+                        {
+                            emitInstruction(context, ByteCodeOp::PushRAParam4, regList[r], regList[r - 1], regList[r - 2], regList[r - 3]);
+                            r -= 4;
+                            precallStack += 4 * sizeof(Register);
+                            numPushParams += 4;
+                        }
+                        else if (r >= 3)
+                        {
+                            emitInstruction(context, ByteCodeOp::PushRAParam3, regList[r], regList[r - 1], regList[r - 2]);
+                            r -= 3;
+                            precallStack += 3 * sizeof(Register);
+                            numPushParams += 3;
+                        }
+                        else if (r >= 2)
+                        {
+                            emitInstruction(context, ByteCodeOp::PushRAParam2, regList[r], regList[r - 1]);
+                            r -= 2;
+                            precallStack += 2 * sizeof(Register);
+                            numPushParams += 2;
+                        }
+                        else
+                        {
+                            emitInstruction(context, ByteCodeOp::PushRAParam, regList[r--]);
+                            precallStack += sizeof(Register);
+                            numPushParams++;
+                        }
                     }
                 }
             }
@@ -657,11 +681,35 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 if (freeRegistersParams)
                     toFree += param->resultRegisterRC;
-                for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
+                for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                 {
-                    emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
-                    precallStack += sizeof(Register);
-                    numPushParams++;
+                    if (r >= 4)
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam4, param->resultRegisterRC[r], param->resultRegisterRC[r - 1], param->resultRegisterRC[r - 2], param->resultRegisterRC[r - 3]);
+                        r -= 4;
+                        precallStack += 4 * sizeof(Register);
+                        numPushParams += 4;
+                    }
+                    else if (r >= 3)
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam3, param->resultRegisterRC[r], param->resultRegisterRC[r - 1], param->resultRegisterRC[r - 2]);
+                        r -= 3;
+                        precallStack += 3 * sizeof(Register);
+                        numPushParams += 3;
+                    }
+                    else if (r >= 2)
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam2, param->resultRegisterRC[r], param->resultRegisterRC[r - 1]);
+                        r -= 2;
+                        precallStack += 2 * sizeof(Register);
+                        numPushParams += 2;
+                    }
+                    else
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r--]);
+                        precallStack += sizeof(Register);
+                        numPushParams++;
+                    }
                 }
             }
         }

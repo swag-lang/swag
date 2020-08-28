@@ -1620,6 +1620,27 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=r[%u].s32>=0?1:0;", ip->a.u32, ip->a.u32);
             break;
 
+        case ByteCodeOp::PushRAParam4:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            pushRAParams.push_back(ip->d.u32);
+            if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)
+                concat.addEol();
+            continue;
+        case ByteCodeOp::PushRAParam3:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)
+                concat.addEol();
+            continue;
+        case ByteCodeOp::PushRAParam2:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)
+                concat.addEol();
+            continue;
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)
