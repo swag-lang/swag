@@ -1336,7 +1336,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=r[%u].s64>r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::CompareOpGreaterU32:
-            concat.addStringFormat("r[%u].b=r[%u].u32>r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB(">");
             break;
         case ByteCodeOp::CompareOpGreaterU64:
             concat.addStringFormat("r[%u].b=r[%u].u64>r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);

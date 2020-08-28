@@ -1038,7 +1038,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpGreaterU32:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 > registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].b = IMMA_U32(ip) > IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterU64:
