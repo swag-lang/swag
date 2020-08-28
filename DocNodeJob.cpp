@@ -11,47 +11,58 @@
 
 thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 
-void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode, bool light)
+void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, bool light)
 {
     if (!light)
         CONCAT_FIXED_STR(concat, "<span class = \"keyword\">func </span>");
 
     concat.addString("<span class = \"funcCall\">");
-    concat.addString(funcNode->name.c_str());
+    concat.addString(node->name.c_str());
     concat.addString("</span>");
     CONCAT_FIXED_STR(concat, "(");
 
-    if (funcNode->parameters)
+    // Can be called for a lambda
+    AstFuncDecl* funcNode = node->kind == AstNodeKind::FuncDecl ? (AstFuncDecl*) node : nullptr;
+
+    if (!typeFunc->parameters.empty())
     {
         uint32_t idx = 0;
-        for (auto p : funcNode->parameters->childs)
+        for (auto p : typeFunc->parameters)
         {
-            if (p->name != "self")
+            AstVarDecl* varDecl = nullptr;
+            if (funcNode && idx < funcNode->parameters->childs.size())
+                varDecl = CastAst<AstVarDecl>(funcNode->parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+
+            // Parameter name, if any
+            if (varDecl)
             {
-                if (!light)
+                if (varDecl->name == "self")
                 {
+                    concat.addString("<span class = \"keyword\">");
                     concat.addString(p->name);
+                    concat.addString("</span>");
+                }
+                else if (!light)
+                {
+                    concat.addString(varDecl->name);
                     CONCAT_FIXED_STR(concat, ": ");
                 }
+            }
 
+            // Type
+            if (!varDecl || (varDecl->name != "self"))
+            {
                 p->typeInfo->computeScopedName();
                 DocHtmlHelper::syntaxHilight(concat, light ? p->typeInfo->name : p->typeInfo->scopedName);
             }
-            else
-            {
-                concat.addString("<span class = \"keyword\">");
-                concat.addString(p->name);
-                concat.addString("</span>");
-            }
 
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
-            if (varDecl->assignment)
+            if (varDecl && varDecl->assignment)
             {
                 CONCAT_FIXED_STR(concat, " = ");
                 Ast::output(concat, varDecl->assignment);
             }
 
-            if (idx != funcNode->parameters->childs.size() - 1)
+            if (idx != typeFunc->parameters.size() - 1)
                 CONCAT_FIXED_STR(concat, ", ");
             idx++;
         }
@@ -95,6 +106,16 @@ Utf8 DocNodeJob::referencableType(TypeInfo* typeInfo)
     return name;
 }
 
+void DocNodeJob::emitVariables(OutputFile& outFile)
+{
+    auto node = nodes.front();
+    DocHtmlHelper::summary(outFile, node->docContent ? node->docContent->docSummary : Utf8(""));
+    DocHtmlHelper::origin(outFile, node->ownerScope);
+
+    if (node->typeInfo->kind == TypeInfoKind::Lambda)
+        emitFunction(outFile, node);
+}
+
 void DocNodeJob::emitFunctions(OutputFile& outFile)
 {
     auto node = nodes.front();
@@ -108,7 +129,7 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
         DocHtmlHelper::sectionTitle1(outFile, "Overloads");
         CONCAT_FIXED_STR(outFile, "<pre>");
         for (auto one : nodes)
-            emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, (AstFuncDecl*) one);
+            emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, one);
         CONCAT_FIXED_STR(outFile, "</pre>");
     }
 
@@ -117,7 +138,7 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
         if (nodes.size() > 1)
         {
             CONCAT_FIXED_STR(outFile, "<h2>");
-            emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, (AstFuncDecl*) one, true);
+            emitFuncSignature(outFile, (TypeInfoFuncAttr*) one->typeInfo, one, true);
             CONCAT_FIXED_STR(outFile, "</h2>\n");
             DocHtmlHelper::summary(outFile, one->docContent ? one->docContent->docSummary : Utf8(""));
         }
@@ -129,12 +150,12 @@ void DocNodeJob::emitFunctions(OutputFile& outFile)
 void DocNodeJob::emitFunction(OutputFile& outFile, AstNode* node)
 {
     CONCAT_FIXED_STR(outFile, "<pre>");
-    emitFuncSignature(outFile, (TypeInfoFuncAttr*) node->typeInfo, (AstFuncDecl*) node);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+    emitFuncSignature(outFile, typeFunc, node);
     CONCAT_FIXED_STR(outFile, "</pre>");
 
     // Parameters
     ///////////////////////////
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     if (typeFunc->parameters.size())
     {
         DocHtmlHelper::sectionTitle3(outFile, "Parameters");
@@ -225,6 +246,9 @@ JobResult DocNodeJob::execute()
 
     switch (nodes.front()->kind)
     {
+    case AstNodeKind::VarDecl:
+        emitVariables(outFile);
+        break;
     case AstNodeKind::FuncDecl:
         emitFunctions(outFile);
         break;

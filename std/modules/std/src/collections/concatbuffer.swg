@@ -191,7 +191,7 @@ namespace std.collections
                 curCount += num
             }
 
-            /// Convert buffer to a [String]
+            /// Convert buffer to a [std.text.String]
             func toString(using self) -> String
             {
                 var result: String

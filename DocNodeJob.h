@@ -12,8 +12,9 @@ struct TypeInfo;
 struct DocNodeJob : public Job
 {
     JobResult execute() override;
-    void      emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode, bool light = false);
+    void      emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstNode* node, bool light = false);
     void      emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode);
+    void      emitVariables(OutputFile& concat);
     void      emitFunctions(OutputFile& concat);
     void      emitFunction(OutputFile& concat, AstNode* node);
     void      emitEnum(OutputFile& concat);

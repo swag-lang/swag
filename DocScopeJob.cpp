@@ -70,7 +70,12 @@ JobResult DocScopeJob::execute()
     outFile.path += scope->getFullName() + ".html";
 
     DocHtmlHelper::htmlStart(outFile);
-    DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
+
+    auto nakedName = Scope::getNakedKindName(scope->kind);
+    if (scope->kind == ScopeKind::Struct && scope->owner->typeInfo->kind == TypeInfoKind::Interface)
+        nakedName = "interface";
+
+    DocHtmlHelper::title(outFile, format("%s.%s %s", scope->parentScope->name.c_str(), scope->name.c_str(), nakedName));
     DocHtmlHelper::summary(outFile, scope->owner->docContent ? scope->owner->docContent->docSummary : Utf8(""));
     DocHtmlHelper::origin(outFile, scope->parentScope);
 
@@ -83,7 +88,13 @@ JobResult DocScopeJob::execute()
         if (typeStruct->kind == TypeInfoKind::Interface)
         {
             DocHtmlHelper::sectionTitle1(outFile, "Functions");
-            DocHtmlHelper::table(outFile, scope, typeStruct->itable->fields, false);
+            DocHtmlHelper::table(outFile, scope, typeStruct->itable->fields, true);
+
+            auto nodeJob    = g_Pool_docNodeJob.alloc();
+            nodeJob->module = module;
+            nodeJob->nodes.push_back(typeStruct->itable->fields[0]->node);
+            g_ThreadMgr.addJob(nodeJob);
+            //nameToJob[scopedName] = nodeJob;
         }
         else
         {
