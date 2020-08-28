@@ -12,15 +12,13 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
         return context->report({node, "'@mkany' must have a pointer as a first parameter"});
-    if (second->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkany' must have a pointer as a second parameter"});
-
-    auto ptrPointer1 = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer1->ptrCount != 1)
+    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer->ptrCount != 1)
         return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
 
-    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
-        return context->report({node, "'@mkany' must have a 'swag.TypeInfo' pointer (i.e. a type) as a second parameter"});
+    SWAG_CHECK(checkIsConcreteOrType(context, second));
+    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR) && !(second->flags & AST_VALUE_IS_TYPEINFO))
+        return context->report({node, "'@mkany' must have a 'swag.TypeInfo' pointer or a type value as a second parameter"});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
