@@ -2015,10 +2015,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpLowerU32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateICmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            llvm::Value *r1, *r2;
+            if (ip->flags & BCI_IMM_A)
+                r1 = builder.getInt32(ip->a.u32);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
+            if (ip->flags & BCI_IMM_B)
+                r2 = builder.getInt32(ip->b.u32);
+            else
+                r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;

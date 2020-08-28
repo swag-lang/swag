@@ -1172,8 +1172,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CompareOpLowerU32:
             //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Cmp32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))
+            {
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Cmp32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            }
+            else
+            {
+                if (ip->flags & BCI_IMM_A)
+                    BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                else
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                if (ip->flags & BCI_IMM_B)
+                    BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+                else
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
+            }
+            
             BackendX64Inst::emit_SetB(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
@@ -1889,142 +1905,142 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::MakeLambdaForeign:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
+                //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
 
-            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(funcNode);
-            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
-            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue     foreignValue;
-            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
-            SWAG_ASSERT(!foreignValue.text.empty());
+                auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+                SWAG_ASSERT(funcNode);
+                SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
+                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                ComputedValue     foreignValue;
+                typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+                SWAG_ASSERT(!foreignValue.text.empty());
 
-            BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
+                BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
-            CoffRelocation reloc;
-            reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, foreignValue.text, CoffSymbolKind::Extern);
-            reloc.symbolIndex    = callSym->index;
-            reloc.type           = IMAGE_REL_AMD64_ADDR64;
-            pp.relocTableTextSection.table.push_back(reloc);
+                CoffRelocation reloc;
+                reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+                auto callSym         = getOrAddSymbol(pp, foreignValue.text, CoffSymbolKind::Extern);
+                reloc.symbolIndex    = callSym->index;
+                reloc.type           = IMAGE_REL_AMD64_ADDR64;
+                pp.relocTableTextSection.table.push_back(reloc);
 
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
+                BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                break;
         }
 
         case ByteCodeOp::MakeLambda:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
-            auto funcBC = (ByteCode*) ip->b.pointer;
-            SWAG_ASSERT(funcBC);
-            BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
+                //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
+                auto funcBC = (ByteCode*) ip->b.pointer;
+                SWAG_ASSERT(funcBC);
+                BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
-            CoffRelocation reloc;
-            reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, funcBC->callName(), CoffSymbolKind::Extern);
-            reloc.symbolIndex    = callSym->index;
-            reloc.type           = IMAGE_REL_AMD64_ADDR64;
-            pp.relocTableTextSection.table.push_back(reloc);
+                CoffRelocation reloc;
+                reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+                auto callSym         = getOrAddSymbol(pp, funcBC->callName(), CoffSymbolKind::Extern);
+                reloc.symbolIndex    = callSym->index;
+                reloc.type           = IMAGE_REL_AMD64_ADDR64;
+                pp.relocTableTextSection.table.push_back(reloc);
 
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                break;
         }
 
         case ByteCodeOp::LambdaCall:
         {
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
+                TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+                //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_MARKER);
 
-            // Test if it's a bytecode lambda
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
-            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RBX, RBX);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
-            concat.addU32(0);
-            auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpToBCOffset = concat.totalCount();
+                // Test if it's a bytecode lambda
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
+                BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
+                BackendX64Inst::emit_Test64(pp, RBX, RBX);
+                concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+                concat.addU32(0);
+                auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+                auto jumpToBCOffset = concat.totalCount();
 
-            // Test if it's a foreign lambda
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
-            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RBX, RBX);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
-            concat.addU32(0);
-            auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpToForeignOffset = concat.totalCount();
+                // Test if it's a foreign lambda
+                BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
+                BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
+                BackendX64Inst::emit_Test64(pp, RBX, RBX);
+                concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
+                concat.addU32(0);
+                auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+                auto jumpToForeignOffset = concat.totalCount();
 
-            // Local lambda
-            //////////////////
-            uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
-            concat.addString2("\xff\xd0"); // call rax
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
+                // Local lambda
+                //////////////////
+                uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
+                concat.addString2("\xff\xd0"); // call rax
+                BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
 
-            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            concat.addU32(0);
-            auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpBCToAfterOffset = concat.totalCount();
+                concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
+                concat.addU32(0);
+                auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+                auto jumpBCToAfterOffset = concat.totalCount();
 
-            // Foreign lambda
-            //////////////////
-            *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
+                // Foreign lambda
+                //////////////////
+                *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
 
-            BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
-            BackendX64Inst::emit_Copy64(pp, RAX, R12);
-            SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
-            concat.addString3("\x41\xFF\xD4"); // call r12
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
-            emitForeignCallResult(pp, typeFuncBC, offsetRT);
+                BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
+                BackendX64Inst::emit_Copy64(pp, RAX, R12);
+                SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+                concat.addString3("\x41\xFF\xD4"); // call r12
+                BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
+                emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
-            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            concat.addU32(0);
-            auto jumpForeignToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpForeignToAfterOffset = concat.totalCount();
+                concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
+                concat.addU32(0);
+                auto jumpForeignToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+                auto jumpForeignToAfterOffset = concat.totalCount();
 
-            // ByteCode lambda
-            //////////////////
-            *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+                // ByteCode lambda
+                //////////////////
+                *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-            BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+                BackendX64Inst::emit_Copy64(pp, RAX, RCX);
 
-            sizeCallStack = 0;
-            for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
-            {
-                switch (idxReg)
+                sizeCallStack = 0;
+                for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
                 {
-                case 0:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RDX, RDI);
-                    break;
-                case 1:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R8, RDI);
-                    break;
-                case 2:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R9, RDI);
-                    break;
-                default:
-                    sizeCallStack += 8;
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    BackendX64Inst::emit_Push(pp, RAX);
-                    break;
+                    switch (idxReg)
+                    {
+                    case 0:
+                        BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RDX, RDI);
+                        break;
+                    case 1:
+                        BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R8, RDI);
+                        break;
+                    case 2:
+                        BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R9, RDI);
+                        break;
+                    default:
+                        sizeCallStack += 8;
+                        BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                        BackendX64Inst::emit_Push(pp, RAX);
+                        break;
+                    }
                 }
-            }
 
-            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_byteCodeRun);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
-            concat.addString2("\xff\xd0"); // call rax
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
+                BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_byteCodeRun);
+                BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+                concat.addString2("\xff\xd0"); // call rax
+                BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
 
-            // End
-            //////////////////
-            *jumpBCToAfterAddr      = concat.totalCount() - jumpBCToAfterOffset;
-            *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
+                // End
+                //////////////////
+                *jumpBCToAfterAddr      = concat.totalCount() - jumpBCToAfterOffset;
+                *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
 
-            variadicStackSize = 0;
-            pushRAParams.clear();
-            break;
+                variadicStackSize = 0;
+                pushRAParams.clear();
+                break;
         }
 
         case ByteCodeOp::IncSPPostCall:
@@ -2035,13 +2051,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::LocalCall:
         {
-            auto              funcBC        = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC    = (TypeInfoFuncAttr*) ip->b.pointer;
-            uint32_t          sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
-            emitCall(pp, funcBC->callName());
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
-            pushRAParams.clear();
-            break;
+                auto              funcBC        = (ByteCode*) ip->a.pointer;
+                TypeInfoFuncAttr* typeFuncBC    = (TypeInfoFuncAttr*) ip->b.pointer;
+                uint32_t          sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
+                emitCall(pp, funcBC->callName());
+                BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
+                pushRAParams.clear();
+                break;
         }
 
         case ByteCodeOp::ForeignCall:
@@ -2062,224 +2078,224 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
-            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+                BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
+                BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
+                BackendX64Inst::emit_Copy32(pp, RAX, RCX);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "abs");
+                    break;
+                }
+                BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 break;
-            }
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+                BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
+                BackendX64Inst::emit_Copy32(pp, RAX, RCX);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "abs");
+                    break;
+                }
+                BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 break;
-            }
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
         }
         case ByteCodeOp::IntrinsicS32x1:
         {
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "abs");
+                    break;
+                }
+                BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 break;
-            }
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "llabs");
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "llabs");
+                    break;
+                }
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 break;
-            }
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
         }
         case ByteCodeOp::IntrinsicF32x2:
         {
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicPow:
-                emitCall(pp, "powf");
+                BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+                BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicPow:
+                    emitCall(pp, "powf");
+                    break;
+                }
+                BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
                 break;
-            }
-            BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            break;
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicPow:
-                emitCall(pp, "pow");
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicPow:
+                    emitCall(pp, "pow");
+                    break;
+                }
+                BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
                 break;
-            }
-            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            break;
         }
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicSqrt:
-                emitCall(pp, "sqrtf");
-                break;
-            case TokenId::IntrinsicSin:
-                emitCall(pp, "sinf");
-                break;
-            case TokenId::IntrinsicCos:
-                emitCall(pp, "cosf");
-                break;
-            case TokenId::IntrinsicTan:
-                emitCall(pp, "tanf");
-                break;
-            case TokenId::IntrinsicSinh:
-                emitCall(pp, "sinhf");
-                break;
-            case TokenId::IntrinsicCosh:
-                emitCall(pp, "coshf");
-                break;
-            case TokenId::IntrinsicTanh:
-                emitCall(pp, "tanhf");
-                break;
-            case TokenId::IntrinsicASin:
-                emitCall(pp, "asinf");
-                break;
-            case TokenId::IntrinsicACos:
-                emitCall(pp, "acosf");
-                break;
-            case TokenId::IntrinsicATan:
-                emitCall(pp, "atanf");
-                break;
-            case TokenId::IntrinsicLog:
-                emitCall(pp, "logf");
-                break;
-            case TokenId::IntrinsicLog2:
-                emitCall(pp, "log2f");
-                break;
-            case TokenId::IntrinsicLog10:
-                emitCall(pp, "log10f");
-                break;
-            case TokenId::IntrinsicFloor:
-                emitCall(pp, "floorf");
-                break;
-            case TokenId::IntrinsicCeil:
-                emitCall(pp, "ceilf");
-                break;
-            case TokenId::IntrinsicTrunc:
-                emitCall(pp, "truncf");
-                break;
-            case TokenId::IntrinsicRound:
-                emitCall(pp, "roundf");
-                break;
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "fabsf");
-                break;
-            case TokenId::IntrinsicExp:
-                emitCall(pp, "expf");
-                break;
-            case TokenId::IntrinsicExp2:
-                emitCall(pp, "exp2f");
-                break;
-            }
+                BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicSqrt:
+                    emitCall(pp, "sqrtf");
+                    break;
+                case TokenId::IntrinsicSin:
+                    emitCall(pp, "sinf");
+                    break;
+                case TokenId::IntrinsicCos:
+                    emitCall(pp, "cosf");
+                    break;
+                case TokenId::IntrinsicTan:
+                    emitCall(pp, "tanf");
+                    break;
+                case TokenId::IntrinsicSinh:
+                    emitCall(pp, "sinhf");
+                    break;
+                case TokenId::IntrinsicCosh:
+                    emitCall(pp, "coshf");
+                    break;
+                case TokenId::IntrinsicTanh:
+                    emitCall(pp, "tanhf");
+                    break;
+                case TokenId::IntrinsicASin:
+                    emitCall(pp, "asinf");
+                    break;
+                case TokenId::IntrinsicACos:
+                    emitCall(pp, "acosf");
+                    break;
+                case TokenId::IntrinsicATan:
+                    emitCall(pp, "atanf");
+                    break;
+                case TokenId::IntrinsicLog:
+                    emitCall(pp, "logf");
+                    break;
+                case TokenId::IntrinsicLog2:
+                    emitCall(pp, "log2f");
+                    break;
+                case TokenId::IntrinsicLog10:
+                    emitCall(pp, "log10f");
+                    break;
+                case TokenId::IntrinsicFloor:
+                    emitCall(pp, "floorf");
+                    break;
+                case TokenId::IntrinsicCeil:
+                    emitCall(pp, "ceilf");
+                    break;
+                case TokenId::IntrinsicTrunc:
+                    emitCall(pp, "truncf");
+                    break;
+                case TokenId::IntrinsicRound:
+                    emitCall(pp, "roundf");
+                    break;
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "fabsf");
+                    break;
+                case TokenId::IntrinsicExp:
+                    emitCall(pp, "expf");
+                    break;
+                case TokenId::IntrinsicExp2:
+                    emitCall(pp, "exp2f");
+                    break;
+                }
 
-            BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            break;
+                BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+                break;
         }
 
         case ByteCodeOp::IntrinsicF64x1:
         {
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            switch ((TokenId) ip->d.u32)
-            {
-            case TokenId::IntrinsicSqrt:
-                emitCall(pp, "sqrt");
-                break;
-            case TokenId::IntrinsicSin:
-                emitCall(pp, "sin");
-                break;
-            case TokenId::IntrinsicCos:
-                emitCall(pp, "cos");
-                break;
-            case TokenId::IntrinsicTan:
-                emitCall(pp, "tan");
-                break;
-            case TokenId::IntrinsicSinh:
-                emitCall(pp, "sinh");
-                break;
-            case TokenId::IntrinsicCosh:
-                emitCall(pp, "cosh");
-                break;
-            case TokenId::IntrinsicTanh:
-                emitCall(pp, "tanh");
-                break;
-            case TokenId::IntrinsicASin:
-                emitCall(pp, "asin");
-                break;
-            case TokenId::IntrinsicACos:
-                emitCall(pp, "acos");
-                break;
-            case TokenId::IntrinsicATan:
-                emitCall(pp, "atan");
-                break;
-            case TokenId::IntrinsicLog:
-                emitCall(pp, "log");
-                break;
-            case TokenId::IntrinsicLog2:
-                emitCall(pp, "log2");
-                break;
-            case TokenId::IntrinsicLog10:
-                emitCall(pp, "log10");
-                break;
-            case TokenId::IntrinsicFloor:
-                emitCall(pp, "floor");
-                break;
-            case TokenId::IntrinsicCeil:
-                emitCall(pp, "ceil");
-                break;
-            case TokenId::IntrinsicTrunc:
-                emitCall(pp, "trunc");
-                break;
-            case TokenId::IntrinsicRound:
-                emitCall(pp, "round");
-                break;
-            case TokenId::IntrinsicAbs:
-                emitCall(pp, "fabs");
-                break;
-            case TokenId::IntrinsicExp:
-                emitCall(pp, "exp");
-                break;
-            case TokenId::IntrinsicExp2:
-                emitCall(pp, "exp2");
-                break;
-            }
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicSqrt:
+                    emitCall(pp, "sqrt");
+                    break;
+                case TokenId::IntrinsicSin:
+                    emitCall(pp, "sin");
+                    break;
+                case TokenId::IntrinsicCos:
+                    emitCall(pp, "cos");
+                    break;
+                case TokenId::IntrinsicTan:
+                    emitCall(pp, "tan");
+                    break;
+                case TokenId::IntrinsicSinh:
+                    emitCall(pp, "sinh");
+                    break;
+                case TokenId::IntrinsicCosh:
+                    emitCall(pp, "cosh");
+                    break;
+                case TokenId::IntrinsicTanh:
+                    emitCall(pp, "tanh");
+                    break;
+                case TokenId::IntrinsicASin:
+                    emitCall(pp, "asin");
+                    break;
+                case TokenId::IntrinsicACos:
+                    emitCall(pp, "acos");
+                    break;
+                case TokenId::IntrinsicATan:
+                    emitCall(pp, "atan");
+                    break;
+                case TokenId::IntrinsicLog:
+                    emitCall(pp, "log");
+                    break;
+                case TokenId::IntrinsicLog2:
+                    emitCall(pp, "log2");
+                    break;
+                case TokenId::IntrinsicLog10:
+                    emitCall(pp, "log10");
+                    break;
+                case TokenId::IntrinsicFloor:
+                    emitCall(pp, "floor");
+                    break;
+                case TokenId::IntrinsicCeil:
+                    emitCall(pp, "ceil");
+                    break;
+                case TokenId::IntrinsicTrunc:
+                    emitCall(pp, "trunc");
+                    break;
+                case TokenId::IntrinsicRound:
+                    emitCall(pp, "round");
+                    break;
+                case TokenId::IntrinsicAbs:
+                    emitCall(pp, "fabs");
+                    break;
+                case TokenId::IntrinsicExp:
+                    emitCall(pp, "exp");
+                    break;
+                case TokenId::IntrinsicExp2:
+                    emitCall(pp, "exp2");
+                    break;
+                }
 
-            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            break;
+                BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+                break;
         }
 
         default:

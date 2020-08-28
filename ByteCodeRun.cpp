@@ -11,6 +11,8 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
+#define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
+
 #define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
 #define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
 #define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
@@ -1005,7 +1007,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpLowerU32:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 < registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].b = IMMA_U32(ip) < IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerU64:

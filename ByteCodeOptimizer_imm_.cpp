@@ -26,11 +26,21 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regsRW[ip->a.u32] = ip->b.u32;
             regs[ip->a.u32]   = ip;
         }
-
-        if (ip->op == ByteCodeOp::SetImmediate64)
+        else if (ip->op == ByteCodeOp::SetImmediate64)
         {
             regsRW[ip->a.u32] = ip->b.u64;
             regs[ip->a.u32]   = ip;
+        }
+        else
+        {
+            if (flags & OPFLAG_WRITE_A)
+                regs[ip->a.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_B)
+                regs[ip->b.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_C)
+                regs[ip->c.u32] = nullptr;
+            if (flags & OPFLAG_WRITE_D)
+                regs[ip->d.u32] = nullptr;
         }
 
         if ((flags & OPFLAG_IMM_A) && !(ip->flags & BCI_IMM_A) && (flags & OPFLAG_READ_A) && regs[ip->a.u32])

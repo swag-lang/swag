@@ -76,7 +76,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     auto module = job->originalNode->sourceFile->module;
 
     //if (module->mustOptimizeBC(job->originalNode) < 2)
-    //    return;
+     //   return;
 
     //if (job->originalNode->sourceFile->name != "compiler1904.swg")
     //   return;
