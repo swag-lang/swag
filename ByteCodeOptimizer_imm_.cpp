@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "Log.h"
 
 void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 {
@@ -43,12 +44,21 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->d.u32] = nullptr;
         }
 
-        if ((flags & OPFLAG_IMM_A) && !(ip->flags & BCI_IMM_A) && (flags & OPFLAG_READ_A) && regs[ip->a.u32])
+        if (!(ip->flags & BCI_IMM_A) && (flags & OPFLAG_READ_A) && regs[ip->a.u32])
         {
-            context->passHasDoneSomething = true;
-            ip->flags |= BCI_IMM_A;
-            regs[ip->a.u32] = nullptr;
-            ip->a.u64       = regsRW[ip->a.u32];
+            if (flags & OPFLAG_IMM_A)
+            {
+                context->passHasDoneSomething = true;
+                ip->flags |= BCI_IMM_A;
+                regs[ip->a.u32] = nullptr;
+                ip->a.u64 = regsRW[ip->a.u32];
+            }
+            /*else
+            {
+                g_Log.lock();
+                context->bc->printInstruction(ip);
+                g_Log.unlock();
+            }*/
         }
 
         if ((flags & OPFLAG_IMM_B) && !(ip->flags & BCI_IMM_B) && (flags & OPFLAG_READ_B) && regs[ip->b.u32])

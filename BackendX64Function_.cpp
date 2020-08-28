@@ -13,6 +13,11 @@
         BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
         BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                  \
     }                                                                                 \
+    else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                     \
+    {                                                                                 \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);                    \
+        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                  \
+    }                                                                                 \
     else                                                                              \
     {                                                                                 \
         if (ip->flags & BCI_IMM_A)                                                    \
