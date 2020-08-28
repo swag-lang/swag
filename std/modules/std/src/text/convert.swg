@@ -41,6 +41,11 @@ namespace std.text
         signed:         bool
     }
 
+    interface IConvert
+    {
+        convert: func(self, *ConcatBuffer)
+    }
+
     public
     {
         /// Convert a value to an utf8 string, and put the result in a [ConcatBuffer]
@@ -54,6 +59,17 @@ namespace std.text
                 ptr := cast(*void) value
                 buf.addBytes(@mkslice(cast(const *u8) &value, @sizeof(*void)))
                 return
+            }
+
+            // A structure with an implementation of IConvert
+            if type.kind == swag.TypeInfoKind.Struct
+            {
+                itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
+                if itf != null
+                {
+                    itf.convert(buf)
+                    return
+                }
             }
 
             switch type
