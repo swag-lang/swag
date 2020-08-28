@@ -5,26 +5,6 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
-{
-    auto first  = node->childs.front();
-    auto second = node->childs.back();
-
-    if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkany' must have a pointer as a first parameter"});
-    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer->ptrCount != 1)
-        return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
-
-    SWAG_CHECK(checkIsConcreteOrType(context, second));
-    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR) && !(second->flags & AST_VALUE_IS_TYPEINFO))
-        return context->report({node, "'@mkany' must have a 'swag.TypeInfo' pointer or a type value as a second parameter"});
-
-    node->typeInfo    = g_TypeMgr.typeInfoAny;
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
-    return true;
-}
-
 bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
@@ -50,6 +30,32 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
     node->typeInfo = ptrSlice;
 
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeSlice;
+    return true;
+}
+
+bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    auto first  = node->childs.front();
+    auto second = node->childs.back();
+
+    if (first->typeInfo->kind != TypeInfoKind::Pointer)
+        return context->report({node, "'@mkany' must have a pointer as a first parameter"});
+    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer->ptrCount != 1)
+        return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
+
+    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
+    {
+        if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            return context->report({node, format("'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')", ptrPointer->pointedType->name.c_str(), second->typeInfo->name.c_str())});
+    }
+
+    SWAG_CHECK(checkIsConcreteOrType(context, second));
+    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
+        return context->report({node, "'@mkany' must have a 'const *swag.TypeInfo' or a type value as a second parameter"});
+
+    node->typeInfo    = g_TypeMgr.typeInfoAny;
+    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
     return true;
 }
 
@@ -85,7 +91,9 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return context->report({node, "'@mkinterface' must have a one dimension pointer as a second parameter"});
 
     if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
-        return context->report({node, "'@mkinterface' must have a 'swag.TypeInfo' pointer (i.e. a type) as a second parameter"});
+        return context->report({node, "'@mkinterface' must have a 'const *swag.TypeInfo' (i.e. a type) as a second parameter"});
+
+    SWAG_VERIFY(third->typeInfo->kind == TypeInfoKind::Interface, context->report({node, "'@mkinterface' must have an interface as a third parameter"}));
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;

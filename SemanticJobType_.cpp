@@ -27,7 +27,8 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 
     if (node->kind == AstNodeKind::TypeExpression ||
         node->kind == AstNodeKind::TypeLambda ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct))
+        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct) ||
+        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Interface))
     {
         TypeInfo* result = nullptr;
         SWAG_CHECK(resolveTypeAsExpression(context, node, &result));

@@ -1,0 +1,11 @@
+#module "compiler1910"
+#unittest error
+
+//#[swag.printbc]
+#test
+{
+    x := 666
+    val := @mkany(&x, f32)
+
+    value := cast(f32) val
+}
