@@ -1,19 +1,32 @@
 #import "std"
-/*
+
+using std.collections, std.diagnostics, std.text
+
+struct TOTO
+{
+    x: s32 = 555
+    y: s32 = 666
+}
+
+impl IConvert for TOTO
+{
+    func convert(using self, buf: *ConcatBuffer)
+    {
+        buf.addBytes("{ x = ");
+        convertInt(buf, x)
+        buf.addBytes(", y = ");
+        convertInt(buf, y)
+        buf.addBytes(" }");
+    }
+}
+
 //#[swag.printbc]
 #test
 {
-    if false
-    {
-        @print(std.toto9(1,2,3,4,5,6))
-        @print(cast(s64) std.toto8(1,2,3,4,5,6))
-        @print(std.toto7(1,2,3,4))
-        @print(std.toto6("666"))
-        @print(std.toto5(666))
-        @print(std.toto4())
-        std.toto3(1,2,3,4,5,6)
-        std.toto()
-        std.toto1(64)
-        std.toto2(1,2,3,4)
-    }
-}*/
+    var buf: ConcatBuffer
+
+    var x: TOTO
+    format(&buf, "%", x)
+    //@print(cast(string) buf.toString())
+    @assert(buf.toString() == "{ x = 555, y = 666 }")
+}

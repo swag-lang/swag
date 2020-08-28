@@ -41,7 +41,7 @@ namespace std.text
         signed:         bool
     }
 
-    interface IConvert
+    public interface IConvert
     {
         convert: func(self, *ConcatBuffer)
     }
