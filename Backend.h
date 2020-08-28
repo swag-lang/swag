@@ -5,6 +5,7 @@ struct BuildParameters;
 struct TypeInfoFuncAttr;
 struct TypeInfoStruct;
 struct TypeInfoEnum;
+struct TypeInfo;
 struct AstFuncDecl;
 struct AstStruct;
 struct AstNode;
@@ -45,6 +46,7 @@ struct Backend
     void setupExportFile();
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);
+    void emitType(TypeInfo* typeInfo);
     bool emitGenericParameters(AstNode* node);
     bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);

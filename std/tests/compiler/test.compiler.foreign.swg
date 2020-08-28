@@ -2,9 +2,16 @@
 
 public namespace tcf
 {
+    namespace BB
+    {
+        public struct AA
+        {
+        }
+    }
+
     public interface ITcf
     {
-        call: func(self)
+        call: func(self, *BB.AA)
     }
 }
 

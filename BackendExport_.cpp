@@ -49,6 +49,30 @@ bool Backend::emitAttributes(TypeInfoParam* param)
     return true;
 }
 
+void Backend::emitType(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind == TypeInfoKind::Lambda)
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+        bufferSwg.addString("func(");
+        for (auto p : typeFunc->parameters)
+        {
+            if (p != typeFunc->parameters[0])
+                bufferSwg.addString(", ");
+            emitType(p->typeInfo);
+        }
+
+        bufferSwg.addString(")->");
+        emitType(typeFunc->returnType);
+    }
+    else
+    {
+        typeInfo = TypeManager::concreteReference(typeInfo);
+        typeInfo->computeScopedName();
+        bufferSwg.addString(typeInfo->scopedName);
+    }
+}
+
 bool Backend::emitGenericParameters(AstNode* node)
 {
     CONCAT_FIXED_STR(bufferSwg, "(");
@@ -100,9 +124,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                auto typeParam = TypeManager::concreteReference(p->typeInfo);
-                typeParam->computeScopedName();
-                bufferSwg.addString(typeParam->scopedName);
+                emitType(p->typeInfo);
             }
 
             // Assignment
@@ -124,8 +146,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        typeFunc->returnType->computeScopedName();
-        bufferSwg.addString(typeFunc->returnType->scopedName);
+        emitType(typeFunc->returnType);
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
@@ -164,9 +185,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                auto typeParam = TypeManager::concreteReference(p->typeInfo);
-                typeParam->computeScopedName();
-                bufferSwg.addString(typeParam->scopedName);
+                emitType(p->typeInfo);
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
@@ -187,8 +206,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        typeFunc->returnType->computeScopedName();
-        bufferSwg.addString(typeFunc->returnType->scopedName);
+        emitType(typeFunc->returnType);
     }
 
     bufferSwg.addEolIndent(1);
@@ -280,16 +298,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
             CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
-
-        if (p->typeInfo->kind == TypeInfoKind::Lambda)
-        {
-            bufferSwg.addString(p->typeInfo->name);
-        }
-        else
-        {
-            p->typeInfo->computeScopedName();
-            bufferSwg.addString(p->typeInfo->scopedName);
-        }
+        emitType(p->typeInfo);
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
         {
