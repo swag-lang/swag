@@ -9,6 +9,17 @@
 #include "swag_runtime.h"
 #include "Module.h"
 
+#define MK_BINOP_CAB(__op)                                      \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);              \
+    if (ip->flags & BCI_IMM_A)                                  \
+        concat.addStringFormat("%u%s", ip->a.u32, __op);        \
+    else                                                        \
+        concat.addStringFormat("r[%u].u32%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                  \
+        concat.addStringFormat("%u;", ip->b.u32);               \
+    else                                                        \
+        concat.addStringFormat("r[%u].u32;", ip->b.u32);
+
 BackendFunctionBodyJob* BackendC::newFunctionJob()
 {
     return g_Pool_backendCFunctionBodyJob.alloc();
@@ -1344,15 +1355,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             concat.addStringFormat("r[%u].b=r[%u].s64<r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::CompareOpLowerU32:
-            concat.addStringFormat("r[%u].b=", ip->c.u32);
-            if (ip->flags & BCI_IMM_A)
-                concat.addStringFormat("%u<", ip->a.u32);
-            else
-                concat.addStringFormat("r[%u].u32<", ip->a.u32);
-            if (ip->flags & BCI_IMM_B)
-                concat.addStringFormat("%u;", ip->b.u32);
-            else
-                concat.addStringFormat("r[%u].u32;", ip->b.u32);
+            MK_BINOP_CAB("<");
             break;
         case ByteCodeOp::CompareOpLowerU64:
             concat.addStringFormat("r[%u].b=r[%u].u64<r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
