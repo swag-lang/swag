@@ -7,7 +7,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-#define MK_CMP_CAB(__opInd, __op)                                                     \
+#define MK_BINOP_CAB(__opInd, __op)                                                   \
     if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                                       \
     {                                                                                 \
         BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
@@ -1191,7 +1191,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CompareOpLowerU32:
             //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_CMP_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            MK_BINOP_CAB(emit_Cmp32_Indirect, emit_Cmp32);
             BackendX64Inst::emit_SetB(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
