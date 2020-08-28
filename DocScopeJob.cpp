@@ -78,29 +78,37 @@ JobResult DocScopeJob::execute()
     /////////////////////////////////
     if (scope->kind == ScopeKind::Struct)
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct, TypeInfoKind::Interface);
 
-        VectorNative<TypeInfoParam*> rwmembers, romembers;
-        for (auto param : typeStruct->fields)
+        if (typeStruct->kind == TypeInfoKind::Interface)
         {
-            if (param->node->attributeFlags & (ATTRIBUTE_INTERNAL | ATTRIBUTE_NODOC))
-                continue;
-            if (param->node->attributeFlags & ATTRIBUTE_READONLY)
-                romembers.push_back(param);
-            else
-                rwmembers.push_back(param);
+            DocHtmlHelper::sectionTitle1(outFile, "Functions");
+            DocHtmlHelper::table(outFile, scope, typeStruct->itable->fields, false);
         }
-
-        if (!rwmembers.empty())
+        else
         {
-            DocHtmlHelper::sectionTitle1(outFile, "Read/Write Members");
-            DocHtmlHelper::table(outFile, scope, rwmembers, false);
-        }
+            VectorNative<TypeInfoParam*> rwmembers, romembers;
+            for (auto param : typeStruct->fields)
+            {
+                if (param->node->attributeFlags & (ATTRIBUTE_INTERNAL | ATTRIBUTE_NODOC))
+                    continue;
+                if (param->node->attributeFlags & ATTRIBUTE_READONLY)
+                    romembers.push_back(param);
+                else
+                    rwmembers.push_back(param);
+            }
 
-        if (!romembers.empty())
-        {
-            DocHtmlHelper::sectionTitle1(outFile, "Read Only Members");
-            DocHtmlHelper::table(outFile, scope, romembers, false);
+            if (!rwmembers.empty())
+            {
+                DocHtmlHelper::sectionTitle1(outFile, "Read/Write Members");
+                DocHtmlHelper::table(outFile, scope, rwmembers, false);
+            }
+
+            if (!romembers.empty())
+            {
+                DocHtmlHelper::sectionTitle1(outFile, "Read Only Members");
+                DocHtmlHelper::table(outFile, scope, romembers, false);
+            }
         }
     }
 
@@ -206,6 +214,14 @@ JobResult DocScopeJob::execute()
     {
         DocHtmlHelper::sectionTitle1(outFile, "Structs");
         DocHtmlHelper::table(outFile, scope, scope->publicStruct);
+    }
+
+    // Interfaces
+    /////////////////////////////////
+    if (!scope->publicInterface.empty())
+    {
+        DocHtmlHelper::sectionTitle1(outFile, "Interfaces");
+        DocHtmlHelper::table(outFile, scope, scope->publicInterface);
     }
 
     // Enums

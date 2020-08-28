@@ -367,6 +367,7 @@ namespace DocHtmlHelper
 
     void htmlStart(Concat& outFile)
     {
+        outFile.init(4 * 1024);
         CONCAT_FIXED_STR(outFile, "<html>\n");
         CONCAT_FIXED_STR(outFile, "<head>\n");
         CONCAT_FIXED_STR(outFile, "<link href=\"swag.documentation.css\" rel=\"stylesheet\" type=\"text/css\" />\n");

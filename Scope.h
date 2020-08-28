@@ -49,6 +49,7 @@ struct Scope
     void               addPublicFunc(AstNode* node);
     void               addPublicGenericFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
+    void               addPublicInterface(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
     void               addPublicAlias(AstNode* node);
@@ -83,6 +84,7 @@ struct Scope
     set<AstNode*>          publicFunc;
     set<AstNode*>          publicGenericFunc;
     set<AstNode*>          publicStruct;
+    set<AstNode*>          publicInterface;
     set<AstNode*>          publicEnum;
     set<AstNode*>          publicConst;
     set<AstNode*>          publicAlias;

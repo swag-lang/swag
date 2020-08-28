@@ -707,7 +707,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->name.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicStruct(node);
+            node->ownerScope->addPublicInterface(node);
     }
 
     // Register symbol with its type

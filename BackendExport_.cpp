@@ -386,17 +386,20 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     {
         for (auto one : scope->publicStruct)
         {
-            AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-            if (node->typeInfo->kind == TypeInfoKind::Interface)
-            {
-                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-                SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node));
-            }
-            else
-            {
-                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-                SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
-            }
+            AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
+        }
+    }
+
+    if (!scope->publicInterface.empty())
+    {
+        for (auto one : scope->publicInterface)
+        {
+            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+            SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node));
         }
     }
 
