@@ -224,7 +224,7 @@
     <ClInclude Include="SpinLock.h" />
     <ClInclude Include="SwagScope.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TokenizerIds.h" />
+    <ClInclude Include="TokenIds.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleSemanticJob.h" />

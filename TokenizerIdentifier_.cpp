@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 #include "Version.h"
+#include "Timer.h"
 
 void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
 {

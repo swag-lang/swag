@@ -149,11 +149,13 @@ char32_t SourceFile::getChar(unsigned& offset)
 {
     char c = getPrivateChar();
     offset = 1;
-
-    // utf8
     if ((c & 0x80) == 0)
         return c;
+    return getCharExtended(c, offset);
+}
 
+char32_t SourceFile::getCharExtended(char c, unsigned& offset)
+{
     char32_t wc;
     if ((c & 0xE0) == 0xC0)
     {

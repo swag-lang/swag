@@ -24,6 +24,7 @@ struct Stats
     atomic<double> outputTime           = 0;
     atomic<double> prepOutputTimeJob    = 0;
     atomic<double> genOutputTime        = 0;
+    atomic<double> tmpTime              = 0;
 };
 
 extern Stats g_Stats;

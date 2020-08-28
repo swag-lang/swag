@@ -313,7 +313,15 @@ void Utf8::operator=(char32_t c)
 
 void Utf8::operator+=(char32_t c)
 {
-    append(c);
+    if (c <= 0x7F)
+    {
+        if (count + 2 > allocated)
+            reserve(count + 2);
+        buffer[count++] = (uint8_t) c;
+        buffer[count] = 0;
+    }
+    else
+        append(c);
 }
 
 char Utf8::back() const

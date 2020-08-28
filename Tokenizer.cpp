@@ -9,7 +9,7 @@ const char* g_TokenNames[] =
     {
 #undef DEFINE_TOKEN_ID
 #define DEFINE_TOKEN_ID(__id) #__id,
-#include "TokenizerIds.h"
+#include "TokenIds.h"
 };
 
 void Tokenizer::setFile(SourceFile* file)

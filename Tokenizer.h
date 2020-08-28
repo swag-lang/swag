@@ -8,7 +8,7 @@ enum class Intrisic;
 enum class TokenId
 {
 #define DEFINE_TOKEN_ID(__id) __id,
-#include "TokenizerIds.h"
+#include "TokenIds.h"
 };
 
 extern const char* g_TokenNames[];
