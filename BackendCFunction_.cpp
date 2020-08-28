@@ -804,9 +804,9 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
         case ByteCodeOp::End:
         case ByteCodeOp::Nop:
         case ByteCodeOp::DecSP:
+        case ByteCodeOp::DecSPBP:
         case ByteCodeOp::IncSP:
         case ByteCodeOp::IncSPPostCall:
-        case ByteCodeOp::CopySPtoBP:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
             if (moduleToGen->buildParameters.buildCfg->backendC.writeByteCodeInstruction)

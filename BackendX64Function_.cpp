@@ -325,8 +325,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::End:
         case ByteCodeOp::Nop:
         case ByteCodeOp::DecSP:
+        case ByteCodeOp::DecSPBP:
         case ByteCodeOp::IncSP:
-        case ByteCodeOp::CopySPtoBP:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
             continue;

@@ -18,12 +18,11 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
         return;
     }
 
-    if (context->bc->numInstructions == 5)
+    if (context->bc->numInstructions == 4)
     {
-        if (context->bc->out[0].op == ByteCodeOp::DecSP &&
-            context->bc->out[1].op == ByteCodeOp::CopySPtoBP &&
-            context->bc->out[2].op == ByteCodeOp::IncSP &&
-            context->bc->out[3].op == ByteCodeOp::Ret)
+        if (context->bc->out[0].op == ByteCodeOp::DecSPBP &&
+            context->bc->out[1].op == ByteCodeOp::IncSP &&
+            context->bc->out[2].op == ByteCodeOp::Ret)
         {
             SWAG_ASSERT(context->bc->callType()->returnType == g_TypeMgr.typeInfoVoid);
             context->bc->isEmpty = true;

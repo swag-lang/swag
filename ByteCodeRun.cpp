@@ -456,6 +456,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->decSP(ip->a.u32);
         break;
     }
+    case ByteCodeOp::DecSPBP:
+    {
+        context->decSP(ip->a.u32);
+        context->bp = context->sp;
+        break;
+    }
     case ByteCodeOp::MemCpy:
     {
         void*    dst  = registersRC[ip->a.u32].pointer;
@@ -558,11 +564,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::PopBP:
     {
         context->bp = context->pop<uint8_t*>();
-        break;
-    }
-    case ByteCodeOp::CopySPtoBP:
-    {
-        context->bp = context->sp;
         break;
     }
     case ByteCodeOp::CopySP:

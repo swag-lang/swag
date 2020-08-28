@@ -838,8 +838,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         PushNode pn(context, funcNode->content);
-        emitInstruction(context, ByteCodeOp::DecSP)->a.u32 = funcNode->stackSize;
-        emitInstruction(context, ByteCodeOp::CopySPtoBP);
+        emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 
     return true;
