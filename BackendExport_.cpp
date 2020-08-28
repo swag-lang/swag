@@ -280,8 +280,16 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
             CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        p->typeInfo->computeScopedName();
-        bufferSwg.addString(p->typeInfo->scopedName);
+
+        if (p->typeInfo->kind == TypeInfoKind::Lambda)
+        {
+            bufferSwg.addString(p->typeInfo->name);
+        }
+        else
+        {
+            p->typeInfo->computeScopedName();
+            bufferSwg.addString(p->typeInfo->scopedName);
+        }
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
         {

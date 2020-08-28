@@ -1,5 +1,13 @@
 #module "tests.compiler.foreign"
 
+public namespace tcf
+{
+    public interface ITcf
+    {
+        call: func(self)
+    }
+}
+
 public func tcf_toto()
 {
 
