@@ -98,7 +98,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
 
     auto r1 = reserveRegisterRC(context);
 
-    auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, r1);
+    auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, r1);
     inst->b.u32 = typeInfo->count;
     emitSafetyBoundCheckLower(context, r0, r1);
 
@@ -161,7 +161,7 @@ void ByteCodeGenJob::emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPo
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
         maxBound       = reserveRegisterRC(context);
-        auto inst      = emitInstruction(context, ByteCodeOp::CopyRAVB32, maxBound);
+        auto inst      = emitInstruction(context, ByteCodeOp::SetImmediate32, maxBound);
         inst->b.u32    = typeArray->count;
         freeMaxBound   = true;
     }

@@ -561,7 +561,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0[1])->b.u32 = typeArray->count;
+        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u32 = typeArray->count;
         freeRegisterRC(context, node);
         exprNode->resultRegisterRC = r0;
         return true;
@@ -663,7 +663,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         node->resultRegisterRC += reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1]);
+        auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1]);
         inst->b.u32 = fromTypeArray->count;
         transformResultToLinear2(context, node);
     }

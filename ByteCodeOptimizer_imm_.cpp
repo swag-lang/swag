@@ -21,13 +21,13 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
-        if (ip->op == ByteCodeOp::CopyRAVB32)
+        if (ip->op == ByteCodeOp::SetImmediate32)
         {
             regsRW[ip->a.u32] = ip->b.u32;
             regs[ip->a.u32]   = ip;
         }
 
-        if (ip->op == ByteCodeOp::CopyRAVB64)
+        if (ip->op == ByteCodeOp::SetImmediate64)
         {
             regsRW[ip->a.u32] = ip->b.u64;
             regs[ip->a.u32]   = ip;

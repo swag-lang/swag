@@ -33,7 +33,7 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op != ByteCodeOp::Jump &&
             !(ip->flags & BCI_START_STMT) &&
             ip != context->bc->out &&
-            ip[-1].op == ByteCodeOp::CopyRAVB32 &&
+            ip[-1].op == ByteCodeOp::SetImmediate32 &&
             ip[-1].a.u32 == ip->a.u32)
         {
             switch (ip->op)

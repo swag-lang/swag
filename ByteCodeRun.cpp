@@ -490,12 +490,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) (registersRC + ip->b.u32);
         break;
     }
-    case ByteCodeOp::CopyRAVB32:
+    case ByteCodeOp::SetImmediate32:
     {
         registersRC[ip->a.u32].u32 = ip->b.u32;
         break;
     }
-    case ByteCodeOp::CopyRAVB64:
+    case ByteCodeOp::SetImmediate64:
     {
         registersRC[ip->a.u32].u64 = ip->b.u64;
         break;

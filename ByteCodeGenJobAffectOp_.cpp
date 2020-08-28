@@ -81,7 +81,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             auto r2        = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
+            emitInstruction(context, ByteCodeOp::SetImmediate64, r2)->b.u64 = typeArray->count;
             emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r2);
 

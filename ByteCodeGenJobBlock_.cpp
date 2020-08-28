@@ -214,7 +214,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     if (loopNode->needIndex())
     {
         loopNode->registerIndex = reserveRegisterRC(context);
-        auto inst               = emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex);
+        auto inst               = emitInstruction(context, ByteCodeOp::SetImmediate32, loopNode->registerIndex);
         inst->b.s32             = -1;
     }
 
@@ -283,7 +283,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     if (whileNode->needIndex())
     {
         whileNode->registerIndex = reserveRegisterRC(context);
-        auto inst                = emitInstruction(context, ByteCodeOp::CopyRAVB32, whileNode->registerIndex);
+        auto inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, whileNode->registerIndex);
         inst->b.s32              = -1;
     }
 
@@ -319,7 +319,7 @@ bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
     if (forNode->needIndex())
     {
         forNode->registerIndex = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::CopyRAVB32, forNode->registerIndex);
+        auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate32, forNode->registerIndex);
         inst->b.s32            = -1;
     }
 

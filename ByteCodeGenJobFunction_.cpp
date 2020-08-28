@@ -462,7 +462,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.length());
+            emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1], (uint32_t) str.length());
             break;
         }
         default:
@@ -675,7 +675,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[0]);
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[1])->b.u32 = 8;
+        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u32 = 8;
         emitInstruction(context, ByteCodeOp::DecPointer32, lastParam->resultRegisterRC, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[1]);
@@ -696,7 +696,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store number of extra parameters
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
+            emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             // Store address on the stack of those parameters. This must be the last push
@@ -716,7 +716,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store number of extra parameters
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | (offset << 32);
+            emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | (offset << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             // Store address on the stack of those parameters. This must be the last push
