@@ -98,7 +98,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|print|error|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|compiler|isbytecode)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|print|error|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|compiler|isbytecode)\\b"
         }
       ]
     },
