@@ -1,12 +1,24 @@
 //#[swag.printbc]
-func toto(x: ...)
+struct TT
 {
-    var xx: [1] s32 = ?
+    x, y: s32
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    a := 55
-    a = a + 1
+    var buf: [100] u8
+    idx := 0'u32
+
+    ptr := @typeof(TT)
+    visit it: ptr.fields
+    {
+        @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))
+        idx += @countof(it.name)
+        const val = ": s32 = 555;"
+        @memcpy(&buf[idx], @dataof(val), @countof(val))
+        idx += @countof(val)
+    }
+
+    buf[idx] = 0
 }

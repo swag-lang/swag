@@ -27,11 +27,18 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regs[ip->a.u32]   = ip;
         }
 
-        if ((flags & OPFLAG_IMM32_B) && !(ip->flags & BCI_IMM_B) && (flags & OPFLAG_READ_B) && regs[ip->b.u32])
+        if (ip->op == ByteCodeOp::CopyRAVB64)
+        {
+            regsRW[ip->a.u32] = ip->b.u64;
+            regs[ip->a.u32]   = ip;
+        }
+
+        if ((flags & OPFLAG_IMM_B) && !(ip->flags & BCI_IMM_B) && (flags & OPFLAG_READ_B) && regs[ip->b.u32])
         {
             context->passHasDoneSomething = true;
             ip->flags |= BCI_IMM_B;
-            ip->b.u64 = regsRW[ip->b.u32];
+            regs[ip->b.u32] = nullptr;
+            ip->b.u64       = regsRW[ip->b.u32];
         }
 
         if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))

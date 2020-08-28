@@ -11,7 +11,11 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
+#define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
+#define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
 #define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
+#define IMMB_U64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
+
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
@@ -927,13 +931,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::SetAtPointer8:
     {
         auto ptr        = registersRC[ip->a.u32].pointer;
-        *(uint8_t*) ptr = registersRC[ip->b.u32].u8;
+        *(uint8_t*) ptr = IMMB_U8(ip);
         break;
     }
     case ByteCodeOp::SetAtPointer16:
     {
         auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint16_t*) ptr = registersRC[ip->b.u32].u16;
+        *(uint16_t*) ptr = IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::SetAtPointer32:
@@ -945,7 +949,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::SetAtPointer64:
     {
         auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint64_t*) ptr = registersRC[ip->b.u32].u64;
+        *(uint64_t*) ptr = IMMB_U64(ip);
         break;
     }
 

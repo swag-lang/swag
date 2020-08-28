@@ -25,10 +25,10 @@ static const uint32_t OPFLAG_WRITE_VAL64_A = 0x00010000;
 static const uint32_t OPFLAG_WRITE_VAL64_B = 0x00020000;
 static const uint32_t OPFLAG_WRITE_VAL64_C = 0x00040000;
 static const uint32_t OPFLAG_WRITE_VAL64_D = 0x00080000;
-static const uint32_t OPFLAG_IMM32_A       = 0x00100000;
-static const uint32_t OPFLAG_IMM32_B       = 0x00200000;
-static const uint32_t OPFLAG_IMM32_C       = 0x00400000;
-static const uint32_t OPFLAG_IMM32_D       = 0x00800000;
+static const uint32_t OPFLAG_IMM_A         = 0x00100000;
+static const uint32_t OPFLAG_IMM_B         = 0x00200000;
+static const uint32_t OPFLAG_IMM_C         = 0x00400000;
+static const uint32_t OPFLAG_IMM_D         = 0x00800000;
 
 enum class ByteCodeOp : uint16_t
 {

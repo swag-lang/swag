@@ -155,6 +155,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     else if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
         g_Log.print(format("D {0x%llx} ", ip->d.u32));
 
+    g_Log.setColor(LogColor::DarkMagenta);
     if (ip->flags & BCI_IMM_A)
         g_Log.print("IMMA ");
     if (ip->flags & BCI_IMM_B)

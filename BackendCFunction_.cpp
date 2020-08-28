@@ -965,10 +965,16 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::SetAtPointer8:
-            concat.addStringFormat("*(__u8_t*)r[%u].p=r[%u].u8;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("*(__u8_t*)r[%u].p=%u;", ip->a.u32, ip->b.u8);
+            else
+                concat.addStringFormat("*(__u8_t*)r[%u].p=r[%u].u8;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer16:
-            concat.addStringFormat("*(__u16_t*)r[%u].p=r[%u].u16;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("*(__u16_t*)r[%u].p=%u;", ip->a.u32, ip->b.u16);
+            else
+                concat.addStringFormat("*(__u16_t*)r[%u].p=r[%u].u16;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer32:
             if (ip->flags & BCI_IMM_B)
@@ -977,7 +983,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
                 concat.addStringFormat("*(__u32_t*)r[%u].p=r[%u].u32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::SetAtPointer64:
-            concat.addStringFormat("*(__u64_t*)r[%u].p=r[%u].u64;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("*(__u64_t*)r[%u].p=0x%I64x;", ip->a.u32, ip->b.u64);
+            else
+                concat.addStringFormat("*(__u64_t*)r[%u].p=r[%u].u64;", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::SetZeroAtPointer8:
