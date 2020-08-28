@@ -611,12 +611,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        switch (child->kind)
-        {
-        case AstNodeKind::AttrUse:
-        case AstNodeKind::DocComment:
+        if (child->kind != AstNodeKind::VarDecl)
             continue;
-        }
 
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
@@ -626,7 +622,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam             = g_Allocator.alloc<TypeInfoParam>();
             typeParam->namedParam = child->name;
             typeParam->name       = child->typeInfo->name;
-            typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->node       = child;
@@ -635,6 +630,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeITable->fields.push_back(typeParam);
 
             // Verify signature
+            typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
             SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format("missing parameters for interface member '%s' ('self' expected as first parameter)", child->name.c_str())}));
