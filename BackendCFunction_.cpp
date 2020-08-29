@@ -1485,7 +1485,10 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            concat.addStringFormat("swag_runtime_assert(r[%u].b,\"%s\",%d,\"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
+            if(ip->flags & BCI_IMM_A)
+                concat.addStringFormat("swag_runtime_assert(%u,\"%s\",%d,\"%s\");", ip->a.b, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
+            else
+                concat.addStringFormat("swag_runtime_assert(r[%u].b,\"%s\",%d,\"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].p=(__u8_t*)malloc(r[%u].u32);", ip->a.u32, ip->b.u32);

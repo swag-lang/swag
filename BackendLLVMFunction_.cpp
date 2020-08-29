@@ -2282,7 +2282,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicAssert:
         {
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, %s);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
-            auto r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            llvm::Value* r0;
+            if (ip->flags & BCI_IMM_A)
+                r0 = builder.getInt8(ip->a.b);
+            else
+                r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
             auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
             auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);

@@ -1729,7 +1729,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicAssert:
             //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_A)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u8, RCX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RDX);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line + 1, R8);
             if (ip->d.pointer)
