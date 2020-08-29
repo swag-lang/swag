@@ -383,7 +383,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
-    case TokenId::CompilerTag:
+    case TokenId::CompilerHasTag:
     {
         auto front = node->childs.front();
         SWAG_CHECK(evaluateConstExpression(context, front));
@@ -391,18 +391,29 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
             return true;
         SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#tag' name cannot be evaluated at compile time"}));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#tag' parameter must be a string ('%s' provided)", front->typeInfo->name.c_str())}));
-        auto tag = g_Workspace.hasTag(front->computedValue.text);
-        if (!tag)
+        auto tag                  = g_Workspace.hasTag(front->computedValue.text);
+        node->typeInfo            = g_TypeMgr.typeInfoBool;
+        node->computedValue.reg.b = tag ? true : false;
+        node->setFlagsValueIsComputed();
+        return true;
+    }
+    case TokenId::CompilerTagVal:
+    {
+        auto front = node->childs.front();
+        auto back  = node->childs.back();
+        SWAG_CHECK(evaluateConstExpression(context, back));
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "'#tag' name cannot be evaluated at compile time"}));
+        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tag' parameter must be a string ('%s' provided)", back->typeInfo->name.c_str())}));
+        node->typeInfo = front->typeInfo;
+        auto tag       = g_Workspace.hasTag(back->computedValue.text);
+        if (tag)
         {
-            node->typeInfo            = g_TypeMgr.typeInfoBool;
-            node->computedValue.reg.b = false;
-        }
-        else
-        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK));
             node->typeInfo      = tag->type;
             node->computedValue = tag->value;
         }
-
         node->setFlagsValueIsComputed();
         return true;
     }

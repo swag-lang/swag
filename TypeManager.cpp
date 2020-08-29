@@ -371,10 +371,17 @@ TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
     return typeInfo;
 }
 
+TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
+{
+    SWAG_ASSERT(literalType < LiteralType::TT_MAX);
+    auto result = g_LiteralTypeToType[(int) literalType];
+    SWAG_ASSERT(result);
+    return result;
+}
+
 TypeInfo* TypeManager::literalTypeToType(const Token& token)
 {
-    SWAG_ASSERT(token.literalType < LiteralType::TT_MAX);
-    auto result = g_LiteralTypeToType[(int) token.literalType];
+    auto result = literalTypeToType(token.literalType);
     SWAG_ASSERT(result);
     result = makeUntypedType(result, token.literalValue.u32);
     return result;

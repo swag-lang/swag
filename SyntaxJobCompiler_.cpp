@@ -32,6 +32,13 @@ bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node));
+
+    if (node->token.id == TokenId::CompilerTagVal)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(doExpression(node));
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
     return true;

@@ -10,6 +10,8 @@
 #include "CommandLineParser.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "LanguageSpec.h"
+#include "Tokenizer.h"
 
 Workspace g_Workspace;
 
@@ -113,23 +115,70 @@ void Workspace::setupTags()
     // Command line tags
     for (auto& tag : g_CommandLine.tags)
     {
-        Utf8 oneTagName = tag;
+        OneTag oneTag;
+        Utf8   oneTagName = tag;
         oneTagName.trim();
 
         vector<Utf8> tokens;
         tokenize(oneTagName, '=', tokens);
+
         if (tokens.size() == 2)
         {
-            OneTag oneTag;
-            oneTag.type = g_TypeMgr.typeInfoString;
-            tokens[1].trim();
-            oneTag.name       = tokens[0];
-            oneTag.value.text = tokens[1];
-            tags.push_back(oneTag);
+            // Get the type
+            vector<Utf8> tokens1;
+            tokenize(tokens[0], ':', tokens1);
+            if (tokens1.size() == 2)
+            {
+                auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
+                if (it == g_LangSpec.nativeTypes.end())
+                {
+                    g_Log.error(format("fatal error: cannot resolve type '%s' of command line tag '%s'", tokens1[1].c_str(), tokens1[0].c_str()));
+                    exit(-1);
+                }
+
+                switch (it->second)
+                {
+                case LiteralType::TT_F32:
+                case LiteralType::TT_F64:
+                    oneTag.value.reg.f64 = atof(tokens[1].c_str());
+                    break;
+                case LiteralType::TT_S8:
+                case LiteralType::TT_S16:
+                case LiteralType::TT_S32:
+                case LiteralType::TT_S64:
+                case LiteralType::TT_U8:
+                case LiteralType::TT_U16:
+                case LiteralType::TT_U32:
+                case LiteralType::TT_U64:
+                    oneTag.value.reg.s64 = atoll(tokens[1].c_str());
+                    break;
+                case LiteralType::TT_BOOL:
+                    oneTag.value.reg.b = tokens[1] == "true" ? true : false;
+                    break;
+                case LiteralType::TT_STRING:
+                    oneTag.value.text = tokens1[1];
+                    break;
+                default:
+                    g_Log.error(format("fatal error: type '%s' for tag '%s' is not a valid tag type", tokens1[1].c_str(), tokens1[0].c_str()));
+                    exit(-1);
+                }
+
+                oneTag.type = TypeManager::literalTypeToType(it->second);
+                tokens1[0].trim();
+                oneTag.name = tokens1[0];
+                tags.push_back(oneTag);
+            }
+            else
+            {
+                oneTag.type = g_TypeMgr.typeInfoString;
+                tokens[1].trim();
+                oneTag.name       = tokens[0];
+                oneTag.value.text = tokens[1];
+                tags.push_back(oneTag);
+            }
         }
         else
         {
-            OneTag oneTag;
             oneTag.type        = g_TypeMgr.typeInfoBool;
             oneTag.value.reg.b = true;
             oneTag.name        = oneTagName;

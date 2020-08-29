@@ -66,6 +66,7 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
+    static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(const Token& token);
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);

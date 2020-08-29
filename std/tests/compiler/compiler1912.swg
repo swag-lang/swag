@@ -3,9 +3,9 @@ func toto() => "tag"
 
 #test
 {
-    @print(#tag("tag1"))
+    @print(#tagval(f64, "tag1"))
 
-    if(#tag(toto()))
+    if(#hastag(toto()))
     {
         @print("tag\n")
     }
