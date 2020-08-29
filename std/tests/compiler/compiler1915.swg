@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     let a = 1'u64

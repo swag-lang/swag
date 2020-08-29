@@ -53,8 +53,6 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             regsRW[ip->d.u32] |= READ;
         }
 
-        // Optimize only A. This is on purpose because this is what will make relevant changes.
-        // Not that optimizing other registers can create some problems (for example C, with MkInterface);
         if (flags & OPFLAG_WRITE_A)
         {
             if (regs[ip->a.u32])
@@ -63,10 +61,34 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 regs[ip->a.u32] = ip;
         }
 
+        if (flags & OPFLAG_WRITE_B)
+        {
+            if (regs[ip->b.u32])
+                setNop(context, regs[ip->b.u32]);
+            if (!(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+                regs[ip->b.u32] = ip;
+        }
+
+        if (flags & OPFLAG_WRITE_C)
+        {
+            if (regs[ip->c.u32])
+                setNop(context, regs[ip->c.u32]);
+            if (!(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D)))
+                regs[ip->c.u32] = ip;
+        }
+
+        if (flags & OPFLAG_WRITE_D)
+        {
+            if (regs[ip->d.u32])
+                setNop(context, regs[ip->d.u32]);
+            if (!(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C)))
+                regs[ip->d.u32] = ip;
+        }
+
         // If we leave the function, then we can discard all pending write that are not read
         if (ip->op == ByteCodeOp::Ret)
         {
-            for (int i = 0; i < maxReg; i++)
+            for (uint32_t i = 0; i < maxReg; i++)
             {
                 if (regs[i])
                     setNop(context, regs[i]);

@@ -20,7 +20,6 @@ impl IConvert for TOTO
     }
 }
 
-//#[swag.printbc]
 #test
 {
     var buf: ConcatBuffer
