@@ -9,6 +9,17 @@
 #include "swag_runtime.h"
 #include "Module.h"
 
+#define MK_BINOP_CAB_S32(__op)                                  \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);              \
+    if (ip->flags & BCI_IMM_A)                                  \
+        concat.addStringFormat("%d%s", ip->a.s32, __op);        \
+    else                                                        \
+        concat.addStringFormat("r[%u].s32%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                  \
+        concat.addStringFormat("%d;", ip->b.s32);               \
+    else                                                        \
+        concat.addStringFormat("r[%u].s32;", ip->b.u32);
+
 #define MK_BINOP_CAB_U32(__op)                                  \
     concat.addStringFormat("r[%u].b=", ip->c.u32);              \
     if (ip->flags & BCI_IMM_A)                                  \
@@ -1330,7 +1341,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::CompareOpGreaterS32:
-            concat.addStringFormat("r[%u].b=r[%u].s32>r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_S32(">");
             break;
         case ByteCodeOp::CompareOpGreaterS64:
             concat.addStringFormat("r[%u].b=r[%u].s64>r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -1349,7 +1360,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::CompareOpLowerS32:
-            concat.addStringFormat("r[%u].b=r[%u].s32<r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_S32("<");
             break;
         case ByteCodeOp::CompareOpLowerS64:
             concat.addStringFormat("r[%u].b=r[%u].s64<r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
