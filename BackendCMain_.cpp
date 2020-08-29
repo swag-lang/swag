@@ -30,7 +30,8 @@ bool BackendC::emitMain(OutputFile& bufferC)
     {
         Utf8 nameDown = dep->name;
         nameDown.replaceAll('.', '_');
-        bufferC.addStringFormat("swag_runtime_loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
+        auto nameLib = nameDown + OS::getDllFileExtension();
+        bufferC.addStringFormat("swag_runtime_loadDynamicLibrary(\"%s\");\n", nameLib.c_str());
         if (dep->generated)
         {
             bufferC.addStringFormat("extern SWAG_IMPORT void %s_globalInit(struct swag_process_infos_t*);\n", nameDown.c_str());

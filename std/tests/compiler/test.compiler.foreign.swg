@@ -1,20 +1,5 @@
 #module "tests.compiler.foreign"
 
-public namespace tcf
-{
-    namespace BB
-    {
-        public struct AA
-        {
-        }
-    }
-
-    public interface ITcf
-    {
-        call: func(self, *BB.AA)
-    }
-}
-
 public func tcf_toto()
 {
 

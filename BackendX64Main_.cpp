@@ -69,7 +69,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     {
         auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
-        emitGlobalString(pp, precompileIndex, nameDown, RCX);
+        auto nameLib = nameDown + OS::getDllFileExtension();
+        emitGlobalString(pp, precompileIndex, nameLib, RCX);
         emitCall(pp, "swag_runtime_loadDynamicLibrary");
 
         if (dep->generated)

@@ -266,7 +266,7 @@ bool Backend::emitPublicAliasSwg(AstNode* node)
 {
     CONCAT_FIXED_STR(bufferSwg, "\talias ");
     bufferSwg.addString(node->name.c_str());
-    CONCAT_FIXED_STR(bufferSwg, "= ");
+    CONCAT_FIXED_STR(bufferSwg, " = ");
     SWAG_CHECK(Ast::output(bufferSwg, node->childs.front()));
 
     CONCAT_FIXED_STR(bufferSwg, "\n");

@@ -504,9 +504,14 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
+    uint32_t subTotal = 4;
     for (auto str : pp.stringTable)
+    {
         concat.addString(str->c_str(), str->length() + 1);
+        subTotal += str->length() + 1;
+    }
 
+    SWAG_ASSERT(subTotal == pp.stringTableOffset);
     return true;
 }
 

@@ -268,6 +268,11 @@ namespace OS
         return ok;
     }
 
+    string getDllFileExtension()
+    {
+        return ".dll";
+    }
+
     string getOutputFileExtension(BackendOutputType type)
     {
         switch (type)

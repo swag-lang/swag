@@ -81,7 +81,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     {
         auto nameDown = dep->name;
         nameDown.replaceAll('.', '_');
-        auto ptrStr = builder.CreateGlobalStringPtr(nameDown.c_str());
+        auto nameLib = nameDown + OS::getDllFileExtension();
+        auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
         builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
 
         if (dep->generated)
