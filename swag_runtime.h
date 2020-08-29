@@ -72,10 +72,6 @@ struct BuildCfgBackendX64
     swag_runtime_uint32_t maxFunctionPerFile = 1024;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 struct BuildCfg
 {
     // Debug
