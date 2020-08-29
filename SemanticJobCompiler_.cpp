@@ -389,8 +389,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#tag' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#tag' parameter must be a string ('%s' provided)", front->typeInfo->name.c_str())}));
+        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#hastag' name cannot be evaluated at compile time"}));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#hastag' parameter must be a string ('%s' provided)", front->typeInfo->name.c_str())}));
         auto tag                  = g_Workspace.hasTag(front->computedValue.text);
         node->typeInfo            = g_TypeMgr.typeInfoBool;
         node->computedValue.reg.b = tag ? true : false;
@@ -404,13 +404,21 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, back));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "'#tag' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tag' parameter must be a string ('%s' provided)", back->typeInfo->name.c_str())}));
+        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "'#tagval' name cannot be evaluated at compile time"}));
+        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tagval' parameter must be a string ('%s' provided)", back->typeInfo->name.c_str())}));
         node->typeInfo = front->typeInfo;
         auto tag       = g_Workspace.hasTag(back->computedValue.text);
         if (tag)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK));
+            if (!TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            {
+                Diagnostic diag(front, front->token, format("type '%s' and type '%s' defined in the command line for '%s' are incompatible", front->typeInfo->name.c_str(), tag->type->name.c_str(), tag->name.c_str()));
+                Diagnostic note(front, front->token, format("this is the related command line option: '%s'", tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                note.hasFile     = false;
+                note.printSource = false;
+                return context->report(diag, &note);
+            }
+
             node->typeInfo      = tag->type;
             node->computedValue = tag->value;
         }

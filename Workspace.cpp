@@ -116,7 +116,9 @@ void Workspace::setupTags()
     for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;
-        Utf8   oneTagName = tag;
+        oneTag.cmdLine = tag;
+
+        Utf8 oneTagName = tag;
         oneTagName.trim();
 
         vector<Utf8> tokens;
@@ -124,11 +126,16 @@ void Workspace::setupTags()
 
         if (tokens.size() == 2)
         {
+            tokens[0].trim();
+            tokens[1].trim();
+
             // Get the type
             vector<Utf8> tokens1;
             tokenize(tokens[0], ':', tokens1);
             if (tokens1.size() == 2)
             {
+                tokens1[0].trim();
+                tokens1[1].trim();
                 auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
                 if (it == g_LangSpec.nativeTypes.end())
                 {

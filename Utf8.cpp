@@ -318,7 +318,7 @@ void Utf8::operator+=(char32_t c)
         if (count + 2 > allocated)
             reserve(count + 2);
         buffer[count++] = (uint8_t) c;
-        buffer[count] = 0;
+        buffer[count]   = 0;
     }
     else
         append(c);
@@ -368,7 +368,7 @@ void Utf8::trimRight()
 {
     if (!count)
         return;
-    while (count && UTF8_IS_BLANK(buffer[count]))
+    while (count && UTF8_IS_BLANK(buffer[count - 1]))
         count--;
 }
 

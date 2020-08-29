@@ -7,6 +7,7 @@ struct Scope;
 
 struct OneTag
 {
+    Utf8          cmdLine;
     Utf8          name;
     TypeInfo*     type;
     ComputedValue value;
