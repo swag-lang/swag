@@ -74,7 +74,7 @@ struct Job : public PoolElem
     void setPending(SymbolName* symbolToWait);
 
     shared_mutex           executeMutex;
-    shared_mutex           mutexDependentNodes;
+    shared_mutex           mutexDependent;
     DependentJobs          dependentJobs;
     VectorNative<AstNode*> dependentNodes;
     VectorNative<AstNode*> nodes;

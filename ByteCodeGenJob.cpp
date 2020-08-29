@@ -289,7 +289,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (flags & ASKBC_ADD_DEP_NODE)
     {
         SWAG_ASSERT(job);
-        scoped_lock lk1(job->mutexDependentNodes);
+        scoped_lock lk1(job->mutexDependent);
         job->dependentNodes.push_back(node);
     }
 
@@ -328,7 +328,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         }
 
         if (flags & ASKBC_WAIT_DONE)
+        {
+            scoped_lock lk1(node->byteCodeJob->mutexDependent);
             node->byteCodeJob->dependentJobs.add(job);
+        }
 
         return;
     }
@@ -567,7 +570,7 @@ JobResult ByteCodeGenJob::execute()
                 if (dep->byteCodeJob->dependentNodes.empty())
                     continue;
 
-                shared_lock lk1(dep->byteCodeJob->mutexDependentNodes);
+                shared_lock lk1(dep->byteCodeJob->mutexDependent);
                 for (auto newDep : dep->byteCodeJob->dependentNodes)
                 {
                     auto it = done.find(newDep);

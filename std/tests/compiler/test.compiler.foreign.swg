@@ -135,3 +135,19 @@ public func tcf_toto18(x, y: s64, fct: func(s64, s64))
     @assert(y == 666)
     fct(x,y)
 }
+
+
+public namespace tcf
+{
+    namespace BB
+    {
+        public struct AA
+        {
+        }
+    }
+
+    public interface ITcf
+    {
+        call: func(self, *BB.AA)
+    }
+}

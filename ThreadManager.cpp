@@ -100,7 +100,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     // Some jobs need to be run because this one is finished
     if (result == JobResult::ReleaseJob)
     {
-        SWAG_RACE_CONDITION_WRITE(job->dependentJobs.raceCondition);
+        scoped_lock lk1(job->mutexDependent);
         for (auto toRun : job->dependentJobs.list)
             addJobNoLock(toRun);
         job->dependentJobs.clear();
