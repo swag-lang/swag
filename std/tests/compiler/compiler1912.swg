@@ -3,8 +3,13 @@ func toto() => "tag"
 
 #test
 {
+    if(#tag("tag1"))
+    {
+        @print("tag1\n")
+    }
+
     if(#tag(toto()))
     {
-        @print("toto\n")
+        @print("tag\n")
     }
 }
