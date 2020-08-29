@@ -44,7 +44,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     if (ptrPointer->ptrCount != 1)
         return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
 
-    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
+    if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             return context->report({node, format("'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')", ptrPointer->pointedType->name.c_str(), second->typeInfo->name.c_str())});

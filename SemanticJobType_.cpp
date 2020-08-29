@@ -169,7 +169,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // Otherwise, this is strange, we should have a type
-    SWAG_VERIFY(typeNode->typeInfo, internalError(context, "resolveTypeExpression, null type !"));
+    SWAG_VERIFY(typeNode->typeInfo, internalError(context, "resolveType, null type !"));
 
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier)
@@ -286,7 +286,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
     typeNode->computedValue.reg.pointer = (uint8_t*) typeNode->typeInfo;
     if (!(typeNode->flags & AST_HAS_STRUCT_PARAMETERS))
-        typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
+        typeNode->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
 
     // Is this a const pointer to a typeinfo ?
     // We need to detect that special kind of pointer to set TYPEINFO_TYPEINFO_PTR.
