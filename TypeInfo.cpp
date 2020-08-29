@@ -150,6 +150,16 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
     return true;
 }
 
+bool TypeInfo::isPointerToTypeInfo()
+{
+    if (kind != TypeInfoKind::Pointer)
+        return false;
+    auto ptr = (TypeInfoPointer*) this;
+    if (ptr->ptrCount != 1)
+        return false;
+    return ptr->finalType->flags & TYPEINFO_STRUCT_TYPEINFO;
+}
+
 bool TypeInfo::isInitializerList()
 {
     if (kind != TypeInfoKind::TypeListTuple)

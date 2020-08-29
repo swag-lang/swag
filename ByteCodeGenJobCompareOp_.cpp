@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
-        if (leftTypeInfo->flags & TYPEINFO_TYPEINFO_PTR || rightTypeInfo->flags & TYPEINFO_TYPEINFO_PTR)
+        if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
             emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, r1, r2);
 
         // Simple pointer compare

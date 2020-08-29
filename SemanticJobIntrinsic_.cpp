@@ -51,7 +51,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
-    if (!(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR))
+    if (!(second->typeInfo->isPointerToTypeInfo()))
         return context->report({node, "'@mkany' must have a 'const *swag.TypeInfo' or a type value as a second parameter"});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
@@ -90,7 +90,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     if (ptrPointer2->ptrCount != 1)
         return context->report({node, "'@mkinterface' must have a one dimension pointer as a second parameter"});
 
-    SWAG_VERIFY(second->typeInfo->flags & TYPEINFO_TYPEINFO_PTR, context->report({node, "'@mkinterface' must have a 'const *swag.TypeInfo' (i.e. a type) as a second parameter"}));
+    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({node, "'@mkinterface' must have a 'const *swag.TypeInfo' (i.e. a type) as a second parameter"}));
     SWAG_VERIFY(third->typeInfo->kind == TypeInfoKind::Interface, context->report({node, "'@mkinterface' must have an interface as a third parameter"}));
 
     node->typeInfo = third->typeInfo;

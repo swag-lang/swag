@@ -264,7 +264,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Pointer arithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY((leftTypeInfo->flags & TYPEINFO_TYPEINFO_PTR) == 0, context->report({left, "pointer arithmetic not allowed on 'TypeInfo'"}));
+            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'TypeInfo'"}));
 
             if (rightTypeInfo->nativeType != NativeTypeKind::S32 &&
                 rightTypeInfo->nativeType != NativeTypeKind::S64 &&
