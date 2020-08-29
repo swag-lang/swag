@@ -110,7 +110,26 @@ OneTag* Workspace::hasTag(const Utf8& name)
     return nullptr;
 }
 
-void Workspace::setupTags()
+void Workspace::setupInternalTags()
+{
+    OneTag oneTag;
+
+    // swag.endian = "little" or "big" depending on the architecture
+    switch (g_CommandLine.arch)
+    {
+    case BackendArch::X64:
+        oneTag.type       = g_TypeMgr.typeInfoString;
+        oneTag.value.text = "little";
+        oneTag.name       = "swag.endian";
+        tags.push_back(oneTag);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+}
+
+void Workspace::setupUserTags()
 {
     // Command line tags
     for (auto& tag : g_CommandLine.tags)
@@ -271,7 +290,8 @@ void Workspace::createNew()
 void Workspace::setup()
 {
     setupPaths();
-    setupTags();
+    setupInternalTags();
+    setupUserTags();
 
     if (workspacePath.empty())
     {

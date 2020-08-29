@@ -6,32 +6,7 @@
 
 namespace std
 {
-    // Setup
-    #if #arch == "x64"
-    {
-        public const BIG_ENDIAN = false
-    }
-    #else
-    {
-        #assert(false, "invalid arch:" ~ #arch)
-    }
-
-    // Platform setup
-    #if #os == "windows"
-    {
-        public const WINDOWS = true
-    }
-    #else
-    {
-        #assert(false, "invalid os:" ~ #os)
-    }
-
-    #if #cfg != "final"
-    {
-        public const ASSERT = true
-    }
-    #else
-    {
-        public const ASSERT = false
-    }
+    public const BIG_ENDIAN = #tagval(string, "swag.endian") == "big"
+    public const WINDOWS = #os == "windows"
+    public const ASSERT = #cfg == "debug" || #cfg == "fast-debug" || #hastag("swag.std.assert")
 }

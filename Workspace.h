@@ -24,7 +24,8 @@ struct Workspace
 
     void    addBootstrap();
     void    setupPaths();
-    void    setupTags();
+    void    setupInternalTags();
+    void    setupUserTags();
     void    setup();
     Module* getModuleByName(const Utf8& moduleName);
     void    deleteFolderContent(const fs::path& path);

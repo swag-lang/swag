@@ -84,7 +84,7 @@ bool Module::setup(const Utf8& moduleName)
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
-    else if (g_CommandLine.buildCfg == "release")
+    else if (g_CommandLine.buildCfg == "fast-debug")
     {
         buildCfg.byteCodeOptimize         = 2;
         buildCfg.safetyGuards             = true;
@@ -92,7 +92,7 @@ bool Module::setup(const Utf8& moduleName)
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
-    else if (g_CommandLine.buildCfg == "final")
+    else if (g_CommandLine.buildCfg == "release")
     {
         buildCfg.byteCodeOptimize         = 2;
         buildCfg.safetyGuards             = false;
