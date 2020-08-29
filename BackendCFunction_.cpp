@@ -1485,7 +1485,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            MK_ASSERT(format("r[%u].b", ip->a.u32).c_str(), ip->d.pointer);
+            concat.addStringFormat("swag_runtime_assert(r[%u].b,\"%s\",%d,\"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             break;
         case ByteCodeOp::IntrinsicAlloc:
             concat.addStringFormat("r[%u].p=(__u8_t*)malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
