@@ -1,6 +1,3 @@
-
-
-
 func(T) valueof(x: any)->T
 {
 	ptr := cast(*T) @dataof(x)

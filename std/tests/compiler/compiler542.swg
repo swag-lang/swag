@@ -22,7 +22,7 @@ namespace titi
 
 //#[swag.printbc]
 #test
-{	
+{
 	a = false
 	b = false
 	@assert(a == false)

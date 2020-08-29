@@ -31,6 +31,17 @@
     else                                                        \
         concat.addStringFormat("r[%u].u32;", ip->b.u32);
 
+#define MK_BINOP_CAB_U8(__op)                                  \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);             \
+    if (ip->flags & BCI_IMM_A)                                 \
+        concat.addStringFormat("%u%s", ip->a.u8, __op);        \
+    else                                                       \
+        concat.addStringFormat("r[%u].u8%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                 \
+        concat.addStringFormat("%u;", ip->b.u8);               \
+    else                                                       \
+        concat.addStringFormat("r[%u].u8;", ip->b.u32);
+
 BackendFunctionBodyJob* BackendC::newFunctionJob()
 {
     return g_Pool_backendCFunctionBodyJob.alloc();
@@ -1379,7 +1390,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::CompareOpEqual8:
-            concat.addStringFormat("r[%u].b=r[%u].u8==r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_U8("==");
             break;
         case ByteCodeOp::CompareOpEqual16:
             concat.addStringFormat("r[%u].b=r[%u].u16==r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
@@ -1485,7 +1496,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            if(ip->flags & BCI_IMM_A)
+            if (ip->flags & BCI_IMM_A)
                 concat.addStringFormat("swag_runtime_assert(%u,\"%s\",%d,\"%s\");", ip->a.b, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             else
                 concat.addStringFormat("swag_runtime_assert(r[%u].b,\"%s\",%d,\"%s\");", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);

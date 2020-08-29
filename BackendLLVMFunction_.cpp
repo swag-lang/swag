@@ -9,7 +9,7 @@
 #include "Ast.h"
 #include "OS.h"
 
-#define MK_BINOP_CAB()                                                   \
+#define MK_BINOP32_CAB()                                                 \
     auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));             \
     llvm::Value *r1, *r2;                                                \
     if (ip->flags & BCI_IMM_A)                                           \
@@ -20,6 +20,18 @@
         r2 = builder.getInt32(ip->b.u32);                                \
     else                                                                 \
         r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+#define MK_BINOP8_CAB()                                                 \
+    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));            \
+    llvm::Value *r1, *r2;                                               \
+    if (ip->flags & BCI_IMM_A)                                          \
+        r1 = builder.getInt8(ip->a.u8);                                 \
+    else                                                                \
+        r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32))); \
+    if (ip->flags & BCI_IMM_B)                                          \
+        r2 = builder.getInt8(ip->b.u32);                                \
+    else                                                                \
+        r2 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
 
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
@@ -1938,7 +1950,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpGreaterS32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP_CAB();
+            MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
@@ -1958,7 +1970,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpGreaterU32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP_CAB();
+            MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
@@ -2001,7 +2013,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpLowerS32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP_CAB();
+            MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
@@ -2021,7 +2033,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpLowerU32:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP_CAB();
+            MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
@@ -2064,10 +2076,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpEqual8:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateICmpEQ(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP8_CAB();
+            auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;

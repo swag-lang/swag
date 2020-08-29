@@ -976,7 +976,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::CompareOpEqual8:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u8 == registersRC[ip->b.u32].u8;
+        registersRC[ip->c.u32].b = IMMA_U8(ip) == IMMB_U8(ip);
         break;
     }
     case ByteCodeOp::CompareOpEqual16:
