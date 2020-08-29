@@ -42,7 +42,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--cfg-optim-size", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSize, "true|false|default", "force the build configuration to (not) be optimized for size");
     addArg("--arch", nullptr, CommandLineType::EnumInt, &cmdLine->arch, "x64", "set the target architecture");
     addArg("--os", nullptr, CommandLineType::EnumInt, &cmdLine->os, "windows", "set the target operating system");
-    addArg("--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "set a build tag, with an optional associated value");
+    addArg("--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "set a build tag, with an optional associated type and value");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "c|llvm|x64", "the type of backend to use");
