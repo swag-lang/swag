@@ -1,6 +1,10 @@
-//#[swag.printbc]
+#module "compiler1911"
+#unittest error
+
 #test
 {
-    x := 666'u32
-    b := x
+    if(#tag(6))
+    {
+
+    }
 }

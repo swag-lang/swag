@@ -383,6 +383,19 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
+    case TokenId::CompilerTag:
+    {
+        auto front = node->childs.front();
+        SWAG_CHECK(evaluateConstExpression(context, front));
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#tag' name cannot be evaluated at compile time"}));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#tag' parameter must be a string ('%s' provided)", front->typeInfo->name.c_str())}));
+        node->typeInfo            = g_TypeMgr.typeInfoBool;
+        node->computedValue.reg.b = g_Workspace.hasTag(node->computedValue.text);
+        node->setFlagsValueIsComputed();
+        return true;
+    }
 
     case TokenId::CompilerLocation:
         node->typeInfo                 = g_Workspace.swagScope.regTypeInfoSourceLoc;

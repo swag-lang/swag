@@ -22,6 +22,21 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
     return doCompilerIfFor(parent, result, AstNodeKind::Statement);

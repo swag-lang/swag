@@ -137,6 +137,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
     }
 
+    case TokenId::CompilerTag:
+        SWAG_CHECK(doCompilerTag(parent, result));
+        break;
+
     case TokenId::SymLeftParen:
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "expression is empty"));

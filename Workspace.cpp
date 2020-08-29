@@ -246,6 +246,12 @@ Utf8 Workspace::GetOsName()
     }
 }
 
+bool Workspace::hasTag(const Utf8& name)
+{
+    auto it = tags.find(name);
+    return it != tags.end();
+}
+
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
@@ -355,7 +361,7 @@ void Workspace::checkPendingJobs()
                             typeName = format("(type is %s)", firstNode->typeInfo->name.c_str());
 
                         if (pendingJob->waitingSymbolSolved && !name.empty())
-                            pendingJob->sourceFile->report({ node, node->token, format("cannot resolve %s '%s' %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), name.c_str(), typeName.c_str(), pendingJob->waitingSymbolSolved->getFullName().c_str()) });
+                            pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s '%s' %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), name.c_str(), typeName.c_str(), pendingJob->waitingSymbolSolved->getFullName().c_str())});
                         else if (pendingJob->waitingSymbolSolved)
                             pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->getFullName().c_str())});
                         else
