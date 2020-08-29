@@ -28,6 +28,20 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 setNop(context, ip);
         }
 
+        if (ip->op == ByteCodeOp::JumpIfFalse && ip->b.s32 == 1 && ip[1].op == ByteCodeOp::Jump)
+        {
+            ip->op = ByteCodeOp::JumpIfTrue;
+            ip->b.s32 = ip[1].b.s32 + 1;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::JumpIfTrue && ip->b.s32 == 1 && ip[1].op == ByteCodeOp::Jump)
+        {
+            ip->op    = ByteCodeOp::JumpIfFalse;
+            ip->b.s32 = ip[1].b.s32 + 1;
+            setNop(context, ip + 1);
+        }
+
         // If a conditional jump has a constant value (preceded with a constant assign to the register that
         // will be tested by the jump condition), then we can evaluate the jump right now
         if (ip->op != ByteCodeOp::Jump &&
