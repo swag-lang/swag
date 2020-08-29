@@ -76,7 +76,7 @@ struct CommandLine
     string      buildCfgOptimSize  = "default";
     BackendOs   os                 = BackendOs::Windows;
     BackendArch arch               = BackendArch::X64;
-    string      tags;
+    set<string> tags;
 
     // Backend
     BackendType backendType = BackendType::LLVM;

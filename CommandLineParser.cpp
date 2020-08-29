@@ -42,7 +42,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--cfg-optim-size", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSize, "true|false|default", "force the build configuration to (not) be optimized for size");
     addArg("--arch", nullptr, CommandLineType::EnumInt, &cmdLine->arch, "x64", "set the target architecture");
     addArg("--os", nullptr, CommandLineType::EnumInt, &cmdLine->os, "windows", "set the target operating system");
-    addArg("--tags", nullptr, CommandLineType::String, &cmdLine->tags, nullptr, "set the list of build tags, as a list of names separated with blanks");
+    addArg("--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "set a build tag, with an optional associated value");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
     addArg("--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "c|llvm|x64", "the type of backend to use");
@@ -272,6 +272,19 @@ bool CommandLineParser::process(int argc, const char* argv[])
             break;
         }
 
+        case CommandLineType::StringSet:
+        {
+            if (argument.empty())
+            {
+                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
+                result = false;
+                continue;
+            }
+
+            ((set<string>*) arg->buffer)->insert(argument);
+            break;
+        }
+
         case CommandLineType::Int:
         {
             pz               = argument.c_str();
@@ -342,6 +355,20 @@ string CommandLineParser::buildString(bool full)
                 result += " ";
             }
             break;
+        case CommandLineType::StringSet:
+        {
+            if (full)
+            {
+                result += oneArg->longName + ":";
+                auto all = (set<string>*) oneArg->buffer;
+                for (auto& one : *all)
+                {
+                    result += one;
+                    result += " ";
+                }
+            }
+            break;
+        }
         case CommandLineType::EnumString:
             if (full || *(string*) oneArg->buffer != *(string*) defaultArg->buffer)
             {

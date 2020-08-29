@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include "CommandLineParser.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 Workspace g_Workspace;
 
@@ -96,13 +97,45 @@ void Workspace::setupPaths()
     dependenciesPath.append("dependencies/");
 }
 
+OneTag* Workspace::hasTag(const Utf8& name)
+{
+    for (auto& tag : tags)
+    {
+        if (tag.name == name)
+            return &tag;
+    }
+
+    return nullptr;
+}
+
 void Workspace::setupTags()
 {
     // Command line tags
-    vector<Utf8> tokens;
-    tokenize(g_CommandLine.tags.c_str(), ' ', tokens);
-    for (auto& tag : tokens)
-        tags.insert(tag);
+    for (auto& tag : g_CommandLine.tags)
+    {
+        Utf8 oneTagName = tag;
+        oneTagName.trim();
+
+        vector<Utf8> tokens;
+        tokenize(oneTagName, '=', tokens);
+        if (tokens.size() == 2)
+        {
+            OneTag oneTag;
+            oneTag.type = g_TypeMgr.typeInfoString;
+            tokens[1].trim();
+            oneTag.name       = tokens[0];
+            oneTag.value.text = tokens[1];
+            tags.push_back(oneTag);
+        }
+        else
+        {
+            OneTag oneTag;
+            oneTag.type        = g_TypeMgr.typeInfoBool;
+            oneTag.value.reg.b = true;
+            oneTag.name        = oneTagName;
+            tags.push_back(oneTag);
+        }
+    }
 }
 
 void Workspace::createNew()
@@ -254,12 +287,6 @@ Utf8 Workspace::GetOsName()
     default:
         return "?";
     }
-}
-
-bool Workspace::hasTag(const Utf8& name)
-{
-    auto it = tags.find(name);
-    return it != tags.end();
 }
 
 void Workspace::setupTarget()

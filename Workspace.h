@@ -1,8 +1,16 @@
 #pragma once
 #include "SwagScope.h"
 #include "Utf8.h"
+#include "Register.h"
 struct Module;
 struct Scope;
+
+struct OneTag
+{
+    Utf8          name;
+    TypeInfo*     type;
+    ComputedValue value;
+};
 
 struct Workspace
 {
@@ -21,7 +29,7 @@ struct Workspace
     void    deleteFolderContent(const fs::path& path);
     Utf8    GetArchName();
     Utf8    GetOsName();
-    bool    hasTag(const Utf8& name);
+    OneTag* hasTag(const Utf8& name);
     void    setupTarget();
 
     bool watch();
@@ -35,11 +43,13 @@ struct Workspace
     shared_mutex          mutexModules;
     atomic<int>           numErrors = 0;
     VectorNative<Module*> modules;
-    set<Utf8>             tags;
-    map<Utf8, Module*>    mapModulesNames;
-    Module*               filteredModule = nullptr;
-    Module*               bootstrapModule;
-    SwagScope             swagScope;
+
+    vector<OneTag> tags;
+
+    map<Utf8, Module*> mapModulesNames;
+    Module*            filteredModule = nullptr;
+    Module*            bootstrapModule;
+    SwagScope          swagScope;
 };
 
 extern Workspace g_Workspace;

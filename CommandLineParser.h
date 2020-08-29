@@ -8,6 +8,7 @@ enum CommandLineType
     EnumInt,
     EnumString,
     String,
+    StringSet,
 };
 
 struct CommandLineArgument
