@@ -1,6 +1,6 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    let a = 1.5
-    @assert(a == 1.5)
+    let a = 1'u64
+    @assert(a == 1)
 }
