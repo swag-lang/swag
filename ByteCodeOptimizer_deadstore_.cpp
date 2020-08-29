@@ -23,7 +23,8 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         // Reset at each statement
-        if (ip->flags & BCI_START_STMT || isJump(ip))
+        //if (ip->flags & BCI_START_STMT || isJump(ip))
+        if (isJump(ip))
             memset(regs.buffer, 0, maxReg * sizeof(void*));
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
