@@ -15,7 +15,9 @@
 #define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
 
 #define IMMA_U8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u8 : registersRC[ip->a.u32].u8)
+#define IMMA_U16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u16 : registersRC[ip->a.u32].u16)
 #define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
+#define IMMA_U64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
 
 #define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
 #define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
@@ -981,17 +983,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqual16:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u16 == registersRC[ip->b.u32].u16;
+        registersRC[ip->c.u32].b = IMMA_U16(ip) == IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::CompareOpEqual32:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 == registersRC[ip->b.u32].u32;
+        registersRC[ip->c.u32].b = IMMA_U32(ip) == IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::CompareOpEqual64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 == registersRC[ip->b.u32].u64;
+        registersRC[ip->c.u32].b = IMMA_U64(ip) == IMMB_U64(ip);
         break;
     }
     case ByteCodeOp::CompareOpEqualString:

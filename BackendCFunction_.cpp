@@ -20,6 +20,28 @@
     else                                                        \
         concat.addStringFormat("r[%u].s32;", ip->b.u32);
 
+#define MK_BINOP_CAB_U8(__op)                                  \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);             \
+    if (ip->flags & BCI_IMM_A)                                 \
+        concat.addStringFormat("%u%s", ip->a.u8, __op);        \
+    else                                                       \
+        concat.addStringFormat("r[%u].u8%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                 \
+        concat.addStringFormat("%u;", ip->b.u8);               \
+    else                                                       \
+        concat.addStringFormat("r[%u].u8;", ip->b.u32);
+
+#define MK_BINOP_CAB_U16(__op)                                  \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);              \
+    if (ip->flags & BCI_IMM_A)                                  \
+        concat.addStringFormat("%u%s", ip->a.u16, __op);        \
+    else                                                        \
+        concat.addStringFormat("r[%u].u16%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                  \
+        concat.addStringFormat("%u;", ip->b.u16);               \
+    else                                                        \
+        concat.addStringFormat("r[%u].u16;", ip->b.u32);
+
 #define MK_BINOP_CAB_U32(__op)                                  \
     concat.addStringFormat("r[%u].b=", ip->c.u32);              \
     if (ip->flags & BCI_IMM_A)                                  \
@@ -31,16 +53,16 @@
     else                                                        \
         concat.addStringFormat("r[%u].u32;", ip->b.u32);
 
-#define MK_BINOP_CAB_U8(__op)                                  \
-    concat.addStringFormat("r[%u].b=", ip->c.u32);             \
-    if (ip->flags & BCI_IMM_A)                                 \
-        concat.addStringFormat("%u%s", ip->a.u8, __op);        \
-    else                                                       \
-        concat.addStringFormat("r[%u].u8%s", ip->a.u32, __op); \
-    if (ip->flags & BCI_IMM_B)                                 \
-        concat.addStringFormat("%u;", ip->b.u8);               \
-    else                                                       \
-        concat.addStringFormat("r[%u].u8;", ip->b.u32);
+#define MK_BINOP_CAB_U64(__op)                                  \
+    concat.addStringFormat("r[%u].b=", ip->c.u32);              \
+    if (ip->flags & BCI_IMM_A)                                  \
+        concat.addStringFormat("0x%I64x%s", ip->a.u64, __op);   \
+    else                                                        \
+        concat.addStringFormat("r[%u].u64%s", ip->a.u32, __op); \
+    if (ip->flags & BCI_IMM_B)                                  \
+        concat.addStringFormat("0x%I64x;", ip->b.u64);          \
+    else                                                        \
+        concat.addStringFormat("r[%u].u64;", ip->b.u32);
 
 BackendFunctionBodyJob* BackendC::newFunctionJob()
 {
@@ -1393,13 +1415,13 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             MK_BINOP_CAB_U8("==");
             break;
         case ByteCodeOp::CompareOpEqual16:
-            concat.addStringFormat("r[%u].b=r[%u].u16==r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_U16("==");
             break;
         case ByteCodeOp::CompareOpEqual32:
-            concat.addStringFormat("r[%u].b=r[%u].u32==r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_U32("==");
             break;
         case ByteCodeOp::CompareOpEqual64:
-            concat.addStringFormat("r[%u].b=r[%u].u64==r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
+            MK_BINOP_CAB_U64("==");
             break;
         case ByteCodeOp::CompareOpEqualString:
             concat.addStringFormat("r[%u].b=swag_runtime_compareString(r[%u].p,r[%u].p,r[%u].u32,r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
