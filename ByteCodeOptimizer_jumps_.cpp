@@ -28,9 +28,14 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 setNop(context, ip);
         }
 
+        // If we have :
+        // 0: (jump if false) to 2
+        // 1: (jump) to whatever
+        // 2: ...
+        // Then we switch to (jump if true) whatever, and eliminate the unconditional jump
         if (ip->op == ByteCodeOp::JumpIfFalse && ip->b.s32 == 1 && ip[1].op == ByteCodeOp::Jump)
         {
-            ip->op = ByteCodeOp::JumpIfTrue;
+            ip->op    = ByteCodeOp::JumpIfTrue;
             ip->b.s32 = ip[1].b.s32 + 1;
             setNop(context, ip + 1);
         }
