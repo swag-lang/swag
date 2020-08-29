@@ -306,6 +306,29 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
+{
+    auto back = node->childs.back();
+
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (node->ownerScope->isGlobalOrImpl())
+        {
+            auto overload = back->resolvedSymbolOverload;
+            if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+            {
+                Diagnostic diag(back, back->token, format("alias is public but '%s' is not", back->name.c_str()));
+                Diagnostic note(overload->node, overload->node->token, format("this is the definition of '%s'", node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                return context->report(diag, &note);
+            }
+
+            node->ownerScope->addPublicAlias(node);
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveAlias(SemanticContext* context)
 {
     auto job  = context->job;
@@ -339,14 +362,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     SWAG_ASSERT(overload);
     SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, overload));
-
-    // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (node->ownerScope->isGlobalOrImpl())
-            node->ownerScope->addPublicAlias(node);
-    }
-
+    SWAG_CHECK(checkPublicAlias(context, node));
     return true;
 }
 
@@ -375,14 +391,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
     SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, "type alias cannot be generic"}));
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
-
-    // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (node->ownerScope->isGlobalOrImpl())
-            node->ownerScope->addPublicAlias(node);
-    }
-
+    SWAG_CHECK(checkPublicAlias(context, node));
     return true;
 }
 

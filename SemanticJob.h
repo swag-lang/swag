@@ -189,6 +189,7 @@ struct SemanticJob : public Job
     static bool resolveReturn(SemanticContext* context);
     static bool resolveNamespace(SemanticContext* context);
     static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
+    static bool checkPublicAlias(SemanticContext* context, AstNode* node);
     static bool resolveAlias(SemanticContext* context);
     static bool resolveUsing(SemanticContext* context);
     static bool resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right);
