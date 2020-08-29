@@ -737,6 +737,15 @@
     <ClInclude Include="TokenIds.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="BackendCFunctionMacros_.h">
+      <Filter>Backend\C</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendLLVMFunctionMacros_.h">
+      <Filter>Backend\LLVM</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendX64FunctionMacros_.h">
+      <Filter>Backend\X64</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

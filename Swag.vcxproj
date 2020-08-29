@@ -163,14 +163,17 @@
     <ClInclude Include="Backend.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCFunctionBodyJob.h" />
+    <ClInclude Include="BackendCFunctionMacros_.h" />
     <ClInclude Include="BackendFunctionBodyJob.h" />
     <ClInclude Include="BackendLLVMDbg.h" />
     <ClInclude Include="BackendLLVMFunctionBodyJob.h" />
+    <ClInclude Include="BackendLLVMFunctionMacros_.h" />
     <ClInclude Include="BackendSetupWin32.h" />
     <ClInclude Include="BackendLinkerWin32.h" />
     <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BackendX64.h" />
     <ClInclude Include="BackendX64FunctionBodyJob.h" />
+    <ClInclude Include="BackendX64FunctionMacros_.h" />
     <ClInclude Include="BackendX64Inst.h" />
     <ClInclude Include="BuildParameters.h" />
     <ClInclude Include="BuildPass.h" />
