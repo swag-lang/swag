@@ -73,7 +73,7 @@ namespace std.math
             /// Returns true if this instance is null
             func isZero(using self)->bool
             {
-                return x == 0 && y == 0 && width == 0 && height == 0
+                return x == y == width == height == 0
             }
 
             /// Returns true if this instance is null with an epsilon
@@ -85,7 +85,7 @@ namespace std.math
             /// Returns true if this instance has a surface of zero (width and heigth are null)
             func isEmpty(using self)->bool
             {
-                return width == 0 && height == 0
+                return width == height == 0
             }
 
             /// Returns true if this instance has a surface of zero (width and heigth are null)
