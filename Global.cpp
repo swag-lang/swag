@@ -38,7 +38,7 @@ void tokenize(const char* str, char c, vector<Utf8>& tokens)
         Utf8 one;
         while (*pz && *pz != c)
             one += *pz++;
-        if (*pz)
+        while (*pz && *pz == c)
             pz++;
         if (!one.empty())
             tokens.push_back(one);

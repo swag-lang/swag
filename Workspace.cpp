@@ -96,6 +96,15 @@ void Workspace::setupPaths()
     dependenciesPath.append("dependencies/");
 }
 
+void Workspace::setupTags()
+{
+    // Command line tags
+    vector<Utf8> tokens;
+    tokenize(g_CommandLine.tags.c_str(), ' ', tokens);
+    for (auto& tag : tokens)
+        tags.insert(tag);
+}
+
 void Workspace::createNew()
 {
     setupPaths();
@@ -173,6 +182,7 @@ void Workspace::createNew()
 void Workspace::setup()
 {
     setupPaths();
+    setupTags();
 
     if (workspacePath.empty())
     {

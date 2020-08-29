@@ -5,6 +5,6 @@ func toto() => "tag"
 {
     if(#tag(toto()))
     {
-
+        @print("toto\n")
     }
 }
