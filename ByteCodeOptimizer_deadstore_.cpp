@@ -63,6 +63,16 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 regs[ip->a.u32] = ip;
         }
 
+        // If we leave the function, then we can discard all pending write that are not read
+        if (ip->op == ByteCodeOp::Ret)
+        {
+            for (int i = 0; i < maxReg; i++)
+            {
+                if (regs[i])
+                    setNop(context, regs[i]);
+            }
+        }
+
         if (flags & OPFLAG_WRITE_A)
             regsRW[ip->a.u32] |= WRITE;
         if (flags & OPFLAG_WRITE_B)
