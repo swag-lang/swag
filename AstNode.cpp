@@ -244,7 +244,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     parentAttributes = from->parentAttributes;
     parentAttributes = from->parentAttributes;
-    attributeFlags   = from->attributeFlags;
+    attributeFlags   = from->attributeFlags | context.forceAttributeFlags;
     token            = from->token;
 
     semanticFct       = from->semanticFct;

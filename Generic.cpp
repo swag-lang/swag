@@ -10,13 +10,13 @@ Job* Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
     auto& dependentSymbols = job->cacheDependentSymbols;
     auto  symbol           = *dependentSymbols.begin();
 
-    // Need to wait for the struct to be semantic resolved
+    // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
     symbol->cptOverloadsInit++;
     if (waitSymbol)
         job->waitForSymbolNoLock(symbol);
 
-    // Run semantic on that struct
+    // Run semantic on that struct/function
     auto sourceFile = context->sourceFile;
     auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
 
@@ -208,6 +208,9 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
     Ast::addChildBack(funcNode->parent, newFunc);
     *specialFct = newFunc;
 
+    // Generate and initialize a new type if the type is still generic
+    // The type is still generic if the doTypeSubstitution didn't find any type to change
+    // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
     if (newTypeFunc->flags & TYPEINFO_GENERIC)
     {
@@ -234,7 +237,7 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
+bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -246,6 +249,14 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
     // Types replacements
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
+
+    // We are batching the struct
+    if (instContext.fromBatch)
+    {
+        cloneContext.forceFlags = AST_FROM_BATCH;
+        if (instContext.batchIsPublic)
+            cloneContext.forceAttributeFlags = ATTRIBUTE_PUBLIC;
+    }
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -270,7 +281,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     newType->nakedName.clear(); // Force the recompute of the name
     newType->computeName();
 
-    auto structJob = end(context, structNode, waitSymbol);
+    auto structJob = end(context, structNode, true);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -292,43 +303,48 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
                 instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
             }
         }
+        else if (instContext.fromBatch)
+        {
+            auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
+            instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+        }
     }
 
     g_ThreadMgr.addJob(structJob);
     return true;
 }
 
-bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
     CloneContext cloneContext;
 
     // Types replacements
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
+    auto overload             = match.symbolOverload;
+    auto funcNode             = overload->node;
 
     // Clone original node
-    auto overload   = match.symbolOverload;
-    auto sourceNode = overload->node;
-    auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
-    funcNode->flags |= AST_FROM_GENERIC;
-    funcNode->content->flags &= ~AST_NO_SEMANTIC;
-    Ast::addChildBack(sourceNode->parent, funcNode);
+    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    newFunc->flags |= AST_FROM_GENERIC;
+    newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    Ast::addChildBack(funcNode->parent, newFunc);
 
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
-    TypeInfoFuncAttr* newType = static_cast<TypeInfoFuncAttr*>(funcNode->typeInfo);
-    if (newType->flags & TYPEINFO_GENERIC)
+    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    if (newTypeFunc->flags & TYPEINFO_GENERIC)
     {
-        newType = static_cast<TypeInfoFuncAttr*>(funcNode->typeInfo->clone());
-        newType->flags &= ~TYPEINFO_GENERIC;
-        funcNode->typeInfo = newType;
+        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+        newFunc->typeInfo = newTypeFunc;
     }
 
     // Replace generic types and values in the function generic parameters
-    SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match));
-    newType->computeName();
+    SWAG_CHECK(updateGenericParameters(context, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
+    newTypeFunc->computeName();
 
-    auto job = end(context, funcNode, true);
+    auto job = end(context, newFunc, true);
     g_ThreadMgr.addJob(job);
 
     return true;

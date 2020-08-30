@@ -142,14 +142,15 @@ struct CloneContext
     map<TokenId, AstNode*>  replaceTokens;
     map<Utf8Crc, Utf8>      replaceNames;
 
-    AstInline*    ownerInline      = nullptr;
-    AstBreakable* ownerBreakable   = nullptr;
-    AstFuncDecl*  ownerFct         = nullptr;
-    AstNode*      parent           = nullptr;
-    Scope*        parentScope      = nullptr;
-    Scope*        ownerStructScope = nullptr;
-    AstNode*      ownerMainNode    = nullptr;
-    uint64_t      forceFlags       = 0;
+    AstInline*    ownerInline         = nullptr;
+    AstBreakable* ownerBreakable      = nullptr;
+    AstFuncDecl*  ownerFct            = nullptr;
+    AstNode*      parent              = nullptr;
+    Scope*        parentScope         = nullptr;
+    Scope*        ownerStructScope    = nullptr;
+    AstNode*      ownerMainNode       = nullptr;
+    uint64_t      forceFlags          = 0;
+    uint64_t      forceAttributeFlags = 0;
 };
 
 struct AstNode

@@ -279,7 +279,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
         CONCAT_FIXED_STR(bufferSwg, "\tinterface");
     else
         CONCAT_FIXED_STR(bufferSwg, "\tstruct");
-    if (node->genericParameters)
+    if (node->genericParameters && !(node->flags & AST_FROM_BATCH))
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     CONCAT_FIXED_STR(bufferSwg, " ");

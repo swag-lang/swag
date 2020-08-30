@@ -831,7 +831,11 @@ anotherTry:
         {
             if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
             {
-                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, true));
+                InstanciateContext instContext;
+                // @remove
+                //instContext.fromBatch = true;
+                //instContext.batchIsPublic = true;
+                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, instContext));
             }
             else
             {
@@ -846,7 +850,8 @@ anotherTry:
         }
         else
         {
-            SWAG_CHECK(Generic::instanciateFunction(context, genericParameters, firstMatch));
+            InstanciateContext instContext;
+            SWAG_CHECK(Generic::instanciateFunction(context, genericParameters, firstMatch, instContext));
         }
 
         symbol->mutex.unlock();

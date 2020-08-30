@@ -536,7 +536,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (!node->ownerScope->isGlobal())
             return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_FROM_BATCH))
             node->ownerScope->addPublicStruct(node);
     }
 
