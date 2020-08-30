@@ -206,10 +206,10 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
 
     // We are batching the struct
-    if (instContext.fromBatch)
+    if (instContext.fromBake)
     {
         cloneContext.forceFlags = AST_FROM_BATCH;
-        if (instContext.batchIsPublic)
+        if (instContext.bakeIsPublic)
             cloneContext.forceAttributeFlags = ATTRIBUTE_PUBLIC;
     }
 
@@ -221,11 +221,11 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
 
-    if (instContext.fromBatch)
+    if (instContext.fromBake)
     {
-        SWAG_ASSERT(!instContext.batchName.empty());
-        structNode->batchName   = instContext.batchName;
-        structNode->scope->name = instContext.batchName;
+        SWAG_ASSERT(!instContext.bakeName.empty());
+        structNode->batchName   = instContext.bakeName;
+        structNode->scope->name = instContext.bakeName;
     }
 
     // Make a new type
@@ -247,7 +247,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
-    if (instContext.fromBatch)
+    if (instContext.fromBake)
     {
         cloneContext.parentScope = structNode->scope;
         cloneContext.ownerStructScope = structNode->scope;
@@ -271,7 +271,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
                 instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
             }
         }
-        else if (instContext.fromBatch)
+        else if (instContext.fromBake)
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);

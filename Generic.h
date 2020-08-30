@@ -7,9 +7,9 @@ struct AstVarDecl;
 
 struct InstanciateContext
 {
-    bool fromBatch     = false;
-    bool batchIsPublic = false;
-    Utf8 batchName;
+    bool fromBake     = false;
+    bool bakeIsPublic = false;
+    Utf8 bakeName;
 };
 
 struct Generic

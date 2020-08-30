@@ -5,9 +5,14 @@
 #include "Scoped.h"
 #include "Module.h"
 
+bool SyntaxJob::doCompilerBake(AstNode* parent, AstNode** result)
+{
+    return true;
+}
+
 bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;

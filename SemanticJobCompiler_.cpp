@@ -43,6 +43,11 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     return true;
 }
 
+bool SemanticJob::resolveCompilerBake(SemanticContext* context)
+{
+    return true;
+}
+
 bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 {
     auto node   = context->node;
