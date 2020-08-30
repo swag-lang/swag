@@ -63,6 +63,8 @@ bool SemanticJob::resolveCompilerBake(SemanticContext* context)
         return context->report(diag, &note);
     }
 
+    // Bake behave like a type alias when done
+    SWAG_CHECK(resolveTypeAlias(context));
     return true;
 }
 

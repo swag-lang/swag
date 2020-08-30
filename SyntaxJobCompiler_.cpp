@@ -14,6 +14,7 @@ bool SyntaxJob::doCompilerBake(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid bake alias name"));
+    node->inheritTokenLocation(token);
     node->inheritTokenName(token);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));

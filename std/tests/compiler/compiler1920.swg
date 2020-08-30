@@ -1,0 +1,9 @@
+#module "compiler1920"
+#unittest error
+
+struct(T) C1920
+{
+
+}
+
+#bake C1920 = C1920's32
