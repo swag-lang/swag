@@ -6,6 +6,5 @@ thread_local Pool<ModuleExportJob> g_Pool_moduleExportJob;
 
 JobResult ModuleExportJob::execute()
 {
-	backend->generateExportFile();
-    return JobResult::ReleaseJob;
+	return backend->generateExportFile(this);
 }

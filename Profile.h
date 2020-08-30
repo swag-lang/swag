@@ -6,6 +6,7 @@
 #define PRF_LINK 2
 #define PRF_LOAD 3
 #define PRF_SAVE 4
+#define PRF_OUT 5
 
 #ifdef _WIN32
 #include "ProfileWin32.h"

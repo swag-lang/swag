@@ -7,6 +7,7 @@
 #include "Os.h"
 #include "Module.h"
 #include "Profile.h"
+#include "ModuleSaveExportJob.h"
 
 bool Backend::emitAttributes(AstNode* node)
 {
@@ -285,7 +286,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     CONCAT_FIXED_STR(bufferSwg, " ");
-    if(node->flags & AST_FROM_BATCH)
+    if (node->flags & AST_FROM_BATCH)
         bufferSwg.addString(node->batchName.c_str());
     else
         bufferSwg.addString(node->name.c_str());
@@ -455,7 +456,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 void Backend::setupExportFile()
 {
-    if (bufferSwg.path.empty())
+    if (bufferSwgPath.empty())
     {
         exportFileGenerated = true;
         Utf8 targetName     = module->name + ".generated.swg";
@@ -471,8 +472,8 @@ void Backend::setupExportFile()
 
         if (exists)
         {
-            bufferSwg.name = targetName;
-            bufferSwg.path = targetPath;
+            bufferSwgName  = targetName;
+            bufferSwgPath  = targetPath;
             timeExportFile = OS::getFileWriteTime(targetPath.c_str());
         }
     }
@@ -482,36 +483,71 @@ void Backend::setupExportFile()
     }
 }
 
-bool Backend::generateExportFile()
+JobResult Backend::generateExportFile(Job* ownerJob)
 {
-    SWAG_PROFILE(PRF_SAVE, format("export %s", module->name.c_str()));
+    SWAG_PROFILE(PRF_OUT, format("generateExportFile %s", module->name.c_str()));
+    if (passExport == BackendPreCompilePass::Init)
+    {
+        passExport          = BackendPreCompilePass::GenerateObj;
+        exportFileGenerated = true;
+        bufferSwgName       = module->name + ".generated.swg";
+        bufferSwgPath       = g_Workspace.cachePath.string() + "\\" + bufferSwgName;
+        if (!mustCompile)
+            return JobResult::ReleaseJob;
 
-    exportFileGenerated = true;
-    bufferSwg.name      = module->name + ".generated.swg";
-    bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + bufferSwg.name;
-    if (!mustCompile)
-        return true;
+        bufferSwg.init(4 * 1024);
+        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
-    bufferSwg.init(4 * 1024);
-    bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        for (const auto& dep : module->moduleDependencies)
+            bufferSwg.addStringFormat("#import \"%s\"\n", dep->name.c_str());
+        CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
-    for (const auto& dep : module->moduleDependencies)
-        bufferSwg.addStringFormat("#import \"%s\"\n", dep->name.c_str());
-    CONCAT_FIXED_STR(bufferSwg, "using swag\n");
-
-    // Emit everything that's public
-    if (!emitPublicSwg(module, module->scopeRoot))
-        return true;
+        // Emit everything that's public
+        if (!emitPublicSwg(module, module->scopeRoot))
+            return JobResult::ReleaseJob;
+    }
 
     // Save the export file
-    auto result = bufferSwg.flush(true, [](Job* job) {
-        return true;
-    });
+    if (passExport == BackendPreCompilePass::GenerateObj)
+    {
+        passExport        = BackendPreCompilePass::Release;
+        auto job          = g_Pool_moduleSaveExportJob.alloc();
+        job->module       = module;
+        job->dependentJob = ownerJob;
+        ownerJob->jobsToAdd.push_back(job);
+        return JobResult::KeepJobAlive;
+    }
 
-    if (!result)
-        return false;
+    return JobResult::ReleaseJob;
+}
 
-    timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());
+bool Backend::saveExportFile()
+{
+    SWAG_PROFILE(PRF_SAVE, format("saveExportFile %s", module->name.c_str()));
+    {
+        ofstream destFile(bufferSwgPath, ios::binary);
+        if (!destFile.is_open())
+        {
+            module->error(format("unable to write output file '%s'", bufferSwgPath.c_str()));
+            return false;
+        }
+
+        // Output the full concat buffer
+        uint32_t totalCount = 0;
+        auto     bucket     = bufferSwg.firstBucket;
+        while (bucket != bufferSwg.lastBucket->nextBucket)
+        {
+            auto count = bufferSwg.bucketCount(bucket);
+            destFile.write((const char*) bucket->datas, count);
+            totalCount += count;
+            bucket = bucket->nextBucket;
+        }
+
+        destFile.flush();
+        destFile.close();
+    }
+
+    timeExportFile = OS::getFileWriteTime(bufferSwgPath.c_str());
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

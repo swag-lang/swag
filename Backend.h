@@ -1,5 +1,5 @@
 #pragma once
-#include "OutputFile.h"
+#include "Concat.h"
 struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
@@ -44,25 +44,29 @@ struct Backend
     void getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end);
     bool emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
 
-    bool generateExportFile();
-    void setupExportFile();
-    bool emitAttributes(AstNode* node);
-    bool emitAttributes(TypeInfoParam* param);
-    void emitType(TypeInfo* typeInfo);
-    bool emitGenericParameters(AstNode* node);
-    bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
-    bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);
-    bool emitPublicConstSwg(AstVarDecl* node);
-    bool emitPublicAliasSwg(AstNode* node);
-    bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitPublicSwg(Module* moduleToGen, Scope* scope);
+    JobResult generateExportFile(Job* ownerJob);
+    bool      saveExportFile();
+    void      setupExportFile();
+    bool      emitAttributes(AstNode* node);
+    bool      emitAttributes(TypeInfoParam* param);
+    void      emitType(TypeInfo* typeInfo);
+    bool      emitGenericParameters(AstNode* node);
+    bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
+    bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);
+    bool      emitPublicConstSwg(AstVarDecl* node);
+    bool      emitPublicAliasSwg(AstNode* node);
+    bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool      emitPublicSwg(Module* moduleToGen, Scope* scope);
 
-    OutputFile bufferSwg;
+    Concat bufferSwg;
+    string bufferSwgName;
+    string bufferSwgPath;
 
-    Module*  module               = nullptr;
-    uint64_t timeExportFile       = 0;
-    int      numPreCompileBuffers = 0;
+    Module*               module               = nullptr;
+    uint64_t              timeExportFile       = 0;
+    int                   numPreCompileBuffers = 0;
+    BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
     bool mustCompile         = true;
     bool exportFileGenerated = false;

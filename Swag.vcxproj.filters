@@ -446,6 +446,9 @@
     <ClCompile Include="BackendX64GenObjJob.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleSaveExportJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -751,6 +754,9 @@
     </ClInclude>
     <ClInclude Include="CopyFileJob.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSaveExportJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

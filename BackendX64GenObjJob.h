@@ -13,7 +13,6 @@ struct BackendX64GenObjJob : public Job
     JobResult execute() override;
 
     ModulePrepOutputJob* prepJob;
-    Module*              module;
 };
 
 extern thread_local Pool<BackendX64GenObjJob> g_Pool_backendX64GenObjJob;

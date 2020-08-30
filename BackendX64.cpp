@@ -584,9 +584,9 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
     emitSymbolRelocation(pp, name);
 }
 
-bool BackendX64::generateObjFile(const BuildParameters& buildParameters)
+bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 {
-    SWAG_PROFILE(PRF_SAVE, format("x64 save obj %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+    SWAG_PROFILE(PRF_SAVE, format("saveObjFile %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
