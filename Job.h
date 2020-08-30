@@ -10,15 +10,21 @@ struct Module;
 struct Diagnostic;
 struct TypeInfo;
 
-enum class JobKind
+enum class JobKind : uint8_t
 {
     MISC,
     BACKEND_FCT_BODY,
 };
 
-static const uint32_t AFFINITY_BACKEND_FCTBODY = 0x00000001;
-static const uint32_t AFFINITY_EXECBC          = 0x00000002;
-static const uint32_t AFFINITY_ALL             = 0xFFFFFFFF;
+static const uint8_t AFFINITY_BACKEND_FCTBODY = 0x01;
+static const uint8_t AFFINITY_EXECBC          = 0x02;
+static const uint8_t AFFINITY_ALL             = 0xFF;
+
+static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
+static const uint8_t JOB_IS_IN_THREAD   = 0x02;
+static const uint8_t JOB_IS_PENDING     = 0x04;
+static const uint8_t JOB_IS_PENDING_RUN = 0x08;
+static const uint8_t JOB_COMPILER_PASS  = 0x10;
 
 enum class ContextResult
 {
@@ -57,12 +63,6 @@ enum class JobResult
     KeepJobAlive,
 };
 
-static const uint32_t JOB_IS_IN_QUEUE    = 0x00000001;
-static const uint32_t JOB_IS_IN_THREAD   = 0x00000002;
-static const uint32_t JOB_IS_PENDING     = 0x00000004;
-static const uint32_t JOB_IS_PENDING_RUN = 0x00000008;
-static const uint32_t JOB_COMPILER_PASS  = 0x00000010;
-
 struct Job : public PoolElem
 {
     virtual JobResult execute() = 0;
@@ -87,11 +87,12 @@ struct Job : public PoolElem
     Job*        dependentJob        = nullptr;
     JobContext* baseContext         = nullptr;
 
-    uint32_t flags           = 0;
     int32_t  waitingJobIndex = -1;
     uint32_t waitOnJobs      = 0;
-    uint32_t affinity        = AFFINITY_ALL;
-    JobKind  jobKind         = JobKind::MISC;
+
+    uint8_t flags    = 0;
+    uint8_t affinity = AFFINITY_ALL;
+    JobKind jobKind  = JobKind::MISC;
 
     void reset() override
     {
