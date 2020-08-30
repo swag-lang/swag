@@ -233,12 +233,16 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
-            if (module->name == "tests.std.math")
-                module = module;
-            if (!module->WaitForDependenciesDone(this))
-                return JobResult::KeepJobAlive;
-            pass = ModuleBuildPass::RunByteCode;
+            pass = ModuleBuildPass::WaitForDependenciesEffective;
         }
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::WaitForDependenciesEffective)
+    {
+        if (!module->WaitForDependenciesDone(this))
+            return JobResult::KeepJobAlive;
+        pass = ModuleBuildPass::RunByteCode;
     }
 
     //////////////////////////////////////////////////

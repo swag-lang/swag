@@ -10,13 +10,13 @@ struct Timer
 
     void start(bool force = false)
     {
-        if (g_CommandLine.stats || force)
+        if (g_CommandLine.stats || g_CommandLine.verbose || force)
             timeBefore = chrono::high_resolution_clock::now();
     }
 
     void stop(bool force = false)
     {
-        if (g_CommandLine.stats || force)
+        if (g_CommandLine.stats || g_CommandLine.verbose || force)
         {
             auto timeAfter = chrono::high_resolution_clock::now();
             elapsed        = timeAfter - timeBefore;
