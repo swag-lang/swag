@@ -339,23 +339,37 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
     if (bc->node)
     {
-        if ((bc->node->attributeFlags & ATTRIBUTE_PUBLIC) && !(bc->node->attributeFlags & ATTRIBUTE_INLINE) && (!(bc->node->flags & AST_FROM_GENERIC)))
+        auto attributeFlags = bc->node->attributeFlags;
+        auto flags          = bc->node->flags;
+
+        // Register for export
+        if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
+            !(attributeFlags & ATTRIBUTE_INLINE) &&
+            (!(flags & AST_FROM_GENERIC) || (flags & AST_FROM_BATCH)))
             bc->node->ownerScope->addPublicFunc(bc->node);
 
-        if (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+        if (attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             if (g_CommandLine.testFilter.empty() || strstr(bc->node->sourceFile->name, g_CommandLine.testFilter.c_str()))
                 byteCodeTestFunc.push_back(bc);
         }
-        else if (bc->node->attributeFlags & ATTRIBUTE_INIT_FUNC)
+        else if (attributeFlags & ATTRIBUTE_INIT_FUNC)
+        {
             byteCodeInitFunc.push_back(bc);
-        else if (bc->node->attributeFlags & ATTRIBUTE_DROP_FUNC)
+        }
+        else if (attributeFlags & ATTRIBUTE_DROP_FUNC)
+        {
             byteCodeDropFunc.push_back(bc);
-        else if (bc->node->attributeFlags & ATTRIBUTE_RUN_FUNC)
+        }
+        else if (attributeFlags & ATTRIBUTE_RUN_FUNC)
+        {
             byteCodeRunFunc.push_back(bc);
-        else if (bc->node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        }
+        else if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        {
             addCompilerFunc(bc);
-        else if (bc->node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+        }
+        else if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
         {
             SWAG_ASSERT(!byteCodeMainFunc);
             byteCodeMainFunc = bc;

@@ -833,8 +833,9 @@ anotherTry:
             {
                 InstanciateContext instContext;
                 // @remove
-                //instContext.fromBatch = true;
-                //instContext.batchIsPublic = true;
+                /*instContext.fromBatch = true;
+                instContext.batchIsPublic = true;
+                instContext.batchName = "TITITITI";*/
                 SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, instContext));
             }
             else

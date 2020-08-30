@@ -9,6 +9,7 @@ struct InstanciateContext
 {
     bool fromBatch     = false;
     bool batchIsPublic = false;
+    Utf8 batchName;
 };
 
 struct Generic

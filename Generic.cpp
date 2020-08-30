@@ -192,36 +192,6 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
-{
-    auto funcNode = *specialFct;
-    if (!funcNode)
-        return;
-
-    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
-    newFunc->flags |= AST_FROM_GENERIC;
-    newFunc->content->flags &= ~AST_NO_SEMANTIC;
-    Ast::addChildBack(funcNode->parent, newFunc);
-    *specialFct = newFunc;
-
-    // Generate and initialize a new type if the type is still generic
-    // The type is still generic if the doTypeSubstitution didn't find any type to change
-    // (for example if we have just generic value)
-    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
-    if (newTypeFunc->flags & TYPEINFO_GENERIC)
-    {
-        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
-        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-        newFunc->typeInfo = newTypeFunc;
-    }
-
-    // Replace generic types and values in the function generic parameters
-    newTypeFunc->computeName();
-
-    auto newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
-    structJob->dependentJobs.add(newJob);
-}
-
 bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
@@ -251,6 +221,13 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
 
+    if (instContext.fromBatch)
+    {
+        SWAG_ASSERT(!instContext.batchName.empty());
+        structNode->batchName   = instContext.batchName;
+        structNode->scope->name = instContext.batchName;
+    }
+
     // Make a new type
     auto oldType = static_cast<TypeInfoStruct*>(overload->typeInfo);
     auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
@@ -269,6 +246,12 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto structJob = end(context, context->job, match.symbolName, structNode, true);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
+
+    if (instContext.fromBatch)
+    {
+        cloneContext.parentScope = structNode->scope;
+        cloneContext.ownerStructScope = structNode->scope;
+    }
 
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
     instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
@@ -297,6 +280,37 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
     g_ThreadMgr.addJob(structJob);
     return true;
+}
+
+void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
+{
+    auto funcNode = *specialFct;
+    if (!funcNode)
+        return;
+
+    // Clone original node
+    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    newFunc->flags |= AST_FROM_GENERIC;
+    newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    Ast::addChildBack(funcNode->parent, newFunc);
+    *specialFct = newFunc;
+
+    // Generate and initialize a new type if the type is still generic
+    // The type is still generic if the doTypeSubstitution didn't find any type to change
+    // (for example if we have just generic value)
+    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    if (newTypeFunc->flags & TYPEINFO_GENERIC)
+    {
+        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+        newFunc->typeInfo = newTypeFunc;
+    }
+
+    // Replace generic types and values in the function generic parameters
+    newTypeFunc->computeName();
+
+    auto newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
+    structJob->dependentJobs.add(newJob);
 }
 
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)

@@ -668,6 +668,7 @@ struct AstStruct : public AstNode
     AstNode* genericParameters;
     AstNode* content;
     Scope*   scope;
+    Utf8     batchName;
 
     uint32_t packing = sizeof(uint64_t);
 };

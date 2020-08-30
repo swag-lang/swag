@@ -279,11 +279,16 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
         CONCAT_FIXED_STR(bufferSwg, "\tinterface");
     else
         CONCAT_FIXED_STR(bufferSwg, "\tstruct");
+
+    // If the node comes from a batch, then there's no more generic parameters
     if (node->genericParameters && !(node->flags & AST_FROM_BATCH))
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     CONCAT_FIXED_STR(bufferSwg, " ");
-    bufferSwg.addString(node->name.c_str());
+    if(node->flags & AST_FROM_BATCH)
+        bufferSwg.addString(node->batchName.c_str());
+    else
+        bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
 
     for (auto p : typeStruct->fields)
