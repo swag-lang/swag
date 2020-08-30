@@ -232,10 +232,11 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto oldType = static_cast<TypeInfoStruct*>(overload->typeInfo);
     auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
-    newType->scope       = structNode->scope;
-    newType->declNode    = structNode;
-    newType->fromGeneric = oldType;
-    structNode->typeInfo = newType;
+    newType->scope           = structNode->scope;
+    newType->declNode        = structNode;
+    newType->fromGeneric     = oldType;
+    structNode->typeInfo     = newType;
+    structNode->ownerGeneric = context->node;
 
     // Replace generic types and values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
@@ -247,9 +248,10 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
+    // Not sure this shouldn't be done for all, not just for bake
     if (instContext.fromBake)
     {
-        cloneContext.parentScope = structNode->scope;
+        cloneContext.parentScope      = structNode->scope;
         cloneContext.ownerStructScope = structNode->scope;
     }
 
