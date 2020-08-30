@@ -7,7 +7,7 @@
 #include "Os.h"
 #include "ByteCode.h"
 #include "Backend.h"
-#include "CopyFileJob.h"
+#include "IOJob.h"
 #include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
@@ -160,17 +160,17 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::SemanticModule;
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
-            // Everything in a /publih folder will be copied "as is" in the output directory
+            // Everything in a /publish folder will be copied "as is" in the output directory
             string publishPath = module->path + "/publish";
             if (fs::exists(publishPath))
             {
                 OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-                    auto job          = g_Pool_copyFileJob.alloc();
+                    auto job          = g_Pool_ioJob.alloc();
                     job->module       = module;
                     job->sourcePath   = publishPath + "/" + cFileName;
                     job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
                     job->dependentJob = this;
-                    job->flags |= JOB_IS_IO;
+                    job->type         = IOJobType::CopyFileJob;
                     jobsToAdd.push_back(job);
                 });
             }

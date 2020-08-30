@@ -641,9 +641,6 @@
     <ClInclude Include="VectorNative.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="CopyFileJob.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="BackendLLVM.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
@@ -745,6 +742,9 @@
     </ClInclude>
     <ClInclude Include="BackendX64FunctionMacros_.h">
       <Filter>Backend\X64</Filter>
+    </ClInclude>
+    <ClInclude Include="IOJob.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
