@@ -3,9 +3,9 @@
 struct Module;
 struct ModulePrepOutputJob;
 
-struct BackendX64GenObjJob : public Job
+struct BackendX64SaveObjJob : public Job
 {
-    BackendX64GenObjJob()
+    BackendX64SaveObjJob()
     {
         flags |= JOB_IS_IO;
     }
@@ -15,4 +15,4 @@ struct BackendX64GenObjJob : public Job
     ModulePrepOutputJob* prepJob;
 };
 
-extern thread_local Pool<BackendX64GenObjJob> g_Pool_backendX64GenObjJob;
+extern thread_local Pool<BackendX64SaveObjJob> g_Pool_backendX64SaveObjJob;

@@ -7,7 +7,7 @@
 #include "Profile.h"
 #include "CopyFileJob.h"
 #include "ModulePrepOutputJob.h"
-#include "BackendX64GenObjJob.h"
+#include "BackendX64SaveObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
@@ -351,7 +351,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = g_Pool_backendX64GenObjJob.alloc();
+        auto job          = g_Pool_backendX64SaveObjJob.alloc();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputJob*) ownerJob;

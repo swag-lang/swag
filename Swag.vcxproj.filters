@@ -443,11 +443,11 @@
     <ClCompile Include="SemanticJobIntrinsic_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="BackendX64GenObjJob.cpp">
-      <Filter>Backend\X64</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleSaveExportJob.cpp">
       <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendX64SaveObjJob.cpp">
+      <Filter>Backend\X64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -749,14 +749,14 @@
     <ClInclude Include="BackendX64FunctionMacros_.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
-    <ClInclude Include="BackendX64GenObjJob.h">
-      <Filter>Backend\X64</Filter>
-    </ClInclude>
     <ClInclude Include="CopyFileJob.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ModuleSaveExportJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendX64SaveObjJob.h">
+      <Filter>Backend\X64</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
