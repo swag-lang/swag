@@ -4,6 +4,11 @@ struct Backend;
 
 struct ModuleExportJob : public Job
 {
+    ModuleExportJob()
+    {
+        flags |= JOB_IS_IO;
+    }
+
     JobResult execute() override;
     Backend*  backend = nullptr;
 };
