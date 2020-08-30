@@ -116,32 +116,7 @@ JobResult ModuleBuildJob::execute()
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
 
-            pass = ModuleBuildPass::Publish;
-        }
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Publish)
-    {
-        pass = ModuleBuildPass::SemanticCompiler;
-        if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
-        {
-            // Everything in a /publih folder will be copied "as is" in the output directory
-            string publishPath = module->path + "/publish";
-            if (fs::exists(publishPath))
-            {
-                OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-                    auto job          = g_Pool_copyFileJob.alloc();
-                    job->module       = module;
-                    job->sourcePath   = publishPath + "/" + cFileName;
-                    job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
-                    job->dependentJob = this;
-                    jobsToAdd.push_back(job);
-                });
-            }
-
-            if (!jobsToAdd.empty())
-                return JobResult::KeepJobAlive;
+            pass = ModuleBuildPass::SemanticCompiler;
         }
     }
 
@@ -149,7 +124,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::SemanticCompiler)
     {
         module->canSendCompilerMessages = false;
-        pass                            = ModuleBuildPass::SemanticModule;
+        pass                            = ModuleBuildPass::Publish;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -176,6 +151,29 @@ JobResult ModuleBuildJob::execute()
             }
 
             return JobResult::KeepJobAlive;
+        }
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::Publish)
+    {
+        pass = ModuleBuildPass::SemanticModule;
+        if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
+        {
+            // Everything in a /publih folder will be copied "as is" in the output directory
+            string publishPath = module->path + "/publish";
+            if (fs::exists(publishPath))
+            {
+                OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+                    auto job          = g_Pool_copyFileJob.alloc();
+                    job->module       = module;
+                    job->sourcePath   = publishPath + "/" + cFileName;
+                    job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+                    job->dependentJob = this;
+                    job->flags |= JOB_IS_IO;
+                    jobsToAdd.push_back(job);
+                });
+            }
         }
     }
 
@@ -265,7 +263,7 @@ JobResult ModuleBuildJob::execute()
             if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
             {
                 if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Exec",  format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
                 for (auto func : module->byteCodeInitFunc)
                 {

@@ -60,7 +60,10 @@ void ThreadManager::addJobNoLock(Job* job)
         job->waitingJobIndex = -1;
     }
 
-    queueJobs.push_back(job);
+    if (job->flags & JOB_IS_IO)
+        queueJobsIO.push_back(job);
+    else
+        queueJobs.push_back(job);
 
     // Wakeup one thread
     if (!availableThreads.empty())
@@ -106,7 +109,14 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         job->dependentJobs.clear();
     }
 
-    // Notify my parent job that i'm done
+    // If i am an IO job, then decrease counter
+    if (job->flags & JOB_IS_IO)
+    {
+        SWAG_ASSERT(currentJobsIO);
+        currentJobsIO--;
+    }
+
+    // Notify my parent job that i am done
     if (result != JobResult::KeepJobAlive && job->dependentJob)
     {
         SWAG_ASSERT(job->dependentJob->waitOnJobs);
@@ -177,16 +187,43 @@ void ThreadManager::waitEndJobs()
 Job* ThreadManager::getJob(uint32_t affinity, function<bool(Job*)> canGetJob)
 {
     unique_lock lk(mutexAdd);
-    if (queueJobs.empty())
+    Job*        job;
+
+    // If no IO is running, then we can take one in priority
+    if (!currentJobsIO)
+    {
+        job = getJob(affinity, queueJobsIO, canGetJob);
+        if (job)
+        {
+            currentJobsIO++;
+            return job;
+        }
+    }
+
+    // Else we take a normal job in priority
+    job = getJob(affinity, queueJobs, canGetJob);
+    if (job)
+        return job;
+
+    // Otherwise, then IO, as there's nothing left
+    job = getJob(affinity, queueJobsIO, canGetJob);
+    if (job)
+        currentJobsIO++;
+    return job;
+}
+
+Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue, function<bool(Job*)> canGetJob)
+{
+    if (queue.empty())
         return nullptr;
 
-    auto job = queueJobs.back();
+    auto job = queue.back();
     if (!(job->affinity & affinity))
         return nullptr;
     if (canGetJob && !canGetJob(job))
         return nullptr;
 
-    queueJobs.pop_back();
+    queue.pop_back();
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
     job->flags &= ~JOB_IS_IN_QUEUE;

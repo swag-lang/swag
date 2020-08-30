@@ -11,6 +11,7 @@ struct ThreadManager
     void addJob(Job* job);
     void addJobNoLock(Job* job);
     Job* getJob(JobThread* thread);
+    Job* getJob(uint32_t affinity, VectorNative<Job*>& queue, function<bool(Job*)> canGetJob);
     bool doneWithJobs();
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
@@ -20,6 +21,7 @@ struct ThreadManager
 
     Job* getJob(uint32_t affinity = AFFINITY_ALL, function<bool(Job*)> canGetJob = nullptr);
 
+    VectorNative<Job*>       queueJobsIO;
     VectorNative<Job*>       queueJobs;
     VectorNative<JobThread*> availableThreads;
     VectorNative<JobThread*> workerThreads;
@@ -29,6 +31,7 @@ struct ThreadManager
     mutex                    mutexDone;
     condition_variable       condVarDone;
     atomic<int>              jobsInThreads = 0;
+    int                      currentJobsIO = 0;
 };
 
 extern ThreadManager g_ThreadMgr;
