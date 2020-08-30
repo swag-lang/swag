@@ -24,7 +24,7 @@ JobResult BackendC::prepareOutput(const BuildParameters& buildParameters, Job* o
         auto moduleName = format("%s%d", module->name.c_str(), precompileIndex);
         bufferC.path    = targetPath + "/" + moduleName + ".c";
         if (g_CommandLine.verbose)
-            g_Log.verbose(format("   module %s, C backend, precompile", moduleName.c_str(), module->byteCodeTestFunc.size()));
+            g_Log.verbosePass(LogPassType::Info, "C precompile", moduleName);
 
         emitRuntime(bufferC, precompileIndex);
         emitDataSegment(bufferC, &module->bssSegment, precompileIndex);

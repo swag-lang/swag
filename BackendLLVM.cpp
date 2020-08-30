@@ -251,7 +251,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         }
 
         if (g_CommandLine.verbose)
-            g_Log.verbose(format("   module %s, llvm backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
+            g_Log.verbosePass(LogPassType::Info, "LLVM precompile", perThread[ct][precompileIndex].filename);
 
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
