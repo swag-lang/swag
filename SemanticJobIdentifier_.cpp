@@ -831,12 +831,14 @@ anotherTry:
         {
             if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
             {
+                // If we are inside a #back instruction, then setup
                 InstanciateContext instContext;
                 if (node->parent->parent->kind == AstNodeKind::CompilerBake)
                 {
                     instContext.fromBake     = true;
                     instContext.bakeIsPublic = node->parent->parent->attributeFlags & ATTRIBUTE_PUBLIC;
                     instContext.bakeName     = node->parent->parent->name;
+                    node->parent->parent->flags |= AST_FROM_GENERIC; // This is tell the #bake that is has worked
                 }
 
                 SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, instContext));

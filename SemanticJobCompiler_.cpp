@@ -45,6 +45,13 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
 bool SemanticJob::resolveCompilerBake(SemanticContext* context)
 {
+    auto node = context->node;
+    auto expr = node->childs.front();
+    auto type = expr->typeInfo;
+
+    SWAG_VERIFY(type->kind == TypeInfoKind::Struct, context->report({expr, expr->token, format("cannot bake type '%s'", type->name.c_str())}));
+    SWAG_VERIFY(type->declNode->flags & AST_FROM_GENERIC, context->report({expr, expr->token, format("cannot bake type '%s' because it's not generic", type->name.c_str())}));
+    SWAG_VERIFY(node->flags & AST_FROM_GENERIC, context->report({ expr, expr->token, format("fail to bake type '%s' because it's already instanciated", type->name.c_str()) }));
     return true;
 }
 
