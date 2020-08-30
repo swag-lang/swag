@@ -42,7 +42,7 @@ JobResult ModuleOutputJob::execute()
         {
             timerPrepareOutput.start();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s [PrepareOutput] pass begin", module->name.c_str()));
+                g_Log.verbosePass(LogPassType::PassBegin, "PrepareOutput", module->name);
         }
 
         // Compute the number of sub modules (i.e the number of output temporary files)
@@ -141,8 +141,8 @@ JobResult ModuleOutputJob::execute()
             timerPrepareOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbose(format(" # module %s [PrepareOutput] pass end in %.3fs", module->name.c_str(), timerPrepareOutput.elapsed.count()));
-                g_Log.verbose(format("## module %s [GenOutput] pass begin", module->name.c_str()));
+                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassBegin, "GenOutput", module->name);
             }
             timerGenOutput.start();
         }
@@ -191,7 +191,7 @@ JobResult ModuleOutputJob::execute()
     {
         timerGenOutput.stop();
         if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbose(format(" # module %s [GenOutput] end in %.3fs", module->name.c_str(), timerGenOutput.elapsed.count()));
+            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name, timerGenOutput.elapsed.count());
     }
 
     return JobResult::ReleaseJob;

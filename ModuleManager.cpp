@@ -4,6 +4,7 @@
 #include "Context.h"
 #include "Ast.h"
 #include "Profile.h"
+#include "Timer.h"
 
 ModuleManager g_ModuleMgr;
 
@@ -27,6 +28,10 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     path += name.c_str();
     path += ".dll";
 
+    Timer loadLibTimer;
+    if (verbose)
+        loadLibTimer.start();
+
     auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
@@ -47,7 +52,10 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     }
 
     if (verbose)
-        g_Log.verbose(format("   load module '%s': success\n", name.c_str()), false);
+    {
+        loadLibTimer.stop();
+        g_Log.verbosePass(LogPassType::Info,  "LoadModule", name.c_str(), loadLibTimer.elapsed.count());
+    }
 
     unique_lock lk(mutex);
 

@@ -372,7 +372,7 @@ void Workspace::setupTarget()
     targetPath.append(g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str());
 
     if (g_CommandLine.verbose)
-        g_Log.verbose(format("-- target directory is '%s'", targetPath.string().c_str()));
+        g_Log.verbose(format("   target directory is '%s'", targetPath.string().c_str()));
 
     // Clean target
     if (g_CommandLine.clean && g_CommandLine.output)
@@ -430,7 +430,7 @@ void Workspace::setupTarget()
 
     if (g_CommandLine.verbose)
     {
-        g_Log.verbose(format("-- cache directory is '%s'", cachePath.string().c_str()));
+        g_Log.verbose(format("   cache directory is '%s'", cachePath.string().c_str()));
     }
 
     // Clean target
@@ -493,7 +493,7 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
 
     if (g_CommandLine.verbose)
-        g_Log.verbose("## syntax pass begin");
+        g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
 
     {
         Timer timer(g_Stats.syntaxTime);
@@ -505,7 +505,7 @@ bool Workspace::buildTarget()
     }
 
     if (g_CommandLine.verbose)
-        g_Log.verbose(format(" # syntax pass end in %.3fs (%d files %d modules)", g_Stats.syntaxTime.load(), g_Stats.numFiles.load(), modules.size()));
+        g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
 
     // Runtime swag module semantic pass
     //////////////////////////////////////////////////
@@ -591,7 +591,7 @@ bool Workspace::build()
         if (g_CommandLine.devMode)
             g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
         if (g_CommandLine.verbose)
-            g_Log.verbose(format("-- workspace path is '%s'", workspacePath.string().c_str()));
+            g_Log.verbose(format("   workspace path is '%s'", workspacePath.string().c_str()));
 
         g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetOsName().c_str(), g_Workspace.GetArchName().c_str()));
         addBootstrap();

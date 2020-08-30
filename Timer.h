@@ -8,6 +8,11 @@ struct Timer
     {
     }
 
+    Timer()
+        : destValue{internal}
+    {
+    }
+
     void start(bool force = false)
     {
         if (g_CommandLine.stats || g_CommandLine.verbose || force)
@@ -24,6 +29,7 @@ struct Timer
         }
     }
 
+    atomic<double>                            internal;
     chrono::duration<double>                  elapsed;
     chrono::high_resolution_clock::time_point timeBefore;
     atomic<double>&                           destValue;

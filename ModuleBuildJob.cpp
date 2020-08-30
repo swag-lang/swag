@@ -155,7 +155,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerSemanticCompiler.start();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s [SemanticCompiler] pass begin", module->name.c_str()));
+                g_Log.verbosePass(LogPassType::PassBegin, "SemanticCompiler", module->name);
         }
 
         if (!module->filesForCompilerPass.empty())
@@ -191,8 +191,8 @@ JobResult ModuleBuildJob::execute()
             timerSemanticCompiler.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbose(format(" # module %s [SemanticCompiler] pass end in %.3fs", module->name.c_str(), timerSemanticCompiler.elapsed.count()));
-                g_Log.verbose(format("## module %s [SemanticModule] pass begin", module->name.c_str()));
+                g_Log.verbosePass(LogPassType::PassEnd, "SemanticCompiler", module->name, timerSemanticCompiler.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassBegin, "SemanticModule", module->name);
             }
             timerSemanticModule.start();
         }
@@ -219,7 +219,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerSemanticModule.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s [SemanticModule] pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
+                g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed.count());
         }
 
         // If we will not run some stuff, then no need to wait for dependencies, because we do not
@@ -265,7 +265,7 @@ JobResult ModuleBuildJob::execute()
             if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
             {
                 if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbose(format("   module %s, bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Exec",  format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
                 for (auto func : module->byteCodeInitFunc)
                 {
@@ -280,7 +280,7 @@ JobResult ModuleBuildJob::execute()
             if (!module->byteCodeRunFunc.empty())
             {
                 if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbose(format("   module %s, bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
                 // A #run pass cannot modify a bss variable
                 module->bssCannotChange = true;
@@ -303,7 +303,7 @@ JobResult ModuleBuildJob::execute()
                 if (!module->byteCodeTestFunc.empty())
                 {
                     if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                        g_Log.verbose(format("   module %s, bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                        g_Log.verbosePass(LogPassType::Info, "Test", format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                     // Modified global variables during test will be restored after
                     module->saveBssValues     = true;
@@ -338,7 +338,7 @@ JobResult ModuleBuildJob::execute()
             if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
             {
                 if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbose(format("   module %s, bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
                 for (auto func : module->byteCodeDropFunc)
                 {
@@ -378,7 +378,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerRun.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s [Output] pass begin", module->name.c_str()));
+                g_Log.verbosePass(LogPassType::PassBegin, "Output", module->name);
             timerOutput.start();
         }
 
@@ -433,7 +433,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s [Output] pass end in %.3fs", module->name.c_str(), timerOutput.elapsed.count()));
+                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name, timerOutput.elapsed.count());
         }
 
         if (module->numErrors)

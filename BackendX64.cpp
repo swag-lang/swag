@@ -230,7 +230,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.filename += ".obj";
 
         if (g_CommandLine.verbose)
-            g_Log.verbose(format("   module %s, x64 backend, precompile", perThread[ct][precompileIndex].filename.c_str(), module->byteCodeTestFunc.size()));
+            g_Log.verbosePass(LogPassType::Info, "X64 precompile", perThread[ct][precompileIndex].filename);
 
         emitHeader(buildParameters);
         createRuntime(buildParameters);

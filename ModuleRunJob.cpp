@@ -35,7 +35,7 @@ JobResult ModuleRunJob::execute()
     else
         g_Log.messageHeaderCentered("Running backend", module->name.c_str());
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
-        g_Log.verbose("   running " + path.string());
+        g_Log.verbosePass(LogPassType::Info, "Test", path.string());
 
     uint32_t numErrors = 0;
     OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);

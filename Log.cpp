@@ -91,6 +91,53 @@ void Log::message(const Utf8& message)
     unlock();
 }
 
+void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& moduleName, double time)
+{
+    if (g_CommandLine.silent || !g_CommandLine.verbose)
+        return;
+    lock();
+    setColor(LogColor::DarkCyan);
+
+    switch (type)
+    {
+    case LogPassType::PassBegin:
+        g_Log.print("## ");
+        break;
+    case LogPassType::PassEnd:
+        g_Log.print("-- ");
+        break;
+    default:
+        g_Log.print("   ");
+        break;
+    }
+
+    // Pass name
+    g_Log.print(format("[%s]", passName.c_str()));
+    int len = passName.length();
+    while (len < 20)
+    {
+        g_Log.print(" ");
+        len++;
+    }
+
+    // Module name
+    g_Log.print(format("%s ", moduleName.c_str()));
+    len = moduleName.length();
+    while (len < 30)
+    {
+        g_Log.print(" ");
+        len++;
+    }
+
+    // Time
+    if (time != -1)
+        g_Log.print(format("%.3fs", time));
+
+    g_Log.eol();
+    setDefaultColor();
+    unlock();
+}
+
 void Log::verbose(const Utf8& message, bool forceEol)
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)

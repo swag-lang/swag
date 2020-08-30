@@ -111,8 +111,8 @@ namespace OS
 
         if (g_CommandLine.verbose)
         {
-            g_Log.verbose(format("-- winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
-            g_Log.verbose(format("-- winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
+            g_Log.verbose(format("   winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
+            g_Log.verbose(format("   winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
         }
     }
 } // namespace OS
