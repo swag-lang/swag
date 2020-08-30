@@ -51,10 +51,10 @@ void Backend::setup()
                 exit(-1);
             }
 
-            if (g_CommandLine.verbose)
+            if (g_CommandLine.verbose && g_CommandLine.verbosePath)
             {
-                g_Log.verbose(format("   linkerPath is '%s'\n", Backend::linkerPath.c_str()));
-                g_Log.verbose(format("   linkerExe is '%s'\n", Backend::linkerExe.c_str()));
+                g_Log.verbose(format("linkerPath is '%s'\n", Backend::linkerPath.c_str()));
+                g_Log.verbose(format("linkerExe is '%s'\n", Backend::linkerExe.c_str()));
             }
         }
     }

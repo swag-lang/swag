@@ -95,6 +95,9 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)
         return;
+    if (!g_CommandLine.verbosePass)
+        return;
+
     lock();
     setColor(LogColor::DarkCyan);
 

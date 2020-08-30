@@ -109,10 +109,10 @@ namespace OS
             break;
         }
 
-        if (g_CommandLine.verbose)
+        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
         {
-            g_Log.verbose(format("   winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
-            g_Log.verbose(format("   winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
+            g_Log.verbose(format("winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
+            g_Log.verbose(format("winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
         }
     }
 } // namespace OS

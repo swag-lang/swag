@@ -371,8 +371,8 @@ void Workspace::setupTarget()
     targetPath.append("output/");
     targetPath.append(g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str());
 
-    if (g_CommandLine.verbose)
-        g_Log.verbose(format("   target directory is '%s'", targetPath.string().c_str()));
+    if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+        g_Log.verbose(format("target path is '%s'", targetPath.string().c_str()));
 
     // Clean target
     if (g_CommandLine.clean && g_CommandLine.output)
@@ -428,9 +428,9 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    if (g_CommandLine.verbose)
+    if (g_CommandLine.verbose && g_CommandLine.verbosePath)
     {
-        g_Log.verbose(format("   cache directory is '%s'", cachePath.string().c_str()));
+        g_Log.verbose(format("cache path is '%s'", cachePath.string().c_str()));
     }
 
     // Clean target
@@ -590,8 +590,8 @@ bool Workspace::build()
 
         if (g_CommandLine.devMode)
             g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
-        if (g_CommandLine.verbose)
-            g_Log.verbose(format("   workspace path is '%s'", workspacePath.string().c_str()));
+        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+            g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
         g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetOsName().c_str(), g_Workspace.GetArchName().c_str()));
         addBootstrap();

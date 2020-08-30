@@ -56,8 +56,12 @@ struct CommandLine
     bool silent                = false;
     bool stats                 = false;
     bool verbose               = false;
+    bool verboseCmdLine        = false;
+    bool verbosePath           = false;
+    bool verboseLink           = false;
     bool verboseUnittestErrors = false;
-    bool verboseBackendCommand = true;
+    bool verbosePass           = true;
+    bool verboseBackendCommand = false;
     bool errorSourceOut        = true;
     bool errorNoteOut          = true;
 

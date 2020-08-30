@@ -180,7 +180,11 @@ namespace OS
         bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
         uint32_t numErrors = 0;
         auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
-        auto     result    = OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
+
+        if (g_CommandLine.verbose && g_CommandLine.verboseLink)
+            g_Log.verbose(cmdLine);
+
+        auto result = OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
 
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;

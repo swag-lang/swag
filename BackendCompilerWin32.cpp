@@ -72,8 +72,8 @@ namespace OS
             }
 
             auto cmdLineLIB = "\"" + Backend::compilerPath + "lib.exe\" " + libArguments;
-            if (verbose)
-                g_Log.verbose("VS " + cmdLineLIB + "\n");
+            if (g_CommandLine.verbose && g_CommandLine.verboseLink)
+                g_Log.verbose(cmdLineLIB);
             SWAG_CHECK(OS::doProcess(cmdLineLIB, Backend::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
             break;
         }
@@ -93,8 +93,8 @@ namespace OS
                 clArguments += "/DSWAG_IS_BINARY ";
 
             auto cmdLineCL = "\"" + Backend::compilerPath + Backend::compilerExe + "\" " + clArguments + "/link " + linkArguments;
-            if (verbose)
-                g_Log.verbose("VS " + cmdLineCL + "\n");
+            if (g_CommandLine.verbose && g_CommandLine.verboseLink)
+                g_Log.verbose(cmdLineCL);
             SWAG_CHECK(OS::doProcess(cmdLineCL, Backend::compilerPath, verbose, numErrors, LogColor::DarkCyan, "CL "));
             break;
         }

@@ -158,10 +158,9 @@ int main(int argc, const char* argv[])
         exit(-1);
 
     // Output command line in verbose mode
-    if (g_CommandLine.verbose)
+    if (g_CommandLine.verbose && g_CommandLine.verboseCmdLine)
     {
-        auto str = cmdParser.buildString(true);
-        g_Log.verbose("   command line is " + str);
+        g_Log.verbose(cmdParser.buildString(true));
     }
 
     // Creates a new workspace, and exit

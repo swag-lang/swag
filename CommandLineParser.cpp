@@ -8,6 +8,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats, nullptr, "display build statistics at the end");
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose, nullptr, "verbose mode, log all kind of informations");
+    addArg("--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
+    addArg("--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log used global paths");
+    addArg("--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker/compiler command line");
+    addArg("--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes");
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
