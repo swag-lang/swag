@@ -17,10 +17,10 @@ impl C1914
 alias TC1914 = C1914's32
 alias TC19142 = C1914'f32
 
-#test
+/*#test
 {
     var x : TC1914
     var y : TC19142
-    @assert(@typeof(x).name == "compiler1914.C1914'(s32)")
-    @assert(@typeof(y).name == "compiler1914.C1914'(f32)")
-}
+    @print(@typeof(x).name)
+    @print(@typeof(y).name)
+}*/

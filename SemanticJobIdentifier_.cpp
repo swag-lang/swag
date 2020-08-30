@@ -725,7 +725,7 @@ anotherTry:
 
             // For a function, sometime, we do not want call parameters
             bool forcedFine = false;
-            if (node && node->parent && node->parent->parent)
+            if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
             {
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
