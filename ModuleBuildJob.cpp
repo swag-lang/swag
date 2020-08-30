@@ -123,7 +123,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
-        pass = ModuleBuildPass::SemanticCompilerPass;
+        pass = ModuleBuildPass::SemanticCompiler;
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
             // Everything in a /publih folder will be copied "as is" in the output directory
@@ -146,16 +146,16 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::SemanticCompilerPass)
+    if (pass == ModuleBuildPass::SemanticCompiler)
     {
         module->canSendCompilerMessages = false;
-        pass                            = ModuleBuildPass::SemanticModulePass;
+        pass                            = ModuleBuildPass::SemanticModule;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
             timerSemanticCompiler.start();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s semantic compiler pass begin", module->name.c_str()));
+                g_Log.verbose(format("## module %s [SemanticCompiler] pass begin", module->name.c_str()));
         }
 
         if (!module->filesForCompilerPass.empty())
@@ -180,7 +180,7 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::SemanticModulePass)
+    if (pass == ModuleBuildPass::SemanticModule)
     {
         // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = true;
@@ -191,8 +191,8 @@ JobResult ModuleBuildJob::execute()
             timerSemanticCompiler.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbose(format(" # module %s semantic compiler pass end in %.3fs", module->name.c_str(), timerSemanticCompiler.elapsed.count()));
-                g_Log.verbose(format("## module %s semantic module pass begin", module->name.c_str()));
+                g_Log.verbose(format(" # module %s [SemanticCompiler] pass end in %.3fs", module->name.c_str(), timerSemanticCompiler.elapsed.count()));
+                g_Log.verbose(format("## module %s [SemanticModule] pass begin", module->name.c_str()));
             }
             timerSemanticModule.start();
         }
@@ -219,7 +219,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerSemanticModule.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s semantic module pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
+                g_Log.verbose(format(" # module %s [SemanticModule] pass end in %.3fs", module->name.c_str(), timerSemanticModule.elapsed.count()));
         }
 
         // If we will not run some stuff, then no need to wait for dependencies, because we do not
@@ -378,7 +378,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerRun.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format("## module %s output pass begin", module->name.c_str()));
+                g_Log.verbose(format("## module %s [Output] pass begin", module->name.c_str()));
             timerOutput.start();
         }
 
@@ -433,7 +433,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbose(format(" # module %s output pass end in %.3fs", module->name.c_str(), timerOutput.elapsed.count()));
+                g_Log.verbose(format(" # module %s [Output] pass end in %.3fs", module->name.c_str(), timerOutput.elapsed.count()));
         }
 
         if (module->numErrors)
