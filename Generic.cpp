@@ -171,10 +171,8 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     return typeInfo;
 }
 
-Job* Generic::end(SemanticContext* context, SymbolName* symbol, AstNode* newNode, bool waitSymbol)
+Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol)
 {
-    auto job = context->job;
-
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
     symbol->cptOverloadsInit++;
@@ -220,18 +218,7 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
     // Replace generic types and values in the function generic parameters
     newTypeFunc->computeName();
 
-    // Run semantic on that struct
-    newFunc->resolvedSymbolName->cptOverloads++;
-    newFunc->resolvedSymbolName->cptOverloadsInit++;
-    auto sourceFile = context->sourceFile;
-    auto newJob     = SemanticJob::newJob(context->job->dependentJob, sourceFile, newFunc, false);
-
-    // Store stack of instantiation contexts
-    auto srcCxt  = context;
-    auto destCxt = &newJob->context;
-    destCxt->expansionNode.append(srcCxt->expansionNode);
-    destCxt->expansionNode.push_back(context->node);
-
+    auto newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
     structJob->dependentJobs.add(newJob);
 }
 
@@ -279,7 +266,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     newType->nakedName.clear(); // Force the recompute of the name
     newType->computeName();
 
-    auto structJob = end(context, match.symbolName, structNode, true);
+    auto structJob = end(context, context->job, match.symbolName, structNode, true);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -342,7 +329,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->computeName();
 
-    auto job = end(context, match.symbolName, newFunc, true);
+    auto job = end(context, context->job, match.symbolName, newFunc, true);
     g_ThreadMgr.addJob(job);
 
     return true;
