@@ -7,7 +7,7 @@
 #include "Os.h"
 #include "ByteCode.h"
 #include "Backend.h"
-#include "IOJob.h"
+#include "CopyFileJob.h"
 #include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
@@ -165,14 +165,16 @@ JobResult ModuleBuildJob::execute()
             if (fs::exists(publishPath))
             {
                 OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-                    auto job          = g_Pool_ioJob.alloc();
+                    auto job          = g_Pool_copyFileJob.alloc();
                     job->module       = module;
                     job->sourcePath   = publishPath + "/" + cFileName;
                     job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
                     job->dependentJob = this;
-                    job->type         = IOJobType::CopyFileJob;
                     jobsToAdd.push_back(job);
                 });
+
+                // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and we the scheduler will
+                // execute them when possible
             }
         }
     }

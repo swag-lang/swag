@@ -5,6 +5,9 @@
 #include "OS.h"
 #include "Module.h"
 #include "Profile.h"
+#include "CopyFileJob.h"
+#include "ModulePrepOutputJob.h"
+#include "BackendX64GenObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
@@ -252,6 +255,8 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
     if (pp.pass == BackendPreCompilePass::End)
     {
+        pp.pass = BackendPreCompilePass::GenerateObj;
+
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
@@ -341,9 +346,17 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
                 emitRelocationTable(pp.postConcat, pp.relocTableTSSection, pp.patchTSSectionFlags, pp.patchTSSectionRelocTableCount);
             }
         }
+    }
 
-        // Output file
-        generateObjFile(buildParameters);
+    if (pp.pass == BackendPreCompilePass::GenerateObj)
+    {
+        pp.pass           = BackendPreCompilePass::Release;
+        auto job          = g_Pool_backendX64GenObjJob.alloc();
+        job->module       = module;
+        job->dependentJob = ownerJob;
+        job->prepJob      = (ModulePrepOutputJob*) ownerJob;
+        ownerJob->jobsToAdd.push_back(job);
+        return JobResult::KeepJobAlive;
     }
 
     return JobResult::ReleaseJob;

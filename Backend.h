@@ -22,6 +22,8 @@ enum class BackendPreCompilePass
     Init,
     FunctionBodies,
     End,
+    GenerateObj,
+    Release,
 };
 
 struct Backend

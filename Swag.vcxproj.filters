@@ -443,6 +443,9 @@
     <ClCompile Include="SemanticJobIntrinsic_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="BackendX64GenObjJob.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -743,7 +746,10 @@
     <ClInclude Include="BackendX64FunctionMacros_.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
-    <ClInclude Include="IOJob.h">
+    <ClInclude Include="BackendX64GenObjJob.h">
+      <Filter>Backend\X64</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyFileJob.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

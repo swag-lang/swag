@@ -1,25 +1,11 @@
 #include "pch.h"
 #include "Module.h"
-#include "IOJob.h"
+#include "CopyFileJob.h"
 #include "OS.h"
 
-thread_local Pool<IOJob> g_Pool_ioJob;
+thread_local Pool<CopyFileJob> g_Pool_copyFileJob;
 
-JobResult IOJob::execute()
-{
-    switch (type)
-    {
-    case IOJobType::CopyFileJob:
-        return CopyFile();
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    return JobResult::ReleaseJob;
-}
-
-JobResult IOJob::CopyFile()
+JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
     if (fs::exists(destPath))
