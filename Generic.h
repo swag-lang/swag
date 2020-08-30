@@ -14,7 +14,7 @@ struct InstanciateContext
 struct Generic
 {
     static bool      updateGenericParameters(SemanticContext* context, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
-    static Job*      end(SemanticContext* context, AstNode* newNode, bool waitSymbol);
+    static Job*      end(SemanticContext* context, SymbolName* symbol, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo);
 
     static void instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** funcNode);

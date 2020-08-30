@@ -4,31 +4,6 @@
 #include "Ast.h"
 #include "ThreadManager.h"
 
-Job* Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
-{
-    auto  job              = context->job;
-    auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  symbol           = *dependentSymbols.begin();
-
-    // Need to wait for the struct/function to be semantic resolved
-    symbol->cptOverloads++;
-    symbol->cptOverloadsInit++;
-    if (waitSymbol)
-        job->waitForSymbolNoLock(symbol);
-
-    // Run semantic on that struct/function
-    auto sourceFile = context->sourceFile;
-    auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
-
-    // Store stack of instantiation contexts
-    auto srcCxt  = context;
-    auto destCxt = &newJob->context;
-    destCxt->expansionNode.append(srcCxt->expansionNode);
-    destCxt->expansionNode.push_back(context->node);
-
-    return newJob;
-}
-
 bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
     for (int i = 0; i < typeGenericParameters.size(); i++)
@@ -196,6 +171,29 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     return typeInfo;
 }
 
+Job* Generic::end(SemanticContext* context, SymbolName* symbol, AstNode* newNode, bool waitSymbol)
+{
+    auto job = context->job;
+
+    // Need to wait for the struct/function to be semantic resolved
+    symbol->cptOverloads++;
+    symbol->cptOverloadsInit++;
+    if (waitSymbol)
+        job->waitForSymbolNoLock(symbol);
+
+    // Run semantic on that struct/function
+    auto sourceFile = context->sourceFile;
+    auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
+
+    // Store stack of instantiation contexts
+    auto srcCxt  = context;
+    auto destCxt = &newJob->context;
+    destCxt->expansionNode.append(srcCxt->expansionNode);
+    destCxt->expansionNode.push_back(context->node);
+
+    return newJob;
+}
+
 void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
@@ -281,7 +279,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     newType->nakedName.clear(); // Force the recompute of the name
     newType->computeName();
 
-    auto structJob = end(context, structNode, true);
+    auto structJob = end(context, match.symbolName, structNode, true);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -344,7 +342,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->computeName();
 
-    auto job = end(context, newFunc, true);
+    auto job = end(context, match.symbolName, newFunc, true);
     g_ThreadMgr.addJob(job);
 
     return true;
