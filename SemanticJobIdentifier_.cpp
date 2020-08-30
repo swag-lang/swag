@@ -832,10 +832,13 @@ anotherTry:
             if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
             {
                 InstanciateContext instContext;
-                // @remove
-                /*instContext.fromBatch = true;
-                instContext.batchIsPublic = true;
-                instContext.batchName = "TITITITI";*/
+                if (node->parent->parent->kind == AstNodeKind::CompilerBake)
+                {
+                    instContext.fromBake     = true;
+                    instContext.bakeIsPublic = node->parent->parent->attributeFlags & ATTRIBUTE_PUBLIC;
+                    instContext.bakeName     = node->parent->parent->name;
+                }
+
                 SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, instContext));
             }
             else

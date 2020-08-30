@@ -7,6 +7,19 @@
 
 bool SyntaxJob::doCompilerBake(AstNode* parent, AstNode** result)
 {
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerBake, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerBake;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid bake alias name"));
+    node->inheritTokenName(token);
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymEqual));
+
+    ScopedFlags scoped(this, AST_CAN_INSTANCIATE_TYPE);
+    SWAG_CHECK(doIdentifierRef(node));
     return true;
 }
 
