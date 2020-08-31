@@ -465,7 +465,7 @@ void Workspace::checkPendingJobs()
                     node = pendingJob->dependentNodes.back();
                 if (node)
                 {
-                    if (!pendingJob->sourceFile->numErrors)
+                    if (!pendingJob->sourceFile->module->numErrors)
                     {
                         auto name = firstNode->name;
 
@@ -479,7 +479,7 @@ void Workspace::checkPendingJobs()
                             pendingJob->sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->getFullName().c_str())});
                         else
                             pendingJob->sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
-                        pendingJob->sourceFile->numErrors = 0;
+                        pendingJob->sourceFile->module->numErrors = 0;
                     }
                 }
             }

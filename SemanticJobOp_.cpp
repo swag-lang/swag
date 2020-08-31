@@ -156,7 +156,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, 0), context->report({parameters->childs[1], format("invalid parameter '2' for special function '%s' (cannot be of type '%s')", name.c_str(), typeStruct->name.c_str())}));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_EXACT), context->report({parameters->childs[1], format("invalid parameter '2' for special function '%s' (cannot be of type '%s')", name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == "opIndex")
     {

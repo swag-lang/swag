@@ -1,4 +1,9 @@
 struct TT
 {
-    //x: [10] Point1921
+    x: TT1
+}
+
+struct TT1
+{
+    x: TT
 }
