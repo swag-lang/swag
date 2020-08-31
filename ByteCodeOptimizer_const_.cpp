@@ -83,6 +83,12 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 if (ip->a.u8)
                     setNop(context, ip);
                 break;
+            default:
+                /*g_Log.lock();
+                printf("%s\n", context->bc->callName().c_str());
+                context->bc->printInstruction(ip);
+                g_Log.unlock();*/
+                break;
             }
         }
         else if (ip->flags & BCI_IMM_B)
@@ -108,6 +114,12 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->op                        = ByteCodeOp::SetImmediate32;
                 ip->b.u32                     = ip->b.u64 != 0;
                 context->passHasDoneSomething = true;
+                break;
+            default:
+                /*g_Log.lock();
+                printf("%s\n", context->bc->callName().c_str());
+                context->bc->printInstruction(ip);
+                g_Log.unlock();*/
                 break;
             }
         }
