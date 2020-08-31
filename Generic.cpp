@@ -241,8 +241,16 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic types and values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
-    newType->nakedName.clear(); // Force the recompute of the name
-    newType->computeName();
+    if (instContext.fromBake)
+    {
+        newType->nakedName = instContext.bakeName;
+        newType->name      = newType->nakedName;
+    }
+    else
+    {
+        newType->nakedName.clear(); // Force the recompute of the name
+        newType->computeName();
+    }
 
     auto structJob = end(context, context->job, match.symbolName, structNode, true);
 
