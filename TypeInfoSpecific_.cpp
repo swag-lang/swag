@@ -115,8 +115,9 @@ bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoReference::clone()
 {
-    auto newType         = g_Allocator.alloc<TypeInfoReference>();
-    newType->pointedType = pointedType;
+    auto newType          = g_Allocator.alloc<TypeInfoReference>();
+    newType->pointedType  = pointedType;
+    newType->originalType = originalType;
     newType->copyFrom(this);
     return newType;
 }

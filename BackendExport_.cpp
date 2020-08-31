@@ -68,9 +68,15 @@ void Backend::emitType(TypeInfo* typeInfo)
     }
     else
     {
-        // If the type is a baked one, then use the bake name
-        if (!(typeInfo->flags & TYPEINFO_BAKE))
-            typeInfo = TypeManager::concreteReference(typeInfo);
+        if (typeInfo->kind == TypeInfoKind::Reference)
+        {
+            auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+            if (typeRef->originalType->flags & TYPEINFO_BAKE)
+                typeInfo = typeRef->originalType;
+        }
+
+        typeInfo = TypeManager::concreteReference(typeInfo);
+
         typeInfo->computeScopedName();
         bufferSwg.addString(typeInfo->scopedName);
     }

@@ -862,9 +862,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
             {
-                auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
-                typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
-                typeRef->pointedType = typeInfo;
+                auto typeRef          = g_Allocator.alloc<TypeInfoReference>();
+                typeRef->flags        = typeInfo->flags | TYPEINFO_CONST;
+                typeRef->pointedType  = typeInfo;
+                typeRef->originalType = node->typeInfo;
                 typeRef->computeName();
                 node->typeInfo = typeRef;
             }

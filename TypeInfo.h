@@ -389,7 +389,8 @@ struct TypeInfoReference : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType = nullptr;
+    TypeInfo* pointedType  = nullptr;
+    TypeInfo* originalType = nullptr;
 };
 
 struct TypeInfoArray : public TypeInfo
