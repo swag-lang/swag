@@ -10,7 +10,7 @@ public struct TT1925
 
 public impl C1925
 {
-    public func xxC1925(x: Self)
+    public func xxC1925(x: C1925)
     {
     }
 }

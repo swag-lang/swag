@@ -670,7 +670,7 @@ struct AstStruct : public AstNode
     AstNode* content;
     Scope*   scope;
     AstNode* ownerGeneric;
-    Utf8     batchName;
+    Utf8     bakeName;
 
     uint32_t packing = sizeof(uint64_t);
 };

@@ -208,7 +208,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     // We are batching the struct
     if (instContext.fromBake)
     {
-        cloneContext.forceFlags = AST_FROM_BATCH;
+        cloneContext.forceFlags = AST_FROM_BAKE;
         if (instContext.bakeIsPublic)
             cloneContext.forceAttributeFlags = ATTRIBUTE_PUBLIC;
     }
@@ -224,7 +224,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     if (instContext.fromBake)
     {
         SWAG_ASSERT(!instContext.bakeName.empty());
-        structNode->batchName   = instContext.bakeName;
+        structNode->bakeName    = instContext.bakeName;
         structNode->scope->name = instContext.bakeName;
     }
 

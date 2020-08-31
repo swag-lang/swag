@@ -345,7 +345,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
         // Register for export
         if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
             !(attributeFlags & ATTRIBUTE_INLINE) &&
-            (!(flags & AST_FROM_GENERIC) || (flags & AST_FROM_BATCH)))
+            (!(flags & AST_FROM_GENERIC) || (flags & AST_FROM_BAKE)))
             bc->node->ownerScope->addPublicFunc(bc->node);
 
         if (attributeFlags & ATTRIBUTE_TEST_FUNC)
