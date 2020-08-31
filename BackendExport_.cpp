@@ -115,23 +115,24 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (node->parameters)
     {
         uint32_t idx = 0;
-        for (auto p : node->parameters->childs)
+        for (auto p : typeFunc->parameters)
         {
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(node->parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+
             // Name
-            if (p->name == "self" && p->typeInfo->isConst())
+            if (varDecl->name == "self" && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
-            bufferSwg.addString(p->name);
+            bufferSwg.addString(varDecl->name);
 
             // Type
-            if (p->name != "self")
+            if (varDecl->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
                 emitType(p->typeInfo);
             }
 
             // Assignment
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
             if (varDecl->assignment)
             {
                 CONCAT_FIXED_STR(bufferSwg, " = ");
