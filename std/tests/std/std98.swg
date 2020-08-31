@@ -23,4 +23,7 @@ impl IConvert for TOTO
     var x: TOTO
     format(&buf, "%{ABC}toto", x)
     @assert(cast(string) buf.toString() == "toto")
+
+    format(&buf, "{ABC}toto", x)
+    @assert(cast(string) buf.toString() == "{ABC}toto")
 }
