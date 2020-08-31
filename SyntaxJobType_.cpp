@@ -28,7 +28,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
     {
         ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
-        SWAG_CHECK(doExpression(node, &expr));
+        SWAG_CHECK(doPrimaryExpression(node, &expr));
     }
 
     SWAG_CHECK(eatSemiCol("after alias"));
