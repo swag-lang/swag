@@ -305,6 +305,7 @@
     <ClCompile Include="ByteCodeGenJobUnaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobVar_.cpp" />
     <ClCompile Include="ByteCodeGenJobSafety_.cpp" />
+    <ClCompile Include="ByteCodeOptimizer_const_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadcode_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadstore_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_emptyfct_.cpp" />

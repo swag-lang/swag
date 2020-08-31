@@ -95,6 +95,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     passes.push_back(optimizePassDeadCode);
     passes.push_back(optimizePassStack);
     passes.push_back(optimizePassImmediate);
+    passes.push_back(optimizePassConst);
 
     // Get all jumps
     setJumps(&optContext);
