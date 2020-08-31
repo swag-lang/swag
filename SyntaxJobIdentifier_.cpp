@@ -30,6 +30,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+    identifier->inheritTokenLocation(token);
     identifier->inheritTokenName(token);
     identifier->semanticFct   = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
