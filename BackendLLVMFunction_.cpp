@@ -872,7 +872,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer16:
         {
             //concat.addStringFormat("*(__u16_t*)(r[%u].pointer) = r[%u].u16;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -885,7 +885,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer32:
         {
             //concat.addStringFormat("*(__u32_t*)(r[%u].pointer) = r[%u].u32;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -898,7 +898,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer64:
         {
             //concat.addStringFormat("*(__u64_t*)(r[%u].pointer) = r[%u].u64;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             r0      = builder.CreateLoad(r0);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
