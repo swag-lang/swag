@@ -1,5 +1,5 @@
 #pragma once
-#include "Concat.h"
+#include "OutputFile.h"
 struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
@@ -59,9 +59,7 @@ struct Backend
     bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool      emitPublicSwg(Module* moduleToGen, Scope* scope);
 
-    Concat bufferSwg;
-    string bufferSwgName;
-    string bufferSwgPath;
+    OutputFile bufferSwg;
 
     Module*               module               = nullptr;
     uint64_t              timeExportFile       = 0;

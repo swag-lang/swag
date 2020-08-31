@@ -21,12 +21,12 @@ bool OutputFile::openWrite()
     return true;
 }
 
-bool OutputFile::flush(bool last, const function<bool(Job*)>& execAsync)
+bool OutputFile::flush(bool last, uint8_t pendingAffinity)
 {
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        save(bucket, bucketCount(bucket), execAsync);
+        saveBucket(bucket, bucketCount(bucket), pendingAffinity);
         bucket = bucket->nextBucket;
     }
 
@@ -40,7 +40,7 @@ bool OutputFile::flush(bool last, const function<bool(Job*)>& execAsync)
     return true;
 }
 
-void OutputFile::save(ConcatBucket* bucket, uint32_t count, const function<bool(Job*)>& execAsync)
+void OutputFile::saveBucket(ConcatBucket* bucket, uint32_t count, uint8_t pendingAffinity)
 {
     if (!openWrite())
         return;
@@ -65,8 +65,8 @@ void OutputFile::save(ConcatBucket* bucket, uint32_t count, const function<bool(
             DWORD written = 0;
             while (!GetOverlappedResult(winHandle, over, &written, false))
             {
-                if (execAsync)
-                    g_ThreadMgr.participate(execAsync);
+                if (pendingAffinity)
+                    g_ThreadMgr.participate(pendingAffinity);
             }
         }
     }

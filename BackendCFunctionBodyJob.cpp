@@ -42,12 +42,7 @@ JobResult BackendCFunctionBodyJob::execute()
     {
         totalCount += g_Concat.bucketCount(firstBucket);
         auto& file = bachendC->bufferCFiles[precompileIndex];
-        file.save(firstBucket, g_Concat.bucketCount(firstBucket), [this](Job* job) {
-            if (job->jobKind == JobKind::BACKEND_FCT_BODY)
-                return false;
-            return true;
-        });
-
+        file.saveBucket(firstBucket, g_Concat.bucketCount(firstBucket), AFFINITY_NONE);
         firstBucket = firstBucket->nextBucket;
     }
 

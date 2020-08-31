@@ -10,14 +10,10 @@ struct Module;
 struct Diagnostic;
 struct TypeInfo;
 
-enum class JobKind : uint8_t
-{
-    MISC,
-    BACKEND_FCT_BODY,
-};
-
 static const uint8_t AFFINITY_BACKEND_FCTBODY = 0x01;
 static const uint8_t AFFINITY_EXECBC          = 0x02;
+static const uint8_t AFFINITY_IO              = 0x04;
+static const uint8_t AFFINITY_NONE            = 0x00;
 static const uint8_t AFFINITY_ALL             = 0xFF;
 
 static const uint8_t JOB_IS_IN_QUEUE    = 0x01;
@@ -93,7 +89,6 @@ struct Job : public PoolElem
 
     uint8_t flags    = 0;
     uint8_t affinity = AFFINITY_ALL;
-    JobKind jobKind  = JobKind::MISC;
 
     void reset() override
     {

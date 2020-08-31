@@ -33,7 +33,7 @@ JobResult BackendC::prepareOutput(const BuildParameters& buildParameters, Job* o
         emitDataSegment(bufferC, &module->constantSegment, precompileIndex);
         emitPublic(bufferC, g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(bufferC, module, module->scopeRoot);
-        bufferC.flush(false);
+        bufferC.flush(false, AFFINITY_NONE);
     }
 
     if (pass[precompileIndex] == BackendPreCompilePass::FunctionBodies)
@@ -55,7 +55,7 @@ JobResult BackendC::prepareOutput(const BuildParameters& buildParameters, Job* o
             emitMain(bufferC);
         }
 
-        bufferC.flush(true);
+        bufferC.flush(true, AFFINITY_NONE);
     }
 
     return JobResult::ReleaseJob;

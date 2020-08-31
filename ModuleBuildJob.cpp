@@ -104,8 +104,8 @@ JobResult ModuleBuildJob::execute()
                 syntaxJob->sourceFile   = file;
                 syntaxJob->module       = module;
                 syntaxJob->dependentJob = this;
-                file->name              = depModule->backend->bufferSwgName;
-                file->path              = depModule->backend->bufferSwgPath;
+                file->name              = depModule->backend->bufferSwg.name;
+                file->path              = depModule->backend->bufferSwg.path;
                 file->generated         = true;
                 dep->generated          = depModule->backend->exportFileGenerated;
                 module->addFile(file);
@@ -419,7 +419,7 @@ JobResult ModuleBuildJob::execute()
             }
             else if (module->backend->mustCompile)
             {
-                OS::touchFile(module->backend->bufferSwgPath);
+                OS::touchFile(module->backend->bufferSwg.path);
             }
         }
     }

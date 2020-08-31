@@ -275,7 +275,7 @@ JobResult DocScopeJob::execute()
     }
 
     DocHtmlHelper::htmlEnd(outFile);
-    outFile.flush(true);
+    outFile.flush(true, AFFINITY_NONE);
 
     return JobResult::ReleaseJob;
 }

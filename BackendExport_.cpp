@@ -466,7 +466,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 void Backend::setupExportFile()
 {
-    if (bufferSwgPath.empty())
+    if (bufferSwg.path.empty())
     {
         exportFileGenerated = true;
         Utf8 targetName     = module->name + ".generated.swg";
@@ -482,8 +482,8 @@ void Backend::setupExportFile()
 
         if (exists)
         {
-            bufferSwgName  = targetName;
-            bufferSwgPath  = targetPath;
+            bufferSwg.name = targetName;
+            bufferSwg.path = targetPath;
             timeExportFile = OS::getFileWriteTime(targetPath.c_str());
         }
     }
@@ -500,8 +500,8 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     {
         passExport          = BackendPreCompilePass::GenerateObj;
         exportFileGenerated = true;
-        bufferSwgName       = module->name + ".generated.swg";
-        bufferSwgPath       = g_Workspace.cachePath.string() + "\\" + bufferSwgName;
+        bufferSwg.name      = module->name + ".generated.swg";
+        bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + bufferSwg.name;
         if (!mustCompile)
             return JobResult::ReleaseJob;
 
@@ -534,28 +534,10 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 bool Backend::saveExportFile()
 {
     SWAG_PROFILE(PRF_SAVE, format("saveExportFile %s", module->name.c_str()));
-    ofstream destFile(bufferSwgPath, ios::binary);
-    if (!destFile.is_open())
-    {
-        module->error(format("unable to write output file '%s'", bufferSwgPath.c_str()));
+    auto result = bufferSwg.flush(true, AFFINITY_ALL ^ AFFINITY_IO);
+    if (!result)
         return false;
-    }
-
-    // Output the full concat buffer
-    uint32_t totalCount = 0;
-    auto     bucket     = bufferSwg.firstBucket;
-    while (bucket != bufferSwg.lastBucket->nextBucket)
-    {
-        auto count = bufferSwg.bucketCount(bucket);
-        destFile.write((const char*) bucket->datas, count);
-        totalCount += count;
-        bucket = bucket->nextBucket;
-    }
-
-    destFile.flush();
-    destFile.close();
-
-    timeExportFile = OS::getFileWriteTime(bufferSwgPath.c_str());
+    timeExportFile = OS::getFileWriteTime(bufferSwg.path.c_str());
     SWAG_ASSERT(timeExportFile);
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;

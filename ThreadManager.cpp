@@ -184,15 +184,15 @@ void ThreadManager::waitEndJobs()
     }
 }
 
-Job* ThreadManager::getJob(uint32_t affinity, function<bool(Job*)> canGetJob)
+Job* ThreadManager::getJob(uint32_t affinity)
 {
     unique_lock lk(mutexAdd);
     Job*        job;
 
     // If no IO is running, then we can take one in priority
-    if (!currentJobsIO)
+    if (!currentJobsIO && (affinity & AFFINITY_IO))
     {
-        job = getJob(affinity, queueJobsIO, canGetJob);
+        job = getJob(affinity, queueJobsIO);
         if (job)
         {
             currentJobsIO++;
@@ -200,27 +200,29 @@ Job* ThreadManager::getJob(uint32_t affinity, function<bool(Job*)> canGetJob)
         }
     }
 
-    // Else we take a normal job in priority
-    job = getJob(affinity, queueJobs, canGetJob);
+    // Else we take a normal job if we can
+    job = getJob(affinity, queueJobs);
     if (job)
         return job;
 
     // Otherwise, then IO, as there's nothing left
-    job = getJob(affinity, queueJobsIO, canGetJob);
-    if (job)
-        currentJobsIO++;
+    if (affinity & AFFINITY_IO)
+    {
+        job = getJob(affinity, queueJobsIO);
+        if (job)
+            currentJobsIO++;
+    }
+
     return job;
 }
 
-Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue, function<bool(Job*)> canGetJob)
+Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
 {
     if (queue.empty())
         return nullptr;
 
     auto job = queue.back();
     if (!(job->affinity & affinity))
-        return nullptr;
-    if (canGetJob && !canGetJob(job))
         return nullptr;
 
     queue.pop_back();
@@ -248,25 +250,25 @@ Job* ThreadManager::getJob(JobThread* thread)
     return nullptr;
 }
 
-void ThreadManager::participate(mutex& lock, uint32_t affinity, const function<bool(Job*)>& canGetJob)
+void ThreadManager::participate(mutex& lock, uint32_t affinity)
 {
     while (true)
     {
         if (lock.try_lock())
             return;
 
-        auto job = getJob(affinity, canGetJob);
+        auto job = getJob(affinity);
         if (!job)
             continue;
         g_ThreadMgr.executeOneJob(job);
     }
 }
 
-void ThreadManager::participate(const function<bool(Job*)>& canGetJob)
+void ThreadManager::participate(uint32_t affinity)
 {
-    auto job = getJob(AFFINITY_ALL, canGetJob);
+    auto job = getJob(affinity);
     if (!job)
         return;
-
+    printf("xxxx\n");
     g_ThreadMgr.executeOneJob(job);
 }
