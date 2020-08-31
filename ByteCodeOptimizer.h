@@ -47,6 +47,7 @@ struct ByteCodeOptimizer
     static void optimizePassEmptyFct(ByteCodeOptContext* context);
     static void optimizePassDeadStore(ByteCodeOptContext* context);
     static void optimizePassImmediate(ByteCodeOptContext* context);
+    static void optimizePassStack(ByteCodeOptContext* context);
 
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);

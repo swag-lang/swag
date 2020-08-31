@@ -76,10 +76,10 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     auto job    = context->job;
     auto module = job->originalNode->sourceFile->module;
 
-    if (module->mustOptimizeBC(job->originalNode) < 2)
-      return;
+    //if (module->mustOptimizeBC(job->originalNode) < 2)
+    //  return;
 
-    //if (job->originalNode->sourceFile->name != "compiler1911.swg")
+    //if (job->originalNode->sourceFile->name != "compiler1931.swg")
     //    return;
 
     Timer tm(g_Stats.optimBCTime);
@@ -93,6 +93,7 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     passes.push_back(optimizePassEmptyFct);
     passes.push_back(optimizePassDeadStore);
     passes.push_back(optimizePassDeadCode);
+    passes.push_back(optimizePassStack);
     passes.push_back(optimizePassImmediate);
 
     // Get all jumps
