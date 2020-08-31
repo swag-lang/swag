@@ -40,9 +40,10 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    int  sizeOf   = node->typeInfo->sizeOf;
-    auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+    auto node      = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    int  sizeOf    = node->typeInfo->sizeOf;
+    auto typeArray = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo  = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
     if (!node->access->hasComputedValue())
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfo);

@@ -549,9 +549,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
+
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
-    if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
+    if (!node->type || concreteNodeType->kind != TypeInfoKind::Struct)
     {
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
             return context->report({node, "a constant must be initialized"});
@@ -579,8 +581,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
 
             if (node->type &&
-                node->type->typeInfo->kind != TypeInfoKind::Slice &&
-                node->type->typeInfo->kind != TypeInfoKind::Pointer)
+                concreteNodeType->kind != TypeInfoKind::Slice &&
+                concreteNodeType->kind != TypeInfoKind::Pointer)
             {
                 SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report({node->assignment, "affect not allowed from an array"}));
             }
@@ -597,9 +599,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Be sure that an array without a size has an initializer, to deduce its size
-    if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
+    if (concreteNodeType && concreteNodeType->kind == TypeInfoKind::Array)
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report({node, "missing initialization expression to deduce size of array"}));
         SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node, "invalid initialization expression for an array"}));
 

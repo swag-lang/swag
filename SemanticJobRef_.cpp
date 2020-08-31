@@ -236,7 +236,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto arrayType = arrayNode->array->typeInfo;
+    auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo, CONCRETE_ALIAS);
 
     // When we are building a pointer, this is fine to be const, be cause in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
