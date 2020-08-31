@@ -21,36 +21,42 @@ bool OutputFile::openWrite()
     return true;
 }
 
+void OutputFile::close()
+{
+    SWAG_ASSERT(winHandle != INVALID_HANDLE_VALUE);
+    ::CloseHandle(winHandle);
+    winHandle = INVALID_HANDLE_VALUE;
+}
+
 bool OutputFile::flush(bool last, uint8_t pendingAffinity)
 {
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        saveBucket(bucket, bucketCount(bucket), pendingAffinity);
+        save(bucket->datas, bucketCount(bucket), pendingAffinity);
         bucket = bucket->nextBucket;
     }
 
     if (last)
-    {
-        SWAG_ASSERT(winHandle != INVALID_HANDLE_VALUE);
-        ::CloseHandle(winHandle);
-    }
+        close();
 
     clear();
     return true;
 }
 
-void OutputFile::saveBucket(ConcatBucket* bucket, uint32_t count, uint8_t pendingAffinity)
+bool OutputFile::save(void* buffer, uint32_t count, uint8_t pendingAffinity)
 {
+    if (!count)
+        return true;
     if (!openWrite())
-        return;
+        return false;
 
     OVERLAPPED* over = (OVERLAPPED*) g_Allocator.alloc(sizeof(OVERLAPPED));
     memset(over, 0, sizeof(OVERLAPPED));
     over->Offset = seekSave;
     overlappeds.push_back(over);
 
-    auto result = ::WriteFile(winHandle, bucket->datas, count, NULL, over);
+    auto result = ::WriteFile(winHandle, buffer, count, NULL, over);
     seekSave += count;
 
     if (!result)
@@ -59,15 +65,16 @@ void OutputFile::saveBucket(ConcatBucket* bucket, uint32_t count, uint8_t pendin
         if (err != ERROR_IO_PENDING)
         {
             g_Log.error(format("error writing to file '%s': '%s'", path.c_str(), OS::getLastErrorAsString().c_str()));
+            return false;
         }
-        else
+
+        DWORD written = 0;
+        while (!GetOverlappedResult(winHandle, over, &written, false))
         {
-            DWORD written = 0;
-            while (!GetOverlappedResult(winHandle, over, &written, false))
-            {
-                if (pendingAffinity)
-                    g_ThreadMgr.participate(pendingAffinity);
-            }
+            if (pendingAffinity)
+                g_ThreadMgr.participate(pendingAffinity);
         }
     }
+
+    return true;
 }

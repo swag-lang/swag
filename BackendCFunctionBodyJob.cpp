@@ -40,9 +40,10 @@ JobResult BackendCFunctionBodyJob::execute()
     uint32_t totalCount  = 0;
     while (firstBucket != g_Concat.lastBucket->nextBucket)
     {
-        totalCount += g_Concat.bucketCount(firstBucket);
+        auto count = g_Concat.bucketCount(firstBucket);
+        totalCount += count;
         auto& file = bachendC->bufferCFiles[precompileIndex];
-        file.saveBucket(firstBucket, g_Concat.bucketCount(firstBucket), AFFINITY_NONE);
+        file.save(firstBucket->datas, count, AFFINITY_NONE);
         firstBucket = firstBucket->nextBucket;
     }
 

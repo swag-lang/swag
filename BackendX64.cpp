@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "BackendX64.h"
 #include "BackendX64Inst.h"
-#include "Workspace.h"
 #include "OS.h"
 #include "Module.h"
 #include "Profile.h"
-#include "CopyFileJob.h"
-#include "ModulePrepOutputJob.h"
 #include "BackendX64SaveObjJob.h"
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -596,12 +593,9 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     auto path       = targetPath + "/" + pp.filename;
     auto filename   = path;
 
-    ofstream destFile(filename, ios::binary);
-    if (!destFile.is_open())
-    {
-        module->error(format("unable to write output file '%s'", filename.c_str()));
-        return false;
-    }
+    OutputFile    destFile;
+    const uint8_t affinity = AFFINITY_ALL ^ AFFINITY_IO;
+    destFile.path          = filename;
 
     // Output the full concat buffer
     uint32_t totalCount = 0;
@@ -609,7 +603,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     while (bucket != pp.concat.lastBucket->nextBucket)
     {
         auto count = pp.concat.bucketCount(bucket);
-        destFile.write((const char*) bucket->datas, count);
+        destFile.save(bucket->datas, count, affinity);
         totalCount += count;
         bucket = bucket->nextBucket;
     }
@@ -623,7 +617,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     {
         totalCount += oneB.count;
         subTotal += oneB.count;
-        destFile.write((const char*) oneB.buffer, oneB.count);
+        destFile.save(oneB.buffer, oneB.count, affinity);
     }
     SWAG_ASSERT(subTotal == pp.stringSegment.totalCount);
 
@@ -636,7 +630,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         {
             totalCount += oneB.count;
             subTotal += oneB.count;
-            destFile.write((const char*) oneB.buffer, oneB.count);
+            destFile.save(oneB.buffer, oneB.count, affinity);
         }
         SWAG_ASSERT(subTotal == *pp.patchGSCount || *pp.patchGSCount == 0);
         SWAG_ASSERT(subTotal == pp.globalSegment.totalCount);
@@ -648,7 +642,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         {
             totalCount += oneB.count;
             subTotal += oneB.count;
-            destFile.write((const char*) oneB.buffer, oneB.count);
+            destFile.save(oneB.buffer, oneB.count, affinity);
         }
         SWAG_ASSERT(subTotal == *pp.patchCSCount || *pp.patchCSCount == 0);
         SWAG_ASSERT(subTotal == module->constantSegment.totalCount);
@@ -660,7 +654,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         {
             totalCount += oneB.count;
             subTotal += oneB.count;
-            destFile.write((const char*) oneB.buffer, oneB.count);
+            destFile.save(oneB.buffer, oneB.count, affinity);
         }
         SWAG_ASSERT(subTotal == *pp.patchMSCount || *pp.patchMSCount == 0);
         SWAG_ASSERT(subTotal == module->mutableSegment.totalCount);
@@ -672,7 +666,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         {
             totalCount += oneB.count;
             subTotal += oneB.count;
-            destFile.write((const char*) oneB.buffer, oneB.count);
+            destFile.save(oneB.buffer, oneB.count, affinity);
         }
         SWAG_ASSERT(subTotal == *pp.patchTSCount || *pp.patchTSCount == 0);
         SWAG_ASSERT(subTotal == module->typeSegment.totalCount);
@@ -682,14 +676,12 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         while (bucket != pp.postConcat.lastBucket->nextBucket)
         {
             auto count = pp.postConcat.bucketCount(bucket);
-            destFile.write((const char*) bucket->datas, count);
+            destFile.save(bucket->datas, count, AFFINITY_ALL ^ AFFINITY_IO);
             bucket = bucket->nextBucket;
         }
     }
 
-    destFile.flush();
     destFile.close();
-
     return true;
 }
 

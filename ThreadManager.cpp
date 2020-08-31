@@ -269,6 +269,5 @@ void ThreadManager::participate(uint32_t affinity)
     auto job = getJob(affinity);
     if (!job)
         return;
-    printf("xxxx\n");
     g_ThreadMgr.executeOneJob(job);
 }
