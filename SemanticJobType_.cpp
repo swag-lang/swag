@@ -304,6 +304,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
 bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
 {
+    // If the alias comes from a bake command, then do not export it, because the real deal is
+    // also exported with the same name
+    if (node->kind == AstNodeKind::CompilerBake)
+        return true;
+
     auto back = node->childs.back();
 
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)

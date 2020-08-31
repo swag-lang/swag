@@ -524,30 +524,29 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 bool Backend::saveExportFile()
 {
     SWAG_PROFILE(PRF_SAVE, format("saveExportFile %s", module->name.c_str()));
+    ofstream destFile(bufferSwgPath, ios::binary);
+    if (!destFile.is_open())
     {
-        ofstream destFile(bufferSwgPath, ios::binary);
-        if (!destFile.is_open())
-        {
-            module->error(format("unable to write output file '%s'", bufferSwgPath.c_str()));
-            return false;
-        }
-
-        // Output the full concat buffer
-        uint32_t totalCount = 0;
-        auto     bucket     = bufferSwg.firstBucket;
-        while (bucket != bufferSwg.lastBucket->nextBucket)
-        {
-            auto count = bufferSwg.bucketCount(bucket);
-            destFile.write((const char*) bucket->datas, count);
-            totalCount += count;
-            bucket = bucket->nextBucket;
-        }
-
-        destFile.flush();
-        destFile.close();
+        module->error(format("unable to write output file '%s'", bufferSwgPath.c_str()));
+        return false;
     }
 
+    // Output the full concat buffer
+    uint32_t totalCount = 0;
+    auto     bucket     = bufferSwg.firstBucket;
+    while (bucket != bufferSwg.lastBucket->nextBucket)
+    {
+        auto count = bufferSwg.bucketCount(bucket);
+        destFile.write((const char*) bucket->datas, count);
+        totalCount += count;
+        bucket = bucket->nextBucket;
+    }
+
+    destFile.flush();
+    destFile.close();
+
     timeExportFile = OS::getFileWriteTime(bufferSwgPath.c_str());
+    SWAG_ASSERT(timeExportFile);
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

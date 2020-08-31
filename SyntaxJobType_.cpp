@@ -11,7 +11,6 @@
 #include "Module.h"
 #include "LanguageSpec.h"
 
-// This is an alias
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
