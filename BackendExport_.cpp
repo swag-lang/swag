@@ -68,6 +68,7 @@ void Backend::emitType(TypeInfo* typeInfo)
     }
     else
     {
+        // Be sure to keep the original baked name
         if (typeInfo->kind == TypeInfoKind::Reference)
         {
             auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
