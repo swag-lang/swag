@@ -31,9 +31,28 @@ namespace std.text
                     continue
                 }
 
+                // Optional string format, lie "%{whatever}"
+                var strFormat: const [..] u8
+                if ptr[nextIdx] == "{"'u8
+                {
+                    nextIdx += 1
+                    ptrFormat := ptr + nextIdx
+                    countFormat := 0'u32
+                    while ptr[nextIdx] && ptr[nextIdx] != "}"'u8
+                    {
+                        countFormat += 1
+                        nextIdx += 1
+                    }
+
+                    if ptr[nextIdx]
+                        nextIdx += 1
+                    idx = nextIdx
+                    strFormat = @mkslice(ptrFormat, countFormat)
+                }
+
                 // Deal with the parameter
                 debug.assert(paramIdx < numParams, "not enough 'format' parameters")
-                convertAny(buf, values[paramIdx])
+                convertAny(buf, values[paramIdx], cast(string) strFormat)
                 paramIdx += 1
             }
             else

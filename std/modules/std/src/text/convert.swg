@@ -44,13 +44,13 @@ namespace std.text
     /// Interface to implement a custom conversion function
     public interface IConvert
     {
-        convert: func(self, *ConcatBuffer)
+        convert: func(self, *ConcatBuffer, string)
     }
 
     public
     {
-        /// Convert a value to an utf8 string, and put the result in a [ConcatBuffer]
-        func convertAny(buf: *ConcatBuffer, value: any)
+        /// Convert a value to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             type := @kindof(value)
 
@@ -62,16 +62,17 @@ namespace std.text
                 return
             }
 
-            // A structure with an implementation of IConvert
             if type.kind == swag.TypeInfoKind.Struct
             {
+                // A structure with an implementation of IConvert
                 itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
                 if itf != null
                 {
-                    itf.convert(buf)
+                    itf.convert(buf, strFormat)
                     return
                 }
 
+                // A special format structure
                 if type == ConvertFormatInt
                     convertInt(buf, cast(ConvertFormatInt) value)
                 else if type ==  ConvertFormatFloat
@@ -308,10 +309,7 @@ namespace std.text
         /// Convert a `bool` to a string, and put the result in a [std.collections.ConcatBuffer]
         func convertBool(buf: *ConcatBuffer, value: bool)
         {
-            if value
-                buf.addBytes("true")
-            else
-                buf.addBytes("false")
+            buf.addBytes(value ? "true" : "false")
         }
 
         /// Convert a `char` to a string, and put the result in a [std.collections.ConcatBuffer]

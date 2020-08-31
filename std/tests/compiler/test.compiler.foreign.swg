@@ -136,6 +136,28 @@ public func tcf_toto18(x, y: s64, fct: func(s64, s64))
     fct(x,y)
 }
 
+public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
+{
+    /*@print("toto19: ")
+    @print(cast(s64) v)
+    @print(" ")
+    @print(cast(s64) w)
+    @print(" ")
+    @print(cast(s64) x)
+    @print(" ")
+    @print(cast(s64) y)
+    @print(" ")
+    @print(cast(s64) z)
+    @print("\n")*/
+
+    @assert(v == 333)
+    @assert(w == 444)
+    @assert(x == 555)
+    @assert(y == 666)
+    @assert(z == 777)
+    fct(v,w,x,y,z)
+}
+
 
 public namespace tcf
 {

@@ -10,7 +10,7 @@ struct TOTO
 
 impl IConvert for TOTO
 {
-    func convert(using self, buf: *ConcatBuffer)
+    func convert(using self, buf: *ConcatBuffer, strFormat: string)
     {
         buf.addBytes("! x = ");
         convertInt(buf, x)

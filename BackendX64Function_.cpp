@@ -2001,7 +2001,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
 
-            sizeCallStack = 0;
+            // Reserve room for additional parameters (the one that cannot stored in registers)
+            sizeCallStack = pushRAParams.size() > 3 ? ((int) pushRAParams.size() - 3) * sizeof(Register) : 0;
+            if (sizeCallStack % 16)
+                sizeCallStack += 8;
+            BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeCallStack);
+
             for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
             {
                 switch (idxReg)
@@ -2016,10 +2021,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R9, RDI);
                     break;
                 default:
-                    sizeCallStack += 8;
+                {
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    BackendX64Inst::emit_Push(pp, RAX);
+                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
+                    auto stackOffset = (int)pushRAParams.size() - idxParam;
+                    concat.addU32(regOffset(stackOffset));
                     break;
+                }
                 }
             }
 
