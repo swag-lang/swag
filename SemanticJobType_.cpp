@@ -212,8 +212,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a reference
     else if (typeNode->isRef)
     {
-        auto ptrRef         = g_Allocator.alloc<TypeInfoReference>();
-        ptrRef->pointedType = typeNode->typeInfo;
+        auto ptrRef          = g_Allocator.alloc<TypeInfoReference>();
+        ptrRef->pointedType  = typeNode->typeInfo;
+        ptrRef->originalType = typeNode->typeInfo;
         SWAG_VERIFY(typeNode->isConst, context->report({typeNode, "a reference must be declared as 'const'"}));
         if (typeNode->isConst)
             ptrRef->flags |= TYPEINFO_CONST;
@@ -425,9 +426,10 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // When we cast to a structure, in fact we cast to a const reference
     if (typeNode->typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto typeRef         = g_Allocator.alloc<TypeInfoReference>();
-        typeRef->flags       = typeNode->typeInfo->flags | TYPEINFO_CONST;
-        typeRef->pointedType = typeNode->typeInfo;
+        auto typeRef          = g_Allocator.alloc<TypeInfoReference>();
+        typeRef->flags        = typeNode->typeInfo->flags | TYPEINFO_CONST;
+        typeRef->pointedType  = typeNode->typeInfo;
+        typeRef->originalType = typeNode->typeInfo;
         typeRef->computeName();
         typeNode->typeInfo = typeRef;
     }
