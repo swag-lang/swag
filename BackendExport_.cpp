@@ -68,7 +68,9 @@ void Backend::emitType(TypeInfo* typeInfo)
     }
     else
     {
-        typeInfo = TypeManager::concreteReference(typeInfo);
+        // If the type is a baked one, then use the bake name
+        if (!(typeInfo->flags & TYPEINFO_BAKE))
+            typeInfo = TypeManager::concreteReference(typeInfo);
         typeInfo->computeScopedName();
         bufferSwg.addString(typeInfo->scopedName);
     }

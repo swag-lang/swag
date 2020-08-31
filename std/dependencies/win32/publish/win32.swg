@@ -5,8 +5,8 @@ namespace win32
     alias HANDLE = 			*void
     alias HWND = 			*void
     alias WORD = 			u16
-    alias DWORD = 			u32
-    alias BOOL = 			s32
+    alias DWORD =           u32
+    alias BOOL = 	        s32
     alias BYTE = 			u8
     alias LONG = 			s32
     alias LPVOID =			*void

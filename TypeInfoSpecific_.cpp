@@ -71,16 +71,6 @@ void TypeInfoAlias::computeScopedName()
         TypeInfo::computeScopedNameNoLock();
 }
 
-void TypeInfoAlias::computeName()
-{
-    unique_lock lk(mutex);
-
-    rawType->computeName();
-    preName   = rawType->preName;
-    nakedName = rawType->nakedName;
-    name      = rawType->name;
-}
-
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Allocator.alloc<TypeInfoAlias>();

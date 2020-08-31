@@ -6,7 +6,7 @@
     {
         public
         {
-            func isAttached() => IsDebuggerPresent()
+            func isAttached() => cast(bool) IsDebuggerPresent()
             func break() => DebugBreak()
             func log(msg: string) => OutputDebugStringA(cast(const *u8) msg)
         }

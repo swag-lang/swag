@@ -8,7 +8,7 @@
         {
             const EndLine = "\r\n"
 
-            func getProcessorCount() => g_sysInfo.dwNumberOfProcessors
+            func getProcessorCount() => cast(u32) g_sysInfo.dwNumberOfProcessors
 
             /// Exit the application with a given code
 		    func exit(exitCode: u32) => ExitProcess(exitCode)

@@ -375,14 +375,20 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto typeInfo      = g_Allocator.alloc<TypeInfoAlias>();
-    typeInfo->declNode = node;
-    typeInfo->rawType  = node->childs.front()->typeInfo;
-    typeInfo->name     = node->name;
-    typeInfo->sizeOf   = typeInfo->rawType->sizeOf;
+    auto typeInfo       = g_Allocator.alloc<TypeInfoAlias>();
+    typeInfo->declNode  = node;
+    typeInfo->rawType   = node->childs.front()->typeInfo;
+    typeInfo->nakedName = node->name;
+    typeInfo->name      = node->name;
+    typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+
+    // resolveTypeAlias can also be called for a #bake command
+    if (node->kind == AstNodeKind::CompilerBake)
+        typeInfo->flags |= TYPEINFO_BAKE;
+
     typeInfo->computeName();
     node->typeInfo = typeInfo;
 
