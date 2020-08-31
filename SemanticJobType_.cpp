@@ -333,10 +333,11 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveAlias(SemanticContext* context)
 {
-    auto job  = context->job;
-    auto node = context->node;
+    auto node     = context->node;
+    auto back     = node->childs.back();
+    auto overload = back->resolvedSymbolOverload;
+    SWAG_VERIFY(overload, context->report({back, "alias can only be used with a type or an identifier"}));
 
-    auto overload     = node->childs.back()->resolvedSymbolOverload;
     auto typeResolved = overload->typeInfo;
 
     if (typeResolved->kind == TypeInfoKind::Struct)
@@ -359,7 +360,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case TypeInfoKind::Alias:
         break;
     default:
-        return job->error(context, format("'using' as an alias cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
+        return context->report({back, back->token, format("alias cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved))});
     }
 
     SWAG_ASSERT(overload);
