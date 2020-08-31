@@ -1,10 +1,12 @@
-/*struct TT
+struct TT
 {
-    x: TT1
+    x: s32
 }
 
-struct TT1
+alias AA = TT
+
+#test
 {
-    x: TT
+    s := AA(66)
+    @assert(s.x == 66)
 }
-*/

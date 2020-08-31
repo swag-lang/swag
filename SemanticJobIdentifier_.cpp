@@ -336,7 +336,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return true;
     }
 
-    switch (symbol->kind)
+    // If this is a typealias, find the right thing
+    auto symbolKind = symbol->kind;
+    if (symbol->kind == SymbolKind::TypeAlias)
+    {
+        auto typeAlias = TypeManager::concreteType(identifier->typeInfo);
+        if (typeAlias->kind == TypeInfoKind::Struct)
+            symbolKind = SymbolKind::Struct;
+    }
+
+    switch (symbolKind)
     {
     case SymbolKind::GenericType:
         SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
