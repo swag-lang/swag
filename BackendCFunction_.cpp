@@ -1397,16 +1397,28 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
 
         case ByteCodeOp::TestNotZero8:
-            concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("r[%u].b=%u!=0;", ip->a.u32, ip->b.u8);
+            else
+                concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero16:
-            concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("r[%u].b=%u!=0;", ip->a.u32, ip->b.u16);
+            else
+                concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero32:
-            concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("r[%u].b=%u!=0;", ip->a.u32, ip->b.u32);
+            else
+                concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::TestNotZero64:
-            concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
+            if (ip->flags & BCI_IMM_B)
+                concat.addStringFormat("r[%u].b=%u!=0;", ip->a.u32, ip->b.u64);
+            else
+                concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::Jump:

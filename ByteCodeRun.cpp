@@ -264,22 +264,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::TestNotZero8:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u8 != 0;
+        registersRC[ip->a.u32].b = IMMB_U8(ip) != 0;
         break;
     }
     case ByteCodeOp::TestNotZero16:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u16 != 0;
+        registersRC[ip->a.u32].b = IMMB_U16(ip) != 0;
         break;
     }
     case ByteCodeOp::TestNotZero32:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u32 != 0;
+        registersRC[ip->a.u32].b = IMMB_U32(ip) != 0;
         break;
     }
     case ByteCodeOp::TestNotZero64:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u64 != 0;
+        registersRC[ip->a.u32].b = IMMB_U64(ip) != 0;
         break;
     }
 

@@ -2115,36 +2115,52 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::TestNotZero8:
         {
             //concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt8(ip->b.u8);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto b0 = builder.CreateIsNotNull(r1);
             builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero16:
         {
             //concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt16(ip->b.u16);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+            auto b0 = builder.CreateIsNotNull(r1);
             builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero32:
         {
             //concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt32(ip->b.u32);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            auto b0 = builder.CreateIsNotNull(r1);
             builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero64:
         {
             //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I64(GEP_I32(allocR, ip->b.u32));
-            auto b0 = builder.CreateIsNotNull(builder.CreateLoad(r1));
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt64(ip->b.u64);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
+            auto b0 = builder.CreateIsNotNull(r1);
             builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
             break;
         }
