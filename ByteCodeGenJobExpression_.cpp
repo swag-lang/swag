@@ -150,12 +150,12 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->computedValue.reg.offset;
-        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32       = (uint32_t) listNode->childs.size();
+        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32   = (uint32_t) listNode->childs.size();
     }
     else
     {
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.offset;
-        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32             = (uint32_t) typeList->subTypes.size();
+        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32         = (uint32_t) typeList->subTypes.size();
     }
 
     return true;
@@ -188,7 +188,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             reserveLinearRegisterRC(context, regList, 2);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
-            node->castedTypeInfo = nullptr;
             return true;
         }
 
@@ -199,7 +198,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[2]);
             emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, regList[0], regList[1], regList[2]);
-            node->castedTypeInfo = nullptr;
             return true;
         }
     }
@@ -284,7 +282,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
-        emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1])->b.u32             = typeArray->count;
+        emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1])->b.u32         = typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
