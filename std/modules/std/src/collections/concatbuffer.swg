@@ -25,52 +25,6 @@ namespace std.collections
 
     impl ConcatBuffer
     {
-        func bucketCount(using self, b: *ConcatBufferBucket)->u32
-        {
-            if b != lastBucket
-                return b.count
-            count := cast(u32) (currentSP - lastBucket.datas)
-            return count
-        }
-
-        func ensureSpace(using self, numBytes: u32)
-        {
-            debug.assert(numBytes <= bucketSize)
-
-            if firstBucket
-            {
-                count := cast(u32) (currentSP - lastBucket.datas);
-                if count + numBytes <= bucketSize
-                    return
-
-                totalCount += count;
-                lastBucket.count = count;
-
-                // Next is already allocated
-                if lastBucket.next
-                {
-                    lastBucket = lastBucket.next
-                    currentSP = lastBucket.datas
-                    lastBucket.count = 0
-                    return;
-                }
-            }
-
-            // Need to allocate a new bucket
-            if allocator == null
-                allocator = @getcontext().allocator
-            newBucket := cast(*ConcatBufferBucket) memory.alloc(&allocator, @sizeof(ConcatBufferBucket))
-            @init(newBucket)
-            if lastBucket
-                lastBucket.next = newBucket
-            else
-                firstBucket = newBucket
-            lastBucket = newBucket
-
-            lastBucket.datas = acast memory.alloc(&allocator, bucketSize)
-            currentSP = lastBucket.datas
-        }
-
         func release(using self)
         {
             if !firstBucket
@@ -103,6 +57,54 @@ namespace std.collections
             func opDrop(using self)
             {
                 release(self)
+            }
+
+            // Returns the number of elements in the given bucket
+            func bucketCount(using self, b: *ConcatBufferBucket)->u32
+            {
+                if b != lastBucket
+                    return b.count
+                count := cast(u32) (currentSP - lastBucket.datas)
+                return count
+            }
+
+            // Be sure that their is enough room to store at least 'numBytes' bytes
+            func ensureCapacity(using self, numBytes: u32)
+            {
+                debug.assert(numBytes <= bucketSize)
+
+                if firstBucket
+                {
+                    count := cast(u32) (currentSP - lastBucket.datas);
+                    if count + numBytes <= bucketSize
+                        return
+
+                    totalCount += count;
+                    lastBucket.count = count;
+
+                    // Next is already allocated
+                    if lastBucket.next
+                    {
+                        lastBucket = lastBucket.next
+                        currentSP = lastBucket.datas
+                        lastBucket.count = 0
+                        return;
+                    }
+                }
+
+                // Need to allocate a new bucket
+                if allocator == null
+                    allocator = @getcontext().allocator
+                newBucket := cast(*ConcatBufferBucket) memory.alloc(&allocator, @sizeof(ConcatBufferBucket))
+                @init(newBucket)
+                if lastBucket
+                    lastBucket.next = newBucket
+                else
+                    firstBucket = newBucket
+                lastBucket = newBucket
+
+                lastBucket.datas = acast memory.alloc(&allocator, bucketSize)
+                currentSP = lastBucket.datas
             }
 
             // Associate an allocator with the buffer.
@@ -145,13 +147,14 @@ namespace std.collections
             // Add one byte to the buffer
             func addByte(using self, byte: u8)
             {
-                ensureSpace(self, 1)
+                ensureCapacity(self, 1)
                 currentSP[0] = byte
                 currentSP += 1
             }
 
             // Add a slice of bytes to the buffer
-            func addBytes(using self, bytes: const [..] u8)
+            // If 'contiguous' is false, the slice will be divided in chunks if necessary
+            func addBytes(using self, bytes: const [..] u8, contiguous: bool = true)
             {
                 num := @countof(bytes)
                 if !num
@@ -161,21 +164,28 @@ namespace std.collections
 
                 // Be sure we have a buffer
                 if !lastBucket
-                    ensureSpace(self, 1)
+                    ensureCapacity(self, 1)
 
                 // Divide the slice in the given amount of buckets if necessary
-                curCount := cast(u32) (currentSP - lastBucket.datas)
-                remain := bucketSize - curCount
-                while num > remain
+                if !contiguous
                 {
-                    memory.copy(currentSP, slicePtr, remain)
-                    num -= remain
-                    slicePtr += remain
-                    currentSP += remain
-                    if !num
-                        return
-                    ensureSpace(self, 1) // Will alloc a new bucket as the current one is full
-                    remain = bucketSize
+                    curCount := cast(u32) (currentSP - lastBucket.datas)
+                    remain := bucketSize - curCount
+                    while num > remain
+                    {
+                        memory.copy(currentSP, slicePtr, remain)
+                        num -= remain
+                        slicePtr += remain
+                        currentSP += remain
+                        if !num
+                            return
+                        ensureCapacity(self, 1) // Will alloc a new bucket as the current one is full
+                        remain = bucketSize
+                    }
+                }
+                else
+                {
+                    ensureCapacity(self, num)
                 }
 
                 // We should have enough size in the last bucket to store the

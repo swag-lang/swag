@@ -12,11 +12,10 @@
             count1 := text.unicode16.fromUtf8(messageW, message)
 
             const info =
-            #"
-            - Press Cancel to exit
-            - Press Retry to debug the application
-            - Press Continue to ignore the assert
-            "#
+            #"- Press Cancel to exit
+              - Press Retry to debug the application
+              - Press Continue to ignore the assert
+              "#
 
             count2 := text.unicode16.fromUtf8(@mkslice(&messageW[count1], @countof(messageW) - count1), info)
             messageW[count1 + count2] = 0
