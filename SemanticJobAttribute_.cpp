@@ -184,8 +184,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_PROPERTY;
             else if (child->name == "nobss")
                 flags |= ATTRIBUTE_NOBSS;
-            else if (child->name == "nodoc")
-                flags |= ATTRIBUTE_NODOC;
             else if (child->name == "noreturn")
                 flags |= ATTRIBUTE_NORETURN;
             else if (child->name == "global")

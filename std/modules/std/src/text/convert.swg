@@ -2,46 +2,38 @@ namespace std.text
 {
     using std.collections, std.diagnostics, std.globalization
 
-    /// Format structure to convert a float to a string
-    ///
-    /// # See also
-    /// * [std.text.convertFloat]
+    // Format structure to convert a float to a string
     public struct ConvertFormatFloat
     {
-        /// The  value to convert to string
+        // The  value to convert to string
         value:      f64
-        /// Number of valid bits in the value (32 or 64)
+        // Number of valid bits in the value (32 or 64)
         bits:       u32 = 32
-        /// Number of digits in the decimal part
+        // Number of digits in the decimal part
         precision:  u32 = 5
     }
 
-    /// Format structure to convert an integer to a string
-    ///
-    /// # Remarks
-    /// If `signed` is `true`, the value to convert must be stored in `signedValue`, otherwise it must
-    /// be stored in `unsignedValue`.
-    ///
-    /// # See also
-    /// * [std.text.convertInt]
+    // Format structure to convert an integer to a string
+    // If `signed` is `true`, the value to convert must be stored in `signedValue`, otherwise it must
+    // be stored in `unsignedValue`.
     public struct ConvertFormatInt
     {
-        /// The unsigned value to convert to string (`signed` must be `false`)
+        // The unsigned value to convert to string (`signed` must be `false`)
         unsignedValue:  u64
 
-        /// The signed  value to convert to string (`signed` must be `true`)
+        // The signed  value to convert to string (`signed` must be `true`)
         #[swag.offset("unsignedValue")]
         signedValue:    s64
 
-        /// Number of valid bits in the value (usually 8, 16, 32 or 64)
+        // Number of valid bits in the value (usually 8, 16, 32 or 64)
         bits:           u32 = 32
-        /// Base of the conversion (2 for binary, 10 for decimal, 16 for hexadecimal)
+        // Base of the conversion (2 for binary, 10 for decimal, 16 for hexadecimal)
         base:           u32 = 10
-        /// `true` if the value to convert is signed, `false` if it is unsigned
+        // `true` if the value to convert is signed, `false` if it is unsigned
         signed:         bool
     }
 
-    /// Interface to implement a custom conversion function
+    // Interface to implement a custom conversion function
     public interface IConvert
     {
         convert: func(self, *ConcatBuffer, string)
@@ -49,7 +41,7 @@ namespace std.text
 
     public
     {
-        /// Convert a value to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a value to an utf8 string, and put the result in a ConcatBuffer
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             type := @kindof(value)
@@ -115,7 +107,7 @@ namespace std.text
             }
         }
 
-        /// Convert a structure content to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
         func convertStruct(buf: *ConcatBuffer, value: any)
         {
             typeOf := @kindof(value)
@@ -138,7 +130,7 @@ namespace std.text
             buf.addBytes("}")
         }
 
-        /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
             neg := fmt.value < 0
@@ -179,7 +171,7 @@ namespace std.text
             }
         }
 
-        /// Convert a `f64` to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `f64` to a string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, value: f64)
         {
             var fmt: ConvertFormatFloat
@@ -188,7 +180,7 @@ namespace std.text
             convertFloat(buf, fmt)
         }
 
-        /// Convert a `f32` to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `f32` to a string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, value: f32)
         {
             var fmt: ConvertFormatFloat
@@ -197,7 +189,7 @@ namespace std.text
             convertFloat(buf, fmt)
         }
 
-        /// Convert an integer to an utf8 string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             const tbl = "0123456789ABCDEF"
@@ -226,7 +218,7 @@ namespace std.text
             buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], 63 - cpt));
         }
 
-        /// Convert a `s8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `s8` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s8)
         {
             var fmt: ConvertFormatInt
@@ -236,7 +228,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `s16` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `s16` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s16)
         {
             var fmt: ConvertFormatInt
@@ -246,7 +238,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `s32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `s32` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s32)
         {
             var fmt: ConvertFormatInt
@@ -256,7 +248,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `s64` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `s64` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s64)
         {
             var fmt: ConvertFormatInt
@@ -266,7 +258,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `u8` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `u8` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: u8)
         {
             var fmt: ConvertFormatInt
@@ -276,7 +268,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `u16` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `u16` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: u16)
         {
             var fmt: ConvertFormatInt
@@ -286,7 +278,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `u32` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `u32` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: u32)
         {
             var fmt: ConvertFormatInt
@@ -296,7 +288,7 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `u64` integer to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `u64` integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: u64)
         {
             var fmt: ConvertFormatInt
@@ -306,13 +298,13 @@ namespace std.text
             convertInt(buf, fmt)
         }
 
-        /// Convert a `bool` to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `bool` to a string, and put the result in a ConcatBuffer
         func convertBool(buf: *ConcatBuffer, value: bool)
         {
             buf.addBytes(value ? "true" : "false")
         }
 
-        /// Convert a `char` to a string, and put the result in a [std.collections.ConcatBuffer]
+        // Convert a `char` to a string, and put the result in a ConcatBuffer
         func convertChar(buf: *ConcatBuffer, value: char)
         {
             if value <= 0xFF

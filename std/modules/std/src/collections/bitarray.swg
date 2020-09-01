@@ -3,36 +3,30 @@ namespace std.collections
     using swag
     using diagnostics.debug
 
-    /// Manages a compact array of bit values, which are represented as booleans, where `true` indicates that
-    /// the bit is on (1) and `false` indicates the bit is off (0)
+    // Manages a compact array of bit values, which are represented as booleans, where `true` indicates that
+    // the bit is on (1) and `false` indicates the bit is off (0)
     public struct BitArray
     {
         buffer:     *u32
         allocator:  const IAllocator
-
-        /// Maximum number of bits the [BitArray] can hold
-        count:      u32
-        /// The size, in bytes, of the allocated buffer
-        capacity:   u32
+        count:      u32 // Maximum number of bits the [BitArray] can hold
+        capacity:   u32 // The size, in bytes, of the allocated buffer
     }
 
     impl BitArray
     {
         public
         {
-            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return count
             }
 
-            #[swag.nodoc]
             func opDrop(using self)
             {
                 free(self)
             }
 
-            #[swag.nodoc]
             func opPostCopy(using self)
             {
                 if(buffer)
@@ -44,19 +38,19 @@ namespace std.collections
                 }
             }
 
-            /// Gets the value of the bit at a specific position in the [BitArray]
+            // Gets the value of the bit at a specific position
             func opIndex(using self, index: u32)->bool
             {
                 return get(self, index)
             }
 
-            /// Sets the value of the bit at a specific position in the [BitArray]
+            // Sets the value of the bit at a specific position
             func opIndexAffect(using self, value: bool, index: u32)
             {
                 set(self, index, value)
             }
 
-            /// Initializes a [BitArray] that contains bit values copied from the specified array of booleans.
+            // Initializes a BitArray that contains bit values copied from the specified array of booleans
             func opAffect(using self, slice: [..] bool)
             {
                 len := @countof(slice)
@@ -66,7 +60,7 @@ namespace std.collections
                     set(self, index, value)
             }
 
-            /// Compares two [BitArray], and returns `true` if they are equal
+            // Compares two arrays, and returns `true` if they are equal
             func opEquals(using self, other: Self)->bool
             {
                 if count != other.count
@@ -81,7 +75,7 @@ namespace std.collections
                 return true
             }
 
-            /// Visit all the booleans of the [BitArray]
+            // Visit all the booleans
             #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
@@ -125,7 +119,7 @@ namespace std.collections
 
         public
         {
-            /// Reserve the given amount of bits
+            // Reserve the given amount of bits
             func reserve(using self, maxBits: u32)
             {
                 if !maxBits
@@ -145,20 +139,20 @@ namespace std.collections
                 realloc(self, capacity)
             }
 
-            /// Reserve the given amount of bits and set an initial value to all bits
+            // Reserve the given amount of bits and set an initial value to all bits
             func reserve(using self, maxBits: u32, initialValue: bool)
             {
                 reserve(self, maxBits)
                 memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
             }
 
-            /// Sets all bits in the [BitArray] to the specified value
+            // Sets all bits to the specified value
             func setAll(using self, value: bool)
             {
                 memory.set(buffer, value ? 0xFF : 0x00, capacity)
             }
 
-            /// Sets the bit at a specific position in the [BitArray] to the specified value
+            // Sets the bit at a specific position to the specified value
             func set(using self, index: u32, value: bool)
             {
                 assert(index < count)
@@ -171,7 +165,7 @@ namespace std.collections
                     buffer[val] &= ~shift
             }
 
-            /// Gets the value of the bit at a specific position in the [BitArray]
+            // Gets the value of the bit at a specific position
             func get(using self, index: u32)->bool
             {
                 assert(index < count)
@@ -181,7 +175,7 @@ namespace std.collections
                 return cast(bool) (buffer[val] & shift)
             }
 
-            /// Inverts the value of the bit at a specific position in the [BitArray]
+            // Inverts the value of the bit at a specific position
             func invert(using self, index: u32)
             {
                 assert(index < count)
@@ -194,8 +188,8 @@ namespace std.collections
                     buffer[val] |= shift
             }
 
-            /// Performs the bitwise AND operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
-            /// The current [BitArray] will be modified to store the result of the bitwise AND operation.
+            // Performs the bitwise AND operation between the elements of the current BitArray and the corresponding elements in the specified array.
+            // The current BitArray will be modified to store the result of the bitwise AND operation.
             func and(using self, other: Self)
             {
                 diagnostics.debug.assert(count == other.count)
@@ -204,8 +198,8 @@ namespace std.collections
                     buffer[@index] &= other.buffer[@index]
             }
 
-            /// Performs the bitwise OR operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
-            /// The current [BitArray] will be modified to store the result of the bitwise OR operation.
+            // Performs the bitwise OR operation between the elements of the current BitArray and the corresponding elements in the specified array.
+            // The current BitArray will be modified to store the result of the bitwise OR operation.
             func or(using self, other: Self)
             {
                 diagnostics.debug.assert(count == other.count)
@@ -214,8 +208,8 @@ namespace std.collections
                     buffer[@index] |= other.buffer[@index]
             }
 
-            /// Performs the bitwise XOR operation between the elements of the current [BitArray] and the corresponding elements in the specified array.
-            /// The current [BitArray] will be modified to store the result of the bitwise XOR operation.
+            // Performs the bitwise XOR operation between the elements of the current BitArray and the corresponding elements in the specified array.
+            // The current BitArray will be modified to store the result of the bitwise XOR operation.
             func xor(using self, other: Self)
             {
                 diagnostics.debug.assert(count == other.count)
@@ -224,7 +218,7 @@ namespace std.collections
                     buffer[@index] ^= other.buffer[@index]
             }
 
-            /// Inverts all the bit values in the current [BitArray], so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
+            // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
             func not(using self)
             {
                 if !count return

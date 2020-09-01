@@ -24,14 +24,14 @@
 
     namespace std.input
 	{
-        /// Returns true if the corresponding `padIndex` is connected
+        // Returns true if the corresponding `padIndex` is connected
 		public func isGamePadConnected(padIndex: u32)->bool
 		{
 			var state: XINPUT_STATE = ?
 			return XInputGetState(padIndex, &state) != ERROR_SUCCESS
 		}
 
-        /// Set the left and right vibration of the given `padIndex`
+        // Set the left and right vibration of the given `padIndex`
         public func setGamePadVibration(padIndex: u32, left, right: f32)->bool
         {
             var vibration: XINPUT_VIBRATION = ?
@@ -42,7 +42,7 @@
 
         impl GamePadState
         {
-            /// Compute the current state of the given pad index
+            // Compute the current state of the given pad index
             public func update(using self, padIndex: u32)->bool
             {
                 var state: XINPUT_STATE = ?

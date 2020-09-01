@@ -2,21 +2,21 @@ namespace std.input
 {
     using std.math
 
-    /// Represents one mouse state
+    // Represents one mouse state
     public struct MouseState
     {
-        /// Whether each button is pressed or not
+        // Whether each button is pressed or not
         pressed:    [@countof(MouseButton)] bool
-        /// Mouse position, in screen coordinates
+        // Mouse position, in screen coordinates
         position:   Point
     }
 
-    /// Represents a mouse state with cursor position and button press information
+    // Represents a mouse state with cursor position and button press information
     impl MouseState
     {
         public
         {
-            /// Compute the actual state of the mouse
+            // Compute the actual state of the mouse
             func update(using self)
             {
                 pressed[cast(u32) MouseButton.Left] = isMouseButtonPressed(MouseButton.Left)
@@ -27,7 +27,7 @@ namespace std.input
                 position = getMousePos()
             }
 
-            /// Reset the state to its default value
+            // Reset the state to its default value
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))
@@ -36,7 +36,7 @@ namespace std.input
         }
     }
 
-    /// Determins if one given mouse button is pressed or not
+    // Determins if one given mouse button is pressed or not
 	public func isMouseButtonPressed(button: MouseButton)->bool
 	{
 		using input, MouseButton

@@ -4,7 +4,7 @@
 
     namespace std.diagnostics.debug
     {
-        /// Generate an assert dialog box
+        // Generate an assert dialog box
         public func assertMessage(message: string)
         {
             // User message

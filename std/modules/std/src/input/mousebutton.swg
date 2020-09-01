@@ -1,17 +1,17 @@
 namespace std.input
 {
-    /// Enumerates mouse buttons
+    // Enumerates mouse buttons
     public enum MouseButton
     {
-        /// Left button
+        // Left button
 		Left
-        /// Right button
+        // Right button
 		Middle
-        /// Middle button
+        // Middle button
 		Right
-        /// XButton1 button
+        // XButton1 button
 		XButton1
-        /// XButton2 button
+        // XButton2 button
 		XButton2
     }
 }

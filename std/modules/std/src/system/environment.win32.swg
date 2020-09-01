@@ -10,7 +10,7 @@
 
             func getProcessorCount() => cast(u32) g_sysInfo.dwNumberOfProcessors
 
-            /// Exit the application with a given code
+            // Exit the application with a given code
 		    func exit(exitCode: u32) => ExitProcess(exitCode)
         }
 

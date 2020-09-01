@@ -1,57 +1,57 @@
 namespace std.input
 {
-    /// Enumerates gamepad buttons
+    // Enumerates gamepad buttons
     public enum GamePadButton
     {
-        /// **A** button
+        // **A** button
 		A
-        /// **B** button
+        // **B** button
 		B
-        /// **BACK** button
+        // **BACK** button
 		Back
-        /// Big button
+        // Big button
 		BigButton
-        /// Directional pad down
+        // Directional pad down
 		DPadDown
-        /// Directional pad left
+        // Directional pad left
 		DPadLeft
-        /// Directional pad right
+        // Directional pad right
 		DPadRight
-        /// Directional pad up
+        // Directional pad up
 		DPadUp
-        /// Left bumper (shoulder) button
+        // Left bumper (shoulder) button
 		LeftShoulder
-        /// Left stick button (pressing the left stick)
+        // Left stick button (pressing the left stick)
 		LeftStick
-        /// Left stick is toward down
+        // Left stick is toward down
 		LeftThumbstickDown
-        /// Left stick is toward the left
+        // Left stick is toward the left
 		LeftThumbstickLeft
-        /// Left stick is toward the right
+        // Left stick is toward the right
 		LeftThumbstickRight
-        /// Left stick is toward up
+        // Left stick is toward up
 		LeftThumbstickUp
-        /// Left trigger
+        // Left trigger
 		LeftTrigger
-        /// Right bumper (shoulder) button
+        // Right bumper (shoulder) button
 		RightShoulder
-        /// Right stick button (pressing the right stick)
+        // Right stick button (pressing the right stick)
 		RightStick
-        /// Right stick is toward down
+        // Right stick is toward down
 		RightThumbstickDown
-        /// Right stick is toward the left
+        // Right stick is toward the left
 		RightThumbstickLeft
-        /// Right stick is toward the right
+        // Right stick is toward the right
 		RightThumbstickRight
-        /// Right sitck is toward up
+        // Right sitck is toward up
 		RightThumbstickUp
-        /// Right trigger
+        // Right trigger
 		RightTrigger
-        /// **START** button
+        // **START** button
 		Start
-        /// **X** button
+        // **X** button
 		X
-        /// **Y** button
+        // **Y** button
 		Y
     }
 }

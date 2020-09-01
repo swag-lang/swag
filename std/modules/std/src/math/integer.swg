@@ -38,7 +38,7 @@ namespace std.math
 
         #[swag.constexpr, swag.inline]
         {
-            /// Returns the absolute value
+            // Returns the absolute value
             func abs(x: s8) => @abs(x)
             func abs(x: s16) => @abs(x)
             func abs(x: s32) => @abs(x)

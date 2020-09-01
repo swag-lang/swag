@@ -6,47 +6,39 @@ namespace std.collections
     {
         buffer:     *T
         allocator:  const IAllocator
-
-        /// Number of valid elements in the [Array]
         count:      u32
-        /// Maximim elements the [Array] can store
         capacity:   u32
     }
 
     impl Array
-    {    
+    {
         public
         {
-            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return count
             }
 
-            #[swag.nodoc]
             func opDrop(using self)
             {
                 free(self)
             }
 
-            #[swag.nodoc]
             func opIndex(using self, index: u32)->const *T
             {
                 std.diagnostics.debug.assert(index < count)
                 return buffer + index
             }
 
-            #[swag.nodoc]
             func opIndexAffect(using self, value: T, index: u32)
             {
                 std.diagnostics.debug.assert(index < count)
                 buffer[index] = value
-            }    
+            }
         }
 
         public
         {
-            #[swag.nodoc]
             func free(using self)
             {
                 if !buffer
@@ -64,7 +56,6 @@ namespace std.collections
                 memory.free(&allocator, buffer)
             }
 
-            #[swag.nodoc]
             func realloc(using self, newCapacity: u32)
             {
                 if allocator == null
@@ -87,7 +78,7 @@ namespace std.collections
                 capacity = newCapacity
             }
 
-            /// Ensure the [Array] is big enough to store at least `newCount` elements
+            // Ensure the [Array] is big enough to store at least `newCount` elements
             func ensureCapacity(using self, newCount : u32)
             {
                 if newCount <= capacity
@@ -96,7 +87,7 @@ namespace std.collections
                 reserve(self, newCapacity)
             }
 
-            /// Reserve room for `newCapacity` elements without changing the [Array] count
+            // Reserve room for `newCapacity` elements without changing the array count
             func reserve(using self, newCapacity: u32)
             {
                 if !newCapacity
@@ -113,7 +104,7 @@ namespace std.collections
                 realloc(self, newCapacity)
             }
 
-            /// Add one element at the end of the [Array]
+            // Add one element at the end of the array
             func addBack(using self, value: T)
             {
                 reserve(self, count + 1)
@@ -121,19 +112,19 @@ namespace std.collections
                 count += 1
             }
 
-            /// Add one element at the end of the [Array]
+            // Add one element at the end of the array
             func emplaceBack(using self, value: *T)
             {
                 reserve(self, count + 1)
                 buffer[count] = nodrop move deref value
                 count += 1
-            } 
+            }
 
-            /// Set the number of elements to 0
+            // Set the number of elements to 0
             func clear(using self)
             {
                 count = 0
-            }          
+            }
         }
     }
 }

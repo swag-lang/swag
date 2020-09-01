@@ -72,9 +72,6 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr property()
 
-    #[attributeUsage(AttributeUsage.Function | AttributeUsage.Field)]
-    attr nodoc()
-
     #[attributeUsage(AttributeUsage.LocalVariable)]
     attr global()
 

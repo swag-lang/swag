@@ -94,15 +94,6 @@ namespace std.text.unicode
             return UnicodeCategory.OtherNotAssigned // @todo
         }
 
-        /// Indicates whether a Unicode character is categorized as white space.
-        ///
-        /// # Examples
-        /// ```
-        /// let c1 = "A"'char
-        /// let c2 = " "'char
-        /// @assert(isWhiteSpace(c1) == false)
-        /// @assert(isWhiteSpace(c2) == true)
-        /// ```
         func isWhiteSpace(c: char)->bool
         {
             if isLatin1(c)
@@ -135,14 +126,14 @@ namespace std.text.unicode
         {
             if isAscii(c)
                 return cast(char) latin1.toUpper(cast(u8) c)
-            return c; // @todo         
+            return c; // @todo
         }
 
         func toLower(c: char)->char
         {
             if isAscii(c)
                 return cast(char) latin1.toLower(cast(u8) c)
-            return c; // @todo             
-        }        
+            return c; // @todo
+        }
     }
 }

@@ -7,9 +7,9 @@ namespace std.globalization
 
     var g_CultureInfo: CultureInfo
 
-    /// Returns the global culture info structure
+    // Returns the global culture info structure
     public func getCultureInfo()->*CultureInfo
     {
         return &g_CultureInfo
-    }   
+    }
 }

@@ -2,8 +2,8 @@ namespace std.collections
 {
     using std.diagnostics, std.text
 
-    /// Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
-    /// the buffer needs to increase its size. This is the main difference with [Array]
+    // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
+    // the buffer needs to increase its size. This is the main difference with Array
     public readonly struct ConcatBuffer
     {
         allocator:      const swag.IAllocator
@@ -81,13 +81,11 @@ namespace std.collections
 
         public
         {
-            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return count(self)
             }
 
-            #[swag.nodoc]
             func opDrop(using self)
             {
                 release(self)
@@ -96,18 +94,16 @@ namespace std.collections
 
         public
         {
-            /// Associate an allocator with the buffer.
-            ///
-            /// The allocator can only be changed if the buffer has no pending buckets.
+            // Associate an allocator with the buffer.
+            // The allocator can only be changed if the buffer has no pending buckets.
             func setAllocator(using self, alloc: swag.IAllocator)
             {
                 diagnostics.debug.assert(firstBucket == null, "bucket is not empty")
                 allocator = alloc;
             }
 
-            /// Set the size of one given bucket. Minimal size is 4.
-            ///
-            /// The buffer will be erased before the change, even if the new size is the same as the current one.
+            // Set the size of one given bucket. Minimal size is 4.
+            // The buffer will be erased before the change, even if the new size is the same as the current one.
             func setBucketSize(using self, size: u32)
             {
                 diagnostics.debug.assert(size >= 4)
@@ -115,7 +111,7 @@ namespace std.collections
                 sizeBucket = size
             }
 
-            /// Release the content of the buffer
+            // Release the content of the buffer
             func free(using self)
             {
                 @drop(self)
@@ -123,7 +119,7 @@ namespace std.collections
                 firstBucket, curBucket = null
             }
 
-            /// Clear the content of the buffer
+            // Clear the content of the buffer
             func clear(using self)
             {
                 curCount = 0
@@ -131,14 +127,14 @@ namespace std.collections
                 usedBuckets = curBucket ? 1 : 0
             }
 
-            /// Get the address of datas in a given bucket pointer
+            // Get the address of datas in a given bucket pointer
             #[swag.inline]
             func bucketToDatas(using self, bucket: *u8)->*u8
             {
                 return bucket + @sizeof(*void)
             }
 
-            /// Get the address of the next bucket
+            // Get the address of the next bucket
             #[swag.inline]
             func bucketToNext(using self, bucket: *u8)->*u8
             {
@@ -146,7 +142,7 @@ namespace std.collections
                 return nextPtr[0]
             }
 
-            /// Add one byte to the buffer
+            // Add one byte to the buffer
             func addByte(using self, byte: u8)
             {
                 growBuckets(self, 1)
@@ -155,7 +151,7 @@ namespace std.collections
                 curCount += 1
             }
 
-            /// Add a slice of bytes to the buffer
+            // Add a slice of bytes to the buffer
             func addBytes(using self, bytes: const [..] u8)
             {
                 num := @countof(bytes)
@@ -191,7 +187,7 @@ namespace std.collections
                 curCount += num
             }
 
-            /// Convert buffer to a [std.text.String]
+            // Convert buffer to a String
             func toString(using self) -> String
             {
                 var result: String

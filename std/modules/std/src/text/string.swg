@@ -35,20 +35,17 @@ namespace std.text
         public
         {
             #[swag.inline]
-            #[swag.nodoc]
             func opCount(using self)->u32
             {
                 return length
             }
 
             #[swag.inline]
-            #[swag.nodoc]
             func opData(using self)->const *void
             {
                 return buffer
             }
 
-            #[swag.nodoc]
             func(T) opCast(using self)->T
             {
                 #if @typeof(T) == @typeof(string)
@@ -57,7 +54,6 @@ namespace std.text
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
             }
 
-            #[swag.nodoc]
             func opAffect(using self, value: string)
             {
                 if @dataof(value) == null
@@ -73,7 +69,6 @@ namespace std.text
                 buffer[length] = 0
             }
 
-            #[swag.nodoc]
             func opEquals(using self, other: string)->bool
             {
                 if buffer == @dataof(other)
@@ -83,7 +78,6 @@ namespace std.text
                 return memory.compare(buffer, @dataof(other), length) == 0
             }
 
-            #[swag.nodoc]
             func(op: string) opAssign(using self, value: string)
             {
                 #if op == "+="
@@ -92,14 +86,12 @@ namespace std.text
                     #assert(false, "invalid binary operator '" ~ op ~ "'")
             }
 
-            #[swag.nodoc]
             func opPostMove(using self)
             {
                 if capacity <= SmallSize
                     buffer = acast &allocator
             }
 
-            #[swag.nodoc]
             func opPostCopy(using self)
             {
                 if !buffer
@@ -115,14 +107,13 @@ namespace std.text
                 }
             }
 
-            #[swag.nodoc]
             func opDrop(using self)
             {
                 if buffer && buffer != acast &allocator
                     free(self)
             }
 
-            /// Visit the [String] utf8 bytes
+            // Visit the String utf8 bytes
             #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisitBytes(using self, stmt: code)
             {
@@ -146,7 +137,7 @@ namespace std.text
                 }
             }
 
-            /// Visit the [String] unicode characters
+            // Visit the String unicode characters
             #[swag.macro, swag.noreturn]
             func(ptr: bool) opVisit(using self, stmt: code)
             {
@@ -181,31 +172,31 @@ namespace std.text
     {
         public
         {
-            /// Set the length of the [String] to 0
+            // Set the length of the String to 0
             func clear(using self)
             {
                 length = 0
             }
 
-            /// Returns true if the [String] has zero length
+            // Returns true if the String has zero length
             func isEmpty(using self)->bool
             {
                 return length == 0
             }
 
-            /// Returns true if the [String] is null (undefined)
+            // Returns true if the String is null (undefined)
             func isNull(using self)->bool
             {
                 return buffer == null
             }
 
-            /// Returns true if the [String] is null or empty
+            // Returns true if the String is null or empty
             func isNullOrEmpty(using self)->bool
             {
                 return buffer == null || length == 0
             }
 
-            /// Append a string to the [String]
+            // Append a string to the String
             func append(using self, value: string)
             {
                 concatLength := @countof(value)
@@ -219,7 +210,7 @@ namespace std.text
                 buffer[length] = 0
             }
 
-            /// Ensure the [String] is big enough to store a given amount of bytes
+            // Ensure the String is big enough to store a given amount of bytes
             func ensureCapacity(using self, wantedCapacity: u32)
             {
                 if wantedCapacity <= capacity
@@ -228,7 +219,7 @@ namespace std.text
                 reserve(self, newCapacity)
             }
 
-            /// Reserve room for `newCapacity` bytes without changing the string length
+            // Reserve room for `newCapacity` bytes without changing the string length
             func reserve(using self, newCapacity: u32)
             {
                 // Small size, just be sure with have a valid buffer address
@@ -273,7 +264,7 @@ namespace std.text
                 capacity = newCapacity
             }
 
-            /// Remove whitespaces at the start of the [String]
+            // Remove whitespaces at the start of the String
             func trimStart(using self)
             {
                 if !length
@@ -293,7 +284,7 @@ namespace std.text
                 buffer[length] = 0
             }
 
-            /// Remove whitespaces at the end of the [String]
+            // Remove whitespaces at the end of the String
             func trimEnd(using self)
             {
                 if !length
@@ -312,52 +303,20 @@ namespace std.text
                 buffer[length] = 0
             }
 
-            /// Removes all leading and trailing white-space characters from the current [String]
-            ///
-            /// The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
-            /// trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
-            /// function returns "abc xyz".
-            ///
-            /// White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
-            /// that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
-            ///
-            /// # Examples
-            /// ```
-            /// let str: String = "  ABC  "
-            /// str.trim()
-            /// @assert(str == "ABC")
-            /// ```
-            ///
-            /// # See also
-            /// * [std.text.String.trimStart]
-            /// * [std.text.String.trimEnd]
+            // Removes all leading and trailing white-space characters from the current String
+            // The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
+            // trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
+            // function returns "abc xyz".
+            // White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
+            // that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
             func trim(using self)
             {
                 trimStart(self)
                 trimEnd(self)
             }
 
-            /// Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this [String].
-            ///
-            /// # Remarks
-            /// The function will return -1 if the `value` cannot be found
-            ///
-            /// # Examples
-            /// ```
-            /// let str: String = "ABC"
-            /// @assert(str.indexOf("A"'char) == 0)
-            /// @assert(str.indexOf("B"'char) == 1)
-            /// @assert(str.indexOf("C"'char) == 2)
-            /// @assert(str.indexOf("D"'char) == -1)
-            /// ```
-            /// The returned index is a byte index, not the index of the unicode character
-            /// ```
-            /// var str: String = "A⻨C"
-            /// @assert(str.indexOf("A"'char) == 0)
-            /// @assert(str.indexOf("⻨"'char) == 1)
-            /// @assert(str.indexOf("C"'char) == 4)
-            /// @assert(str.indexOf("D"'char) == -1)
-            /// ```
+            // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+            // The function will return -1 if the `value` cannot be found
             func indexOf(using self, value: char)->s32
             {
                 if !length
@@ -372,21 +331,8 @@ namespace std.text
                 return -1
             }
 
-            /// Returns the first Unicode character of the [String]
-            ///
-            /// # Remarks
-            /// This function will return 0 if the [String] is null or empty
-            ///
-            /// # Examples
-            /// ```
-            /// let str1: String = "ABC"
-            /// @assert(str1.front() == "A"'char)
-            /// let str2: String = "⾆BC"
-            /// @assert(str2.front() == "⾆"'char)
-            /// ```
-            ///
-            /// # See also
-            /// * [std.text.String.back]
+            // Returns the first Unicode character of the String
+            // This function will return 0 if the String is null or empty
             func front(using self)->char
             {
                 if !length
@@ -397,21 +343,8 @@ namespace std.text
                 return c
             }
 
-            /// Returns the last Unicode character of the [String]
-            ///
-            /// # Remarks
-            /// This function will return 0 if the [String] is null or empty
-            ///
-            /// # Examples
-            /// ```
-            /// let str1: String = "ABC"
-            /// @assert(str1.back() == "C"'char)
-            /// let str2: String = "AB⾆"
-            /// @assert(str2.back() == "⾆"'char)
-            /// ```
-            ///
-            /// # See also
-            /// * [std.text.String.front]
+            // Returns the last Unicode character of the String
+            // This function will return 0 if the String is null or empty
             func back(using self)->char
             {
                 if !length

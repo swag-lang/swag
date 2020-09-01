@@ -2,7 +2,7 @@ namespace std.time
 {
 	public
 	{
-        /// Returns the current time expressed in milliseconds
+        // Returns the current time expressed in milliseconds
 		func nowMilliseconds()->u32
 		{
 			ticks := nowTicks() * 1000
@@ -10,7 +10,7 @@ namespace std.time
 			return acast ticks
 		}
 
-        /// Returns the current time expressed in microseconds
+        // Returns the current time expressed in microseconds
 		func nowMicroseconds()->u32
 		{
 			ticks := nowTicks() * 1000000
