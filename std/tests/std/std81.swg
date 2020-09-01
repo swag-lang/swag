@@ -18,7 +18,7 @@ using std.collections
     b.addByte(66)
     @assert(@countof(b) == 2)
 
-    ptr := b.bucketToDatas(b.curBucket)
+    ptr := b.lastBucket.datas
     @assert(ptr[0] == 55)
     @assert(ptr[1] == 66)
 
@@ -44,16 +44,15 @@ using std.collections
     b.setBucketSize(4)
     b.addBytes(@[1,2,3,4,5,6,7,8])
 
-    @assert(b.usedBuckets == 2)
-    @assert(b.firstBucket != b.curBucket)
+    @assert(b.firstBucket != b.lastBucket)
 
-    ptr := b.bucketToDatas(b.firstBucket)
+    ptr := b.firstBucket.datas
     @assert(ptr[0] == 1)
     @assert(ptr[1] == 2)
     @assert(ptr[2] == 3)
     @assert(ptr[3] == 4)
 
-    ptr1 := b.bucketToDatas(b.curBucket)
+    ptr1 := b.lastBucket.datas
     @assert(ptr1[0] == 5)
     @assert(ptr1[1] == 6)
     @assert(ptr1[2] == 7)

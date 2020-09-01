@@ -2,61 +2,70 @@ namespace std.collections
 {
     using std.diagnostics, std.text
 
+    public struct ConcatBufferBucket
+    {
+        datas:  *u8
+        next:   *ConcatBufferBucket
+        count:  u32
+    }
+
     // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
     // the buffer needs to increase its size. This is the main difference with Array
     public readonly struct ConcatBuffer
     {
         allocator:      const swag.IAllocator
 
-        firstBucket:    *u8
-        curBucket:      *u8
+        firstBucket:    *ConcatBufferBucket
+        lastBucket:     *ConcatBufferBucket
+        currentSP:      *u8
 
-        totalBuckets:   u32
-        usedBuckets:    u32
-        curCount:       u32
-
-        sizeBucket:     u32 = 1024
+        bucketSize:     u32 = 1024
+        totalCount:     u32
     }
 
     impl ConcatBuffer
     {
-        func growBuckets(using self, size: u32)
+        func bucketCount(using self, b: *ConcatBufferBucket)->u32
         {
-            if curBucket != null && curCount + size < sizeBucket
-                return
+            if b != lastBucket
+                return b.count
+            count := cast(u32) (currentSP - lastBucket.datas)
+            return count
+        }
 
-            debug.assert(size <= sizeBucket)
-            curCount = 0
-
-            // No need to allocate a new bucket if we are not already using them all
-            if usedBuckets < totalBuckets
+        func ensureSpace(using self, numBytes: u32)
+        {
+            if firstBucket != null
             {
-                ptr := cast(**void) curBucket
-                curBucket = acast ptr[0]
-                debug.assert(curBucket != null)
-                usedBuckets += 1
-                return;
+                count := cast(u32) (currentSP - lastBucket.datas);
+                if count + numBytes < bucketSize
+                    return
+                totalCount += count;
+                lastBucket.count = count;
+
+                // Next is already allocated
+                if lastBucket.next
+                {
+                    lastBucket = lastBucket.next
+                    currentSP = lastBucket.datas
+                    lastBucket.count = 0
+                    return;
+                }
             }
 
+            // Need to allocate a new bucket
             if allocator == null
                 allocator = @getcontext().allocator
-            newBucket := acast memory.alloc(&allocator, sizeBucket + @sizeof(*void))
-            if !firstBucket
-            {
-                firstBucket = newBucket
-            }
+            newBucket := cast(*ConcatBufferBucket) memory.alloc(&allocator, @sizeof(ConcatBufferBucket))
+            @init(newBucket)
+            if lastBucket
+                lastBucket.next = newBucket
             else
-            {
-                ptr := cast(**void) curBucket
-                ptr[0] = newBucket
-            }
+                firstBucket = newBucket
+            lastBucket = newBucket
 
-            curBucket = newBucket
-            newPtr := cast(**void) newBucket
-            newPtr[0] = null
-
-            usedBuckets += 1
-            totalBuckets += 1
+            lastBucket.datas = acast memory.alloc(&allocator, bucketSize)
+            currentSP = lastBucket.datas
         }
 
         func release(using self)
@@ -66,17 +75,19 @@ namespace std.collections
             ptr := firstBucket
             while ptr != null
             {
-                nextPtr := bucketToNext(self,  ptr)
-                memory.free(&allocator, cast(*void) ptr)
+                nextPtr := ptr.next
+                memory.free(&allocator, ptr.datas)
+                memory.free(&allocator, ptr)
                 ptr = nextPtr
             }
         }
 
         func count(using self)->u32
         {
-            if curBucket == null
-                return 0
-            return ((usedBuckets - 1) * sizeBucket) + curCount
+            if lastBucket == null
+                return 0;
+            lastBucket.count = cast(u32) (currentSP - lastBucket.datas)
+            return totalCount + lastBucket.count
         }
 
         public
@@ -108,47 +119,35 @@ namespace std.collections
             {
                 diagnostics.debug.assert(size >= 4)
                 free(self)
-                sizeBucket = size
+                bucketSize = size
             }
 
             // Release the content of the buffer
             func free(using self)
             {
                 @drop(self)
-                curCount, usedBuckets, totalBuckets = 0
-                firstBucket, curBucket = null
+                firstBucket, lastBucket = null
+                currentSP = null
+                totalCount = 0
             }
 
             // Clear the content of the buffer
             func clear(using self)
             {
-                curCount = 0
-                curBucket = firstBucket
-                usedBuckets = curBucket ? 1 : 0
-            }
-
-            // Get the address of datas in a given bucket pointer
-            #[swag.inline]
-            func bucketToDatas(using self, bucket: *u8)->*u8
-            {
-                return bucket + @sizeof(*void)
-            }
-
-            // Get the address of the next bucket
-            #[swag.inline]
-            func bucketToNext(using self, bucket: *u8)->*u8
-            {
-                nextPtr := cast(**u8) bucket
-                return nextPtr[0]
+                if !firstBucket
+                    return
+                lastBucket = firstBucket
+                lastBucket.count = 0
+                currentSP = lastBucket.datas
+                totalCount = 0
             }
 
             // Add one byte to the buffer
             func addByte(using self, byte: u8)
             {
-                growBuckets(self, 1)
-                ptr := bucketToDatas(self, curBucket) + curCount
-                ptr[0] = byte
-                curCount += 1
+                ensureSpace(self, 1)
+                currentSP[0] = byte
+                currentSP += 1
             }
 
             // Add a slice of bytes to the buffer
@@ -161,30 +160,28 @@ namespace std.collections
                 slicePtr := @dataof(bytes)
 
                 // Be sure we have a buffer
-                if !curBucket
-                    growBuckets(self, 1)
+                if lastBucket == null
+                    ensureSpace(self, 1)
 
                 // Divide the slice in the given amount of buckets if necessary
-                remain := sizeBucket - curCount
-                ptr := curBucket
-                while(num > remain)
+                curCount := cast(u32) (currentSP - lastBucket.datas)
+                remain := bucketSize - curCount
+                while num > remain
                 {
-                    ptr = bucketToDatas(self, curBucket) + curCount
-                    memory.copy(ptr, slicePtr, remain)
+                    memory.copy(currentSP, slicePtr, remain)
                     num -= remain
-                    curCount = sizeBucket
                     slicePtr += remain
+                    currentSP += remain
                     if !num
                         return
-                    growBuckets(self, 1)
-                    remain = sizeBucket
+                    ensureSpace(self, 1) // Will alloc a new bucket as the current one is full
+                    remain = bucketSize
                 }
 
                 // We should have enough size in the last bucket to store the
                 // rest of the slice
-                ptr = bucketToDatas(self, curBucket) + curCount
-                memory.copy(ptr, slicePtr, num)
-                curCount += num
+                memory.copy(currentSP, slicePtr, num)
+                currentSP += num
             }
 
             // Convert buffer to a String
@@ -194,18 +191,14 @@ namespace std.collections
                 if firstBucket == null
                     return result
 
-                ptr := firstBucket
                 totalCpt := count(self)
-
                 result.ensureCapacity(totalCpt + 1)
-                while totalCpt
-                {
-                    offset := math.min(totalCpt, sizeBucket)
-                    ptrData := bucketToDatas(self, ptr)
-                    result.append(cast(string) @mkslice(ptrData, offset))
 
-                    totalCpt -= offset
-                    ptr = bucketToNext(self,  ptr)
+                ptr := firstBucket
+                while ptr != lastBucket.next
+                {
+                    result.append(cast(string) @mkslice(ptr.datas, ptr.count))
+                    ptr = ptr.next
                 }
 
                 return result
