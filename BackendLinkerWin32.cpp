@@ -130,7 +130,7 @@ namespace OS
 
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
-        SWAG_PROFILE(PRF_LINK, format("link %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+        SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
         vector<Utf8> linkArguments;
         BackendLinkerWin32::getArguments(buildParameters, module, linkArguments, false);
@@ -161,7 +161,7 @@ namespace OS
 
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
-        SWAG_PROFILE(PRF_LINK, format("link %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+        SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
         vector<Utf8> linkArgumentsList;
         BackendLinkerWin32::getArguments(buildParameters, module, linkArgumentsList, true);

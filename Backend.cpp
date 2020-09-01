@@ -55,7 +55,7 @@ string Backend::getCacheFolder(const BuildParameters& buildParameters)
 string Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
+    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
     destFile += OS::getOutputFileExtension(buildParameters.outputType);
     return destFile;
 }

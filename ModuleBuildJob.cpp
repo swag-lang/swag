@@ -257,7 +257,7 @@ JobResult ModuleBuildJob::execute()
 
         if (module->hasBytecodeToRun())
         {
-            SWAG_PROFILE(PRF_GFCT, format("run bc %s%s", module->name.c_str(), module->buildParameters.postFix.c_str()));
+            SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
 
             module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun);
 
@@ -448,8 +448,6 @@ JobResult ModuleBuildJob::execute()
             job->buildParameters                = module->buildParameters;
             job->buildParameters.outputFileName = module->name;
             job->buildParameters.compileType    = BackendCompileType::Test;
-            if (!module->fromTestsFolder)
-                job->buildParameters.postFix = ".test";
             g_ThreadMgr.addJob(job);
         }
 

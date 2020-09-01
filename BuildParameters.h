@@ -21,7 +21,6 @@ struct BuildParameters
     BackendOutputType  outputType = BackendOutputType::Binary;
     set<Utf8>          foreignLibs;
     BuildCfg*          buildCfg = nullptr;
-    string             postFix;
     string             outputFileName;
     int                precompileIndex = 0;
     BackendCompileType compileType;

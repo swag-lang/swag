@@ -11,9 +11,9 @@ thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
 JobResult ModuleRunJob::execute()
 {
-    SWAG_PROFILE(PRF_RUN, format("run %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+    SWAG_PROFILE(PRF_RUN, format("run %s", module->name.c_str()));
 
-    fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName + buildParameters.postFix;
+    fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName;
     path += OS::getOutputFileExtension(BackendOutputType::Binary);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;

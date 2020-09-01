@@ -68,8 +68,6 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
                 preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
-                if (!module->fromTestsFolder)
-                    preCompileJob->buildParameters.postFix = ".test";
                 jobsToAdd.push_back(preCompileJob);
             }
 
@@ -129,8 +127,6 @@ JobResult ModuleOutputJob::execute()
             compileJob->buildParameters.outputFileName = module->name;
             compileJob->buildParameters.outputType     = BackendOutputType::Binary;
             compileJob->buildParameters.compileType    = BackendCompileType::Test;
-            if (!module->fromTestsFolder)
-                compileJob->buildParameters.postFix = ".test";
             jobsToAdd.push_back(compileJob);
         }
 

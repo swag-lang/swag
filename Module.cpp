@@ -17,6 +17,8 @@ bool Module::mustGenerateTestExe()
         return false;
     if (!g_CommandLine.outputTest)
         return false;
+    if (!fromTestsFolder)
+        return false;
     if (byteCodeTestFunc.empty())
         return false;
     if ((g_CommandLine.script))

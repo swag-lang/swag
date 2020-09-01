@@ -226,7 +226,6 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         pp.filename = format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += buildParameters.postFix;
         pp.filename += ".obj";
 
         if (g_CommandLine.verbose)
@@ -583,7 +582,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
 
 bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 {
-    SWAG_PROFILE(PRF_SAVE, format("saveObjFile %s%s", module->name.c_str(), buildParameters.postFix.c_str()));
+    SWAG_PROFILE(PRF_SAVE, format("saveObjFile %s", module->name.c_str()));
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
