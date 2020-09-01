@@ -186,7 +186,7 @@ namespace std.text
             const tbl = "0123456789ABCDEF"
             var value: u64 = fmt.signed ? cast(u64) math.abs(fmt.signedValue) : fmt.unsignedValue
 
-            debug.assert(0'u32 < fmt.bits <= 64'u32, "bad 'bits' value (should be > 0 and <= 64)")
+            debug.assert(0 < fmt.bits <= 64, "bad 'bits' value (should be > 0 and <= 64)")
 
             var tmp: [64] u8
             cpt := 63'u32

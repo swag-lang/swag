@@ -1950,6 +1950,10 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
             else
                 left->typeInfo = g_TypeMgr.typeInfoS64;
         }
+        else if (leftNative->valueInteger == 0)
+        {
+            left->typeInfo = rightTypeInfo;
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 //#[swag.printbc]
 #test
 {
-    var a: bool
-    @assert(a == false)
+    a := 0'u32
+    b := 0 < a
 }
