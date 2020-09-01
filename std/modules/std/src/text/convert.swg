@@ -24,6 +24,34 @@ namespace std.text
         signed:         bool
     }
 
+    impl ConvertFormatFloat
+    {
+        // Set some format options with a given user string
+        public func setFormat(using self, strFormat: string)
+        {
+            if strFormat == null
+                return
+        }
+    }
+
+    impl ConvertFormatInt
+    {
+        // Set some format options with a given user string
+        public func setFormat(using self, strFormat: string)
+        {
+            if strFormat == null
+                return
+            /*visit c: strFormat
+            {
+                switch c
+                {
+                    case "B"'u8: base = 2
+                    case "X"'u8: base = 16
+                }
+            }*/
+        }
+    }
+
     // Interface to implement a custom conversion function
     public interface IConvert
     {
@@ -35,6 +63,11 @@ namespace std.text
         // Convert a value to an utf8 string, and put the result in a ConcatBuffer
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
+            if strFormat != null
+            {
+                @print(cast(string) strFormat)
+            }
+
             type := @kindof(value)
 
             // A pointer, whatever type
@@ -76,6 +109,10 @@ namespace std.text
                 case s16:
                     convertInt(buf, cast(s16) value, strFormat)
                 case s32:
+            if strFormat != null
+            {
+                @print(cast(string) strFormat)
+            }
                     convertInt(buf, cast(s32) value, strFormat)
                 case s64:
                     convertInt(buf, cast(s64) value, strFormat)
@@ -122,7 +159,7 @@ namespace std.text
         }
 
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
-        func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat, strFormat: string = null)
+        func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
             neg := fmt.value < 0
             value := fmt.value
@@ -168,7 +205,8 @@ namespace std.text
             var fmt: ConvertFormatFloat
             fmt.value = value
             fmt.bits = 64
-            convertFloat(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertFloat(buf, fmt)
         }
 
         // Convert a 'f32' to a string, and put the result in a ConcatBuffer
@@ -177,11 +215,12 @@ namespace std.text
             var fmt: ConvertFormatFloat
             fmt.value = cast(f64) value
             fmt.bits = 32
-            convertFloat(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertFloat(buf, fmt)
         }
 
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt, strFormat: string = null)
+        func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             const tbl = "0123456789ABCDEF"
             var value: u64 = fmt.signed ? cast(u64) math.abs(fmt.signedValue) : fmt.unsignedValue
@@ -216,7 +255,8 @@ namespace std.text
             fmt.signedValue = acast value
             fmt.bits = 8
             fmt.signed = true
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 's16' integer to a string, and put the result in a ConcatBuffer
@@ -226,17 +266,25 @@ namespace std.text
             fmt.signedValue = acast value
             fmt.bits = 16
             fmt.signed = true
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 's32' integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s32, strFormat: string = null)
         {
+            if strFormat != null
+            {
+                @print("convertint: ")
+                @print(cast(string) strFormat)
+            }
+
             var fmt: ConvertFormatInt
             fmt.signedValue = acast value
             fmt.bits = 32
             fmt.signed = true
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 's64' integer to a string, and put the result in a ConcatBuffer
@@ -246,7 +294,8 @@ namespace std.text
             fmt.signedValue = acast value
             fmt.bits = 64
             fmt.signed = true
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 'u8' integer to a string, and put the result in a ConcatBuffer
@@ -256,7 +305,8 @@ namespace std.text
             fmt.unsignedValue = acast value
             fmt.signed = false
             fmt.bits = 8
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 'u16' integer to a string, and put the result in a ConcatBuffer
@@ -266,7 +316,8 @@ namespace std.text
             fmt.unsignedValue = acast value
             fmt.signed = false
             fmt.bits = 16
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 'u32' integer to a string, and put the result in a ConcatBuffer
@@ -276,7 +327,8 @@ namespace std.text
             fmt.unsignedValue = acast value
             fmt.signed = false
             fmt.bits = 32
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 'u64' integer to a string, and put the result in a ConcatBuffer
@@ -286,7 +338,8 @@ namespace std.text
             fmt.unsignedValue = acast value
             fmt.signed = false
             fmt.bits = 64
-            convertInt(buf, fmt, strFormat)
+            fmt.setFormat(strFormat)
+            convertInt(buf, fmt)
         }
 
         // Convert a 'bool' to a string, and put the result in a ConcatBuffer
