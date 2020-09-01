@@ -660,7 +660,8 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     {
         auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        node->resultRegisterRC += reserveRegisterRC(context);
+        if (node->resultRegisterRC.size() == 1)
+            node->resultRegisterRC += reserveRegisterRC(context);
         auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1]);
         inst->b.u32 = fromTypeArray->count;
         transformResultToLinear2(context, node);
@@ -707,7 +708,14 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
         }
 
-        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        if (typeInfo->numRegisters() == 1)
+            node->resultRegisterRC = exprNode->resultRegisterRC[0];
+        else
+        {
+            SWAG_ASSERT(exprNode->resultRegisterRC.size() == typeInfo->numRegisters());
+            node->resultRegisterRC = exprNode->resultRegisterRC;
+        }
+
         exprNode->typeInfo       = typeInfo;
         exprNode->castedTypeInfo = nullptr;
         return true;

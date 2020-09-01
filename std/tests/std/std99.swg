@@ -3,5 +3,5 @@
 #test
 {
     using std.diagnostics
-    console.write("%{ABCDEF}", 9999)
+    console.write("%{X}", 9999)
 }

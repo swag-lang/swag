@@ -63,6 +63,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
+    SWAG_ASSERT(node->array->resultRegisterRC.size() != 2);
     node->array->resultRegisterRC += reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
 
@@ -108,7 +109,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->resultRegisterRC += reserveRegisterRC(context);
+        if (node->resultRegisterRC.size() == 1)
+            node->resultRegisterRC += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
@@ -132,7 +134,8 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (typeInfo->numRegisters() == 2)
     {
         emitSafetyNullPointer(context, r0);
-        r0 += reserveRegisterRC(context);
+        if (r0.size() == 1)
+            r0 += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
     }

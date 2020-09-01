@@ -41,14 +41,14 @@ namespace std.text
         {
             if strFormat == null
                 return
-            /*visit c: strFormat
+            visit c: strFormat
             {
                 switch c
                 {
                     case "B"'u8: base = 2
                     case "X"'u8: base = 16
                 }
-            }*/
+            }
         }
     }
 
@@ -63,11 +63,6 @@ namespace std.text
         // Convert a value to an utf8 string, and put the result in a ConcatBuffer
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
-            if strFormat != null
-            {
-                @print(cast(string) strFormat)
-            }
-
             type := @kindof(value)
 
             // A pointer, whatever type
@@ -109,10 +104,6 @@ namespace std.text
                 case s16:
                     convertInt(buf, cast(s16) value, strFormat)
                 case s32:
-            if strFormat != null
-            {
-                @print(cast(string) strFormat)
-            }
                     convertInt(buf, cast(s32) value, strFormat)
                 case s64:
                     convertInt(buf, cast(s64) value, strFormat)
@@ -273,12 +264,6 @@ namespace std.text
         // Convert a 's32' integer to a string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: s32, strFormat: string = null)
         {
-            if strFormat != null
-            {
-                @print("convertint: ")
-                @print(cast(string) strFormat)
-            }
-
             var fmt: ConvertFormatInt
             fmt.signedValue = acast value
             fmt.bits = 32

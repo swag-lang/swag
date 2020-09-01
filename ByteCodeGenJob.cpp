@@ -94,10 +94,15 @@ void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& 
 
     for (int i = 0; i < count; i++)
         rs += rc[i];
-    for (int i = count; i < rc.size(); i++)
-        freeRegisterRC(context, rc[i]);
 
-    rc = rs;
+    if (rc.canFree)
+    {
+        for (int i = count; i < rc.size(); i++)
+            freeRegisterRC(context, rc[i]);
+    }
+
+    rs.canFree = rc.canFree;
+    rc         = rs;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
