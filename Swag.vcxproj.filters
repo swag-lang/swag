@@ -275,18 +275,6 @@
     <ClCompile Include="BackendCFunctionBodyJob.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
-    <ClCompile Include="DocModuleJob.cpp">
-      <Filter>Doc</Filter>
-    </ClCompile>
-    <ClCompile Include="DocScopeJob.cpp">
-      <Filter>Doc</Filter>
-    </ClCompile>
-    <ClCompile Include="DocNodeJob.cpp">
-      <Filter>Doc</Filter>
-    </ClCompile>
-    <ClCompile Include="DocHtmlHelper.cpp">
-      <Filter>Doc</Filter>
-    </ClCompile>
     <ClCompile Include="CopyFileJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -620,18 +608,6 @@
     <ClInclude Include="BackendCFunctionBodyJob.h">
       <Filter>Backend\C</Filter>
     </ClInclude>
-    <ClInclude Include="DocModuleJob.h">
-      <Filter>Doc</Filter>
-    </ClInclude>
-    <ClInclude Include="DocScopeJob.h">
-      <Filter>Doc</Filter>
-    </ClInclude>
-    <ClInclude Include="DocHtmlHelper.h">
-      <Filter>Doc</Filter>
-    </ClInclude>
-    <ClInclude Include="DocNodeJob.h">
-      <Filter>Doc</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -643,9 +619,6 @@
     </ClInclude>
     <ClInclude Include="DiagnosticInfos.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="DocContent.h">
-      <Filter>Doc</Filter>
     </ClInclude>
     <ClInclude Include="ModuleManager.h">
       <Filter>Backend</Filter>
@@ -786,9 +759,6 @@
     </Filter>
     <Filter Include="Backend\ByteCode">
       <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Doc">
-      <UniqueIdentifier>{e58d8fca-e46c-4b1e-a2da-c17e4da58dea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{db70f2f6-b909-4fab-a3c3-a23454ba5a37}</UniqueIdentifier>

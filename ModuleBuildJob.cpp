@@ -57,7 +57,7 @@ JobResult ModuleBuildJob::execute()
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
-        if (!module->backend->mustCompile && !g_CommandLine.generateDoc && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
+        if (!module->backend->mustCompile && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
             timerSemanticModule.start();
             pass = ModuleBuildPass::WaitForDependencies;
@@ -408,7 +408,7 @@ JobResult ModuleBuildJob::execute()
 
         if (mustOutput)
         {
-            if (g_CommandLine.output || g_CommandLine.generateDoc)
+            if (g_CommandLine.output)
             {
                 module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();

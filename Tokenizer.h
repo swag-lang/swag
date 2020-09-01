@@ -49,9 +49,8 @@ struct Token
 
 static const uint32_t TOKENIZER_KEEP_EOL              = 0x00000001;
 static const uint32_t TOKENIZER_KEEP_BLANKS           = 0x00000002;
-static const uint32_t TOKENIZER_KEEP_CPP_COMMENTS     = 0x00000004;
-static const uint32_t TOKENIZER_KEEP_KEYWORDS         = 0x00000008;
-static const uint32_t TOKENIZER_NO_LITERAL_CONVERSION = 0x00000010;
+static const uint32_t TOKENIZER_KEEP_KEYWORDS         = 0x00000004;
+static const uint32_t TOKENIZER_NO_LITERAL_CONVERSION = 0x00000008;
 
 struct Tokenizer
 {
@@ -79,7 +78,6 @@ struct Tokenizer
     bool     isEscape(char32_t& c, Token& token);
     bool     getDigitHexa(Token& token, int& result);
     bool     doCharLiteral(Token& token);
-    void     doDocComment(Token& token);
 
     SourceFile*    sourceFile         = nullptr;
     char32_t       cacheChar[2]       = {0};

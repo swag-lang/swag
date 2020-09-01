@@ -257,7 +257,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     // Need to zap doc comments, when generating doc
     auto idx           = node->childParentIdx + 1;
     auto nextStatement = node->parent->childs[idx];
-    while (nextStatement->kind == AstNodeKind::DocComment || nextStatement->kind == AstNodeKind::AttrUse)
+    while (nextStatement->kind == AstNodeKind::AttrUse)
     {
         idx++;
         if (idx >= node->parent->childs.size())

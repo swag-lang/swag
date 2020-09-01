@@ -270,9 +270,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
             break;
-        case TokenId::DocComment:
-            SWAG_CHECK(doDocComment(parent));
-            break;
 
         case TokenId::KwdAlias:
             SWAG_CHECK(doAlias(parent));

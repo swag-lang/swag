@@ -40,7 +40,6 @@ struct CommandLine
     bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
-    bool runDocTests      = true;
     bool devMode          = false;
 
     // Language options
@@ -67,9 +66,6 @@ struct CommandLine
 
     // Watch
     bool watch = false;
-
-    // Documentation
-    bool generateDoc = false;
 
     // Output
     string      buildCfg           = "debug";

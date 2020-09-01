@@ -60,7 +60,6 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("build        build the specified workspace\n");
     g_Log.message("run          build and run the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
-    g_Log.message("doc          generate documentation for the specified workspace\n");
     g_Log.message("new          creates a new workspace\n");
     g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
 
@@ -73,7 +72,6 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("swag build --workspace:c:/myWorkspace --rebuild\n");
     g_Log.message("swag run -w:c:/myWorkspace -m:myModuleToRun\n");
     g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
-    g_Log.message("swag doc -w:c:/myWorkspace --clean\n");
     g_Log.message("swag new -w:newWorkspace\n");
 
     exit(0);
@@ -141,11 +139,6 @@ int main(int argc, const char* argv[])
     else if (command == "watch")
     {
         g_CommandLine.watch = true;
-    }
-    else if (command == "doc")
-    {
-        g_CommandLine.output      = false;
-        g_CommandLine.generateDoc = true;
     }
     else
     {

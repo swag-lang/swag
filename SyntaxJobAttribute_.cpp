@@ -3,8 +3,6 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Scoped.h"
-#include "DocHtmlHelper.h"
-#include "DocContent.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -153,88 +151,6 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    }
-
-    return true;
-}
-
-bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
-{
-    auto attrBlockNode = Ast::newNode<AstNode>(this, AstNodeKind::DocComment, sourceFile, parent);
-    if (result)
-        *result = attrBlockNode;
-    attrBlockNode->docContent = g_Allocator.alloc<DocContent>();
-
-    int pass = 0;
-    while (token.id == TokenId::DocComment)
-    {
-        auto trimLeft = token.text;
-        trimLeft.trim();
-
-        // Start of a category with '#' : directly fill the doc content
-        if (trimLeft.length() && trimLeft[0] == '#')
-            pass = 3;
-
-        switch (pass)
-        {
-        // Summary
-        case 0:
-            if (token.text.empty())
-            {
-                pass = 1;
-            }
-            else
-            {
-                if (!attrBlockNode->docContent->docSummary.empty())
-                    attrBlockNode->docContent->docSummary += " ";
-                attrBlockNode->docContent->docSummary += token.text;
-            }
-            break;
-
-        // Between summary and description
-        case 1:
-            if (token.text.empty())
-                break;
-            pass = 2;
-
-        // Description
-        case 2:
-            if (!token.text.empty() && token.text[0] == '#')
-                pass = 3;
-            else
-                attrBlockNode->docContent->docDescription += token.text + "\n";
-            break;
-
-        // Content
-        case 3:
-            attrBlockNode->docContent->docContent += token.text + "\n";
-            break;
-        }
-
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
-
-    vector<Utf8> embeddedCode;
-    attrBlockNode->computeScopedName();
-    attrBlockNode->docContent->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docContent->docSummary, attrBlockNode->computeScopedName(), embeddedCode);
-    attrBlockNode->docContent->docDescription = DocHtmlHelper::markdown(attrBlockNode->docContent->docDescription, attrBlockNode->computeScopedName(), embeddedCode);
-    attrBlockNode->docContent->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent->docContent, attrBlockNode->computeScopedName(), embeddedCode);
-
-    // Construct a #test per embedded code to be able to run examples
-    if (g_CommandLine.runDocTests)
-    {
-        SyntaxJob embeddedJob;
-        for (auto& oneCode : embeddedCode)
-        {
-            Utf8 code;
-            code = "#test {\n";
-            code += format("using %s\n", attrBlockNode->ownerScope->getFullName().c_str());
-            code += oneCode;
-            code += "}\n";
-
-            SWAG_CHECK(embeddedJob.constructEmbedded(code, sourceFile->astRoot, attrBlockNode, CompilerAstKind::TopLevelInstruction));
-            //sourceFile->astRoot->childs.back()->attributeFlags |= ATTRIBUTE_PRINTBYTECODE;
-        }
     }
 
     return true;

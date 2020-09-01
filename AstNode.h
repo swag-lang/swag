@@ -84,7 +84,6 @@ enum class AstNodeKind : uint8_t
     FuncDecl,
     AttrDecl,
     AttrUse,
-    DocComment,
     FuncDeclParams,
     FuncDeclParam,
     FuncDeclType,
@@ -339,7 +338,6 @@ struct AstNode
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;
 
-    DocContent*         docContent;
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;
     AstInline*          ownerInline;

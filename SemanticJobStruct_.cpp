@@ -325,7 +325,6 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
         }
 
         case AstNodeKind::AttrUse:
-        case AstNodeKind::DocComment:
             continue;
         }
 

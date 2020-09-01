@@ -471,9 +471,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::SymAttrStart:
         SWAG_CHECK(doAttrUse(parent));
         break;
-    case TokenId::DocComment:
-        SWAG_CHECK(doDocComment(parent));
-        break;
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::TopLevelInstruction));
         break;

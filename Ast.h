@@ -50,15 +50,6 @@ namespace Ast
             node->flags |= parent->flags & AST_RUN_BLOCK;
 
             parent->lock();
-
-            // If previous node is a doc comment, then move the text to this node
-            if (g_CommandLine.generateDoc)
-            {
-                auto childBack = parent->childs.empty() ? nullptr : parent->childs.back();
-                if (childBack && (childBack->kind == AstNodeKind::DocComment || childBack->kind == AstNodeKind::AttrUse))
-                    node->docContent = move(childBack->docContent);
-            }
-
             node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
             parent->unlock();

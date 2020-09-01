@@ -15,8 +15,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
-    addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the workspace to compile/document/create");
-    addArg("--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to compile/document");
+    addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the workspace to compile/create");
+    addArg("--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to compile");
 
     addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
@@ -28,11 +28,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test, nullptr, "test mode (compile the ./tests folder and run all #test)");
     addArg("--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
-    addArg("--test-doc", "-td", CommandLineType::Bool, &cmdLine->runDocTests, nullptr, "run documentation code");
 
     addArg("--clean", nullptr, CommandLineType::Bool, &cmdLine->clean, nullptr, "clean the cache and target folder");
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
-    addArg("--doc", nullptr, CommandLineType::Bool, &cmdLine->generateDoc, nullptr, "generate documentation");
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);

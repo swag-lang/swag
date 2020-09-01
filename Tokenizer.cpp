@@ -161,21 +161,6 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
     return false;
 }
 
-void Tokenizer::doDocComment(Token& token)
-{
-    token.id = TokenId::DocComment;
-
-    while (true)
-    {
-        auto nc = getChar();
-        if (!nc || nc == '\n')
-            break;
-        token.text += nc;
-    }
-
-    lastTokenIsEOL = true;
-}
-
 bool Tokenizer::getToken(Token& token)
 {
     unsigned offset;
@@ -241,31 +226,6 @@ bool Tokenizer::getToken(Token& token)
             {
                 treatChar(c, offset);
                 nc = getChar();
-
-                // Keep comments alive
-                if (parseFlags & TOKENIZER_KEEP_CPP_COMMENTS)
-                {
-                    token.id = TokenId::DocComment;
-                    token.text += "//";
-                    while (nc && nc != '\n')
-                    {
-                        if (nc != '\r')
-                            token.text += nc;
-                        nc = getChar();
-                    }
-
-                    lastTokenIsEOL = true;
-                    return true;
-                }
-
-                // This is a '///' doc comment
-                if (nc == '/' && (g_CommandLine.generateDoc || (g_CommandLine.test && g_CommandLine.runDocTests)))
-                {
-                    getChar();
-                    doDocComment(token);
-                    return true;
-                }
-
                 while (nc && nc != '\n')
                     nc = getChar();
                 lastTokenIsEOL = true;

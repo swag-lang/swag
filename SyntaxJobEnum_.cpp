@@ -125,9 +125,6 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
         case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
             break;
-        case TokenId::DocComment:
-            SWAG_CHECK(doDocComment(parent));
-            break;
         case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);

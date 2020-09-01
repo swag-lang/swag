@@ -3,7 +3,6 @@
 #include "ModuleExportJob.h"
 #include "ModulePrepOutputJob.h"
 #include "ModuleGenOutputJob.h"
-#include "DocModuleJob.h"
 #include "ThreadManager.h"
 #include "Module.h"
 
@@ -22,16 +21,6 @@ JobResult ModuleOutputJob::execute()
             exportJob->backend      = module->backend;
             exportJob->dependentJob = dependentJob;
             jobsToAdd.push_back(exportJob);
-        }
-
-        // Generate documentation for module (except for tests)
-        if (g_CommandLine.generateDoc && !module->fromTestsFolder)
-        {
-            auto docJob    = g_Pool_docModuleJob.alloc();
-            docJob->module = module;
-            g_ThreadMgr.addJob(docJob);
-            if (!g_CommandLine.output)
-                return JobResult::ReleaseJob;
         }
     }
 
