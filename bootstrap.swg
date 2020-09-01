@@ -324,15 +324,6 @@ namespace swag
     // Build configuration
     // #########################################################
 
-    struct BuildCfgBackendC
-    {
-        maxApplicationArguments: u32    = 64
-        minFunctionPerFile: u32         = 1024;
-        maxFunctionPerFile: u32         = 2048;
-        writeSourceCode: bool           = false
-        writeByteCodeInstruction: bool  = false
-    }
-
     struct BuildCfgBackendLLVM
     {
         minFunctionPerFile: u32 = 256;
@@ -362,7 +353,6 @@ namespace swag
         backendOptimizeSize: bool       = false
 
         // Specific backend parameters
-        backendC:       BuildCfgBackendC
         backendLLVM:    BuildCfgBackendLLVM
         backendX64:     BuildCfgBackendX64
     }

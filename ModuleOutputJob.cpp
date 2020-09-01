@@ -43,15 +43,10 @@ JobResult ModuleOutputJob::execute()
             minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;
         }
-        else if (g_CommandLine.backendType == BackendType::X64)
+        else
         {
             minPerFile = module->buildParameters.buildCfg->backendX64.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendX64.maxFunctionPerFile;
-        }
-        else
-        {
-            minPerFile = module->buildParameters.buildCfg->backendC.minFunctionPerFile;
-            maxPerFile = module->buildParameters.buildCfg->backendC.maxFunctionPerFile;
         }
 
         auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
@@ -64,43 +59,29 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::WaitForDependencies;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
-            // For C backend, only one pass (test/normal), because only one C file is generated with every cases (the difference is made
-            // with an #ifdef). For other backends, we generate one obj file per case
-            if (g_CommandLine.backendType != BackendType::C)
-            {
-                // Precompile a specific version, to test it
-                if (module->mustGenerateTestExe())
-                {
-                    auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
-                    preCompileJob->module                          = module;
-                    preCompileJob->dependentJob                    = this;
-                    preCompileJob->buildParameters                 = module->buildParameters;
-                    preCompileJob->buildParameters.precompileIndex = i;
-                    preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
-                    if (!module->fromTestsFolder)
-                        preCompileJob->buildParameters.postFix = ".test";
-                    jobsToAdd.push_back(preCompileJob);
-                }
-
-                // Precompile the normal version
-                if (module->canGenerateLegit())
-                {
-                    auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
-                    preCompileJob->module                          = module;
-                    preCompileJob->dependentJob                    = this;
-                    preCompileJob->buildParameters                 = module->buildParameters;
-                    preCompileJob->buildParameters.precompileIndex = i;
-                    preCompileJob->buildParameters.compileType     = BackendCompileType::Normal;
-                    jobsToAdd.push_back(preCompileJob);
-                }
-            }
-            else
+            // Precompile a specific version, to test it
+            if (module->mustGenerateTestExe())
             {
                 auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
+                preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
+                if (!module->fromTestsFolder)
+                    preCompileJob->buildParameters.postFix = ".test";
+                jobsToAdd.push_back(preCompileJob);
+            }
+
+            // Precompile the normal version
+            if (module->canGenerateLegit())
+            {
+                auto preCompileJob                             = g_Pool_modulePrepOutputJob.alloc();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
+                preCompileJob->buildParameters.compileType     = BackendCompileType::Normal;
                 jobsToAdd.push_back(preCompileJob);
             }
         }

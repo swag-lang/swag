@@ -161,9 +161,6 @@
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="Backend.h" />
-    <ClInclude Include="BackendC.h" />
-    <ClInclude Include="BackendCFunctionBodyJob.h" />
-    <ClInclude Include="BackendCFunctionMacros_.h" />
     <ClInclude Include="BackendFunctionBodyJob.h" />
     <ClInclude Include="BackendLLVMDbg.h" />
     <ClInclude Include="BackendLLVMFunctionBodyJob.h" />
@@ -260,13 +257,6 @@
     <ClCompile Include="AstOutput.cpp" />
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="Backend.cpp" />
-    <ClCompile Include="BackendC.cpp" />
-    <ClCompile Include="BackendCompilerWin32.cpp" />
-    <ClCompile Include="BackendCData_.cpp" />
-    <ClCompile Include="BackendCFunctionBodyJob.cpp" />
-    <ClCompile Include="BackendCFunction_.cpp" />
-    <ClCompile Include="BackendCMain_.cpp" />
-    <ClCompile Include="BackendCRuntime_.cpp" />
     <ClCompile Include="BackendExport_.cpp" />
     <ClCompile Include="BackendLLVMData_.cpp" />
     <ClCompile Include="BackendLLVMDbg.cpp" />

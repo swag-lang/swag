@@ -50,15 +50,6 @@ typedef struct swag_process_infos_t
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct BuildCfgBackendC
-{
-    swag_runtime_uint32_t maxApplicationArguments  = 64;
-    swag_runtime_uint32_t minFunctionPerFile       = 1024;
-    swag_runtime_uint32_t maxFunctionPerFile       = 2048;
-    bool                  writeSourceCode          = false;
-    bool                  writeByteCodeInstruction = false;
-};
-
 struct BuildCfgBackendLLVM
 {
     swag_runtime_uint32_t minFunctionPerFile = 256;
@@ -88,7 +79,6 @@ struct BuildCfg
     bool backendOptimizeSize      = false;
 
     // Specific backend parameters
-    BuildCfgBackendC    backendC;
     BuildCfgBackendLLVM backendLLVM;
     BuildCfgBackendX64  backendX64;
 };

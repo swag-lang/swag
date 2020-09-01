@@ -7,7 +7,6 @@
 #include "Diagnostic.h"
 #include "DiagnosticInfos.h"
 #include "TypeManager.h"
-#include "BackendC.h"
 #include "BackendLLVM.h"
 #include "BackendX64.h"
 #include "ThreadManager.h"
@@ -128,9 +127,6 @@ void Module::allocateBackend()
     {
         switch (g_CommandLine.backendType)
         {
-        case BackendType::C:
-            backend = new BackendC(this);
-            break;
         case BackendType::LLVM:
             backend = new BackendLLVM(this);
             break;

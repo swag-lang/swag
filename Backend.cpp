@@ -4,8 +4,6 @@
 #include "OS.h"
 #include "Module.h"
 
-string Backend::compilerExe;
-string Backend::compilerPath;
 string Backend::linkerExe;
 string Backend::linkerPath;
 
@@ -31,31 +29,17 @@ void Backend::setup()
 
     if (g_CommandLine.output)
     {
-        if (g_CommandLine.backendType == BackendType::C)
+        auto fullPath = Backend::linkerPath + Backend::linkerExe;
+        if (!fs::exists(fullPath))
         {
-            auto fullPath = Backend::compilerPath + Backend::compilerExe;
-            if (!fs::exists(fullPath))
-            {
-                g_Log.error(format("error: backend: cannot locate compiler '%s'", fullPath.c_str()));
-                exit(-1);
-            }
-
-            g_Log.verbose(format("compilerPath is '%s'\n", Backend::compilerPath.c_str()));
+            g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
+            exit(-1);
         }
-        else
-        {
-            auto fullPath = Backend::linkerPath + Backend::linkerExe;
-            if (!fs::exists(fullPath))
-            {
-                g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
-                exit(-1);
-            }
 
-            if (g_CommandLine.verbose && g_CommandLine.verbosePath)
-            {
-                g_Log.verbose(format("linkerPath is '%s'\n", Backend::linkerPath.c_str()));
-                g_Log.verbose(format("linkerExe is '%s'\n", Backend::linkerExe.c_str()));
-            }
+        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+        {
+            g_Log.verbose(format("linkerPath is '%s'\n", Backend::linkerPath.c_str()));
+            g_Log.verbose(format("linkerExe is '%s'\n", Backend::linkerExe.c_str()));
         }
     }
 }

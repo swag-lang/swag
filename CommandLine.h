@@ -14,7 +14,6 @@ enum class BackendOs
 
 enum class BackendType
 {
-    C,
     LLVM,
     X64,
 };

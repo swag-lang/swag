@@ -94,12 +94,6 @@ namespace OS
         // Compiler
         switch (g_CommandLine.backendType)
         {
-        case BackendType::C:
-            Backend::compilerExe  = "clang-cl.exe";
-            Backend::compilerPath = g_CommandLine.exePath.parent_path().string();
-            Backend::compilerPath += "\\";
-            break;
-
         case BackendType::LLVM:
         case BackendType::X64:
             LLVM::setup();
