@@ -22,6 +22,8 @@ namespace std.text
         bits:           u32 = 32
         base:           u32 = 10
         signed:         bool
+        padding:        u8
+        width:          u8
     }
 
     impl ConvertFormatFloat
@@ -37,17 +39,39 @@ namespace std.text
     impl ConvertFormatInt
     {
         // Set some format options with a given user string
+        // Format is :
+        // [B|D|X] [padding] [width]
+        // => binary, decimal, hexadecimal
+        // => padding character, in ascii, mandatory before the next field
+        // => width of the output, in characters
         public func setFormat(using self, strFormat: string)
         {
-            if strFormat == null
+            if strFormat == null || @countof(strFormat) == 0
                 return
-            visit c: strFormat
+
+            cpt := 0'u32
+            switch strFormat[cpt]
             {
-                switch c
-                {
-                    case "B"'u8: base = 2
-                    case "X"'u8: base = 16
-                }
+                case "B"'u8: base = 2; cpt += 1
+                case "D"'u8: base = 10; cpt += 1
+                case "X"'u8: base = 16; cpt += 1
+            }
+
+            // Next comes the padding characters
+            if cpt >= @countof(strFormat)
+                return
+            padding = strFormat[cpt]
+            cpt += 1
+
+            // Next comes the width
+            if cpt >= @countof(strFormat)
+                return
+            width = 0
+            while latin1.isDigit(strFormat[cpt]) && cpt < @countof(strFormat)
+            {
+                width *= 10
+                width += cast(u8) (strFormat[cpt] - "0"'u8)
+                cpt += 1
             }
         }
     }
@@ -230,6 +254,19 @@ namespace std.text
                     break
             }
 
+            // Fill the remaining place with the padding character, so that the total result is 'fmt.width' long
+            if fmt.padding
+            {
+                curWidth := 63 - cpt
+                while curWidth < fmt.width && cpt > 1
+                {
+                    tmp[cpt] = fmt.padding
+                    curWidth += 1
+                    cpt -= 1
+                }
+            }
+
+            // Prepend the negative character
             if fmt.signed && fmt.signedValue < 0
             {
                 tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.negativeSign
