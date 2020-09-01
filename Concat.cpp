@@ -37,7 +37,7 @@ bool Concat::hasEnoughtSpace(uint32_t numBytes)
 void Concat::ensureSpace(int numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);
-    if (count + numBytes < bucketSize)
+    if (count + numBytes <= bucketSize)
         return;
     totalCountBytes += count;
     lastBucket->countBytes = count;

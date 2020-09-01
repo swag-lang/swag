@@ -35,11 +35,14 @@ namespace std.collections
 
         func ensureSpace(using self, numBytes: u32)
         {
-            if firstBucket != null
+            debug.assert(numBytes <= bucketSize)
+
+            if firstBucket
             {
                 count := cast(u32) (currentSP - lastBucket.datas);
-                if count + numBytes < bucketSize
+                if count + numBytes <= bucketSize
                     return
+
                 totalCount += count;
                 lastBucket.count = count;
 
@@ -70,10 +73,10 @@ namespace std.collections
 
         func release(using self)
         {
-            if firstBucket == null
+            if !firstBucket
                 return
             ptr := firstBucket
-            while ptr != null
+            while ptr
             {
                 nextPtr := ptr.next
                 memory.free(&allocator, ptr.datas)
@@ -84,7 +87,7 @@ namespace std.collections
 
         func count(using self)->u32
         {
-            if lastBucket == null
+            if !lastBucket
                 return 0;
             lastBucket.count = cast(u32) (currentSP - lastBucket.datas)
             return totalCount + lastBucket.count
@@ -101,15 +104,12 @@ namespace std.collections
             {
                 release(self)
             }
-        }
 
-        public
-        {
             // Associate an allocator with the buffer.
             // The allocator can only be changed if the buffer has no pending buckets.
             func setAllocator(using self, alloc: swag.IAllocator)
             {
-                diagnostics.debug.assert(firstBucket == null, "bucket is not empty")
+                debug.assert(firstBucket == null, "bucket is not empty")
                 allocator = alloc;
             }
 
@@ -131,7 +131,7 @@ namespace std.collections
                 totalCount = 0
             }
 
-            // Clear the content of the buffer
+            // Clear the content of the buffer, but do not free the memory
             func clear(using self)
             {
                 if !firstBucket
@@ -160,7 +160,7 @@ namespace std.collections
                 slicePtr := @dataof(bytes)
 
                 // Be sure we have a buffer
-                if lastBucket == null
+                if !lastBucket
                     ensureSpace(self, 1)
 
                 // Divide the slice in the given amount of buckets if necessary
@@ -185,14 +185,13 @@ namespace std.collections
             }
 
             // Convert buffer to a String
-            func toString(using self) -> String
+            func toString(using self)->String
             {
                 var result: String
-                if firstBucket == null
+                if !firstBucket
                     return result
 
-                totalCpt := count(self)
-                result.ensureCapacity(totalCpt + 1)
+                result.ensureCapacity(count(self) + 1)
 
                 ptr := firstBucket
                 while ptr != lastBucket.next

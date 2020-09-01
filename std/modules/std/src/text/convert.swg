@@ -84,7 +84,7 @@ namespace std.text
 
     public
     {
-        // Convert a value to an utf8 string, and put the result in a ConcatBuffer
+        // Convert a value to an utf8 string, and append the result in a ConcatBuffer
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             type := @kindof(value)
