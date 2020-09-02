@@ -1,6 +1,7 @@
 namespace std.text
 {
-    using swag
+    using swag, std.collections
+
     private const SmallSize = 24'u32
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
@@ -353,6 +354,17 @@ namespace std.text
                     return cast(char) buffer[length - 1]
                 let (b, c) = utf8.previousChar(buffer, buffer + length)
                 return c
+            }
+
+            // Convert string to an 16 bits unicode array
+            func toUnicode16(using self)->Array'u16
+            {
+                var utf16: Array'u16
+                utf16.ensureCapacity(length + 1)
+                utf16.count = length + 1
+                unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
+                utf16[length] = 0
+                return utf16
             }
         }
     }

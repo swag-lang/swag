@@ -27,18 +27,13 @@
             str += info
 
             // Convert message to utf16 for windows
-            var messageW: Array'u16
-            messageW.ensureCapacity(str.length + 1)
-            messageW.count = str.length + 1
-            unicode16.fromUtf8(@mkslice(messageW.buffer, str.length), @mkslice(str.buffer, str.length))
-            messageW[str.length] = 0
+            messageW := str.toUnicode16()
 
             // Message box title
-            var titleW: [128] u16 = ?
-            count := unicode16.fromUtf8(titleW, "Swag Assertion Failed!")
-            titleW[count] = 0
+            str = "Swag Assertion Failed!"
+            titleW := str.toUnicode16()
 
-            result := MessageBoxW(null, messageW.buffer, titleW, MB_ICONERROR | MB_CANCELTRYCONTINUE)
+            result := MessageBoxW(null, messageW.buffer, titleW.buffer, MB_ICONERROR | MB_CANCELTRYCONTINUE)
             switch result
             {
                 case IDCANCEL:
