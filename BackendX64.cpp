@@ -171,6 +171,8 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symMC_mainContext_allocator_addr   = getOrAddSymbol(pp, "swag_main_context_allocator_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                                = pp.globalSegment.reserve(8, true);
         pp.symMC_mainContext_allocator_itable = getOrAddSymbol(pp, "swag_main_context_allocator_itable", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        offset                                = pp.globalSegment.reserve(8, true);
+        pp.symMC_mainContext_flags            = getOrAddSymbol(pp, "swag_main_context_flags", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // defaultAllocTable, an interface itable that contains only one entry
         offset                  = pp.globalSegment.reserve(8, true);

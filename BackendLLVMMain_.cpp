@@ -41,6 +41,13 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateStore(fromTable, toTable);
     }
 
+    //mainContext.flags = 0
+    {
+        auto toFlags = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
+        uint64_t contextFlags = 0;
+        builder.CreateStore(builder.getInt64(contextFlags), toFlags);
+    }
+
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
         auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});

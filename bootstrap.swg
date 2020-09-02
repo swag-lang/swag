@@ -166,7 +166,8 @@ namespace swag
 
     struct Context
     {
-        allocator: IAllocator
+        allocator:  IAllocator
+        flags:      u64
     }
 
     // #########################################################

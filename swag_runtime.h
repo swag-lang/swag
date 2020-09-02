@@ -28,7 +28,8 @@ typedef struct swag_interface_t
 
 typedef struct swag_context_t
 {
-    swag_interface_t allocator;
+    swag_interface_t      allocator;
+    swag_runtime_uint64_t flags;
 } swag_context_t;
 
 typedef struct swag_slice_t

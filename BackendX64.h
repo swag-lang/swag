@@ -110,6 +110,7 @@ struct X64PerThread
     uint32_t symMC_mainContext                  = 0;
     uint32_t symMC_mainContext_allocator_addr   = 0;
     uint32_t symMC_mainContext_allocator_itable = 0;
+    uint32_t symMC_mainContext_flags            = 0;
     uint32_t symDefaultAllocTable               = 0;
     uint32_t symPI_processInfos                 = 0;
     uint32_t symPI_args_addr                    = 0;
