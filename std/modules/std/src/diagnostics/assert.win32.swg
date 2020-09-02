@@ -5,7 +5,7 @@
     namespace std.diagnostics.debug
     {
         // Generate an assert dialog box
-        public func assertMessage(message: string)
+        public func assertMessage(message: string, loc: swag.CompilerSourceLocation)
         {
             // User message
             var messageW: [512] u16
