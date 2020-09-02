@@ -423,7 +423,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
 uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
 {
     auto module     = node->sourceFile->module;
-    auto str        = Utf8(node->sourceFile->path);
+    auto str        = Utf8(normalizePath(node->sourceFile->path));
     auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation));
     auto loc        = (ConcreteCompilerSourceLocation*) module->constantSegment.address(offset);
     auto offsetName = module->constantSegment.addString(str);
