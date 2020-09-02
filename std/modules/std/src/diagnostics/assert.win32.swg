@@ -12,18 +12,19 @@
             if message != null
             {
                 str += message
-                str += "\n"
+                str += "\n\n"
             }
 
+            // Source location
             str += loc.fileName
-            str += "\n"
+            str += ", "
+            str += cast(string) format("line %\n\n", loc.lineStart + 1)
 
             const info =
             #"- Press Cancel to exit
               - Press Retry to debug the application
               - Press Continue to ignore the assert
               "#
-
             str += info
 
             // Convert message to utf16 for windows

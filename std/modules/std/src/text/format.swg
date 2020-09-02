@@ -2,6 +2,15 @@ namespace std.text
 {
     using std.collections, std.diagnostics
 
+    // Format a string and returns the result as a String
+    public func format(fmt: string, values: ...)->String
+    {
+        var buf: ConcatBuffer
+        format(&buf, fmt, values)
+        return buf.toString()
+    }
+
+    // Format a string and put the result in a ConcatBuffer
     public func format(buf: *ConcatBuffer, fmt: string, values: ...)
     {
         ptr := @dataof(fmt)
