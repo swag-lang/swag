@@ -1,61 +1,77 @@
 #include "swag_runtime.h"
 #include "libc/libc.h"
 
-static void __print(const void* __msg)
-{
-    swag_runtime_print_n((const char*) __msg, (SwagS32) strlen((const char*) __msg));
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* message)
 {
     if (expr)
         return;
 
+    // During tests, and if not in devmode, then just raise an error
     SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+    if ((context->flags & (SwagU64) ContextFlags::Test) && !(context->flags & (SwagU64) ContextFlags::DevMode))
+    {
+        ConcreteCompilerSourceLocation loc;
+        loc.lineStart = loc.lineEnd = line;
+        loc.colStart = loc.colEnd = 0;
+        loc.fileName.buffer       = (void*) file;
+        loc.fileName.count        = strlen((const char*) file);
+        swag_runtime_error(&loc, message, (SwagU32) strlen((const char*) message));
+        return;
+    }
 
-    __print("error: ");
-    __print(file ? file : "<unknown file>");
-    __print(":");
-    swag_runtime_print_i64(line);
+    static char buf[1024];
+    static char bufline[64];
 
     const char* msg = (const char*) message;
+    buf[0]          = 0;
     if (msg && msg[0])
     {
-        __print(": ");
-        __print(msg);
-        __print("\n");
+        strcat(buf, msg);
+        strcat(buf, "\n\n");
     }
     else
     {
-        __print(": assertion failed\n");
+        strcat(buf, "assertion failed\n\n");
     }
 
+    strcat(buf, file ? (const char*) file : "<unknown file>");
+    strcat(buf, ", line ");
+    swag_runtime_itoa(bufline, line);
+    strcat(buf, bufline);
+
 #ifdef _WIN32
-#ifdef _DEBUG
-    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
-#endif
-    RaiseException(0x666, 0, 0, 0);
-#endif
+    // No need to convert to unicode as this assert does not allow user messages
+    auto result = MessageBoxA(0, buf, "Intrinsic assertion failed", MB_ICONHAND | MB_CANCELTRYCONTINUE);
+    switch (result)
+    {
+    case IDCANCEL:
+        RaiseException(0x666, 0, 0, 0);
+        exit(-666);
+        break;
+    case IDTRYAGAIN:
+        DebugBreak();
+        break;
+    case IDCONTINUE:
+        break;
+    }
+#else
     exit(-666);
+#endif
 }
 
 void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size)
 {
-    __print("error: ");
+    swag_runtime_print("error: ");
     swag_runtime_print_n(location->fileName.buffer, (SwagU32) location->fileName.count);
-    __print(":");
+    swag_runtime_print(":");
     swag_runtime_print_i64(location->lineStart);
-    __print(": ");
+    swag_runtime_print(": ");
     swag_runtime_print_n(message, size);
-    __print("\n");
+    swag_runtime_print("\n");
 
 #ifdef _WIN32
-#ifdef _DEBUG
-    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
-#endif
     RaiseException(0x666, 0, 0, 0);
 #endif
-
     exit(-666);
 }

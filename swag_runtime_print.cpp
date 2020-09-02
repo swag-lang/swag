@@ -1,9 +1,16 @@
 #include "swag_runtime.h"
 #include "libc/libc.h"
 
-static char* __itoa(char* result, SwagS64 value)
+/////////////////////////////////////////////////////////////////////////////////////////////
+EXTERN_C void swag_runtime_print(const char* msg)
 {
-    char *               ptr = result, *ptr1 = result, tmp_char;
+    swag_runtime_print_n(msg, (SwagS32) strlen(msg));
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+EXTERN_C char* swag_runtime_itoa(char* result, SwagS64 value)
+{
+    char *  ptr = result, *ptr1 = result, tmp_char;
     SwagS64 tmp_value;
     do
     {
@@ -26,10 +33,11 @@ static char* __itoa(char* result, SwagS64 value)
     return retVal;
 }
 
-static void __ftoa(char* result, double value)
+/////////////////////////////////////////////////////////////////////////////////////////////
+EXTERN_C void swag_runtime_ftoa(char* result, double value)
 {
     SwagS64 ipart = (SwagS64) value;
-    double               fpart = value - (double) ipart;
+    double  fpart = value - (double) ipart;
 
     char* n = result;
     if (ipart == 0)
@@ -39,7 +47,7 @@ static void __ftoa(char* result, double value)
         *n++ = '0';
     }
     else
-        n = __itoa(result, ipart);
+        n = swag_runtime_itoa(result, ipart);
     *n++ = '.';
 
     SwagS32 afterPoint = 5;
@@ -47,12 +55,7 @@ static void __ftoa(char* result, double value)
         fpart = -fpart;
     while (afterPoint--)
         fpart *= 10;
-    __itoa(n, (SwagS64) fpart);
-}
-
-static void __print(const void* __msg)
-{
-    swag_runtime_print_n((const char*) __msg, (SwagS32) strlen((const char*) __msg));
+    swag_runtime_itoa(n, (SwagS64) fpart);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,14 +75,14 @@ EXTERN_C void swag_runtime_print_n(const void* message, SwagS32 len)
 EXTERN_C void swag_runtime_print_i64(SwagS64 value)
 {
     char buf[100];
-    __itoa(buf, (SwagS32) value);
-    __print(buf);
+    swag_runtime_itoa(buf, (SwagS32) value);
+    swag_runtime_print(buf);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_print_f64(double value)
 {
     char buf[100];
-    __ftoa(buf, value);
-    __print(buf);
+    swag_runtime_ftoa(buf, value);
+    swag_runtime_print(buf);
 }

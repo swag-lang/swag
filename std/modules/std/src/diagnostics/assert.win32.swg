@@ -9,22 +9,11 @@
         {
             var str: String
 
-            @assert(false)
-
             // During tests, and if not in devmode, then just raise an error without
             // a dialog box
             contextFlags := @getcontext().flags
             if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
-            {
-                str = format("error: %:%: assertion failed", loc.fileName, loc.lineStart)
-                if message != null
-                {
-                    str += ", "
-                    str += message
-                }
-
-                @error(loc, cast(string) str)
-            }
+                @error(loc, message)
 
             // Build message
             if message != null

@@ -63,9 +63,7 @@ namespace BackendLinkerWin32
         // External libraries from windows sdk
         arguments.push_back("kernel32.lib");
         arguments.push_back("ucrt.lib");
-
-        //if (g_CommandLine.devMode)
-        //arguments += "user32.lib "; // MessageBox
+        arguments.push_back("user32.lib");
 
         // Add swag.runtime
         if (buildParameters.buildCfg->backendDebugInformations)
