@@ -83,9 +83,9 @@ void Scope::collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result
     while (true)
     {
         result.push_back(src);
+        src = src->parentScope;
         if (src == to)
             return;
-        src = src->parentScope;
         SWAG_ASSERT(src);
     }
 }

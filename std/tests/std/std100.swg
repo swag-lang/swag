@@ -1,7 +1,16 @@
 #import "std"
+using std.text, std.collections
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    std.diagnostics.debug.assert(false, "toto")
+    var str: String = "toto"
+    u := str.toUnicode16()
+
+    v := 0
+    switch v
+    {
+        case 0:
+            break;
+    }
 }
