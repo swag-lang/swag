@@ -1,6 +1,8 @@
 #include "swag_runtime.h"
 #include "libc/libc.h"
 
+SwagProcessInfos g_SwagProcessInfos;
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C SwagU64 swag_runtime_tlsAlloc()
 {
@@ -23,4 +25,10 @@ EXTERN_C void* swag_runtime_tlsGetValue(SwagU64 id)
 #ifdef _WIN32
     return TlsGetValue((SwagU32) id);
 #endif
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+EXTERN_C void swag_runtime_setProcessInfos(SwagProcessInfos* infos)
+{
+    g_SwagProcessInfos = *infos;
 }

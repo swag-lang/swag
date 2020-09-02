@@ -1,20 +1,22 @@
 #pragma once
 #include "libc/stdint.h"
 
-extern "C" void    swag_runtime_print_n(const void* message, SwagS32 len);
-extern "C" void    swag_runtime_print_i64(SwagS64 value);
-extern "C" void    swag_runtime_print_f64(double value);
-extern "C" bool    swag_runtime_compareString(const void* str1, const void* str2, SwagU32 num1, SwagU32 num2);
-extern "C" void*   swag_runtime_loadDynamicLibrary(const void* name);
-extern "C" SwagU64 swag_runtime_tlsAlloc();
-extern "C" void    swag_runtime_tlsSetValue(SwagU64 id, void* value);
-extern "C" void*   swag_runtime_tlsGetValue(SwagU64 id);
-extern "C" void    swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
-extern "C" bool    swag_runtime_compareType(const void* type1, const void* type2);
-extern "C" void*   swag_runtime_interfaceof(const void* structType, const void* itfType);
-extern "C" void    swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* msg);
-extern "C" void*   swag_runtime_memcpy(void* destination, const void* source, size_t size);
-extern "C" void    swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size);
+extern "C" void             swag_runtime_print_n(const void* message, SwagS32 len);
+extern "C" void             swag_runtime_print_i64(SwagS64 value);
+extern "C" void             swag_runtime_print_f64(double value);
+extern "C" bool             swag_runtime_compareString(const void* str1, const void* str2, SwagU32 num1, SwagU32 num2);
+extern "C" void*            swag_runtime_loadDynamicLibrary(const void* name);
+extern "C" SwagU64          swag_runtime_tlsAlloc();
+extern "C" void             swag_runtime_tlsSetValue(SwagU64 id, void* value);
+extern "C" void*            swag_runtime_tlsGetValue(SwagU64 id);
+extern "C" void             swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
+extern "C" bool             swag_runtime_compareType(const void* type1, const void* type2);
+extern "C" void*            swag_runtime_interfaceof(const void* structType, const void* itfType);
+extern "C" void             swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* msg);
+extern "C" void*            swag_runtime_memcpy(void* destination, const void* source, size_t size);
+extern "C" void             swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size);
+extern "C" void             swag_runtime_setProcessInfos(struct SwagProcessInfos* infos);
+extern "C" SwagProcessInfos g_SwagProcessInfos;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 // SHOULD MATCH EVERY BACKENDS

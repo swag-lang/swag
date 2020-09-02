@@ -40,7 +40,7 @@ using std.collections
 
 #test
 {
-    //std.diagnostics.debug.assert(false, "my message")
+    std.diagnostics.debug.assert(false, "my message")
 
     var b: ConcatBuffer
     b.setBucketSize(4)

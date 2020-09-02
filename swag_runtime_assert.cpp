@@ -12,6 +12,8 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
     if (expr)
         return;
 
+    SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+
     __print("error: ");
     __print(file ? file : "<unknown file>");
     __print(":");

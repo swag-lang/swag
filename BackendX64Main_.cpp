@@ -147,6 +147,11 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
 
+    // Inform runtime about my processInfos
+    concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
+    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
+    emitCall(pp, "swag_runtime_setProcessInfos");
+
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
     {

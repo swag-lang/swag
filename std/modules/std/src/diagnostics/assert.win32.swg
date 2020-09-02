@@ -9,6 +9,8 @@
         {
             var str: String
 
+            @assert(false)
+
             // During tests, and if not in devmode, then just raise an error without
             // a dialog box
             contextFlags := @getcontext().flags
