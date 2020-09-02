@@ -78,7 +78,7 @@ namespace std.collections
                 capacity = newCapacity
             }
 
-            // Ensure the [Array] is big enough to store at least `newCount` elements
+            // Ensure the Array is big enough to store at least 'newCount' elements
             func ensureCapacity(using self, newCount : u32)
             {
                 if newCount <= capacity
@@ -87,7 +87,7 @@ namespace std.collections
                 reserve(self, newCapacity)
             }
 
-            // Reserve room for `newCapacity` elements without changing the array count
+            // Reserve room for 'newCapacity' elements without changing the array count
             func reserve(using self, newCapacity: u32)
             {
                 if !newCapacity

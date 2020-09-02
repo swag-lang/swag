@@ -7,6 +7,7 @@ namespace std.text
             // Convert an Utf8 buffer to a 16 bits unicode sequence
             func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
             {
+                @print("fromUtf8")
                 count := 0'u32
                 result := utf8.nextChar(src)
                 destPtr := @dataof(dest)
