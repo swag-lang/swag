@@ -8,9 +8,9 @@
 #include "Global.h"
 #include "Module.h"
 
-uint64_t             g_tlsContextId = 0;
-swag_context_t       g_defaultContext;
-swag_process_infos_t g_processInfos = {0};
+uint64_t         g_tlsContextId = 0;
+SwagContext      g_defaultContext;
+SwagProcessInfos g_processInfos = {0};
 
 static void byteCodeRun(void* byteCodePtr, ...)
 {

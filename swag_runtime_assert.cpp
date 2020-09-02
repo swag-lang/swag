@@ -3,11 +3,11 @@
 
 static void __print(const void* __msg)
 {
-    swag_runtime_print_n((const char*) __msg, (swag_runtime_int32_t) strlen((const char*) __msg));
+    swag_runtime_print_n((const char*) __msg, (SwagS32) strlen((const char*) __msg));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* message)
+EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* message)
 {
     if (expr)
         return;
@@ -38,10 +38,10 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, swag_runtime_int3
     exit(-666);
 }
 
-void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, swag_runtime_uint32_t size)
+void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size)
 {
     __print("error: ");
-    swag_runtime_print_n(location->fileName.buffer, (swag_runtime_uint32_t) location->fileName.count);
+    swag_runtime_print_n(location->fileName.buffer, (SwagU32) location->fileName.count);
     __print(":");
     swag_runtime_print_i64(location->lineStart);
     __print(": ");

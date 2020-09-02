@@ -144,7 +144,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     concat.addString3("\x48\x89\xca"); // mov rdx, rcx
     concat.addString3("\x48\x8d\x0d"); // mov rcx, qword ptr ????????[rip]
     BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_processInfos);
-    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(swag_process_infos_t), R8);
+    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
 
     // Call to #init functions

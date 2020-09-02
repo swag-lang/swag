@@ -1,58 +1,58 @@
 #pragma once
 #include "libc/stdint.h"
 
-extern "C" void                  swag_runtime_print_n(const void* message, swag_runtime_int32_t len);
-extern "C" void                  swag_runtime_print_i64(swag_runtime_int64_t value);
-extern "C" void                  swag_runtime_print_f64(double value);
-extern "C" bool                  swag_runtime_compareString(const void* str1, const void* str2, swag_runtime_uint32_t num1, swag_runtime_uint32_t num2);
-extern "C" void*                 swag_runtime_loadDynamicLibrary(const void* name);
-extern "C" swag_runtime_uint64_t swag_runtime_tlsAlloc();
-extern "C" void                  swag_runtime_tlsSetValue(swag_runtime_uint64_t id, void* value);
-extern "C" void*                 swag_runtime_tlsGetValue(swag_runtime_uint64_t id);
-extern "C" void                  swag_runtime_convertArgcArgv(void* dest, swag_runtime_int32_t argc, void* argv[]);
-extern "C" bool                  swag_runtime_compareType(const void* type1, const void* type2);
-extern "C" void*                 swag_runtime_interfaceof(const void* structType, const void* itfType);
-extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
-extern "C" void*                 swag_runtime_memcpy(void* destination, const void* source, size_t size);
-extern "C" void                  swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, swag_runtime_uint32_t size);
+extern "C" void    swag_runtime_print_n(const void* message, SwagS32 len);
+extern "C" void    swag_runtime_print_i64(SwagS64 value);
+extern "C" void    swag_runtime_print_f64(double value);
+extern "C" bool    swag_runtime_compareString(const void* str1, const void* str2, SwagU32 num1, SwagU32 num2);
+extern "C" void*   swag_runtime_loadDynamicLibrary(const void* name);
+extern "C" SwagU64 swag_runtime_tlsAlloc();
+extern "C" void    swag_runtime_tlsSetValue(SwagU64 id, void* value);
+extern "C" void*   swag_runtime_tlsGetValue(SwagU64 id);
+extern "C" void    swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
+extern "C" bool    swag_runtime_compareType(const void* type1, const void* type2);
+extern "C" void*   swag_runtime_interfaceof(const void* structType, const void* itfType);
+extern "C" void    swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* msg);
+extern "C" void*   swag_runtime_memcpy(void* destination, const void* source, size_t size);
+extern "C" void    swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 // SHOULD MATCH EVERY BACKENDS
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class ContextFlags : swag_runtime_uint64_t
+enum class ContextFlags : SwagU64
 {
     Test    = 0x00000000'00000001,
     DevMode = 0x00000000'00000002,
 };
 
-typedef struct swag_interface_t
+typedef struct SwagInterface
 {
     void* data;
     void* itable;
-} swag_interface_t;
+} SwagInterface;
 
-typedef struct swag_context_t
+typedef struct SwagContext
 {
-    swag_interface_t      allocator;
-    swag_runtime_uint64_t flags;
-} swag_context_t;
+    SwagInterface allocator;
+    SwagU64       flags;
+} SwagContext;
 
-typedef struct swag_slice_t
+typedef struct SwagSlice
 {
-    void*                 addr;
-    swag_runtime_uint64_t count;
-} swag_slice_t;
+    void*   addr;
+    SwagU64 count;
+} SwagSlice;
 
-typedef void (*swag_bytecoderun_t)(void*, ...);
+typedef void (*SwagBytecodeRun)(void*, ...);
 
-typedef struct swag_process_infos_t
+typedef struct SwagProcessInfos
 {
-    swag_slice_t          arguments;
-    swag_runtime_uint64_t contextTlsId;
-    swag_context_t*       defaultContext;
-    swag_bytecoderun_t    byteCodeRun;
-} swag_process_infos_t;
+    SwagSlice       arguments;
+    SwagU64         contextTlsId;
+    SwagContext*    defaultContext;
+    SwagBytecodeRun byteCodeRun;
+} SwagProcessInfos;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
@@ -60,15 +60,15 @@ typedef struct swag_process_infos_t
 
 struct BuildCfgBackendLLVM
 {
-    swag_runtime_uint32_t minFunctionPerFile = 256;
-    swag_runtime_uint32_t maxFunctionPerFile = 1024;
-    bool                  outputIR           = false; // Write a 'file.ir' text file just next to the output file
+    SwagU32 minFunctionPerFile = 256;
+    SwagU32 maxFunctionPerFile = 1024;
+    bool    outputIR           = false; // Write a 'file.ir' text file just next to the output file
 };
 
 struct BuildCfgBackendX64
 {
-    swag_runtime_uint32_t minFunctionPerFile = 256;
-    swag_runtime_uint32_t maxFunctionPerFile = 1024;
+    SwagU32 minFunctionPerFile = 256;
+    SwagU32 maxFunctionPerFile = 1024;
 };
 
 struct BuildCfg
@@ -77,9 +77,9 @@ struct BuildCfg
     bool safetyGuards = true;
 
     // Bytecode
-    swag_runtime_uint32_t byteCodeMaxRecurse = 1024;
-    swag_runtime_uint32_t byteCodeStackSize  = 16 * 1024;
-    swag_runtime_uint32_t byteCodeOptimize   = 1;
+    SwagU32 byteCodeMaxRecurse = 1024;
+    SwagU32 byteCodeStackSize  = 16 * 1024;
+    SwagU32 byteCodeOptimize   = 1;
 
     // Backend common
     bool backendDebugInformations = false;
@@ -151,15 +151,15 @@ enum class NativeTypeKind
 
 struct ConcreteSlice
 {
-    void*                 buffer;
-    swag_runtime_uint64_t count;
+    void*   buffer;
+    SwagU64 count;
 };
 
 struct ConcreteTypeInfo
 {
-    ConcreteSlice         name;
-    TypeInfoKind          kind;
-    swag_runtime_uint32_t sizeOf;
+    ConcreteSlice name;
+    TypeInfoKind  kind;
+    SwagU32       sizeOf;
 };
 
 struct ConcreteAny
@@ -188,10 +188,10 @@ struct ConcreteTypeInfoNative
 
 struct ConcreteTypeInfoPointer
 {
-    ConcreteTypeInfo      base;
-    ConcreteTypeInfo*     finalType;
-    ConcreteTypeInfo*     pointedType;
-    swag_runtime_uint32_t ptrCount;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* finalType;
+    ConcreteTypeInfo* pointedType;
+    SwagU32           ptrCount;
 };
 
 struct ConcreteTypeInfoReference
@@ -202,12 +202,12 @@ struct ConcreteTypeInfoReference
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteSlice         name;
-    ConcreteTypeInfo*     pointedType;
-    void*                 value;
-    ConcreteSlice         attributes;
-    swag_runtime_uint32_t offsetOf;
-    swag_runtime_uint32_t padding;
+    ConcreteSlice     name;
+    ConcreteTypeInfo* pointedType;
+    void*             value;
+    ConcreteSlice     attributes;
+    SwagU32           offsetOf;
+    SwagU32           padding;
 };
 
 struct ConcreteTypeInfoStruct
@@ -244,11 +244,11 @@ struct ConcreteTypeInfoEnum
 
 struct ConcreteTypeInfoArray
 {
-    ConcreteTypeInfo      base;
-    ConcreteTypeInfo*     pointedType;
-    ConcreteTypeInfo*     finalType;
-    swag_runtime_uint32_t count;
-    swag_runtime_uint32_t totalCount;
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo* finalType;
+    SwagU32           count;
+    SwagU32           totalCount;
 };
 
 struct ConcreteTypeInfoSlice
@@ -270,13 +270,13 @@ enum class CompilerMsgKind
     SemanticFunc,
 };
 
-enum class CompilerMsgKindMask : swag_runtime_uint64_t
+enum class CompilerMsgKindMask : SwagU64
 {
-    PassBeforeSemantic = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeSemantic,
-    PassBeforeRun      = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeRun,
-    PassBeforeOutput   = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassBeforeOutput,
-    PassAllDone        = 1 << (swag_runtime_uint32_t) CompilerMsgKind::PassAllDone,
-    SemanticFunc       = 1 << (swag_runtime_uint32_t) CompilerMsgKind::SemanticFunc,
+    PassBeforeSemantic = 1 << (SwagU32) CompilerMsgKind::PassBeforeSemantic,
+    PassBeforeRun      = 1 << (SwagU32) CompilerMsgKind::PassBeforeRun,
+    PassBeforeOutput   = 1 << (SwagU32) CompilerMsgKind::PassBeforeOutput,
+    PassAllDone        = 1 << (SwagU32) CompilerMsgKind::PassAllDone,
+    SemanticFunc       = 1 << (SwagU32) CompilerMsgKind::SemanticFunc,
     All                = 0xFFFFFFFFFFFFFFFF,
 };
 
@@ -294,7 +294,7 @@ struct ConcreteCompilerMessage
 
 struct ConcreteCompilerSourceLocation
 {
-    ConcreteSlice         fileName;
-    swag_runtime_uint32_t lineStart, colStart;
-    swag_runtime_uint32_t lineEnd, colEnd;
+    ConcreteSlice fileName;
+    SwagU32       lineStart, colStart;
+    SwagU32       lineEnd, colEnd;
 };

@@ -7,12 +7,12 @@ EXTERN_C void* swag_runtime_interfaceof(const void* structType, const void* itfT
     auto itype  = (ConcreteTypeInfoStruct*) itfType;
     auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
 
-    for (swag_runtime_int32_t i = 0; i < ctype->interfaces.count; i++)
+    for (SwagS32 i = 0; i < ctype->interfaces.count; i++)
     {
         if (swag_runtime_compareString(buffer[i].name.buffer,
                                        itype->base.name.buffer,
-                                       (swag_runtime_uint32_t) buffer[i].name.count,
-                                       (swag_runtime_uint32_t) itype->base.name.count))
+                                       (SwagU32) buffer[i].name.count,
+                                       (SwagU32) itype->base.name.count))
             return buffer[i].value;
     }
 

@@ -7,13 +7,13 @@
 #endif
 #include "stdint.h"
 
-EXTERN_C void*               memcpy(void* dst, const void* src, swag_runtime_size_t size);
-EXTERN_C int                 memcmp(const void* b1, const void* b2, swag_runtime_size_t n);
-EXTERN_C swag_runtime_size_t strlen(const char*);
-EXTERN_C char*               strcpy(char*, const char*);
-EXTERN_C void                exit(swag_runtime_int32_t code);
-EXTERN_C void*               malloc(swag_runtime_size_t);
-EXTERN_C void                free(void*);
-EXTERN_C void*               realloc(void*, swag_runtime_size_t);
+EXTERN_C void*     memcpy(void* dst, const void* src, SwagSizeT size);
+EXTERN_C int       memcmp(const void* b1, const void* b2, SwagSizeT n);
+EXTERN_C SwagSizeT strlen(const char*);
+EXTERN_C char*     strcpy(char*, const char*);
+EXTERN_C void      exit(SwagS32 code);
+EXTERN_C void*     malloc(SwagSizeT);
+EXTERN_C void      free(void*);
+EXTERN_C void*     realloc(void*, SwagSizeT);
 
 #define isspace(__c) (__c == ' ' || __c == '\t')
