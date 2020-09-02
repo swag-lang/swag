@@ -35,5 +35,25 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, swag_runtime_int3
 #endif
     RaiseException(0x666, 0, 0, 0);
 #endif
-    exit(-1);
+    exit(-666);
+}
+
+void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, swag_runtime_uint32_t size)
+{
+    __print("error: ");
+    swag_runtime_print_n(location->fileName.buffer, (swag_runtime_uint32_t) location->fileName.count);
+    __print(":");
+    swag_runtime_print_i64(location->lineStart);
+    __print(": ");
+    swag_runtime_print_n(message, size);
+    __print("\n");
+
+#ifdef _WIN32
+#ifdef _DEBUG
+    //MessageBoxA(0, "Native assertion failed !", "[Developer Mode]", 0x10);
+#endif
+    RaiseException(0x666, 0, 0, 0);
+#endif
+
+    exit(-666);
 }

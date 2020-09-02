@@ -1,7 +1,7 @@
 #import "std"
 using std.collections
 
-#test
+/*#test
 {
     var b: ConcatBuffer
     @assert(@countof(b) == 0)
@@ -36,11 +36,11 @@ using std.collections
     b.setBucketSize(50)
     loop 50
         b.addByte(0xFE)
-}
+}*/
 
 #test
 {
-    //std.diagnostics.debug.assert(false, "my message")
+    std.diagnostics.debug.assert(false, "my message")
 
     var b: ConcatBuffer
     b.setBucketSize(4)

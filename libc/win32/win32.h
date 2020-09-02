@@ -10,3 +10,4 @@ EXTERN_C int         TlsAlloc();
 EXTERN_C void        TlsSetValue(int, void*);
 EXTERN_C void*       TlsGetValue(int);
 EXTERN_C const char* GetCommandLineA();
+EXTERN_C void        ExitProcess(unsigned int);

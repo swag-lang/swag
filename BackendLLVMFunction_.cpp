@@ -2275,6 +2275,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
             break;
         }
+        case ByteCodeOp::IntrinsicError:
+        {
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
+            builder.CreateCall(modu.getFunction("swag_runtime_error"), {builder.CreateLoad(r0), builder.CreateLoad(r1), builder.CreateLoad(r2)});
+            break;
+        }
 
         case ByteCodeOp::IntrinsicAssert:
         {

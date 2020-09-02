@@ -193,10 +193,6 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
         }
         break;
     }
-
-    case TokenId::IntrinsicError:
-        Ast::visit(context->node, [](AstNode* x) { x->flags |= AST_NO_BACKEND; });
-        break;
     }
 }
 

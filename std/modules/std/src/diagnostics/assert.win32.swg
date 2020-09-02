@@ -7,8 +7,20 @@
         // Generate an assert dialog box
         public func assertMessage(message: string, loc: swag.CompilerSourceLocation)
         {
-            // Build message
             var str: String
+
+            /*{
+                str = format("error: %:%: assertion failed", loc.fileName, loc.lineStart)
+                if message != null
+                {
+                    str += ", "
+                    str += message
+                }
+
+                @error(loc, cast(string) str)
+            }*/
+
+            // Build message
             if message != null
             {
                 str += message

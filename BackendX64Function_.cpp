@@ -1798,6 +1798,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             emitCall(pp, "swag_runtime_print_f64");
             break;
+        case ByteCodeOp::IntrinsicError:
+            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            emitCall(pp, "swag_runtime_error");
+            break;
         case ByteCodeOp::IntrinsicMkInterface:
             //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

@@ -14,6 +14,7 @@ extern "C" bool                  swag_runtime_compareType(const void* type1, con
 extern "C" void*                 swag_runtime_interfaceof(const void* structType, const void* itfType);
 extern "C" void                  swag_runtime_assert(bool expr, const void* file, swag_runtime_int32_t line, const void* msg);
 extern "C" void*                 swag_runtime_memcpy(void* destination, const void* source, size_t size);
+extern "C" void                  swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, swag_runtime_uint32_t size);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 // SHOULD MATCH EVERY BACKENDS
