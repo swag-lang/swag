@@ -208,6 +208,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Setup flags before running
     g_defaultContext.flags = getDefaultContextFlags(this);
+    g_defaultContext.flags |= (uint64_t) ContextFlags::ByteCode;
 
     bool result = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();

@@ -44,7 +44,7 @@
             switch result
             {
                 case IDCANCEL:
-                    ExitProcess(0xFFFFFFFF)
+                    ExitProcess(cast(u32) -666)
                 case IDTRYAGAIN:
                     DebugBreak();
                 case IDCONTINUE:

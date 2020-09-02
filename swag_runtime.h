@@ -27,8 +27,9 @@ extern "C" SwagProcessInfos g_SwagProcessInfos;
 
 enum class ContextFlags : SwagU64
 {
-    Test    = 0x00000000'00000001,
-    DevMode = 0x00000000'00000002,
+    Test     = 0x00000000'00000001,
+    DevMode  = 0x00000000'00000002,
+    ByteCode = 0x00000000'00000004,
 };
 
 typedef struct SwagInterface

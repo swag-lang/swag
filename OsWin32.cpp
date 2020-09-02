@@ -110,16 +110,6 @@ namespace OS
 
     bool doProcess(const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
     {
-#ifdef SWAG_HAS_ASSERT
-        PushDiagnosticInfos di;
-        if (g_CommandLine.devMode)
-        {
-            g_diagnosticInfos.last().message = "doProcess";
-            g_diagnosticInfos.last().user    = cmdline.c_str();
-            g_diagnosticInfos.last().node    = nullptr;
-        }
-#endif
-
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
         SECURITY_ATTRIBUTES saAttr;
@@ -240,7 +230,7 @@ namespace OS
                 switch (exit)
                 {
                 case 0:
-                case -1:
+                case -666:
                     break;
                 case STATUS_ACCESS_VIOLATION:
                     g_Log.lock();

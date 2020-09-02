@@ -890,13 +890,28 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
-        context->error(msg, (ConcreteCompilerSourceLocation*) registersRC[ip->a.u32].pointer);
+        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
+        swag_runtime_error(location, msg.c_str(), msg.length());
         break;
     }
     case ByteCodeOp::IntrinsicAssert:
     {
-        if (!IMMA_U8(ip))
-            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
+        if (IMMA_U8(ip))
+            break;
+        if (context->sourceFile->unittestError)
+        {
+            ConcreteCompilerSourceLocation loc;
+            loc.fileName.buffer = (void*) context->sourceFile->path.c_str();
+            loc.fileName.count  = context->sourceFile->path.length();
+            loc.lineStart = loc.lineEnd = ip->getLocation(context->bc)->line;
+            loc.colStart = loc.colEnd = 0;
+            auto userMsg              = (const char*) ip->d.pointer;
+            swag_runtime_error(&loc, userMsg, userMsg ? (SwagU32) strlen(userMsg) : 0);
+        }
+        else
+        {
+            swag_runtime_assert(false, context->sourceFile->path.c_str(), ip->getLocation(context->bc)->line, (const char*) ip->d.pointer);
+        }
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:
@@ -1707,8 +1722,29 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     return true;
 }
 
-static int exceptionHandler(ByteCodeRunContext* runContext)
+static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
+    // Special exception raised by swag_runtime_error, to simply log an error message
+    // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
+    if (args->ExceptionRecord->ExceptionCode == 0x666)
+    {
+        auto location = (ConcreteCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
+
+        Utf8 fileName;
+        fileName.append((const char*) location->fileName.buffer, (uint32_t) location->fileName.count);
+
+        Utf8 userMsg;
+        if (args->ExceptionRecord->ExceptionInformation[1] && args->ExceptionRecord->ExceptionInformation[2])
+            userMsg.append((const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]);
+        else
+            userMsg.append("assertion failed");
+
+        Utf8 msg = format("%s:%d: %s", fileName.c_str(), location->lineStart + 1, userMsg.c_str());
+        runContext->bc->sourceFile->report(msg);
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+
+    // Hardware exception
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
     diag.criticalError  = true;
@@ -1726,7 +1762,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         if (!module->runner.runLoop(runContext))
             return false;
     }
-    __except (exceptionHandler(runContext))
+    __except (exceptionHandler(runContext, GetExceptionInformation()))
     {
         return false;
     }

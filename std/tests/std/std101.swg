@@ -3,5 +3,7 @@
 //#[swag.printbc]
 #test
 {
-    //std.diagnostics.debug.assert(false, "otot")
+    //@error(#location, "this is an error")
+    @assert(false)
+    //std.diagnostics.debug.assert(false, "this is a user std assert")
 }

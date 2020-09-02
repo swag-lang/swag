@@ -16,7 +16,7 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
         loc.colStart = loc.colEnd = 0;
         loc.fileName.buffer       = (void*) file;
         loc.fileName.count        = strlen((const char*) file);
-        swag_runtime_error(&loc, message, (SwagU32) strlen((const char*) message));
+        swag_runtime_error(&loc, message, message ? (SwagU32) strlen((const char*) message) : 0);
         return;
     }
 
@@ -46,7 +46,6 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
     switch (result)
     {
     case IDCANCEL:
-        RaiseException(0x666, 0, 0, 0);
         exit(-666);
         break;
     case IDTRYAGAIN:
@@ -62,6 +61,20 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
 
 void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size)
 {
+    SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+    if (context->flags & (SwagU64) ContextFlags::ByteCode)
+    {
+#ifdef _WIN32
+        // Raise an exception that will be catched by the runner.
+        // The runner is in charge of displaying the user error message and location
+        static void* params[3];
+        params[0] = (void*) location;
+        params[1] = (void*) message;
+        params[2] = (void*) (SwagSizeT) size;
+        RaiseException(0x666, 0, 3, &params);
+#endif
+    }
+
     swag_runtime_print("error: ");
     swag_runtime_print_n(location->fileName.buffer, (SwagU32) location->fileName.count);
     swag_runtime_print(":");
@@ -69,9 +82,5 @@ void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* me
     swag_runtime_print(": ");
     swag_runtime_print_n(message, size);
     swag_runtime_print("\n");
-
-#ifdef _WIN32
-    RaiseException(0x666, 0, 0, 0);
-#endif
     exit(-666);
 }
