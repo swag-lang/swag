@@ -31,6 +31,8 @@ void DiagnosticInfos::log()
             g_Log.print(format("source line: %d\n", step.node->token.startLocation.line + 1));
         if (step.ip)
             g_Log.print(format("source line: %d\n", step.ip->node->token.startLocation.line + 1));
+        if (step.user)
+            g_Log.print(format("user:        %d\n", step.user));
     }
 
     g_Log.print("----------------\n");

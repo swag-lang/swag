@@ -7,8 +7,6 @@
         // Generate an assert dialog box
         public func assertMessage(message: string, loc: swag.CompilerSourceLocation)
         {
-            var str: String
-
             // During tests, and if not in devmode, then just raise an error without
             // a dialog box
             contextFlags := @getcontext().flags
@@ -16,6 +14,7 @@
                 @error(loc, message)
 
             // Build message
+            var str: String
             if message != null
             {
                 str += message
@@ -38,7 +37,7 @@
             messageW := str.toUnicode16()
 
             // Message box title
-            str = "Swag Assertion Failed!"
+            str = "Swag Assertion Failed !"
             titleW := str.toUnicode16()
 
             result := MessageBoxW(null, messageW.buffer, titleW.buffer, MB_ICONERROR | MB_CANCELTRYCONTINUE)

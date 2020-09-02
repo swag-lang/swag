@@ -12,6 +12,7 @@ struct DiagnosticInfosStep
     SourceFile*          sourceFile = nullptr;
     AstNode*             node       = nullptr;
     ByteCodeInstruction* ip         = nullptr;
+    const char*          user       = nullptr;
 };
 
 struct DiagnosticInfos
