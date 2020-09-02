@@ -110,7 +110,14 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         if (node->resultRegisterRC.size() == 1)
-            node->resultRegisterRC += reserveRegisterRC(context);
+        {
+            RegisterList result;
+            reserveLinearRegisterRC(context, result, 2);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, result[0], node->resultRegisterRC[0]);
+            freeRegisterRC(context, node->resultRegisterRC);
+            node->resultRegisterRC = result;
+        }
+
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
@@ -134,8 +141,17 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (typeInfo->numRegisters() == 2)
     {
         emitSafetyNullPointer(context, r0);
+
+        // Make sure registers are linear
         if (r0.size() == 1)
-            r0 += reserveRegisterRC(context);
+        {
+            RegisterList result;
+            reserveLinearRegisterRC(context, result, 2);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, result[0], r0[0]);
+            freeRegisterRC(context, r0);
+            r0 = result;
+        }
+
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
     }
