@@ -43,8 +43,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     //mainContext.flags = 0
     {
-        auto toFlags = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
-        uint64_t contextFlags = 0;
+        auto     toFlags      = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
+        uint64_t contextFlags = getDefaultContextFlags(module);
         builder.CreateStore(builder.getInt64(contextFlags), toFlags);
     }
 

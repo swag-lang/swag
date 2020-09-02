@@ -1,6 +1,4 @@
-#import "tests.compiler.foreign"
-
 #test
 {
-    //tcf_toto3(1,2,3,4,5,6)
+    @assert(@getcontext().flags & swag.ContextFlags.Test ? true : false)
 }

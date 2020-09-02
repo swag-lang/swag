@@ -41,7 +41,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // main context flags
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     BackendX64Inst::emit_Symbol_Relocation(pp, pp.symMC_mainContext_flags);
-    uint64_t contextFlags = 0;
+    uint64_t contextFlags = getDefaultContextFlags(module);
     BackendX64Inst::emit_Store64_Immediate(pp, 0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();

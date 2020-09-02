@@ -242,9 +242,6 @@
     <ClCompile Include="Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="Context.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeRunFFI_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -422,6 +419,9 @@
     <ClCompile Include="ByteCodeOptimizer_const_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="Context.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -558,9 +558,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="RaceCondition.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="Context.h">
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="DependentJobs.h">
@@ -706,6 +703,9 @@
     </ClInclude>
     <ClInclude Include="BackendX64SaveObjJob.h">
       <Filter>Backend\X64</Filter>
+    </ClInclude>
+    <ClInclude Include="Context.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

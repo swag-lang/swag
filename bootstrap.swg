@@ -164,10 +164,18 @@ namespace swag
         }
     }
 
+    #[swag.flags]
+    enum ContextFlags: u64
+    {
+        None    = 0x00000000_00000000
+        Test    = 0x00000000_00000001
+        DevMode = 0x00000000_00000002
+    }
+
     struct Context
     {
         allocator:  IAllocator
-        flags:      u64
+        flags:      ContextFlags = ContextFlags.None
     }
 
     // #########################################################

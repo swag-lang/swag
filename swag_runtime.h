@@ -20,6 +20,12 @@ extern "C" void                  swag_runtime_error(struct ConcreteCompilerSourc
 // SHOULD MATCH EVERY BACKENDS
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+enum class ContextFlags : swag_runtime_uint64_t
+{
+    Test    = 0x00000000'00000001,
+    DevMode = 0x00000000'00000002,
+};
+
 typedef struct swag_interface_t
 {
     void* data;

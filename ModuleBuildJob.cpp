@@ -13,6 +13,7 @@
 #include "ModuleRunJob.h"
 #include "ThreadManager.h"
 #include "Profile.h"
+#include "Context.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 

@@ -10,6 +10,7 @@
 #include "BackendLLVM.h"
 #include "BackendX64.h"
 #include "ThreadManager.h"
+#include "Context.h"
 
 bool Module::mustGenerateTestExe()
 {
@@ -204,6 +205,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     SWAG_ASSERT(node->flags & AST_BYTECODE_RESOLVED);
     SWAG_ASSERT(node->bc);
     SWAG_ASSERT(node->bc->out);
+
+    // Setup flags before running
+    g_defaultContext.flags = getDefaultContextFlags(this);
 
     bool result = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
