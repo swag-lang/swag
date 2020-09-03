@@ -376,7 +376,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
         auto location = ip->getLocation(bc);
         if (location)
         {
-            llvm::DIFile*  file  = getOrCreateFile(bc->sourceFile);
+            llvm::DIFile*  file  = getOrCreateFile(ip->getFileLocation(bc));
             llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
             builder->SetCurrentDebugLocation(llvm::DebugLoc::get(location->line + 1, 0, scope));
         }

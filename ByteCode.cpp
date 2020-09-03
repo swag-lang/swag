@@ -25,6 +25,19 @@ uint32_t g_ByteCodeOpFlags[] = {
 #include "ByteCodeOpList.h"
 };
 
+SourceFile* ByteCodeInstruction::getFileLocation(ByteCode* bc)
+{
+    if (!node)
+        return bc->sourceFile;
+    if (node->ownerInline)
+    {
+        auto inlineNode = CastAst<AstInline>(node->ownerInline, AstNodeKind::Inline);
+        return inlineNode->func->sourceFile;
+    }
+
+    return bc->sourceFile;
+}
+
 SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
 {
     if (flags & BCI_LOCATION_IS_BC)
@@ -257,6 +270,8 @@ void ByteCode::print()
         g_Log.print(name.c_str());
     }
 
+    g_Log.print(" ");
+    g_Log.print(callType()->name.c_str());
     g_Log.eol();
 
     uint32_t lastLine = UINT32_MAX;
@@ -268,7 +283,7 @@ void ByteCode::print()
         if (location && location->line != lastLine && ip->op != ByteCodeOp::End)
         {
             lastLine = location->line;
-            auto s   = sourceFile->getLine(lastLine);
+            auto s   = ip->getFileLocation(this)->getLine(lastLine);
             s.trimLeft();
             g_Log.setColor(LogColor::DarkYellow);
             for (int idx = 0; idx < 9; idx++)

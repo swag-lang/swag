@@ -43,6 +43,7 @@ struct ByteCodeInstruction
     uint16_t   flags;
 
     SourceLocation* getLocation(ByteCode* bc);
+    SourceFile*     getFileLocation(ByteCode* bc);
 };
 
 #define MAX_CACHE_FREE_REG 8

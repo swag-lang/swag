@@ -30,7 +30,6 @@ namespace std.collections
                 return buffer + index
             }
 
-            #[swag.printbc]
             func opIndexAffect(using self, value: T, index: u32)
             {
                 std.diagnostics.debug.assert(index < count, "index out of range")
