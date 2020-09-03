@@ -26,13 +26,14 @@ namespace std.collections
 
             func opIndex(using self, index: u32)->const *T
             {
-                std.diagnostics.debug.assert(index < count)
+                std.diagnostics.debug.assert(index < count, "index out of range")
                 return buffer + index
             }
 
+            #[swag.printbc]
             func opIndexAffect(using self, value: T, index: u32)
             {
-                std.diagnostics.debug.assert(index < count)
+                std.diagnostics.debug.assert(index < count, "index out of range")
                 buffer[index] = value
             }
         }

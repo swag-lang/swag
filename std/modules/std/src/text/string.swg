@@ -361,9 +361,9 @@ namespace std.text
             {
                 var utf16: Array'u16
                 utf16.ensureCapacity(length + 1)
-                utf16.count = length + 1
-                unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
-                utf16[length] = 0
+                count := unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
+                utf16.count = count + 1
+                utf16[count - 1] = 0
                 return utf16
             }
         }
