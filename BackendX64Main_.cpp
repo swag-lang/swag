@@ -34,7 +34,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     //mainContext.allocator.itable = &defaultAllocTable;
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
-    concat.addString3("\x48\x89\x01"); // mov [rcx], rax
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
     // main context flags
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_flags, 0);
@@ -44,12 +44,12 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     emitCall(pp, "swag_runtime_tlsAlloc");
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
-    concat.addString3("\x48\x89\x01"); // mov [rcx], rax
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
     //__process_infos.defaultContext = &mainContext;
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);
-    concat.addString3("\x48\x89\x01"); // mov [rcx], rax
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
     //swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
