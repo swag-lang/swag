@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "Tokenizer.h"
 #include "Log.h"
 
 // If an instruction can have an immediate form, then transform it if the corresponding
@@ -81,12 +82,91 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 ip->b.u64                     = regsRW[ip->b.u32];
                 flags                         = g_ByteCodeOpFlags[(int) ip->op];
             }
-            else if(!(flags & OPFLAG_IMM_A))
+            else if (ip->op == ByteCodeOp::IntrinsicS8x1)
             {
-                g_Log.lock();
-                printf("%s\n", context->bc->callName().c_str());
-                context->bc->printInstruction(ip);
-                g_Log.unlock();
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.s8        = (int8_t) abs(ip->b.s8);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                }
+            }
+            else if (ip->op == ByteCodeOp::IntrinsicS16x1)
+            {
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.s16       = (int16_t) abs(ip->b.s16);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                }
+            }
+            else if (ip->op == ByteCodeOp::IntrinsicS32x1)
+            {
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.s32       = abs(ip->b.s32);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                }
+            }
+            else if (ip->op == ByteCodeOp::IntrinsicS64x1)
+            {
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate64;
+                    ip->b.s64       = abs(ip->b.s64);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                }
+            }
+            else if (ip->op == ByteCodeOp::IntrinsicF32x1)
+            {
+                switch ((TokenId) ip->d.u32)
+                {
+                case TokenId::IntrinsicAbs:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.f32       = fabs(ip->b.f32);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                case TokenId::IntrinsicCos:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.f32       = cosf(ip->b.f32);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                case TokenId::IntrinsicSin:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    ip->b.f32       = sinf(ip->b.f32);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                }
             }
         }
 

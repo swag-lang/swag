@@ -76,6 +76,8 @@ func test(x: f64)
     xsf32 := 0.5'f32
     xsf64 := 0.5'f64
 
+    @assert(@abs(xs32) == 5)
+
     test(cast(f64) @abs(xs8))
     test(cast(f64) @abs(xs16))
 
