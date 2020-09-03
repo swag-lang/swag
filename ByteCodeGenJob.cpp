@@ -218,8 +218,12 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
     if (context->noLocation)
         ins.location = nullptr;
+    else if (context->forceLocation)
+        ins.location = context->forceLocation;
+    else if (node->parent && node->parent->kind == AstNodeKind::FuncDecl && node->kind == AstNodeKind::Statement)
+        ins.location = &((AstFuncDecl*) node->parent)->endToken.startLocation;
     else
-        ins.location = context->forceLocation ? context->forceLocation : &node->token.startLocation;
+        ins.location = &node->token.startLocation;
 
     switch (op)
     {

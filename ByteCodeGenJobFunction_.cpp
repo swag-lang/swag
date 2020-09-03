@@ -126,7 +126,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     else
         topScope = funcNode->scope;
 
-    Scope::collectScopeFrom(node->ownerScope, topScope->parentScope, context->job->collectScopes);
+    Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope, node->forceNoDrop));

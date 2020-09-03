@@ -500,7 +500,7 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
     auto node     = context->node;
     auto fallNode = CastAst<AstBreakContinue>(node, AstNodeKind::FallThrough);
 
-    Scope::collectScopeFrom(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->job->collectScopes);
+    Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope));
@@ -518,7 +518,7 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
 
-    Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
+    Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope));
@@ -536,7 +536,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto node         = context->node;
     auto continueNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    Scope::collectScopeFrom(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->job->collectScopes);
+    Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(emitLeaveScope(context, scope));
@@ -567,6 +567,9 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     // Need to wait for the structure to be ok, in order to call the opDrop function
     auto count = (int) table.structVarsToDrop.size() - 1;
+    if (count == -1)
+        return true;
+
     for (int i = count; i >= 0; i--)
     {
         auto one            = table.structVarsToDrop[i];

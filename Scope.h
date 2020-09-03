@@ -58,7 +58,7 @@ struct Scope
     const Utf8&        getFullName();
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
-    static void        collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result);
+    static void        collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
     bool               isParentOf(Scope* child);
 
     bool isGlobal()

@@ -77,7 +77,7 @@ void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
     }
 }
 
-void Scope::collectScopeFrom(Scope* src, Scope* to, VectorNative<Scope*>& result)
+void Scope::collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result)
 {
     result.clear();
     while (true)
