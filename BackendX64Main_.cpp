@@ -52,9 +52,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     //swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);
-    BackendX64Inst::emit_Symbol_Relocation2(pp, RCX, pp.symPI_contextTlsId, 0);
-    BackendX64Inst::emit_Symbol_Relocation2(pp, RDX, pp.symPI_defaultContext, 0);
-
+    BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
+    BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symPI_defaultContext, 0);
     emitCall(pp, "swag_runtime_tlsSetValue");
 
     // Call to global init of this module

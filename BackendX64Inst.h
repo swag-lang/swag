@@ -560,7 +560,7 @@ namespace BackendX64Inst
         concat.addU32(offset);
     }
 
-    inline void emit_Symbol_Relocation2(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
+    inline void emit_Symbol_RelocationValue(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
         auto& concat = pp.concat;
 
