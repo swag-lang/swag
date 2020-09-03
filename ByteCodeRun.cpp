@@ -899,19 +899,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (IMMA_U8(ip))
             break;
         if (context->sourceFile->unittestError)
-        {
-            ConcreteCompilerSourceLocation loc;
-            loc.fileName.buffer = (void*) context->sourceFile->path.c_str();
-            loc.fileName.count  = context->sourceFile->path.length();
-            loc.lineStart = loc.lineEnd = ip->getLocation(context->bc)->line;
-            loc.colStart = loc.colEnd = 0;
-            auto userMsg              = (const char*) ip->d.pointer;
-            swag_runtime_error(&loc, userMsg, userMsg ? (SwagU32) strlen(userMsg) : 0);
-        }
+            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
-        {
             swag_runtime_assert(false, context->sourceFile->path.c_str(), ip->getLocation(context->bc)->line, (const char*) ip->d.pointer);
-        }
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:
