@@ -1661,9 +1661,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Div64byVB32:
             //concat.addStringFormat("r[%u].s64 /= %u;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             BackendX64Inst::emit_Clear64(pp, RDX);
-            concat.addString3("\x48\xf7\xfb"); // idiv rax, rbx
+            concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
