@@ -53,9 +53,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     //swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);
     concat.addString3("\x48\x8b\x0d"); // mov rcx, qword ptr ????????[rip]
-    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_contextTlsId);
+    BackendX64Inst::emit_Symbol_Relocation2(pp, pp.symPI_contextTlsId);
     concat.addString3("\x48\x8b\x15"); // mov rdx, qword ptr ????????[rip]
-    BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_defaultContext);
+    BackendX64Inst::emit_Symbol_Relocation2(pp, pp.symPI_defaultContext);
 
     emitCall(pp, "swag_runtime_tlsSetValue");
 

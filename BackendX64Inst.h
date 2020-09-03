@@ -560,7 +560,7 @@ namespace BackendX64Inst
         concat.addU32(offset);
     }
 
-    inline void emit_Symbol_Relocation(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
+    inline void emit_Symbol_Relocation2(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
     {
         auto&          concat = pp.concat;
         CoffRelocation reloc;
@@ -569,11 +569,6 @@ namespace BackendX64Inst
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
         concat.addU32(offset);
-    }
-
-    inline void emit_SymbolAddr_In_RAX(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
-    {
-        emit_Symbol_Relocation(pp, RAX, symbolIndex, offset);
     }
 
     inline void emit_Sub_Cst32_To_RSP(X64PerThread& pp, uint32_t value)
