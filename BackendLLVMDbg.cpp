@@ -18,7 +18,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     dbgBuilder    = new llvm::DIBuilder(*modu, true);
     llvmModule    = modu;
     llvmContext   = &modu->getContext();
-    auto mainFile = dbgBuilder->createFile("module.pdb", "f:/");
+    auto mainFile = dbgBuilder->createFile("<stdin>", "f:/");
     Utf8 compiler = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
@@ -278,6 +278,23 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
 
     mapFuncTypes[typeFunc] = result;
     return result;
+}
+
+void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func)
+{
+    Utf8                    name        = node->fullnameForeign;
+    llvm::DIFile*           file        = compileUnit->getFile();
+    llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->callType(), file);
+
+    llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
+    if (isOptimized)
+        spFlags |= llvm::DISubprogram::SPFlagOptimized;
+
+    llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagArtificial;
+
+    // Register function
+    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, 0, dbgFuncType, 0, diFlags, spFlags);
+    func->setSubprogram(SP);
 }
 
 void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)

@@ -223,6 +223,12 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
     builder.SetInsertPoint(block);
 
+    if (pp.dbg)
+    {
+        pp.dbg->startWrapperFunction(pp, bc, node, func);
+        builder.SetCurrentDebugLocation(llvm::DebugLoc::get(0, 0, func->getSubprogram()));
+    }
+
     // Total number of registers
     auto n = typeFunc->numReturnRegisters();
     for (auto param : typeFunc->parameters)
@@ -3440,7 +3446,10 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     // Make the call
     llvm::FunctionType* typeF;
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
-    auto result = builder.CreateCall(modu.getOrInsertFunction(funcName.c_str(), typeF), {params.begin(), params.end()});
+    auto func = modu.getOrInsertFunction(funcName.c_str(), typeF);
+    auto F = llvm::dyn_cast<llvm::Function>(func.getCallee());
+    F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
+    auto result = builder.CreateCall(func, {params.begin(), params.end()});
 
     // Store result to rt0
     SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
