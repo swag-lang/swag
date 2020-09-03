@@ -123,7 +123,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    concat.addU8(0xC3); // ret
+    BackendX64Inst::emit_Ret(pp);
     return true;
 }
 
@@ -162,8 +162,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    concat.addU8(0xC3); // ret
-
+    BackendX64Inst::emit_Ret(pp);
     return true;
 }
 
@@ -190,7 +189,6 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    concat.addU8(0xC3); // ret
-
+    BackendX64Inst::emit_Ret(pp);
     return true;
 }

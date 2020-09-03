@@ -262,9 +262,19 @@ namespace BackendX64Inst
 
     inline void emit_Push(X64PerThread& pp, uint8_t reg)
     {
-        if (reg > R9)
-            pp.concat.addU8(0x41);
-        pp.concat.addU8(0x50 | reg & 0b111);
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x50 | (reg & 0b111));
+    }
+
+    inline void emit_Pop(X64PerThread& pp, uint8_t reg)
+    {
+        SWAG_ASSERT(reg < R8);
+        pp.concat.addU8(0x58 | (reg & 0b111));
+    }
+
+    inline void emit_Ret(X64PerThread& pp)
+    {
+        pp.concat.addU8(0xC3);
     }
 
     inline void emit_Copy64(X64PerThread& pp, uint8_t regSrc, uint8_t regDst)

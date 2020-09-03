@@ -227,8 +227,8 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
-    concat.addU8(0x5F); // pop rdi
-    concat.addU8(0xC3); // ret
+    BackendX64Inst::emit_Pop(pp, RDI);
+    BackendX64Inst::emit_Ret(pp);
     return true;
 }
 
@@ -2089,13 +2089,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::Ret:
-            if (sizeStack)
-            {
-                BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
-                concat.addU8(0x5F); // pop rdi
-            }
-
-            concat.addU8(0xc3); // ret
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
+            BackendX64Inst::emit_Pop(pp, RDI);
+            BackendX64Inst::emit_Ret(pp);
             break;
 
         case ByteCodeOp::IntrinsicS8x1:
