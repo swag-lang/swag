@@ -28,7 +28,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(g_defaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symDefaultAllocTable);
+    BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     emitSymbolRelocation(pp, bcAlloc->callName());
     concat.addString3("\x48\x89\x08"); // mov [rax], rcx
@@ -51,7 +51,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     //__process_infos.defaultContext = &mainContext;
-    BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symMC_mainContext);
+    BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symMC_mainContext, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     BackendX64Inst::emit_Symbol_Relocation(pp, pp.symPI_defaultContext);
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax

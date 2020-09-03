@@ -1729,7 +1729,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicGetContext:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
-            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_contextTlsId);
+            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RCX, RAX);
             emitCall(pp, "swag_runtime_tlsGetValue");
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -1745,10 +1745,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicArguments:
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
             //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
-            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_args_addr);
+            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_args_addr, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_args_count);
+            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_args_count, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             break;
@@ -2050,7 +2050,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 }
             }
 
-            BackendX64Inst::emit_SymbolAddr_In_RAX(pp, pp.symPI_byteCodeRun);
+            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\xff\xd0"); // call rax
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
