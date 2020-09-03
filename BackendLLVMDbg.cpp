@@ -29,8 +29,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
                                                 0,
                                                 "",
                                                 llvm::DICompileUnit::DebugEmissionKind::FullDebug,
-                                                0,
-                                                true);
+                                                0);
 
     modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 #ifdef _WIN32

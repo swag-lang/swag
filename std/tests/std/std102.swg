@@ -12,6 +12,7 @@ func cc(sl: [..] u8, val: s32)
 //#[swag.printbc]
 #test
 {
+    std.diagnostics.debug.assert(true, "")
     cc("toto", 666)
 //    var x: String = "toto"
 //    var y: Array'u16 = x.toUnicode16()
