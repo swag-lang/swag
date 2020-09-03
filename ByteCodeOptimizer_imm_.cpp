@@ -1,7 +1,11 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCodeGenJob.h"
 #include "Tokenizer.h"
 #include "Log.h"
+#include "AstNode.h"
+#include "Diagnostic.h"
+#include "SourceFile.h"
 
 // If an instruction can have an immediate form, then transform it if the corresponding
 // register is a constant.
@@ -163,6 +167,19 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                     ip->b.u64       = regsRW[ip->b.u32];
                     ip->op          = ByteCodeOp::SetImmediate32;
                     ip->b.f32       = sinf(ip->b.f32);
+                    ip->flags |= BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                    break;
+                case TokenId::IntrinsicSqrt:
+                    regs[ip->b.u32] = nullptr;
+                    ip->b.u64       = regsRW[ip->b.u32];
+                    ip->op          = ByteCodeOp::SetImmediate32;
+                    if (ip->b.f32 < 0)
+                    {
+                        context->semContext->report({ip->node->sourceFile, ip->node->token, format("'@sqrt' on negative value '%.3f'", ip->b.f32)});
+                        context->hasError = true;
+                    }
+                    ip->b.f32 = sqrtf(ip->b.f32);
                     ip->flags |= BCI_IMM_B;
                     context->passHasDoneSomething = true;
                     break;

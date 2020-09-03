@@ -14,6 +14,8 @@ struct ByteCodeOptContext
     VectorNative<uint64_t>             tmpBufU64;
     bool                               allPassesHaveDoneSomething = false;
     bool                               passHasDoneSomething       = false;
+    bool                               hasError                   = false;
+    ByteCodeGenContext*                semContext                 = nullptr;
 };
 
 struct ByteCodeOptimizer
@@ -53,5 +55,5 @@ struct ByteCodeOptimizer
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
-    static void optimize(ByteCodeGenContext* context);
+    static bool optimize(ByteCodeGenContext* context);
 };

@@ -68,10 +68,10 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
         jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
 }
 
-void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
+bool ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 {
     if (!context->bc)
-        return;
+        return true;
 
     auto job    = context->job;
     auto module = job->originalNode->sourceFile->module;
@@ -86,7 +86,8 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     tm.start();
 
     ByteCodeOptContext optContext;
-    optContext.bc = context->bc;
+    optContext.bc         = context->bc;
+    optContext.semContext = context;
 
     vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(optimizePassJumps);
@@ -102,6 +103,8 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
 
     while (true)
     {
+        if (optContext.hasError)
+            return false;
         optContext.allPassesHaveDoneSomething = false;
         for (auto pass : passes)
         {
@@ -116,4 +119,5 @@ void ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     }
 
     tm.stop();
+    return true;
 }

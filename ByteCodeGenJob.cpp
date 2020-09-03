@@ -496,7 +496,8 @@ JobResult ByteCodeGenJob::execute()
                     g_Stats.numInstructions += context.bc->numInstructions;
 
                 // Optims
-                ByteCodeOptimizer::optimize(&context);
+                if (!ByteCodeOptimizer::optimize(&context))
+                    return JobResult::ReleaseJob;
 
                 // Print resulting bytecode
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
