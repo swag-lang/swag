@@ -30,7 +30,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     emitSymbolRelocation(pp, bcAlloc->callName());
-    concat.addString3("\x48\x89\x08"); // mov [rax], rcx
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
     //mainContext.allocator.itable = &defaultAllocTable;
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
