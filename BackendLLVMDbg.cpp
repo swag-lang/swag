@@ -10,6 +10,7 @@
 #include "SymTable.h"
 #include "BuildParameters.h"
 #include "Version.h"
+#include "TypeManager.h"
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
@@ -269,9 +270,17 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
 
     VectorNative<llvm::Metadata*> params;
 
-    params.push_back(getType(typeFunc->returnType, file));
+    if (typeFunc->returnType)
+    {
+        for (int r = 0; r < typeFunc->returnType->numRegisters(); r++)
+            params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+    }
+
     for (auto one : typeFunc->parameters)
-        params.push_back(getType(one->typeInfo, file));
+    {
+        for (int r = 0; r < one->typeInfo->numRegisters(); r++)
+            params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+    }
 
     auto typeArray = dbgBuilder->getOrCreateTypeArray({params.begin(), params.end()});
     auto result    = dbgBuilder->createSubroutineType(typeArray);
@@ -343,18 +352,24 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
             auto        child     = decl->parameters->childs[i];
             const auto& loc       = child->token.startLocation;
             auto        typeParam = typeFunc->parameters[i]->typeInfo;
+            auto        location  = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
 
             // Transform to a pointer in case of a function parameter
             llvm::DIType* type = nullptr;
-            if (typeParam->kind == TypeInfoKind::Array)
+            switch (typeParam->kind)
+            {
+            case TypeInfoKind::Array:
                 type = getPointerToType(typeParam, file);
-            else
-                type = dbgFuncType->getTypeArray()[i + 1];
+                break;
 
-            llvm::DILocalVariable* var      = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type, !isOptimized);
-            auto                   location = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
+            default:
+                type = getType(typeParam, file);
+                break;
+            }
+
+            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), i + 1, file, loc.line + 1, type, !isOptimized);
             dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
-            idxParam += child->typeInfo->numRegisters();
+            idxParam += typeParam->numRegisters();
         }
     }
 
