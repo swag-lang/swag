@@ -1446,8 +1446,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (r[%u].pointer + 8); ", ip->b.u32, ip->a.u32);
             //concat.addStringFormat("r[%u].pointer = *(__u8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, 8, RDX, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, 8, RCX, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1474,15 +1474,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ClearMaskU32:
             //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RBX);
-            BackendX64Inst::emit_Op32(pp, RBX, RAX, X64Op::AND);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+            BackendX64Inst::emit_Op32(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::ClearMaskU64:
             //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RBX);
-            BackendX64Inst::emit_Op64(pp, RBX, RAX, X64Op::AND);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
