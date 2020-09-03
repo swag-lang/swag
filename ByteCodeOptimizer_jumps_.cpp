@@ -47,40 +47,49 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
-        // If a conditional jump has a constant value (preceded with a constant assign to the register that
-        // will be tested by the jump condition), then we can evaluate the jump right now
-        if (ip->op != ByteCodeOp::Jump &&
-            !(ip->flags & BCI_START_STMT) &&
-            ip != context->bc->out &&
-            ip[-1].op == ByteCodeOp::SetImmediate32 &&
-            ip[-1].a.u32 == ip->a.u32)
+        // Evaluate the jump if the condition is constant
+        if (ip->op != ByteCodeOp::Jump && (ip->flags & BCI_IMM_A))
         {
             switch (ip->op)
             {
             case ByteCodeOp::JumpIfFalse:
                 context->passHasDoneSomething = true;
-                if (ip[-1].b.b)
+                if (ip->a.u8)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfTrue:
                 context->passHasDoneSomething = true;
-                if (!ip[-1].b.b)
+                if (!ip->a.u8)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfNotZero32:
                 context->passHasDoneSomething = true;
-                if (!ip[-1].b.u32)
+                if (!ip->a.u32)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
             case ByteCodeOp::JumpIfZero32:
                 context->passHasDoneSomething = true;
-                if (ip[-1].b.u32)
+                if (ip->a.u32)
+                    setNop(context, ip);
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfNotZero64:
+                context->passHasDoneSomething = true;
+                if (!ip->a.u64)
+                    setNop(context, ip);
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfZero64:
+                context->passHasDoneSomething = true;
+                if (ip->a.u64)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;

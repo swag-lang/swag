@@ -19,7 +19,7 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->flags & BCI_START_STMT || isJump(ip))
+        if (ip->flags & BCI_START_STMT)
             memset(regs.buffer, 0, maxReg * sizeof(void*));
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
@@ -113,5 +113,8 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regs[ip->c.u32] = nullptr;
         if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
             regs[ip->d.u32] = nullptr;
+
+        if (isJump(ip))
+            memset(regs.buffer, 0, maxReg * sizeof(void*));
     }
 }

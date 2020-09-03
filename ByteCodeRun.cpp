@@ -285,7 +285,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::JumpIfZero32:
     {
-        if (!registersRC[ip->a.u32].u32)
+        if (!IMMA_U32(ip))
             context->ip += ip->b.s32;
         break;
     }
