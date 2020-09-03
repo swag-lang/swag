@@ -18,8 +18,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     //swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, (void**)argv);
     // Must be done first ! We need to have rcx (argc) and rdx (argv) valid
-    concat.addString3("\x49\x89\xd0"); // mov r8, rdx -- argv
-    concat.addString3("\x48\x89\xca"); // mov rdx, rcx -- argc
+    BackendX64Inst::emit_Copy64(pp, RDX, R8);
+    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_args_addr, 0);
     emitCall(pp, "swag_runtime_convertArgcArgv");
 
