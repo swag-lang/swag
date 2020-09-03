@@ -128,13 +128,12 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     if (it != mapTypes.end())
         return it->second;
 
-    // If a field is a pointer to the struct itself, this will avoid a recursive call
-    //mapTypes[typeInfo] = ptrU8Ty;
-
     auto scope  = file->getScope();
     auto noFlag = llvm::DINode::DIFlags::FlagZero;
     auto lineNo = typeInfo->declNode->token.startLocation.line + 1;
-    auto result = dbgBuilder->createStructType(scope, typeInfo->name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+    auto name   = typeInfo->name;
+    Ast::normalizeIdentifierName(name);
+    auto result = dbgBuilder->createStructType(scope, name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     // This way, even it a struct references itself, this will work
     mapTypes[typeInfo] = result;
@@ -162,10 +161,12 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, llvm::DIFile* fil
     if (it != mapTypes.end())
         return it->second;
 
-    auto typeInfoPtr   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-    auto fileScope     = file->getScope();
-    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
-    auto result        = dbgBuilder->createStructType(fileScope, typeInfoPtr->name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, llvm::DINodeArray());
+    auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    auto fileScope   = file->getScope();
+    auto noFlag      = llvm::DINode::DIFlags::FlagZero;
+    auto name        = "__autoslice_" + typeInfoPtr->name;
+    Ast::normalizeIdentifierName(name);
+    auto result        = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, llvm::DINodeArray());
     mapTypes[typeInfo] = result;
 
     auto realType = getPointerToType(typeInfoPtr->pointedType, file);

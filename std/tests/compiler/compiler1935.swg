@@ -3,9 +3,10 @@ struct SALUTE
     s, t: f64
 }
 
-func cc(sl: [..] u8, val: u32, titi: string, st: SALUTE)
+//#[swag.printbc]
+func cc(sl: const [..] u8, val: u32, titi: string, st: SALUTE)
 {
-    @print(st.s)
+    //@print(st.s)
     x := @countof(sl)
     loop val
     {
