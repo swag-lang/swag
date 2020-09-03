@@ -485,6 +485,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         switch (ip->op)
         {
         case ByteCodeOp::IncPointer32:
+        case ByteCodeOp::DecPointer32:
         {
             //concat.addStringFormat("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
@@ -494,21 +495,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r2 = builder.getInt32(ip->b.u32);
             else
                 r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            if (ip->op == ByteCodeOp::DecPointer32)
+                r2 = builder.CreateNeg(r2);
             auto r3 = builder.CreateInBoundsGEP(r1, r2);
             builder.CreateStore(r3, r0);
             break;
         }
-        case ByteCodeOp::DecPointer32:
-        {
-            //concat.addStringFormat("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r2 = builder.CreateNeg(builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32))));
-            auto r3 = builder.CreateInBoundsGEP(r1, r2);
-            builder.CreateStore(r3, r0);
-            break;
-        }
-        break;
 
         case ByteCodeOp::DeRef8:
         {
@@ -3447,7 +3439,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     llvm::FunctionType* typeF;
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
     auto func = modu.getOrInsertFunction(funcName.c_str(), typeF);
-    auto F = llvm::dyn_cast<llvm::Function>(func.getCallee());
+    auto F    = llvm::dyn_cast<llvm::Function>(func.getCallee());
     F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
     auto result = builder.CreateCall(func, {params.begin(), params.end()});
 

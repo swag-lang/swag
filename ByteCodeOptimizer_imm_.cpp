@@ -24,18 +24,17 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
-        if (ip->op == ByteCodeOp::SetImmediate32)
+        switch (ip->op)
         {
+        case ByteCodeOp::SetImmediate32:
             regsRW[ip->a.u32] = ip->b.u32;
             regs[ip->a.u32]   = ip;
-        }
-        else if (ip->op == ByteCodeOp::SetImmediate64)
-        {
+            break;
+        case ByteCodeOp::SetImmediate64:
             regsRW[ip->a.u32] = ip->b.u64;
             regs[ip->a.u32]   = ip;
-        }
-        else
-        {
+            break;
+        default:
             if (flags & OPFLAG_WRITE_A)
                 regs[ip->a.u32] = nullptr;
             if (flags & OPFLAG_WRITE_B)
@@ -44,6 +43,7 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->c.u32] = nullptr;
             if (flags & OPFLAG_WRITE_D)
                 regs[ip->d.u32] = nullptr;
+            break;
         }
 
         if (!(ip->flags & BCI_IMM_A) && (flags & OPFLAG_READ_A) && regs[ip->a.u32])
@@ -55,7 +55,7 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->a.u32] = nullptr;
                 ip->a.u64       = regsRW[ip->a.u32];
             }
-            /*else
+            /*else if(ip->op != ByteCodeOp::PushRAParam)
             {
                 g_Log.lock();
                 printf("%s\n", context->bc->callName().c_str());
@@ -80,6 +80,13 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->b.u32]               = nullptr;
                 ip->b.u64                     = regsRW[ip->b.u32];
                 flags                         = g_ByteCodeOpFlags[(int) ip->op];
+            }
+            else if(!(flags & OPFLAG_IMM_A))
+            {
+                g_Log.lock();
+                printf("%s\n", context->bc->callName().c_str());
+                context->bc->printInstruction(ip);
+                g_Log.unlock();
             }
         }
 
