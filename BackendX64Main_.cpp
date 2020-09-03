@@ -134,7 +134,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     // __process_infos = *processInfos;
-    concat.addString3("\x48\x89\xca"); // mov rdx, rcx
+    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
     BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_processInfos, 0);
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
