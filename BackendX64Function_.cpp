@@ -1853,13 +1853,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopySPVaargs:
-            //concat.addStringFormat("__r_t vaargs%u[] = { 0, ", vaargsIdx);
-            //int idxParam = (int) pushRAParams.size() - 1;
-            //while (idxParam >= 0)
-            //{
-            //    concat.addStringFormat("r[%u], ", pushRAParams[idxParam]);
-            //    idxParam--;
-            //}
             variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
             if (variadicStackSize % 16)
                 variadicStackSize += 8;
