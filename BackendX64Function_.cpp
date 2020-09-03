@@ -1458,13 +1458,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::GetFromBssSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__bs + %u);", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symBSIndex, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symBSIndex, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, ip->b.u32, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromMutableSeg64:
             //concat.addStringFormat("r[%u].u64 = *(__u64_t*) (__ms + %u);", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symMSIndex, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMSIndex, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, ip->b.u32, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -1608,22 +1608,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::MakeTypeSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ts + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symTSIndex, ip->b.u32);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTSIndex, ip->b.u32);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeMutableSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__ms + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symMSIndex, ip->b.u32);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMSIndex, ip->b.u32);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeBssSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__bs + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symBSIndex, ip->b.u32);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symBSIndex, ip->b.u32);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeConstantSegPointer:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) (__cs + %u); ", ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symCSIndex, ip->b.u32);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->b.u32);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -1729,15 +1729,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicGetContext:
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_contextTlsId, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RCX, RAX);
             emitCall(pp, "swag_runtime_tlsGetValue");
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicSetContext:
             //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
-            concat.addString3("\x48\x8b\x0d"); // mov rcx, qword ptr ????????[rip]
-            BackendX64Inst::emit_Symbol_Relocation2(pp, pp.symPI_contextTlsId);
+            BackendX64Inst::emit_Symbol_Relocation2(pp, RCX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             emitCall(pp, "swag_runtime_tlsSetValue");
             break;
@@ -1745,10 +1744,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicArguments:
             //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
             //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_args_addr, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_args_addr, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_args_count, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_args_count, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             break;
@@ -2050,7 +2049,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 }
             }
 
-            BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symPI_byteCodeRun, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\xff\xd0"); // call rax
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);

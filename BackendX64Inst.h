@@ -544,7 +544,7 @@ namespace BackendX64Inst
 
     ///////////////////////////////////////////////////////
 
-    inline void emit_Symbol_Relocation(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
+    inline void emit_Symbol_RelocationAddr(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
         auto& concat = pp.concat;
 
@@ -560,9 +560,14 @@ namespace BackendX64Inst
         concat.addU32(offset);
     }
 
-    inline void emit_Symbol_Relocation2(X64PerThread& pp, uint32_t symbolIndex, uint32_t offset = 0)
+    inline void emit_Symbol_Relocation2(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
-        auto&          concat = pp.concat;
+        auto& concat = pp.concat;
+
+        concat.addU8(0x48);
+        concat.addU8(0x8B);
+        concat.addU8(0x05 | (reg << 3));
+
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
         reloc.symbolIndex    = symbolIndex;

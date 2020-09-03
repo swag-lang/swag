@@ -20,47 +20,45 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Must be done first ! We need to have rcx (argc) and rdx (argv) valid
     concat.addString3("\x49\x89\xd0"); // mov r8, rdx -- argv
     concat.addString3("\x48\x89\xca"); // mov rdx, rcx -- argc
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_args_addr, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_args_addr, 0);
     emitCall(pp, "swag_runtime_convertArgcArgv");
 
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;
     SWAG_ASSERT(g_defaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symDefaultAllocTable, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     emitSymbolRelocation(pp, bcAlloc->callName());
     concat.addString3("\x48\x89\x08"); // mov [rax], rcx
 
     //mainContext.allocator.itable = &defaultAllocTable;
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     // main context flags
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symMC_mainContext_flags, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_flags, 0);
     uint64_t contextFlags = getDefaultContextFlags(module);
     BackendX64Inst::emit_Store64_Immediate(pp, 0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     emitCall(pp, "swag_runtime_tlsAlloc");
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_contextTlsId, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     //__process_infos.defaultContext = &mainContext;
-    BackendX64Inst::emit_Symbol_Relocation(pp, RAX, pp.symMC_mainContext, 0);
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_defaultContext, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);
     concat.addString3("\x48\x89\x01"); // mov [rcx], rax
 
     //swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);
-    concat.addString3("\x48\x8b\x0d"); // mov rcx, qword ptr ????????[rip]
-    BackendX64Inst::emit_Symbol_Relocation2(pp, pp.symPI_contextTlsId);
-    concat.addString3("\x48\x8b\x15"); // mov rdx, qword ptr ????????[rip]
-    BackendX64Inst::emit_Symbol_Relocation2(pp, pp.symPI_defaultContext);
+    BackendX64Inst::emit_Symbol_Relocation2(pp, RCX, pp.symPI_contextTlsId, 0);
+    BackendX64Inst::emit_Symbol_Relocation2(pp, RDX, pp.symPI_defaultContext, 0);
 
     emitCall(pp, "swag_runtime_tlsSetValue");
 
     // Call to global init of this module
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_processInfos, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     emitCall(pp, thisInit);
 
@@ -75,7 +73,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
         if (dep->generated)
         {
-            BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_processInfos, 0);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
             auto initFunc = format("%s_globalInit", nameDown.c_str());
             emitCall(pp, initFunc);
         }
@@ -135,12 +133,12 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     BackendX64Inst::emit_Copy64(pp, RCX, RDX);
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_processInfos, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
 
     // Inform runtime about my processInfos
-    BackendX64Inst::emit_Symbol_Relocation(pp, RCX, pp.symPI_processInfos, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     emitCall(pp, "swag_runtime_setProcessInfos");
 
     // Call to #init functions
