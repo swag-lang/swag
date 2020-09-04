@@ -585,11 +585,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::BinOpMulF32:
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, 0x59);
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
             break;
         case ByteCodeOp::BinOpMulF64:
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, 0x59);
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FMUL);
             break;
 
         case ByteCodeOp::BinOpModuloS32:

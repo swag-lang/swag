@@ -39,6 +39,7 @@ enum class X64Op : uint8_t
     MUL  = 0xC1,
     FADD = 0x58,
     FSUB = 0x5C,
+    FMUL = 0x59,
 };
 
 namespace BackendX64Inst
