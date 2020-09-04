@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCodeGenJob.h"
+#include "ByteCodeRun.h"
 #include "Log.h"
 
 // Make constant folding. If an instruction is purely constant, then compute the result and replace the instruction
@@ -85,12 +87,38 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             default:
                 /*g_Log.lock();
-                printf("%s\n", context->bc->callName().c_str());
-                context->bc->printInstruction(ip);
-                g_Log.unlock();*/
+            printf("%s\n", context->bc->callName().c_str());
+            context->bc->printInstruction(ip);
+            g_Log.unlock();*/
                 break;
             }
         }
+        else if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C))
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::IntrinsicF32x2:
+            {
+                Register result;
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                ip->b.u32                     = result.u32;
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                context->passHasDoneSomething = true;
+                break;
+            }
+
+            case ByteCodeOp::IntrinsicF64x2:
+            {
+                Register result;
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                ip->b.u64                     = result.u64;
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                context->passHasDoneSomething = true;
+                break;
+            }
+            }
+        }
+
         else if (ip->flags & BCI_IMM_B)
         {
             switch (ip->op)
@@ -115,6 +143,30 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.u32                     = ip->b.u64 != 0;
                 context->passHasDoneSomething = true;
                 break;
+            case ByteCodeOp::IntrinsicS8x1:
+            case ByteCodeOp::IntrinsicS16x1:
+            case ByteCodeOp::IntrinsicS32x1:
+            case ByteCodeOp::IntrinsicF32x1:
+            {
+                Register result;
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                ip->b.u32                     = result.u32;
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                context->passHasDoneSomething = true;
+                break;
+            }
+
+            case ByteCodeOp::IntrinsicF64x1:
+            case ByteCodeOp::IntrinsicS64x1:
+            {
+                Register result;
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.u64                     = result.u64;
+                context->passHasDoneSomething = true;
+                break;
+            }
+
             default:
                 /*g_Log.lock();
                 printf("%s\n", context->bc->callName().c_str());
