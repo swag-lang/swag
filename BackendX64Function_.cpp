@@ -661,11 +661,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::BinOpMinusF32:
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, 0x5C);
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
             break;
         case ByteCodeOp::BinOpMinusF64:
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, 0x5C);
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FSUB);
             break;
 
         case ByteCodeOp::BinOpBitmaskAndS32:
