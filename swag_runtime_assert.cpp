@@ -16,7 +16,9 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
         loc.colStart = loc.colEnd = 0;
         loc.fileName.buffer       = (void*) file;
         loc.fileName.count        = strlen((const char*) file);
-        swag_runtime_error(&loc, message, message ? (SwagU32) strlen((const char*) message) : 0);
+        if (!message)
+            message = "assertion failed";
+        swag_runtime_error(&loc, message, (SwagU32) strlen((const char*) message));
         return;
     }
 

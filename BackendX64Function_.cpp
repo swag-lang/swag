@@ -1344,47 +1344,47 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfFalse:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotZero32:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotZero64:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test64(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero32:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero64:
             //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test64(pp, RAX, RAX);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JZ, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::Jump:
             //CONCAT_FIXED_STR(concat, "goto _");
             //concat.addS32Str8(ip->b.s32 + i + 1);
-            BackendX64Inst::emitJump(pp, BackendX64Inst::JUMP, i, ip->b.s32);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JUMP, i, ip->b.s32);
             break;
 
         case ByteCodeOp::IncrementRA32:

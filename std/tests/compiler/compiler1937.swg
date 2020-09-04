@@ -34,3 +34,13 @@
     x = x + 1
     @assert(x == 3)
 }
+
+#[swag.printbc]
+#test
+{
+    x := 3's32
+    y := -1's32
+    x += y
+    x = x / -1
+    @assert(x == -2)
+}

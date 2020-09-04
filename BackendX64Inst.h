@@ -839,26 +839,15 @@ namespace BackendX64Inst
 
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);
         if (offsetStack == 0)
-        {
-            if (isSigned)
-                pp.concat.addU8(0x3F);
-            else
-                pp.concat.addU8(0x37);
-        }
+            pp.concat.addU8(0x37 | (isSigned ? 0b1000 : 0));
         else if (offsetStack <= 0x7F)
         {
-            if (isSigned)
-                pp.concat.addU8(0x7F);
-            else
-                pp.concat.addU8(0x77);
+            pp.concat.addU8(0x77 | (isSigned ? 0b1000 : 0));
             pp.concat.addU8((uint8_t) offsetStack);
         }
         else
         {
-            if (isSigned)
-                pp.concat.addU8(0xBF);
-            else
-                pp.concat.addU8(0xB7);
+            pp.concat.addU8(0xB7 | (isSigned ? 0b1000 : 0));
             pp.concat.addU32(offsetStack);
         }
 
@@ -894,7 +883,7 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emitJump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
+    inline void emit_Jump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
     {
         LabelToSolve label;
         label.ipDest = jumpOffset + instructionCount + 1;
