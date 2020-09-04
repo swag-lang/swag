@@ -1193,16 +1193,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOpLowerF32:
             //concat.addStringFormat("r[%u].b = r[%u].f32 < r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_CmpF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            BackendX64Inst::emit_SetA(pp);
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            BackendX64Inst::emit_CmpF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+            BackendX64Inst::emit_SetB(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpLowerF64:
             //concat.addStringFormat("r[%u].b = r[%u].f64 < r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_CmpF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            BackendX64Inst::emit_SetA(pp);
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            BackendX64Inst::emit_CmpF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+            BackendX64Inst::emit_SetB(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
