@@ -484,6 +484,98 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::BinOpXorU32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::XOR);
+            break;
+        case ByteCodeOp::BinOpXorU64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::XOR);
+            break;
+
+        case ByteCodeOp::BinOpMulS32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
+            break;
+        case ByteCodeOp::BinOpMulS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
+            break;
+        case ByteCodeOp::BinOpMulF32:
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
+            break;
+        case ByteCodeOp::BinOpMulF64:
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FMUL);
+            break;
+
+        case ByteCodeOp::BinOpModuloS32:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32, true);
+            break;
+        case ByteCodeOp::BinOpModuloS64:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64, true);
+            break;
+        case ByteCodeOp::BinOpModuloU32:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32, true);
+            break;
+        case ByteCodeOp::BinOpModuloU64:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64, true);
+            break;
+
+        case ByteCodeOp::BinOpDivS32:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32);
+            break;
+        case ByteCodeOp::BinOpDivS64:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64);
+            break;
+        case ByteCodeOp::BinOpDivU32:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32);
+            break;
+        case ByteCodeOp::BinOpDivU64:
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64);
+            break;
+        case ByteCodeOp::BinOpDivF32:
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FDIV);
+            break;
+        case ByteCodeOp::BinOpDivF64:
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FDIV);
+            break;
+
+        case ByteCodeOp::BinOpPlusS32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
+            break;
+        case ByteCodeOp::BinOpPlusS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
+            break;
+        case ByteCodeOp::BinOpPlusF32:
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FADD);
+            break;
+        case ByteCodeOp::BinOpPlusF64:
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FADD);
+            break;
+
+        case ByteCodeOp::BinOpMinusS32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
+            break;
+        case ByteCodeOp::BinOpMinusS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
+            break;
+        case ByteCodeOp::BinOpMinusF32:
+            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
+            break;
+        case ByteCodeOp::BinOpMinusF64:
+            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FSUB);
+            break;
+
+        case ByteCodeOp::BinOpBitmaskAndS32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::AND);
+            break;
+        case ByteCodeOp::BinOpBitmaskAndS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::AND);
+            break;
+
+        case ByteCodeOp::BinOpBitmaskOrS32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::OR);
+            break;
+        case ByteCodeOp::BinOpBitmaskOrS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::OR);
+            break;
+
         case ByteCodeOp::AffectOpShiftLeftEqS8:
             //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) >>= r[", ip->b.u32, "].u32;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -564,126 +656,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             concat.addString3("\x48\xd3\xe8"); // shr rax, cl
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-
-        case ByteCodeOp::BinOpXorU32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 ^ r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::XOR);
-            break;
-        case ByteCodeOp::BinOpXorU64:
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 ^ r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::XOR);
-            break;
-
-        case ByteCodeOp::BinOpMulS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
-            break;
-        case ByteCodeOp::BinOpMulS64:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
-            break;
-        case ByteCodeOp::BinOpMulF32:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
-            break;
-        case ByteCodeOp::BinOpMulF64:
-            //concat.addStringFormat("r[%u].f64 = r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FMUL);
-            break;
-
-        case ByteCodeOp::BinOpModuloS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 % r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32, true);
-            break;
-        case ByteCodeOp::BinOpModuloS64:
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 % r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64, true);
-            break;
-        case ByteCodeOp::BinOpModuloU32:
-            //concat.addStringFormat("r[%u].u32 = r[%u].u32 % r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32, true);
-            break;
-        case ByteCodeOp::BinOpModuloU64:
-            //concat.addStringFormat("r[%u].u64 = r[%u].u64 % r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64, true);
-            break;
-
-        case ByteCodeOp::BinOpDivS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32);
-            break;
-        case ByteCodeOp::BinOpDivS64:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64);
-            break;
-        case ByteCodeOp::BinOpDivU32:
-            //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32);
-            break;
-        case ByteCodeOp::BinOpDivU64:
-            //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64);
-            break;
-        case ByteCodeOp::BinOpDivF32:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FDIV);
-            break;
-        case ByteCodeOp::BinOpDivF64:
-            //concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FDIV);
-            break;
-
-        case ByteCodeOp::BinOpPlusS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
-            break;
-        case ByteCodeOp::BinOpPlusS64:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
-            break;
-        case ByteCodeOp::BinOpPlusF32:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FADD);
-            break;
-        case ByteCodeOp::BinOpPlusF64:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FADD);
-            break;
-
-        case ByteCodeOp::BinOpMinusS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 - r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
-            break;
-        case ByteCodeOp::BinOpMinusS64:
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 - r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
-            break;
-        case ByteCodeOp::BinOpMinusF32:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
-            break;
-        case ByteCodeOp::BinOpMinusF64:
-            //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FSUB);
-            break;
-
-        case ByteCodeOp::BinOpBitmaskAndS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::AND);
-            break;
-        case ByteCodeOp::BinOpBitmaskAndS64:
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::AND);
-            break;
-
-        case ByteCodeOp::BinOpBitmaskOrS32:
-            //concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::OR);
-            break;
-        case ByteCodeOp::BinOpBitmaskOrS64:
-            //concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::OR);
             break;
 
         case ByteCodeOp::AffectOpXOrEqS8:
