@@ -700,6 +700,7 @@ namespace BackendX64Inst
             pp.concat.addU8(0xF3);
             pp.concat.addU8(0x0F);
             pp.concat.addU8((uint8_t) op);
+            pp.concat.addU8(0xC1);
         }
 
         BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
@@ -734,6 +735,7 @@ namespace BackendX64Inst
             pp.concat.addU8(0xF2);
             pp.concat.addU8(0x0F);
             pp.concat.addU8((uint8_t) op);
+            pp.concat.addU8(0xC1);
         }
 
         BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
