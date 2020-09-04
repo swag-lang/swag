@@ -36,6 +36,7 @@ enum class X64Op : uint8_t
     SUB  = 0x29,
     XOR  = 0x31,
     IDIV = 0xF7,
+    MUL  = 0xC1,
 };
 
 namespace BackendX64Inst
@@ -724,7 +725,10 @@ namespace BackendX64Inst
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            pp.concat.addU8((uint8_t) op | 2);
+            if (op == X64Op::MUL)
+                pp.concat.addU16(0xAF0F);
+            else
+                pp.concat.addU8((uint8_t) op | 2);
             emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
         }
         else
@@ -737,7 +741,13 @@ namespace BackendX64Inst
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emit_Op32(pp, RCX, RAX, op);
+            if (op == X64Op::MUL)
+            {
+                pp.concat.addU16(0xAF0F);
+                pp.concat.addU8(0xC1);
+            }
+            else
+                emit_Op32(pp, RCX, RAX, op);
         }
 
         BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
@@ -749,7 +759,10 @@ namespace BackendX64Inst
         {
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             pp.concat.addU8(0x48);
-            pp.concat.addU8((uint8_t) op | 2);
+            if (op == X64Op::MUL)
+                pp.concat.addU16(0xAF0F);
+            else
+                pp.concat.addU8((uint8_t) op | 2);
             emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
         }
         else
@@ -762,7 +775,13 @@ namespace BackendX64Inst
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emit_Op64(pp, RCX, RAX, op);
+            if (op == X64Op::MUL)
+            {
+                pp.concat.addU16(0xAF0F);
+                pp.concat.addU8(0xC1);
+            }
+            else
+                emit_Op64(pp, RCX, RAX, op);
         }
 
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
