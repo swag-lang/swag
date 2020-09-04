@@ -20,9 +20,12 @@
 #define IMMB_F32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f32 : registersRC[ip->b.u32].f32)
 #define IMMB_F64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f64 : registersRC[ip->b.u32].f64)
 
+#define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
 #define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
 #define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
 
+#define IMMB_S8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s8 : registersRC[ip->b.u32].s8)
+#define IMMB_S16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s16 : registersRC[ip->b.u32].s16)
 #define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
 #define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
 
@@ -1401,12 +1404,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpPlusEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32:
@@ -1416,38 +1419,38 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpPlusEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqF32:
     {
-        *(float*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f32;
+        *(float*) registersRC[ip->a.u32].pointer += IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqF64:
     {
-        *(double*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f64;
+        *(double*) registersRC[ip->a.u32].pointer += IMMB_F64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqPointer:
     {
-        *(uint8_t**) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
+        *(uint8_t**) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqPointer:
     {
-        *(uint8_t**) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS32:
@@ -1457,283 +1460,265 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpMinusEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqF32:
     {
-        *(float*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].f32;
+        *(float*) registersRC[ip->a.u32].pointer -= IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqF64:
     {
-        *(double*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].f64;
+        *(double*) registersRC[ip->a.u32].pointer -= IMMB_F64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpMulEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s32;
+        *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqF32:
     {
-        *(float*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].f32;
+        *(float*) registersRC[ip->a.u32].pointer *= IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqF64:
     {
-        *(double*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].f64;
+        *(double*) registersRC[ip->a.u32].pointer *= IMMB_F64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpDivEqS8:
     {
-        auto val = registersRC[ip->b.u32].s8;
-        *(int8_t*) registersRC[ip->a.u32].pointer /= val;
+        *(int8_t*) registersRC[ip->a.u32].pointer /= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqS16:
     {
-        auto val = registersRC[ip->b.u32].s16;
-        *(int16_t*) registersRC[ip->a.u32].pointer /= val;
+        *(int16_t*) registersRC[ip->a.u32].pointer /= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqS32:
     {
-        auto val = registersRC[ip->b.u32].s32;
-        *(int32_t*) registersRC[ip->a.u32].pointer /= val;
+        *(int32_t*) registersRC[ip->a.u32].pointer /= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqS64:
     {
-        auto val = registersRC[ip->b.u32].s64;
-        *(int64_t*) registersRC[ip->a.u32].pointer /= val;
+        *(int64_t*) registersRC[ip->a.u32].pointer /= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqU8:
     {
-        auto val = registersRC[ip->b.u32].u8;
-        *(uint8_t*) registersRC[ip->a.u32].pointer /= val;
+        *(uint8_t*) registersRC[ip->a.u32].pointer /= IMMB_U8(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqU16:
     {
-        auto val = registersRC[ip->b.u32].u16;
-        *(uint16_t*) registersRC[ip->a.u32].pointer /= val;
+        *(uint16_t*) registersRC[ip->a.u32].pointer /= IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqU32:
     {
-        auto val = registersRC[ip->b.u32].u32;
-        *(uint32_t*) registersRC[ip->a.u32].pointer /= val;
+        *(uint32_t*) registersRC[ip->a.u32].pointer /= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqU64:
     {
-        auto val = registersRC[ip->b.u32].u64;
-        *(uint64_t*) registersRC[ip->a.u32].pointer /= val;
+        *(uint64_t*) registersRC[ip->a.u32].pointer /= IMMB_U64(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqF32:
     {
-        auto val = registersRC[ip->b.u32].f32;
-        *(float*) registersRC[ip->a.u32].pointer /= val;
+        *(float*) registersRC[ip->a.u32].pointer /= IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::AffectOpDivEqF64:
     {
-        auto val = registersRC[ip->b.u32].f64;
-        *(double*) registersRC[ip->a.u32].pointer /= val;
+        *(double*) registersRC[ip->a.u32].pointer /= IMMB_F64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpAndEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer &= registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer &= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpAndEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer &= registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer &= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpAndEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer &= registersRC[ip->b.u32].s32;
+        *(int32_t*) registersRC[ip->a.u32].pointer &= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpAndEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer &= registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer &= IMMB_S64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpOrEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer |= registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer |= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpOrEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer |= registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer |= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpOrEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer |= registersRC[ip->b.u32].s32;
+        *(int32_t*) registersRC[ip->a.u32].pointer |= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpOrEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer |= registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer |= IMMB_S64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpXOrEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s8;
+        *(int8_t*) registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpXOrEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s16;
+        *(int16_t*) registersRC[ip->a.u32].pointer ^= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpXOrEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s32;
+        *(int32_t*) registersRC[ip->a.u32].pointer ^= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpXOrEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s64;
+        *(int64_t*) registersRC[ip->a.u32].pointer ^= IMMB_S64(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpShiftLeftEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        *(int8_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        *(int16_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        *(int32_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        *(int64_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpShiftRightEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(int8_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(int16_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(int32_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(int64_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU8:
     {
-        *(uint8_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(uint8_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU16:
     {
-        *(uint16_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(uint16_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU32:
     {
-        *(uint32_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(uint32_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU64:
     {
-        *(uint64_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        *(uint64_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
 
     case ByteCodeOp::AffectOpModuloEqS8:
     {
-        auto val2 = registersRC[ip->b.u32].s8;
-        *(int8_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int8_t*) registersRC[ip->a.u32].pointer %= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS16:
     {
-        auto val2 = registersRC[ip->b.u32].s16;
-        *(int16_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int16_t*) registersRC[ip->a.u32].pointer %= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS32:
     {
-        auto val2 = registersRC[ip->b.u32].s32;
-        *(int32_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int32_t*) registersRC[ip->a.u32].pointer %= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqS64:
     {
-        auto val2 = registersRC[ip->b.u32].s64;
-        *(int64_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(int64_t*) registersRC[ip->a.u32].pointer %= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU8:
     {
-        auto val2 = registersRC[ip->b.u32].u8;
-        *(uint8_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint8_t*) registersRC[ip->a.u32].pointer %= IMMB_U8(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU16:
     {
-        auto val2 = registersRC[ip->b.u32].u16;
-        *(uint16_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint16_t*) registersRC[ip->a.u32].pointer %= IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU32:
     {
-        auto val2 = registersRC[ip->b.u32].u32;
-        *(uint32_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint32_t*) registersRC[ip->a.u32].pointer %= IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::AffectOpModuloEqU64:
     {
-        auto val2 = registersRC[ip->b.u32].u64;
-        *(uint64_t*) registersRC[ip->a.u32].pointer %= val2;
+        *(uint64_t*) registersRC[ip->a.u32].pointer %= IMMB_U64(ip);
         break;
     }
 
