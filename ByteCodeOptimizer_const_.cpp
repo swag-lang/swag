@@ -152,6 +152,26 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.f64                     = -ip->b.f64;
                 context->passHasDoneSomething = true;
                 break;
+            case ByteCodeOp::InvertS8:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s8                      = ~ip->b.s8;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::InvertS16:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s16                     = ~ip->b.s16;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::InvertS32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s32                     = ~ip->b.s32;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::InvertS64:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.s64                     = ~ip->b.s64;
+                context->passHasDoneSomething = true;
+                break;
             case ByteCodeOp::NegBool:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ip->b.b ^= 1;
