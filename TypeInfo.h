@@ -132,6 +132,7 @@ struct TypeInfo
         declNode   = from->declNode;
     }
 
+    void               forceComputeName();
     virtual TypeInfo*  clone() = 0;
     virtual void       computeName();
     virtual void       computeScopedName();

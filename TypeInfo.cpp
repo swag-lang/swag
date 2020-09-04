@@ -6,6 +6,12 @@ void TypeInfo::computeName()
 {
 }
 
+void TypeInfo::forceComputeName()
+{
+    nakedName.clear();
+    computeName();
+}
+
 void TypeInfo::computeScopedNameNoLock()
 {
     if (!scopedName.empty())

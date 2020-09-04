@@ -248,8 +248,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     }
     else
     {
-        newType->nakedName.clear(); // Force the recompute of the name
-        newType->computeName();
+        newType->forceComputeName();
     }
 
     auto structJob = end(context, context->job, match.symbolName, structNode, true);

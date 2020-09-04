@@ -281,6 +281,8 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
+
+            typeInfo->forceComputeName();
         }
     }
 
