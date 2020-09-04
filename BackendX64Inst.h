@@ -689,22 +689,7 @@ namespace BackendX64Inst
 
         pp.concat.addU8(0x0F);
         pp.concat.addU8(op);
-
-        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
-        if (offsetStack == 0)
-        {
-            pp.concat.addU8(0x07);
-        }
-        else if (offsetStack <= 0x7F)
-        {
-            pp.concat.addU8(0x47);
-            pp.concat.addU8((uint8_t) offsetStack);
-        }
-        else
-        {
-            pp.concat.addU8(0x87);
-            pp.concat.addU32(offsetStack);
-        }
+        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
 
         switch (bits)
         {
@@ -786,7 +771,7 @@ namespace BackendX64Inst
 
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
     }
-    
+
     inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false)
     {
         switch (bits)
