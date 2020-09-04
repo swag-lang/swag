@@ -744,30 +744,6 @@ namespace BackendX64Inst
         BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
     }
 
-    inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op)
-    {
-        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-        pp.concat.addU8(0xF3);
-
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(op);
-        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
-
-        BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
-    }
-
-    inline void emit_BinOpFloat64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op)
-    {
-        BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-        pp.concat.addU8(0xF2);
-
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(op);
-        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
-
-        BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
-    }
-
     inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
