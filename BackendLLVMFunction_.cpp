@@ -1934,10 +1934,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpGreaterS64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].s64 > r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateICmpSGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -1954,10 +1952,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpGreaterU64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u64 > r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateICmpUGT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -1997,10 +1993,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpLowerS64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].s64 < r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateICmpSLT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -2017,10 +2011,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CompareOpLowerU64:
         {
             //concat.addStringFormat("r[%u].b = r[%u].u64 < r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateICmpULT(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;

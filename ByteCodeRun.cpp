@@ -12,7 +12,10 @@
 #include "CompilerItf.h"
 
 #define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
+#define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
+
 #define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
+#define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
 
 #define IMMA_U8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u8 : registersRC[ip->a.u32].u8)
 #define IMMA_U16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u16 : registersRC[ip->a.u32].u16)
@@ -1075,7 +1078,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpLowerS64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s64 < registersRC[ip->b.u32].s64;
+        registersRC[ip->c.u32].b = IMMA_S64(ip) < IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerU32:
@@ -1085,7 +1088,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpLowerU64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 < registersRC[ip->b.u32].u64;
+        registersRC[ip->c.u32].b = IMMA_U64(ip) < IMMB_U64(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerF32:
@@ -1106,7 +1109,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpGreaterS64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s64 > registersRC[ip->b.u32].s64;
+        registersRC[ip->c.u32].b = IMMA_S64(ip) > IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterU32:
@@ -1116,7 +1119,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpGreaterU64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 > registersRC[ip->b.u32].u64;
+        registersRC[ip->c.u32].b = IMMA_U64(ip) > IMMB_U64(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterF32:
