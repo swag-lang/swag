@@ -1060,7 +1060,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS32:
             //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) += r[", ip->b.u32, "].s32;");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX, RDI);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RCX, X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
