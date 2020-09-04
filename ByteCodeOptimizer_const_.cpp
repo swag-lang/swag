@@ -118,11 +118,30 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
             }
         }
-
         else if (ip->flags & BCI_IMM_B)
         {
             switch (ip->op)
             {
+            case ByteCodeOp::NegBool:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.b ^= 1;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastF32F64:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.f64                     = ip->b.f32;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastF64S64:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.s64                     = (int64_t) ip->b.f64;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastF64F32:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.f32                     = (float) ip->b.f64;
+                context->passHasDoneSomething = true;
+                break;
             case ByteCodeOp::TestNotZero8:
                 ip->op                        = ByteCodeOp::SetImmediate32;
                 ip->b.u32                     = ip->b.u8 != 0;
