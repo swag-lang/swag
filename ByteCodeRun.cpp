@@ -11,6 +11,12 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
+#define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
+#define IMMA_F64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f64 : registersRC[ip->a.u32].f64)
+
+#define IMMB_F32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f32 : registersRC[ip->b.u32].f32)
+#define IMMB_F64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f64 : registersRC[ip->b.u32].f64)
+
 #define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
 #define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
 
@@ -1093,12 +1099,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpLowerF32:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f32 < registersRC[ip->b.u32].f32;
+        registersRC[ip->c.u32].b = IMMA_F32(ip) < IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerF64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 < registersRC[ip->b.u32].f64;
+        registersRC[ip->c.u32].b = IMMA_F64(ip) < IMMB_F64(ip);
         break;
     }
 
@@ -1124,12 +1130,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpGreaterF32:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f32 > registersRC[ip->b.u32].f32;
+        registersRC[ip->c.u32].b = IMMA_F32(ip) > IMMB_F32(ip);
         break;
     }
     case ByteCodeOp::CompareOpGreaterF64:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 > registersRC[ip->b.u32].f64;
+        registersRC[ip->c.u32].b = IMMA_F64(ip) > IMMB_F64(ip);
         break;
     }
 

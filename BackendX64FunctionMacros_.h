@@ -93,3 +93,34 @@
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI); \
         BackendX64Inst::__op(pp, RAX, RCX);                                           \
     }
+
+#define MK_BINOPF32_CAB(__opInd, __op)                                                  \
+    if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                                         \
+    {                                                                                   \
+        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);     \
+        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), XMM0, RDI);                   \
+    }                                                                                   \
+    else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                       \
+    {                                                                                   \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);                      \
+        BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);                                    \
+        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), XMM0, RDI);                   \
+    }                                                                                   \
+    else                                                                                \
+    {                                                                                   \
+        if (ip->flags & BCI_IMM_A)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);                  \
+            BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_B)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);                  \
+            BackendX64Inst::emit_CopyF32(pp, RAX, XMM1);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI); \
+        BackendX64Inst::__op(pp, XMM0, XMM1);                                           \
+    }
