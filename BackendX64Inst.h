@@ -723,12 +723,6 @@ namespace BackendX64Inst
     {
         switch (bits)
         {
-        case 8:
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-        case 16:
-            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            break;
         case 32:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
@@ -749,12 +743,6 @@ namespace BackendX64Inst
 
         switch (bits)
         {
-        case 8:
-            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
-        case 16:
-            BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
         case 32:
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
