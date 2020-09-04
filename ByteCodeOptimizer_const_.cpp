@@ -122,6 +122,36 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
+            case ByteCodeOp::DecrementRA32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u32 -= 1;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::IncrementRA32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u32 += 1;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::NegS32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s32                     = -ip->b.s32;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::NegS64:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.s64                     = -ip->b.s64;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::NegF32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.f32                     = -ip->b.f32;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::NegF64:
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.f64                     = -ip->b.f64;
+                context->passHasDoneSomething = true;
+                break;
             case ByteCodeOp::NegBool:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ip->b.b ^= 1;
