@@ -719,6 +719,55 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
+        {
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            pp.concat.addU8((uint8_t) op | 2);
+            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+        }
+        else
+        {
+            if (ip->flags & BCI_IMM_A)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            emit_Op32(pp, RCX, RAX, op);
+        }
+
+        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+    }
+
+    inline void emit_BinOpInt64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
+        {
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            pp.concat.addU8(0x48);
+            pp.concat.addU8((uint8_t) op | 2);
+            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+        }
+        else
+        {
+            if (ip->flags & BCI_IMM_A)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            emit_Op64(pp, RCX, RAX, op);
+        }
+
+        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+    }
+
     inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint16_t op)
     {
         BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
