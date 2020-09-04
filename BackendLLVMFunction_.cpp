@@ -1228,10 +1228,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS32:
         {
             //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s32;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateSub(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }

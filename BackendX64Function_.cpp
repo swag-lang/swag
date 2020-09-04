@@ -1011,10 +1011,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Op16_Indirect(pp, 0, RAX, RCX, X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
-            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s16;");
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RCX, X64Op::SUB);
+            MK_BINOPEQ32_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
             //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s64;");

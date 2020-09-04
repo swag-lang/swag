@@ -1452,7 +1452,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpMinusEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS64:

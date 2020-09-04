@@ -159,7 +159,7 @@
 #define MK_BINOPEQ32_CAB(__op)                                                    \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);     \
     if (ip->flags & BCI_IMM_B)                                                    \
-        BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX, RDI);           \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);                \
     else                                                                          \
         BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI); \
     BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RCX, __op);
