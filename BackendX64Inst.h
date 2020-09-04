@@ -745,22 +745,7 @@ namespace BackendX64Inst
             pp.concat.addU16(op);
         else
             pp.concat.addU8((uint8_t) op);
-
-        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
-        if (offsetStack == 0)
-        {
-            pp.concat.addU8(0x07);
-        }
-        else if (offsetStack <= 0x7F)
-        {
-            pp.concat.addU8(0x47);
-            pp.concat.addU8((uint8_t) offsetStack);
-        }
-        else
-        {
-            pp.concat.addU8(0x87);
-            pp.concat.addU32(offsetStack);
-        }
+        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
 
         switch (bits)
         {
