@@ -731,13 +731,9 @@ namespace BackendX64Inst
             break;
         case 32:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (op == 0xF7)                   // idiv
-                pp.concat.addString1("\x99"); // cdq
             break;
         case 64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (op == 0xF7)                       // idiv
-                pp.concat.addString2("\x48\x99"); // cqo
             pp.concat.addU8(0x48);
             break;
         default:
@@ -753,25 +749,16 @@ namespace BackendX64Inst
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);
         if (offsetStack == 0)
         {
-            if (op == 0xF7) // idiv
-                pp.concat.addU8(0x3F);
-            else
-                pp.concat.addU8(0x07);
+            pp.concat.addU8(0x07);
         }
         else if (offsetStack <= 0x7F)
         {
-            if (op == 0xF7) // idiv
-                pp.concat.addU8(0x7F);
-            else
-                pp.concat.addU8(0x47);
+            pp.concat.addU8(0x47);
             pp.concat.addU8((uint8_t) offsetStack);
         }
         else
         {
-            if (op == 0xF7) // idiv
-                pp.concat.addU8(0xBF);
-            else
-                pp.concat.addU8(0x87);
+            pp.concat.addU8(0x87);
             pp.concat.addU32(offsetStack);
         }
 
