@@ -304,5 +304,16 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
+        else if (ip->flags & BCI_IMM_C)
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::Mul64byVB32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s32                     = ip->b.s32 * ip->c.s32;
+                context->passHasDoneSomething = true;
+                break;
+            }
+        }
     }
 }

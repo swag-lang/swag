@@ -50,6 +50,16 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->a.u32] = nullptr;
                 ip->b.u64       = regsRW[ip->a.u32];
             }
+            // Read/write to A, and A is a constant, we store the current value in C. The constant folding pass can take care of that
+            // depending on the instruction
+            if (!(ip->flags & BCI_IMM_C) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs[ip->a.u32] &&
+                !(flags & OPFLAG_READ_C) && !(flags & OPFLAG_READ_VAL32_C) && !(flags & OPFLAG_READ_VAL64_C))
+            {
+                context->passHasDoneSomething = true;
+                ip->flags |= BCI_IMM_C;
+                regs[ip->a.u32] = nullptr;
+                ip->c.u64       = regsRW[ip->a.u32];
+            }
             else
             {
                 if (flags & OPFLAG_WRITE_A)
