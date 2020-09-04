@@ -670,39 +670,28 @@ namespace BackendX64Inst
 
     //////////////////////////////////////////////////
 
-    inline void emit_BinOpFloat_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op, uint32_t bits)
+    inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op)
     {
-        switch (bits)
-        {
-        case 32:
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            pp.concat.addU8(0xF3);
-            break;
-        case 64:
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            pp.concat.addU8(0xF2);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+        pp.concat.addU8(0xF3);
 
         pp.concat.addU8(0x0F);
         pp.concat.addU8(op);
         emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
 
-        switch (bits)
-        {
-        case 32:
-            BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
-            break;
-        case 64:
-            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
+    }
+
+    inline void emit_BinOpFloat64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op)
+    {
+        BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+        pp.concat.addU8(0xF2);
+
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(op);
+        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+
+        BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
     }
 
     inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
