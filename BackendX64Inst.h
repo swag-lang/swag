@@ -719,21 +719,9 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_BinOpInt_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint16_t op, uint32_t bits)
+    inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint16_t op)
     {
-        switch (bits)
-        {
-        case 32:
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-        case 64:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            pp.concat.addU8(0x48);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
 
         if (op & 0xFF00)
             pp.concat.addU16(op);
@@ -741,18 +729,21 @@ namespace BackendX64Inst
             pp.concat.addU8((uint8_t) op);
         emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
 
-        switch (bits)
-        {
-        case 32:
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
-        case 64:
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+    }
+
+    inline void emit_BinOpInt64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint16_t op)
+    {
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+
+        pp.concat.addU8(0x48);
+        if (op & 0xFF00)
+            pp.concat.addU16(op);
+        else
+            pp.concat.addU8((uint8_t) op);
+        emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+
+        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
     }
 
     inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false)
