@@ -37,6 +37,7 @@ enum class X64Op : uint8_t
     XOR  = 0x31,
     IDIV = 0xF7,
     MUL  = 0xC1,
+    FADD = 0x58,
 };
 
 namespace BackendX64Inst
@@ -669,6 +670,74 @@ namespace BackendX64Inst
     // clang-format on
 
     //////////////////////////////////////////////////
+
+    inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
+        {
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            pp.concat.addU8(0xF3);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) op);
+            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+        }
+        else
+        {
+            if (ip->flags & BCI_IMM_A)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
+            }
+            else
+                BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);
+                BackendX64Inst::emit_CopyF32(pp, RAX, XMM1);
+            }
+            else
+                BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
+            pp.concat.addU8(0xF3);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) op);
+        }
+
+        BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
+    }
+
+    inline void emit_BinOpFloat64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
+        {
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            pp.concat.addU8(0xF2);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) op);
+            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+        }
+        else
+        {
+            if (ip->flags & BCI_IMM_A)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
+                BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);
+            }
+            else
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
+                BackendX64Inst::emit_CopyF64(pp, RAX, XMM1);
+            }
+            else
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM1, RDI);
+            pp.concat.addU8(0xF2);
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8((uint8_t) op);
+        }
+
+        BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
+    }
 
     inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, uint8_t op)
     {
