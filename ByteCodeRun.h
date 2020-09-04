@@ -6,6 +6,10 @@ struct ByteCodeInstruction;
 struct TypeInfo;
 struct AstFuncDecl;
 struct TypeInfoFuncAttr;
+struct JobContext;
+enum class ByteCodeOp : uint16_t;
+enum class TokenId;
+union Register;
 
 struct ByteCodeRun
 {
@@ -18,4 +22,6 @@ struct ByteCodeRun
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
+
+    static bool executeMathIntrinsic(JobContext* context, ByteCodeOp op, TokenId intrinsic, Register& ra, Register& rb, Register& rc);
 };

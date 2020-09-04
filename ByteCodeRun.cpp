@@ -26,6 +26,240 @@
 
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 
+bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, TokenId intrinsic, Register& ra, Register& rb, Register& rc)
+{
+    switch (op)
+    {
+    case ByteCodeOp::IntrinsicS8x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicAbs:
+            ra.s8 = (int8_t) abs(rb.s8);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS16x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicAbs:
+            ra.s16 = (int16_t) abs(rb.s16);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS32x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicAbs:
+            ra.s32 = abs(rb.s32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS64x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicAbs:
+            ra.s64 = abs(rb.s64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF32x2:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicPow:
+            ra.f32 = powf(rb.f32, rc.f32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF64x2:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicPow:
+            ra.f64 = pow(rb.f64, rc.f64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF32x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicSqrt:
+            ra.f32 = sqrtf(rb.f32);
+            break;
+        case TokenId::IntrinsicSin:
+            ra.f32 = sinf(rb.f32);
+            break;
+        case TokenId::IntrinsicCos:
+            ra.f32 = cosf(rb.f32);
+            break;
+        case TokenId::IntrinsicTan:
+            ra.f32 = tanf(rb.f32);
+            break;
+        case TokenId::IntrinsicSinh:
+            ra.f32 = sinhf(rb.f32);
+            break;
+        case TokenId::IntrinsicCosh:
+            ra.f32 = coshf(rb.f32);
+            break;
+        case TokenId::IntrinsicTanh:
+            ra.f32 = tanhf(rb.f32);
+            break;
+        case TokenId::IntrinsicASin:
+            ra.f32 = asinf(rb.f32);
+            break;
+        case TokenId::IntrinsicACos:
+            ra.f32 = acosf(rb.f32);
+            break;
+        case TokenId::IntrinsicATan:
+            ra.f32 = atanf(rb.f32);
+            break;
+        case TokenId::IntrinsicLog:
+            ra.f32 = log(rb.f32);
+            break;
+        case TokenId::IntrinsicLog2:
+            ra.f32 = log2(rb.f32);
+            break;
+        case TokenId::IntrinsicLog10:
+            ra.f32 = log10(rb.f32);
+            break;
+        case TokenId::IntrinsicFloor:
+            ra.f32 = floorf(rb.f32);
+            break;
+        case TokenId::IntrinsicCeil:
+            ra.f32 = ceilf(rb.f32);
+            break;
+        case TokenId::IntrinsicTrunc:
+            ra.f32 = truncf(rb.f32);
+            break;
+        case TokenId::IntrinsicRound:
+            ra.f32 = roundf(rb.f32);
+            break;
+        case TokenId::IntrinsicAbs:
+            ra.f32 = fabsf(rb.f32);
+            break;
+        case TokenId::IntrinsicExp:
+            ra.f32 = expf(rb.f32);
+            break;
+        case TokenId::IntrinsicExp2:
+            ra.f32 = exp2f(rb.f32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF64x1:
+    {
+        switch (intrinsic)
+        {
+        case TokenId::IntrinsicSqrt:
+            ra.f64 = sqrt(rb.f64);
+            break;
+        case TokenId::IntrinsicSin:
+            ra.f64 = sin(rb.f64);
+            break;
+        case TokenId::IntrinsicCos:
+            ra.f64 = cos(rb.f64);
+            break;
+        case TokenId::IntrinsicTan:
+            ra.f64 = tan(rb.f64);
+            break;
+        case TokenId::IntrinsicSinh:
+            ra.f64 = sinh(rb.f64);
+            break;
+        case TokenId::IntrinsicCosh:
+            ra.f64 = cosh(rb.f64);
+            break;
+        case TokenId::IntrinsicTanh:
+            ra.f64 = tanh(rb.f64);
+            break;
+        case TokenId::IntrinsicASin:
+            ra.f64 = asin(rb.f64);
+            break;
+        case TokenId::IntrinsicACos:
+            ra.f64 = acos(rb.f64);
+            break;
+        case TokenId::IntrinsicATan:
+            ra.f64 = atan(rb.f64);
+            break;
+        case TokenId::IntrinsicLog:
+            ra.f64 = log(rb.f64);
+            break;
+        case TokenId::IntrinsicLog2:
+            ra.f64 = log2(rb.f64);
+            break;
+        case TokenId::IntrinsicLog10:
+            ra.f64 = log10(rb.f64);
+            break;
+        case TokenId::IntrinsicFloor:
+            ra.f64 = floor(rb.f64);
+            break;
+        case TokenId::IntrinsicCeil:
+            ra.f64 = ceil(rb.f64);
+            break;
+        case TokenId::IntrinsicTrunc:
+            ra.f64 = trunc(rb.f64);
+            break;
+        case TokenId::IntrinsicRound:
+            ra.f64 = round(rb.f64);
+            break;
+        case TokenId::IntrinsicAbs:
+            ra.f64 = fabs(rb.f64);
+            break;
+        case TokenId::IntrinsicExp:
+            ra.f64 = exp(rb.f64);
+            break;
+        case TokenId::IntrinsicExp2:
+            ra.f64 = exp2(rb.f64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+    }
+
+    return true;
+}
+
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->bc->registersRC[context->bc->curRC];
@@ -37,230 +271,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
 
     case ByteCodeOp::IntrinsicS8x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].s8 = (int8_t) abs(registersRC[ip->b.u32].s8);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicS16x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].s16 = (int16_t) abs(registersRC[ip->b.u32].s16);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicS32x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].s32 = abs(registersRC[ip->b.u32].s32);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicS64x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].s64 = abs(registersRC[ip->b.u32].s64);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicF32x2:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicPow:
-            registersRC[ip->a.u32].f32 = powf(registersRC[ip->b.u32].f32, registersRC[ip->c.u32].f32);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicF64x2:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicPow:
-            registersRC[ip->a.u32].f64 = pow(registersRC[ip->b.u32].f64, registersRC[ip->c.u32].f64);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicF32x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicSqrt:
-            registersRC[ip->a.u32].f32 = sqrtf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicSin:
-            registersRC[ip->a.u32].f32 = sinf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicCos:
-            registersRC[ip->a.u32].f32 = cosf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicTan:
-            registersRC[ip->a.u32].f32 = tanf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicSinh:
-            registersRC[ip->a.u32].f32 = sinhf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicCosh:
-            registersRC[ip->a.u32].f32 = coshf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicTanh:
-            registersRC[ip->a.u32].f32 = tanhf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicASin:
-            registersRC[ip->a.u32].f32 = asinf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicACos:
-            registersRC[ip->a.u32].f32 = acosf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicATan:
-            registersRC[ip->a.u32].f32 = atanf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicLog:
-            registersRC[ip->a.u32].f32 = log(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicLog2:
-            registersRC[ip->a.u32].f32 = log2(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicLog10:
-            registersRC[ip->a.u32].f32 = log10(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicFloor:
-            registersRC[ip->a.u32].f32 = floorf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicCeil:
-            registersRC[ip->a.u32].f32 = ceilf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicTrunc:
-            registersRC[ip->a.u32].f32 = truncf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicRound:
-            registersRC[ip->a.u32].f32 = roundf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].f32 = fabsf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicExp:
-            registersRC[ip->a.u32].f32 = expf(registersRC[ip->b.u32].f32);
-            break;
-        case TokenId::IntrinsicExp2:
-            registersRC[ip->a.u32].f32 = exp2f(registersRC[ip->b.u32].f32);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-        break;
-    }
-
     case ByteCodeOp::IntrinsicF64x1:
-    {
-        switch ((TokenId) ip->d.u32)
-        {
-        case TokenId::IntrinsicSqrt:
-            registersRC[ip->a.u32].f64 = sqrt(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicSin:
-            registersRC[ip->a.u32].f64 = sin(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicCos:
-            registersRC[ip->a.u32].f64 = cos(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicTan:
-            registersRC[ip->a.u32].f64 = tan(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicSinh:
-            registersRC[ip->a.u32].f64 = sinh(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicCosh:
-            registersRC[ip->a.u32].f64 = cosh(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicTanh:
-            registersRC[ip->a.u32].f64 = tanh(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicASin:
-            registersRC[ip->a.u32].f64 = asin(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicACos:
-            registersRC[ip->a.u32].f64 = acos(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicATan:
-            registersRC[ip->a.u32].f64 = atan(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicLog:
-            registersRC[ip->a.u32].f64 = log(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicLog2:
-            registersRC[ip->a.u32].f64 = log2(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicLog10:
-            registersRC[ip->a.u32].f64 = log10(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicFloor:
-            registersRC[ip->a.u32].f64 = floor(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicCeil:
-            registersRC[ip->a.u32].f64 = ceil(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicTrunc:
-            registersRC[ip->a.u32].f64 = trunc(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicRound:
-            registersRC[ip->a.u32].f64 = round(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicAbs:
-            registersRC[ip->a.u32].f64 = fabs(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicExp:
-            registersRC[ip->a.u32].f64 = exp(registersRC[ip->b.u32].f64);
-            break;
-        case TokenId::IntrinsicExp2:
-            registersRC[ip->a.u32].f64 = exp2(registersRC[ip->b.u32].f64);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        SWAG_CHECK(executeMathIntrinsic(context, ip->op, (TokenId) ip->d.u32, registersRC[ip->a.u32], registersRC[ip->b.u32], registersRC[ip->c.u32]));
         break;
-    }
 
     case ByteCodeOp::TestNotZero8:
     {
