@@ -888,7 +888,7 @@ namespace BackendX64Inst
         LabelToSolve label;
         label.ipDest = jumpOffset + instructionCount + 1;
 
-        // Can we solve the lavel now ?
+        // Can we solve the label now ?
         auto it = pp.labels.find(label.ipDest);
         if (it != pp.labels.end())
         {
@@ -900,13 +900,13 @@ namespace BackendX64Inst
                 switch (jumpType)
                 {
                 case JNZ:
-                    pp.concat.addString1("\x75"); // jnz ??
+                    pp.concat.addU8(0x75);
                     break;
                 case JZ:
-                    pp.concat.addString1("\x74"); // jz ??
+                    pp.concat.addU8(0x74);
                     break;
                 case JUMP:
-                    pp.concat.addString1("\xeb"); // jmp ??
+                    pp.concat.addU8(0xEB);
                     break;
                 }
 
@@ -919,13 +919,15 @@ namespace BackendX64Inst
                 switch (jumpType)
                 {
                 case JNZ:
-                    pp.concat.addString2("\x0F\x85"); // jnz ????????
+                    pp.concat.addU8(0x0F);
+                    pp.concat.addU8(0x85);
                     break;
                 case JZ:
-                    pp.concat.addString2("\x0F\x84"); // jz ????????
+                    pp.concat.addU8(0x0F);
+                    pp.concat.addU8(0x84);
                     break;
                 case JUMP:
-                    pp.concat.addU8(0xE9); // jmp ????????
+                    pp.concat.addU8(0xE9);
                     break;
                 }
 
@@ -941,13 +943,15 @@ namespace BackendX64Inst
         switch (jumpType)
         {
         case JNZ:
-            pp.concat.addString2("\x0F\x85"); // jnz ????????
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x85);
             break;
         case JZ:
-            pp.concat.addString2("\x0F\x84"); // jz ????????
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x84);
             break;
         case JUMP:
-            pp.concat.addU8(0xE9); // jmp ????????
+            pp.concat.addU8(0xE9);
             break;
         }
 

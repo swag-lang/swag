@@ -35,7 +35,6 @@
     @assert(x == 3)
 }
 
-#[swag.printbc]
 #test
 {
     x := 3's32
