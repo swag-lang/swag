@@ -673,13 +673,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x23, 32);
             break;
         case ByteCodeOp::BinOpBitmaskAndS64:
-        case ByteCodeOp::BinOpAnd:
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x23, 64);
             break;
 
         case ByteCodeOp::BinOpBitmaskOrS32:
-        case ByteCodeOp::BinOpOr:
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_BinOpInt_At_Reg(pp, ip, 0x0b, 32);
             break;

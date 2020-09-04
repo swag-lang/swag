@@ -953,21 +953,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::BinOpAnd:
-    {
-        auto val1                = IMMA_B(ip);
-        auto val2                = IMMB_B(ip);
-        registersRC[ip->c.u32].b = val1 && val2;
-        break;
-    }
-    case ByteCodeOp::BinOpOr:
-    {
-        auto val1                = IMMA_B(ip);
-        auto val2                = IMMB_B(ip);
-        registersRC[ip->c.u32].b = val1 || val2;
-        break;
-    }
-
     case ByteCodeOp::BinOpBitmaskAndS32:
     {
         auto val1                  = IMMA_S32(ip);

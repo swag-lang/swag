@@ -147,12 +147,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpXorU64:
                 BINOP_U64(^);
                 break;
-            case ByteCodeOp::BinOpAnd:
-                BINOP_B(&&);
-                break;
-            case ByteCodeOp::BinOpOr:
-                BINOP_B(||);
-                break;
             case ByteCodeOp::BinOpShiftLeftU32:
                 BINOP_U32(<<);
                 break;

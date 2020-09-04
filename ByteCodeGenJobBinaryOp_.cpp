@@ -379,10 +379,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
                 SWAG_CHECK(emitBinaryOpModulo(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymAmpersandAmpersand:
-                emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
+                emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
                 break;
             case TokenId::SymVerticalVertical:
-                emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
+                emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
                 break;
             case TokenId::SymVertical:
                 SWAG_CHECK(emitBitmaskOr(context, typeInfoExpr, r0, r1, r2));

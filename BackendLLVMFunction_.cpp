@@ -1170,23 +1170,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpAnd:
-        {
-            //concat.addStringFormat("r[%u].b = r[%u].b && r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateAnd(r1, r2);
-            builder.CreateStore(v0, r0);
-            break;
-        }
-        case ByteCodeOp::BinOpOr:
-        {
-            //concat.addStringFormat("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateOr(r1, r2);
-            builder.CreateStore(v0, r0);
-            break;
-        }
-
         case ByteCodeOp::BinOpBitmaskAndS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
