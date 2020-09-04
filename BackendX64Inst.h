@@ -755,11 +755,11 @@ namespace BackendX64Inst
         else
         {
             if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             emit_Op64(pp, RCX, RAX, op);
