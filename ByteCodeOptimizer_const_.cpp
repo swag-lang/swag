@@ -309,8 +309,14 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             switch (ip->op)
             {
             case ByteCodeOp::Mul64byVB32:
-                ip->op                        = ByteCodeOp::SetImmediate32;
-                ip->b.s32                     = ip->b.s32 * ip->c.s32;
+                ip->op                        = ByteCodeOp::SetImmediate64;
+                ip->b.s64                     = ip->c.s64 * ip->b.s32;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::Div64byVB32:
+                ip->op = ByteCodeOp::SetImmediate64;
+                SWAG_ASSERT(ip->b.s32 != 0);
+                ip->b.s64                     = ip->c.s64 / ip->b.s32;
                 context->passHasDoneSomething = true;
                 break;
             }
