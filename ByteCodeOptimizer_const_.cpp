@@ -127,6 +127,36 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.b ^= 1;
                 context->passHasDoneSomething = true;
                 break;
+            case ByteCodeOp::CastBool8:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.b                       = ip->b.u8 ? true : false;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastBool16:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.b                       = ip->b.u16 ? true : false;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastBool32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.b                       = ip->b.u32 ? true : false;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastBool64:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.b                       = ip->b.u64 ? true : false;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastS8S16:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s16                     = ip->b.s8;
+                context->passHasDoneSomething = true;
+                break;
+            case ByteCodeOp::CastS16S32:
+                ip->op                        = ByteCodeOp::SetImmediate32;
+                ip->b.s32                     = ip->b.s16;
+                context->passHasDoneSomething = true;
+                break;
             case ByteCodeOp::CastF32F64:
                 ip->op                        = ByteCodeOp::SetImmediate64;
                 ip->b.f64                     = ip->b.f32;
