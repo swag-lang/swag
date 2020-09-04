@@ -910,209 +910,172 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpPlusS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpPlusS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 + r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpPlusF32:
         {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::BinOpPlusF64:
         {
             //concat.addStringFormat("r[%u].f64= r[%u].f64 + r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpMinusS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 - r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpMinusS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 - r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpMinusF32:
         {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 - r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::BinOpMinusF64:
         {
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 - r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpMulS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpMulS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpMulF32:
         {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::BinOpMulF64:
         {
             //concat.addStringFormat("r[%u].f64= r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpXorU32:
         {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 ^ r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateXor(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpXorU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 ^ r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateXor(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpShiftLeftU32:
         {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateShl(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpShiftLeftU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto vb = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), vb);
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto vb = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
+            vb      = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
+            auto v0 = builder.CreateShl(r1, vb);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpShiftRightS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateAShr(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpShiftRightS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto vb = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            auto v0 = builder.CreateAShr(builder.CreateLoad(r1), vb);
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto vb = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
+            vb      = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
+            auto v0 = builder.CreateAShr(r1, vb);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpShiftRightU32:
         {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateLShr(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpShiftRightU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto vb = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), vb);
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto vb = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
+            vb      = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
+            auto v0 = builder.CreateLShr(r1, vb);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpShiftRightU64VB:
@@ -1128,122 +1091,98 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpModuloS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 %% r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateSRem(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpModuloS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 %% r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateSRem(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpModuloU32:
         {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 %% r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateURem(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpModuloU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 %% r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateURem(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpDivS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 / r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateSDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpDivS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 / r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateSDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpDivU32:
         {
             //concat.addStringFormat("r[%u].u32 = r[%u].u32 / r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateUDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpDivU64:
         {
             //concat.addStringFormat("r[%u].u64 = r[%u].u64 / r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateUDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::BinOpDivF32:
         {
             //concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::BinOpDivF64:
         {
             //concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFDiv(r1, r2);
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpAnd:
         {
             //concat.addStringFormat("r[%u].b = r[%u].b && r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP8_CAB();
+            auto v0 = builder.CreateAnd(r1, r2);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpOr:
         {
             //concat.addStringFormat("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOP8_CAB();
+            auto v0 = builder.CreateOr(r1, r2);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1251,42 +1190,34 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpBitmaskAndS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateAnd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpBitmaskAndS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateAnd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::BinOpBitmaskOrS32:
         {
             //concat.addStringFormat("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateOr(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::BinOpBitmaskOrS64:
         {
             //concat.addStringFormat("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
-            auto r0 = GEP_I32(allocR, ip->c.u32);
-            auto r1 = GEP_I32(allocR, ip->a.u32);
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r0);
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateOr(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
