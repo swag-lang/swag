@@ -11,6 +11,9 @@
 #include "Module.h"
 #include "CompilerItf.h"
 
+#define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
+#define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
+
 #define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
 #define IMMA_F64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f64 : registersRC[ip->a.u32].f64)
 
@@ -779,77 +782,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::BinOpModuloS32:
-    {
-        auto val1                  = registersRC[ip->a.u32].s32;
-        auto val2                  = registersRC[ip->b.u32].s32;
-        registersRC[ip->c.u32].s32 = val1 % val2;
-        break;
-    }
-    case ByteCodeOp::BinOpModuloS64:
-    {
-        auto val1                  = registersRC[ip->a.u32].s64;
-        auto val2                  = registersRC[ip->b.u32].s64;
-        registersRC[ip->c.u32].s64 = val1 % val2;
-        break;
-    }
-    case ByteCodeOp::BinOpModuloU32:
-    {
-        auto val1                  = registersRC[ip->a.u32].u32;
-        auto val2                  = registersRC[ip->b.u32].u32;
-        registersRC[ip->c.u32].u32 = val1 % val2;
-        break;
-    }
-    case ByteCodeOp::BinOpModuloU64:
-    {
-        auto val1                  = registersRC[ip->a.u32].u64;
-        auto val2                  = registersRC[ip->b.u32].u64;
-        registersRC[ip->c.u32].u64 = val1 % val2;
-        break;
-    }
-
-    case ByteCodeOp::BinOpPlusS32:
-    {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 + registersRC[ip->b.u32].s32;
-        break;
-    }
-    case ByteCodeOp::BinOpPlusS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 + registersRC[ip->b.u32].s64;
-        break;
-    }
-    case ByteCodeOp::BinOpPlusF32:
-    {
-        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 + registersRC[ip->b.u32].f32;
-        break;
-    }
-    case ByteCodeOp::BinOpPlusF64:
-    {
-        registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 + registersRC[ip->b.u32].f64;
-        break;
-    }
-
-    case ByteCodeOp::BinOpMinusS32:
-    {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 - registersRC[ip->b.u32].s32;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 - registersRC[ip->b.u32].s64;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusF32:
-    {
-        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 - registersRC[ip->b.u32].f32;
-        break;
-    }
-    case ByteCodeOp::BinOpMinusF64:
-    {
-        registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 - registersRC[ip->b.u32].f64;
-        break;
-    }
-
     case ByteCodeOp::Mul64byVB32:
     {
         registersRC[ip->a.u32].s64 *= ip->b.u32;
@@ -861,68 +793,272 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpModuloS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU32:
+    {
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU64:
+    {
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U64(ip);
+        registersRC[ip->c.u32].u64 = val1 % val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpPlusS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusF32:
+    {
+        auto val1                  = IMMA_F32(ip);
+        auto val2                  = IMMB_F32(ip);
+        registersRC[ip->c.u32].f32 = val1 + val2;
+        break;
+    }
+    case ByteCodeOp::BinOpPlusF64:
+    {
+        auto val1                  = IMMA_F64(ip);
+        auto val2                  = IMMB_F64(ip);
+        registersRC[ip->c.u32].f64 = val1 + val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpMinusS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusF32:
+    {
+        auto val1                  = IMMA_F32(ip);
+        auto val2                  = IMMB_F32(ip);
+        registersRC[ip->c.u32].f32 = val1 - val2;
+        break;
+    }
+    case ByteCodeOp::BinOpMinusF64:
+    {
+        auto val1                  = IMMA_F64(ip);
+        auto val2                  = IMMB_F64(ip);
+        registersRC[ip->c.u32].f64 = val1 - val2;
+        break;
+    }
+
     case ByteCodeOp::BinOpMulS32:
     {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 * registersRC[ip->b.u32].s32;
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulS64:
     {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 * registersRC[ip->b.u32].s64;
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulF32:
     {
-        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 * registersRC[ip->b.u32].f32;
+        auto val1                  = IMMA_F32(ip);
+        auto val2                  = IMMB_F32(ip);
+        registersRC[ip->c.u32].f32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulF64:
     {
-        registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 * registersRC[ip->b.u32].f64;
+        auto val1                  = IMMA_F64(ip);
+        auto val2                  = IMMB_F64(ip);
+        registersRC[ip->c.u32].f64 = val1 * val2;
         break;
     }
 
     case ByteCodeOp::BinOpDivS32:
     {
-        auto val1                  = registersRC[ip->a.u32].s32;
-        auto val2                  = registersRC[ip->b.u32].s32;
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 / val2;
         break;
     }
     case ByteCodeOp::BinOpDivS64:
     {
-        auto val1                  = registersRC[ip->a.u32].s64;
-        auto val2                  = registersRC[ip->b.u32].s64;
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 / val2;
         break;
     }
     case ByteCodeOp::BinOpDivU32:
     {
-        auto val1                  = registersRC[ip->a.u32].u32;
-        auto val2                  = registersRC[ip->b.u32].u32;
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
         registersRC[ip->c.u32].u32 = val1 / val2;
         break;
     }
     case ByteCodeOp::BinOpDivU64:
     {
-        auto val1                  = registersRC[ip->a.u32].u64;
-        auto val2                  = registersRC[ip->b.u32].u64;
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U64(ip);
         registersRC[ip->c.u32].u64 = val1 / val2;
         break;
     }
     case ByteCodeOp::BinOpDivF32:
     {
-        auto val1                  = registersRC[ip->a.u32].f32;
-        auto val2                  = registersRC[ip->b.u32].f32;
+        auto val1                  = IMMA_F32(ip);
+        auto val2                  = IMMB_F32(ip);
         registersRC[ip->c.u32].f32 = val1 / val2;
         break;
     }
 
     case ByteCodeOp::BinOpDivF64:
     {
-        auto val1                  = registersRC[ip->a.u32].f64;
-        auto val2                  = registersRC[ip->b.u32].f64;
+        auto val1                  = IMMA_F64(ip);
+        auto val2                  = IMMB_F64(ip);
         registersRC[ip->c.u32].f64 = val1 / val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpAnd:
+    {
+        auto val1                = IMMA_B(ip);
+        auto val2                = IMMB_B(ip);
+        registersRC[ip->c.u32].b = val1 && val2;
+        break;
+    }
+    case ByteCodeOp::BinOpOr:
+    {
+        auto val1                = IMMA_B(ip);
+        auto val2                = IMMB_B(ip);
+        registersRC[ip->c.u32].b = val1 || val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpBitmaskAndS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 & val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskAndS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 & val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskOrS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = val1 | val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskOrS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
+        registersRC[ip->c.u32].s64 = val1 | val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpShiftLeftU32:
+    {
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 << val2;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftLeftU64:
+    {
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u64 = val1 << val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpShiftRightS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].s32 = val1 >> val2;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].s64 = val1 >> val2;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightU32:
+    {
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 >> val2;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightU64:
+    {
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u64 = val1 >> val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpXorU32:
+    {
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 ^ val2;
+        break;
+    }
+    case ByteCodeOp::BinOpXorU64:
+    {
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U64(ip);
+        registersRC[ip->c.u32].u64 = val1 ^ val2;
+        break;
+    }
+
+    case ByteCodeOp::BinOpShiftRightU64VB:
+    {
+        registersRC[ip->a.u32].u64 >>= ip->b.u32;
         break;
     }
 
@@ -1162,86 +1298,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::NegF64:
     {
         registersRC[ip->a.u32].f64 = -registersRC[ip->a.u32].f64;
-        break;
-    }
-
-    case ByteCodeOp::BinOpAnd:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].b && registersRC[ip->b.u32].b;
-        break;
-    }
-    case ByteCodeOp::BinOpOr:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].b || registersRC[ip->b.u32].b;
-        break;
-    }
-
-    case ByteCodeOp::BinOpBitmaskAndS32:
-    {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 & registersRC[ip->b.u32].s32;
-        break;
-    }
-    case ByteCodeOp::BinOpBitmaskAndS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 & registersRC[ip->b.u32].s64;
-        break;
-    }
-    case ByteCodeOp::BinOpBitmaskOrS32:
-    {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 | registersRC[ip->b.u32].s32;
-        break;
-    }
-    case ByteCodeOp::BinOpBitmaskOrS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 | registersRC[ip->b.u32].s64;
-        break;
-    }
-
-    case ByteCodeOp::BinOpShiftLeftU32:
-    {
-        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 << registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpShiftLeftU64:
-    {
-        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 << registersRC[ip->b.u32].u32;
-        break;
-    }
-
-    case ByteCodeOp::BinOpShiftRightS32:
-    {
-        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpShiftRightS64:
-    {
-        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpShiftRightU32:
-    {
-        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpShiftRightU64:
-    {
-        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 >> registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpShiftRightU64VB:
-    {
-        registersRC[ip->a.u32].u64 >>= ip->b.u32;
-        break;
-    }
-
-    case ByteCodeOp::BinOpXorU32:
-    {
-        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 ^ registersRC[ip->b.u32].u32;
-        break;
-    }
-    case ByteCodeOp::BinOpXorU64:
-    {
-        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 ^ registersRC[ip->b.u32].u64;
         break;
     }
 

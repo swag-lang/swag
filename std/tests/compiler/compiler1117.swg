@@ -1,3 +1,4 @@
+//#[swag.printbc]
 #test
 {
 	x := 5
