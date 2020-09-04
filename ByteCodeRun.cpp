@@ -92,6 +92,8 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicPow:
             ra.f32 = powf(rb.f32, rc.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f32, rc.f32)});
             break;
         default:
             SWAG_ASSERT(false);
@@ -106,6 +108,8 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicPow:
             ra.f64 = pow(rb.f64, rc.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f64, rc.f64)});
             break;
         default:
             SWAG_ASSERT(false);
@@ -142,21 +146,31 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f32 = tanhf(rb.f32);
             break;
         case TokenId::IntrinsicASin:
+            if (rb.f32 < -1 || rb.f32 > 1)
+                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
             ra.f32 = asinf(rb.f32);
             break;
         case TokenId::IntrinsicACos:
+            if (rb.f32 < -1 || rb.f32 > 1)
+                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f32)});
             ra.f32 = acosf(rb.f32);
             break;
         case TokenId::IntrinsicATan:
             ra.f32 = atanf(rb.f32);
             break;
         case TokenId::IntrinsicLog:
+            if (rb.f32 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log(rb.f32);
             break;
         case TokenId::IntrinsicLog2:
+            if (rb.f32 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log2' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log2(rb.f32);
             break;
         case TokenId::IntrinsicLog10:
+            if (rb.f32 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log10' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log10(rb.f32);
             break;
         case TokenId::IntrinsicFloor:
@@ -189,9 +203,11 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicF64x1:
     {
-        switch ((TokenId)ip->d.u32)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
+            if (rb.f64 < 0)
+                return context->report({ip->node, ip->node->token, format("'@sqrt' on a negative value '%.3f'", rb.f64)});
             ra.f64 = sqrt(rb.f64);
             break;
         case TokenId::IntrinsicSin:
@@ -213,21 +229,31 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f64 = tanh(rb.f64);
             break;
         case TokenId::IntrinsicASin:
+            if (rb.f64 < -1 || rb.f64 > 1)
+                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
             ra.f64 = asin(rb.f64);
             break;
         case TokenId::IntrinsicACos:
+            if (rb.f64 < -1 || rb.f64 > 1)
+                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f64)});
             ra.f64 = acos(rb.f64);
             break;
         case TokenId::IntrinsicATan:
             ra.f64 = atan(rb.f64);
             break;
         case TokenId::IntrinsicLog:
+            if (rb.f64 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log(rb.f64);
             break;
         case TokenId::IntrinsicLog2:
+            if (rb.f64 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log2' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log2(rb.f64);
             break;
         case TokenId::IntrinsicLog10:
+            if (rb.f64 < 0)
+                return context->report({ip->node, ip->node->token, format("'@log10' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log10(rb.f64);
             break;
         case TokenId::IntrinsicFloor:
