@@ -26,13 +26,13 @@
 
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 
-bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, TokenId intrinsic, Register& ra, Register& rb, Register& rc)
+bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, Register& rb, Register& rc)
 {
-    switch (op)
+    switch (ip->op)
     {
     case ByteCodeOp::IntrinsicS8x1:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicAbs:
             ra.s8 = (int8_t) abs(rb.s8);
@@ -46,7 +46,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicS16x1:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicAbs:
             ra.s16 = (int16_t) abs(rb.s16);
@@ -60,7 +60,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicS32x1:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicAbs:
             ra.s32 = abs(rb.s32);
@@ -74,7 +74,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicS64x1:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicAbs:
             ra.s64 = abs(rb.s64);
@@ -88,7 +88,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicF32x2:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicPow:
             ra.f32 = powf(rb.f32, rc.f32);
@@ -102,7 +102,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicF64x2:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicPow:
             ra.f64 = pow(rb.f64, rc.f64);
@@ -116,9 +116,11 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicF32x1:
     {
-        switch (intrinsic)
+        switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
+            if (rb.f32 < 0)
+                return context->report({ip->node, ip->node->token, format("'@sqrt' on a negative value '%.3f'", rb.f32)});
             ra.f32 = sqrtf(rb.f32);
             break;
         case TokenId::IntrinsicSin:
@@ -187,7 +189,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeOp op, Token
 
     case ByteCodeOp::IntrinsicF64x1:
     {
-        switch (intrinsic)
+        switch ((TokenId)ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
             ra.f64 = sqrt(rb.f64);
@@ -278,7 +280,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicF64x2:
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
-        SWAG_CHECK(executeMathIntrinsic(context, ip->op, (TokenId) ip->d.u32, registersRC[ip->a.u32], registersRC[ip->b.u32], registersRC[ip->c.u32]));
+        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], registersRC[ip->b.u32], registersRC[ip->c.u32]));
         break;
 
     case ByteCodeOp::TestNotZero8:

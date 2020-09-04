@@ -100,7 +100,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
-                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
                 ip->b.u32                     = result.u32;
                 ip->op                        = ByteCodeOp::SetImmediate32;
                 context->passHasDoneSomething = true;
@@ -110,7 +110,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;
-                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
                 ip->b.u64                     = result.u64;
                 ip->op                        = ByteCodeOp::SetImmediate64;
                 context->passHasDoneSomething = true;
@@ -149,7 +149,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x1:
             {
                 Register result;
-                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
                 ip->b.u32                     = result.u32;
                 ip->op                        = ByteCodeOp::SetImmediate32;
                 context->passHasDoneSomething = true;
@@ -160,7 +160,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicS64x1:
             {
                 Register result;
-                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip->op, (TokenId) ip->d.u32, result, ip->b, ip->c);
+                context->hasError             = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
                 ip->op                        = ByteCodeOp::SetImmediate64;
                 ip->b.u64                     = result.u64;
                 context->passHasDoneSomething = true;
