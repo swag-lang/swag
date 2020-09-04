@@ -308,9 +308,9 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
-            case ByteCodeOp::AddRAVB32:
+            case ByteCodeOp::Add32byVB32:
                 ip->op                        = ByteCodeOp::SetImmediate32;
-                ip->b.u32                     = ip->c.u32 + ip->b.s32;
+                ip->b.u32                     = ip->c.u32 + ip->b.u32;
                 context->passHasDoneSomething = true;
                 break;
             case ByteCodeOp::Mul64byVB32:

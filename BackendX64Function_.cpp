@@ -311,7 +311,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
-        case ByteCodeOp::AddRAVB32:
+        case ByteCodeOp::Add32byVB32:
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->b.u32 <= 0x7F) // add [rax], ?

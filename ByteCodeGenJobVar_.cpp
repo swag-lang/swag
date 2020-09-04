@@ -108,7 +108,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
                     emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
                     if (typeArray->finalType->sizeOf)
-                        emitInstruction(context, ByteCodeOp::AddRAVB32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
+                        emitInstruction(context, ByteCodeOp::Add32byVB32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
                     emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);

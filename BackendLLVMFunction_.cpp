@@ -845,7 +845,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::AddRAVB32:
+        case ByteCodeOp::Add32byVB32:
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].u32 += ", ip->b.u32, ";");
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
