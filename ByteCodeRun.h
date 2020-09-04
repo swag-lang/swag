@@ -21,5 +21,5 @@ struct ByteCodeRun
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
 
-    static bool executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, Register& rb, Register& rc);
+    static bool executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc);
 };

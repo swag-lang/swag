@@ -26,7 +26,7 @@
 
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 
-bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, Register& rb, Register& rc)
+bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
     {
@@ -124,7 +124,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicSqrt:
             if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format("'@sqrt' on a negative value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format("'@sqrt' on an invalid value '%.3f'", rb.f32)});
             ra.f32 = sqrtf(rb.f32);
             break;
         case TokenId::IntrinsicSin:
@@ -146,32 +146,32 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f32 = tanhf(rb.f32);
             break;
         case TokenId::IntrinsicASin:
-            if (rb.f32 < -1 || rb.f32 > 1)
-                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
             ra.f32 = asinf(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
             break;
         case TokenId::IntrinsicACos:
-            if (rb.f32 < -1 || rb.f32 > 1)
-                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f32)});
             ra.f32 = acosf(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f32)});
             break;
         case TokenId::IntrinsicATan:
             ra.f32 = atanf(rb.f32);
             break;
         case TokenId::IntrinsicLog:
-            if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@log' on an invalid value '%.3f'", rb.f32)});
             break;
         case TokenId::IntrinsicLog2:
-            if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log2' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log2(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@log2' on an invalid value '%.3f'", rb.f32)});
             break;
         case TokenId::IntrinsicLog10:
-            if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log10' on a negative value '%.3f'", rb.f32)});
             ra.f32 = log10(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, ip->node->token, format("'@log10' on an invalid value '%.3f'", rb.f32)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f32 = floorf(rb.f32);
@@ -206,9 +206,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
-            if (rb.f64 < 0)
-                return context->report({ip->node, ip->node->token, format("'@sqrt' on a negative value '%.3f'", rb.f64)});
             ra.f64 = sqrt(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@sqrt' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicSin:
             ra.f64 = sin(rb.f64);
@@ -229,32 +229,32 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f64 = tanh(rb.f64);
             break;
         case TokenId::IntrinsicASin:
-            if (rb.f64 < -1 || rb.f64 > 1)
-                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
             ra.f64 = asin(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicACos:
-            if (rb.f64 < -1 || rb.f64 > 1)
-                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f64)});
             ra.f64 = acos(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicATan:
             ra.f64 = atan(rb.f64);
             break;
         case TokenId::IntrinsicLog:
-            if (rb.f64 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@lob' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicLog2:
-            if (rb.f64 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log2' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log2(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@log2' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicLog10:
-            if (rb.f64 < 0)
-                return context->report({ip->node, ip->node->token, format("'@log10' on a negative value '%.3f'", rb.f64)});
             ra.f64 = log10(rb.f64);
+            if (isnan(ra.f64))
+                return context->report({ip->node, ip->node->token, format("'@log10' on an invalid value '%.3f'", rb.f64)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f64 = floor(rb.f64);
