@@ -3,7 +3,7 @@
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "SourceFile.h"
-#include "DiagnosticInfos.h"
+#include "ByteCodeStack.h"
 #include "ByteCodeRunContext.h"
 #include "Module.h"
 

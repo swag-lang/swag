@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "DiagnosticInfos.h"
+#include "ByteCodeStack.h"
 #include "Os.h"
 
 #ifdef SWAG_HAS_ASSERT

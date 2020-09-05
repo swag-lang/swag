@@ -4,7 +4,7 @@
 #include "SourceFile.h"
 #include "AstNode.h"
 #include "Os.h"
-#include "DiagnosticInfos.h"
+#include "ByteCodeStack.h"
 #include "ByteCode.h"
 
 thread_local DiagnosticInfos g_diagnosticInfos;

@@ -5,7 +5,6 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
-#include "DiagnosticInfos.h"
 #include "TypeManager.h"
 #include "BackendLLVM.h"
 #include "BackendX64.h"

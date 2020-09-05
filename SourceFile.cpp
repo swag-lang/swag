@@ -4,9 +4,9 @@
 #include "Workspace.h"
 #include "Stats.h"
 #include "Module.h"
-#include "DiagnosticInfos.h"
 #include "Os.h"
 #include "Timer.h"
+#include "ByteCodeStack.h"
 
 const auto BUF_SIZE = 2048;
 

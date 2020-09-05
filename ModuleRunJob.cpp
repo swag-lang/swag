@@ -2,7 +2,6 @@
 #include "ModuleRunJob.h"
 #include "Workspace.h"
 #include "Os.h"
-#include "DiagnosticInfos.h"
 #include "Module.h"
 #include "Timer.h"
 #include "Profile.h"

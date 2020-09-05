@@ -266,9 +266,6 @@
     <ClCompile Include="Allocator .cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="DiagnosticInfos.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -421,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="Context.cpp">
       <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeStack.cpp">
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,9 +587,6 @@
     <ClInclude Include="Allocator.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="DiagnosticInfos.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleManager.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -706,6 +703,9 @@
     </ClInclude>
     <ClInclude Include="Context.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeStack.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

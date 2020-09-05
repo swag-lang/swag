@@ -192,7 +192,7 @@
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
-    <ClInclude Include="DiagnosticInfos.h" />
+    <ClInclude Include="ByteCodeStack.h" />
     <ClInclude Include="EnumerateModuleJob.h" />
     <ClInclude Include="ffi/ffi.h" />
     <ClInclude Include="ffi/fficonfig.h" />
@@ -315,7 +315,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Final|x64'">false</ShowIncludes>
     </ClCompile>
-    <ClCompile Include="DiagnosticInfos.cpp" />
+    <ClCompile Include="ByteCodeStack.cpp" />
     <ClCompile Include="EnumerateModuleJob.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Job.cpp" />

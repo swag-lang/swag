@@ -10,7 +10,6 @@
 #include "BuildParameters.h"
 #include "Workspace.h"
 #include "ProfileWin32.h"
-#include "DiagnosticInfos.h"
 
 namespace OS
 {

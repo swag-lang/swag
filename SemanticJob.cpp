@@ -5,7 +5,6 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "SourceFile.h"
-#include "DiagnosticInfos.h"
 
 thread_local Pool<SemanticJob> g_Pool_semanticJob;
 

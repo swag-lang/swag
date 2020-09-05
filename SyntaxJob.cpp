@@ -3,7 +3,6 @@
 #include "Module.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
-#include "DiagnosticInfos.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
 

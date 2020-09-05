@@ -4,7 +4,7 @@
 #include "Stats.h"
 #include "Job.h"
 #include "Context.h"
-#include "DiagnosticInfos.h"
+#include "ByteCodeStack.h"
 
 ThreadManager g_ThreadMgr;
 

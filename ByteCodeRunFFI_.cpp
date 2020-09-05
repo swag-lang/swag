@@ -8,7 +8,6 @@
 #include "ModuleGenOutputJob.h"
 #include "TypeManager.h"
 #include "OS.h"
-#include "DiagnosticInfos.h"
 #include "Module.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
