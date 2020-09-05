@@ -510,21 +510,25 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
             node->typeInfo->setConst();
     }
 
-    node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_PURE);
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
-
-    // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->flags & AST_VALUE_COMPUTED)
-        node->castedTypeInfo = child->castedTypeInfo;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
     if (!(node->parent->flags & AST_NO_BYTECODE))
     {
-        SWAG_CHECK(checkIsConcrete(context, child));
+        SWAG_CHECK(checkIsConcreteOrType(context, child));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->typeInfo = child->typeInfo;
         node->flags |= AST_R_VALUE;
     }
+
+    node->inheritComputedValue(child);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_PURE);
+
+    // Inherit the original type in case of computed values, in order to make the cast if necessary
+    if (node->flags & AST_VALUE_COMPUTED)
+        node->castedTypeInfo = child->castedTypeInfo;
 
     SWAG_CHECK(evaluateConstExpression(context, node));
     if (context->result == ContextResult::Pending)

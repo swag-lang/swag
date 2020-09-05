@@ -33,6 +33,10 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     {
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
     }
+    else if (exprNode->flags & AST_VALUE_IS_TYPEINFO)
+    {
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
+    }
     else
     {
         return internalError(context, "emitCastToNativeAny, invalid type", exprNode);

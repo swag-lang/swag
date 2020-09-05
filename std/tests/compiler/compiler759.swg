@@ -8,9 +8,9 @@ struct Point
 }
 
 //#[swag.printbc]
-func Print(x: s32)
+func Print(x: s64)
 {
-/*	@print(x.x)
+/*	@print(x)
 	@print(" ")
 	@print(x.y)
 	@print("\n")*/
@@ -19,6 +19,6 @@ func Print(x: s32)
 //#[swag.printbc]
 #unittest error
 #test
-{	
+{
 	Print(s32)
 }
