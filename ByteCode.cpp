@@ -71,11 +71,11 @@ TypeInfoFuncAttr* ByteCode::callType()
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
     // Trace call stack in case of errors
-    g_byteCodeStack.push();
-    auto& last      = g_byteCodeStack.last();
-    last.message    = context->bc->name;
-    last.node       = context->bc->node;
-    last.sourceFile = context->sourceFile;
+    ByteCodeStackStep stackStep;
+    stackStep.message    = context->bc->name;
+    stackStep.node       = context->bc->node;
+    stackStep.sourceFile = context->sourceFile;
+    g_byteCodeStack.push(stackStep);
 
     auto module = context->sourceFile->module;
     if (curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)

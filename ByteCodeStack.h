@@ -5,7 +5,7 @@ struct AstNode;
 struct Utf8;
 struct ByteCodeInstruction;
 
-struct DiagnosticInfosStep
+struct ByteCodeStackStep
 {
     const char*          message    = nullptr;
     SourceFile*          sourceFile = nullptr;
@@ -15,10 +15,9 @@ struct DiagnosticInfosStep
 
 struct ByteCodeStack
 {
-    void push()
+    void push(ByteCodeStackStep& step)
     {
-        DiagnosticInfosStep step;
-        steps.push_back(step);
+        steps.emplace_back(step);
     }
 
     void pop()
@@ -27,7 +26,7 @@ struct ByteCodeStack
             steps.pop_back();
     }
 
-    DiagnosticInfosStep& last()
+    ByteCodeStackStep& last()
     {
         return steps.back();
     }
@@ -40,7 +39,7 @@ struct ByteCodeStack
     void reportError(const Utf8& msg);
     void log();
 
-    vector<DiagnosticInfosStep> steps;
+    vector<ByteCodeStackStep> steps;
 };
 
 extern thread_local ByteCodeStack g_byteCodeStack;

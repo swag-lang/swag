@@ -73,7 +73,7 @@ namespace std.collections
                 count = 0
                 removed = 0
                 newSize := newCapacity * @sizeof(HashTableEntry'(K, V))
-                table = acast memory.alloc(&allocator, newSize)
+                //table = acast memory.alloc(&allocator, newSize)
 
                 // Copy the last table to the next table, removing deleted entries
                 loop i: allocated
