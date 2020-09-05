@@ -4,8 +4,8 @@ namespace std.collections
 
     public struct(T) Array
     {
-        buffer:     *T
         allocator:  const IAllocator
+        buffer:     *T
         count:      u32
         capacity:   u32
     }

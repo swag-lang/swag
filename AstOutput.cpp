@@ -76,6 +76,16 @@ namespace Ast
         case AstNodeKind::Index:
             concat.addString("@index");
             break;
+        case AstNodeKind::Init:
+            concat.addString("@init(");
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            concat.addString(")");
+            break;
+        case AstNodeKind::Drop:
+            concat.addString("@drop(");
+            SWAG_CHECK(output(concat, node->childs.front(), indent));
+            concat.addString(")");
+            break;
 
         case AstNodeKind::Break:
         {

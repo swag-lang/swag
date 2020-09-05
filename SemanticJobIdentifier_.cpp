@@ -655,6 +655,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
     auto&             dependentSymbols    = job->cacheDependentSymbols;
+    MatchResult       bestMatchResult     = MatchResult::Ok;
     BadSignatureInfos bestSignatureInfos;
 
 anotherTry:
@@ -761,9 +762,11 @@ anotherTry:
             // Remember the signature with the longest match (for error reporting)
             if (job->symMatch.result != MatchResult::Ok)
             {
-                if (bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                    job->symMatch.badSignatureInfos.badSignatureParameterIdx > bestSignatureInfos.badSignatureParameterIdx)
+                if (bestSignatureInfos.badSignatureParameterIdx == -1 || job->symMatch.badSignatureInfos.badSignatureParameterIdx > bestSignatureInfos.badSignatureParameterIdx)
+                {
+                    bestMatchResult    = job->symMatch.result;
                     bestSignatureInfos = job->symMatch.badSignatureInfos;
+                }
             }
 
             switch (job->symMatch.result)
@@ -884,8 +887,9 @@ anotherTry:
             {
                 if (one->flags & OVERLOAD_GENERIC)
                 {
-                    overload          = one;
-                    badSignatureInfos = bestSignatureInfos;
+                    overload             = one;
+                    job->symMatch.result = bestMatchResult;
+                    badSignatureInfos    = bestSignatureInfos;
                     break;
                 }
             }

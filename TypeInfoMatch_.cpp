@@ -63,7 +63,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.badSignatureInfos.badSignatureParameterIdx  = i;
             context.badSignatureInfos.badSignatureRequestedType = symbolTypeInfo;
             context.badSignatureInfos.badSignatureGivenType     = typeInfo;
-            context.result                                      = MatchResult::BadSignature;
+            SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+            context.result = MatchResult::BadSignature;
         }
         else
         {
@@ -96,7 +97,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
                             context.badSignatureInfos.badSignatureRequestedType = it->second;
                             context.badSignatureInfos.badSignatureGivenType     = typeInfo;
-                            context.result                                      = MatchResult::BadSignature;
+                            SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                            context.result = MatchResult::BadSignature;
                         }
                     }
                     else
@@ -123,14 +125,17 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Struct:
                     {
                         auto symbolStruct = CastTypeInfo<TypeInfoStruct>(symbolTypeInfo, TypeInfoKind::Struct);
-                        auto typeStruct   = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-                        auto num          = symbolStruct->genericParameters.size();
-                        for (int idx = 0; idx < num; idx++)
+                        if (typeInfo->kind == TypeInfoKind::Struct)
                         {
-                            auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                            auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
-                            symbolTypeInfos.push_back(genTypeInfo);
-                            typeInfos.push_back(rawTypeInfo);
+                            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+                            auto num        = symbolStruct->genericParameters.size();
+                            for (int idx = 0; idx < num; idx++)
+                            {
+                                auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
+                                auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
+                                symbolTypeInfos.push_back(genTypeInfo);
+                                typeInfos.push_back(rawTypeInfo);
+                            }
                         }
                         break;
                     }
@@ -253,7 +258,8 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
                     context.badSignatureInfos.badSignatureGivenType     = typeInfo;
-                    context.result                                      = MatchResult::BadSignature;
+                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                    context.result = MatchResult::BadSignature;
                 }
 
                 context.solvedParameters[j] = symbolParameter;
