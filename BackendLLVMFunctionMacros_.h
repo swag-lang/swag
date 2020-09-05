@@ -70,6 +70,24 @@
     else                                                                         \
         r2 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
 
+#define MK_BINOPEQ8_CAB()                                    \
+    auto         r0 = GEP_I32(allocR, ip->a.u32);            \
+    auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0)); \
+    llvm::Value* r2;                                         \
+    if (ip->flags & BCI_IMM_B)                               \
+        r2 = builder.getInt8(ip->b.s8);                      \
+    else                                                     \
+        r2 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+
+#define MK_BINOPEQ16_CAB()                                    \
+    auto         r0 = GEP_I32(allocR, ip->a.u32);             \
+    auto         r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0)); \
+    llvm::Value* r2;                                          \
+    if (ip->flags & BCI_IMM_B)                                \
+        r2 = builder.getInt16(ip->b.s16);                     \
+    else                                                      \
+        r2 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+
 #define MK_BINOPEQ32_CAB()                                    \
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0)); \
@@ -78,3 +96,12 @@
         r2 = builder.getInt32(ip->b.s32);                     \
     else                                                      \
         r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+#define MK_BINOPEQ64_CAB()                                    \
+    auto         r0 = GEP_I32(allocR, ip->a.u32);             \
+    auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0)); \
+    llvm::Value* r2;                                          \
+    if (ip->flags & BCI_IMM_B)                                \
+        r2 = builder.getInt64(ip->b.s64);                     \
+    else                                                      \
+        r2 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));

@@ -999,18 +999,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpMinusEqS8:
-            //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s8;");
             MK_BINOPEQ8_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
-            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s16;");
             MK_BINOPEQ16_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) -= r[", ip->b.u32, "].s64;");
             MK_BINOPEQ64_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
