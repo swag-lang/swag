@@ -34,7 +34,6 @@ namespace std.collections
             func hash(key: K)->u32
             {
                 hashVal := 0'u32
-
                 if hashVal < HASH_FIRST
                     hashVal += HASH_FIRST
                 return hashVal
