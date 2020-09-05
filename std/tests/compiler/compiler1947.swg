@@ -8,5 +8,5 @@ struct(A, B) Foozle
 {
     var fooz1: Foozle'(s32, f32)
     var fooz2: Foozle'(s32, @typeof(fooz1))
-    @print(@typeof(fooz2.B).name)
+    @assert(@typeof(fooz2.B).kind == swag.TypeInfoKind.Struct)
 }

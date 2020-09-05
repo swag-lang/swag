@@ -12,10 +12,18 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
-    if (token.id != TokenId::SymLeftParen)
+    bool multi = false;
+    if (token.id == TokenId::SymLeftParen)
+    {
+        multi = true;
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    }
+
+    while (token.id != TokenId::SymRightParen)
     {
         auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
         param->semanticFct = SemanticJob::resolveFuncCallParam;
+        param->token       = token;
         switch (token.id)
         {
         case TokenId::Identifier:
@@ -30,53 +38,25 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
         case TokenId::LiteralString:
             SWAG_CHECK(doLiteral(param));
             break;
+
+        case TokenId::CompilerLocation:
+            SWAG_CHECK(doCompilerSpecialFunction(param));
+            break;
+
         default:
             SWAG_CHECK(doTypeExpression(param));
             break;
         }
+
+        if (!multi)
+            break;
+        if (token.id == TokenId::SymRightParen)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymComma));
     }
-    else
-    {
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        while (token.id != TokenId::SymRightParen)
-        {
-            while (true)
-            {
-                auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
-                param->semanticFct = SemanticJob::resolveFuncCallParam;
-                param->token       = token;
-                switch (token.id)
-                {
-                case TokenId::Identifier:
-                {
-                    auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, param);
-                    identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
-                    SWAG_CHECK(doIdentifier(identifierRef, false));
-                    break;
-                }
-                case TokenId::LiteralCharacter:
-                case TokenId::LiteralNumber:
-                case TokenId::LiteralString:
-                    SWAG_CHECK(doLiteral(param));
-                    break;
 
-                case TokenId::CompilerLocation:
-                    SWAG_CHECK(doCompilerSpecialFunction(param));
-                    break;
-
-                default:
-                    SWAG_CHECK(doTypeExpression(param));
-                    break;
-                }
-
-                if (token.id == TokenId::SymRightParen)
-                    break;
-                SWAG_CHECK(eatToken(TokenId::SymComma));
-            }
-        }
-
+    if (multi)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    }
 
     return true;
 }
