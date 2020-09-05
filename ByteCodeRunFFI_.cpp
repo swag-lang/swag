@@ -117,18 +117,6 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         ip->d.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
     if (!ip->d.pointer)
         return;
-
-#ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.push();
-        AstFuncDecl* funcDecl               = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        g_diagnosticInfos.last().message    = format("ffi call to '%s'", funcDecl->name.c_str());
-        g_diagnosticInfos.last().sourceFile = context->sourceFile;
-        g_diagnosticInfos.last().ip         = ip;
-    }
-#endif
-
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
     ffiCall(context, ip->d.pointer, typeInfoFunc);
 }

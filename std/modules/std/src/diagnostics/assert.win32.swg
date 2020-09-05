@@ -7,10 +7,14 @@
         // Generate an assert dialog box
         public func assertMessage(message: string, loc: swag.CompilerSourceLocation)
         {
+            contextFlags := @getcontext().flags
+            // If we are running bytecode, then just let the runner deal with the assertion,
+            // we will have more usefull information
+            if(contextFlags & swag.ContextFlags.ByteCode)
+                @error(loc, message)
             // During tests, and if not in devmode, then just raise an error without
             // a dialog box
-            contextFlags := @getcontext().flags
-            if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
+            else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
                 @error(loc, message)
 
             // Build message

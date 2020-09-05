@@ -7,14 +7,11 @@
 #include "DiagnosticInfos.h"
 #include "ByteCode.h"
 
-#ifdef SWAG_HAS_ASSERT
 thread_local DiagnosticInfos g_diagnosticInfos;
 
 void DiagnosticInfos::log()
 {
     if (steps.empty())
-        return;
-    if (!g_CommandLine.devMode)
         return;
 
     g_Log.setColor(LogColor::DarkYellow);
@@ -22,20 +19,26 @@ void DiagnosticInfos::log()
     {
         const auto& step = steps[i];
 
-        g_Log.print("----------------\n");
-        if (!step.message.empty())
-            g_Log.print(format("note:        %s\n", step.message.c_str()));
-        if (step.sourceFile)
-            g_Log.print(format("source file: %s\n", step.sourceFile->path.c_str()));
+        if (step.node && step.node->sourceFile)
+            g_Log.print(format("%s", step.node->sourceFile->path.c_str()));
+        else if (step.ip && step.ip->node && step.ip->node->sourceFile)
+            g_Log.print(format("%s", step.ip->node->sourceFile->path.c_str()));
+        else if (step.sourceFile)
+            g_Log.print(format("%s", step.sourceFile->path.c_str()));
+        else
+            g_Log.print("<unknown file>");
         if (step.node)
-            g_Log.print(format("source line: %d\n", step.node->token.startLocation.line + 1));
-        if (step.ip)
-            g_Log.print(format("source line: %d\n", step.ip->node->token.startLocation.line + 1));
-        if (step.user)
-            g_Log.print(format("user:        %d\n", step.user));
+            g_Log.print(format(":%d: ", step.node->token.startLocation.line + 1));
+        else if (step.ip)
+            g_Log.print(format(":%d: ", step.ip->node->token.startLocation.line + 1));
+        else
+            g_Log.print(":<unknown line>: ");
+
+        if (step.message)
+            g_Log.print(step.message);
+        g_Log.eol();
     }
 
-    g_Log.print("----------------\n");
     g_Log.setDefaultColor();
 }
 
@@ -49,5 +52,3 @@ void DiagnosticInfos::reportError(const Utf8& msg)
     g_Log.setDefaultColor();
     g_Log.unlock();
 }
-
-#endif

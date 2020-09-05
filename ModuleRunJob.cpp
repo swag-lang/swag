@@ -22,14 +22,6 @@ JobResult ModuleRunJob::execute()
     Timer timer(g_Stats.runTestTime);
     timer.start();
 
-#ifdef SWAG_HAS_ASSERT
-    PushDiagnosticInfos di;
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.last().message = "ModuleTestJob - " + path.string();
-    }
-#endif
-
     if(buildParameters.compileType == BackendCompileType::Test)
         g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
     else

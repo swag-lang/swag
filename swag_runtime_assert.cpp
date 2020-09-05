@@ -9,7 +9,8 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
 
     // During tests, and if not in devmode, then just raise an error
     SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
-    if ((context->flags & (SwagU64) ContextFlags::Test) && !(context->flags & (SwagU64) ContextFlags::DevMode))
+    if ((context->flags & (SwagU64) ContextFlags::ByteCode) ||
+        ((context->flags & (SwagU64) ContextFlags::Test) && !(context->flags & (SwagU64) ContextFlags::DevMode)))
     {
         ConcreteCompilerSourceLocation loc;
         loc.lineStart = loc.lineEnd = line;

@@ -5,14 +5,12 @@ struct AstNode;
 struct Utf8;
 struct ByteCodeInstruction;
 
-#ifdef SWAG_HAS_ASSERT
 struct DiagnosticInfosStep
 {
-    string               message;
+    const char*          message    = nullptr;
     SourceFile*          sourceFile = nullptr;
     AstNode*             node       = nullptr;
     ByteCodeInstruction* ip         = nullptr;
-    const char*          user       = nullptr;
 };
 
 struct DiagnosticInfos
@@ -61,4 +59,3 @@ struct PushDiagnosticInfos
             g_diagnosticInfos.pop();
     }
 };
-#endif

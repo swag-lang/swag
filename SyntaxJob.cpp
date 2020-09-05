@@ -223,15 +223,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     currentMainNode          = parent->ownerMainNode;
     currentFct               = parent->ownerFct;
 
-#ifdef SWAG_HAS_ASSERT
-    PushDiagnosticInfos di;
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.last().message    = "SyntaxJob (constructed)";
-        g_diagnosticInfos.last().sourceFile = tmpFile;
-    }
-#endif
-
     tokenizer.setFile(sourceFile);
 
     ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
@@ -265,15 +256,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
 JobResult SyntaxJob::execute()
 {
-#ifdef SWAG_HAS_ASSERT
-    PushDiagnosticInfos di;
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.last().message    = "SyntaxJob";
-        g_diagnosticInfos.last().sourceFile = sourceFile;
-    }
-#endif
-
     baseContext        = &context;
     context.job        = this;
     context.sourceFile = sourceFile;

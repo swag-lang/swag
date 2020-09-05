@@ -70,15 +70,12 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
-#ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.push();
-        g_diagnosticInfos.last().message    = context->bc->name;
-        g_diagnosticInfos.last().sourceFile = context->sourceFile;
-        g_diagnosticInfos.last().node       = context->bc->node;
-    }
-#endif
+    // Trace call stack in case of errors
+    g_diagnosticInfos.push();
+    auto& last      = g_diagnosticInfos.last();
+    last.message    = context->bc->name;
+    last.node       = context->bc->node;
+    last.sourceFile = context->sourceFile;
 
     auto module = context->sourceFile->module;
     if (curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
@@ -98,13 +95,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 
 void ByteCode::leaveByteCode()
 {
-#ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.pop();
-    }
-#endif
-
+    g_diagnosticInfos.pop();
     curRC--;
 }
 

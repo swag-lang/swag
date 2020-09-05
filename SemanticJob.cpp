@@ -76,15 +76,6 @@ JobResult SemanticJob::execute()
         originalNode = nodes.front();
     }
 
-#ifdef SWAG_HAS_ASSERT
-    PushDiagnosticInfos di;
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.last().message    = "SemanticJob";
-        g_diagnosticInfos.last().sourceFile = sourceFile;
-    }
-#endif
-
     auto firstNode     = nodes.front();
     baseContext        = &context;
     context.baseJob    = this;
