@@ -31,6 +31,7 @@ enum class LiteralType
     TT_NULL,
     TT_ANY,
     TT_VOID,
+    TT_TYPE,
     TT_UNTYPED_BINHEXA,
     TT_UNTYPED_INT,
     TT_UNTYPED_FLOAT,

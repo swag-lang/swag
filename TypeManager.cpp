@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TypeManager.h"
 #include "Tokenizer.h"
+#include "Workspace.h"
 
 TypeManager g_TypeMgr;
 
@@ -94,6 +95,7 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]     = typeInfoUntypedInt;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]   = typeInfoUntypedFloat;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA] = typeInfoUntypedBinHexa;
+    g_LiteralTypeToType[(int) LiteralType::TT_TYPE]            = nullptr; // will be done with registerTypeType
 
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U8]  = typeInfoU32;
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U16] = typeInfoU32;
@@ -369,6 +371,19 @@ TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
     }
 
     return typeInfo;
+}
+
+void TypeManager::registerTypeType()
+{
+    // Generate the alias for 'const *TypeInfo'
+    typeInfoTypeType = g_Allocator.alloc<TypeInfoPointer>();
+    typeInfoTypeType->flags |= TYPEINFO_CONST;
+    typeInfoTypeType->ptrCount    = 1;
+    typeInfoTypeType->finalType   = g_Workspace.swagScope.regTypeInfo;
+    typeInfoTypeType->pointedType = typeInfoTypeType->finalType;
+    typeInfoTypeType->computeName();
+    typeInfoTypeType->sizeOf                        = sizeof(void*);
+    g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
 TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)

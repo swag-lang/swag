@@ -87,21 +87,22 @@ void LanguageSpec::setup()
     keywords["code"]        = TokenId::KwdCode;
     keywords["label"]       = TokenId::KwdLabel;
 
-    keywords["u64"]    = TokenId::NativeType;
-    keywords["u32"]    = TokenId::NativeType;
-    keywords["u16"]    = TokenId::NativeType;
-    keywords["u8"]     = TokenId::NativeType;
-    keywords["s64"]    = TokenId::NativeType;
-    keywords["s32"]    = TokenId::NativeType;
-    keywords["s16"]    = TokenId::NativeType;
-    keywords["s8"]     = TokenId::NativeType;
-    keywords["f32"]    = TokenId::NativeType;
-    keywords["f64"]    = TokenId::NativeType;
-    keywords["bool"]   = TokenId::NativeType;
-    keywords["char"]   = TokenId::NativeType;
-    keywords["string"] = TokenId::NativeType;
-    keywords["any"]    = TokenId::NativeType;
-    keywords["void"]   = TokenId::NativeType;
+    keywords["u64"]      = TokenId::NativeType;
+    keywords["u32"]      = TokenId::NativeType;
+    keywords["u16"]      = TokenId::NativeType;
+    keywords["u8"]       = TokenId::NativeType;
+    keywords["s64"]      = TokenId::NativeType;
+    keywords["s32"]      = TokenId::NativeType;
+    keywords["s16"]      = TokenId::NativeType;
+    keywords["s8"]       = TokenId::NativeType;
+    keywords["f32"]      = TokenId::NativeType;
+    keywords["f64"]      = TokenId::NativeType;
+    keywords["bool"]     = TokenId::NativeType;
+    keywords["char"]     = TokenId::NativeType;
+    keywords["string"]   = TokenId::NativeType;
+    keywords["any"]      = TokenId::NativeType;
+    keywords["void"]     = TokenId::NativeType;
+    keywords["typeinfo"] = TokenId::NativeType;
 
     keywords["@init"]        = TokenId::IntrinsicInit;
     keywords["@drop"]        = TokenId::IntrinsicDrop;
@@ -151,21 +152,22 @@ void LanguageSpec::setup()
     keywords["@exp2"]  = TokenId::IntrinsicExp2;
     keywords["@pow"]   = TokenId::IntrinsicPow;
 
-    nativeTypes["u64"]    = LiteralType::TT_U64;
-    nativeTypes["u32"]    = LiteralType::TT_U32;
-    nativeTypes["u16"]    = LiteralType::TT_U16;
-    nativeTypes["u8"]     = LiteralType::TT_U8;
-    nativeTypes["s64"]    = LiteralType::TT_S64;
-    nativeTypes["s32"]    = LiteralType::TT_S32;
-    nativeTypes["s16"]    = LiteralType::TT_S16;
-    nativeTypes["s8"]     = LiteralType::TT_S8;
-    nativeTypes["f32"]    = LiteralType::TT_F32;
-    nativeTypes["f64"]    = LiteralType::TT_F64;
-    nativeTypes["bool"]   = LiteralType::TT_BOOL;
-    nativeTypes["char"]   = LiteralType::TT_CHAR;
-    nativeTypes["string"] = LiteralType::TT_STRING;
-    nativeTypes["any"]    = LiteralType::TT_ANY;
-    nativeTypes["void"]   = LiteralType::TT_VOID;
+    nativeTypes["u64"]      = LiteralType::TT_U64;
+    nativeTypes["u32"]      = LiteralType::TT_U32;
+    nativeTypes["u16"]      = LiteralType::TT_U16;
+    nativeTypes["u8"]       = LiteralType::TT_U8;
+    nativeTypes["s64"]      = LiteralType::TT_S64;
+    nativeTypes["s32"]      = LiteralType::TT_S32;
+    nativeTypes["s16"]      = LiteralType::TT_S16;
+    nativeTypes["s8"]       = LiteralType::TT_S8;
+    nativeTypes["f32"]      = LiteralType::TT_F32;
+    nativeTypes["f64"]      = LiteralType::TT_F64;
+    nativeTypes["bool"]     = LiteralType::TT_BOOL;
+    nativeTypes["char"]     = LiteralType::TT_CHAR;
+    nativeTypes["string"]   = LiteralType::TT_STRING;
+    nativeTypes["any"]      = LiteralType::TT_ANY;
+    nativeTypes["void"]     = LiteralType::TT_VOID;
+    nativeTypes["typeinfo"] = LiteralType::TT_TYPE;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

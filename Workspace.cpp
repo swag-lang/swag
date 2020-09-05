@@ -6,12 +6,10 @@
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
 #include "Os.h"
-#include "Timer.h"
 #include "CommandLineParser.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
-#include "Tokenizer.h"
 
 Workspace g_Workspace;
 

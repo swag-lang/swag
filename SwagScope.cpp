@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SwagScope.h"
-#include "TypeInfo.h"
-#include "ThreadManager.h"
+#include "TypeManager.h"
 
 void SwagScope::registerType(TypeInfo* typeInfo)
 {
@@ -13,6 +12,7 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         SWAG_ASSERT(!regTypeInfo);
         regTypeInfo = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         regTypeInfo->flags |= TYPEINFO_STRUCT_TYPEINFO;
+        g_TypeMgr.registerTypeType();
     }
     else if (typeInfo->name == "TypeInfoNative")
     {

@@ -66,6 +66,7 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
+    void             registerTypeType();
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(const Token& token);
     static void      promote(AstNode* left, AstNode* right);
@@ -94,6 +95,7 @@ struct TypeManager
     TypeInfoPointer*  typeInfoNull;
     TypeInfoPointer*  typeInfoPVoid;
     TypeInfoPointer*  typeInfoConstPVoid;
+    TypeInfoPointer*  typeInfoTypeType;
     TypeInfoVariadic* typeInfoVariadic;
     TypeInfoNative*   typeInfoUntypedInt;
     TypeInfoNative*   typeInfoUntypedBinHexa;
