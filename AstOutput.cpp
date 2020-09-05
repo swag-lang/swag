@@ -6,6 +6,22 @@
 
 namespace Ast
 {
+    void incIndentStatement(AstNode* node, int& indent)
+    {
+        if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
+            return;
+        if (node->kind != AstNodeKind::Statement)
+            indent++;
+    }
+
+    void decIndentStatement(AstNode* node, int& indent)
+    {
+        if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
+            return;
+        if (node->kind != AstNodeKind::Statement)
+            indent--;
+    }
+
     bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
     {
         if (typeInfo == g_TypeMgr.typeInfoNull)
@@ -66,6 +82,7 @@ namespace Ast
             auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
             concat.addString("break ");
             concat.addString(nodeBreak->label);
+            concat.addEolIndent(indent);
             break;
         }
 
@@ -74,6 +91,7 @@ namespace Ast
             auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
             concat.addString("continue ");
             concat.addString(nodeContinue->label);
+            concat.addEolIndent(indent);
             break;
         }
 
@@ -129,14 +147,20 @@ namespace Ast
 
         case AstNodeKind::CompilerMacro:
             CONCAT_FIXED_STR(concat, "#macro");
+            incIndentStatement(node->childs.front(), indent);
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, node->childs.front(), indent));
+            decIndentStatement(node->childs.front(), indent);
+            concat.addEolIndent(indent);
             break;
 
         case AstNodeKind::CompilerInline:
             CONCAT_FIXED_STR(concat, "#inline");
+            incIndentStatement(node->childs.front(), indent);
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, node->childs.front(), indent));
+            decIndentStatement(node->childs.front(), indent);
+            concat.addEolIndent(indent);
             break;
 
         case AstNodeKind::CompilerMixin:
@@ -147,6 +171,7 @@ namespace Ast
         case AstNodeKind::CompilerPrint:
             CONCAT_FIXED_STR(concat, "#print ");
             SWAG_CHECK(output(concat, node->childs.front(), indent));
+            concat.addEolIndent(indent);
             break;
 
         case AstNodeKind::CompilerIf:
@@ -163,14 +188,26 @@ namespace Ast
             {
                 CONCAT_FIXED_STR(concat, "#if ");
                 SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
+
+                incIndentStatement(compilerIf->ifBlock, indent);
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
+                decIndentStatement(compilerIf->ifBlock, indent);
+
                 if (compilerIf->elseBlock)
                 {
                     concat.addEolIndent(indent);
-                    CONCAT_FIXED_STR(concat, "#else");
-                    concat.addEolIndent(indent);
+                    CONCAT_FIXED_STR(concat, "#else ");
+                    if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
+                    {
+                        incIndentStatement(compilerIf->elseBlock, indent);
+                        concat.addEolIndent(indent);
+                    }
                     SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
+                    if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
+                    {
+                        decIndentStatement(compilerIf->elseBlock, indent);
+                    }
                 }
             }
             break;
@@ -181,14 +218,20 @@ namespace Ast
             auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
             CONCAT_FIXED_STR(concat, "if ");
             SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
+
+            incIndentStatement(compilerIf->ifBlock, indent);
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
+            decIndentStatement(compilerIf->ifBlock, indent);
+
             if (compilerIf->elseBlock)
             {
                 concat.addEolIndent(indent);
                 CONCAT_FIXED_STR(concat, "else");
+                incIndentStatement(compilerIf->elseBlock, indent);
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
+                decIndentStatement(compilerIf->elseBlock, indent);
             }
             break;
         }
@@ -204,8 +247,10 @@ namespace Ast
             }
 
             SWAG_CHECK(output(concat, loopNode->expression, indent));
+            incIndentStatement(loopNode->block, indent);
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, loopNode->block, indent));
+            decIndentStatement(loopNode->block, indent);
             break;
         }
 
@@ -214,8 +259,10 @@ namespace Ast
             auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
             CONCAT_FIXED_STR(concat, "while ");
             SWAG_CHECK(output(concat, whileNode->boolExpression, indent));
+            incIndentStatement(whileNode->block, indent);
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, whileNode->block, indent));
+            decIndentStatement(whileNode->block, indent);
             break;
         }
 
@@ -400,23 +447,24 @@ namespace Ast
         case AstNodeKind::StatementNoScope:
             for (auto child : node->childs)
             {
-                concat.addIndent(1);
+                concat.addIndent(indent);
                 SWAG_CHECK(output(concat, child, indent + 1));
-                concat.addEolIndent(indent);
+                concat.addEol();
             }
 
             break;
 
         case AstNodeKind::Statement:
             concat.addChar('{');
-            concat.addEolIndent(indent);
+            concat.addEol();
             for (auto child : node->childs)
             {
-                concat.addIndent(1);
+                concat.addIndent(indent + 1);
                 SWAG_CHECK(output(concat, child, indent + 1));
-                concat.addEolIndent(indent);
+                concat.addEol();
             }
 
+            concat.addIndent(indent);
             concat.addChar('}');
             concat.addEolIndent(indent);
             break;
@@ -440,7 +488,7 @@ namespace Ast
             for (auto child : node->childs)
             {
                 if (idx)
-                    concat.addChar(',');
+                    concat.addString(", ");
                 SWAG_CHECK(output(concat, child));
                 idx++;
             }
@@ -525,6 +573,7 @@ namespace Ast
             }
 
             concat.addChar(')');
+            concat.addEolIndent(indent);
             break;
 
         case AstNodeKind::Literal:

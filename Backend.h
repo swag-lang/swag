@@ -47,17 +47,17 @@ struct Backend
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
     void      setupExportFile();
-    bool      emitAttributes(AstNode* node);
-    bool      emitAttributes(TypeInfoParam* param);
+    bool      emitAttributes(AstNode* node, int indent);
+    bool      emitAttributes(TypeInfoParam* param, int indent);
     void      emitType(TypeInfo* typeInfo);
     bool      emitGenericParameters(AstNode* node);
-    bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
-    bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);
-    bool      emitPublicConstSwg(AstVarDecl* node);
-    bool      emitPublicAliasSwg(AstNode* node);
-    bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
+    bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
+    bool      emitPublicConstSwg(AstVarDecl* node, int indent);
+    bool      emitPublicAliasSwg(AstNode* node, int indent);
+    bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool      emitPublicSwg(Module* moduleToGen, Scope* scope);
+    bool      emitPublicSwg(Module* moduleToGen, Scope* scope, int indent);
 
     OutputFile bufferSwg;
 
