@@ -229,7 +229,11 @@ namespace swag
     #[swag.flags]
     enum TypeInfoFlags: u16
     {
-        None = 0x0000
+        None        = 0x0000
+        TypeInfoPtr = 0x0001
+        Integer     = 0x0002
+        Float       = 0x0004
+        Unsigned    = 0x0008
     }
 
     struct TypeInfo

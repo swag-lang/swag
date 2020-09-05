@@ -291,8 +291,18 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name), cflags));
     concreteTypeInfoValue->kind   = typeInfo->kind;
-    concreteTypeInfoValue->flags  = TypeInfoFlags::None;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+
+    // Setup useful flags
+    concreteTypeInfoValue->flags = (uint16_t) TypeInfoFlags::None;
+    if (typeInfo->isPointerToTypeInfo())
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::TypeInfoPtr;
+    if (typeInfo->flags & TYPEINFO_INTEGER)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Integer;
+    if (typeInfo->flags & TYPEINFO_FLOAT)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Float;
+    if (typeInfo->flags & TYPEINFO_UNSIGNED)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
 
     // Register type and value
     // Do it now to break recursive references
