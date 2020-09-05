@@ -21,13 +21,13 @@ func(T) hash(value: T)->u32
 {
     #if @typeof(T) == u32
         return value
-
-    #if @typeof(T).kind == swag.TypeInfoKind.Struct
+    #elif @typeof(T).kind == swag.TypeInfoKind.Struct
     {
         itf := cast(IHash) value
         return itf.hash()
     }
-
+    //#else
+    //    #assert(false, "invalid type")
     return 5
 }
 
