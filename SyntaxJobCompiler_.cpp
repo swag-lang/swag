@@ -409,6 +409,17 @@ bool SyntaxJob::doCompilerModule()
     return true;
 }
 
+bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
+{
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
+    if (result)
+        *result = exprNode;
+    exprNode->inheritTokenLocation(token);
+    SWAG_CHECK(eatToken());
+    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    return true;
+}
+
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#import can only be declared in the top level scope"}));

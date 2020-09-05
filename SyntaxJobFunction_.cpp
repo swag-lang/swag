@@ -45,22 +45,28 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
                 auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
                 param->semanticFct = SemanticJob::resolveFuncCallParam;
                 param->token       = token;
-                AstNode* paramExpression;
-                SWAG_CHECK(doExpression(nullptr, &paramExpression));
-
-                // Name
-                if (token.id == TokenId::SymColon)
+                switch (token.id)
                 {
-                    if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                        return sourceFile->report({paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
-                    param->namedParamNode = paramExpression->childs.front();
-                    param->namedParam     = param->namedParamNode->name;
-                    SWAG_CHECK(eatToken());
-                    SWAG_CHECK(doExpression(param));
+                case TokenId::Identifier:
+                {
+                    auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, param);
+                    identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
+                    SWAG_CHECK(doIdentifier(identifierRef, false));
+                    break;
                 }
-                else
-                {
-                    Ast::addChildBack(param, paramExpression);
+                case TokenId::LiteralCharacter:
+                case TokenId::LiteralNumber:
+                case TokenId::LiteralString:
+                    SWAG_CHECK(doLiteral(param));
+                    break;
+
+                case TokenId::CompilerLocation:
+                    SWAG_CHECK(doCompilerSpecialFunction(param));
+                    break;
+
+                default:
+                    SWAG_CHECK(doTypeExpression(param));
+                    break;
                 }
 
                 if (token.id == TokenId::SymRightParen)

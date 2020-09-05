@@ -70,6 +70,7 @@ struct SyntaxJob : public Job
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
     bool doCompilerModule();
+    bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerImport(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);

@@ -127,15 +127,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:
-    {
-        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
-        if (result)
-            *result = exprNode;
-        exprNode->inheritTokenLocation(token);
-        SWAG_CHECK(eatToken());
-        exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+        SWAG_CHECK(doCompilerSpecialFunction(parent, result));
         break;
-    }
 
     case TokenId::CompilerHasTag:
     case TokenId::CompilerTagVal:
