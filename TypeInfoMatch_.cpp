@@ -97,8 +97,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
                             context.badSignatureInfos.badSignatureRequestedType = it->second;
                             context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                            context.badSignatureInfos.badGenMatch               = symbolTypeInfo->name;
                             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                            context.result = MatchResult::BadSignature;
+                            context.result = MatchResult::BadGenMatch;
                         }
                     }
                     else

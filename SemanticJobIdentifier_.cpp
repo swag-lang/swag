@@ -1006,6 +1006,22 @@ anotherTry:
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
+            case MatchResult::BadGenMatch:
+            {
+                SWAG_ASSERT(callParameters);
+                Diagnostic diag{match.parameters[badSignatureInfos.badSignatureParameterIdx],
+                                format("bad type of parameter '%d' for %s '%s', generic type '%s' was already assigned to '%s' ('%s' provided)",
+                                       badSignatureInfos.badSignatureParameterIdx + 1,
+                                       SymTable::getNakedKindName(symbol->kind),
+                                       symbol->name.c_str(),
+                                       badSignatureInfos.badGenMatch.c_str(),
+                                       badSignatureInfos.badSignatureRequestedType->name.c_str(),
+                                       badSignatureInfos.badSignatureGivenType->name.c_str())};
+                if (TypeManager::makeCompatibles(context, badSignatureInfos.badSignatureRequestedType, badSignatureInfos.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                    diag.codeComment = format("'cast(%s)' can be used in that context", badSignatureInfos.badSignatureRequestedType->name.c_str());
+                Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
             case MatchResult::BadSignature:
             {
                 SWAG_ASSERT(callParameters);

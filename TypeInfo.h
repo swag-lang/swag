@@ -250,6 +250,7 @@ enum class MatchResult
     MissingParameters,
     NotEnoughGenericParameters,
     BadSignature,
+    BadGenMatch,
     BadGenericSignature,
     InvalidNamedParameter,
     MissingNamedParameter,
@@ -260,10 +261,12 @@ struct BadSignatureInfos
 {
     TypeInfo* badSignatureRequestedType;
     TypeInfo* badSignatureGivenType;
+    Utf8      badGenMatch;
     int       badSignatureParameterIdx;
 
     void clear()
     {
+        badGenMatch.clear();
         badSignatureParameterIdx  = -1;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
