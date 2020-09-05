@@ -290,31 +290,36 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     if (myTypeInfo->kind == TypeInfoKind::Struct)
     {
         // A reference to a generic without specifying the generic parameters is a match
-        // (we deduce type)
+        // (we deduce the type)
         if (!userGenericParams && wantedNumGenericParams)
         {
             if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
             {
                 if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
                 {
+                    context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
                     for (int i = 0; i < wantedNumGenericParams; i++)
                     {
                         auto symbolParameter = genericParameters[i];
                         auto genType         = symbolParameter->typeInfo;
                         if (!genType)
                             genType = symbolParameter->typeInfo;
+                        SWAG_ASSERT(genType);
+
+                        // Take the real type if we can
                         auto it = context.genericReplaceTypes.find(genType->name);
                         if (it != context.genericReplaceTypes.end())
-                            context.genericParametersCallTypes[i] = it->second;
-                        else
-                            context.genericParametersCallTypes[i] = genType;
-                    }
+                        {
+                            context.genericParametersCallTypes[i]       = it->second;
+                            context.mapGenericTypesIndex[genType->name] = i;
+                        }
 
-                    context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
-                    for (auto oneType : context.genericParametersCallTypes)
-                    {
-                        if (oneType->flags & TYPEINFO_GENERIC)
+                        // Otherwise take the generic type
+                        else
+                        {
+                            context.genericParametersCallTypes[i] = genType;
                             context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
+                        }
                     }
 
                     context.result = MatchResult::Ok;
