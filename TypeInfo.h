@@ -274,7 +274,7 @@ struct SymbolMatchContext
 {
     static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
     static const uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
-    static const uint32_t MATCH_WAS_PARTIAL       = 0x00000004;
+    static const uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
     static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
     static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
     static const uint32_t MATCH_UNCONST           = 0x00000020;

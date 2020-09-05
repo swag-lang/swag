@@ -284,41 +284,54 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 {
     // Solve generic parameters
     int wantedNumGenericParams = (int) genericParameters.size();
-    int numGenericParams       = (int) context.genericParameters.size();
+    int userGenericParams      = (int) context.genericParameters.size();
 
     // It's valid to not specify generic parameters. They will be deduced
     if (myTypeInfo->kind == TypeInfoKind::Struct)
     {
-        if (numGenericParams < wantedNumGenericParams)
+        // A reference to a generic without specifying the generic parameters is a match
+        // (we deduce type)
+        if (!userGenericParams && wantedNumGenericParams)
         {
-            // A reference to a generic without specifying the generic parameters is a match
-            // (we deduce type)
-            context.result = MatchResult::NotEnoughGenericParameters;
-            if (!numGenericParams)
+            if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
             {
-                if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
+                if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
                 {
-                    if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
+                    for (int i = 0; i < wantedNumGenericParams; i++)
                     {
-                        for (int i = 0; i < wantedNumGenericParams; i++)
-                        {
-                            auto symbolParameter                  = genericParameters[i];
-                            auto genType                          = symbolParameter->typeInfo;
-                            context.genericParametersCallTypes[i] = genType ? genType : symbolParameter->typeInfo;
-                        }
-
-                        context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
-                        context.result = MatchResult::Ok;
+                        auto symbolParameter = genericParameters[i];
+                        auto genType         = symbolParameter->typeInfo;
+                        if (!genType)
+                            genType = symbolParameter->typeInfo;
+                        auto it = context.genericReplaceTypes.find(genType->name);
+                        if (it != context.genericReplaceTypes.end())
+                            context.genericParametersCallTypes[i] = it->second;
+                        else
+                            context.genericParametersCallTypes[i] = genType;
                     }
+
+                    context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
+                    for (auto oneType : context.genericParametersCallTypes)
+                    {
+                        if (oneType->flags & TYPEINFO_GENERIC)
+                            context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
+                    }
+
+                    context.result = MatchResult::Ok;
+                    return;
                 }
             }
+        }
 
+        if (userGenericParams < wantedNumGenericParams)
+        {
+            context.result = MatchResult::NotEnoughGenericParameters;
             return;
         }
     }
     else
     {
-        if (!numGenericParams && wantedNumGenericParams)
+        if (!userGenericParams && wantedNumGenericParams)
         {
             for (int i = 0; i < wantedNumGenericParams; i++)
             {
@@ -336,7 +349,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         }
     }
 
-    for (int i = 0; i < numGenericParams; i++)
+    for (int i = 0; i < userGenericParams; i++)
     {
         auto callParameter   = context.genericParameters[i];
         auto symbolParameter = genericParameters[i];
@@ -397,9 +410,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
 static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
-    context.mapGenericTypesIndex.clear();
-    context.genericReplaceTypes.clear();
-
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
 

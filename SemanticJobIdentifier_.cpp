@@ -33,8 +33,6 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_IS_GENERIC;
         if (child->flags & AST_IS_CONST)
             node->flags |= AST_IS_CONST;
-        if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
-            node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
     if (childBack->flags & AST_VALUE_COMPUTED)
@@ -647,6 +645,32 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
+void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context)
+{
+    auto job  = context->job;
+    auto node = context->node;
+
+    // Fresh start on generic types
+    job->symMatch.genericReplaceTypes.clear();
+    job->symMatch.mapGenericTypesIndex.clear();
+
+    // Collect from the owner structure
+    if (node->ownerStructScope)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        if (!(typeStruct->flags & TYPEINFO_GENERIC))
+        {
+            int idx = 0;
+            for (auto genParam : typeStruct->genericParameters)
+            {
+                job->symMatch.genericReplaceTypes[genParam->name]  = genParam->typeInfo;
+                job->symMatch.mapGenericTypesIndex[genParam->name] = idx;
+                idx++;
+            }
+        }
+    }
+}
+
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node)
 {
     auto              job                 = context->job;
@@ -701,6 +725,9 @@ anotherTry:
                         job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
                 }
             }
+
+            // We collect type replacements depending on where the identifier is
+            setupContextualGenericTypeReplacement(context);
 
             if (rawTypeInfo->kind == TypeInfoKind::Struct)
             {
@@ -837,6 +864,20 @@ anotherTry:
         auto& firstMatch = genericMatches[0];
         if (forStruct)
         {
+            // Be sure we have generic parameters if there's an automatic match
+            if (!genericParameters && (firstMatch.flags & SymbolMatchContext::MATCH_GENERIC_AUTO))
+            {
+                SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
+                auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+                identifier->genericParameters = Ast::newFuncCallParams(node->sourceFile, node);
+                genericParameters             = identifier->genericParameters;
+                for (auto param : firstMatch.genericParametersCallTypes)
+                {
+                    auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
+                    callParam->typeInfo = param;
+                }
+            }
+
             if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
             {
                 // If we are inside a #back instruction, then setup
@@ -858,8 +899,6 @@ anotherTry:
                 oneMatch.symbolOverload = firstMatch.symbolOverload;
                 matches.emplace_back(oneMatch);
                 node->flags |= AST_IS_GENERIC;
-                if (firstMatch.flags & SymbolMatchContext::MATCH_WAS_PARTIAL)
-                    node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
             }
         }
         else
