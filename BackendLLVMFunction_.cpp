@@ -2368,7 +2368,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             //CONCAT_STR_2(concat, "r[", ip->a.u32, "].b = r[", ip->a.u32, "].u16 ? 1 : 0;");
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I16(r0)));
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
