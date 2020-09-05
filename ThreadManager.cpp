@@ -143,7 +143,7 @@ static int exceptionHandler()
 {
     if (g_CommandLine.devMode)
     {
-        g_diagnosticInfos.reportError("exception during job execution !");
+        g_byteCodeStack.reportError("exception during job execution !");
         SWAG_ASSERT(false);
         return EXCEPTION_CONTINUE_EXECUTION;
     }

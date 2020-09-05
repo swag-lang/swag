@@ -13,7 +13,7 @@ struct DiagnosticInfosStep
     ByteCodeInstruction* ip         = nullptr;
 };
 
-struct DiagnosticInfos
+struct ByteCodeStack
 {
     void push()
     {
@@ -43,19 +43,4 @@ struct DiagnosticInfos
     vector<DiagnosticInfosStep> steps;
 };
 
-extern thread_local DiagnosticInfos g_diagnosticInfos;
-
-struct PushDiagnosticInfos
-{
-    PushDiagnosticInfos()
-    {
-        if (g_CommandLine.devMode)
-            g_diagnosticInfos.push();
-    }
-
-    ~PushDiagnosticInfos()
-    {
-        if (g_CommandLine.devMode)
-            g_diagnosticInfos.pop();
-    }
-};
+extern thread_local ByteCodeStack g_byteCodeStack;

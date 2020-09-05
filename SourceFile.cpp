@@ -294,7 +294,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     // Block execution in devmode, to be able to attach...
     SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
     if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-        g_diagnosticInfos.log();
+        g_byteCodeStack.log();
     if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
     {
         OS::errorBox("[Developer Mode]", "Error raised !");

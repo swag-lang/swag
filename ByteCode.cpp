@@ -71,8 +71,8 @@ TypeInfoFuncAttr* ByteCode::callType()
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
     // Trace call stack in case of errors
-    g_diagnosticInfos.push();
-    auto& last      = g_diagnosticInfos.last();
+    g_byteCodeStack.push();
+    auto& last      = g_byteCodeStack.last();
     last.message    = context->bc->name;
     last.node       = context->bc->node;
     last.sourceFile = context->sourceFile;
@@ -95,7 +95,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 
 void ByteCode::leaveByteCode()
 {
-    g_diagnosticInfos.pop();
+    g_byteCodeStack.pop();
     curRC--;
 }
 

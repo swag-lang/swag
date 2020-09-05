@@ -7,9 +7,9 @@
 #include "ByteCodeStack.h"
 #include "ByteCode.h"
 
-thread_local DiagnosticInfos g_diagnosticInfos;
+thread_local ByteCodeStack g_byteCodeStack;
 
-void DiagnosticInfos::log()
+void ByteCodeStack::log()
 {
     if (steps.empty())
         return;
@@ -42,7 +42,7 @@ void DiagnosticInfos::log()
     g_Log.setDefaultColor();
 }
 
-void DiagnosticInfos::reportError(const Utf8& msg)
+void ByteCodeStack::reportError(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
