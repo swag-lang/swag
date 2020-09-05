@@ -291,6 +291,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name), cflags));
     concreteTypeInfoValue->kind   = typeInfo->kind;
+    concreteTypeInfoValue->flags  = TypeInfoFlags::None;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     // Register type and value

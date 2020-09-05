@@ -183,7 +183,7 @@ namespace swag
     // Type reflection
     // #########################################################
 
-    enum TypeInfoKind
+    enum TypeInfoKind: u16
     {
         Invalid
         Native
@@ -226,11 +226,18 @@ namespace swag
         Any
     }
 
+    #[swag.flags]
+    enum TypeInfoFlags: u16
+    {
+        None = 0x0000
+    }
+
     struct TypeInfo
     {
         name:	string  // Must remain first !! (see emitCompareOpEqual when comparing two typeinfos)
-        kind: 	TypeInfoKind = ?
         sizeof: u32
+        kind: 	TypeInfoKind = ?
+        flags:  TypeInfoFlags = ?
     }
 
     struct TypeInfoNative

@@ -102,7 +102,7 @@ struct BuildCfg
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class TypeInfoKind
+enum class TypeInfoKind : SwagU16
 {
     Invalid,
     Native,
@@ -127,10 +127,6 @@ enum class TypeInfoKind
     Count,
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN BOOTSTRAP.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 enum class NativeTypeKind
 {
     Void,
@@ -152,6 +148,11 @@ enum class NativeTypeKind
     Count,
 };
 
+enum class TypeInfoFlags : SwagU16
+{
+    None = 0x0000,
+};
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -165,8 +166,9 @@ struct ConcreteSlice
 struct ConcreteTypeInfo
 {
     ConcreteSlice name;
-    TypeInfoKind  kind;
     SwagU32       sizeOf;
+    TypeInfoKind  kind;
+    TypeInfoFlags flags;
 };
 
 struct ConcreteAny
