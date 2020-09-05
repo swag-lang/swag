@@ -1757,48 +1757,35 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpXOrEqS8:
         {
-            //CONCAT_STR_2(concat, "*(__s8_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s8;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpXOrEqS16:
         {
-            //CONCAT_STR_2(concat, "*(__s16_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s16;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            auto r2 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpXOrEqS32:
         {
-            //CONCAT_STR_2(concat, "*(__s32_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s32;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpXOrEqS64:
         {
-            //CONCAT_STR_2(concat, "*(__s64_t*)(r[", ip->a.u32, "].pointer) ^= r[", ip->b.u32, "].s64;");
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
 
         case ByteCodeOp::CompareOpGreaterS32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1807,7 +1794,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpGreaterS64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s64 > r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1816,7 +1802,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpGreaterU32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1825,7 +1810,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpGreaterU64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u64 > r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1834,7 +1818,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpGreaterF32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].f32 > r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1843,7 +1826,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpGreaterF64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].f64 > r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1853,7 +1835,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CompareOpLowerS32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1862,7 +1843,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpLowerS64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s64 < r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1871,7 +1851,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpLowerU32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1880,7 +1859,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpLowerU64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u64 < r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1889,7 +1867,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpLowerF32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].f32 < r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1898,7 +1875,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpLowerF64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].f64 < r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1908,7 +1884,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CompareOpEqual8:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP8_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1917,7 +1892,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqual16:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1926,7 +1900,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqual32:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1935,7 +1908,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqual64:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32);
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
@@ -1944,7 +1916,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualString:
         {
-            //concat.addStringFormat("r[%u].b = swag_runtime_compareString(r[%u].pointer, r[%u].pointer, r[%u].u32, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2  = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
@@ -1958,7 +1929,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualTypeInfo:
         {
-            //concat.addStringFormat("r[%u].b = swag_runtime_compareType(r[%u].pointer, r[%u].pointer);", ip->c.u32, ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
@@ -1970,7 +1940,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::TestNotZero8:
         {
-            //concat.addStringFormat("r[%u].b=r[%u].u8!=0;", ip->a.u32, ip->b.u32);
             auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -1983,7 +1952,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::TestNotZero16:
         {
-            //concat.addStringFormat("r[%u].b=r[%u].u16!=0;", ip->a.u32, ip->b.u32);
             auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -1996,7 +1964,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::TestNotZero32:
         {
-            //concat.addStringFormat("r[%u].b=r[%u].u32!=0;", ip->a.u32, ip->b.u32);
             auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -2009,7 +1976,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::TestNotZero64:
         {
-            //concat.addStringFormat("r[%u].b=r[%u].u64!=0;", ip->a.u32, ip->b.u32);
             auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
@@ -2023,8 +1989,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::Jump:
         {
-            //CONCAT_FIXED_STR(concat, "goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto label = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             builder.CreateBr(label);
             blockIsClosed = true;
@@ -2032,8 +1996,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfFalse:
         {
-            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].b) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
@@ -2044,8 +2006,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfTrue:
         {
-            //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].b) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
@@ -2056,8 +2016,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfZero32:
         {
-            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u32) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
@@ -2068,8 +2026,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfZero64:
         {
-            //CONCAT_STR_1(concat, "if(!r[", ip->a.u32, "].u64) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
@@ -2080,8 +2036,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfNotZero32:
         {
-            //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u32) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
@@ -2092,8 +2046,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::JumpIfNotZero64:
         {
-            //CONCAT_STR_1(concat, "if(r[", ip->a.u32, "].u64) goto _");
-            //concat.addS32Str8(ip->b.s32 + i + 1);
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
@@ -2104,7 +2056,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::Ret:
-            //return;
             builder.CreateRetVoid();
             blockIsClosed = true;
             break;

@@ -326,13 +326,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::IntrinsicF32x2:
-    {
-        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], rb, rc));
-        break;
-    }
-
     case ByteCodeOp::IntrinsicF64x2:
     {
         auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
