@@ -1830,10 +1830,6 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
     for (auto scope : job->cacheScopeHierarchy)
     {
-        // No ghosting with struct
-        if (scope->kind == ScopeKind::Struct)
-            continue;
-
         // Do not check if this is the same scope
         if (scope == startScope)
             continue;

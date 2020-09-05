@@ -72,7 +72,8 @@ namespace std.collections
                 oldTable := table
                 count = 0
                 removed = 0
-                table := acast memory.alloc(&allocator, newCapacity * @sizeof(HashTableEntry'(K, V)))
+                newSize := newCapacity * @sizeof(HashTableEntry'(K, V))
+                table = acast memory.alloc(&allocator, newSize)
 
                 // Copy the last table to the next table, removing deleted entries
                 loop i: allocated
@@ -92,23 +93,23 @@ namespace std.collections
                 if !allocated
                     grow(self)
 
-                hashIndex := hashIndex(self, hashVal)
-                while table[hashIndex].hash
+                index := hashIndex(self, hashVal)
+                while table[index].hash
                 {
-                    if table[hashIndex].hash == hashVal && table[hashIndex].key == key
+                    if table[index].hash == hashVal && table[index].key == key
                     {
-                        table[hashIndex].value = value
+                        table[index].value = value
                         return
                     }
 
-                    hashIndex += 1
-                    if hashIndex == allocated
-                        hashIndex = 0
+                    index += 1
+                    if index == allocated
+                        index = 0
                 }
 
-                table[hashIndex].hash = hashVal
-                table[hashIndex].key = key
-                table[hashIndex].value = value
+                table[index].hash = hashVal
+                table[index].key = key
+                table[index].value = value
                 count += 1
             }
 

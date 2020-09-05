@@ -4,12 +4,12 @@ namespace std.crypto
 	{
 		x: u32
 	}
-	
+
 	impl Mwc
-	{	
-		func seed(using self, seed: u32)
+	{
+		func seed(using self, _seed: u32)
 		{
-			x = seed
+			x = _seed
 		}
 	}
 }

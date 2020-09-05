@@ -22,19 +22,19 @@ namespace std.drawing
 		public
 		{
             #[swag.complete]
-			func opAffect(self, argb: u32)
+			func opAffect(self, _argb: u32)
             {
-                self.argb = argb
+                self.argb = _argb
             }
 
             #[swag.complete]
-            func opAffect(self, argb: Argb)
+            func opAffect(self, _argb: Argb)
             {
-                self.argb = cast(u32) argb
+                self.argb = cast(u32) _argb
             }
 
-			func opEquals(self, argb: u32) => self.argb == argb
-            func opEquals(self, b: Self) => self.argb == b.argb
+			func opEquals(self, _argb: u32) => self.argb == _argb
+            func opEquals(self, other: Self) => self.argb == other.argb
 		}
 	}
 }

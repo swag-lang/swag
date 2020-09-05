@@ -6,10 +6,10 @@ struct point
 impl point
 {
 	//#[swag.printbc]
-	func set(self, x: s32)
+	func set(self, _x: s32)
 	{
 		@assert(self.x == 100)
-		self.x = x
+		self.x = _x
 	}
 }
 

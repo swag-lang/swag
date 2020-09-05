@@ -9,9 +9,9 @@ struct(T) Point
 impl Point
 {
 	//#[swag.printbc]
-	func toto(x: T)->T
+	func toto(xx: T)->T
 	{
-		return x
+		return xx
 	}
 }
 

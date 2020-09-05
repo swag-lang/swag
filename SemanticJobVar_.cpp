@@ -509,6 +509,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto module     = sourceFile->module;
     auto node       = static_cast<AstVarDecl*>(context->node);
 
+    if (node->name == "xxx")
+        node = node;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
     if (context->result == ContextResult::Pending)
         return true;

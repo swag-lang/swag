@@ -1081,7 +1081,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (context->sourceFile->unittestError)
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
-            swag_runtime_assert(false, context->sourceFile->path.c_str(), ip->getLocation(context->bc)->line, (const char*) ip->d.pointer);
+            swag_runtime_assert(false, ip->node->sourceFile->path.c_str(), ip->getLocation(context->bc)->line, (const char*) ip->d.pointer);
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:

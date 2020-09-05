@@ -64,8 +64,8 @@ namespace std.collections
             {
                 if b != lastBucket
                     return b.count
-                count := cast(u32) (currentSP - lastBucket.datas)
-                return count
+                bcount := cast(u32) (currentSP - lastBucket.datas)
+                return bcount
             }
 
             // Be sure that their is enough room to store at least 'numBytes' bytes
@@ -75,12 +75,12 @@ namespace std.collections
 
                 if firstBucket
                 {
-                    count := cast(u32) (currentSP - lastBucket.datas);
-                    if count + numBytes <= bucketSize
+                    bcount := cast(u32) (currentSP - lastBucket.datas);
+                    if bcount + numBytes <= bucketSize
                         return
 
-                    totalCount += count;
-                    lastBucket.count = count;
+                    totalCount += bcount;
+                    lastBucket.count = bcount;
 
                     // Next is already allocated
                     if lastBucket.next

@@ -6,9 +6,9 @@ struct A
 impl A
 {
     #[swag.inline]
-    func toto(s: *Self, v: u32)
+    func toto(s: *Self, _v: u32)
     {
-        s.v = v
+        s.v = _v
     }
 }
 
