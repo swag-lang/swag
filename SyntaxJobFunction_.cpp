@@ -6,13 +6,13 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, bool forGeneric)
+bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
     auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
-    if (forGeneric && token.id != TokenId::SymLeftParen)
+    if (token.id != TokenId::SymLeftParen)
     {
         auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
         param->semanticFct = SemanticJob::resolveFuncCallParam;
@@ -71,6 +71,49 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, bool for
 
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
+
+    return true;
+}
+
+bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
+{
+    auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
+    *result                 = callParams;
+    callParams->semanticFct = SemanticJob::resolveFuncCallParams;
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    while (token.id != TokenId::SymRightParen)
+    {
+        while (true)
+        {
+            auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
+            param->semanticFct = SemanticJob::resolveFuncCallParam;
+            param->token       = token;
+            AstNode* paramExpression;
+            SWAG_CHECK(doExpression(nullptr, &paramExpression));
+
+            // Name
+            if (token.id == TokenId::SymColon)
+            {
+                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
+                    return sourceFile->report({paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
+                param->namedParamNode = paramExpression->childs.front();
+                param->namedParam     = param->namedParamNode->name;
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doExpression(param));
+            }
+            else
+            {
+                Ast::addChildBack(param, paramExpression);
+            }
+
+            if (token.id == TokenId::SymRightParen)
+                break;
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+        }
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
     return true;
 }

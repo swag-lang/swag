@@ -52,7 +52,8 @@ struct SyntaxJob : public Job
     void moveAttributes(AstNode* from, AstNode* to);
 
     bool doLabel(AstNode* parent, AstNode** result = nullptr);
-    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr, bool forGeneric = false);
+    bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerBake(AstNode* parent, AstNode** result = nullptr);

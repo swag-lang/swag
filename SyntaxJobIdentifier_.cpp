@@ -44,14 +44,14 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         if (token.id == TokenId::SymQuote)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters, true));
+            SWAG_CHECK(doGenericFuncCallParameters(identifier, &identifier->genericParameters));
             identifier->genericParameters->flags |= AST_NO_BYTECODE;
         }
 
         // Function call parameters
         if (token.id == TokenId::SymLeftParen)
         {
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, false));
+            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
         }
     }
 

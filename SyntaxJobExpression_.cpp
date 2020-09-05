@@ -168,7 +168,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::IntrinsicSizeOf:
-    case TokenId::IntrinsicTypeOf:
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
@@ -182,6 +181,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicArguments:
     case TokenId::IntrinsicCompiler:
     case TokenId::IntrinsicIsByteCode:
+        SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+
+    case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
