@@ -1,5 +1,5 @@
-//#module "compiler1939"
-//#unittest error
+#module "compiler1940"
+#unittest error
 
 struct(T) B
 {

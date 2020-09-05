@@ -524,21 +524,24 @@ void Backend::setupExportFile()
     {
         exportFileGenerated = true;
         Utf8 targetName     = module->name + ".generated.swg";
-        Utf8 targetPath     = g_Workspace.cachePath.string() + "\\" + targetName;
-        bool exists         = fs::exists(targetPath.c_str());
+        auto targetPath     = g_Workspace.cachePath;
+        targetPath.append(targetName.c_str());
+        bool exists = fs::exists(targetPath.c_str());
         if (!exists)
         {
             exportFileGenerated = false;
             targetName          = module->name + ".swg";
-            targetPath          = g_Workspace.targetPath.string() + "\\" + module->name + ".swg";
-            exists              = fs::exists(targetPath.c_str());
+            targetPath          = g_Workspace.targetPath.c_str();
+            auto otherName      = module->name + ".swg";
+            targetPath.append(otherName.c_str());
+            exists = fs::exists(targetPath.c_str());
         }
 
         if (exists)
         {
             bufferSwg.name = targetName;
-            bufferSwg.path = targetPath;
-            timeExportFile = OS::getFileWriteTime(targetPath.c_str());
+            bufferSwg.path = normalizePath(fs::path(targetPath.string().c_str()));
+            timeExportFile = OS::getFileWriteTime(targetPath.string().c_str());
         }
     }
     else
@@ -555,7 +558,9 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         passExport          = BackendPreCompilePass::GenerateObj;
         exportFileGenerated = true;
         bufferSwg.name      = module->name + ".generated.swg";
-        bufferSwg.path      = g_Workspace.cachePath.string() + "\\" + bufferSwg.name;
+        auto targetPath     = g_Workspace.cachePath;
+        targetPath.append(bufferSwg.name.c_str());
+        bufferSwg.path = normalizePath(targetPath);
         if (!mustCompile)
             return JobResult::ReleaseJob;
 
