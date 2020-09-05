@@ -317,12 +317,29 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicS16x1:
     case ByteCodeOp::IntrinsicS32x1:
     case ByteCodeOp::IntrinsicS64x1:
-    case ByteCodeOp::IntrinsicF32x2:
-    case ByteCodeOp::IntrinsicF64x2:
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
-        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], registersRC[ip->b.u32], registersRC[ip->c.u32]));
+    {
+        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], rb, rb));
         break;
+    }
+
+    case ByteCodeOp::IntrinsicF32x2:
+    {
+        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], rb, rc));
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicF64x2:
+    {
+        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+        SWAG_CHECK(executeMathIntrinsic(context, ip, registersRC[ip->a.u32], rb, rc));
+        break;
+    }
 
     case ByteCodeOp::TestNotZero8:
     {
