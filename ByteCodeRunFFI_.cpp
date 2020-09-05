@@ -273,11 +273,4 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
 
     // Make the call
     ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, context->ffiArgsValues.empty() ? nullptr : &context->ffiArgsValues[0]);
-
-#ifdef SWAG_HAS_ASSERT
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.pop();
-    }
-#endif
 }

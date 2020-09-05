@@ -49,9 +49,5 @@ void JobThread::loop()
         }
 
         g_ThreadMgr.executeOneJob(job);
-
-#ifdef SWAG_HAS_ASSERT
-        g_diagnosticInfos.clear();
-#endif
     }
 }

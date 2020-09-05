@@ -95,13 +95,6 @@ JobResult SemanticJob::execute()
             continue;
         }
 
-#ifdef SWAG_HAS_ASSERT
-        if (g_CommandLine.devMode)
-        {
-            g_diagnosticInfos.last().node = node;
-        }
-#endif
-
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:

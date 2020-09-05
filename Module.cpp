@@ -217,15 +217,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
-#ifdef SWAG_HAS_ASSERT
-    PushDiagnosticInfos di;
-    if (g_CommandLine.devMode)
-    {
-        g_diagnosticInfos.last().sourceFile = sourceFile;
-        g_diagnosticInfos.last().node       = node;
-    }
-#endif
-
     // Global setup
     runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);

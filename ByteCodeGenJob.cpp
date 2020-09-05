@@ -395,15 +395,7 @@ JobResult ByteCodeGenJob::execute()
 
         while (!nodes.empty())
         {
-            auto node = nodes.back();
-
-#ifdef SWAG_HAS_ASSERT
-            if (g_CommandLine.devMode)
-            {
-                g_diagnosticInfos.last().node = node;
-            }
-#endif
-
+            auto node      = nodes.back();
             context.node   = node;
             context.result = ContextResult::Done;
 
