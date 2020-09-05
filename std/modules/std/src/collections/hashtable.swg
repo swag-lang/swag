@@ -26,6 +26,11 @@ namespace std.collections
             const HASH_DELETED = 1'u32
             const HASH_FIRST = 2'u32
 
+            func opDrop(self)
+            {
+                free(self)
+            }
+
             func hash(key: K)->u32
             {
                 hashVal := 0'u32
@@ -33,11 +38,6 @@ namespace std.collections
                 if hashVal < HASH_FIRST
                     hashVal += HASH_FIRST
                 return hashVal
-            }
-
-            func hashIndex(using self, hashVal: u32)->u32
-            {
-                return hashVal & (allocated - 1)
             }
 
             func free(using self)
@@ -73,7 +73,7 @@ namespace std.collections
                 count = 0
                 removed = 0
                 newSize := newCapacity * @sizeof(HashTableEntry'(K, V))
-                //table = acast memory.alloc(&allocator, newSize)
+                table = acast memory.alloc(&allocator, newSize)
 
                 // Copy the last table to the next table, removing deleted entries
                 loop i: allocated
@@ -88,12 +88,12 @@ namespace std.collections
             // Add a new key value pair. If the key already exists, then the value will be replaced
             func add(using self, key: K, value: V)
             {
-                hashVal := hash(key)
-
                 if !allocated
                     grow(self)
 
-                index := hashIndex(self, hashVal)
+                hashVal := hash(key)
+                index := hashVal % allocated
+
                 while table[index].hash
                 {
                     if table[index].hash == hashVal && table[index].key == key
@@ -117,16 +117,17 @@ namespace std.collections
             func contains(using self, key: K)->bool
             {
                 if !table return false
-                hashVal := hash(key)
-                hashIndex := hashIndex(self, hashVal)
 
-                while table[hashIndex].hash
+                hashVal := hash(key)
+                index := hashVal % allocated
+
+                while table[index].hash
                 {
-                    if table[hashIndex].hash == hashVal && table[hashIndex].key == key
+                    if table[index].hash == hashVal && table[index].key == key
                         return true
-                    hashIndex += 1
-                    if hashIndex == allocated
-                        hashIndex = 0
+                    index += 1
+                    if index == allocated
+                        index = 0
                 }
 
                 return false

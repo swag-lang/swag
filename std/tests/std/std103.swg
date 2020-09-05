@@ -4,5 +4,7 @@ using std.collections
 #test
 {
     var map: HashTable'(s32, bool)
-    map.add(0, true)
+    @assert(!map.contains(666))
+    map.add(666, true)
+    @assert(map.contains(666))
 }
