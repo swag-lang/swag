@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "Ast.h"
 #include "ByteCode.h"
+#include "ByteCodeStack.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "BackendLLVM.h"
@@ -209,6 +210,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_defaultContext.flags = getDefaultContextFlags(this);
     g_defaultContext.flags |= (uint64_t) ContextFlags::ByteCode;
 
+    g_byteCodeStack.clear();
     bool result = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
     return result;

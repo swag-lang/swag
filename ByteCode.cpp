@@ -72,9 +72,8 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
     // Trace call stack in case of errors
     ByteCodeStackStep stackStep;
-    stackStep.message    = context->bc->name;
-    stackStep.node       = context->bc->node;
-    stackStep.sourceFile = context->sourceFile;
+    stackStep.bc = context->bc;
+    stackStep.ip = context->ip;
     g_byteCodeStack.push(stackStep);
 
     auto module = context->sourceFile->module;

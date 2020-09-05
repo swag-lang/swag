@@ -1,23 +1,19 @@
 #pragma once
 #include "CommandLine.h"
-struct SourceFile;
-struct AstNode;
-struct Utf8;
+struct ByteCode;
 struct ByteCodeInstruction;
 
 struct ByteCodeStackStep
 {
-    const char*          message    = nullptr;
-    SourceFile*          sourceFile = nullptr;
-    AstNode*             node       = nullptr;
-    ByteCodeInstruction* ip         = nullptr;
+    ByteCode*            bc = nullptr;
+    ByteCodeInstruction* ip = nullptr;
 };
 
 struct ByteCodeStack
 {
     void push(ByteCodeStackStep& step)
     {
-        steps.emplace_back(step);
+        steps.push_back(step);
     }
 
     void pop()

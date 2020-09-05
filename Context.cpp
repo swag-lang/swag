@@ -7,6 +7,7 @@
 #include "AstNode.h"
 #include "Global.h"
 #include "Module.h"
+#include "ByteCodeStack.h"
 
 uint64_t         g_tlsContextId = 0;
 SwagContext      g_defaultContext;
