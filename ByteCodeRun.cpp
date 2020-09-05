@@ -398,6 +398,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::LocalCall:
     {
+        context->bc->addCallStack(context);
         context->push(context->bp);
         context->push(context->bc);
         context->push(context->ip);
@@ -415,6 +416,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto ptr = registersRC[ip->a.u32].u64;
         if (isByteCodeLambda((void*) ptr))
         {
+            context->bc->addCallStack(context);
             context->push(context->bp);
             context->push(context->bc);
             context->push(context->ip);
@@ -1081,7 +1083,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (context->sourceFile->unittestError)
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
-            swag_runtime_assert(false, ip->node->sourceFile->path.c_str(), ip->getLocation(context->bc)->line, (const char*) ip->d.pointer);
+        {
+            ConcreteCompilerSourceLocation loc;
+            auto                           ipLocation = ip->getLocation(context->bc);
+            loc.lineStart = loc.lineEnd = ipLocation->line;
+            loc.colStart = loc.colEnd = ipLocation->column;
+            loc.fileName.buffer       = (void*) ip->node->sourceFile->path.c_str();
+            loc.fileName.count        = ip->node->sourceFile->path.length();
+            swag_runtime_assert_msg(&loc, (const char*) ip->d.pointer);
+        }
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:
@@ -1811,8 +1821,14 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             userMsg.append("assertion failed");
 
-        Utf8 msg = format("%s:%d: %s", fileName.c_str(), location->lineStart + 1, userMsg.c_str());
-        runContext->bc->sourceFile->report(msg);
+        SourceFile dummyFile;
+        dummyFile.path = fileName;
+        SourceLocation sourceLocation;
+        sourceLocation.line   = location->lineStart;
+        sourceLocation.column = location->colStart;
+        Diagnostic diag{&dummyFile, sourceLocation, userMsg};
+        runContext->bc->sourceFile->report(diag);
+
         return EXCEPTION_EXECUTE_HANDLER;
     }
 

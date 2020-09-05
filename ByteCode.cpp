@@ -68,14 +68,16 @@ TypeInfoFuncAttr* ByteCode::callType()
     return typeInfoFunc;
 }
 
-void ByteCode::enterByteCode(ByteCodeRunContext* context)
+void ByteCode::addCallStack(ByteCodeRunContext* context)
 {
-    // Trace call stack in case of errors
     ByteCodeStackStep stackStep;
     stackStep.bc = context->bc;
     stackStep.ip = context->ip;
     g_byteCodeStack.push(stackStep);
+}
 
+void ByteCode::enterByteCode(ByteCodeRunContext* context)
+{
     auto module = context->sourceFile->module;
     if (curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
     {
@@ -92,9 +94,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
     }
 }
 
-void ByteCode::leaveByteCode()
+void ByteCode::leaveByteCode(bool popCallStack)
 {
-    g_byteCodeStack.pop();
+    if (popCallStack)
+        g_byteCodeStack.pop();
     curRC--;
 }
 

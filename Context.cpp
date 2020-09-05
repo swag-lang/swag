@@ -58,6 +58,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 
     // Run !
     runContext.bp = runContext.sp;
+    bc->addCallStack(&runContext);
     bc->enterByteCode(&runContext);
     module->runner.run(&runContext);
 }

@@ -221,11 +221,11 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     // Global setup
     runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);
-    node->bc->enterByteCode(&runContext);
 
+    node->bc->enterByteCode(&runContext);
     auto module = sourceFile->module;
     bool result = module->runner.run(&runContext);
-    node->bc->leaveByteCode();
+    node->bc->leaveByteCode(false);
     if (!result)
         return false;
 

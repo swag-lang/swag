@@ -6,6 +6,7 @@
 #include "Os.h"
 #include "ByteCodeStack.h"
 #include "ByteCode.h"
+#include "Diagnostic.h"
 
 thread_local ByteCodeStack g_byteCodeStack;
 
@@ -18,9 +19,8 @@ void ByteCodeStack::log()
     for (int i = (int) steps.size() - 1; i >= 0; i--)
     {
         const auto& step = steps[i];
-        g_Log.print(format("%s", step.ip->node->sourceFile->path.c_str()));
-        g_Log.print(format(":%d: ", step.ip->getLocation(step.bc)->line + 1));
-        g_Log.eol();
+        Diagnostic  diag{step.ip->node->sourceFile, *step.ip->getLocation(step.bc), step.bc->name, DiagnosticLevel::Note};
+        diag.report();
     }
 
     g_Log.setDefaultColor();

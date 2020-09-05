@@ -49,8 +49,9 @@ struct ByteCodeInstruction
 #define MAX_CACHE_FREE_REG 8
 struct ByteCode
 {
+    void addCallStack(ByteCodeRunContext* context);
     void enterByteCode(ByteCodeRunContext* context);
-    void leaveByteCode();
+    void leaveByteCode(bool popCallStack = true);
     void markLabels();
 
     void              printInstruction(ByteCodeInstruction* ip);

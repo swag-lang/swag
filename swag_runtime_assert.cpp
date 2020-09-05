@@ -2,24 +2,16 @@
 #include "libc/libc.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* message)
+EXTERN_C void swag_runtime_assert_msg(ConcreteCompilerSourceLocation* location, const void* message)
 {
-    if (expr)
-        return;
-
     // During tests, and if not in devmode, then just raise an error
     SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
     if ((context->flags & (SwagU64) ContextFlags::ByteCode) ||
         ((context->flags & (SwagU64) ContextFlags::Test) && !(context->flags & (SwagU64) ContextFlags::DevMode)))
     {
-        ConcreteCompilerSourceLocation loc;
-        loc.lineStart = loc.lineEnd = line;
-        loc.colStart = loc.colEnd = 0;
-        loc.fileName.buffer       = (void*) file;
-        loc.fileName.count        = strlen((const char*) file);
         if (!message)
             message = "assertion failed";
-        swag_runtime_error(&loc, message, (SwagU32) strlen((const char*) message));
+        swag_runtime_error(location, message, (SwagU32) strlen((const char*) message));
         return;
     }
 
@@ -38,9 +30,9 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
         strcat(buf, "assertion failed\n\n");
     }
 
-    strcat(buf, file ? (const char*) file : "<unknown file>");
+    strcat(buf, (const char*) location->fileName.buffer);
     strcat(buf, ", line ");
-    swag_runtime_itoa(bufline, line);
+    swag_runtime_itoa(bufline, location->lineStart);
     strcat(buf, bufline);
 
 #ifdef _WIN32
@@ -62,6 +54,20 @@ EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, con
 #endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* message)
+{
+    if (expr)
+        return;
+    ConcreteCompilerSourceLocation loc;
+    loc.lineStart = loc.lineEnd = line;
+    loc.colStart = loc.colEnd = 0;
+    loc.fileName.buffer       = (void*) file;
+    loc.fileName.count        = strlen((const char*) file);
+    swag_runtime_assert_msg(&loc, message);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size)
 {
     SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
