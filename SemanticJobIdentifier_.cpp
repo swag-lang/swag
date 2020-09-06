@@ -1481,6 +1481,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
                 if (identifierRef->typeInfo)
                     return context->report({node, node->token, format("identifier '%s' cannot be found in type '%s'", node->name.c_str(), identifierRef->typeInfo->name.c_str())});
+
                 return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
             }
 
