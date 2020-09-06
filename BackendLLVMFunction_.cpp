@@ -2062,21 +2062,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicPrintS64:
         {
-            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
             auto r0 = GEP_I32(allocR, ip->a.u32);
             builder.CreateCall(modu.getFunction("swag_runtime_print_i64"), {builder.CreateLoad(r0)});
             break;
         }
         case ByteCodeOp::IntrinsicPrintF64:
         {
-            //CONCAT_STR_1(concat, "swag_runtime_print_f64(r[", ip->a.u32, "].f64);");
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_f64"), {builder.CreateLoad(r0)});
             break;
         }
         case ByteCodeOp::IntrinsicPrintString:
         {
-            //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
@@ -2093,7 +2090,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicAssert:
         {
-            //concat.addStringFormat("swag_runtime_assert(r[%u].b, \"%s\", %d, %s);", ip->a.u32, normalizePath(ip->node->sourceFile->path).c_str(), ip->node->token.startLocation.line + 1, ip->d.pointer);
             llvm::Value* r0;
             if (ip->flags & BCI_IMM_A)
                 r0 = builder.getInt8(ip->a.b);
@@ -2115,7 +2111,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicAlloc:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) malloc(r[%u].u32);", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), false);
             auto a0 = builder.CreateCall(pp.fn_malloc, {v0});
@@ -2125,7 +2120,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicRealloc:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
             auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
@@ -2136,14 +2130,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicFree:
         {
-            //concat.addStringFormat("free(r[%u].pointer);", ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             builder.CreateCall(pp.fn_free, {v0});
             break;
         }
         case ByteCodeOp::IntrinsicGetContext:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) swag_runtime_tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
             auto a0 = builder.CreateCall(modu.getFunction("swag_runtime_tlsGetValue"), {v0});
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
@@ -2152,7 +2144,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
-            //concat.addStringFormat("swag_runtime_tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
             auto v1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {v0, v1});
@@ -2160,8 +2151,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicArguments:
         {
-            //concat.addStringFormat("r[%u].pointer = __process_infos.arguments.addr;", ip->a.u32);
-            //concat.addStringFormat("r[%u].u64 = __process_infos.arguments.count;", ip->b.u32);
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1 = GEP_I32(allocR, ip->b.u32);
             auto v0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32, pp.cst0_i32}));
@@ -2172,14 +2161,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicIsByteCode:
         {
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(pp.cst0_i8, r0);
             break;
         }
         case ByteCodeOp::IntrinsicCompiler:
         {
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].p = 0;");
             auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(pp.cst0_i64, r0);
             break;
@@ -2187,7 +2174,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::NegBool:
         {
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b ^= 1;");
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateXor(builder.CreateLoad(r0), pp.cst1_i8);
             builder.CreateStore(v0, r0);
@@ -2195,7 +2181,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::NegF32:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f32 = -r[", ip->a.u32, "].f32;");
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2203,7 +2188,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::NegF64:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].f64 = -r[", ip->a.u32, "].f64;");
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2211,7 +2195,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::NegS32:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = -r[", ip->a.u32, "].s32;");
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2219,7 +2202,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::NegS64:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = -r[", ip->a.u32, "].s64;");
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2228,7 +2210,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InvertS8:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s8 = ~r[", ip->a.u32, "].s8;");
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2236,7 +2217,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InvertS16:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s16 = ~r[", ip->a.u32, "].s16;");
             auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2244,7 +2224,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InvertS32:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s32 = ~r[", ip->a.u32, "].s32;");
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2252,7 +2231,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InvertS64:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].s64 = ~r[", ip->a.u32, "].s64;");
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
@@ -2261,7 +2239,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ClearMaskU32:
         {
-            //concat.addStringFormat("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32);
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB32);
             builder.CreateStore(v0, r0);
@@ -2269,7 +2246,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::ClearMaskU64:
         {
-            //concat.addStringFormat("r[%u].u64 &= 0x%llx;", ip->a.u32, ip->b.u64);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB64);
             builder.CreateStore(v0, r0);
@@ -3071,11 +3047,9 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         {
             auto index = pushParams[idxParam--];
             auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             params.push_back(builder.CreateLoad(r0));
 
             index = pushParams[idxParam--];
-            //CONCAT_STR_1(concat, ", r[", index, "].u32");
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
             numCallParams--;
@@ -3091,7 +3065,6 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
 
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             auto typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             if (typePtr->ptrCount != 1)
                 return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid pointer count");
@@ -3121,35 +3094,29 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
                  typeParam->kind == TypeInfoKind::Lambda ||
                  typeParam->kind == TypeInfoKind::Array)
         {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
         }
         else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
         {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
 
             index = pushParams[idxParam--];
-            //CONCAT_STR_1(concat, ", r[", index, "].u32");
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
         else if (typeParam->isNative(NativeTypeKind::Any))
         {
-            //CONCAT_STR_1(concat, "(void*)r[", index, "].pointer");
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
 
             index = pushParams[idxParam--];
-            //CONCAT_STR_1(concat, ", (void*)r[", index, "].pointer");
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            //CONCAT_STR_1(concat, "r[", index, "]");
             auto r0 = GEP_I32(allocR, index);
             auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
             if (!r)
