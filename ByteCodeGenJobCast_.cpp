@@ -713,7 +713,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
 
         if (typeInfo->numRegisters() == 1)
-            node->resultRegisterRC = exprNode->resultRegisterRC[0];
+        {
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC = exprNode->resultRegisterRC;
+        }
         else
         {
             SWAG_ASSERT(exprNode->resultRegisterRC.size() == typeInfo->numRegisters());
@@ -731,7 +734,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (exprNode->castOffset)
         {
             SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Pointer);
-            node->resultRegisterRC   = exprNode->resultRegisterRC[0];
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
             auto inst                = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->flags |= BCI_IMM_B;
@@ -746,14 +750,16 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->kind == TypeInfoKind::Reference)
         {
-            node->resultRegisterRC   = exprNode->resultRegisterRC[0];
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
             return true;
         }
 
         if (fromTypeInfo->isNative(NativeTypeKind::String))
         {
-            node->resultRegisterRC   = exprNode->resultRegisterRC[0];
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
             return true;
         }

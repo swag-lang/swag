@@ -182,9 +182,6 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
-    auto     r0   = node->childs[0]->resultRegisterRC;
-    auto     r1   = node->childs[1]->resultRegisterRC;
-
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
@@ -229,6 +226,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
+        auto &r0 = node->childs[0]->resultRegisterRC;
+        auto &r1 = node->childs[1]->resultRegisterRC;
+
         RegisterList r2;
         reserveRegisterRC(context, r2, 1);
         node->resultRegisterRC = r2;

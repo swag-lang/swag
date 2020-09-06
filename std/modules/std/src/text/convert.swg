@@ -85,7 +85,6 @@ namespace std.text
     public
     {
         // Convert a value to an utf8 string, and append the result in a ConcatBuffer
-        #[swag.printbc]
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             type := @kindof(value)
