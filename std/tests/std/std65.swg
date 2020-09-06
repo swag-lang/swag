@@ -24,7 +24,7 @@ impl BOUBOU
     {
         var arr: Array'BOUBOU
         var value: BOUBOU
-        arr.addBack(value)
+        arr.add(value)
     }
     @assert(G == 2)
 }

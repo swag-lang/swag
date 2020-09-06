@@ -24,7 +24,7 @@ impl X
         G = 0
         var arr: Array'X
         var value: X
-        arr.addBack(value)
+        arr.add(value)
     }
 
     @assert(G == 2)

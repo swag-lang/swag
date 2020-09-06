@@ -48,9 +48,7 @@ namespace std.collections
                 #if reflection.hasMember(@typeof(T), "opDrop")
                 {
                     loop count
-                    {
-                        buffer[count].opDrop()
-                    }
+                        @drop(buffer + @index)
                 }
 
                 memory.free(&allocator, buffer)
@@ -61,16 +59,24 @@ namespace std.collections
                 if allocator == null
                     allocator = @getcontext().allocator
 
-                newBuffer := acast memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
+                newBuffer := cast(*T) acast memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
 
-                // Need to call opPostMove on every element if the buffer has not been reallocated
+                // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
                 // in place
-                #if reflection.hasMember(@typeof(T), "opPostMove")
+                if buffer && newBuffer != buffer
                 {
-                    if buffer && newBuffer != buffer
+                    #if reflection.hasMember(@typeof(T), "opPostMove")
                     {
                         loop count
-                            buffer[count].opPostMove()
+                            newBuffer[@index].opPostMove()
+                    }
+                    #elif reflection.hasMember(@typeof(T), "opPostCopy")
+                    {
+                        loop count
+                        {
+                            newBuffer[@index].opPostCopy()
+                            @drop(buffer + @index)
+                        }
                     }
                 }
 
@@ -79,7 +85,7 @@ namespace std.collections
             }
 
             // Ensure the Array is big enough to store at least 'newCount' elements
-            func ensureCapacity(using self, newCount : u32)
+            func grow(using self, newCount : u32)
             {
                 if newCount <= capacity
                     return
@@ -104,15 +110,15 @@ namespace std.collections
                 realloc(self, newCapacity)
             }
 
-            // Add one element at the end of the array
-            func addBack(using self, value: T)
+            // Add a copy of one element at the end of the array
+            func add(using self, value: T)
             {
                 reserve(self, count + 1)
                 buffer[count] = nodrop value
                 count += 1
             }
 
-            // Add one element at the end of the array
+            // Move one element at the end of the array
             func emplaceBack(using self, value: *T)
             {
                 reserve(self, count + 1)
@@ -124,6 +130,22 @@ namespace std.collections
             func clear(using self)
             {
                 count = 0
+            }
+
+            // Remove an element at 'index' by replacing it with the last
+            // element. Order is not preserved
+            func removeAt(using self, index: u32)
+            {
+                std.diagnostics.debug.assert(index < count, "index out of range")
+                count -= 1
+
+                if index == count
+                {
+                    @drop(buffer[count])
+                    return
+                }
+
+                buffer[index] = move buffer[count]
             }
         }
     }

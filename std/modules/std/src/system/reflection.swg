@@ -2,10 +2,10 @@ namespace std.reflection
 {
     using swag
 
-    public 
+    public
     {
         #[swag.constexpr]
-        func getMember(type: const* TypeInfo, name: string)->const* TypeInfoParam
+        func getMember(type: typeinfo, name: string)->const* TypeInfoParam
         {
             if type.kind != TypeInfoKind.Struct
                 return null
@@ -20,7 +20,7 @@ namespace std.reflection
         }
 
         #[swag.constexpr]
-        func hasMember(type: const* TypeInfo, name: string)->bool
+        func hasMember(type: typeinfo, name: string)->bool
         {
             return getMember(type, name) != null
         }

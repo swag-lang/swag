@@ -13,6 +13,6 @@ struct BABA
     @assert(@typeof(arr).name == "std.collections.Array'(BABA)")
 
     var x: BABA
-    arr.addBack(x)
+    arr.add(x)
     @assert(arr.count == 1)
 }

@@ -49,7 +49,7 @@ namespace std.text
 
             func(T) opCast(using self)->T
             {
-                #if @typeof(T) == @typeof(string)
+                #if @typeof(T) == string
                     return cast(string) @mkslice(buffer, length)
                 #else
                     #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
@@ -205,14 +205,14 @@ namespace std.text
                     return
 
                 newLength := length + concatLength + 1
-                ensureCapacity(self, newLength)
+                grow(self, newLength)
                 memory.copy(buffer + length, @dataof(value), concatLength)
                 length = newLength - 1
                 buffer[length] = 0
             }
 
             // Ensure the String is big enough to store a given amount of bytes
-            func ensureCapacity(using self, wantedCapacity: u32)
+            func grow(using self, wantedCapacity: u32)
             {
                 if wantedCapacity <= capacity
                     return
@@ -220,7 +220,7 @@ namespace std.text
                 reserve(self, newCapacity)
             }
 
-            // Reserve room for `newCapacity` bytes without changing the string length
+            // Reserve room for 'newCapacity' bytes without changing the string length
             func reserve(using self, newCapacity: u32)
             {
                 // Small size, just be sure with have a valid buffer address
@@ -360,11 +360,17 @@ namespace std.text
             func toUnicode16(using self)->Array'u16
             {
                 var utf16: Array'u16
-                utf16.ensureCapacity(length + 1)
+                utf16.reserve(length + 1)
                 count := unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
                 utf16.count = count + 1
                 utf16[count - 1] = 0
                 return utf16
+            }
+
+            func from(value: string)->String
+            {
+                var val: String = value
+                return val
             }
         }
     }

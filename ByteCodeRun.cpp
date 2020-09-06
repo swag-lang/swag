@@ -1848,7 +1848,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     diag.criticalError  = true;
     diag.exceptionError = true;
     runContext->bc->sourceFile->report(diag);
-    g_byteCodeStack.log();
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
 

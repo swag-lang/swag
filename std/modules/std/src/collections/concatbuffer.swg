@@ -69,7 +69,7 @@ namespace std.collections
             }
 
             // Be sure that their is enough room to store at least 'numBytes' bytes
-            func ensureCapacity(using self, numBytes: u32)
+            func grow(using self, numBytes: u32)
             {
                 debug.assert(numBytes <= bucketSize)
 
@@ -147,7 +147,7 @@ namespace std.collections
             // Add one byte to the buffer
             func addByte(using self, byte: u8)
             {
-                ensureCapacity(self, 1)
+                grow(self, 1)
                 currentSP[0] = byte
                 currentSP += 1
             }
@@ -164,7 +164,7 @@ namespace std.collections
 
                 // Be sure we have a buffer
                 if !lastBucket
-                    ensureCapacity(self, 1)
+                    grow(self, 1)
 
                 // Divide the slice in the given amount of buckets if necessary
                 if !contiguous
@@ -179,13 +179,13 @@ namespace std.collections
                         currentSP += remain
                         if !num
                             return
-                        ensureCapacity(self, 1) // Will alloc a new bucket as the current one is full
+                        grow(self, 1) // Will alloc a new bucket as the current one is full
                         remain = bucketSize
                     }
                 }
                 else
                 {
-                    ensureCapacity(self, num)
+                    grow(self, num)
                 }
 
                 // We should have enough size in the last bucket to store the
@@ -201,7 +201,7 @@ namespace std.collections
                 if !firstBucket
                     return result
 
-                result.ensureCapacity(count(self) + 1)
+                result.reserve(count(self) + 1)
 
                 ptr := firstBucket
                 while ptr != lastBucket.next
