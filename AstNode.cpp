@@ -559,7 +559,6 @@ AstNode* AstVisit::clone(CloneContext& context)
     newNode->block            = findChildRef(block, newNode);
     newNode->aliasNames       = aliasNames;
     newNode->wantPointer      = wantPointer;
-    newNode->wantConstPointer = wantConstPointer;
 
     return newNode;
 }

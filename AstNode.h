@@ -551,7 +551,6 @@ struct AstVisit : public AstNode
     AstNode* block;
 
     bool wantPointer;
-    bool wantConstPointer;
 };
 
 struct AstSwitch : public AstBreakable
