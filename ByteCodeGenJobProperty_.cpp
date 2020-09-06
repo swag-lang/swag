@@ -49,6 +49,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     freeRegisterRC(context, params->childs[0]);
     freeRegisterRC(context, params->childs[1]);
+    freeRegisterRC(context, params->childs[2]);
     freeRegisterRC(context, r0);
     return true;
 }
