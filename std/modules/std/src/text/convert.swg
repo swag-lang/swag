@@ -85,6 +85,7 @@ namespace std.text
     public
     {
         // Convert a value to an utf8 string, and append the result in a ConcatBuffer
+        #[swag.printbc]
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             type := @kindof(value)
@@ -92,8 +93,7 @@ namespace std.text
             // A pointer, whatever type
             if type.kind == swag.TypeInfoKind.Pointer
             {
-                ptr := cast(*void) value
-                buf.addBytes(@mkslice(cast(const *u8) &value, @sizeof(*void)))
+                buf.addBytes("?")
                 return
             }
 

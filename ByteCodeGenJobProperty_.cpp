@@ -25,8 +25,9 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto params = node->childs.front();
+    auto        node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto        params = node->childs.front();
+    PushICFlags ci(context, BCI_UNPURE);
 
     reserveLinearRegisterRC(context, node->resultRegisterRC, 3);
 
@@ -41,7 +42,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC)->flags;
 
     // Get interface itable pointer in the second result register
     emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
