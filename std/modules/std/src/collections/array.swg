@@ -34,6 +34,27 @@ namespace std.collections
             buffer[index] = value
         }
 
+        #[swag.macro, swag.noreturn]
+        func(ptr: bool) opVisit(using self, stmt: code)
+        {
+            if !count return
+            scan := buffer
+            loop count
+            {
+                #macro
+                {
+                    #if ptr
+                        let @alias0 = `scan
+                    #else
+                        let @alias0 = deref `scan
+                    let @alias1 = @index
+                    #mixin `stmt
+                }
+
+                scan += 1
+            }
+        }
+
         func free(using self)
         {
             if !buffer

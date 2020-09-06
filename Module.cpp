@@ -226,6 +226,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     auto module = sourceFile->module;
     bool result = module->runner.run(&runContext);
     node->bc->leaveByteCode(false);
+    g_byteCodeStack.clear();
+
     if (!result)
         return false;
 
