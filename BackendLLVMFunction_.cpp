@@ -2102,9 +2102,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
             auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
             auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
-            auto r3 = builder.CreateGlobalString((const char*) ip->d.pointer);
-            auto v3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32, pp.cst0_i32}));
-            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, v1, r2, v3});
+            llvm::Value* r3;
+            if (ip->d.pointer)
+            {
+                r3 = builder.CreateGlobalString((const char*)ip->d.pointer);
+                r3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, { pp.cst0_i32 }));
+            }
+            else
+                r3 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
+            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, v1, r2, r3});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
