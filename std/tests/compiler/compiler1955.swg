@@ -1,7 +1,11 @@
-#[swag.noreturn, swag.inline]
+#[swag.noreturn, swag.macro]
 func toto()
 {
-    return
+    #[swag.safety(true)]
+    #macro
+    {
+        return
+    }
 }
 
 #test

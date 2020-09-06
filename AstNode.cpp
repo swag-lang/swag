@@ -425,7 +425,8 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
 
 AstNode* AstAttrUse::clone(CloneContext& context)
 {
-    auto newNode        = g_Allocator.alloc0<AstAttrUse>();
+    auto newNode = g_Allocator.alloc0<AstAttrUse>();
+    newNode->copyFrom(context, this);
     newNode->attributes = attributes;
     return newNode;
 }
