@@ -39,7 +39,7 @@ namespace std.collections
 
         func opDrop(using self)
         {
-            free(self)
+            self.free()
         }
 
         func opPostCopy(using self)
@@ -48,7 +48,7 @@ namespace std.collections
             {
                 otherBuffer := buffer
                 buffer = null
-                reserve(self, count)
+                self.reserve(count)
                 memory.copy(buffer, otherBuffer, capacity)
             }
         }
@@ -56,23 +56,23 @@ namespace std.collections
         // Gets the value of the bit at a specific position
         func opIndex(using self, index: u32)->bool
         {
-            return get(self, index)
+            return self.get(index)
         }
 
         // Sets the value of the bit at a specific position
         func opIndexAffect(using self, value: bool, index: u32)
         {
-            set(self, index, value)
+            self.set(index, value)
         }
 
         // Initializes a BitArray that contains bit values copied from the specified array of booleans
         func opAffect(using self, slice: [..] bool)
         {
             len := @countof(slice)
-            reserve(self, len)
+            self.reserve(len)
             buffer[len >> 5] = 0
             visit value, index: slice
-                set(self, index, value)
+                self.set(index, value)
         }
 
         // Compares two arrays, and returns `true` if they are equal
@@ -122,7 +122,7 @@ namespace std.collections
         {
             if !maxBits
             {
-                free(self)
+                self.free()
                 buffer = null
                 count, capacity = 0
                 return
@@ -134,13 +134,13 @@ namespace std.collections
                 capacity += 1
 
             capacity *= 4
-            realloc(self, capacity)
+            self.realloc(capacity)
         }
 
         // Reserve the given amount of bits and set an initial value to all bits
         func reserve(using self, maxBits: u32, initialValue: bool)
         {
-            reserve(self, maxBits)
+            self.reserve(maxBits)
             memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
         }
 
