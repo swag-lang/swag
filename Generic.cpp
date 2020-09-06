@@ -337,6 +337,16 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(funcNode->parent, newFunc);
 
+    if (context->node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        if (identifier->identifierRef->resolvedSymbolOverload && identifier->identifierRef->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto structNode = CastAst<AstStruct>(identifier->identifierRef->resolvedSymbolOverload->typeInfo->declNode, AstNodeKind::StructDecl);
+            newFunc->alternativeScopes.push_back(structNode->scope);
+        }
+    }
+
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)

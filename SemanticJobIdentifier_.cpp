@@ -758,8 +758,6 @@ anotherTry:
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
             {
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
-                if (context->sourceFile->name == "compiler1951.swg")
-                    context = context; // @remove
                 typeInfo->match(job->symMatch);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::Lambda)

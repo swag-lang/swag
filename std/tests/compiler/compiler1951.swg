@@ -2,23 +2,25 @@ struct(A) Foozle
 {
 }
 
+var GG = 0
+
 impl Foozle
 {
     func add(self, x: A)
     {
-        @print("add")
+        GG = 1
     }
 
-    /*func(G) add(self, x: G)
+    func(G) add1(self, x: G)
     {
-        //@print("add1")
-        var t: A = x
+        var t: A = cast(A) x
         self.add(t)
-    }*/
+    }
 }
 
 #test
 {
-    //var fooz: Foozle's32
-    //fooz.add(0'f32)
+    var fooz: Foozle's32
+    fooz.add1(0'f32)
+    @assert(GG == 1)
 }
