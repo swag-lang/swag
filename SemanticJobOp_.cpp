@@ -197,7 +197,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
 
 SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
 {
-    auto leftType   = TypeManager::concreteType(left->typeInfo);
+    auto leftType   = TypeManager::concreteReferenceType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
 
     // In case of a generic instance, symbols are defined in the original generic structure scope, not

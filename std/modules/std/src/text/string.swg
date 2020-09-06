@@ -72,7 +72,7 @@ namespace std.text
 
             func opEquals(using self, other: string)->bool
             {
-                if buffer == @dataof(other)
+                if buffer == @dataof(other) // true if null
                     return true
                 if length != @countof(other)
                     return false
@@ -367,6 +367,7 @@ namespace std.text
                 return utf16
             }
 
+            // Convert a literal string to a String
             func from(value: string)->String
             {
                 var val: String = value

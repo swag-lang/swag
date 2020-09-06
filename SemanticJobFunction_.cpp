@@ -411,6 +411,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Slice &&
         typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Interface &&
+        typeInfo->returnType->kind != TypeInfoKind::Reference &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->report({typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
@@ -476,7 +477,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) &&
         funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
-        !(funcNode->flags & AST_FROM_GENERIC) && 
+        !(funcNode->flags & AST_FROM_GENERIC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct))
     {
         SWAG_ASSERT(funcNode->methodParam);

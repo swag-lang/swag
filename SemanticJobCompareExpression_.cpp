@@ -9,7 +9,7 @@
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = left->typeInfo;
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     // Compile time compare of two types
     // We need to use swag_runtime_compareType to be coherent with runtime !
@@ -268,8 +268,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     right->typeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ENUM);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
-    // a opCmp operator
-    if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
+    // a opEquals function
+    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE));
     }

@@ -24,10 +24,10 @@ namespace std.collections
                 free(self)
             }
 
-            func opIndex(using self, index: u32)->const *T
+            func opIndex(using self, index: u32)->const &T
             {
                 std.diagnostics.debug.assert(index < count, "index out of range")
-                return buffer + index
+                return buffer[index]
             }
 
             func opIndexAffect(using self, value: T, index: u32)
