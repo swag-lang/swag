@@ -6,6 +6,7 @@ using std.collections, std.text
     var x: Array'String
     x.add(String.from("toto"))
     x.add(String.from("titi"))
-    //x.add1("tata")
-    //@assert(x.count == 3)
+    x.addAny("tata")
+    x.addAny(String.from("txtx"))
+    @assert(x.count == 4)
 }

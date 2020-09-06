@@ -118,11 +118,20 @@ namespace std.collections
                 count += 1
             }
 
-            /*func(G) add(using self, value: G)
+            // Add any value, as long as the type T accepts an opAffect of type G
+            // or an implicit cast
+            func(G) addAny(using self, value: G)
             {
-                var x: T = value
-                self.add(x)
-            }*/
+                #if @typeof(G) != @typeof(T)
+                {
+                    var x: T = value
+                    self.add(x)
+                }
+                #else
+                {
+                    self.add(value)
+                }
+            }
 
             // Move one element at the end of the array
             func emplaceBack(using self, value: *T)

@@ -538,7 +538,7 @@ namespace Ast
         case AstNodeKind::Cast:
             CONCAT_FIXED_STR(concat, "cast(");
             SWAG_CHECK(output(concat, node->childs[0]));
-            concat.addChar(')');
+            CONCAT_FIXED_STR(concat, ") ");
             SWAG_CHECK(output(concat, node->childs[1]));
             break;
 
