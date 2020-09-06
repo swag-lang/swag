@@ -55,9 +55,12 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
-    auto node                      = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    node->resultRegisterRC         = node->childs.front()->resultRegisterRC[1];
+    auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto front = node->childs.front();
+    SWAG_ASSERT(front->resultRegisterRC.size() <= 2);
+    node->resultRegisterRC         = front->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
+    freeRegisterRC(context, front->resultRegisterRC[0]);
     return true;
 }
 
@@ -76,6 +79,8 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
     if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
+        SWAG_ASSERT(expr->resultRegisterRC.size() <= 2);
+        freeRegisterRC(context, expr->resultRegisterRC[0]);
         return true;
     }
 
@@ -92,7 +97,8 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
+    auto front    = node->childs.front();
+    auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
     if (node->resolvedUserOpSymbolName)
     {
@@ -105,7 +111,8 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Array)
     {
-        node->resultRegisterRC         = node->childs.front()->resultRegisterRC[0];
+        truncRegisterRC(context, front->resultRegisterRC, 1);
+        node->resultRegisterRC         = front->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
