@@ -654,18 +654,32 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     job->symMatch.genericReplaceTypes.clear();
     job->symMatch.mapGenericTypesIndex.clear();
 
-    // Collect from the owner structure
+    VectorNative<AstNode*> toCheck;
     if (node->ownerStructScope)
+        toCheck.push_back(node->ownerStructScope->owner);
+
+    if (node->kind == AstNodeKind::Identifier)
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-        if (!(typeStruct->flags & TYPEINFO_GENERIC))
+        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        if (identifier->identifierRef->startScope)
+            toCheck.push_back(identifier->identifierRef->startScope->owner);
+    }
+
+    // Collect from the owner structure
+    for (auto one : toCheck)
+    {
+        if (one->typeInfo->kind == TypeInfoKind::Struct)
         {
-            int idx = 0;
-            for (auto genParam : typeStruct->genericParameters)
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
+            if (!(typeStruct->flags & TYPEINFO_GENERIC))
             {
-                job->symMatch.genericReplaceTypes[genParam->name]  = genParam->typeInfo;
-                job->symMatch.mapGenericTypesIndex[genParam->name] = idx;
-                idx++;
+                int idx = 0;
+                for (auto genParam : typeStruct->genericParameters)
+                {
+                    job->symMatch.genericReplaceTypes[genParam->name]  = genParam->typeInfo;
+                    job->symMatch.mapGenericTypesIndex[genParam->name] = idx;
+                    idx++;
+                }
             }
         }
     }
@@ -744,6 +758,8 @@ anotherTry:
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
             {
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
+                if (context->sourceFile->name == "compiler1951.swg")
+                    context = context; // @remove
                 typeInfo->match(job->symMatch);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::Lambda)
@@ -1378,7 +1394,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Already solved
-    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined))
+    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined) && node->resolvedSymbolOverload)
     {
         SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
         return true;
@@ -1762,6 +1778,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    SWAG_ASSERT(job->cacheMatches.size());
     auto& match = job->cacheMatches[0];
 
     // Alias
