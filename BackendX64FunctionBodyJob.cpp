@@ -33,7 +33,10 @@ JobResult BackendX64FunctionBodyJob::execute()
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
-            bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one);
+        {
+            if(!bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one))
+                return JobResult::ReleaseJob;
+        }
     }
 
     return JobResult::ReleaseJob;

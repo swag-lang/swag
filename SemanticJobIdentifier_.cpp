@@ -904,7 +904,11 @@ anotherTry:
                     node->parent->parent->flags |= AST_FROM_GENERIC; // This is tell the #bake that is has worked
                 }
 
-                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, instContext));
+                if (!Generic::instanciateStruct(context, genericParameters, firstMatch, instContext))
+                {
+                    symbol->mutex.unlock();
+                    return false;
+                }
             }
             else
             {
@@ -918,7 +922,11 @@ anotherTry:
         else
         {
             InstanciateContext instContext;
-            SWAG_CHECK(Generic::instanciateFunction(context, genericParameters, firstMatch, instContext));
+            if (!Generic::instanciateFunction(context, genericParameters, firstMatch, instContext))
+            {
+                symbol->mutex.unlock();
+                return false;
+            }
         }
 
         symbol->mutex.unlock();

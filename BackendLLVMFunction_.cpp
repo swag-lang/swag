@@ -359,7 +359,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
             builder.CreateRetVoid();
         }
-        else if (returnType->kind == TypeInfoKind::Pointer)
+        else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Reference)
         {
             auto loadInst = builder.CreateLoad(rr0);
             auto arg0     = builder.CreateCast(llvm::Instruction::CastOps::IntToPtr, loadInst, funcType->getReturnType());
