@@ -156,7 +156,7 @@ namespace std.collections
 
                 if index == count
                 {
-                    @drop(buffer[count])
+                    @drop(&buffer[count])
                     return
                 }
 
