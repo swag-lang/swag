@@ -308,6 +308,7 @@ struct ByteCodeGenJob : public Job
     static void waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
 
     static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
+    static void     transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC);
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);

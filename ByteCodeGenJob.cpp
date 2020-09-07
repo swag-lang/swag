@@ -84,6 +84,32 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
         rc += context->bc->maxReservedRegisterRC++;
 }
 
+void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNode* node)
+{
+    transformResultToLinear2(context, node->resultRegisterRC);
+}
+
+void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC)
+{
+    bool onlyOne = false;
+    if (resultRegisterRC.size() == 1)
+    {
+        onlyOne = true;
+        resultRegisterRC += reserveRegisterRC(context);
+    }
+
+    if (resultRegisterRC[1] != resultRegisterRC[0] + 1)
+    {
+        RegisterList r0;
+        reserveLinearRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0]);
+        if (!onlyOne)
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1]);
+        freeRegisterRC(context, resultRegisterRC);
+        resultRegisterRC = r0;
+    }
+}
+
 void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count)
 {
     if (rc.size() == count)

@@ -80,13 +80,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
     auto itf = fromTypeStruct->hasInterface(toTypeItf);
     SWAG_ASSERT(itf);
-    if (exprNode->resultRegisterRC.size() == 1)
-        exprNode->resultRegisterRC += reserveRegisterRC(context);
-
-    // If we cast from a pointer to a struct, then we need to generate a pointer to an interface, which means we
-    // has to emit a pointer on two contiguous registers
-    if (fromPointer)
-        transformResultToLinear2(context, exprNode);
+    transformResultToLinear2(context, exprNode);
 
     SWAG_ASSERT(itf->offset != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, exprNode->resultRegisterRC[1])->b.u64 = itf->offset;
@@ -592,8 +586,6 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    auto node = context->node;
-
     if (fromTypeInfo->isNative(NativeTypeKind::String))
     {
         return true;
@@ -601,8 +593,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        freeRegisterRC(context, exprNode);
-        reserveLinearRegisterRC(context, exprNode->resultRegisterRC, 2);
+        transformResultToLinear2(context, exprNode);
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         return true;
@@ -616,12 +607,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
         auto         typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
-        RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u32 = typeArray->count;
-        freeRegisterRC(context, node);
-        exprNode->resultRegisterRC = r0;
+        transformResultToLinear2(context, exprNode);
+        emitInstruction(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u32 = typeArray->count;
         return true;
     }
 
@@ -633,13 +620,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Pointer || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->kind == TypeInfoKind::Native);
 #endif
-
-        RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], exprNode->resultRegisterRC[1]);
-        freeRegisterRC(context, node);
-        exprNode->resultRegisterRC = r0;
+        transformResultToLinear2(context, exprNode);
         return true;
     }
 

@@ -108,19 +108,6 @@ void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>
     }
 }
 
-void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNode* node)
-{
-    if (node->resultRegisterRC[1] != node->resultRegisterRC[0] + 1)
-    {
-        RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->resultRegisterRC[1]);
-        freeRegisterRC(context, node->resultRegisterRC);
-        node->resultRegisterRC = r0;
-    }
-}
-
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
@@ -183,7 +170,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     if (node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
         // We want a string or a slice
-        if (node->typeInfo->nativeType == NativeTypeKind::String || 
+        if (node->typeInfo->nativeType == NativeTypeKind::String ||
             node->typeInfo->kind == TypeInfoKind::Slice ||
             node->typeInfo->kind == TypeInfoKind::Interface)
         {
