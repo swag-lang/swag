@@ -285,14 +285,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicArguments:
     {
-        reserveLinearRegisterRC(context, node->resultRegisterRC);
+        reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicCompiler:
     {
-        reserveLinearRegisterRC(context, node->resultRegisterRC);
+        reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
@@ -457,7 +457,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         }
         case TokenId::CompilerCallerFunction:
         {
-            reserveLinearRegisterRC(context, regList);
+            reserveLinearRegisterRC2(context, regList);
             const auto& str    = node->ownerFct->computeScopedName();
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);

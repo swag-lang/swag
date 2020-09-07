@@ -62,7 +62,7 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
         rc += reserveRegisterRC(context);
 }
 
-void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
+void ByteCodeGenJob::reserveLinearRegisterRC2(ByteCodeGenContext* context, RegisterList& rc)
 {
     freeRegisterRC(context, rc);
 
@@ -101,7 +101,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     if (resultRegisterRC[1] != resultRegisterRC[0] + 1)
     {
         RegisterList r0;
-        reserveLinearRegisterRC(context, r0);
+        reserveLinearRegisterRC2(context, r0);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0]);
         if (!onlyOne)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1]);

@@ -10,7 +10,7 @@
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     RegisterList r0;
-    reserveLinearRegisterRC(context, r0);
+    reserveLinearRegisterRC2(context, r0);
     SWAG_ASSERT(exprNode->resultRegisterRC.size() <= 2);
 
     // Make a pointer to the value

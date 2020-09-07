@@ -28,7 +28,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
 
-    reserveLinearRegisterRC(context, node->resultRegisterRC);
+    reserveLinearRegisterRC2(context, node->resultRegisterRC);
 
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];
