@@ -226,12 +226,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
                     auto itJob = storedMapJob.find(typeName);
                     if (itJob != storedMapJob.end())
                     {
-                        if (typeName == "std.text.String")
-                        {
-                            printf(typeName.c_str());
-                            printf("\n");
-                        }
-
                         itJob->second->addDependentJob(context->baseJob);
                         context->baseJob->setPending(nullptr);
                     }
