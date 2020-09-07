@@ -6,7 +6,7 @@ using std.collections, std.text, std.diagnostics
     var x: Array'String
     var y: String = "toto"
 
-    //console.write("before: %\n", y)
+    @assert(y.capacity > 0)
     x.emplaceBack(&y)
-    //console.write("after: %\n", y)
+    @assert(y.capacity == 0)
 }

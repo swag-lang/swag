@@ -113,6 +113,7 @@ enum class AstNodeKind : uint8_t
     AffectOp,
     ArrayPointerIndex,
     ArrayPointerSlicing,
+    NoDrop,
     RawMove,
     PointerRef,
     CompilerIf,

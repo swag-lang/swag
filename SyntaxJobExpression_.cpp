@@ -471,7 +471,7 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
     // raw
     if (token.id == TokenId::KwdNoDrop)
     {
-        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile, parent);
+        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         if (result)
             *result = exprNode;
         exprNode->semanticFct = SemanticJob::resolveRawMove;

@@ -9,6 +9,7 @@ bool SemanticJob::resolveRawMove(SemanticContext* context)
     auto node  = context->node;
     auto right = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, right));
+    node->inheritOrFlag(right, AST_FORCE_MOVE | AST_NO_LEFT_DROP);
     node->typeInfo    = right->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 

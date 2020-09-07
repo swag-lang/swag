@@ -11,5 +11,8 @@ slice/cstrings and foreign
 y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 (si on les compare avec un type non compiler, si on les met dans une var any...)
 -------------------------------------
-attribute, erreur si le caller n'utilise pas la valeur de retiour du called (attribute de fonction)
+attribute, erreur si le caller n'utilise pas la valeur de retour du called (attribute de fonction)
 -------------------------------------
+var x, y: STRUCT  ca va faire y = x, et donc une copie, alors que STRUCT est à 0
+-------------------------------------
+llvm debug lines info, avec visit, fait n'importe quoi en pas à pas
