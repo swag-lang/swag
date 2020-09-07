@@ -437,9 +437,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     {
         context->setNoLocation();
 
-        RegisterList r0;
-        reserveRegisterRC(context, r0, 1);
-
+        RegisterList r0 = reserveRegisterRC(context);
         for (auto expr : caseNode->expressions)
         {
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));

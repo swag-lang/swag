@@ -227,8 +227,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         auto &r0 = node->childs[0]->resultRegisterRC;
         auto &r1 = node->childs[1]->resultRegisterRC;
 
-        RegisterList r2;
-        reserveRegisterRC(context, r2, 1);
+        RegisterList r2 = reserveRegisterRC(context);
         node->resultRegisterRC = r2;
 
         switch (node->token.id)
