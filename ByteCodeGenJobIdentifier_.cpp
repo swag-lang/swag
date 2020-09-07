@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
-            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32             = typeArray->count;
+            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32         = typeArray->count;
             return true;
         }
 
@@ -97,6 +97,33 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = resolved->storageIndex;
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = 8;
+            else // Get the structure pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        }
+        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            // Get the ITable pointer
+            if (node->flags & AST_FROM_UFCS)
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+                inst->b.u32 = resolved->storageOffset + 8;
+                inst->c.u32 = resolved->storageIndex + 1;
+            }
+            // Get the structure pointer
+            else
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+                inst->b.u32 = resolved->storageOffset;
+                inst->c.u32 = resolved->storageIndex;
+            }
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
@@ -113,14 +140,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
-
-            if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
-            {
-                if (node->flags & AST_FROM_UFCS)
-                    emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
-                else if (node->flags & AST_TO_UFCS)
-                    emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
-            }
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
@@ -156,6 +175,22 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32     = resolved->storageOffset;
             inst->c.pointer = (uint8_t*) resolved;
         }
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+            else if (node->flags & AST_TO_UFCS) // Get the struct pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        }
+        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+            else if (node->flags & AST_TO_UFCS) // Get the struct pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
@@ -168,21 +203,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             {
                 emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
                 emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
-            }
-        }
-        else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
-        {
-            ByteCodeInstruction* inst;
-            inst        = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
-            inst->c.u32 = 0; // This is a read, so do not store size
-
-            if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
-            {
-                if (node->flags & AST_FROM_UFCS)
-                    emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
-                else if (node->flags & AST_TO_UFCS)
-                    emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
             }
         }
         else
@@ -228,19 +248,27 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+            else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        }
+        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+            else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
-        }
-        else if (typeInfo->kind == TypeInfoKind::Interface)
-        {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
-            if (node->flags & AST_FROM_UFCS)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
-            else if (node->flags & AST_TO_UFCS)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else
         {

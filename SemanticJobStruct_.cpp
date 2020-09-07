@@ -680,7 +680,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
     typeInterface->itable = typeITable;
 
-    // Struct interface, with one pointer for the data, and one pointer per itable
+    // Struct interface, with one pointer for the data, and one pointer for itable
     if (!(node->flags & AST_FROM_GENERIC))
     {
         auto typeParam      = g_Allocator.alloc<TypeInfoParam>();

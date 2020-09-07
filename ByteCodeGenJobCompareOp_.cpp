@@ -67,9 +67,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     else if (leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         // Just compare pointers. This is enough for now, as we can only compare an interface to 'null'
-        emitInstruction(context, ByteCodeOp::DeRefPointer, r0, r0)->c.u32 = (uint32_t) sizeof(void*);
-        emitInstruction(context, ByteCodeOp::DeRefPointer, r1, r1)->c.u32 = (uint32_t) sizeof(void*);
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Slice)
     {

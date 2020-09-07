@@ -494,6 +494,8 @@ struct TypeInfoStruct : public TypeInfo
 
     int numRegisters() override
     {
+        if (kind == TypeInfoKind::Interface)
+            return 2;
         return 1;
     }
 

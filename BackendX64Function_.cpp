@@ -1682,53 +1682,46 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             emitCall(pp, "realloc");
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicFree:
-            //concat.addStringFormat("free(r[%u].pointer);", ip->a.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitCall(pp, "free");
             break;
 
         case ByteCodeOp::IntrinsicCompiler:
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].p = 0;");
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicIsByteCode:
-            //CONCAT_STR_1(concat, "r[", ip->a.u32, "].b = 0;");
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            //swag_runtime_print_n(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitCall(pp, "swag_runtime_print_n");
             break;
         case ByteCodeOp::IntrinsicPrintS64:
-            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].s64);");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitCall(pp, "swag_runtime_print_i64");
             break;
         case ByteCodeOp::IntrinsicPrintF64:
-            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
             BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             emitCall(pp, "swag_runtime_print_f64");
             break;
         case ByteCodeOp::IntrinsicError:
-            //CONCAT_STR_1(concat, "swag_runtime_print_i64(r[", ip->a.u32, "].f64);");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, "swag_runtime_error");
             break;
         case ByteCodeOp::IntrinsicMkInterface:
-            //concat.addStringFormat("r[%u].p=(__u8_t*)swag_runtime_interfaceof(r[%u].p,r[%u].p);", ip->c.u32, ip->a.u32, ip->b.u32);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             emitCall(pp, "swag_runtime_interfaceof");
@@ -2375,7 +2368,6 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
 
         if (typeParam->kind == TypeInfoKind::Pointer ||
             typeParam->kind == TypeInfoKind::Struct ||
-            typeParam->kind == TypeInfoKind::Interface ||
             typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Array)
         {
@@ -2390,7 +2382,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU32);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any))
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);

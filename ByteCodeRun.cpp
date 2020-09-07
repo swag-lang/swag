@@ -1070,7 +1070,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicCompiler:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) getCompilerItf(context->sourceFile->module);
+        auto itf                       = (uint8_t**) getCompilerItf(context->sourceFile->module);
+        registersRC[ip->a.u32].pointer = itf[0];
+        registersRC[ip->b.u32].pointer = itf[1];
         break;
     }
     case ByteCodeOp::IntrinsicIsByteCode:

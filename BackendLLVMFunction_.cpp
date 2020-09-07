@@ -278,10 +278,14 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
         auto rr0       = GEP_I32(allocRR, idx);
 
-        if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Lambda)
+        if (typeParam->kind == TypeInfoKind::Pointer ||
+            typeParam->kind == TypeInfoKind::Lambda ||
+            typeParam->kind == TypeInfoKind::Struct ||
+            typeParam->kind == TypeInfoKind::Array ||
+            typeParam->kind == TypeInfoKind::Reference)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
@@ -293,20 +297,13 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any))
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
             auto cst1 = TO_PTR_I8(func->getArg(argIdx + 1));
             auto rr1  = GEP_I32(allocRR, idx + 1);
             builder.CreateStore(cst1, TO_PTR_PTR_I8(rr1));
-        }
-        else if (typeParam->kind == TypeInfoKind::Struct ||
-                 typeParam->kind == TypeInfoKind::Array ||
-                 typeParam->kind == TypeInfoKind::Interface)
-        {
-            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
-            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
@@ -2095,14 +2092,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r0 = builder.getInt8(ip->a.b);
             else
                 r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
-            auto v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
-            auto r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
+            auto         r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+            auto         v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
+            auto         r2 = builder.getInt32(ip->node->token.startLocation.line + 1);
             llvm::Value* r3;
             if (ip->d.pointer)
             {
-                r3 = builder.CreateGlobalString((const char*)ip->d.pointer);
-                r3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, { pp.cst0_i32 }));
+                r3 = builder.CreateGlobalString((const char*) ip->d.pointer);
+                r3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32}));
             }
             else
                 r3 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
@@ -2169,6 +2166,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(pp.cst0_i64, r0);
+            auto r1 = TO_PTR_I64(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(pp.cst0_i64, r1);
             break;
         }
 
@@ -3001,14 +3000,11 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param->typeInfo, &cType));
             params.push_back(cType);
 
+            // Additional parameter
             if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
-            {
                 params.push_back(builder.getInt32Ty());
-            }
-            else if (param->typeInfo->isNative(NativeTypeKind::Any))
-            {
+            else if (param->typeInfo->isNative(NativeTypeKind::Any) || param->typeInfo->kind == TypeInfoKind::Interface)
                 params.push_back(builder.getInt8Ty()->getPointerTo());
-            }
         }
     }
 
@@ -3049,7 +3045,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
 
-            index = pushParams[idxParam--];
+            index   = pushParams[idxParam--];
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
             numCallParams--;
@@ -3102,7 +3098,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
 
-            index = pushParams[idxParam--];
+            index   = pushParams[idxParam--];
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
@@ -3111,7 +3107,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
 
-            index = pushParams[idxParam--];
+            index   = pushParams[idxParam--];
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }

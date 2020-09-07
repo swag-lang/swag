@@ -292,9 +292,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicCompiler:
     {
-        node->resultRegisterRC         = reserveRegisterRC(context);
+        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
         node->parent->resultRegisterRC = node->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicIsByteCode:

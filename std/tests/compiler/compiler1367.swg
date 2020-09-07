@@ -16,16 +16,18 @@ impl IIncrementable for TITI
     {
         val += 1
     }
-    
+
     func decr(using self)
     {
+        //@print("decr\n")
         val -= 1
-    }    
-    
+    }
+
     func done(using const self)->bool
     {
+        //@print("done\n")
         return val == 0
-    } 
+    }
 }
 
 impl TITI
@@ -40,7 +42,7 @@ impl TITI
 
 //#[swag.printbc]
 #test
-{   
+{
     var str: TITI
     TITI.Loop(&str)
     @assert(str.val == 0)

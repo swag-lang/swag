@@ -59,9 +59,9 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
-            auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, r1);
-            inst->flags |= BCI_IMM_C;
-            inst->c.u32 = 2 * sizeof(void*);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r1[1]);
         }
 
         return true;

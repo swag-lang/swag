@@ -85,29 +85,26 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     auto node     = context->node;
     auto typeInfo = node->typeInfo;
 
-    if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
+    if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
     {
-        if (typeInfo->isPointerTo(TypeInfoKind::Interface))
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
-        if (node->flags & AST_FROM_UFCS)
+        if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
             emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
-        else if (node->flags & AST_TO_UFCS)
+        else if (node->flags & AST_TO_UFCS) // Get the structure pointer
             emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Array)
-    {
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
     {
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+        else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->resultRegisterRC.size() == 1)
         {
@@ -119,6 +116,17 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         }
 
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Array)
+    {
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::FuncAttr)
+    {
+        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 

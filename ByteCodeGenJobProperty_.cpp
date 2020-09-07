@@ -29,23 +29,20 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     auto        params = node->childs.front();
     PushICFlags ci(context, BCI_UNPURE);
 
-    reserveLinearRegisterRC(context, node->resultRegisterRC, 3);
-
-    // Result will be a pointer to two contiguous registers
-    emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, node->resultRegisterRC[0], node->resultRegisterRC[1], node->resultRegisterRC[2]);
+    reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
 
     // Reference to the interface concrete type info
     auto childItf = params->childs[2];
     SWAG_ASSERT(childItf->computedValue.reg.u32 != UINT32_MAX);
-    auto r0 = reserveRegisterRC(context);
 
+    auto r0 = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], params->childs[0]->resultRegisterRC)->flags;
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
 
     // Get interface itable pointer in the second result register
-    emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[2]);
+    emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);
 
     freeRegisterRC(context, params->childs[0]);
     freeRegisterRC(context, params->childs[1]);
