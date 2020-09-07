@@ -62,12 +62,12 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
         rc += reserveRegisterRC(context);
 }
 
-void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
+void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
     freeRegisterRC(context, rc);
 
     // From linear cache
-    if (num == 2 && !context->bc->availableRegistersRC2.empty())
+    if (!context->bc->availableRegistersRC2.empty())
     {
         auto r0 = context->bc->availableRegistersRC2.back();
         rc += r0;
@@ -80,8 +80,8 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
         return;
     }
 
-    while (num--)
-        rc += context->bc->maxReservedRegisterRC++;
+    rc += context->bc->maxReservedRegisterRC++;
+    rc += context->bc->maxReservedRegisterRC++;
 }
 
 void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, AstNode* node)
@@ -101,7 +101,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     if (resultRegisterRC[1] != resultRegisterRC[0] + 1)
     {
         RegisterList r0;
-        reserveLinearRegisterRC(context, r0, 2);
+        reserveLinearRegisterRC(context, r0);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0]);
         if (!onlyOne)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1]);

@@ -74,7 +74,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (node->resolvedSymbolOverload->storageOffset == UINT32_MAX)
                 node->resolvedSymbolOverload->storageOffset = context->sourceFile->module->constantSegment.addString(node->resolvedSymbolOverload->computedValue.text);
 
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, node->resultRegisterRC);
             node->parent->resultRegisterRC = node->resultRegisterRC;
             auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
@@ -126,7 +126,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, node->resultRegisterRC);
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[0]);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
@@ -193,7 +193,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, node->resultRegisterRC);
             if (resolved->flags & OVERLOAD_VAR_BSS)
             {
                 emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
@@ -266,7 +266,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, node->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
         }

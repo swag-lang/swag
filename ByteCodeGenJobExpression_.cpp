@@ -174,7 +174,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             node->typeInfo->kind == TypeInfoKind::Slice ||
             node->typeInfo->kind == TypeInfoKind::Interface)
         {
-            reserveLinearRegisterRC(context, regList, 2);
+            reserveLinearRegisterRC(context, regList);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
             return true;
@@ -230,7 +230,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             return true;
         case NativeTypeKind::String:
         {
-            reserveLinearRegisterRC(context, regList, 2);
+            reserveLinearRegisterRC(context, regList);
             auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
             SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
         {
-            reserveLinearRegisterRC(context, regList, 2);
+            reserveLinearRegisterRC(context, regList);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
         }
@@ -257,7 +257,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        reserveLinearRegisterRC(context, regList, 2);
+        reserveLinearRegisterRC(context, regList);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;

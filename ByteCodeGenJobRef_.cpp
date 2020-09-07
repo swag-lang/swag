@@ -404,7 +404,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     emitSafetyMakeSlice(context, node);
 
     RegisterList r0;
-    reserveLinearRegisterRC(context, r0, 2);
+    reserveLinearRegisterRC(context, r0);
 
     // Compute size of slice
     if (node->lowerBound)
