@@ -53,10 +53,7 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
                    backIp->op != ByteCodeOp::ForeignCall &&
                    backIp->op != ByteCodeOp::LambdaCall)
             {
-                if (backIp->op == ByteCodeOp::PushRAParam4 ||
-                    backIp->op == ByteCodeOp::PushRAParam3 ||
-                    backIp->op == ByteCodeOp::PushRAParam2 ||
-                    backIp->op == ByteCodeOp::PushRAParam ||
+                if (backIp->op == ByteCodeOp::PushRAParam ||
                     backIp->op == ByteCodeOp::CopySPVaargs ||
                     backIp->op == ByteCodeOp::CopySP)
                     setNop(context, backIp);

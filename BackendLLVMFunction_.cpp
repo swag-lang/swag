@@ -2483,25 +2483,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::PushRAParam4:
-            pushRAParams.push_back(ip->a.u32);
-            pushRAParams.push_back(ip->b.u32);
-            pushRAParams.push_back(ip->c.u32);
-            pushRAParams.push_back(ip->d.u32);
-            break;
-        case ByteCodeOp::PushRAParam3:
-            pushRAParams.push_back(ip->a.u32);
-            pushRAParams.push_back(ip->b.u32);
-            pushRAParams.push_back(ip->c.u32);
-            break;
-        case ByteCodeOp::PushRAParam2:
-            pushRAParams.push_back(ip->a.u32);
-            pushRAParams.push_back(ip->b.u32);
-            break;
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
-
         case ByteCodeOp::CopySP:
         {
             //concat.addStringFormat("r[%u].pointer = (__u8_t*) &r[%u];", ip->a.u32, ip->c.u32);
