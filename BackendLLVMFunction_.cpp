@@ -2646,7 +2646,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicS8x1:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_8();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2658,7 +2658,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicS16x1:
         {
             auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_16();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2670,7 +2670,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicS32x1:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_32();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2682,7 +2682,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicS64x1:
         {
             auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_64();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
