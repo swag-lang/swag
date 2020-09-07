@@ -114,7 +114,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto job      = context->job;
     auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
+    reserveLinearRegisterRC2(context, node->resultRegisterRC);
 
     if (!(node->flags & AST_CONST_EXPR))
     {
