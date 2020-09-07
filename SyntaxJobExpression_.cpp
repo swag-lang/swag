@@ -862,11 +862,13 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
 
             // We are supposed to be constexpr, so we need to duplicate the assignment instead of generating an
-            // affectation to the first variable
-            else if (!acceptDeref)
+            // affectation to the first variable. If there's no assignment, then just declare the variable
+            // without the affectation to avoid a useless copy (and a postCopy in case of structs)
+            else if (!acceptDeref || assign == nullptr)
             {
-                varNode->type       = Ast::clone(type, varNode);
-                varNode->assignment = Ast::clone(assign, varNode);
+                varNode->type = Ast::clone(type, varNode);
+                if (assign)
+                    varNode->assignment = Ast::clone(assign, varNode);
             }
             else
             {
