@@ -12,6 +12,9 @@
 #define MK_IMMB_F32() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getFloatTy(context), ip->b.f32) : (llvm::Value*) builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)))
 #define MK_IMMB_F64() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), ip->b.f64) : (llvm::Value*) builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)))
 
+#define MK_IMMC_F32() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getFloatTy(context), ip->c.f32) : (llvm::Value*) builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->c.u32)))
+#define MK_IMMC_F64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), ip->c.f64) : (llvm::Value*) builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->c.u32)))
+
 #define MK_BINOP8_CAB()                                      \
     auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
     llvm::Value* r1 = MK_IMMA_8();                           \

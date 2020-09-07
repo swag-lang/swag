@@ -2507,7 +2507,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst1_i32);
             builder.CreateStore(r1, r0);
 
-            //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
             auto r2 = TO_PTR_PTR_I64(allocVA);
             builder.CreateStore(r1, r2);
             break;
@@ -2519,7 +2518,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             SWAG_ASSERT(funcBC);
             auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
 
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, funcBC->callName().c_str());
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
             auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
@@ -2540,7 +2538,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
             auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
 
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(TO_PTR_I8(F), r0);
 
@@ -2560,7 +2557,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::BasicBlock* blockLambdaLocal          = llvm::BasicBlock::Create(context, "", func);
             llvm::BasicBlock* blockNext                 = llvm::BasicBlock::Create(context, "", func);
 
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_BC_MARKER);
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
@@ -2569,7 +2565,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 
             builder.SetInsertPoint(blockLambdaLocalOrForeign);
-            //concat.addStringFormat("if(r[%u].u64 & 0x%llx) { ", ip->a.u32, SWAG_LAMBDA_FOREIGN_MARKER);
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
@@ -2578,7 +2573,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 
             builder.SetInsertPoint(blockLambdaForeign);
-            //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
             {
                 auto                v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto                v1 = builder.CreateAnd(v0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
@@ -2594,7 +2588,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 
             builder.SetInsertPoint(blockLambdaLocal);
-            //CONCAT_STR_1(concat, " r[", ip->a.u32, "].pointer)");
             {
                 auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
                 auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
@@ -2607,7 +2600,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
 
             builder.SetInsertPoint(blockLambdaBC);
-            //CONCAT_STR_1(concat, "__process_infos.byteCodeRun(r[", ip->a.u32, "].pointer");
             {
                 auto                       v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
                 VectorNative<llvm::Value*> fctParams;
@@ -2695,8 +2687,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicF32x2:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->c.u32)));
+            auto r1 = MK_IMMB_F32();
+            auto r2 = MK_IMMC_F32();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
@@ -2708,8 +2700,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicF64x2:
         {
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->c.u32)));
+            auto r1 = MK_IMMB_F64();
+            auto r2 = MK_IMMC_F64();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
@@ -2722,7 +2714,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicF32x1:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_F32();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
@@ -2791,7 +2783,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicF64x1:
         {
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = MK_IMMB_F64();
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
