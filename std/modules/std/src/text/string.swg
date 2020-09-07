@@ -31,348 +31,339 @@ namespace std.text
         }
     }
 
-    impl String
+    public impl String
     {
-        public
+        #[swag.inline]
+        func opCount(using self)->u32
         {
-            #[swag.inline]
-            func opCount(using self)->u32
+            return length
+        }
+
+        #[swag.inline]
+        func opData(using self)->const *void
+        {
+            return buffer
+        }
+
+        func(T) opCast(using self)->T
+        {
+            #if @typeof(T) == string
+                return cast(string) @mkslice(buffer, length)
+            #else
+                #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
+        }
+
+        func opAffect(using self, value: string)
+        {
+            if @dataof(value) == null
             {
-                return length
+                reserve(self, 0)
+                return
             }
 
-            #[swag.inline]
-            func opData(using self)->const *void
-            {
-                return buffer
-            }
+            newCapacity := @countof(value) + 1
+            length = newCapacity - 1
+            reserve(self, newCapacity)
+            memory.copy(buffer, @dataof(value), length)
+            buffer[length] = 0
+        }
 
-            func(T) opCast(using self)->T
-            {
-                #if @typeof(T) == string
-                    return cast(string) @mkslice(buffer, length)
-                #else
-                    #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
-            }
+        func opEquals(using self, other: string)->bool
+        {
+            if buffer == @dataof(other) // true if null
+                return true
+            if length != @countof(other)
+                return false
+            return memory.compare(buffer, @dataof(other), length) == 0
+        }
 
-            func opAffect(using self, value: string)
+        func(op: string) opAssign(using self, value: string)
+        {
+            #if op == "+="
+                append(self, value)
+            #else
+                #assert(false, "invalid binary operator '" ~ op ~ "'")
+        }
+
+        func opPostMove(using self)
+        {
+            if capacity <= SmallSize
+                buffer = acast &allocator
+        }
+
+        func opPostCopy(using self)
+        {
+            if !buffer
+                return
+            if capacity <= SmallSize
+                buffer = acast &allocator
+            else
             {
-                if @dataof(value) == null
+                oldBuffer := buffer
+                buffer = null
+                reserve(self, length + 1)
+                memory.copy(buffer, oldBuffer, length + 1)
+            }
+        }
+
+        func opDrop(using self)
+        {
+            if buffer && buffer != acast &allocator
+                free(self)
+        }
+
+        // Visit the String utf8 bytes
+        #[swag.macro, swag.noreturn]
+        func(ptr: bool) opVisitBytes(using self, stmt: code)
+        {
+            if length
+            {
+                scan := buffer
+                loop length
                 {
-                    reserve(self, 0)
-                    return
-                }
-
-                newCapacity := @countof(value) + 1
-                length = newCapacity - 1
-                reserve(self, newCapacity)
-                memory.copy(buffer, @dataof(value), length)
-                buffer[length] = 0
-            }
-
-            func opEquals(using self, other: string)->bool
-            {
-                if buffer == @dataof(other) // true if null
-                    return true
-                if length != @countof(other)
-                    return false
-                return memory.compare(buffer, @dataof(other), length) == 0
-            }
-
-            func(op: string) opAssign(using self, value: string)
-            {
-                #if op == "+="
-                    append(self, value)
-                #else
-                    #assert(false, "invalid binary operator '" ~ op ~ "'")
-            }
-
-            func opPostMove(using self)
-            {
-                if capacity <= SmallSize
-                    buffer = acast &allocator
-            }
-
-            func opPostCopy(using self)
-            {
-                if !buffer
-                    return
-                if capacity <= SmallSize
-                    buffer = acast &allocator
-                else
-                {
-                    oldBuffer := buffer
-                    buffer = null
-                    reserve(self, length + 1)
-                    memory.copy(buffer, oldBuffer, length + 1)
-                }
-            }
-
-            func opDrop(using self)
-            {
-                if buffer && buffer != acast &allocator
-                    free(self)
-            }
-
-            // Visit the String utf8 bytes
-            #[swag.macro, swag.noreturn]
-            func(ptr: bool) opVisitBytes(using self, stmt: code)
-            {
-                if length
-                {
-                    scan := buffer
-                    loop length
+                    #macro
                     {
-                        #macro
-                        {
-                            #if ptr
-                                let @alias0 = `scan
-                            #else
-                                let @alias0 = deref `scan
-                            let @alias1 = @index
-                            #mixin `stmt
-                        }
-
-                        scan += 1
+                        #if ptr
+                            let @alias0 = `scan
+                        #else
+                            let @alias0 = deref `scan
+                        let @alias1 = @index
+                        #mixin `stmt
                     }
-                }
-            }
 
-            // Visit the String unicode characters
-            #[swag.macro, swag.noreturn]
-            func(ptr: bool) opVisit(using self, stmt: code)
-            {
-                if length
-                {
-                    idx := 0
-                    scan := cast(const *u8) buffer
-                    while true
-                    {
-                        var (nextScan, c) = utf8.nextChar(scan)
-                        if c == 0
-                            break
-                        #macro
-                        {
-                            #if ptr
-                                let @alias0 = `scan
-                            #else
-                                let @alias0 = `c
-                            let @alias1 = `idx
-                            #mixin `stmt
-                        }
-
-                        idx += cast(s32) (nextScan - scan)
-                        scan = cast(const *u8) nextScan
-                    }
+                    scan += 1
                 }
             }
         }
-    }
 
-    impl String
-    {
-        public
+        // Visit the String unicode characters
+        #[swag.macro, swag.noreturn]
+        func(ptr: bool) opVisit(using self, stmt: code)
         {
-            // Set the length of the String to 0
-            func clear(using self)
+            if length
             {
-                length = 0
-            }
-
-            // Returns true if the String has zero length
-            func isEmpty(using self)->bool
-            {
-                return length == 0
-            }
-
-            // Returns true if the String is null (undefined)
-            func isNull(using self)->bool
-            {
-                return buffer == null
-            }
-
-            // Returns true if the String is null or empty
-            func isNullOrEmpty(using self)->bool
-            {
-                return buffer == null || length == 0
-            }
-
-            // Append a string to the String
-            func append(using self, value: string)
-            {
-                concatLength := @countof(value)
-                if concatLength == 0
-                    return
-
-                newLength := length + concatLength + 1
-                grow(self, newLength)
-                memory.copy(buffer + length, @dataof(value), concatLength)
-                length = newLength - 1
-                buffer[length] = 0
-            }
-
-            // Ensure the String is big enough to store a given amount of bytes
-            func grow(using self, wantedCapacity: u32)
-            {
-                if wantedCapacity <= capacity
-                    return
-                newCapacity := math.max(capacity * 2, wantedCapacity)
-                reserve(self, newCapacity)
-            }
-
-            // Reserve room for 'newCapacity' bytes without changing the string length
-            func reserve(using self, newCapacity: u32)
-            {
-                // Small size, just be sure with have a valid buffer address
-                if newCapacity <= SmallSize
+                idx := 0
+                scan := cast(const *u8) buffer
+                while true
                 {
-                    // Free everything
-                    if !newCapacity
+                    var (nextScan, c) = utf8.nextChar(scan)
+                    if c == 0
+                        break
+                    #macro
                     {
-                        if !buffer
-                            return
-                        if buffer != acast &allocator
-                            free(self)
-                        buffer = null
-                        length, capacity = 0
-                        return
+                        #if ptr
+                            let @alias0 = `scan
+                        #else
+                            let @alias0 = `c
+                        let @alias1 = `idx
+                        #mixin `stmt
                     }
 
-                    capacity = SmallSize
+                    idx += cast(s32) (nextScan - scan)
+                    scan = cast(const *u8) nextScan
+                }
+            }
+        }
+
+        // Set the length of the String to 0
+        func clear(using self)
+        {
+            length = 0
+        }
+
+        // Returns true if the String has zero length
+        func isEmpty(using self)->bool
+        {
+            return length == 0
+        }
+
+        // Returns true if the String is null (undefined)
+        func isNull(using self)->bool
+        {
+            return buffer == null
+        }
+
+        // Returns true if the String is null or empty
+        func isNullOrEmpty(using self)->bool
+        {
+            return buffer == null || length == 0
+        }
+
+        // Append a string to the String
+        func append(using self, value: string)
+        {
+            concatLength := @countof(value)
+            if concatLength == 0
+                return
+
+            newLength := length + concatLength + 1
+            grow(self, newLength)
+            memory.copy(buffer + length, @dataof(value), concatLength)
+            length = newLength - 1
+            buffer[length] = 0
+        }
+
+        // Ensure the String is big enough to store a given amount of bytes
+        func grow(using self, wantedCapacity: u32)
+        {
+            if wantedCapacity <= capacity
+                return
+            newCapacity := math.max(capacity * 2, wantedCapacity)
+            reserve(self, newCapacity)
+        }
+
+        // Reserve room for 'newCapacity' bytes without changing the string length
+        func reserve(using self, newCapacity: u32)
+        {
+            // Small size, just be sure with have a valid buffer address
+            if newCapacity <= SmallSize
+            {
+                // Free everything
+                if !newCapacity
+                {
                     if !buffer
-                        buffer = acast &allocator
+                        return
+                    if buffer != acast &allocator
+                        self.free()
+                    buffer = null
+                    length, capacity = 0
                     return
                 }
 
-                // Actual size is fine
-                if newCapacity <= capacity
-                    return
-
-                // We were in small size mode, and we are no more
-                if buffer == acast &allocator
-                {
-                    oldBuffer := buffer
-                    newAllocator := @getcontext().allocator
-                    buffer = acast memory.alloc(&newAllocator, newCapacity)
-                    memory.copy(buffer, oldBuffer, length + 1)
-                    allocator = newAllocator
-                }
-                else
-                {
-                    realloc(self, newCapacity)
-                }
-
-                capacity = newCapacity
+                capacity = SmallSize
+                if !buffer
+                    buffer = acast &allocator
+                return
             }
 
-            // Remove whitespaces at the start of the String
-            func trimStart(using self)
+            // Actual size is fine
+            if newCapacity <= capacity
+                return
+
+            // We were in small size mode, and we are no more
+            if buffer == acast &allocator
             {
-                if !length
-                    return
-
-                ptr := cast(const *u8) buffer
-                while true
-                {
-                    var (nextPtr, c) = utf8.nextChar(ptr)
-                    if !unicode.isWhiteSpace(c)
-                        break
-                    length -= cast(u32) (nextPtr - ptr)
-                    ptr = nextPtr
-                }
-
-                memory.copy(buffer, ptr, length)
-                buffer[length] = 0
+                oldBuffer := buffer
+                newAllocator := @getcontext().allocator
+                buffer = acast memory.alloc(&newAllocator, newCapacity)
+                memory.copy(buffer, oldBuffer, length + 1)
+                allocator = newAllocator
+            }
+            else
+            {
+                realloc(self, newCapacity)
             }
 
-            // Remove whitespaces at the end of the String
-            func trimEnd(using self)
+            capacity = newCapacity
+        }
+
+        // Remove whitespaces at the start of the String
+        func trimStart(using self)
+        {
+            if !length
+                return
+
+            ptr := cast(const *u8) buffer
+            while true
             {
-                if !length
-                    return
-
-                ptr := cast(const *u8) buffer + length
-                while true
-                {
-                    var (previousPtr, c) = utf8.previousChar(buffer, ptr)
-                    if !unicode.isWhiteSpace(c)
-                        break
-                    length -= cast(u32) (ptr - previousPtr)
-                    ptr = previousPtr
-                }
-
-                buffer[length] = 0
+                var (nextPtr, c) = utf8.nextChar(ptr)
+                if !unicode.isWhiteSpace(c)
+                    break
+                length -= cast(u32) (nextPtr - ptr)
+                ptr = nextPtr
             }
 
-            // Removes all leading and trailing white-space characters from the current String
-            // The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
-            // trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
-            // function returns "abc xyz".
-            // White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
-            // that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
-            func trim(using self)
+            memory.copy(buffer, ptr, length)
+            buffer[length] = 0
+        }
+
+        // Remove whitespaces at the end of the String
+        func trimEnd(using self)
+        {
+            if !length
+                return
+
+            ptr := cast(const *u8) buffer + length
+            while true
             {
-                trimStart(self)
-                trimEnd(self)
+                var (previousPtr, c) = utf8.previousChar(buffer, ptr)
+                if !unicode.isWhiteSpace(c)
+                    break
+                length -= cast(u32) (ptr - previousPtr)
+                ptr = previousPtr
             }
 
-            // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-            // The function will return -1 if the `value` cannot be found
-            func indexOf(using self, value: char)->s32
-            {
-                if !length
-                    return -1
+            buffer[length] = 0
+        }
 
-                visit c, i: deref self
-                {
-                    if c == value
-                        return i
-                }
+        // Removes all leading and trailing white-space characters from the current String
+        // The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
+        // trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
+        // function returns "abc xyz".
+        // White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
+        // that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
+        func trim(using self)
+        {
+            self.trimStart()
+            self.trimEnd()
+        }
 
+        // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+        // The function will return -1 if the `value` cannot be found
+        func indexOf(using self, value: char)->s32
+        {
+            if !length
                 return -1
+
+            visit c, i: deref self
+            {
+                if c == value
+                    return i
             }
 
-            // Returns the first Unicode character of the String
-            // This function will return 0 if the String is null or empty
-            func front(using self)->char
-            {
-                if !length
-                    return 0
-                if latin1.isAscii(buffer[0])
-                    return cast(char) buffer[0]
-                let (b, c) = utf8.nextChar(buffer)
-                return c
-            }
+            return -1
+        }
 
-            // Returns the last Unicode character of the String
-            // This function will return 0 if the String is null or empty
-            func back(using self)->char
-            {
-                if !length
-                    return 0
-                if latin1.isAscii(buffer[length - 1])
-                    return cast(char) buffer[length - 1]
-                let (b, c) = utf8.previousChar(buffer, buffer + length)
-                return c
-            }
+        // Returns the first Unicode character of the String
+        // This function will return 0 if the String is null or empty
+        func front(using self)->char
+        {
+            if !length
+                return 0
+            if latin1.isAscii(buffer[0])
+                return cast(char) buffer[0]
+            let (b, c) = utf8.nextChar(buffer)
+            return c
+        }
 
-            // Convert string to an 16 bits unicode array
-            func toUnicode16(using self)->Array'u16
-            {
-                var utf16: Array'u16
-                utf16.reserve(length + 1)
-                count := unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
-                utf16.count = count + 1
-                utf16[count - 1] = 0
-                return utf16
-            }
+        // Returns the last Unicode character of the String
+        // This function will return 0 if the String is null or empty
+        func back(using self)->char
+        {
+            if !length
+                return 0
+            if latin1.isAscii(buffer[length - 1])
+                return cast(char) buffer[length - 1]
+            let (b, c) = utf8.previousChar(buffer, buffer + length)
+            return c
+        }
 
-            // Convert a literal string to a String
-            func from(value: string)->String
-            {
-                var val: String = value
-                return val
-            }
+        // Convert string to an 16 bits unicode array
+        func toUnicode16(using self)->Array'u16
+        {
+            var utf16: Array'u16
+            utf16.reserve(length + 1)
+            count := unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
+            utf16.count = count + 1
+            utf16[count] = 0
+            return utf16
+        }
+
+        // Convert a literal string to a String
+        func from(value: string)->String
+        {
+            var val: String = value
+            return val
         }
     }
 }

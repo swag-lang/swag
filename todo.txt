@@ -18,6 +18,4 @@ slice/cstrings and foreign
 y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 (si on les compare avec un type non compiler, si on les met dans une var any...)
 -------------------------------------
-llvm debug lines info, avec visit, fait n'importe quoi en pas à pas
--------------------------------------
 slice, strings & co, passer le count en 64 bits une bonne fois pour toute

@@ -57,6 +57,14 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
         stringTy                  = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*), 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
+
+    // interface
+    {
+        auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "itable", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
+        interfaceTy               = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*), 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+    }
 }
 
 llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
@@ -222,6 +230,9 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     }
     case TypeInfoKind::Slice:
         return getSliceType(typeInfo, file);
+
+    case TypeInfoKind::Interface:
+        return interfaceTy;
 
     case TypeInfoKind::Native:
     {
@@ -399,7 +410,7 @@ void BackendLLVMDbg::finalize()
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
-    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
+    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl || (ip->flags & BCI_SAFETY))
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
     }
