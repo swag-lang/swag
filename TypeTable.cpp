@@ -7,17 +7,6 @@
 #include "TypeManager.h"
 #include "Module.h"
 
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
-{
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
-
-    unique_lock lk(segment->mutex);
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, cflags));
-    return true;
-}
-
 DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
@@ -188,6 +177,17 @@ Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
     return typeInfo->scopedName;
 }
 
+bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getConstantSegment(module, cflags);
+
+    unique_lock lk(segment->mutex);
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, false, cflags));
+    return true;
+}
+
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool forceNoScope, uint32_t cflags)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
@@ -204,33 +204,46 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     if (!forceNoScope)
         typeInfo->computeScopedName();
 
+    auto& typeName = getTypeName(typeInfo, forceNoScope);
+
     // Already computed ?
+    auto& storedMap    = cflags & CONCRETE_FOR_COMPILER ? concreteTypesCompiler : concreteTypes;
+    auto& storedMapJob = cflags & CONCRETE_FOR_COMPILER ? concreteTypesJobCompiler : concreteTypesJob;
     if (typeInfo->kind != TypeInfoKind::Param)
     {
-        if (cflags & CONCRETE_FOR_COMPILER)
+        auto it = storedMap.find(typeName);
+        if (it != storedMap.end())
         {
-            auto it = concreteTypesCompiler.find(getTypeName(typeInfo, forceNoScope));
-            if (it != concreteTypesCompiler.end())
+            if (ptrTypeInfo)
+                *ptrTypeInfo = it->second.first;
+            *storage = it->second.second;
+
+            // A compute job is pending, need to wait
+            if (cflags & CONCRETE_SHOULD_WAIT)
             {
-                if (ptrTypeInfo)
-                    *ptrTypeInfo = it->second.first;
-                *storage = it->second.second;
-                return true;
+                if (context->baseJob->baseContext->result != ContextResult::Pending)
+                {
+                    auto itJob = storedMapJob.find(typeName);
+                    if (itJob != storedMapJob.end())
+                    {
+                        if (typeName == "std.text.String")
+                        {
+                            printf(typeName.c_str());
+                            printf("\n");
+                        }
+
+                        itJob->second->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(nullptr);
+                    }
+                }
             }
-        }
-        else
-        {
-            auto it = concreteTypes.find(getTypeName(typeInfo, forceNoScope));
-            if (it != concreteTypes.end())
-            {
-                if (ptrTypeInfo)
-                    *ptrTypeInfo = it->second.first;
-                *storage = it->second.second;
-                return true;
-            }
-            g_Stats.totalConcreteTypes++;
+
+            return true;
         }
     }
+
+    if ((cflags & CONCRETE_FOR_COMPILER))
+        g_Stats.totalConcreteTypes++;
 
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
@@ -287,7 +300,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     uint32_t          storageOffset         = segment->reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) segment->addressNoLock(storageOffset);
 
-    auto& typeName = getTypeName(typeInfo, forceNoScope);
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name), cflags));
     concreteTypeInfoValue->kind   = typeInfo->kind;
@@ -306,11 +318,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr = g_Allocator.alloc<TypeInfoPointer>();
-    if (cflags & CONCRETE_FOR_COMPILER)
-        concreteTypesCompiler[typeName] = {typePtr, storageOffset};
-    else
-        concreteTypes[typeName] = {typePtr, storageOffset};
+    auto typePtr        = g_Allocator.alloc<TypeInfoPointer>();
+    storedMap[typeName] = {typePtr, storageOffset};
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
@@ -363,7 +372,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         job->typeInfo              = typeInfo;
         job->storageOffset         = storageOffset;
         job->cflags                = cflags & ~CONCRETE_SHOULD_WAIT;
+        job->typeName              = typeName;
         job->nodes.push_back(context->node);
+        storedMapJob[typeName] = job;
 
         if (cflags & CONCRETE_SHOULD_WAIT)
         {
@@ -457,4 +468,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     return true;
+}
+
+void TypeTable::tableJobDone(TypeTableJob* job)
+{
+    auto& storedMap = job->cflags & CONCRETE_FOR_COMPILER ? concreteTypesJobCompiler : concreteTypesJob;
+    auto  it        = storedMap.find(job->typeName);
+    SWAG_ASSERT(it != storedMap.end());
+    storedMap.erase(it);
 }

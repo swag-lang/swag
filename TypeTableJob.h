@@ -8,6 +8,7 @@ struct TypeTableJob : public Job
     JobResult execute() override;
     bool      computeStruct();
 
+    Utf8              typeName;
     TypeTable*        typeTable             = nullptr;
     ConcreteTypeInfo* concreteTypeInfoValue = nullptr;
     TypeInfo*         typeInfo              = nullptr;

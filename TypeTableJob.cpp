@@ -75,6 +75,7 @@ bool TypeTableJob::computeStruct()
         }
     }
 
+    typeTable->tableJobDone(this);
     return true;
 }
 

@@ -11,6 +11,7 @@ struct TypeInfoParam;
 struct ComputedValue;
 struct DataSegment;
 struct Module;
+struct TypeTableJob;
 
 static uint32_t CONCRETE_ZERO         = 0x00000000;
 static uint32_t CONCRETE_SHOULD_WAIT  = 0x00000001;
@@ -27,11 +28,17 @@ struct TypeTable
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue, uint32_t cflags);
 
+    void         tableJobDone(TypeTableJob* job);
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     DataSegment* getConstantSegment(Module* module, uint32_t flags);
 
-    map<Utf8Crc, pair<TypeInfo*, uint32_t>> concreteTypes;
-    map<Utf8Crc, pair<TypeInfo*, uint32_t>> concreteTypesCompiler;
+    using mapType = map<Utf8Crc, pair<TypeInfo*, uint32_t>>;
+    mapType concreteTypes;
+    mapType concreteTypesCompiler;
+
+    using mapTypeJob = map<Utf8Crc, TypeTableJob*>;
+    mapTypeJob concreteTypesJob;
+    mapTypeJob concreteTypesJobCompiler;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
