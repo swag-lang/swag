@@ -276,7 +276,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (typeInfo->kind == TypeInfoKind::Variadic)
     {
         RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
+        reserveLinearRegisterRC2(context, r0);
         emitSafetyBoundCheckVariadic(context, node->access->resultRegisterRC, node->array->resultRegisterRC);
 
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
