@@ -258,11 +258,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (!node->content)
         genByteCode = false;
-    if (node->attributeFlags & ATTRIBUTE_INLINE)
-    {
-        node->flags |= AST_NO_BYTECODE;
-        genByteCode = false;
-    }
 
     if (genByteCode)
         ByteCodeGenJob::askForByteCode(context->job, node, 0);

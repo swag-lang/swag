@@ -6,7 +6,7 @@ using std.collections, std.text, std.diagnostics
     var x: Array'String
     var y: String = "toto"
 
-    console.write("before: %\n", y)
+    //console.write("before: %\n", y)
     x.emplaceBack(&y)
-    console.write("after: %\n", y)
+    //console.write("after: %\n", y)
 }
