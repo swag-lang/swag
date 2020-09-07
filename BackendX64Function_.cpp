@@ -1780,12 +1780,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addU32(offset);
             }
 
-            //concat.addStringFormat("r[%u].pointer = sizeof(__r_t) + (__u8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
             concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
             concat.addU8(8);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-
-            //concat.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
             concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
             break;
 
@@ -1793,7 +1790,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRAParams.push_back(ip->a.u32);
             break;
         case ByteCodeOp::GetFromStackParam64:
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "] = *rp", ip->c.u32, ";");
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
@@ -1801,7 +1797,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeStackPointerParam:
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &rp", ip->c.u32, "->pointer;");
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
@@ -1811,8 +1806,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::MakeLambdaForeign:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &%s;", ip->a.u32, foreignValue.text.c_str());
-
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode);
             SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);

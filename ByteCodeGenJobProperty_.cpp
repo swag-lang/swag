@@ -25,9 +25,8 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
-    auto        node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto        params = node->childs.front();
-    PushICFlags ci(context, BCI_UNPURE);
+    auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto params = node->childs.front();
 
     reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
 
@@ -35,7 +34,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     auto childItf = params->childs[2];
     SWAG_ASSERT(childItf->computedValue.reg.u32 != UINT32_MAX);
 
-    auto r0 = reserveRegisterRC(context);
+    auto r0                                                             = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u32 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register

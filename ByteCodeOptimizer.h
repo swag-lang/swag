@@ -24,10 +24,6 @@ struct ByteCodeOptimizer
     {
         if (ip->op == ByteCodeOp::Nop)
             return;
-        if (ip->flags & BCI_UNPURE)
-            return;
-        if (g_ByteCodeOpFlags[(int) ip->op] & OPFLAG_UNPURE)
-            return;
         SWAG_ASSERT(ip->op != ByteCodeOp::End);
         context->passHasDoneSomething = true;
         ip->op                        = ByteCodeOp::Nop;

@@ -2439,7 +2439,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MakeStackPointerParam:
         {
-            //CONCAT_STR_2(concat, "r[", ip->a.u32, "].pointer = (__u8_t*) &rp", ip->c.u32, "->pointer;");
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto r1 = func->getArg(ip->c.u32 + typeFunc->numReturnRegisters());
             builder.CreateStore(r1, r0);
@@ -2448,7 +2447,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::LowerZeroToTrue:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
             auto a0 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
@@ -2457,7 +2455,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::LowerEqZeroToTrue:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
             auto a0 = builder.CreateIntCast(builder.CreateICmpSLE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
@@ -2466,7 +2463,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::GreaterZeroToTrue:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
             auto a0 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
@@ -2475,7 +2471,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::GreaterEqZeroToTrue:
         {
-            //concat.addStringFormat("r[%u].b = r[%u].s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32);
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
             auto a0 = builder.CreateIntCast(builder.CreateICmpSGE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
@@ -2488,7 +2483,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CopySP:
         {
-            //concat.addStringFormat("r[%u].pointer = (__u8_t*) &r[%u];", ip->a.u32, ip->c.u32);
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto r1 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(r1, r0);
@@ -2496,13 +2490,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopySPVaargs:
         {
-            //concat.addStringFormat("__r_t vaargs%u[] = { 0, ", vaargsIdx);
-            //int idxParam = (int) pushRAParams.size() - 1;
-            //while (idxParam >= 0)
-            //{
-            //    concat.addStringFormat("r[%u], ", pushRAParams[idxParam]);
-            //    idxParam--;
-            //}
             auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size() + 1));
 
             int idx      = 1;
@@ -2516,7 +2503,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 idxParam--;
             }
 
-            //concat.addStringFormat("r[%u].pointer = sizeof(__r_t) + (__u8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst1_i32);
             builder.CreateStore(r1, r0);
