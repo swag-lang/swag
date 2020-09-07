@@ -58,8 +58,15 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();
-    while (num--)
+    if (num == 0)
+        return;
+    if (num == 1)
         rc += reserveRegisterRC(context);
+    else
+    {
+        SWAG_ASSERT(num == 2);
+        reserveLinearRegisterRC2(context, rc);
+    }
 }
 
 void ByteCodeGenJob::reserveLinearRegisterRC2(ByteCodeGenContext* context, RegisterList& rc)
