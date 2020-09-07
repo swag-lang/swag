@@ -181,7 +181,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         }
     }
 
-    reserveRegisterRC(context, regList, 1);
+    regList = reserveRegisterRC(context);
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
