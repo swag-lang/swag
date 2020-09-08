@@ -1981,7 +1981,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_8(RCX);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
             BackendX64Inst::emit_Copy32(pp, RAX, RCX);
@@ -1996,7 +1996,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_16(RCX);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
             BackendX64Inst::emit_Copy32(pp, RAX, RCX);
             switch ((TokenId) ip->d.u32)
@@ -2010,7 +2010,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicS32x1:
         {
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            MK_IMMB_32(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2022,7 +2022,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            MK_IMMB_64(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
@@ -2034,8 +2034,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicF32x2:
         {
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
+            MK_IMMB_F32(XMM0);
+            MK_IMMC_F32(XMM1);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
@@ -2047,8 +2047,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI);
+            MK_IMMB_F64(XMM0);
+            MK_IMMC_F64(XMM1);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicPow:
@@ -2061,7 +2061,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+            MK_IMMB_F32(XMM0);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
@@ -2132,7 +2132,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF64x1:
         {
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), XMM0, RDI);
+            MK_IMMB_F64(XMM0);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
