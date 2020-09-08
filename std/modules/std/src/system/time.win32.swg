@@ -11,19 +11,16 @@
 
 	namespace std.time
 	{
-		public
-		{
-			func nowTicks()->u64
-			{
-				var counter: u64 = ?
-				QueryPerformanceCounter(acast &counter)
-				return counter
-			}
+        public func nowTicks()->u64
+        {
+            var counter: u64 = ?
+            QueryPerformanceCounter(acast &counter)
+            return counter
+        }
 
-			func ticksFrequency()->u64
-			{
-				return g_perfCounterFreq
-			}
-		}
+        public func ticksFrequency()->u64
+        {
+            return g_perfCounterFreq
+        }
 	}
 }
