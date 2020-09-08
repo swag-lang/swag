@@ -3,121 +3,108 @@ namespace std.math
     // A simple rectangle with 4 coordinates
 	public struct Rect
 	{
-        // X coordinate
         x:      f32
-        // Y coordinate
         y:      f32
-        // Width of the rectangle
         width:  f32
-        // Height of the rectangle
         height: f32
 	}
 
-	impl Rect
+	public impl Rect
 	{
-        public
+        #[swag.complete]
+        func opAffect(using self, value: f32)
         {
-            #[swag.complete]
-			func opAffect(using self, value: f32)
-			{
-				x, y, width, height = value
-			}
+            x, y, width, height = value
+        }
 
-            func opEquals(using self, other: Self)->bool
+        func opEquals(using self, other: Self)->bool
+        {
+            return x == other.x && y == other.y && width == other.width && height == other.height
+        }
+
+        #[swag.property, swag.inline]
+        {
+            // right coordinate (x + width)
+            func right(using self)->f32
             {
-                return x == other.x && y == other.y && width == other.width && height == other.height
+                return x + width
+            }
+
+            // right coordinate (x + width)
+            func right(using self, value: f32)
+            {
+                width = value - x
+            }
+
+            // bottom coordinate (y + height)
+            func bottom(using self)->f32
+            {
+                return y + height
+            }
+
+            // bottom coordinate (y + height)
+            func bottom(using self, value: f32)
+            {
+                height = value - y
             }
         }
 
-        public
-		{
-            #[swag.property, swag.inline]
-            {
-                // right coordinate (x + width)
-                func right(using self)->f32
-                {
-                    return x + width
-                }
+        // Represents a rectangle with all coordinates to zero
+        const Zero: Rect(0, 0, 0, 0)
 
-                // right coordinate (x + width)
-                func right(using self, value: f32)
-                {
-                    width = value - x
-                }
-
-                // bottom coordinate (y + height)
-                func bottom(using self)->f32
-                {
-                    return y + height
-                }
-
-                // bottom coordinate (y + height)
-                func bottom(using self, value: f32)
-                {
-                    height = value - y
-                }
-            }
+        // Set rectangle to (0, 0, 0, 0)
+        func clear(using self)
+        {
+            x, y, width, height = 0
         }
 
-		public
-		{
-            // Represents a rectangle with all coordinates to zero
-			const Zero: Rect(0, 0, 0, 0)
+        // Returns true if this instance is null
+        func isZero(using self)->bool
+        {
+            return x == y == width == height == 0
+        }
 
-            // Set point to (0, 0)
-			func clear(using self)
-			{
-				x, y, width, height = 0
-			}
+        // Returns true if this instance is null with an epsilon
+        func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
+        {
+            return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+        }
 
-            // Returns true if this instance is null
-            func isZero(using self)->bool
-            {
-                return x == y == width == height == 0
-            }
+        // Returns true if this instance has a surface of zero (width and heigth are null)
+        func isEmpty(using self)->bool
+        {
+            return width == height == 0
+        }
 
-            // Returns true if this instance is null with an epsilon
-            func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
-            {
-                return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
-            }
+        // Returns true if this instance has a surface of zero (width and heigth are null)
+        func isEmptyEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
+        {
+            return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+        }
 
-            // Returns true if this instance has a surface of zero (width and heigth are null)
-            func isEmpty(using self)->bool
-            {
-                return width == height == 0
-            }
+        // Returns true if this instance has a positive surface (width and heigth greater than zero)
+        func isNormalized(using self)->bool
+        {
+            return width >= 0 && height >= 0
+        }
 
-            // Returns true if this instance has a surface of zero (width and heigth are null)
-            func isEmptyEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
-            {
-                return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
-            }
+        // Offset this point by a given value
+        func offset(using self, value: f32)
+        {
+            x, y += value
+        }
 
-            // Returns true if this instance has a positive surface (width and heigth greater than zero)
-            func isNormalized(using self)->bool
-            {
-                return width >= 0 && height >= 0
-            }
+        // Multiply the width and height of the rectangle by a given value
+        func scale(using self, value: f32)
+        {
+            width, height *= value
+        }
 
-            // Offset this point by a given value
-            func offset(using self, value: f32)
-            {
-                x, y += value
-            }
-
-            // Multiply the width and height of the rectangle by a given value
-            func scale(using self, value: f32)
-            {
-                width, height *= value
-            }
-
-            // Multiply the width and height of the rectangle by a given value
-            func scale(using self, valueX, valueY: f32)
-            {
-                width *= valueX
-                height *= valueY
-            }
-		}
-	}
+        // Multiply the width and height of the rectangle by a given value
+        func scale(using self, valueX, valueY: f32)
+        {
+            width *= valueX
+            height *= valueY
+        }
+    }
 }
