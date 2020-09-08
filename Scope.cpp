@@ -142,10 +142,10 @@ void Scope::addPublicConst(AstNode* node)
     setHasExports();
 }
 
-void Scope::addPublicAlias(AstNode* node)
+void Scope::addPublicNode(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicAlias.insert(node);
+    publicNodes.insert(node);
     setHasExports();
 }
 

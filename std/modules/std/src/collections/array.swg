@@ -26,13 +26,13 @@ namespace std.collections
 
         func opIndex(using self, index: u32)->const &T
         {
-            std.diagnostics.debug.assert(index < count, "index out of range")
+            debug.assert(index < count, "index out of range")
             return buffer[index]
         }
 
         func opIndexAffect(using self, value: T, index: u32)
         {
-            std.diagnostics.debug.assert(index < count, "index out of range")
+            debug.assert(index < count, "index out of range")
             buffer[index] = value
         }
 
@@ -174,7 +174,7 @@ namespace std.collections
         // element. Order is not preserved
         func removeAt(using self, index: u32)
         {
-            std.diagnostics.debug.assert(index < count, "index out of range")
+            debug.assert(index < count, "index out of range")
             count -= 1
 
             if index == count
@@ -190,7 +190,7 @@ namespace std.collections
         // Order is preserved
         func removeAtOrdered(using self, index: u32)
         {
-            std.diagnostics.debug.assert(index < count, "index out of range")
+            debug.assert(index < count, "index out of range")
             count -= 1
             @drop(&buffer[index])
 

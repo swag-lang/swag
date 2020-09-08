@@ -324,7 +324,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
                 return context->report(diag, &note);
             }
 
-            node->ownerScope->addPublicAlias(node);
+            node->ownerScope->addPublicNode(node);
         }
     }
 

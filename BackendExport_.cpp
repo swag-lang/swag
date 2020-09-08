@@ -427,10 +427,10 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope, int indent)
         }
     }
 
-    // Alias
-    if (!scope->publicAlias.empty())
+    // Stuff (alias, using will go there)
+    if (!scope->publicNodes.empty())
     {
-        for (auto one : scope->publicAlias)
+        for (auto one : scope->publicNodes)
         {
             bufferSwg.addIndent(indent);
             SWAG_CHECK(Ast::output(outputContext, bufferSwg, one));

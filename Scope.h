@@ -52,7 +52,7 @@ struct Scope
     void               addPublicInterface(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
-    void               addPublicAlias(AstNode* node);
+    void               addPublicNode(AstNode* node);
     void               addPublicNamespace(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();
@@ -87,7 +87,7 @@ struct Scope
     set<AstNode*>          publicInterface;
     set<AstNode*>          publicEnum;
     set<AstNode*>          publicConst;
-    set<AstNode*>          publicAlias;
+    set<AstNode*>          publicNodes;
     set<AstNode*>          publicNamespace;
     set<AstNode*>          doneLeaveScopeDefer;
     set<AstNode*>          doneLeaveScopeDrop;
