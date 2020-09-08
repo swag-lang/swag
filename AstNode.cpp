@@ -61,16 +61,6 @@ bool AstNode::isConstant1()
     return false;
 }
 
-void AstNode::setHasForeignCall()
-{
-    unique_lock lk(mutex);
-    if (flags & AST_HAS_FOREIGN_CALLS)
-        return;
-    flags |= AST_HAS_FOREIGN_CALLS;
-    if (parent)
-        parent->setHasForeignCall();
-}
-
 void AstNode::setPassThrough()
 {
     semanticAfterFct  = nullptr;

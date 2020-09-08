@@ -475,9 +475,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        if (overload->node && overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
-            identifier->setHasForeignCall();
-
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
