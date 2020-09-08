@@ -296,6 +296,21 @@ namespace Ast
             case TokenId::CompilerCallerLocation:
                 CONCAT_FIXED_STR(concat, "#callerlocation");
                 break;
+            case TokenId::CompilerLocation:
+                CONCAT_FIXED_STR(concat, "#location");
+                break;
+            case TokenId::CompilerHasTag:
+                CONCAT_FIXED_STR(concat, "#hastag(");
+                SWAG_CHECK(output(context, concat, node->childs[0]));
+                CONCAT_FIXED_STR(concat, ")");
+                break;
+            case TokenId::CompilerTagVal:
+                CONCAT_FIXED_STR(concat, "#tagval(");
+                SWAG_CHECK(output(context, concat, node->childs[0]));
+                CONCAT_FIXED_STR(concat, ", ");
+                SWAG_CHECK(output(context, concat, node->childs[1]));
+                CONCAT_FIXED_STR(concat, ")");
+                break;
             default:
                 return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});
             }
