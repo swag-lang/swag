@@ -1,16 +1,16 @@
 namespace std.collections
 {
     using swag
-    using diagnostics.debug
+    using std.diagnostics
 
-    // Manages a compact array of bit values, which are represented as booleans, where `true` indicates that
-    // the bit is on (1) and `false` indicates the bit is off (0)
+    // Manages a compact array of bit values, which are represented as booleans, where 'true' indicates that
+    // the bit is on (1) and 'false' indicates the bit is off (0)
     public struct BitArray
     {
         buffer:     *u32
         allocator:  const IAllocator
-        count:      u32 // Maximum number of bits the [BitArray] can hold
-        capacity:   u32 // The size, in bytes, of the allocated buffer
+        count:      u32
+        capacity:   u32
     }
 
     impl BitArray
@@ -75,7 +75,7 @@ namespace std.collections
                 self.set(index, value)
         }
 
-        // Compares two arrays, and returns `true` if they are equal
+        // Compares two arrays, and returns 'true' if they are equal
         func opEquals(using self, other: Self)->bool
         {
             if count != other.count
@@ -94,25 +94,26 @@ namespace std.collections
         #[swag.macro, swag.noreturn]
         func(ptr: bool) opVisit(using self, stmt: code)
         {
-            if !count return
             #assert(ptr == false, "pointer visit not supported for BitArray")
-
-            remainingBits := count
-            countBits := 0'u32
-            loop idx: math.max(count >> 5, 1)
+            if count
             {
-                var shift: u32 = 1
-                loop math.min(remainingBits, 32)
+                remainingBits := count
+                countBits := 0'u32
+                loop idx: math.max(count >> 5, 1)
                 {
-                    #macro
+                    var shift: u32 = 1
+                    loop math.min(remainingBits, 32)
                     {
-                        let @alias0 = cast(bool) (buffer[`idx] & `shift)
-                        let @alias1 = `countBits
-                        #mixin `stmt
-                    }
+                        #macro
+                        {
+                            let @alias0 = cast(bool) (buffer[`idx] & `shift)
+                            let @alias1 = `countBits
+                            #mixin `stmt
+                        }
 
-                    countBits += 1
-                    shift <<= 1
+                        countBits += 1
+                        shift <<= 1
+                    }
                 }
             }
         }
@@ -153,7 +154,7 @@ namespace std.collections
         // Sets the bit at a specific position to the specified value
         func set(using self, index: u32, value: bool)
         {
-            assert(index < count)
+            debug.assert(index < count)
             val := index >> 5
             bit := index - (val << 5)
             let shift = 1 << bit
@@ -166,7 +167,7 @@ namespace std.collections
         // Gets the value of the bit at a specific position
         func get(using self, index: u32)->bool
         {
-            assert(index < count)
+            debug.assert(index < count)
             val := index >> 5
             bit := index - (val << 5)
             let shift = 1 << bit
@@ -176,7 +177,7 @@ namespace std.collections
         // Inverts the value of the bit at a specific position
         func invert(using self, index: u32)
         {
-            assert(index < count)
+            debug.assert(index < count)
             val := index >> 5
             bit := index - (val << 5)
             let shift = 1 << bit
@@ -190,7 +191,7 @@ namespace std.collections
         // The current BitArray will be modified to store the result of the bitwise AND operation.
         func and(using self, other: Self)
         {
-            diagnostics.debug.assert(count == other.count)
+            debug.assert(count == other.count)
             if !count return
             loop math.max(count >> 5, 1)
                 buffer[@index] &= other.buffer[@index]
@@ -200,7 +201,7 @@ namespace std.collections
         // The current BitArray will be modified to store the result of the bitwise OR operation.
         func or(using self, other: Self)
         {
-            diagnostics.debug.assert(count == other.count)
+            debug.assert(count == other.count)
             if !count return
             loop math.max(count >> 5, 1)
                 buffer[@index] |= other.buffer[@index]
@@ -210,13 +211,13 @@ namespace std.collections
         // The current BitArray will be modified to store the result of the bitwise XOR operation.
         func xor(using self, other: Self)
         {
-            diagnostics.debug.assert(count == other.count)
+            debug.assert(count == other.count)
             if !count return
             loop math.max(count >> 5, 1)
                 buffer[@index] ^= other.buffer[@index]
         }
 
-        // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
+        // Inverts all the bit values, so that elements set to 'true' are changed to `false`, and elements set to `false` are changed to 'true'.
         func not(using self)
         {
             if !count return
