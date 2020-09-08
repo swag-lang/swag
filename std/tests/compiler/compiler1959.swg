@@ -1,9 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    a := 0
-    visit "toto"
+    if @typeof(s32).flags & swag.TypeInfoFlags.Integer
     {
-        a += 2
     }
 }

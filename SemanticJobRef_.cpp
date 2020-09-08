@@ -566,54 +566,67 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         {
         case NativeTypeKind::String:
             node->computedValue.text = *(const char**) ptr;
-            node->typeInfo           = g_TypeMgr.typeInfoString;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoString;
             break;
         case NativeTypeKind::S8:
-            node->typeInfo             = g_TypeMgr.typeInfoS8;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoS8;
             node->computedValue.reg.s8 = *(int8_t*) ptr;
             break;
         case NativeTypeKind::U8:
-            node->typeInfo             = g_TypeMgr.typeInfoU8;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoU8;
             node->computedValue.reg.u8 = *(uint8_t*) ptr;
             break;
         case NativeTypeKind::S16:
-            node->typeInfo              = g_TypeMgr.typeInfoS16;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoS16;
             node->computedValue.reg.s16 = *(int16_t*) ptr;
             break;
         case NativeTypeKind::U16:
-            node->typeInfo              = g_TypeMgr.typeInfoU16;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoU16;
             node->computedValue.reg.u16 = *(uint16_t*) ptr;
             break;
         case NativeTypeKind::S32:
-            node->typeInfo              = g_TypeMgr.typeInfoS32;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoS32;
             node->computedValue.reg.s32 = *(int32_t*) ptr;
             break;
         case NativeTypeKind::U32:
-            node->typeInfo              = g_TypeMgr.typeInfoU32;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoU32;
             node->computedValue.reg.u32 = *(uint32_t*) ptr;
             break;
         case NativeTypeKind::F32:
-            node->typeInfo              = g_TypeMgr.typeInfoF32;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoF32;
             node->computedValue.reg.f32 = *(float*) ptr;
             break;
         case NativeTypeKind::Char:
-            node->typeInfo             = g_TypeMgr.typeInfoChar;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoChar;
             node->computedValue.reg.ch = *(uint32_t*) ptr;
             break;
         case NativeTypeKind::S64:
-            node->typeInfo              = g_TypeMgr.typeInfoS64;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoS64;
             node->computedValue.reg.s64 = *(int64_t*) ptr;
             break;
         case NativeTypeKind::U64:
-            node->typeInfo              = g_TypeMgr.typeInfoU64;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoU64;
             node->computedValue.reg.u64 = *(uint64_t*) ptr;
             break;
         case NativeTypeKind::F64:
-            node->typeInfo              = g_TypeMgr.typeInfoF64;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoF64;
             node->computedValue.reg.f64 = *(double*) ptr;
             break;
         case NativeTypeKind::Bool:
-            node->typeInfo            = g_TypeMgr.typeInfoBool;
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr.typeInfoBool;
             node->computedValue.reg.b = *(bool*) ptr;
             break;
         case NativeTypeKind::Any:
@@ -624,6 +637,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
             if (anyTypeInfo->kind == TypeInfoKind::Native)
             {
                 ConcreteTypeInfoNative* anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
+                node->typeInfo                    = nullptr;
                 return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
             }
 
@@ -655,11 +669,11 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef*
 
     uint8_t* ptr = segment->address(storageOffset);
     ptr += overload->storageOffset;
+    node->typeInfo = overload->typeInfo;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
-        node->typeInfo                 = overload->typeInfo;
         node->computedValue.reg.offset = segment->offset(*(uint8_t**) ptr);
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }

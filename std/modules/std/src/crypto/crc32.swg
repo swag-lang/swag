@@ -499,6 +499,7 @@ namespace std.crypto
         0x24B98D25, 0x8AD11CB4, 0xA319A846, 0x0D7139D7,
     ]]
 
+    // Compute the crc32 of a slice of bytes
 	#[swag.constexpr]
 	public func crc32(data: [..] u8, previous: u32 = 0)->u32
 	{

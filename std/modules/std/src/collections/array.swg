@@ -183,5 +183,24 @@ namespace std.collections
 
             buffer[index] = move buffer[count]
         }
+
+        // Remove an element at 'index' by shifting all others.
+        // Order is preserved
+        func removeAtOrdered(using self, index: u32)
+        {
+            std.diagnostics.debug.assert(index < count, "index out of range")
+            count -= 1
+            @drop(&buffer[index])
+
+            if index == count
+                return
+
+            idx := index
+            loop count - index
+            {
+                buffer[idx] = nodrop move buffer[idx + 1]
+                idx += 1
+            }
+        }
     }
 }
