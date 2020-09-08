@@ -83,10 +83,7 @@
 
             if @countof(params)
             {
-                using std.collections, std.text
-                var buf: ConcatBuffer
-                format(&buf, message, params)
-                str := buf.toString()
+                str := std.text.format(message, params)
                 WriteFile(g_stdOutputHandle, @dataof(str), @countof(str), null, null)
             }
             else
