@@ -260,7 +260,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({ node, node->token, "cannot visit a tuple"}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, "cannot visit a tuple"}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, internalError(context, "cannot resolve visit, expression is not an identifier"));
         auto identifierRef     = Ast::clone(node->expression, node);
         auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
@@ -299,7 +299,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Get back the expression string
     auto& concat = context->job->tmpConcat;
     concat.init(1024);
-    Ast::output(concat, node->expression);
+    Ast::OutputContext outputContext;
+    Ast::output(outputContext, concat, node->expression);
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 

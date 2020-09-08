@@ -14,11 +14,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveUsing;
         if (result)
             *result = node;
-
-        AstNode* leftNode;
-        SWAG_CHECK(doIdentifierRef(node, &leftNode));
-
-        Ast::addChildBack(node, leftNode);
+        SWAG_CHECK(doIdentifierRef(node));
 
         // We must ensure that no job can be run before the using
         if (!node->ownerFct)

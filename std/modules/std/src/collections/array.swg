@@ -12,6 +12,8 @@ namespace std.collections
 
     public impl Array
     {
+        using std.diagnostics
+
         func opCount(using self)->u32
         {
             return count

@@ -1,5 +1,6 @@
 #pragma once
 #include "OutputFile.h"
+#include "Ast.h"
 struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
@@ -54,7 +55,6 @@ struct Backend
     bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
     bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
     bool      emitPublicConstSwg(AstVarDecl* node, int indent);
-    bool      emitPublicAliasSwg(AstNode* node, int indent);
     bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool      emitPublicSwg(Module* moduleToGen, Scope* scope, int indent);
@@ -66,8 +66,9 @@ struct Backend
     int                   numPreCompileBuffers = 0;
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
-    bool mustCompile         = true;
-    bool exportFileGenerated = false;
+    Ast::OutputContext outputContext;
+    bool               mustCompile         = true;
+    bool               exportFileGenerated = false;
 
     static string compilerExe;
     static string compilerPath;

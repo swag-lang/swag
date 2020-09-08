@@ -14,7 +14,7 @@ namespace std.crypto
         }
         #elif @typeof(T) == string
         {
-            return std.crypto.crc32(value)
+            return crc32(value)
         }
         #else
             #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")

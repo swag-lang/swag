@@ -102,13 +102,13 @@ bool Backend::emitGenericParameters(AstNode* node)
         if (varDecl->type)
         {
             CONCAT_FIXED_STR(bufferSwg, ": ");
-            SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->type));
         }
 
         if (varDecl->assignment)
         {
             CONCAT_FIXED_STR(bufferSwg, " = ");
-            SWAG_CHECK(Ast::output(bufferSwg, varDecl->assignment));
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
         }
 
         idx++;
@@ -148,7 +148,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (varDecl->assignment)
             {
                 CONCAT_FIXED_STR(bufferSwg, " = ");
-                Ast::output(bufferSwg, varDecl->assignment);
+                Ast::output(outputContext, bufferSwg, varDecl->assignment);
             }
 
             if (idx != node->parameters->childs.size() - 1)
@@ -209,7 +209,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
             if (param->assignment)
             {
                 CONCAT_FIXED_STR(bufferSwg, " = ");
-                SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
+                SWAG_CHECK(Ast::output(outputContext, bufferSwg, param->assignment));
             }
 
             if (idx != typeFunc->parameters.size() - 1)
@@ -234,7 +234,8 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     }
 
     bufferSwg.addEolIndent(indent);
-    Ast::output(bufferSwg, node->content, indent);
+    outputContext.indent = indent;
+    Ast::output(outputContext, bufferSwg, node->content);
 
     if (node->content->kind != AstNodeKind::Statement)
     {
@@ -266,7 +267,7 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
         bufferSwg.addIndent(indent + 1);
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, typeEnum->rawType, p->value.text, p->value.reg));
+        SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node, typeEnum->rawType, p->value.text, p->value.reg));
         bufferSwg.addEol();
     }
 
@@ -286,28 +287,16 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node, int indent)
     if (node->type)
     {
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        SWAG_CHECK(Ast::output(bufferSwg, node->type));
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->type));
     }
 
     if (node->assignment)
     {
         CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node->assignment, node->assignment->typeInfo, node->computedValue.text, node->computedValue.reg));
+        SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node->assignment, node->assignment->typeInfo, node->computedValue.text, node->computedValue.reg));
     }
 
     bufferSwg.addEol();
-    return true;
-}
-
-bool Backend::emitPublicAliasSwg(AstNode* node, int indent)
-{
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "alias ");
-    bufferSwg.addString(node->name.c_str());
-    CONCAT_FIXED_STR(bufferSwg, " = ");
-    SWAG_CHECK(Ast::output(bufferSwg, node->childs.front()));
-
-    CONCAT_FIXED_STR(bufferSwg, "\n");
     return true;
 }
 
@@ -381,7 +370,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
             if (notZero)
             {
                 CONCAT_FIXED_STR(bufferSwg, " = ");
-                SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
+                SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
             }
         }
 
@@ -398,6 +387,8 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope, int indent)
     SWAG_ASSERT(moduleToGen);
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
+
+    outputContext.forExport = true;
 
     // Scope name
     if (!scope->name.empty())
@@ -441,7 +432,9 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope, int indent)
     {
         for (auto one : scope->publicAlias)
         {
-            SWAG_CHECK(emitPublicAliasSwg(one, indent));
+            bufferSwg.addIndent(indent);
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, one));
+            bufferSwg.addEol();
         }
     }
 

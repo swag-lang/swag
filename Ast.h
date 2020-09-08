@@ -86,8 +86,14 @@ namespace Ast
     extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
 
-    extern bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg);
-    extern bool output(Concat& concat, AstNode* node, int indent = 0);
+    struct OutputContext
+    {
+        int  indent    = 0;
+        bool forExport = false;
+    };
+
+    extern bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg);
+    extern bool output(OutputContext& context, Concat& concat, AstNode* node);
 }; // namespace Ast
 
 template<typename T>
