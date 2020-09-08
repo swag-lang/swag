@@ -13,4 +13,7 @@ using std.crypto
     #assert(hash32(1.0'f64) == 0x3F800000)
 
     v := hash32("this is a string")
+
+    //let x : std.text.String = "toto"
+    //hash32(x)
 }
