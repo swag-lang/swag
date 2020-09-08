@@ -1152,19 +1152,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpMinusEqF32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_F32(r0));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQF32_CAB();
+            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQF64_CAB();
+            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -1199,19 +1195,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::AffectOpPlusEqF32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_F32(r0));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQF32_CAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQF64_CAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }

@@ -64,3 +64,13 @@
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0)); \
     llvm::Value* r2 = MK_IMMB_64();
+
+#define MK_BINOPEQF32_CAB()                                   \
+    auto         r0 = GEP_I32(allocR, ip->a.u32);             \
+    auto         r1 = builder.CreateLoad(TO_PTR_PTR_F32(r0)); \
+    llvm::Value* r2 = MK_IMMB_F32();
+
+#define MK_BINOPEQF64_CAB()                                   \
+    auto         r0 = GEP_I32(allocR, ip->a.u32);             \
+    auto         r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0)); \
+    llvm::Value* r2 = MK_IMMB_F64();
