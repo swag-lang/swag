@@ -123,10 +123,18 @@ namespace Ast
         case AstNodeKind::ArrayPointerIndex:
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-            SWAG_CHECK(output(concat, arrayNode->array, indent));
-            concat.addChar('[');
-            SWAG_CHECK(output(concat, arrayNode->access, indent));
-            concat.addChar(']');
+            if (arrayNode->isDeref)
+            {
+                concat.addString("deref ");
+                SWAG_CHECK(output(concat, arrayNode->array, indent));
+            }
+            else
+            {
+                SWAG_CHECK(output(concat, arrayNode->array, indent));
+                concat.addChar('[');
+                SWAG_CHECK(output(concat, arrayNode->access, indent));
+                concat.addChar(']');
+            }
             break;
         }
 

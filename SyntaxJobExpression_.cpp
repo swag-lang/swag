@@ -265,7 +265,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
         auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
-        SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
+        arrayNode->isDeref     = true;
+        SWAG_CHECK(doUnaryExpression(arrayNode, &arrayNode->array));
 
         auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
         literal->computedValue.reg.u64 = 0;

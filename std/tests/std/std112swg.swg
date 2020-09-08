@@ -3,5 +3,12 @@ using std.crypto
 
 #test
 {
-    //val := hash32(0'u8)
+    @assert(hash32(50'u8) == 50)
+    @assert(hash32(-1's8) == 0xFFFFFFFF)
+    @assert(hash32(1.0'f32) == 0x3F800000)
+    @assert(hash32(1.0'f64) == 0x3F800000)
+    #assert(hash32(50'u8) == 50)
+    #assert(hash32(-1's8) == 0xFFFFFFFF)
+    #assert(hash32(1.0'f32) == 0x3F800000)
+    #assert(hash32(1.0'f64) == 0x3F800000)
 }

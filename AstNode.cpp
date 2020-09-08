@@ -648,8 +648,9 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstArrayPointerIndex>();
     newNode->copyFrom(context, this);
 
-    newNode->array  = findChildRef(array, newNode);
-    newNode->access = findChildRef(access, newNode);
+    newNode->array   = findChildRef(array, newNode);
+    newNode->access  = findChildRef(access, newNode);
+    newNode->isDeref = isDeref;
     return newNode;
 }
 
@@ -660,7 +661,6 @@ AstNode* AstIntrinsicProp::clone(CloneContext& context)
 
     newNode->typeOfAsType  = typeOfAsType;
     newNode->typeOfAsConst = typeOfAsConst;
-
     return newNode;
 }
 

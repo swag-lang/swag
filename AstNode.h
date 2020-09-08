@@ -631,6 +631,7 @@ struct AstArrayPointerIndex : public AstNode
 
     AstNode* array;
     AstNode* access;
+    bool     isDeref;
 };
 
 struct AstArrayPointerSlicing : public AstNode
@@ -655,7 +656,8 @@ struct AstIntrinsicProp : public AstNode
 struct AstExpressionList : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-    bool     forTuple;
+
+    bool forTuple;
 };
 
 struct AstStruct : public AstNode
