@@ -21,7 +21,7 @@ namespace std.collections
 
         func opDrop(using self)
         {
-            free(self)
+            self.free()
         }
 
         func opIndex(using self, index: u32)->const &T
@@ -39,21 +39,23 @@ namespace std.collections
         #[swag.macro, swag.noreturn]
         func(ptr: bool) opVisit(using self, stmt: code)
         {
-            if !count return
-            scan := buffer
-            loop count
+            if count
             {
-                #macro
+                scan := buffer
+                loop count
                 {
-                    #if ptr
-                        let @alias0 = `scan
-                    #else
-                        let @alias0 = deref `scan
-                    let @alias1 = @index
-                    #mixin `stmt
-                }
+                    #macro
+                    {
+                        #if ptr
+                            let @alias0 = `scan
+                        #else
+                            let @alias0 = deref `scan
+                        let @alias1 = @index
+                        #mixin `stmt
+                    }
 
-                scan += 1
+                    scan += 1
+                }
             }
         }
 
@@ -77,7 +79,7 @@ namespace std.collections
             if allocator == null
                 allocator = @getcontext().allocator
 
-            newBuffer := cast(*T) acast memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
+            newBuffer := cast(*T) memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
 
             // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
             // in place
@@ -113,7 +115,7 @@ namespace std.collections
             if newCount <= capacity
                 return
             newCapacity := math.max(capacity * 2, newCount)
-            reserve(self, newCapacity)
+            self.reserve(newCapacity)
         }
 
         // Reserve room for 'newCapacity' elements without changing the array count
@@ -121,7 +123,7 @@ namespace std.collections
         {
             if !newCapacity
             {
-                free(self)
+                self.free()
                 buffer = null
                 count, capacity = 0
                 return
@@ -130,13 +132,13 @@ namespace std.collections
             if newCapacity <= capacity
                 return
 
-            realloc(self, newCapacity)
+            self.realloc(newCapacity)
         }
 
         // Add a copy of one element at the end of the array
         func add(using self, value: T)
         {
-            reserve(self, count + 1)
+            self.reserve(count + 1)
             buffer[count] = nodrop value
             count += 1
         }
@@ -159,7 +161,7 @@ namespace std.collections
         // Move one element at the end of the array
         func emplaceBack(using self, value: *T)
         {
-            reserve(self, count + 1)
+            self.reserve(count + 1)
             buffer[count] = nodrop move deref value
             count += 1
         }
