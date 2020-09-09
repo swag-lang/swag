@@ -94,6 +94,27 @@ Utf8 toStringF64(double v)
     return s;
 }
 
+void* doForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    u |= SWAG_LAMBDA_FOREIGN_MARKER;
+    return (void*) u;
+}
+
+void* undoForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    SWAG_ASSERT(u & SWAG_LAMBDA_FOREIGN_MARKER);
+    u ^= SWAG_LAMBDA_FOREIGN_MARKER;
+    return (void*) u;
+}
+
+bool isForeignLambda(void* ptr)
+{
+    uint64_t u = (uint64_t) ptr;
+    return u & SWAG_LAMBDA_FOREIGN_MARKER;
+}
+
 void* doByteCodeLambda(void* ptr)
 {
     uint64_t u = (uint64_t) ptr;

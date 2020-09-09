@@ -81,7 +81,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // constant section
         /////////////////////////////////////////////
         pp.sectionIndexCS = 4;
-        concat.addString(".rdata\0\0", 8);                        // .Name
+        concat.addString(".data\0\0", 8);                         // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchCSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -90,7 +90,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addU32(0);                                         // .PointerToLinenumbers
         pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
         concat.addU16(0);                                         // .NumberOfLinenumbers
-        pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
+        pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // bss section
         /////////////////////////////////////////////

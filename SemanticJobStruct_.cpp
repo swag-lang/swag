@@ -6,6 +6,7 @@
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
+#include "ByteCode.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -71,7 +72,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
 
     map<TypeInfoParam*, AstNode*> mapItToFunc;
-    VectorNative<AstNode*>        mapItIdxToFunc;
+    VectorNative<AstFuncDecl*>    mapItIdxToFunc;
     mapItIdxToFunc.set_size_clear(numFctInterface);
 
     // Register interface in the structure
@@ -108,12 +109,13 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             }
         }
 
-        auto funcDecl = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
-
         // We need to be have a bytecode pointer to be able to reference it in the itable
-        ByteCodeGenJob::askForByteCode(context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
-        if (context->result == ContextResult::Pending)
-            return true;
+        if (!(child->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            ByteCodeGenJob::askForByteCode(context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
 
         // We need to search the function (as a variable) in the interface
         auto symbolName = typeInterface->findChildByNameNoLock(child->name); // O(n) !
@@ -144,7 +146,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
-        mapItIdxToFunc[symbolName->index] = child;
+        mapItIdxToFunc[symbolName->index] = (AstFuncDecl*) child;
     }
 
     // Be sure every functions of the interface has been covered
@@ -169,8 +171,19 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto     offset       = itableOffset;
     for (uint32_t i = 0; i < numFctInterface; i++)
     {
-        *ptrITable = doByteCodeLambda(mapItIdxToFunc[i]->bc);
-        module->constantSegment.addInitPtrFunc(offset, mapItIdxToFunc[i]->bc);
+        auto funcChild = mapItIdxToFunc[i];
+        if (funcChild->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            *ptrITable = doForeignLambda(funcChild);
+            funcChild->computeFullNameForeign(true);
+            module->constantSegment.addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+        {
+            *ptrITable = doByteCodeLambda(funcChild->bc);
+            module->constantSegment.addInitPtrFunc(offset, funcChild->bc->callName(), DataSegment::RelocType::Local);
+        }
+
         ptrITable++;
         offset += sizeof(void*);
     }

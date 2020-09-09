@@ -208,13 +208,13 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     initPtr.push_back(ref);
 }
 
-void DataSegment::addInitPtrFunc(uint32_t offset, ByteCode* bc)
+void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType)
 {
     if (compilerOnly)
         return;
 
     scoped_lock lk(mutexPtr);
-    initFuncPtr[offset] = bc;
+    initFuncPtr[offset] = {funcName, relocType};
 }
 
 bool DataSegment::readU64(Seek& seek, uint64_t& result)

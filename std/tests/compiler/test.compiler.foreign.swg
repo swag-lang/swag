@@ -161,15 +161,20 @@ public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
 
 public namespace tcf
 {
-    namespace BB
+    public struct AA
     {
-        public struct AA
-        {
-        }
     }
 
     public interface ITcf
     {
-        call: func(self, *BB.AA)
+        call: func(self)->u32
+    }
+
+    public impl ITcf for AA
+    {
+        func call(self)->u32
+        {
+            return 666
+        }
     }
 }

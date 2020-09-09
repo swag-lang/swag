@@ -213,10 +213,13 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
 
     for (auto& k : module->constantSegment.initFuncPtr)
     {
-        auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.first));
-        dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-        auto F    = modu.getOrInsertFunction(k.second->callName().c_str(), fctType);
-        auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
+        auto dest      = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.first));
+        dest           = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+        auto relocType = k.second.second;
+        auto F         = modu.getOrInsertFunction(k.second.first.c_str(), fctType);
+        auto src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
+        if (relocType == DataSegment::RelocType::Foreign)
+            src = builder.CreateOr(src, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
         builder.CreateStore(src, dest);
     }
 

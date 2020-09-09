@@ -493,7 +493,7 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
 
         SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
 
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "}");
@@ -505,7 +505,14 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
     {
         bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+        if (scope->kind == ScopeKind::Impl)
+        {
+            auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
+            auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
+            bufferSwg.addStringFormat("impl %s for %s\n", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
+        }
+        else
+            bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "{\n");
 
@@ -514,13 +521,20 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
         {
             if (oneScope->kind == ScopeKind::Impl)
                 continue;
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
         }
 
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "}");
         bufferSwg.addEol();
         bufferSwg.addEol();
+
+        for (auto oneScope : scope->childScopes)
+        {
+            if (oneScope->kind != ScopeKind::Impl)
+                continue;
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+        }
     }
 
     // Named scope
@@ -531,7 +545,7 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
 
         SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
 
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "}");
@@ -542,9 +556,9 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     // Unnamed scope
     else
     {
-        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
     }
 
     return true;

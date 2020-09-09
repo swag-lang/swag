@@ -439,7 +439,20 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             context->bc->enterByteCode(context);
         }
 
-        // Foreign lambda
+        // Marked as foreign, need to resolve address
+        else if (isForeignLambda((void*) ptr))
+        {
+            auto funcNode = (AstFuncDecl*) undoForeignLambda((void*) ptr);
+            SWAG_ASSERT(funcNode);
+            auto funcPtr = ffiGetFuncAddress(context, funcNode);
+            if (funcPtr)
+            {
+                auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
+                ffiCall(context, funcPtr, typeInfoFunc);
+            }
+        }
+
+        // Normal lambda
         else
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);

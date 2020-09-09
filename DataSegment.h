@@ -46,13 +46,22 @@ struct DataSegment
     map<uint32_t, uint32_t> storedValues32;
     map<uint64_t, uint32_t> storedValues64;
 
-    uint32_t                     addString(const Utf8& str);
-    uint32_t                     addStringNoLock(const Utf8& str);
-    void                         addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
-    void                         addInitPtrFunc(uint32_t offset, ByteCode* bc);
-    shared_mutex                 mutexPtr;
-    map<Utf8, uint32_t>          mapString;
-    map<uint32_t, ByteCode*>     initFuncPtr;
+    enum class RelocType
+    {
+        Foreign,
+        Local,
+        ByteCode
+    };
+
+    uint32_t            addString(const Utf8& str);
+    uint32_t            addStringNoLock(const Utf8& str);
+    void                addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
+    void                addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
+    shared_mutex        mutexPtr;
+    map<Utf8, uint32_t> mapString;
+
+    map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
+
     VectorNative<DataSegmentRef> initPtr;
     uint32_t                     totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);

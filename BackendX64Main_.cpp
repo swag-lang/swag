@@ -56,6 +56,16 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symPI_defaultContext, 0);
     emitCall(pp, "swag_runtime_tlsSetValue");
 
+    // Load all dependencies
+    for (const auto& dep : module->moduleDependencies)
+    {
+        auto nameDown = dep->name;
+        nameDown.replaceAll('.', '_');
+        auto nameLib = nameDown + OS::getDllFileExtension();
+        emitGlobalString(pp, precompileIndex, nameLib, RCX);
+        emitCall(pp, "swag_runtime_loadDynamicLibrary");
+    }
+
     // Call to global init of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
@@ -64,14 +74,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = dep->name;
-        nameDown.replaceAll('.', '_');
-        auto nameLib = nameDown + OS::getDllFileExtension();
-        emitGlobalString(pp, precompileIndex, nameLib, RCX);
-        emitCall(pp, "swag_runtime_loadDynamicLibrary");
-
         if (dep->generated)
         {
+            auto nameDown = dep->name;
+            nameDown.replaceAll('.', '_');
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
             auto initFunc = format("%s_globalInit", nameDown.c_str());
             emitCall(pp, initFunc);
@@ -139,6 +145,31 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     // Inform runtime about my processInfos
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     emitCall(pp, "swag_runtime_setProcessInfos");
+
+    // Reloc functions
+    for (auto& k : module->constantSegment.initFuncPtr)
+    {
+        auto relocType = k.second.second;
+        if (relocType != DataSegment::RelocType::Foreign)
+            continue;
+
+        // Load address of the foreign function in RAX
+        CoffRelocation reloc;
+        BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
+        reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+        auto callSym         = getOrAddSymbol(pp, k.second.first, CoffSymbolKind::Extern);
+        reloc.symbolIndex    = callSym->index;
+        reloc.type           = IMAGE_REL_AMD64_ADDR64;
+        pp.relocTableTextSection.table.push_back(reloc);
+
+        // Add the foreign marker
+        BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+        BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
+
+        // Then store the result in the constant buffer
+        BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symCSIndex, 0);
+        BackendX64Inst::emit_Store64_Indirect(pp, k.first, RAX, RCX);
+    }
 
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
