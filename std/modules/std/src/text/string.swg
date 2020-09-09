@@ -35,7 +35,7 @@ namespace std.text
     {
         func hash(using self)->u32
         {
-            return 0
+            return 666
         }
     }
 
