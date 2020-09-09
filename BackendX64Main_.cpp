@@ -66,11 +66,6 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, "swag_runtime_loadDynamicLibrary");
     }
 
-    // Call to global init of this module
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    auto thisInit = format("%s_globalInit", module->nameDown.c_str());
-    emitCall(pp, thisInit);
-
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
@@ -83,6 +78,11 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             emitCall(pp, initFunc);
         }
     }
+
+    // Call to global init of this module
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+    auto thisInit = format("%s_globalInit", module->nameDown.c_str());
+    emitCall(pp, thisInit);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())

@@ -1,5 +1,5 @@
 #import "std"
-using std.crypto
+using std.crypto, std.text
 
 #test
 {
@@ -15,10 +15,12 @@ using std.crypto
     v1 := hash32("this is a string")
     @assert(v1 != 0)
 
-    let x : std.text.String = "toto"
+    let x: String = "this is a string"
     v2 := hash32(x)
 
-    /*@print(cast(s64) v1)
-    @print(" ")
-    @print(cast(s64) v2)*/
+    @assert(v1 == v2)
+
+    let y: String
+    v3 := hash32(y)
+    @assert(v3 == 0)
 }

@@ -1,6 +1,6 @@
 namespace std.text
 {
-    using swag, std.collections
+    using swag, std.collections, std.crypto
 
     private const SmallSize = 24'u32
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
@@ -31,11 +31,11 @@ namespace std.text
         }
     }
 
-    public impl std.crypto.IHash32 for String
+    public impl IHash32 for String
     {
         func hash(using self)->u32
         {
-            return 666
+            return crc32(@mkslice(buffer, length))
         }
     }
 

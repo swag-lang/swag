@@ -76,14 +76,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateCall(modu.getFunction("swag_runtime_convertArgcArgv"), {toContext, F->getArg(0), F->getArg(1)});
     }
 
-    // Call to global init of this module
-    {
-        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
-        builder.CreateCall(funcInit, pp.processInfos);
-    }
-
-    // Call to global init of all dependencies
+    // Load all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
         auto nameDown = dep->name;
@@ -91,13 +84,26 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto nameLib = nameDown + OS::getDllFileExtension();
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
         builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
+    }
 
+    // Call to global init of all dependencies
+    for (const auto& dep : module->moduleDependencies)
+    {
         if (dep->generated)
         {
+            auto nameDown = dep->name;
+            nameDown.replaceAll('.', '_');
             auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
             auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
             builder.CreateCall(funcInit, pp.processInfos);
         }
+    }
+
+    // Call to global init of this module
+    {
+        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", module->nameDown.c_str()).c_str(), funcType);
+        builder.CreateCall(funcInit, pp.processInfos);
     }
 
     auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);

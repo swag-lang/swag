@@ -79,6 +79,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     if (precompileIndex == 0)
     {
         // constant section
+        // This is not readonly because we can patch some stuff during the initialization stage of the module
         /////////////////////////////////////////////
         pp.sectionIndexCS = 4;
         concat.addString(".data\0\0", 8);                         // .Name
