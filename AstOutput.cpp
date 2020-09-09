@@ -161,6 +161,17 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::CompilerAst:
+        {
+            CONCAT_FIXED_STR(concat, "#ast");
+            AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node->childs.front(), AstNodeKind::FuncDecl);
+            incIndentStatement(funcDecl->content, context.indent);
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, funcDecl->content));
+            decIndentStatement(funcDecl->content, context.indent);
+            break;
+        }
+
         case AstNodeKind::CompilerIfBlock:
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
@@ -396,7 +407,7 @@ namespace Ast
             int idx = 0;
             for (auto child : node->childs)
             {
-                if(idx)
+                if (idx)
                     CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, child));
                 idx++;
