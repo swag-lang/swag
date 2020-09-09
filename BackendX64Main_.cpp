@@ -60,7 +60,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     for (const auto& dep : module->moduleDependencies)
     {
         auto nameDown = dep->name;
-        nameDown.replaceAll('.', '_');
+        Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
         emitGlobalString(pp, precompileIndex, nameLib, RCX);
         emitCall(pp, "swag_runtime_loadDynamicLibrary");
@@ -72,7 +72,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         if (dep->generated)
         {
             auto nameDown = dep->name;
-            nameDown.replaceAll('.', '_');
+            Ast::normalizeIdentifierName(nameDown);
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
             auto initFunc = format("%s_globalInit", nameDown.c_str());
             emitCall(pp, initFunc);
@@ -112,7 +112,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         if (!dep->generated)
             continue;
         auto nameDown = dep->name;
-        nameDown.replaceAll('.', '_');
+        Ast::normalizeIdentifierName(nameDown);
         auto funcDrop = format("%s_globalDrop", nameDown.c_str());
         emitCall(pp, funcDrop);
     }

@@ -80,7 +80,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     for (const auto& dep : module->moduleDependencies)
     {
         auto nameDown = dep->name;
-        nameDown.replaceAll('.', '_');
+        Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
         builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
@@ -92,7 +92,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         if (dep->generated)
         {
             auto nameDown = dep->name;
-            nameDown.replaceAll('.', '_');
+            Ast::normalizeIdentifierName(nameDown);
             auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
             auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
             builder.CreateCall(funcInit, pp.processInfos);
@@ -139,7 +139,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         if (!dep->generated)
             continue;
         auto nameDown = dep->name;
-        nameDown.replaceAll('.', '_');
+        Ast::normalizeIdentifierName(nameDown);
         funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);
     }
