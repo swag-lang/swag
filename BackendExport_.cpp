@@ -391,41 +391,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     return true;
 }
 
-bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope, int indent)
+bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent)
 {
-    SWAG_ASSERT(moduleToGen);
-    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
-        return true;
-
-    outputContext.forExport = true;
-
-    // Scope name
-    if (!scope->name.empty())
-    {
-        if (scope->kind == ScopeKind::Namespace)
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("namespace %s\n", scope->name.c_str());
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-        else if (!scope->isGlobal() && scope->isGlobalOrImpl())
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-        else
-        {
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-    }
-
     // Consts
     if (!scope->publicConst.empty())
     {
@@ -506,8 +473,49 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope, int indent)
     }
 
     for (auto oneScope : scope->childScopes)
-        SWAG_CHECK(emitPublicSwg(moduleToGen, oneScope, indent));
+        SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
 
+    return true;
+}
+
+bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
+{
+    SWAG_ASSERT(moduleToGen);
+    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+        return true;
+
+    outputContext.forExport = true;
+
+    // Scope name
+    if (!scope->name.empty())
+    {
+        if (scope->kind == ScopeKind::Namespace)
+        {
+            bufferSwg.addIndent(indent);
+            bufferSwg.addStringFormat("namespace %s\n", scope->name.c_str());
+            bufferSwg.addIndent(indent);
+            CONCAT_FIXED_STR(bufferSwg, "{\n");
+            indent++;
+        }
+        else if (!scope->isGlobal() && scope->isGlobalOrImpl())
+        {
+            bufferSwg.addIndent(indent);
+            bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+            bufferSwg.addIndent(indent);
+            CONCAT_FIXED_STR(bufferSwg, "{\n");
+            indent++;
+        }
+        else
+        {
+            bufferSwg.addIndent(indent);
+            CONCAT_FIXED_STR(bufferSwg, "{\n");
+            indent++;
+        }
+    }
+
+    SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
+
+    // End of named scope
     if (!scope->name.empty())
     {
         indent--;
@@ -574,7 +582,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
         // Emit everything that's public
-        if (!emitPublicSwg(module, module->scopeRoot, 0))
+        if (!emitPublicScopeSwg(module, module->scopeRoot, 0))
             return JobResult::ReleaseJob;
     }
 

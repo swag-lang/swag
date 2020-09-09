@@ -57,7 +57,8 @@ struct Backend
     bool      emitPublicConstSwg(AstVarDecl* node, int indent);
     bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool      emitPublicSwg(Module* moduleToGen, Scope* scope, int indent);
+    bool      emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
+    bool      emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
 
     OutputFile bufferSwg;
 
