@@ -76,22 +76,11 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkinterface' must have a pointer as a first parameter"});
-    if (second->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkinterface' must have a pointer as a second parameter"});
-    if (second->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkinterface' must have a pointer as a third parameter"});
-
-    auto ptrPointer1 = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer1->ptrCount != 1)
-        return context->report({node, "'@mkinterface' must have a one dimension pointer as a first parameter"});
-    auto ptrPointer2 = CastTypeInfo<TypeInfoPointer>(second->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer2->ptrCount != 1)
-        return context->report({node, "'@mkinterface' must have a one dimension pointer as a second parameter"});
-
-    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({node, "'@mkinterface' must have a 'const *swag.TypeInfo' (i.e. a type) as a second parameter"}));
-    SWAG_VERIFY(third->typeInfo->kind == TypeInfoKind::Interface, context->report({node, "'@mkinterface' must have an interface as a third parameter"}));
+    auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
+    SWAG_VERIFY(firstTypeInfo->isPointer1() || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({node, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
+    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({node, "'@mkinterface' must have a typeinfo as a second parameter"}));
+    auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
+    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({node, "'@mkinterface' must have an interface as a third parameter"}));
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;

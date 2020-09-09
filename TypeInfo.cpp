@@ -144,6 +144,16 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     return "<type>";
 }
 
+bool TypeInfo::isPointer1()
+{
+    if (kind != TypeInfoKind::Pointer)
+        return false;
+    auto ptr = (TypeInfoPointer*) this;
+    if (ptr->ptrCount != 1)
+        return false;
+    return true;
+}
+
 bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)

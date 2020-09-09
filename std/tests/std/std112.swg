@@ -13,6 +13,6 @@ using std.crypto
     #assert(hash32(1.0'f64) == 0x3F800000)
     @assert(hash32("this is a string") != 0)
 
-    //let x : std.text.String = "toto"
-    //hash32(x)
+    let x : std.text.String = "toto"
+    hash32(x)
 }

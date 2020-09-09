@@ -85,6 +85,7 @@ struct TypeInfo
         return true;
     }
 
+    bool isPointer1();
     bool isPointerTo(TypeInfoKind pointerKind);
     bool isPointerToTypeInfo();
     bool isInitializerList();

@@ -31,6 +31,14 @@ namespace std.text
         }
     }
 
+    public impl std.crypto.IHash32 for String
+    {
+        func hash(using self)->u32
+        {
+            return 0
+        }
+    }
+
     public impl String
     {
         #[swag.inline]

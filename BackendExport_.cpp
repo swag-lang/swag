@@ -81,10 +81,19 @@ void Backend::emitType(TypeInfo* typeInfo)
                 typeInfo = typeRef->originalType;
         }
 
-        typeInfo = TypeManager::concreteReference(typeInfo);
-
-        typeInfo->computeScopedName();
-        bufferSwg.addString(typeInfo->scopedName);
+        if (typeInfo->flags & TYPEINFO_SELF)
+        {
+            if (typeInfo->flags & TYPEINFO_CONST)
+                bufferSwg.addString("const self");
+            else
+                bufferSwg.addString("self");
+        }
+        else
+        {
+            typeInfo = TypeManager::concreteReference(typeInfo);
+            typeInfo->computeScopedName();
+            bufferSwg.addString(typeInfo->scopedName);
+        }
     }
 }
 
