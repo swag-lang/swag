@@ -23,6 +23,6 @@ impl TOTO for TITI
 {
     G = false
     var y: TITI
-    TITI.print(y, "toto\n")
+    TITI.TOTO.print(y, "toto\n")
     @assert(G == true)
 }

@@ -18,6 +18,7 @@ enum class ScopeKind
     Namespace,
     Enum,
     Struct,
+    Impl,
     Function,
     FunctionBody,
     Attribute,
@@ -73,7 +74,7 @@ struct Scope
 
     bool isGlobalOrImpl()
     {
-        return isGlobal() || kind == ScopeKind::Struct || kind == ScopeKind::Enum;
+        return isGlobal() || kind == ScopeKind::Struct || kind == ScopeKind::Impl || kind == ScopeKind::Enum;
     }
 
     SymTable               symTable;

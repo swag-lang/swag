@@ -49,7 +49,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto& structName = identifierStruct->childs.front()->name;
     implNode->name   = structName;
     auto newScope    = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
-
     if (scopeKind != newScope->kind)
     {
         Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(scopeKind), implNode->name.c_str(), Scope::getNakedKindName(newScope->kind))};
@@ -94,8 +93,34 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             implNode->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
     }
 
+    // For an interface implementation, creates a sub scope named like the interface
+    auto parentScope = newScope;
+    if (implInterface)
     {
-        Scoped       scoped(this, newScope);
+        scoped_lock lk(newScope->symTable.mutex);
+        auto&       itfName  = implNode->identifier->childs.back()->name;
+        auto        symbol   = newScope->symTable.findNoLock(itfName);
+        Scope*      subScope = nullptr;
+        if (!symbol)
+        {
+            subScope        = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
+            auto typeInfo   = g_Allocator.alloc<TypeInfoStruct>();
+            typeInfo->name  = implNode->identifier->childs.back()->name;
+            typeInfo->scope = subScope;
+            newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL, nullptr, 0, &itfName);
+        }
+        else
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
+            subScope      = typeInfo->scope;
+        }
+
+        parentScope     = subScope;
+        implNode->scope = subScope;
+    }
+
+    {
+        Scoped       scoped(this, parentScope);
         ScopedStruct scopedStruct(this, newScope);
         ScopedFlags  scopedFlags(this, AST_INSIDE_IMPL);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)

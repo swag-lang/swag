@@ -685,6 +685,7 @@ struct AstImpl : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     Scope*   structScope;
+    Scope*   scope;
     AstNode* identifier;
     AstNode* identifierFor;
 };

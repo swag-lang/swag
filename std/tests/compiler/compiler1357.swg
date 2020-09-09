@@ -41,17 +41,17 @@ impl TOTO for TATA
 #test
 {
     G = 0
-    
+
     var XX: TOTO
     var YY: TITI
     XX = YY
     XX.print(true)
-    YY.print(true)
-    
+    YY.TOTO.print(true)
+
     var ZZ: TATA
     XX = ZZ
     XX.print(true)
-    ZZ.print(true)
-    
+    ZZ.TOTO.print(true)
+
     @assert(G == 6)
 }

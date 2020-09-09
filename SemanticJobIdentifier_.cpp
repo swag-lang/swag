@@ -274,8 +274,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
     }
 
-    parent->resolvedSymbolName         = symbol;
-    parent->resolvedSymbolOverload     = overload;
+    // Do not register a sub impl scope, for ufcs to use the real variable
+    if (!(overload->flags & OVERLOAD_IMPL))
+    {
+        parent->resolvedSymbolName     = symbol;
+        parent->resolvedSymbolOverload = overload;
+    }
+
     identifier->resolvedSymbolName     = symbol;
     identifier->resolvedSymbolOverload = overload;
 
@@ -665,7 +670,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // Collect from the owner structure
     for (auto one : toCheck)
     {
-        if (one->typeInfo->kind == TypeInfoKind::Struct)
+        if (one->typeInfo && one->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
             if (!(typeStruct->flags & TYPEINFO_GENERIC))
@@ -1192,8 +1197,9 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         return true;
     }
 
-    SymbolName* pickedSymbol = nullptr;
-    for (auto oneSymbol : dependentSymbols)
+    SymbolName* pickedSymbol         = nullptr;
+    auto        copyDependentSymbols = dependentSymbols;
+    for (auto oneSymbol : copyDependentSymbols)
     {
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
             continue;
@@ -1220,7 +1226,11 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         }
 
         if (!isValid)
+        {
+            auto it = dependentSymbols.find(oneSymbol);
+            dependentSymbols.erase(it);
             continue;
+        }
 
         if (!pickedSymbol)
         {
@@ -1244,17 +1254,29 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 
         if (pickedSymbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
         {
+            auto oneOverload    = oneSymbol->overloads[0];
+            auto pickedOverload = pickedSymbol->overloads[0];
+
+            // Priority to a non IMPL symbol
+            if (!(pickedOverload->flags & OVERLOAD_IMPL) && (oneOverload->flags & OVERLOAD_IMPL))
+                continue;
+            if ((pickedOverload->flags & OVERLOAD_IMPL) && !(oneOverload->flags & OVERLOAD_IMPL))
+            {
+                pickedSymbol = oneSymbol;
+                continue;
+            }
+
             // Priority to the same inline scope
             if (node->ownerInline)
             {
-                if ((!oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                    (pickedSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+                if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                    (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
                 {
                     continue;
                 }
 
-                if ((oneSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                    (!pickedSymbol->overloads[0]->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+                if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                    (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
                 {
                     pickedSymbol = oneSymbol;
                     continue;
@@ -1262,9 +1284,9 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
             }
 
             // Priority to the same stack frame
-            if (node->isSameStackFrame(pickedSymbol->overloads[0]) && !node->isSameStackFrame(oneSymbol->overloads[0]))
+            if (node->isSameStackFrame(pickedOverload) && !node->isSameStackFrame(oneOverload))
                 continue;
-            if (!node->isSameStackFrame(pickedSymbol->overloads[0]) && node->isSameStackFrame(oneSymbol->overloads[0]))
+            if (!node->isSameStackFrame(pickedOverload) && node->isSameStackFrame(oneOverload))
             {
                 pickedSymbol = oneSymbol;
                 continue;
@@ -1544,28 +1566,30 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-        if (identifierRef->resolvedSymbolName &&
-            (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
-             identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue))
+        if (identifierRef->resolvedSymbolName)
         {
-            // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
-            if (!node->callParameters)
+            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
+                identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             {
-                SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
-                SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
-            }
+                // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
+                if (!node->callParameters)
+                {
+                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
+                    SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
+                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
+                }
 
-            if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
-            {
-                SWAG_ASSERT(identifierRef->previousResolvedNode);
-                ufcsParam = identifierRef->previousResolvedNode;
-            }
-            else
-            {
-                node->doneFlags |= AST_DONE_UFCS;
-                SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
-                SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol));
+                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+                {
+                    SWAG_ASSERT(identifierRef->previousResolvedNode);
+                    ufcsParam = identifierRef->previousResolvedNode;
+                }
+                else
+                {
+                    node->doneFlags |= AST_DONE_UFCS;
+                    SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
+                    SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol));
+                }
             }
         }
     }

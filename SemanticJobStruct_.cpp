@@ -98,7 +98,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
         // We need to be sure function semantic is done
         {
-            auto symbolName = typeStruct->scope->symTable.find(child->name);
+            auto symbolName = node->scope->symTable.find(child->name);
             SWAG_ASSERT(symbolName);
             scoped_lock lk(symbolName->mutex);
             if (symbolName->cptOverloads)

@@ -483,6 +483,8 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     SWAG_ASSERT(moduleToGen);
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
+    if (scope->kind == ScopeKind::Impl)
+        return true;
 
     outputContext.forExport = true;
 
