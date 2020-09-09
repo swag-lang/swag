@@ -472,9 +472,6 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         }
     }
 
-    for (auto oneScope : scope->childScopes)
-        SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
-
     return true;
 }
 
@@ -483,48 +480,71 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     SWAG_ASSERT(moduleToGen);
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
-    if (scope->kind == ScopeKind::Impl)
-        return true;
 
     outputContext.forExport = true;
 
-    // Scope name
-    if (!scope->name.empty())
+    // Namespace
+    if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
     {
-        if (scope->kind == ScopeKind::Namespace)
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("namespace %s\n", scope->name.c_str());
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-        else if (!scope->isGlobal() && scope->isGlobalOrImpl())
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-        else
-        {
-            bufferSwg.addIndent(indent);
-            CONCAT_FIXED_STR(bufferSwg, "{\n");
-            indent++;
-        }
-    }
+        bufferSwg.addIndent(indent);
+        bufferSwg.addStringFormat("namespace %s\n", scope->name.c_str());
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "{\n");
 
-    SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
 
-    // End of named scope
-    if (!scope->name.empty())
-    {
-        indent--;
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "}");
         bufferSwg.addEol();
         bufferSwg.addEol();
+    }
+
+    // Impl
+    else if (!scope->isGlobal() && scope->isGlobalOrImpl() && !scope->name.empty())
+    {
+        bufferSwg.addIndent(indent);
+        bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "{\n");
+
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
+        for (auto oneScope : scope->childScopes)
+        {
+            if (oneScope->kind == ScopeKind::Impl)
+                continue;
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+        }
+
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "}");
+        bufferSwg.addEol();
+        bufferSwg.addEol();
+    }
+
+    // Named scope
+    else if (!scope->name.empty())
+    {
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "{\n");
+
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
+
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "}");
+        bufferSwg.addEol();
+        bufferSwg.addEol();
+    }
+
+    // Unnamed scope
+    else
+    {
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
+        for (auto oneScope : scope->childScopes)
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
     }
 
     return true;
