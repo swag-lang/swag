@@ -556,9 +556,9 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     // Unnamed scope
     else
     {
-        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
         for (auto oneScope : scope->childScopes)
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
     }
 
     return true;
@@ -615,7 +615,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
         for (const auto& dep : module->moduleDependencies)
             bufferSwg.addStringFormat("#import \"%s\"\n", dep->name.c_str());
-        CONCAT_FIXED_STR(bufferSwg, "using swag\n");
+        CONCAT_FIXED_STR(bufferSwg, "using swag\n\n");
 
         // Emit everything that's public
         if (!emitPublicScopeSwg(module, module->scopeRoot, 0))
