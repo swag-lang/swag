@@ -8,7 +8,7 @@ namespace std.crypto
     }
 
     // Hash the given value and returns the corresponding u32
-    #[swag.constexpr, swag.printbc]
+    #[swag.constexpr]
     public func(T) hash32(value: T)->u32
     {
         #if @typeof(T).flags & TypeInfoFlags.Integer

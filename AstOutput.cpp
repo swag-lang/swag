@@ -182,7 +182,6 @@ namespace Ast
             concat.addEolIndent(context.indent);
             SWAG_CHECK(output(context, concat, node->childs.front()));
             decIndentStatement(node->childs.front(), context.indent);
-            concat.addEolIndent(context.indent);
             break;
 
         case AstNodeKind::CompilerInline:
@@ -191,7 +190,6 @@ namespace Ast
             concat.addEolIndent(context.indent);
             SWAG_CHECK(output(context, concat, node->childs.front()));
             decIndentStatement(node->childs.front(), context.indent);
-            concat.addEolIndent(context.indent);
             break;
 
         case AstNodeKind::CompilerMixin:
