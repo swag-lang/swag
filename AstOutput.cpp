@@ -163,12 +163,20 @@ namespace Ast
 
         case AstNodeKind::CompilerAst:
         {
-            CONCAT_FIXED_STR(concat, "#ast");
-            AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node->childs.front(), AstNodeKind::FuncDecl);
-            incIndentStatement(funcDecl->content, context.indent);
-            concat.addEolIndent(context.indent);
-            SWAG_CHECK(output(context, concat, funcDecl->content));
-            decIndentStatement(funcDecl->content, context.indent);
+            CONCAT_FIXED_STR(concat, "#ast ");
+            auto front = node->childs.front();
+            if (front->kind == AstNodeKind::FuncDecl)
+            {
+                AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
+                incIndentStatement(funcDecl->content, context.indent);
+                concat.addEolIndent(context.indent);
+                SWAG_CHECK(output(context, concat, funcDecl->content));
+                decIndentStatement(funcDecl->content, context.indent);
+            }
+            else
+            {
+                SWAG_CHECK(output(context, concat, front));
+            }
             break;
         }
 

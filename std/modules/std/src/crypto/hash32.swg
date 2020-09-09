@@ -8,7 +8,7 @@ namespace std.crypto
     }
 
     // Hash the given value and returns the corresponding u32
-    #[swag.constexpr]
+    #[constexpr]
     public func(T) hash32(value: T)->u32
     {
         #if @typeof(T).flags & TypeInfoFlags.Integer
@@ -26,17 +26,8 @@ namespace std.crypto
         }
         #elif @typeof(T).kind == TypeInfoKind.Struct
         {
-            #ast
-            {
-                return "return " ~ @typeof(T).name ~ ".IHash32.hash(value)"
-            }
-
-            //return std.text.String.IHash32.hash(value)
-
-            /*itf := @mkinterface(value, @typeof(T), IHash32)
-            if itf != null
-                return itf.hash()
-            return 0*/
+            #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'std.crypto.IHash32' interface")
+            #ast "return " ~ @typeof(T).name ~ ".IHash32.hash(value)"
         }
         #else
             #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")

@@ -182,10 +182,10 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         if (node->childs.size() > 1)
         {
             auto msg = node->childs[1];
-            context->report({expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str())});
+            context->report({node, node->token, format("%s", msg->computedValue.text.c_str())});
         }
         else
-            context->report({expr, "compiler assertion failed"});
+            context->report({node, node->token, "compiler assertion failed"});
         return false;
     }
 

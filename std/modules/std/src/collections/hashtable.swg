@@ -28,12 +28,13 @@ namespace std.collections
 
             func opDrop(self)
             {
-                free(self)
+                self.free()
             }
 
+            #[inline]
             func hash(key: K)->u32
             {
-                hashVal := 0'u32
+                hashVal := std.crypto.hash32(key)
                 if hashVal < HASH_FIRST
                     hashVal += HASH_FIRST
                 return hashVal
@@ -45,7 +46,7 @@ namespace std.collections
                     return
 
                 // Need to drop every structs
-                #if reflection.hasMember(@typeof(K), "opDrop") || reflection.hasMember(@typeof(V), "opDrop")
+                #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
                 {
                     loop i: allocated
                     {

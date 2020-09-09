@@ -65,7 +65,7 @@ namespace std.collections
                 return
 
             // Need to drop every structs
-            #if reflection.hasMember(@typeof(T), "opDrop")
+            #if reflection.hasDrop(@typeof(T))
             {
                 loop count
                     @drop(buffer + @index)
@@ -85,12 +85,12 @@ namespace std.collections
             // in place
             if buffer && newBuffer != buffer
             {
-                #if reflection.hasMember(@typeof(T), "opPostMove")
+                #if reflection.hasPostMove(@typeof(T))
                 {
                     loop count
                         newBuffer[@index].opPostMove()
                 }
-                #elif reflection.hasMember(@typeof(T), "opPostCopy")
+                #elif reflection.hasPostCopy(@typeof(T))
                 {
                     loop count
                     {
@@ -98,7 +98,7 @@ namespace std.collections
                         @drop(buffer + @index)
                     }
                 }
-                #elif reflection.hasMember(@typeof(T), "opDrop")
+                #elif reflection.hasDrop(@typeof(T))
                 {
                     loop count
                         @drop(buffer + @index)

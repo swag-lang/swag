@@ -23,4 +23,12 @@ using std.crypto, std.text
     let y: String
     v3 := hash32(y)
     @assert(v3 == 0)
+
+    /*struct G
+    {
+
+    }
+
+    var xx: G
+    v4 := hash32(xx)*/
 }
