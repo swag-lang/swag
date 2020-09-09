@@ -36,7 +36,7 @@ namespace std.collections
             buffer[index] = value
         }
 
-        #[swag.macro, swag.noreturn]
+        #[macro, noreturn]
         func(ptr: bool) opVisit(using self, stmt: code)
         {
             if count
@@ -172,8 +172,8 @@ namespace std.collections
             count = 0
         }
 
-        // Remove an element at 'index' by replacing it with the last
-        // element. Order is not preserved
+        // Remove an element at 'index' by replacing it with the last element.
+        // Order is not preserved
         func removeAt(using self, index: u32)
         {
             debug.assert(index < count, "index out of range")
@@ -194,7 +194,7 @@ namespace std.collections
         {
             debug.assert(index < count, "index out of range")
             count -= 1
-            @drop(&buffer[index])
+            @drop(buffer + index)
 
             if index == count
                 return
