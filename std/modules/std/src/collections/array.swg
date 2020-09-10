@@ -207,7 +207,8 @@ namespace std.collections
             }
         }
 
-        // Insert a value at the given index.
+        // Insert a value at the given index. If 'index' is equal to 'count', then
+        // the value is added at the end of the array.
         // Order is preserved.
         func insertAt(using self, index: u32, value: T)
         {
