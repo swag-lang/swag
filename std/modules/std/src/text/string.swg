@@ -65,13 +65,13 @@ namespace std.text
         {
             if @dataof(value) == null
             {
-                reserve(self, 0)
+                reserve(0)
                 return
             }
 
             newCapacity := @countof(value) + 1
             length = newCapacity - 1
-            reserve(self, newCapacity)
+            reserve(newCapacity)
             memory.copy(buffer, @dataof(value), length)
             buffer[length] = 0
         }
@@ -88,7 +88,7 @@ namespace std.text
         func(op: string) opAssign(using self, value: string)
         {
             #if op == "+="
-                append(self, value)
+                append(value)
             #else
                 #assert(false, "invalid binary operator '" ~ op ~ "'")
         }
@@ -109,7 +109,7 @@ namespace std.text
             {
                 oldBuffer := buffer
                 buffer = null
-                reserve(self, length + 1)
+                reserve(length + 1)
                 memory.copy(buffer, oldBuffer, length + 1)
             }
         }
@@ -117,7 +117,7 @@ namespace std.text
         func opDrop(using self)
         {
             if buffer && buffer != acast &allocator
-                free(self)
+                free()
         }
 
         // Visit the String utf8 bytes
@@ -205,7 +205,7 @@ namespace std.text
                 return
 
             newLength := length + concatLength + 1
-            grow(self, newLength)
+            grow(newLength)
             memory.copy(buffer + length, @dataof(value), concatLength)
             length = newLength - 1
             buffer[length] = 0
@@ -217,7 +217,7 @@ namespace std.text
             if wantedCapacity <= capacity
                 return
             newCapacity := math.max(capacity * 2, wantedCapacity)
-            reserve(self, newCapacity)
+            reserve(newCapacity)
         }
 
         // Reserve room for 'newCapacity' bytes without changing the string length
@@ -232,7 +232,7 @@ namespace std.text
                     if !buffer
                         return
                     if buffer != acast &allocator
-                        self.free()
+                        free()
                     buffer = null
                     length, capacity = 0
                     return
@@ -259,7 +259,7 @@ namespace std.text
             }
             else
             {
-                realloc(self, newCapacity)
+                realloc(newCapacity)
             }
 
             capacity = newCapacity
@@ -312,8 +312,8 @@ namespace std.text
         // that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
         func trim(using self)
         {
-            self.trimStart()
-            self.trimEnd()
+            trimStart()
+            trimEnd()
         }
 
         // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.

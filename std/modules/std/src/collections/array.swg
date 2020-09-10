@@ -21,7 +21,7 @@ namespace std.collections
 
         func opDrop(using self)
         {
-            self.free()
+            free()
         }
 
         func opIndex(using self, index: u32)->const &T
@@ -115,7 +115,7 @@ namespace std.collections
             if newCount <= capacity
                 return
             newCapacity := math.max(capacity * 2, newCount)
-            self.reserve(newCapacity)
+            reserve(newCapacity)
         }
 
         // Reserve room for 'newCapacity' elements without changing the array count
@@ -123,7 +123,7 @@ namespace std.collections
         {
             if !newCapacity
             {
-                self.free()
+                free()
                 buffer = null
                 count, capacity = 0
                 return
@@ -132,13 +132,13 @@ namespace std.collections
             if newCapacity <= capacity
                 return
 
-            self.realloc(newCapacity)
+            realloc(newCapacity)
         }
 
         // Add a copy of one element at the end of the array
         func add(using self, value: T)
         {
-            self.reserve(count + 1)
+            grow(count + 1)
             buffer[count] = nodrop value
             count += 1
         }
@@ -150,18 +150,18 @@ namespace std.collections
             #if @typeof(G) != @typeof(T)
             {
                 var x: T = value
-                self.add(x)
+                add(x)
             }
             #else
             {
-                self.add(value)
+                add(value)
             }
         }
 
         // Move one element at the end of the array
         func emplaceBack(using self, value: *T)
         {
-            self.reserve(count + 1)
+            grow(count + 1)
             buffer[count] = nodrop move deref value
             count += 1
         }
@@ -205,6 +205,23 @@ namespace std.collections
                 buffer[idx] = nodrop move buffer[idx + 1]
                 idx += 1
             }
+        }
+
+        func insertAt(using self, index: u32, value: T)
+        {
+            debug.assert(index <= count, "index out of range")
+            if index == count
+                return add(value)
+            grow(count + 1)
+            count += 1
+
+            for idx := count - 1; idx > index; idx -= 1
+            {
+                buffer[idx] = nodrop move buffer[idx - 1]
+                idx -= 1
+            }
+
+            buffer[index] = nodrop value
         }
     }
 }

@@ -1341,7 +1341,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
     return true;
 }
 
-bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol)
+bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol, AstNode* dependentVar)
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
@@ -1355,14 +1355,13 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
 
-    auto prevIdRef = CastAst<AstIdentifierRef>(identifierRef->previousResolvedNode->parent, AstNodeKind::IdentifierRef);
-    auto idRef     = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
+    auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
     if (symbol->kind == SymbolKind::Variable)
     {
         // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
         // Copy all previous references to the one we want to pass as parameter
         // X.Y.call(...) => X.Y.call(X.Y, ...)
-        for (auto child : prevIdRef->childs)
+        for (auto child : identifierRef->childs)
         {
             auto copyChild = Ast::clone(child, idRef);
             if (child == identifierRef->previousResolvedNode)
@@ -1374,17 +1373,30 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
-        // Move all previous references to the one we want to pass as parameter
-        // X.Y.call(...) => call(X.Y, ...)
-        while (prevIdRef->childs.size())
+        if (dependentVar == identifierRef->previousResolvedNode)
         {
-            auto copyChild = prevIdRef->childs.front();
-            Ast::removeFromParent(copyChild);
-            Ast::addChildBack(idRef, copyChild);
-            if (copyChild == identifierRef->previousResolvedNode)
+            auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->name, idRef, idRef);
+            copyChild->inheritOwners(fctCallParam);
+            copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+            copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+            copyChild->typeInfo               = dependentVar->typeInfo;
+            copyChild->byteCodeFct            = ByteCodeGenJob::emitIdentifier;
+            copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
+        }
+        else
+        {
+            // Move all previous references to the one we want to pass as parameter
+            // X.Y.call(...) => call(X.Y, ...)
+            while (identifierRef->childs.size())
             {
-                copyChild->flags |= AST_TO_UFCS;
-                break;
+                auto copyChild = identifierRef->childs.front();
+                Ast::removeFromParent(copyChild);
+                Ast::addChildBack(idRef, copyChild);
+                if (copyChild == identifierRef->previousResolvedNode)
+                {
+                    copyChild->flags |= AST_TO_UFCS;
+                    break;
+                }
             }
         }
 
@@ -1556,6 +1568,50 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (!symbol)
         return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
+    // If there a using variable associated with the resolved symbol ?
+    AstNode* dependentVar = nullptr;
+    for (auto& dep : scopeHierarchyVars)
+    {
+        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
+        {
+            if (dependentVar)
+            {
+                Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
+                Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            dependentVar = dep.node;
+
+            // This way the ufcs can trigger for a function
+            if (symbol->kind == SymbolKind::Function)
+            {
+                // We need to be sure that there is at least one missing argument in all overloads, otherwise we cannot trigger
+                // the ufcs. This check should be better.
+                bool usingUfcs = true;
+                for (auto over : symbol->overloads)
+                {
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+                    if (node->callParameters->childs.size() >= typeFunc->parameters.size())
+                    {
+                        usingUfcs = false;
+                        break;
+                    }
+                }
+
+                if (job->cacheDependentSymbols.size() > 1)
+                    usingUfcs = false;
+
+                if (usingUfcs)
+                {
+                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                    identifierRef->previousResolvedNode   = dependentVar;
+                }
+            }
+        }
+    }
+
     AstNode* ufcsParam = nullptr;
     bool     canDoUfcs = false;
     if (symbol->kind == SymbolKind::Function)
@@ -1588,7 +1644,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 {
                     node->doneFlags |= AST_DONE_UFCS;
                     SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
-                    SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol));
+                    SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol, dependentVar));
                 }
             }
         }
@@ -1754,23 +1810,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
             symMatch.genericParameters.push_back(oneParam);
             symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
-        }
-    }
-
-    // If there a using variable associated with the resolved symbol ?
-    AstNode* dependentVar = nullptr;
-    for (auto& dep : scopeHierarchyVars)
-    {
-        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
-        {
-            if (dependentVar)
-            {
-                Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
-                Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
-                return context->report(diag, &note);
-            }
-
-            dependentVar = dep.node;
         }
     }
 
