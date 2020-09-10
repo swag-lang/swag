@@ -172,6 +172,40 @@ namespace std.collections
             count += 1
         }
 
+        // Insert a value at the given index. If 'index' is equal to 'count', then
+        // the value is added at the end of the array.
+        // Order is preserved.
+        func insertAt(using self, index: u32, value: T)
+        {
+            debug.assert(index <= count, "index out of range")
+            if index == count
+                return add(value)
+            grow(count + 1)
+            count += 1
+
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] = nodrop move buffer[idx - 1]
+
+            buffer[index] = nodrop value
+        }
+
+        // Move a value at the given index. If 'index' is equal to 'count', then
+        // the value is added at the end of the array.
+        // Order is preserved.
+        func emplaceAt(using self, index: u32, value: *T)
+        {
+            debug.assert(index <= count, "index out of range")
+            if index == count
+                return emplace(value)
+            grow(count + 1)
+            count += 1
+
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] = nodrop move buffer[idx - 1]
+
+            buffer[index] = nodrop move deref value
+        }
+
         // Remove an element at 'index' by replacing it with the last element.
         // Order is not preserved
         func removeAt(using self, index: u32)
@@ -205,40 +239,6 @@ namespace std.collections
                 buffer[idx] = nodrop move buffer[idx + 1]
                 idx += 1
             }
-        }
-
-        // Insert a value at the given index. If 'index' is equal to 'count', then
-        // the value is added at the end of the array.
-        // Order is preserved.
-        func insertAt(using self, index: u32, value: T)
-        {
-            debug.assert(index <= count, "index out of range")
-            if index == count
-                return add(value)
-            grow(count + 1)
-            count += 1
-
-            for idx := count - 1; idx > index; idx -= 1
-                buffer[idx] = nodrop move buffer[idx - 1]
-
-            buffer[index] = nodrop value
-        }
-
-        // Move a value at the given index. If 'index' is equal to 'count', then
-        // the value is added at the end of the array.
-        // Order is preserved.
-        func emplaceAt(using self, index: u32, value: *T)
-        {
-            debug.assert(index <= count, "index out of range")
-            if index == count
-                return emplace(value)
-            grow(count + 1)
-            count += 1
-
-            for idx := count - 1; idx > index; idx -= 1
-                buffer[idx] = nodrop move buffer[idx - 1]
-
-            buffer[index] = nodrop move deref value
         }
     }
 }
