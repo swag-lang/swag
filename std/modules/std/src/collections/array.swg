@@ -159,7 +159,7 @@ namespace std.collections
         }
 
         // Move one element at the end of the array
-        func emplaceBack(using self, value: *T)
+        func emplace(using self, value: *T)
         {
             grow(count + 1)
             buffer[count] = nodrop move deref value
@@ -207,6 +207,8 @@ namespace std.collections
             }
         }
 
+        // Insert a value at the given index.
+        // Order is preserved.
         func insertAt(using self, index: u32, value: T)
         {
             debug.assert(index <= count, "index out of range")
@@ -216,10 +218,7 @@ namespace std.collections
             count += 1
 
             for idx := count - 1; idx > index; idx -= 1
-            {
                 buffer[idx] = nodrop move buffer[idx - 1]
-                idx -= 1
-            }
 
             buffer[index] = nodrop value
         }

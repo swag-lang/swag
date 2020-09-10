@@ -1,5 +1,6 @@
 namespace std.text
 {
+    using swag
     using std.collections, std.diagnostics, std.globalization
 
     // Format structure to convert a float to a string
@@ -16,7 +17,7 @@ namespace std.text
     public struct ConvertFormatInt
     {
         unsignedValue:  u64
-        #[swag.offset("unsignedValue")]
+        #[offset("unsignedValue")]
         signedValue:    s64
 
         bits:           u32 = 32
@@ -89,14 +90,19 @@ namespace std.text
         {
             type := @kindof(value)
 
+/*            if type.kind == TypeInfoKind.Reference
+            {
+                typeRef := cast(const *TypeInfoReference) type
+            }*/
+
             // A pointer, whatever type
-            if type.kind == swag.TypeInfoKind.Pointer
+            if type.kind == TypeInfoKind.Pointer
             {
                 buf.addBytes("?")
                 return
             }
 
-            if type.kind == swag.TypeInfoKind.Struct
+            if type.kind == TypeInfoKind.Struct
             {
                 // A structure with an implementation of IConvert
                 itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
@@ -153,12 +159,12 @@ namespace std.text
         func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
             typeOf := @kindof(value)
-            debug.assert(typeOf.kind == swag.TypeInfoKind.Struct, "this is not a structure")
+            debug.assert(typeOf.kind == TypeInfoKind.Struct, "this is not a structure")
 
             buf.addBytes("{")
 
             ptr := @dataof(value)
-            type := cast(const *swag.TypeInfoStruct) typeOf
+            type := cast(const *TypeInfoStruct) typeOf
             visit field: type.fields
             {
                 if(@index != 0)

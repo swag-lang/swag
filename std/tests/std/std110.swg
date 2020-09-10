@@ -7,6 +7,6 @@ using std.collections, std.text, std.diagnostics
     var y: String = "toto"
 
     @assert(y.capacity > 0)
-    x.emplaceBack(&y)
+    x.emplace(&y)
     @assert(y.capacity == 0)
 }
