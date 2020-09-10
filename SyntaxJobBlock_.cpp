@@ -255,47 +255,39 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    bool hasParen = token.id == TokenId::SymLeftParen;
-    if (hasParen)
-        SWAG_CHECK(eatToken());
 
+    ScopedBreakable scopedBreakable(this, node);
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'loop' expression before '{'"));
+    SWAG_CHECK(doExpression(nullptr, &node->expression));
+    Token tokenName = node->expression->token;
+
+    Utf8 name;
+    if (token.id == TokenId::SymColon)
     {
-        ScopedBreakable scopedBreakable(this, node);
-        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'loop' expression before '{'"));
-        SWAG_CHECK(doExpression(nullptr, &node->expression));
-        Token tokenName = node->expression->token;
-
-        Utf8 name;
-        if (token.id == TokenId::SymColon)
-        {
-            SWAG_CHECK(checkIsSingleIdentifier(node->expression));
-            name = node->expression->childs.front()->name;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(node, &node->expression));
-        }
-        else
-        {
-            Ast::addChildBack(node, node->expression);
-        }
-
-        // Creates a variable if we have a named index
-        if (!name.empty())
-        {
-            auto var           = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
-            var->token         = tokenName;
-            node->specificName = var;
-
-            auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
-            identifer->semanticFct = SemanticJob::resolveIndex;
-
-            var->assignment = identifer;
-        }
-
-        if (hasParen)
-            SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
-        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+        SWAG_CHECK(checkIsSingleIdentifier(node->expression));
+        name = node->expression->childs.front()->name;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->expression));
     }
+    else
+    {
+        Ast::addChildBack(node, node->expression);
+    }
+
+    // Creates a variable if we have a named index
+    if (!name.empty())
+    {
+        auto var           = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::LetDecl);
+        var->token         = tokenName;
+        node->specificName = var;
+
+        auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
+        identifer->semanticFct = SemanticJob::resolveIndex;
+
+        var->assignment = identifer;
+    }
+
+    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
 
     return true;
 }
