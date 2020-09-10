@@ -273,6 +273,22 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::For:
+        {
+            auto forNode = CastAst<AstFor>(node, AstNodeKind::For);
+            CONCAT_FIXED_STR(concat, "for ");
+            SWAG_CHECK(output(context, concat, forNode->preExpression));
+            CONCAT_FIXED_STR(concat, "; ");
+            SWAG_CHECK(output(context, concat, forNode->boolExpression));
+            CONCAT_FIXED_STR(concat, "; ");
+            SWAG_CHECK(output(context, concat, forNode->postExpression));
+            incIndentStatement(forNode->block, context.indent);
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, forNode->block));
+            decIndentStatement(forNode->block, context.indent);
+            break;
+        }
+
         case AstNodeKind::Loop:
         {
             auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
