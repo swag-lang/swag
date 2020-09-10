@@ -150,35 +150,27 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    bool hasParen = token.id == TokenId::SymLeftParen;
-    if (hasParen)
-        SWAG_CHECK(eatToken());
 
-    {
-        ScopedBreakable scopedBreakable(this, node);
+    ScopedBreakable scopedBreakable(this, node);
 
-        // Pre statement. Do not call doScopedCurlyStatement in order to avoid
-        // creating a new scope in the case of for { i:= 0; j := 0 } for example
-        if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
-        else
-            SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
+    // Pre statement. Do not call doScopedCurlyStatement in order to avoid
+    // creating a new scope in the case of for { i:= 0; j := 0 } for example
+    if (token.id == TokenId::SymLeftCurly)
+        SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
+    else
+        SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
 
-        // Boolean expression
-        SWAG_CHECK(doExpression(node, &node->boolExpression));
-        SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
+    // Boolean expression
+    SWAG_CHECK(doExpression(node, &node->boolExpression));
+    SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
 
-        // Post expression
-        if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doCurlyStatement(node, &node->postExpression));
-        else
-            SWAG_CHECK(doEmbeddedInstruction(node, &node->postExpression));
+    // Post expression
+    if (token.id == TokenId::SymLeftCurly)
+        SWAG_CHECK(doCurlyStatement(node, &node->postExpression));
+    else
+        SWAG_CHECK(doEmbeddedInstruction(node, &node->postExpression));
 
-        if (hasParen)
-            SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
-        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
-    }
+    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
 
     return true;
 }
