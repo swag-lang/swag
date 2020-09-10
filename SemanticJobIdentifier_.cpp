@@ -1034,7 +1034,7 @@ anotherTry:
             {
                 SWAG_ASSERT(callParameters);
                 Diagnostic diag{match.parameters[badSignatureInfos.badSignatureParameterIdx],
-                                format("bad type of parameter '%d' for %s '%s', generic type '%s' was already assigned to '%s' ('%s' provided)",
+                                format("bad type of parameter '%d' for %s '%s', generic type '%s' is assigned to '%s' ('%s' provided)",
                                        badSignatureInfos.badSignatureParameterIdx + 1,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),

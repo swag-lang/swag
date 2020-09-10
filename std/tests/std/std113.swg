@@ -11,4 +11,14 @@ using std.collections, std.text, std.diagnostics
     @assert(arr[1] == 100)
     @assert(arr[2] == 1)
     @assert(arr[arr.count - 1] == 9)
+
+    var arr1: Array'String
+    arr1.addAny("0")
+    arr1.addAny("1")
+
+    let str: String = "A"
+    arr1.insertAt(0, str)
+    @assert(arr1[0] == "A")
+    @assert(arr1[1] == "0")
+    @assert(arr1[2] == "1")
 }
