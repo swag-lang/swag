@@ -240,5 +240,18 @@ namespace std.collections
                 idx += 1
             }
         }
+
+        // Returns 'true' if the array contains 'value'.
+        // O(n)
+        func contains(using self, value: T)->bool
+        {
+            loop count
+            {
+                if(buffer[@index] == value)
+                    return true
+            }
+
+            return false
+        }
     }
 }
