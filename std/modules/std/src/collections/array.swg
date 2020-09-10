@@ -135,6 +135,12 @@ namespace std.collections
             realloc(newCapacity)
         }
 
+        // Set the number of elements to 0
+        func clear(using self)
+        {
+            count = 0
+        }
+
         // Add a copy of one element at the end of the array
         func add(using self, value: T)
         {
@@ -164,12 +170,6 @@ namespace std.collections
             grow(count + 1)
             buffer[count] = nodrop move deref value
             count += 1
-        }
-
-        // Set the number of elements to 0
-        func clear(using self)
-        {
-            count = 0
         }
 
         // Remove an element at 'index' by replacing it with the last element.
@@ -222,6 +222,23 @@ namespace std.collections
                 buffer[idx] = nodrop move buffer[idx - 1]
 
             buffer[index] = nodrop value
+        }
+
+        // Move a value at the given index. If 'index' is equal to 'count', then
+        // the value is added at the end of the array.
+        // Order is preserved.
+        func emplaceAt(using self, index: u32, value: *T)
+        {
+            debug.assert(index <= count, "index out of range")
+            if index == count
+                return emplace(value)
+            grow(count + 1)
+            count += 1
+
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] = nodrop move buffer[idx - 1]
+
+            buffer[index] = nodrop move deref value
         }
     }
 }
