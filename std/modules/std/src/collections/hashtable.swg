@@ -52,8 +52,8 @@ namespace std.collections
                     {
                         if table[i].hash >= HASH_FIRST
                         {
-                            @drop(table[i].key)
-                            @drop(table[i].value)
+                            @drop(&table[i].key)
+                            @drop(&table[i].value)
                         }
                     }
                 }
@@ -63,33 +63,55 @@ namespace std.collections
 
             func grow(using self)
             {
+                // We need to trigger the growing of the table is there's not enough room
+                if allocated != 0 && allocated - (count + removed) > allocated / 4
+                    return
+
                 if allocator == null
                     allocator = @getcontext().allocator
 
-                newCapacity := allocated * 2
-                if(newCapacity < 32) newCapacity = 32
+                newAllocated := allocated * 2
+                if(newAllocated < 32) newAllocated = 32
 
                 oldTable := table
                 count = 0
                 removed = 0
-                newSize := newCapacity * @sizeof(HashTableEntry'(K, V))
-                table = acast memory.alloc(&allocator, newSize)
+                newAllocatedBytes := newAllocated * @sizeof(HashTableEntry)
+                table = acast memory.alloc(&allocator, newAllocatedBytes)
 
-                // Copy the last table to the next table, removing deleted entries
+                // Be sure hash entry is 0
+                memory.clear(table, newAllocatedBytes)
+
+                @print("newAllocatedBytes=")
+                @print(cast(s64)@sizeof(HashTableEntry))
+                @print("\n")
+                loop i: newAllocated
+                {
+                    @print("v")
+                    @print(cast(s64) i)
+                    @print("=")
+                    @print(cast(s64) table[i].hash)
+                    @print(" ")
+                }
+
+                // Copy the last table to the new table, removing deleted entries
                 loop i: allocated
                 {
                     if oldTable[i].hash >= HASH_FIRST
+                    {
                         add(self, oldTable[i].key, oldTable[i].value)
+                        @drop(&oldTable[i].key)
+                        @drop(&oldTable[i].value)
+                    }
                 }
 
-                allocated = newCapacity
+                allocated = newAllocated
             }
 
             // Add a new key value pair. If the key already exists, then the value will be replaced
             func add(using self, key: K, value: V)
             {
-                if !allocated
-                    grow(self)
+                grow(self)
 
                 hashVal := hash(key)
                 index := hashVal % allocated

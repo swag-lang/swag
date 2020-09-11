@@ -37,7 +37,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source file and location
-    if (hasFile && !sourceFile->name.empty())
+    if (hasFile && !sourceFile->path.empty())
     {
         SWAG_ASSERT(sourceFile);
         fs::path path = sourceFile->path;
@@ -68,7 +68,7 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.setColor(LogColor::Cyan);
 
     // Source code
-    if (hasFile && !sourceFile->name.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
+    if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
     {
         // Get all lines of code
         vector<Utf8> lines;

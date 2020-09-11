@@ -164,6 +164,12 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
+    {
+        ScopedFlags sc(this, AST_CAN_INSTANCIATE_TYPE);
+        SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+    }
+
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeInterface:
