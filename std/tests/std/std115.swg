@@ -15,5 +15,10 @@ using std.collections, std.text, std.diagnostics
     @assert(arr1[3] == "3")
 
     var arr3: Array'u8
-    //arr3.add(cast(const [..] u8) "toto")
+    arr3.add(cast(const [..] u8) "tous")
+    @assert(arr3.count == 4)
+    @assert(arr3[0] == "t"'u8)
+    @assert(arr3[1] == "o"'u8)
+    @assert(arr3[2] == "u"'u8)
+    @assert(arr3[3] == "s"'u8)
 }
