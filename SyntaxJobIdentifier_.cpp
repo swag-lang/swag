@@ -22,13 +22,6 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         backTick = true;
     }
 
-    // An identifier that starts with '__' is reserved for internal usage !
-    /*if (!sourceFile->generated && !(parent->flags & AST_GENERATED))
-    {
-        if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
-            return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
-    }*/
-
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
     identifier->inheritTokenLocation(token);
     identifier->inheritTokenName(token);

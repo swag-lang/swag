@@ -351,6 +351,13 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
+        pass = ModuleBuildPass::Output;
+    }
+
+    // Output pass
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::Output)
+    {
         // During unit testing, be sure we don't have untriggered errors
         if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
         {
@@ -367,13 +374,6 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        pass = ModuleBuildPass::Output;
-    }
-
-    // Output pass
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Output)
-    {
         // TIming...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {

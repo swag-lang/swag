@@ -164,6 +164,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
     structNode->inheritTokenName(token);
+    SWAG_CHECK(isValidUserName(structNode));
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
