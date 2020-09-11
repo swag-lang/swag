@@ -213,8 +213,8 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tmpFile->externalBuffer  = (uint8_t*) tmpFile->externalContent.c_str();
     tmpFile->externalSize    = (uint32_t) tmpFile->externalContent.length();
     tmpFile->module          = parent->sourceFile->module;
-    tmpFile->name            = "generated.swg";
-    tmpFile->path            = "generated.swg";
+    tmpFile->name            = "<generated>";
+    tmpFile->path            = "<generated>";
     tmpFile->sourceNode      = fromNode;
     sourceFile               = tmpFile;
     currentScope             = parent->ownerScope;
@@ -265,7 +265,7 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One named scope per file
-    Utf8 scopeName = sourceFile->name;
+    Utf8 scopeName = "__" + sourceFile->name;
     SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
     scopeName.buffer[scopeName.length() - 4] = 0;
     scopeName.count -= 4;

@@ -10,6 +10,6 @@ var g1 = @typeof(Days).kind
 
 #test
 {
-	@assert(g == "compiler1099.Days")
+	@assert(g == "__compiler1099.Days")
 	@assert(g1 == swag.TypeInfoKind.Enum)
 }

@@ -20,5 +20,5 @@ impl BOUBOU
 #test
 {
     var arr: Array'BOUBOU
-    @assert(@typeof(arr).name == "compiler1562.Array'(BOUBOU)")
+    @assert(@typeof(arr).name == "__compiler1562.Array'(BOUBOU)")
 }

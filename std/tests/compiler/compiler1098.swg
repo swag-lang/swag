@@ -15,5 +15,5 @@ func toto()=>g
 #test
 {
 //	@print(toto().x)
-	@assert(@typeof(Days).name == "compiler1098.Days")
+	@assert(@typeof(Days).name == "__compiler1098.Days")
 }

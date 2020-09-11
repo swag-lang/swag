@@ -1,6 +1,6 @@
 func titi(line: string = #callerfunction)
 {
-	@assert(line == "compiler1128.tata")
+	@assert(line == "__compiler1128.tata")
 }
 
 func tata()

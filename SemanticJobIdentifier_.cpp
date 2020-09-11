@@ -1421,6 +1421,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
+    // Current private scope
+    if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
+    {
+        SWAG_VERIFY(node == identifierRef->childs.front(), context->report({node, node->token, "invalid reference to private scope"}));
+        identifierRef->startScope = context->sourceFile->scopePrivate;
+        return true;
+    }
+
     // If previous identifier was generic, then stop evaluation
     if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->kind == TypeInfoKind::Generic)
     {

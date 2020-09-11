@@ -20,5 +20,5 @@ impl std.crypto.IHash32 for Pt
     @assert(arr.count == 3)
 
     let pt: Pt
-    //@assert(std.crypto.hash32(pt) == 555)
+    @assert(std.crypto.hash32(pt) == 555)
 }

@@ -8,7 +8,7 @@ enum Days
     Wednesday = 0b_0000_1000 // 8
     Thursday  = 0b_0001_0000 // 16
     Friday    = 0b_0010_0000 // 32
-    Saturday  = 0b_0100_0000  // 64 
+    Saturday  = 0b_0100_0000  // 64
 }
 
 #test
@@ -16,5 +16,5 @@ enum Days
     meetingDays := Days.Tuesday | Days.Thursday;
 	@assert(@typeof(meetingDays) == @typeof(Days))
 	ptr := @typeof(meetingDays)
-	@assert(ptr.name == "compiler1097.Days")
+	@assert(ptr.name == "__compiler1097.Days")
 }

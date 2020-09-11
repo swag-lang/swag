@@ -15,7 +15,7 @@ enum A
 	ptr1 := cast(const *TypeInfoParam) ptr.values[0]
 
 	//@print(ptr1.attributes[0].item0)
-	@assert(ptr1.attributes[0].name == "compiler1013.NC1")
+	@assert(ptr1.attributes[0].name == "__compiler1013.NC1")
 	@assert(ptr1.attributes[0].params[0].name == "x")
 
 	val := ptr1.attributes[0].params[0].value

@@ -20,9 +20,9 @@ struct Point
     //@print(cast(s64) @countof(p.attributes))
 
     @assert(@countof(p.attributes) == 2)
-	@assert(p.attributes[0].name == "compiler991.NC1")
-	@assert(p.attributes[1].name == "compiler991.NC2")
-	
+	@assert(p.attributes[0].name == "__compiler991.NC1")
+	@assert(p.attributes[1].name == "__compiler991.NC2")
+
     @assert(@countof(p.attributes[0].params) == 1)
     @assert(@countof(p.attributes[1].params) == 1)
 

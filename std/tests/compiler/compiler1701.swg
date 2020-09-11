@@ -5,7 +5,7 @@ interface Print
 
 struct A
 {
-    x: f64 = 666   
+    x: f64 = 666
 }
 
 impl Print for A
@@ -22,7 +22,7 @@ func callAny(value: any)
     ptr := cast(A) value
     itf := cast(Print) ptr
     @assert(itf.toto() == 667)
-    @assert(@typeof(itf).name == "compiler1701.Print")
+    @assert(@typeof(itf).name == "__compiler1701.Print")
 }
 
 #test

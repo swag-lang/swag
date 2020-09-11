@@ -21,5 +21,5 @@ impl Itf for TOTO
 {
     ptr := cast(const *TypeInfoStruct) @typeof(TOTO)
     @assert(@countof(ptr.interfaces) == 1)
-    @assert(ptr.interfaces[0].name == "compiler1370.Itf")
+    @assert(ptr.interfaces[0].name == "__compiler1370.Itf")
 }
