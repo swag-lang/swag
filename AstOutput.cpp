@@ -208,7 +208,18 @@ namespace Ast
         case AstNodeKind::CompilerPrint:
             CONCAT_FIXED_STR(concat, "#print ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
-            concat.addEolIndent(context.indent);
+            break;
+
+        case AstNodeKind::CompilerAssert:
+            CONCAT_FIXED_STR(concat, "#assert(");
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            if (node->childs.size() > 1)
+            {
+                concat.addChar(',');
+                SWAG_CHECK(output(context, concat, node->childs[1]));
+            }
+
+            concat.addChar(')');
             break;
 
         case AstNodeKind::CompilerIf:
@@ -658,19 +669,6 @@ namespace Ast
 
             break;
         }
-
-        case AstNodeKind::CompilerAssert:
-            CONCAT_FIXED_STR(concat, "#assert(");
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            if (node->childs.size() > 1)
-            {
-                concat.addChar(',');
-                SWAG_CHECK(output(context, concat, node->childs[1]));
-            }
-
-            concat.addChar(')');
-            concat.addEolIndent(context.indent);
-            break;
 
         case AstNodeKind::Literal:
             SWAG_CHECK(outputLiteral(context, concat, node, TypeManager::literalTypeToType(node->token), node->token.text, node->token.literalValue));

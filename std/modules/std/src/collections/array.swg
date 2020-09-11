@@ -19,6 +19,11 @@ namespace std.collections
             return count
         }
 
+        func opData(using self)->const *void
+        {
+            return buffer
+        }
+
         func opDrop(using self)
         {
             free()
