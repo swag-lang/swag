@@ -14,9 +14,6 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
-    if (symbol->name == "__tests_compiler_foreign_import_tuple_s32s32")
-        symbol = symbol;
-
     if (flags & JOB_COMPILER_PASS)
     {
         if (symbol->ownerTable->scope->isGlobal())
