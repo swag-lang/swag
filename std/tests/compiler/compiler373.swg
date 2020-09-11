@@ -4,7 +4,7 @@
 //#[swag.printbc]
 #test
 {
-	var slice: [..] u8 = "titititi";
+	var slice: const [..] u8 = "titititi";
 	@assert(@countof(slice) == 8);
 	slice = "toto";
 	@assert(@countof(slice) == 4);

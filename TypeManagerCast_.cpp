@@ -1882,8 +1882,16 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     }
     else if (fromType->isNative(NativeTypeKind::String))
     {
-        if (toTypeSlice->pointedType->isNative(NativeTypeKind::U8))
+        if (toTypeSlice->pointedType->isNative(NativeTypeKind::U8) && toTypeSlice->isConst())
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toTypeSlice;
+            }
+
             return true;
+        }
     }
     else if (fromType == g_TypeMgr.typeInfoNull)
     {

@@ -1,5 +1,3 @@
-;
-
 var Table: [256] u64 =
 @[
 	0x0000000000000000'u64, 0x42f0e1eba9ea3693'u64, 0x85e1c3d753d46d26'u64, 0xc711223cfa3e5bb5'u64, 0x493366450e42ecdf'u64,
@@ -57,7 +55,7 @@ var Table: [256] u64 =
 ]
 
 //#[swag.printbc]
-func Hash(buffer: [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
+func Hash(buffer: const [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 {
 	crc := previous
 	loop(buffer)

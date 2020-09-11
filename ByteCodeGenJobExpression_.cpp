@@ -282,6 +282,15 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         SWAG_ASSERT(offset != UINT32_MAX);
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
     }
+    else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
+    {
+        reserveLinearRegisterRC2(context, regList);
+        auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
+        SWAG_ASSERT(offset != UINT32_MAX);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
+        emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1], (uint32_t) node->computedValue.text.length());
+        return true;
+    }
     else
     {
         return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->name.c_str()).c_str());

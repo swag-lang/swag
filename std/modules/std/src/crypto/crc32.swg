@@ -501,10 +501,10 @@ namespace std.crypto
 
     // Compute the crc32 of a slice of bytes
 	#[swag.constexpr]
-	public func crc32(data: [..] u8, previous: u32 = 0)->u32
+	public func crc32(data: const [..] u8, previous: u32 = 0)->u32
 	{
 		crc := ~previous
-		current := cast(*u32) @dataof(data)
+		current := cast(const *u32) @dataof(data)
 		length := @countof(data)
 
 		const unroll = 4
@@ -552,7 +552,7 @@ namespace std.crypto
 			length -= bytesAtOnce
 		}
 
-		currentChar := cast(*u8) current
+		currentChar := cast(const *u8) current
 		while length
 		{
 			crc = (crc >> 8) ^ lookupTable[0, (crc & 0xFF) ^ currentChar[0]]

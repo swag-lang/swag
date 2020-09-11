@@ -211,6 +211,41 @@ namespace std.collections
             buffer[index] = nodrop move deref value
         }
 
+        // Append another array to the end of this instance
+        func add(using self, array: Array)
+        {
+            if !array.count
+                return
+            grow(count + array.count)
+
+            oldCount := count
+            count += array.count
+
+            loop array.count
+            {
+                buffer[oldCount] = nodrop array.buffer[@index]
+                oldCount += 1
+            }
+        }
+
+        // Append a slice to the end of this instance
+        func add(using self, values: const [..] T)
+        {
+            sliceCount := @countof(values)
+            if !sliceCount
+                return
+            grow(count + sliceCount)
+
+            oldCount := count
+            count += sliceCount
+
+            loop sliceCount
+            {
+                buffer[oldCount] = nodrop values[@index]
+                oldCount += 1
+            }
+        }
+
         // Remove an element at 'index' by replacing it with the last element.
         // Order is not preserved
         func removeAt(using self, index: u32)

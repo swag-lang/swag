@@ -633,7 +633,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
-    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
+    if (fromTypeInfo == g_TypeMgr.typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }

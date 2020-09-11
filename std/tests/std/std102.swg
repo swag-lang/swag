@@ -1,7 +1,7 @@
 #import "std"
 using std.text, std.collections
 
-func cc(sl: [..] u8, val: s32)
+func cc(sl: const [..] u8, val: s32)
 {
     loop @countof(sl)
     {
