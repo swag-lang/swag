@@ -173,10 +173,11 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 
     // Add struct type and scope
     Scope* rootScope;
-    if (sourceFile->module->fromTestsFolder)
+    if (sourceFile->fromTests)
         rootScope = sourceFile->scopePrivate;
     else
         rootScope = sourceFile->module->scopeRoot;
+
     scoped_lock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->name);
     if (!symbol)

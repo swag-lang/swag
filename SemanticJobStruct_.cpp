@@ -548,7 +548,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     typeInfo->sizeOf = max(typeInfo->sizeOf, 1);
 
     // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         if (!node->ownerScope->isGlobal())
             return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});

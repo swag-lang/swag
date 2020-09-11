@@ -284,7 +284,6 @@ JobResult SyntaxJob::execute()
     // Setup root ast for file
     sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
-    sourceFile->scopePrivate->owner = sourceFile->astRoot;
 
     bool result = true;
     bool ok     = tokenizer.getToken(token);

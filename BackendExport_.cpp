@@ -73,6 +73,27 @@ void Backend::emitType(TypeInfo* typeInfo)
     }
     else
     {
+        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            bufferSwg.addString("struct{");
+            int idx = 0;
+            for (auto field : typeStruct->fields)
+            {
+                if(idx)
+                    bufferSwg.addString(", ");
+                if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+                {
+                    bufferSwg.addString(field->namedParam);
+                    bufferSwg.addString(":");
+                }
+                emitType(field->typeInfo);
+                idx++;
+            }
+            bufferSwg.addString("}");
+            return;
+        }
+
         // Be sure to keep the original baked name
         if (typeInfo->kind == TypeInfoKind::Reference)
         {
