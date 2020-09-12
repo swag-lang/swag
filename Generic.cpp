@@ -376,7 +376,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-        newFunc->typeInfo = newTypeFunc;
+        newTypeFunc->declNode = newFunc;
+        newFunc->typeInfo     = newTypeFunc;
     }
 
     // Replace generic types and values in the function generic parameters
