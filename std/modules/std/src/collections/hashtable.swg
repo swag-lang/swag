@@ -34,7 +34,7 @@ namespace std.collections
             #[inline]
             func hash(key: K)->u32
             {
-                hashVal := std.crypto.hash32(key)
+                hashVal := crypto.hash32(key)
                 if hashVal < HASH_FIRST
                     hashVal += HASH_FIRST
                 return hashVal
@@ -68,19 +68,23 @@ namespace std.collections
                     return
 
                 newCapacity := capacity * 2
-                if(newCapacity < 32) newCapacity = 32
                 reserve(newCapacity)
             }
 
+            // Reserve 'newCapacity' elements in the table.
             func reserve(using self, newCapacity: u32)
             {
-                if allocator == null
-                    allocator = @getcontext().allocator
+                reqCapacity := math.max(newCapacity, 32)
+                if(reqCapacity <= capacity)
+                    return
 
                 oldTable := table
                 count = 0
                 removed = 0
-                newCapacityBytes := newCapacity * @sizeof(HashTableEntry)
+                newCapacityBytes := reqCapacity * @sizeof(HashTableEntry)
+
+                if allocator == null
+                    allocator = @getcontext().allocator
                 table = acast memory.alloc(&allocator, newCapacityBytes)
 
                 // Be sure hash entry is 0
@@ -97,7 +101,7 @@ namespace std.collections
                     }
                 }
 
-                capacity = newCapacity
+                capacity = reqCapacity
             }
 
             // Add a new key value pair. If the key already exists, then the value will be replaced
@@ -108,7 +112,7 @@ namespace std.collections
                 hashVal := hash(key)
                 index := hashVal % capacity
 
-                while table[index].hash
+                while table[index].hash >= HASH_FIRST
                 {
                     if table[index].hash == hashVal && table[index].key == key
                     {
@@ -121,10 +125,34 @@ namespace std.collections
                         index = 0
                 }
 
+                if table[index].hash == HASH_DELETED
+                    removed -= 1
                 table[index].hash = hashVal
                 table[index].key = key
                 table[index].value = value
                 count += 1
+            }
+
+            // Remove the given key if it exists
+            func remove(using self, key: K)
+            {
+                hashVal := hash(key)
+                index := hashVal % capacity
+
+                while table[index].hash
+                {
+                    if table[index].hash == hashVal && table[index].key == key
+                    {
+                        table[index].hash = HASH_DELETED;
+                        count -= 1
+                        removed += 1
+                        return
+                    }
+
+                    index += 1
+                    if index == capacity
+                        index = 0
+                }
             }
 
             // Returns true if the table contains the given key
