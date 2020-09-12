@@ -42,5 +42,5 @@ impl HashTable
     var arr2: HashTable'(bool, f32)
     HashTable.grow(arr2)
 
-    @assert(cast(s64) G == 18)
+    @assert(cast(s64) G == 8 + 8 + 1 + 1)
 }
