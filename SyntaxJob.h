@@ -86,7 +86,7 @@ struct SyntaxJob : public Job
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
-    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
+    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, bool acceptParameters = true);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnumContent(AstNode* parent);

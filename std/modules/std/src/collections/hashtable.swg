@@ -205,5 +205,28 @@ namespace std.collections
 
             return false
         }
+
+        // Remove all elements
+        func clear(using self)
+        {
+            // Need to put the 'hash' value of each entry to HASH_FREE
+            // Drop the key and the value if necessary
+            loop capacity
+            {
+                #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
+                {
+                    if table[@index].hash >= HASH_FIRST
+                    {
+                        @drop(table[@index].key)
+                        @drop(table[@index].value)
+                    }
+                }
+
+                table[@index].hash = HASH_FREE
+            }
+
+            count = 0
+            removed = 0
+        }
     }
 }

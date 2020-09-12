@@ -57,7 +57,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptParameters)
 {
     auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, parent);
     identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
@@ -77,14 +77,14 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIntrinsicProp(identifierRef));
         break;
     default:
-        SWAG_CHECK(doIdentifier(identifierRef));
+        SWAG_CHECK(doIdentifier(identifierRef, acceptParameters));
         break;
     }
 
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef));
+        SWAG_CHECK(doIdentifier(identifierRef, acceptParameters));
     }
 
     return true;

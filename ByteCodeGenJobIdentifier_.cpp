@@ -33,7 +33,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto resolved   = node->resolvedSymbolOverload;
     auto typeInfo   = TypeManager::concreteReference(resolved->typeInfo);
     typeInfo        = TypeManager::concreteType(typeInfo);
-    SWAG_ASSERT(typeInfo->kind != TypeInfoKind::Generic);
+    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, internalError(context, "emitIdentifier, type is generic"));
 
     // Will be done in the variable declaration
     if (typeInfo->kind == TypeInfoKind::Struct)

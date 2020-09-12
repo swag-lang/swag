@@ -28,9 +28,7 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
         {
         case TokenId::Identifier:
         {
-            auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, param);
-            identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
-            SWAG_CHECK(doIdentifier(identifierRef, false));
+            SWAG_CHECK(doIdentifierRef(param, nullptr, false));
             break;
         }
         case TokenId::LiteralCharacter:

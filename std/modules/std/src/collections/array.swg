@@ -143,6 +143,12 @@ namespace std.collections
         // Set the number of elements to 0
         func clear(using self)
         {
+            #if reflection.hasDrop(@typeof(T))
+            {
+                loop count
+                    @drop(table[@index])
+            }
+
             count = 0
         }
 

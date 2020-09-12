@@ -53,7 +53,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             isAfterVariadic = true;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR; // | CASTFLAG_STRICT;
+        uint32_t castFlags = CASTFLAG_NO_ERROR;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
 
