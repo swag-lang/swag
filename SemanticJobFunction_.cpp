@@ -703,7 +703,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // We need to add the parent scope of the inline function (the global one), in order for
     // the inline content to be resolved in the same context as the original function
     auto globalScope = funcDecl->ownerScope;
-    while (!globalScope->isGlobal())
+    while (!globalScope->isGlobalOrImpl())
         globalScope = globalScope->parentScope;
     inlineNode->alternativeScopes.push_back(globalScope);
 

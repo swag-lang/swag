@@ -37,7 +37,7 @@ namespace std.collections
                 remain := count
                 loop capacity
                 {
-                    if table[@index].hash < 2 //HASH_FIRST
+                    if table[@index].hash < HASH_FIRST
                         continue
                     #macro
                     {
