@@ -5,7 +5,7 @@ struct SymbolOverload;
 struct OneGenericMatch;
 struct AstVarDecl;
 
-struct InstanciateContext
+struct InstantiateContext
 {
     bool fromBake     = false;
     bool bakeIsPublic = false;
@@ -18,8 +18,8 @@ struct Generic
     static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo);
 
-    static void instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** funcNode);
-    static bool instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext &instContext);
-    static bool instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext);
+    static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** funcNode);
+    static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext &instContext);
+    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext);
     static bool instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node);
 };

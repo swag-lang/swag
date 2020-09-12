@@ -459,7 +459,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instantiate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         auto realStorageOffset = storageOffset;
@@ -666,7 +666,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instantiate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))

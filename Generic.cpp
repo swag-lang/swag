@@ -192,10 +192,10 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
+bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instanciate generic struct '%s', missing contextual types replacements", node->name.c_str())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instantiate generic struct '%s', missing contextual types replacements", node->name.c_str())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -264,9 +264,9 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
         cloneContext.ownerStructScope = structNode->scope;
     }
 
-    instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
-    instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
-    instanciateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostMoveFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostMoveFct);
 
     // Force instantiation of all special functions
     for (auto method : newType->methods)
@@ -279,13 +279,13 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
                 specFunc != oldType->opUserPostMoveFct &&
                 !specFunc->genericParameters)
             {
-                instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+                instantiateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
             }
         }
         else if (instContext.fromBake)
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
-            instanciateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+            instantiateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
         }
     }
 
@@ -293,7 +293,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
+void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
     if (!funcNode)
@@ -324,7 +324,7 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext)
 {
     auto       node             = context->node;
     AstStruct* contextualStruct = nullptr;
@@ -345,9 +345,9 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     if (match.genericReplaceTypes.empty())
     {
         if (contextualNode)
-            return context->report({contextualNode, contextualNode->token, format("cannot instanciate generic function '%s', missing generic parameters", node->name.c_str())});
+            return context->report({contextualNode, contextualNode->token, format("cannot instantiate generic function '%s', missing generic parameters", node->name.c_str())});
         else
-            return context->report({node, node->token, format("cannot instanciate generic function '%s', missing contextual types replacements", node->name.c_str())});
+            return context->report({node, node->token, format("cannot instantiate generic function '%s', missing contextual types replacements", node->name.c_str())});
     }
 
     // Types replacements
