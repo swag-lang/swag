@@ -26,11 +26,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));
     AstNode* expr;
-
-    {
-        ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
-        SWAG_CHECK(doPrimaryExpression(node, &expr));
-    }
+    SWAG_CHECK(doPrimaryExpression(node, &expr));
 
     SWAG_CHECK(eatSemiCol("after alias"));
 
@@ -314,7 +310,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
-        ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         if (inTypeVarDecl)
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;

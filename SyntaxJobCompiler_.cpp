@@ -22,7 +22,6 @@ bool SyntaxJob::doCompilerBake(AstNode* parent, AstNode** result)
     // The bake name acts as a type alias in the current module, so register the name
     currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
 
-    ScopedFlags scoped(this, AST_CAN_INSTANCIATE_TYPE);
     SWAG_CHECK(doIdentifierRef(node));
     return true;
 }

@@ -909,7 +909,7 @@ anotherTry:
                 }
             }
 
-            if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
+            if (!(node->flags & AST_IS_GENERIC) && genericParameters)
             {
                 // If we are inside a #back instruction, then setup
                 InstanciateContext instContext;
