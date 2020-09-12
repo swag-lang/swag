@@ -511,7 +511,10 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
-    if (!(node->parent->flags & AST_NO_BYTECODE))
+    bool checkForConcrete = true;
+    if (node->parent->flags & AST_NO_BYTECODE)
+        checkForConcrete = false;
+    if(checkForConcrete)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
         if (context->result == ContextResult::Pending)
@@ -527,9 +530,12 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (node->flags & AST_VALUE_COMPUTED)
         node->castedTypeInfo = child->castedTypeInfo;
 
-    SWAG_CHECK(evaluateConstExpression(context, node));
-    if (context->result == ContextResult::Pending)
-        return true;
+    if (checkForConcrete)
+    {
+        SWAG_CHECK(evaluateConstExpression(context, node));
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
 
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
