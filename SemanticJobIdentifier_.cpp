@@ -371,6 +371,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Struct:
     case SymbolKind::Interface:
+        if (!(overload->flags & OVERLOAD_IMPL))
+            SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
 

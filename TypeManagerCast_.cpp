@@ -11,27 +11,30 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (fromType->kind == TypeInfoKind::Struct && (castFlags & CASTFLAG_EXPLICIT))
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable.find("opCast");
-        if (symbol)
+        if (typeStruct->declNode)
         {
-            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+            auto symbol = structNode->scope->symTable.find("opCast");
+            if (symbol)
             {
-                auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
-                node->semanticFct = SemanticJob::resolveUserCast;
-                node->name        = Utf8Crc("opCast");
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    auto node = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
+                    node->semanticFct = SemanticJob::resolveUserCast;
+                    node->name = Utf8Crc("opCast");
 
-                auto lastNode = context->job->nodes.back();
-                context->job->nodes.pop_back();
-                context->job->nodes.push_back(node);
-                context->job->nodes.push_back(lastNode);
+                    auto lastNode = context->job->nodes.back();
+                    context->job->nodes.pop_back();
+                    context->job->nodes.push_back(node);
+                    context->job->nodes.push_back(lastNode);
 
-                node->castedTypeInfo = fromType;
-                node->typeInfo       = toType;
-                fromNode->flags |= AST_USER_CAST;
+                    node->castedTypeInfo = fromType;
+                    node->typeInfo = toType;
+                    fromNode->flags |= AST_USER_CAST;
+                }
+
+                return true;
             }
-
-            return true;
         }
     }
 

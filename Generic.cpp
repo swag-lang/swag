@@ -326,8 +326,29 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
 
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
-    auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instanciate generic function '%s', missing contextual types replacements", node->name.c_str())}));
+    auto       node             = context->node;
+    AstStruct* contextualStruct = nullptr;
+    AstNode*   contextualNode   = nullptr;
+
+    // Get the contextual structure call if it exists
+    if (context->node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        if (identifier->identifierRef->resolvedSymbolOverload && identifier->identifierRef->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            contextualNode   = identifier->identifierRef->previousResolvedNode;
+            contextualStruct = CastAst<AstStruct>(identifier->identifierRef->resolvedSymbolOverload->typeInfo->declNode, AstNodeKind::StructDecl);
+        }
+    }
+
+    // We should have types to replace
+    if (match.genericReplaceTypes.empty())
+    {
+        if (contextualNode)
+            return context->report({contextualNode, contextualNode->token, format("cannot instanciate generic function '%s', missing generic parameters", node->name.c_str())});
+        else
+            return context->report({node, node->token, format("cannot instanciate generic function '%s', missing contextual types replacements", node->name.c_str())});
+    }
 
     // Types replacements
     CloneContext cloneContext;
@@ -342,15 +363,10 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(funcNode->parent, newFunc);
 
-    if (context->node->kind == AstNodeKind::Identifier)
-    {
-        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->resolvedSymbolOverload && identifier->identifierRef->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct)
-        {
-            auto structNode = CastAst<AstStruct>(identifier->identifierRef->resolvedSymbolOverload->typeInfo->declNode, AstNodeKind::StructDecl);
-            newFunc->alternativeScopes.push_back(structNode->scope);
-        }
-    }
+    // If we are calling the function in a struct context (struct.func), then add the struct as
+    // an alternative scope
+    if (contextualStruct)
+        newFunc->alternativeScopes.push_back(contextualStruct->scope);
 
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
