@@ -22,13 +22,15 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
-    node->flags |= AST_CONST_EXPR | AST_PURE;
+    node->flags |= AST_CONST_EXPR | AST_PURE | AST_FROM_GENERIC_REPLACE;
     for (auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
         if (!(child->flags & AST_PURE))
             node->flags &= ~AST_PURE;
+        if (!(child->flags & AST_FROM_GENERIC_REPLACE))
+            node->flags &= ~AST_FROM_GENERIC_REPLACE;
         if (child->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
         if (child->flags & AST_IS_CONST)
@@ -659,6 +661,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     VectorNative<AstNode*> toCheck;
     if (node->ownerStructScope)
         toCheck.push_back(node->ownerStructScope->owner);
+    if (node->ownerFct)
+        toCheck.push_back(node->ownerFct);
 
     if (node->kind == AstNodeKind::Identifier)
     {
@@ -670,6 +674,17 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // Collect from the owner structure
     for (auto one : toCheck)
     {
+        // Inherit the type replacements from the owner function
+        if (one->kind == AstNodeKind::FuncDecl)
+        {
+            auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            for (auto oneReplace : nodeFunc->replaceTypes)
+            {
+                job->symMatch.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+            }
+        }
+
+        // Inherit the generic parameters from the owner struct
         if (one->typeInfo && one->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
@@ -1439,9 +1454,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Already solved
-    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined) && node->resolvedSymbolOverload)
+    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined))
     {
-        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
+        if (node->resolvedSymbolOverload)
+            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
         return true;
     }
 

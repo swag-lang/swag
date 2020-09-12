@@ -331,6 +331,22 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     newNode->aliasNames        = aliasNames;
 
+    // Check if we need to replace the name with a type substitution
+    // That way the new resolveIdentifier will just try to keep the typeinfo
+    auto it = context.replaceTypes.find(newNode->name);
+    if (it != context.replaceTypes.end())
+    {
+        newNode->name     = it->second->name;
+        newNode->typeInfo = it->second;
+        if (newNode->typeInfo->declNode)
+        {
+            newNode->resolvedSymbolName     = newNode->typeInfo->declNode->resolvedSymbolName;
+            newNode->resolvedSymbolOverload = newNode->typeInfo->declNode->resolvedSymbolOverload;
+        }
+        newNode->flags |= AST_FROM_GENERIC_REPLACE;
+        newNode->flags |= AST_FROM_GENERIC;
+    }
+
     return newNode;
 }
 

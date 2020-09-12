@@ -2,16 +2,23 @@ struct(T) Array
 {
 }
 
+var G = 0'u32
+
 impl Array
 {
-	func validateCount()
+	func validateCount(self)
 	{
+        //@print(@typeof(T).name)
 	    size := @sizeof(T)
+        G += size
     }
 
 	func add(self)
 	{
-		validateCount()
+        //@print(@typeof(T).name)
+        size := @sizeof(T)
+        G += size
+		validateCount(self)
 	}
 }
 
@@ -19,5 +26,10 @@ impl Array
 #test
 {
 	var arr: Array's32
-	arr.add()
+	Array.add(&arr)
+
+    var arr1: Array'bool
+    Array.add(&arr1)
+
+    @assert(G == 4 + 4 + 1 + 1)
 }

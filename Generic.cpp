@@ -335,6 +335,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    newFunc->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(funcNode->parent, newFunc);
 
     if (context->node->kind == AstNodeKind::Identifier)

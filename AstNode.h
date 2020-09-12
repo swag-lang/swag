@@ -412,14 +412,15 @@ struct AstFuncDecl : public AstNode
     SymbolAttributes collectAttributes;
     DependentJobs    dependentJobs;
 
-    Token          endToken;
-    AstNode*       parameters;
-    AstNode*       genericParameters;
-    AstNode*       returnType;
-    AstNode*       content;
-    Scope*         scope;
-    TypeInfoParam* methodParam;
-    Job*           pendingLambdaJob;
+    Token                   endToken;
+    AstNode*                parameters;
+    AstNode*                genericParameters;
+    AstNode*                returnType;
+    AstNode*                content;
+    Scope*                  scope;
+    TypeInfoParam*          methodParam;
+    Job*                    pendingLambdaJob;
+    map<Utf8Crc, TypeInfo*> replaceTypes;
 
     uint32_t stackSize = 0;
 
