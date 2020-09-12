@@ -370,6 +370,28 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 }
             }
         }
+
+        // If there's no specified generic parameters, and we try to match a concrete function, then we must to
+        // be sure that the current contextual types match the contextual types of the concrete function (if they are any)
+        else if (!userGenericParams && !(myTypeInfo->flags & TYPEINFO_GENERIC) && !context.genericReplaceTypes.empty())
+        {
+            if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
+            {
+                auto myFunc = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
+                if (!(myFunc->replaceTypes.empty()))
+                {
+                    for (auto one : context.genericReplaceTypes)
+                    {
+                        auto it = myFunc->replaceTypes.find(one.first);
+                        if (it == myFunc->replaceTypes.end() || it->second != one.second)
+                        {
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     for (int i = 0; i < userGenericParams; i++)

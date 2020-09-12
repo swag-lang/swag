@@ -12,20 +12,24 @@ struct(K, V) HashTable
     table:  *HashTableEntry
 }
 
+var G = 0'u32
+
 impl HashTable
 {
     func toto()
     {
-        @print(@typeof(K).name)
+        /*@print(@typeof(K).name)
         @print(@typeof(V).name)
-        @print("\n")
+        @print("\n")*/
+        G += @sizeof(K)
     }
 
     func grow(self)
     {
-        @print(@typeof(K).name)
+        /*@print(@typeof(K).name)
         @print(@typeof(V).name)
-        @print("\n")
+        @print("\n")*/
+        G += @sizeof(K)
         toto()
     }
 }
@@ -37,4 +41,6 @@ impl HashTable
 
     var arr2: HashTable'(bool, f32)
     HashTable.grow(arr2)
+
+    @assert(cast(s64) G == 18)
 }

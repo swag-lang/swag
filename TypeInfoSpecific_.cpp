@@ -553,6 +553,24 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
             return false;
         if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, isSameFlags))
             return false;
+
+        // If the two functions are generics, compare the types that have been used to instantiate the function.
+        // If the types does not match, then the two functions are not the same.
+        if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
+        {
+            auto myFunc    = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+            auto otherFunc = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
+            if (myFunc->replaceTypes.size() != otherFunc->replaceTypes.size())
+                return false;
+            for (auto r : myFunc->replaceTypes)
+            {
+                auto it = otherFunc->replaceTypes.find(r.first);
+                if (it == otherFunc->replaceTypes.end())
+                    return false;
+                if (r.second != it->second)
+                    return false;
+            }
+        }
     }
 
     for (int i = 0; i < genericParameters.size(); i++)
