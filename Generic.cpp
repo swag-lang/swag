@@ -194,15 +194,17 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
 bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
+    auto node = context->node;
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instanciate generic struct '%s', missing contextual types replacements", node->name.c_str())}));
+
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     context->job->waitForAllStructMethods((TypeInfoStruct*) match.symbolOverload->typeInfo);
     if (context->result != ContextResult::Done)
         return true;
 
-    CloneContext cloneContext;
-
     // Types replacements
+    CloneContext cloneContext;
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
 
     // We are batching the struct
@@ -324,15 +326,17 @@ void Generic::instanciateSpecialFunc(SemanticContext* context, Job* structJob, C
 
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstanciateContext& instContext)
 {
-    CloneContext cloneContext;
+    auto node = context->node;
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instanciate generic function '%s', missing contextual types replacements", node->name.c_str())}));
 
     // Types replacements
+    CloneContext cloneContext;
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
-    auto overload             = match.symbolOverload;
-    auto funcNode             = overload->node;
 
     // Clone original node
-    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    auto overload = match.symbolOverload;
+    auto funcNode = overload->node;
+    auto newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->content->flags &= ~AST_NO_SEMANTIC;
     newFunc->replaceTypes = cloneContext.replaceTypes;
