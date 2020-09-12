@@ -1095,37 +1095,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::TestNotZero8:
-            if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RAX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_8(RAX);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero16:
-            if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u16, RAX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_16(RAX);
             BackendX64Inst::emit_Test16(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero32:
-            if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_32(RAX);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::TestNotZero64:
-            if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            MK_IMMB_64(RAX);
             BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emit_SetNE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
