@@ -12,9 +12,9 @@ namespace std.collections
     public struct(K, V) HashTable
     {
         allocator:  const IAllocator
-        table:      *HashTableEntry'(K, V)
+        table:      *HashTableEntry
         count:      u32 // Number of valid entries
-        allocated:  u32 // Number of total entries the table can hold
+        capacity:   u32 // Number of total entries the table can hold
         removed:    u32 // Number of removed entries
     }
 
@@ -48,7 +48,7 @@ namespace std.collections
                 // Need to drop every structs
                 #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
                 {
-                    loop i: allocated
+                    loop i: capacity
                     {
                         if table[i].hash >= HASH_FIRST
                         {
@@ -64,38 +64,30 @@ namespace std.collections
             func grow(using self)
             {
                 // We need to trigger the growing of the table is there's not enough room
-                if allocated != 0 && allocated - (count + removed) > allocated / 4
+                if capacity != 0 && capacity - (count + removed) > capacity / 4
                     return
 
+                newCapacity := capacity * 2
+                if(newCapacity < 32) newCapacity = 32
+                reserve(newCapacity)
+            }
+
+            func reserve(using self, newCapacity: u32)
+            {
                 if allocator == null
                     allocator = @getcontext().allocator
-
-                newAllocated := allocated * 2
-                if(newAllocated < 32) newAllocated = 32
 
                 oldTable := table
                 count = 0
                 removed = 0
-                newAllocatedBytes := newAllocated * @sizeof(HashTableEntry)
-                table = acast memory.alloc(&allocator, newAllocatedBytes)
+                newCapacityBytes := newCapacity * @sizeof(HashTableEntry)
+                table = acast memory.alloc(&allocator, newCapacityBytes)
 
                 // Be sure hash entry is 0
-                memory.clear(table, newAllocatedBytes)
-
-                @print("newAllocatedBytes=")
-                @print(cast(s64)@sizeof(HashTableEntry))
-                @print("\n")
-                loop i: newAllocated
-                {
-                    @print("v")
-                    @print(cast(s64) i)
-                    @print("=")
-                    @print(cast(s64) table[i].hash)
-                    @print(" ")
-                }
+                memory.clear(table, newCapacityBytes)
 
                 // Copy the last table to the new table, removing deleted entries
-                loop i: allocated
+                loop i: capacity
                 {
                     if oldTable[i].hash >= HASH_FIRST
                     {
@@ -105,7 +97,7 @@ namespace std.collections
                     }
                 }
 
-                allocated = newAllocated
+                capacity = newCapacity
             }
 
             // Add a new key value pair. If the key already exists, then the value will be replaced
@@ -114,7 +106,7 @@ namespace std.collections
                 grow(self)
 
                 hashVal := hash(key)
-                index := hashVal % allocated
+                index := hashVal % capacity
 
                 while table[index].hash
                 {
@@ -125,7 +117,7 @@ namespace std.collections
                     }
 
                     index += 1
-                    if index == allocated
+                    if index == capacity
                         index = 0
                 }
 
@@ -141,14 +133,14 @@ namespace std.collections
                 if !table return false
 
                 hashVal := hash(key)
-                index := hashVal % allocated
+                index := hashVal % capacity
 
                 while table[index].hash
                 {
                     if table[index].hash == hashVal && table[index].key == key
                         return true
                     index += 1
-                    if index == allocated
+                    if index == capacity
                         index = 0
                 }
 
