@@ -15,7 +15,7 @@ namespace std.collections
         table:      *HashTableEntry
         count:      u32 // Number of valid entries
         capacity:   u32 // Number of total entries the table can hold
-        removed:    u32 // Number of removed entries
+        deleted:    u32 // Number of deleted entries
     }
 
     public impl HashTable
@@ -95,7 +95,7 @@ namespace std.collections
         func grow(using self)
         {
             // We need to trigger the growing of the table is there's not enough room
-            if capacity != 0 && capacity - (count + removed) > capacity / 4
+            if capacity != 0 && capacity - (count + deleted) > capacity / 4
                 return
 
             newCapacity := capacity * 2
@@ -111,7 +111,7 @@ namespace std.collections
 
             oldTable := table
             count = 0
-            removed = 0
+            deleted = 0
             newCapacityBytes := reqCapacity * @sizeof(HashTableEntry)
 
             if allocator == null
@@ -157,7 +157,7 @@ namespace std.collections
             }
 
             if table[index].hash == HASH_DELETED
-                removed -= 1
+                deleted -= 1
             table[index].hash = hashVal
             table[index].key = key
             table[index].value = value
@@ -176,7 +176,7 @@ namespace std.collections
                 {
                     table[index].hash = HASH_DELETED;
                     count -= 1
-                    removed += 1
+                    deleted += 1
                     return
                 }
 
@@ -211,22 +211,33 @@ namespace std.collections
         {
             // Need to put the 'hash' value of each entry to HASH_FREE
             // Drop the key and the value if necessary
-            loop capacity
+            if count || deleted
             {
-                #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
+                loop capacity
                 {
-                    if table[@index].hash >= HASH_FIRST
+                    hashval := table[@index].hash
+                    #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
                     {
-                        @drop(table[@index].key)
-                        @drop(table[@index].value)
+                        if hashval >= HASH_FIRST
+                        {
+                            @drop(&table[@index].key)
+                            @drop(&table[@index].value)
+                        }
                     }
-                }
 
-                table[@index].hash = HASH_FREE
+                    if hashval == HASH_DELETED
+                        deleted -= 1
+                    else if hashval >= HASH_FIRST
+                        count -= 1
+                    table[@index].hash = HASH_FREE
+
+                    // We are done if there's no more valid value, and no more deleted value
+                    if !count && !deleted
+                        break
+                }
             }
 
-            count = 0
-            removed = 0
+            std.diagnostics.debug.assert(count == 0 && deleted == 0)
         }
     }
 }
