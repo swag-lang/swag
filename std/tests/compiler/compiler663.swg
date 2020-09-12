@@ -1,6 +1,3 @@
-#module "compiler663"
-
-
 enum OT
 {
 	A = 1
@@ -8,7 +5,6 @@ enum OT
 }
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	pt := OT
