@@ -11,4 +11,6 @@ using std.collections, std.text, std.diagnostics
     x := String.from("toto")
     y := String.from("toto")
     @assert(x == y)
+    y = "titi"
+    @assert(x != y)
 }

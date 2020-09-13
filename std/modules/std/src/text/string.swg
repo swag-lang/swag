@@ -31,6 +31,14 @@ namespace std.text
         }
     }
 
+    public impl IConvert for String
+    {
+        func convert(using self, buf: *ConcatBuffer, strFormat: string)
+        {
+            @print("convert\n")
+        }
+    }
+
     public impl IHash32 for String
     {
         func hash(using self)->u32

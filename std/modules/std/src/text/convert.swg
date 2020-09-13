@@ -88,12 +88,7 @@ namespace std.text
         // Convert a value to an utf8 string, and append the result in a ConcatBuffer
         func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
         {
-            type := @kindof(value)
-
-/*            if type.kind == TypeInfoKind.Reference
-            {
-                typeRef := cast(const *TypeInfoReference) type
-            }*/
+            type := cast(const *TypeInfo) @kindof(value)
 
             // A pointer, whatever type
             if type.kind == TypeInfoKind.Pointer

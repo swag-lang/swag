@@ -552,13 +552,27 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
             SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = child->concreteTypeInfoStorage;
+
+            // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
+            // and not a reference to a type
+            if (typeParam->kind == TypeInfoKind::Reference)
+            {
+                ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) context->sourceFile->module->typeSegment.address(child->concreteTypeInfoStorage);
+                auto                       offsetRef = context->sourceFile->module->typeSegment.offset((uint8_t*)typeRef->pointedType);
+
+                emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = offsetRef;
+            }
+            else
+            {
+                emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = child->concreteTypeInfoStorage;
+            }
+
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
-            if (typeParam->kind == TypeInfoKind::Struct)
+            // For a struct (and not a pointer to struct), or a reference, we directly set the data pointer in the 'any' instead
+            // of pushing it to the stack.
+            if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Reference)
             {
-                // For a struct (and not a pointer to struct), we directly set the data pointer in the 'any' instead
-                // of pushing it to the stack.
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
             }
             else
