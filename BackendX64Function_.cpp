@@ -147,8 +147,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     BackendX64Inst::emit_Push(pp, RDI);
-    if (sizeStack % 16)
-        sizeStack += 8; // Align to 16 bytes
+    MK_ALIGN16(sizeStack);
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
     BackendX64Inst::emit_Copy64(pp, RSP, RDI);
 
@@ -275,14 +274,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     BackendX64Inst::emit_Push(pp, RDI);
-    while (sizeStack % 16)
-        sizeStack++; // Align to 16 bytes
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    BackendX64Inst::emit_Copy64(pp, RSP, RDI);
-
-    // C calling convention, space for at least 4 parameters when calling a function
-    // (should be reserved only if we have a call)
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 4 * sizeof(uint64_t));
+    MK_ALIGN16(sizeStack);
+    // x64 calling convention, space for at least 4 parameters when calling a function
+    // (should ideally be reserved only if we have a call)
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
+    pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -1596,8 +1592,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopySPVaargs:
             variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
-            if (variadicStackSize % 16)
-                variadicStackSize += 8;
+            MK_ALIGN16(variadicStackSize);
             BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, variadicStackSize);
             for (int idxParam = (int) pushRAParams.size() - 1, offset = 8; idxParam >= 0; idxParam--, offset += 8)
             {
@@ -1731,8 +1726,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Reserve room for additional parameters (the one that cannot stored in registers)
             sizeCallStack = pushRAParams.size() > 3 ? ((int) pushRAParams.size() - 3) * sizeof(Register) : 0;
-            if (sizeCallStack % 16)
-                sizeCallStack += 8;
+            MK_ALIGN16(sizeCallStack);
             BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeCallStack);
 
             for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
@@ -2291,8 +2285,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         // (remember: we already have reserved 4 x uint64_t for the first four parameters)
         for (int i = 4; i < (int) paramsRegisters.size(); i++)
             exceededStack += 8;
-        if (exceededStack % 16)
-            exceededStack += 8;
+        MK_ALIGN16(exceededStack);
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
         BackendX64Inst::emit_Copy64(pp, RSP, RBX);
 
