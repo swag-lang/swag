@@ -146,14 +146,23 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         sizeStack += sizeof(Register);
     }
 
-    BackendX64Inst::emit_Push(pp, RDI);
-    MK_ALIGN16(sizeStack);
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
-    BackendX64Inst::emit_Copy64(pp, RSP, RDI);
+    if (sizeStack)
+    {
+        BackendX64Inst::emit_Push(pp, RDI);
+        MK_ALIGN16(sizeStack);
+        sizeStack += 4 * sizeof(Register);
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
+        BackendX64Inst::emit_Copy64(pp, RSP, RDI);
+    }
+    else
+    {
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 5 * sizeof(Register));
+    }
 
     // Need to save return register if needed
     if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
     {
+        SWAG_ASSERT(sizeStack);
         SWAG_ASSERT(pushRAParams.size() >= 2);
         int offset = (int) pushRAParams.size() - 2;
         switch (offset)
@@ -225,8 +234,16 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RDX);
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
-    BackendX64Inst::emit_Pop(pp, RDI);
+    if (sizeStack)
+    {
+        BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack);
+        BackendX64Inst::emit_Pop(pp, RDI);
+    }
+    else
+    {
+        BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 5 * sizeof(Register));
+    }
+
     BackendX64Inst::emit_Ret(pp);
     return true;
 }
