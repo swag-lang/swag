@@ -1478,7 +1478,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RDX);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line + 1, R8);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line, R8);
             if (ip->d.pointer)
                 emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, R9);
             else

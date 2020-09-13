@@ -1,0 +1,4 @@
+#test
+{
+    tcf_assert()
+}

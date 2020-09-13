@@ -163,6 +163,10 @@ public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
     fct(v,w,x,y,z)
 }
 
+public func tcf_assert()
+{
+    @assert(false)
+}
 
 public namespace tcf
 {
