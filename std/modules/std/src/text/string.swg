@@ -85,6 +85,13 @@ namespace std.text
             return memory.compare(buffer, @dataof(other), length) == 0
         }
 
+        func opEquals(using self, other: Self)->bool
+        {
+            if length != other.length
+                return false
+            return memory.compare(buffer, other.buffer, length) == 0
+        }
+
         func(op: string) opAssign(using self, value: string)
         {
             #if op == "+="
