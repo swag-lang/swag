@@ -7,6 +7,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "ModuleManager.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -174,9 +175,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto funcChild = mapItIdxToFunc[i];
         if (funcChild->attributeFlags & ATTRIBUTE_FOREIGN)
         {
-            *ptrITable = doForeignLambda(funcChild);
             funcChild->computeFullNameForeign(true);
+
+            // Need to patch the segment at runtime, init, with the real address of the function
             module->constantSegment.addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
+
+            // This will be filled when the module will be loaded, with the real function address
+            *ptrITable = nullptr;
+            g_ModuleMgr.addPatchFuncAddress((void**) module->constantSegment.address(offset), funcChild);
         }
         else
         {

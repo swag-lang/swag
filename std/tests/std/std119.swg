@@ -9,7 +9,7 @@ func toto(v: String)
     //if itf != null
     //    itf.convert(&buf, null)
 
-    //console.write("%", v)
+    console.write("std119: %", v)
 }
 
 #test

@@ -5,13 +5,15 @@
 #include "Ast.h"
 #include "Profile.h"
 #include "Timer.h"
+#include "TypeInfo.h"
+#include "DataSegment.h"
 
 ModuleManager g_ModuleMgr;
 
-bool ModuleManager::isModuleLoaded(const Utf8& name)
+bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
 {
     shared_lock lk(mutexLoaded);
-    return loadedModules.find(name) != loadedModules.end();
+    return loadedModules.find(moduleName) != loadedModules.end();
 }
 
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
@@ -54,7 +56,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (verbose)
     {
         loadLibTimer.stop();
-        g_Log.verbosePass(LogPassType::Info,  "LoadModule", name.c_str(), loadLibTimer.elapsed.count());
+        g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed.count());
     }
 
     unique_lock lk(mutex);
@@ -78,17 +80,59 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
     unique_lock lk1(mutexLoaded);
     loadedModules[name] = h;
+    applyPatches(name);
 
     return true;
 }
 
-void* ModuleManager::getFnPointer(ByteCodeRunContext* context, const Utf8& moduleName, const Utf8& funcName)
+void* ModuleManager::getFnPointerNoLock(const Utf8& moduleName, const Utf8& funcName)
 {
-    SWAG_ASSERT(!moduleName.empty());
-
-    shared_lock lk(mutexLoaded);
-    auto        here = loadedModules.find(moduleName);
+    auto here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
         return OS::getProcAddress(here->second, funcName.c_str());
     return nullptr;
+}
+
+void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
+{
+    SWAG_ASSERT(!moduleName.empty());
+    shared_lock lk(mutexLoaded);
+    return getFnPointerNoLock(moduleName, funcName);
+}
+
+void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
+{
+    unique_lock lk(mutexPatch);
+
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
+
+    ComputedValue moduleName;
+    typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
+    SWAG_ASSERT(!moduleName.text.empty());
+
+    PatchOffset newPatch;
+    newPatch.patchAddress = patchAddress;
+    newPatch.funcDecl     = func;
+
+    auto it = patchOffsets.find(moduleName.text);
+    if (it == patchOffsets.end())
+        patchOffsets[moduleName.text] = {newPatch};
+    else
+        it->second.push_back(newPatch);
+}
+
+void ModuleManager::applyPatches(const Utf8& moduleName)
+{
+    unique_lock lk(mutexPatch);
+
+    auto it = patchOffsets.find(moduleName);
+    if (it == patchOffsets.end())
+        return;
+
+    for (auto& one : it->second)
+    {
+        auto fnPtr = getFnPointerNoLock(moduleName, one.funcDecl->fullnameForeign);
+        SWAG_ASSERT(fnPtr);
+        *one.patchAddress = doForeignLambda(fnPtr);
+    }
 }

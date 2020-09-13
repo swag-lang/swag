@@ -120,6 +120,7 @@ struct Module
     bool      isBootStrap      = false;
     bool      hasUnittestError = false;
     bool      setupDone        = false;
+    bool      dependenciesDone = false;
 
     void     addForeignLib(const Utf8& text);
     void     addDependency(AstNode* importNode);

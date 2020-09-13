@@ -11,6 +11,7 @@
 #include "BackendX64.h"
 #include "ThreadManager.h"
 #include "Context.h"
+#include "ModuleManager.h"
 
 bool Module::mustGenerateTestExe()
 {
@@ -517,6 +518,9 @@ bool Module::hasBytecodeToRun()
 
 bool Module::WaitForDependenciesDone(Job* job)
 {
+    if (dependenciesDone)
+        return true;
+
     for (auto& dep : moduleDependencies)
     {
         auto depModule = dep->module;
@@ -531,7 +535,10 @@ bool Module::WaitForDependenciesDone(Job* job)
             depModule->dependentJobs.add(job);
             return false;
         }
+
+        g_ModuleMgr.loadModule(depModule->name);
     }
 
+    dependenciesDone = true;
     return true;
 }

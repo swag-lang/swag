@@ -546,8 +546,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Be sure to point to the first register of the type, if it has many
             offset += (typeParam->numRegisters() - 1) * sizeof(Register);
 
-            ByteCodeInstruction* inst;
-
             // Store concrete type info
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
@@ -557,10 +555,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // and not a reference to a type
             if (typeParam->kind == TypeInfoKind::Reference)
             {
-                ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) context->sourceFile->module->typeSegment.address(child->concreteTypeInfoStorage);
-                auto                       offsetRef = context->sourceFile->module->typeSegment.offset((uint8_t*)typeRef->pointedType);
-
-                emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = offsetRef;
+                auto                       module    = context->sourceFile->module;
+                ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) module->typeSegment.address(child->concreteTypeInfoStorage);
+                auto                       offsetRef = module->typeSegment.offset((uint8_t*) typeRef->pointedType);
+                auto                       inst      = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
+                inst->b.u64                          = offsetRef;
             }
             else
             {
@@ -583,7 +582,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // The value will be stored on the stack (1 or 2 registers max). So we push now the address
                 // of that value on that stack. This is the data part of the 'any'
                 // Store address of value on the stack
-                inst        = emitInstruction(context, ByteCodeOp::CopySP, r1);
+                auto inst   = emitInstruction(context, ByteCodeOp::CopySP, r1);
                 inst->b.u32 = offset;
                 inst->c.u32 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
