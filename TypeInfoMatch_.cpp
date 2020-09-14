@@ -151,7 +151,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
                             typeInfos.push_back(typePtr->pointedType);
                         }
-                        else if (typeInfo->kind == TypeInfoKind::Struct)
+                        else
                         {
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
                             typeInfos.push_back(typeInfo);
@@ -171,9 +171,23 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Slice:
                     {
                         auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
-                        auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-                        symbolTypeInfos.push_back(symbolSlice->pointedType);
-                        typeInfos.push_back(typeSlice->pointedType);
+                        if (typeInfo->kind == TypeInfoKind::Slice)
+                        {
+                            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+                            symbolTypeInfos.push_back(symbolSlice->pointedType);
+                            typeInfos.push_back(typeSlice->pointedType);
+                        }
+                        else if (typeInfo->kind == TypeInfoKind::Array)
+                        {
+                            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                            symbolTypeInfos.push_back(symbolSlice->pointedType);
+                            typeInfos.push_back(typeArray->pointedType);
+                        }
+                        else
+                        {
+                            symbolTypeInfos.push_back(symbolSlice->pointedType);
+                            typeInfos.push_back(typeInfo);
+                        }
                         break;
                     }
 
