@@ -1,8 +1,9 @@
 func(T) sort(values: [..] T, cb: func(T, T)->s32)
 {
     buffer := @dataof(values)
+    count := @countof(values)
 
-    for i := 1'u32; i < @countof(values); i += 1
+    for i := 1'u32; i < count; i += 1
     {
         tmp := move buffer[i]
         j := i
