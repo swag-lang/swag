@@ -138,7 +138,7 @@ namespace std.collections
         // Add a new key value pair. If the key already exists, then the value will be replaced
         func add(using self, key: K, value: V)
         {
-            grow(self)
+            grow()
 
             hashVal := hash(key)
             index := hashVal % capacity
@@ -151,9 +151,7 @@ namespace std.collections
                     return
                 }
 
-                index += 1
-                if index == capacity
-                    index = 0
+                index = (index + 1) % capacity
             }
 
             if table[index].hash == HASH_DELETED
@@ -180,9 +178,7 @@ namespace std.collections
                     return
                 }
 
-                index += 1
-                if index == capacity
-                    index = 0
+                index = (index + 1) % capacity
             }
         }
 
@@ -198,9 +194,7 @@ namespace std.collections
             {
                 if table[index].hash == hashVal && table[index].key == key
                     return true
-                index += 1
-                if index == capacity
-                    index = 0
+                index = (index + 1) % capacity
             }
 
             return false
@@ -236,8 +230,6 @@ namespace std.collections
                         break
                 }
             }
-
-            std.diagnostics.debug.assert(count == 0 && deleted == 0)
         }
     }
 }
