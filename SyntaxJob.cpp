@@ -49,9 +49,9 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         {
         case TokenId::KwdNoDrop:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return syntaxError(token, "'raw' instruction must be placed before 'move'");
+                return syntaxError(token, "'nodrop' instruction must be placed before 'move'");
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdNoDrop)
-                return syntaxError(token, "'raw' instruction defined twice");
+                return syntaxError(token, "'nodrop' instruction defined twice");
             break;
         case TokenId::KwdMove:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
