@@ -108,7 +108,16 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     }
                     else
                     {
-                        if (symbolTypeInfo->kind != TypeInfoKind::Pointer)
+                        bool canReg = true;
+                        if (symbolTypeInfo->kind == TypeInfoKind::Pointer)
+                            canReg = false;
+
+                        // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
+                        // yet the type of parameters)
+                        if (typeInfo->declNode && (typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+                            canReg = false;
+
+                        if (canReg)
                         {
                             // Associate the generic type with that concrete one
                             context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
@@ -206,7 +215,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         {
                             auto symbolParam = CastTypeInfo<TypeInfoParam>(symbolLambda->parameters[idx], TypeInfoKind::Param);
                             auto typeParam   = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
-                            if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC)
+                            if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC &&
+                                !typeParam->typeInfo->isNative(NativeTypeKind::Undefined)) // For lambda literals, with deduced types
                             {
                                 symbolTypeInfos.push_back(symbolParam->typeInfo);
                                 typeInfos.push_back(typeParam->typeInfo);
