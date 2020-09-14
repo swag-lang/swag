@@ -82,7 +82,11 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 while (symbolTypeInfos.size())
                 {
                     symbolTypeInfo = symbolTypeInfos.back();
-                    typeInfo       = typeInfos.back();
+
+                    // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
+                    // reference as a concrete type
+                    typeInfo = TypeManager::concreteReference(typeInfos.back());
+
                     symbolTypeInfos.pop_back();
                     typeInfos.pop_back();
 
@@ -110,9 +114,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                         if (needReg)
                         {
+                            // Associate the generic type with that concrete one
                             context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
 
-                            // If this is a valid generic argument, register it
+                            // If this is a valid generic argument, register it at the correct call position
                             auto itIdx = context.mapGenericTypesIndex.find(symbolTypeInfo->name);
                             if (itIdx != context.mapGenericTypesIndex.end())
                             {
