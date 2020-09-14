@@ -10,15 +10,27 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
     {
         auto param = typeGenericParameters[i];
 
+        // If the user has specified a generic type, take it
         if (callGenericParameters)
         {
             param->typeInfo = callGenericParameters->childs[i]->typeInfo;
             param->value    = callGenericParameters->childs[i]->computedValue;
         }
-        else
+
+        // If we have a calltype filled with the match, take it
+        else if(match.genericParametersCallTypes[i])
         {
             param->typeInfo = match.genericParametersCallTypes[i];
         }
+
+        // Take the type as it is in the instantiated struct/func
+        else
+        {
+            SWAG_ASSERT(i < nodeGenericParameters.size());
+            param->typeInfo = nodeGenericParameters[i]->typeInfo;
+        }
+
+        SWAG_ASSERT(param->typeInfo);
 
         // We should not instantiate with unresolved types
         auto genGen = match.genericParametersGenTypes[i];

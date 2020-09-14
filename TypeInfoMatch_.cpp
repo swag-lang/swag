@@ -314,7 +314,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                             auto it = context.genericReplaceTypes.find(genType->name);
                             if (it != context.genericReplaceTypes.end())
                             {
-                                context.genericParametersCallTypes[i] = it->second;
+                                context.genericParametersCallTypes[i]       = it->second;
                                 context.mapGenericTypesIndex[genType->name] = i;
                                 continue;
                             }
