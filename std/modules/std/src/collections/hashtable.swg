@@ -200,6 +200,25 @@ namespace std.collections
             return false
         }
 
+        // Find the given key, and returns the corresponding entry.
+        // Returns null if the key is not there.
+        func find(using self, key: K)->const *HashTableEntry
+        {
+            if !table return null
+
+            hashVal := hash(key)
+            index := hashVal % capacity
+
+            while table[index].hash
+            {
+                if table[index].hash == hashVal && table[index].key == key
+                    return &table[index]
+                index = (index + 1) % capacity
+            }
+
+            return null
+        }
+
         // Remove all elements
         func clear(using self)
         {
