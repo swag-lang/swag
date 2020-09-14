@@ -139,7 +139,7 @@ struct SyntaxJob : public Job
     bool doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftExpressionVar(AstNode** result);
+    bool doLeftExpressionVar(AstNode** result, bool acceptParameters = true);
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDrop(AstNode* parent, AstNode** result = nullptr);

@@ -715,7 +715,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionVar(AstNode** result)
+bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
 {
     switch (token.id)
     {
@@ -726,7 +726,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_CHECK(doIdentifierRef(multi));
+            SWAG_CHECK(doIdentifierRef(multi, nullptr, acceptParameters));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
@@ -743,7 +743,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result)
         AstNode* multi    = nullptr;
         while (true)
         {
-            SWAG_CHECK(doIdentifierRef(multi, &exprNode));
+            SWAG_CHECK(doIdentifierRef(multi, &exprNode, acceptParameters));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
