@@ -108,11 +108,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     }
                     else
                     {
-                        bool needReg = true;
-                        if (symbolTypeInfo->kind == TypeInfoKind::Pointer && typeInfo->kind == TypeInfoKind::Struct)
-                            needReg = false;
-
-                        if (needReg)
+                        if (symbolTypeInfo->kind != TypeInfoKind::Pointer)
                         {
                             // Associate the generic type with that concrete one
                             context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
