@@ -35,7 +35,7 @@ namespace std.text
     {
         func convert(using self, buf: *ConcatBuffer, strFormat: string)
         {
-            buf.addBytes("convert")
+            buf.addBytes(@mkslice(buffer, length))
         }
     }
 

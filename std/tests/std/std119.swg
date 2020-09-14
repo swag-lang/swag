@@ -3,17 +3,13 @@ using std.collections, std.text, std.diagnostics
 
 func toto(v: String)
 {
-    //itf := @mkinterface(&v, @typeof(String), IConvert)
-
-    //var buf: ConcatBuffer
-    //if itf != null
-    //    itf.convert(&buf, null)
-
-    console.write("std119: %", v)
+    res := format("std119: %", v)
+    @assert(res == "std119: yes this is a string")
+    //console.write("%", res)
 }
 
 #test
 {
-    var x: String
+    var x: String = "yes this is a string"
     toto(x)
 }
