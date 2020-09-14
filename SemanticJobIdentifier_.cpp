@@ -661,9 +661,14 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     job->symMatch.mapGenericTypesIndex.clear();
 
     VectorNative<AstNode*> toCheck;
+
+    // If we are inside a struct, then we can inherit the generic concrete types of that struct
     if (node->ownerStructScope)
         toCheck.push_back(node->ownerStructScope->owner);
-    if (node->ownerFct)
+
+    // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
+    // when instantiating function B
+    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == node->ownerStructScope)
         toCheck.push_back(node->ownerFct);
 
     if (node->kind == AstNodeKind::Identifier)

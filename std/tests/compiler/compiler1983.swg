@@ -1,10 +1,15 @@
-func(T) toto(x: *T)
+func(T) toto(x: T)
 {
+    #assert @typeof(T) == bool
+}
 
+func(T) titi(x: T)
+{
+    #assert @typeof(T) == s32
+    toto(true)
 }
 
 #test
 {
-    x := 0
-    toto's32(&x)
+    titi's32(0)
 }
