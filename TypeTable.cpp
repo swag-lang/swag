@@ -236,7 +236,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         }
     }
 
-    if ((cflags & CONCRETE_FOR_COMPILER))
+    if (!(cflags & CONCRETE_FOR_COMPILER))
         g_Stats.totalConcreteTypes++;
 
     auto node       = context->node;
