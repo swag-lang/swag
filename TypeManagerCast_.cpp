@@ -14,14 +14,14 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (typeStruct->declNode)
         {
             auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-            auto symbol = structNode->scope->symTable.find("opCast");
+            auto symbol     = structNode->scope->symTable.find("opCast");
             if (symbol)
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    auto node = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
+                    auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
                     node->semanticFct = SemanticJob::resolveUserCast;
-                    node->name = Utf8Crc("opCast");
+                    node->name        = Utf8Crc("opCast");
 
                     auto lastNode = context->job->nodes.back();
                     context->job->nodes.pop_back();
@@ -29,7 +29,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                     context->job->nodes.push_back(lastNode);
 
                     node->castedTypeInfo = fromType;
-                    node->typeInfo = toType;
+                    node->typeInfo       = toType;
                     fromNode->flags |= AST_USER_CAST;
                 }
 
@@ -2277,6 +2277,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         if (!toType->isConst() && fromType->isConst())
         {
             if (!toType->isNative(NativeTypeKind::String) &&
+                (!toType->isNative(NativeTypeKind::Bool) || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
                 (!toType->isNative(NativeTypeKind::U64) || fromType->kind != TypeInfoKind::Pointer))
             {
                 if (!(castFlags & CASTFLAG_UNCONST))
