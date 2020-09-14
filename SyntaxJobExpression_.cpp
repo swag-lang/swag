@@ -236,6 +236,27 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken());
+    auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
+    auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
+    arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
+    arrayNode->isDeref     = true;
+    SWAG_CHECK(doUnaryExpression(arrayNode, &arrayNode->array));
+
+    auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
+    literal->computedValue.reg.u64 = 0;
+    literal->token.literalType     = LiteralType::TT_S32;
+    literal->setFlagsValueIsComputed();
+    literal->semanticFct = SemanticJob::resolveLiteral;
+    arrayNode->access    = literal;
+
+    if (result)
+        *result = identifierRef;
+    return true;
+}
+
 bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 {
     AstNode* exprNode;
@@ -261,21 +282,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     // Dereference pointer
     else if (token.id == TokenId::KwdDeRef)
     {
-        SWAG_CHECK(eatToken());
-        auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
-        auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
-        arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
-        arrayNode->isDeref     = true;
-        SWAG_CHECK(doUnaryExpression(arrayNode, &arrayNode->array));
-
-        auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
-        literal->computedValue.reg.u64 = 0;
-        literal->token.literalType     = LiteralType::TT_S32;
-        literal->setFlagsValueIsComputed();
-        literal->semanticFct = SemanticJob::resolveLiteral;
-        arrayNode->access    = literal;
-
-        exprNode = identifierRef;
+        SWAG_CHECK(doDeRef(parent, &exprNode));
     }
     else
     {
@@ -785,6 +792,11 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::SymBackTick:
         SWAG_CHECK(doLeftExpressionVar(result));
         return true;
+
+    case TokenId::KwdDeRef:
+        SWAG_CHECK(doDeRef(nullptr, result));
+        return true;
+
     default:
         return invalidTokenError(InvalidTokenError::LeftExpression);
     }

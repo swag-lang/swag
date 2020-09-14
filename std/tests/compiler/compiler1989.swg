@@ -1,8 +1,8 @@
 func(T) swap(x, y: *T)
 {
     var tmp = move deref x
-    x[0] = nodrop move deref y
-    y[0] = nodrop move tmp
+    deref x = nodrop move deref y
+    deref y = nodrop move tmp
 }
 
 #test

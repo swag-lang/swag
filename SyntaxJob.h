@@ -104,6 +104,7 @@ struct SyntaxJob : public Job
     bool doIndex(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
