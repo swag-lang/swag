@@ -1,4 +1,4 @@
-namespace std.collections
+namespace std.algorithms
 {
     // Slow sorting (insertion sort algorithm) of a slice. Use it if slice
     // is small, otherwise it's better to use 'sortQuick'
