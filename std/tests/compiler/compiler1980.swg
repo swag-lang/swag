@@ -5,19 +5,12 @@ struct A
 
 func(T) titi(x: T)
 {
-    @print(@typeof(T).name)
-    @print("\n")
-    @print(@typeof(x).name)
-    @print("\n")
-    //@assert(@typeof(x).kind == swag.TypeInfoKind.Struct)
+    #assert(@typeof(T).kind == swag.TypeInfoKind.Struct)
 }
 
 func(T) toto(x: T)
 {
-    @print(@typeof(T).name)
-    @print("\n")
-    @print(@typeof(x).name)
-    @print("\n")
+    #assert(@typeof(T).kind == swag.TypeInfoKind.Struct)
     titi(x)
 }
 
