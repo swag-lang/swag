@@ -242,6 +242,50 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     }
 }
 
+static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters)
+{
+    for (int j = 0; j < parameters.size(); j++)
+    {
+        auto symbolParameter = parameters[j];
+        if (parameters[j]->namedParam == callParameter->namedParam)
+        {
+            if (context.doneParameters[j])
+            {
+                context.badSignatureInfos.badSignatureParameterIdx = parameterIndex;
+                context.result                                     = MatchResult::DuplicatedNamedParameter;
+                return;
+            }
+
+            auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+            bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
+            if (!same)
+            {
+                context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
+                context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                context.result = MatchResult::BadSignature;
+            }
+
+            context.solvedParameters[j]      = symbolParameter;
+            callParameter->resolvedParameter = symbolParameter;
+            callParameter->index             = j;
+            context.doneParameters[j]        = true;
+            context.cptResolved++;
+            return;
+        }
+
+        // Search inside a sub structure marked with 'using'
+        if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->node->flags & AST_DECL_USING)
+        {
+            auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
+            matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields);
+            if (callParameter->resolvedParameter)
+                return;
+        }
+    }
+}
+
 static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters)
 {
     if (!context.hasNamedParameters)
@@ -265,47 +309,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             return;
         }
 
-        for (int j = startResolved; j < parameters.size(); j++)
-        {
-            auto symbolParameter = parameters[j];
-            if (parameters[j]->namedParam == param->namedParam)
-            {
-                if (context.doneParameters[j])
-                {
-                    context.badSignatureInfos.badSignatureParameterIdx = i;
-                    context.result                                     = MatchResult::DuplicatedNamedParameter;
-                    return;
-                }
-
-                auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
-                bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
-                if (!same)
-                {
-                    context.badSignatureInfos.badSignatureParameterIdx  = i;
-                    context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
-                    context.badSignatureInfos.badSignatureGivenType     = typeInfo;
-                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                    context.result = MatchResult::BadSignature;
-                }
-
-                context.solvedParameters[j] = symbolParameter;
-                param->resolvedParameter    = symbolParameter;
-                param->index                = j;
-                context.doneParameters[j]   = true;
-                context.cptResolved++;
-                break;
-            }
-
-            // Search inside a sub structure marked with 'using'
-            if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->node->flags & AST_DECL_USING)
-            {
-                auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
-                matchNamedParameters(context, subStruct->fields);
-                if (param->resolvedParameter)
-                    break;
-            }
-        }
-
+        matchNamedParameter(context, param, i, parameters);
         if (!param->resolvedParameter)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
