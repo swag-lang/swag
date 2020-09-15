@@ -324,11 +324,12 @@ namespace BackendX64Inst
         pp.concat.addU8(0xC0);
     }
 
-    inline void emit_SetA(X64PerThread& pp)
+    inline void emit_SetA(X64PerThread& pp, uint8_t regDst = RAX)
     {
+        SWAG_ASSERT(regDst < R8);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x97);
-        pp.concat.addU8(0xC0);
+        pp.concat.addU8(0xC0 | regDst);
     }
 
     inline void emit_SetNA(X64PerThread& pp)
@@ -619,7 +620,7 @@ namespace BackendX64Inst
         }
     }
 
-    ///////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
     inline void emit_Symbol_RelocationAddr(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
     {
@@ -687,7 +688,7 @@ namespace BackendX64Inst
         }
     }
 
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
     // clang-format off
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
@@ -696,9 +697,9 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
     // clang-format on
 
-    //////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
-    inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    inline void emit_BinOpFloat32(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
@@ -706,7 +707,7 @@ namespace BackendX64Inst
             pp.concat.addU8(0xF3);
             pp.concat.addU8(0x0F);
             pp.concat.addU8((uint8_t) op);
-            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+            emit_ModRM(pp, regOffset(ip->b.u32), XMM0, RDI);
         }
         else
         {
@@ -729,11 +730,15 @@ namespace BackendX64Inst
             pp.concat.addU8((uint8_t) op);
             pp.concat.addU8(0xC1);
         }
+    }
 
+    inline void emit_BinOpFloat32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        emit_BinOpFloat32(pp, ip, op);
         BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
     }
 
-    inline void emit_BinOpFloat64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    inline void emit_BinOpFloat64(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
@@ -741,7 +746,7 @@ namespace BackendX64Inst
             pp.concat.addU8(0xF2);
             pp.concat.addU8(0x0F);
             pp.concat.addU8((uint8_t) op);
-            emit_ModRM(pp, regOffset(ip->b.u32), 0, RDI);
+            emit_ModRM(pp, regOffset(ip->b.u32), XMM0, RDI);
         }
         else
         {
@@ -764,7 +769,11 @@ namespace BackendX64Inst
             pp.concat.addU8((uint8_t) op);
             pp.concat.addU8(0xC1);
         }
+    }
 
+    inline void emit_BinOpFloat64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        emit_BinOpFloat64(pp, ip, op);
         BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
     }
 
@@ -843,6 +852,8 @@ namespace BackendX64Inst
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
     }
 
+    /////////////////////////////////////////////////////////////////////
+
     inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false)
     {
         switch (bits)
@@ -914,6 +925,8 @@ namespace BackendX64Inst
             }
         }
     }
+
+    /////////////////////////////////////////////////////////////////////
 
     inline void emit_Jump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
     {

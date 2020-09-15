@@ -1093,6 +1093,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayF32:
+            BackendX64Inst::emit_BinOpFloat32(pp, ip, X64Op::FSUB);
+            BackendX64Inst::emit_Clear32(pp, RAX);
+            BackendX64Inst::emit_Clear32(pp, RCX);
+            pp.concat.addString3("\x0F\x57\xC9"); // xorps xmm1, xmm1
+            pp.concat.addString3("\x0F\x2F\xC1"); // comiss xmm0, xmm1
+            BackendX64Inst::emit_SetA(pp);
+            pp.concat.addString3("\x0F\x2F\xC8"); // comiss xmm1, xmm0
+            BackendX64Inst::emit_SetA(pp, RCX);
+            pp.concat.addString2("\x29\xC8"); // sub eax, ecx
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayF64:
             break;
