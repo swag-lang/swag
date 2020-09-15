@@ -3,7 +3,7 @@ namespace std.text
     using swag
     using std.collections, std.diagnostics, std.globalization
 
-    public struct ConvertFormatBase
+    public struct ConvertFormat
     {
         value: any
     }
@@ -11,7 +11,7 @@ namespace std.text
     // Format structure to convert a float to a string
     public struct ConvertFormatFloat
     {
-        val:        ConvertFormatBase
+        val:        ConvertFormat
         precision:  u32 = 5
     }
 
@@ -20,7 +20,7 @@ namespace std.text
     // be stored in 'unsignedValue'.
     public struct ConvertFormatInt
     {
-        val:        ConvertFormatBase
+        val:        ConvertFormat
         base:       u32 = 10
         padding:    u8
         width:      u8
@@ -79,7 +79,7 @@ namespace std.text
     // Interface to implement a custom conversion function
     public interface IConvert
     {
-        convert: func(self, *ConcatBuffer, string)
+        convert: func(self, *ConcatBuffer, *ConvertFormat, string)
     }
 
     public
@@ -108,7 +108,7 @@ namespace std.text
                     // A structure with an implementation of IConvert
                     itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
                     if itf != null
-                        itf.convert(buf, strFormat)
+                        itf.convert(buf, null, strFormat)
                     else
                         convertStruct(buf, value, strFormat)
                 }

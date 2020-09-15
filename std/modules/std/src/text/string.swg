@@ -33,7 +33,7 @@ namespace std.text
 
     public impl IConvert for String
     {
-        func convert(using self, buf: *ConcatBuffer, strFormat: string)
+        func convert(using self, buf: *ConcatBuffer, fmt: *ConvertFormat, strFormat: string)
         {
             buf.addBytes(@mkslice(buffer, length))
         }
