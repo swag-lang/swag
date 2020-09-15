@@ -115,7 +115,7 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
 
-        case AstNodeKind::RawMove:
+        case AstNodeKind::Move:
             concat.addString("move ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;

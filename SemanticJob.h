@@ -218,7 +218,7 @@ struct SemanticJob : public Job
     static bool resolveLoop(SemanticContext* context);
     static bool resolveVisit(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
-    static bool resolveRawMove(SemanticContext* context);
+    static bool resolveMove(SemanticContext* context);
     static bool resolveMakePointer(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
     static bool boundCheck(SemanticContext* context, AstNode* arrayAccess, uint32_t maxCount);

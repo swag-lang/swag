@@ -476,15 +476,15 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
 {
-    // raw
+    // nodrop left
     if (token.id == TokenId::KwdNoDrop)
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         if (result)
             *result = exprNode;
-        exprNode->semanticFct = SemanticJob::resolveRawMove;
+        exprNode->semanticFct = SemanticJob::resolveMove;
         exprNode->flags |= AST_NO_LEFT_DROP;
         parent = exprNode;
         result = nullptr;
@@ -494,14 +494,27 @@ bool SyntaxJob::doRawMoveExpression(AstNode* parent, AstNode** result)
     // move
     if (token.id == TokenId::KwdMove)
     {
-        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::RawMove, sourceFile, parent);
+        auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::Move, sourceFile, parent);
         if (result)
             *result = exprNode;
-        exprNode->semanticFct = SemanticJob::resolveRawMove;
+        exprNode->semanticFct = SemanticJob::resolveMove;
         exprNode->flags |= AST_FORCE_MOVE;
         parent = exprNode;
         result = nullptr;
         SWAG_CHECK(eatToken());
+
+        // nodrop right
+        if (token.id == TokenId::KwdNoDrop)
+        {
+            exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
+            if (result)
+                *result = exprNode;
+            exprNode->semanticFct = SemanticJob::resolveMove;
+            exprNode->flags |= AST_NO_RIGHT_DROP;
+            parent = exprNode;
+            result = nullptr;
+            SWAG_CHECK(eatToken());
+        }
     }
 
     SWAG_CHECK(doExpression(parent, result));
@@ -688,7 +701,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    return doRawMoveExpression(parent, result);
+    return doMoveExpression(parent, result);
 }
 
 void SyntaxJob::forceTakeAddress(AstNode* node)
@@ -1037,7 +1050,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     firstDone = true;
                     SWAG_CHECK(tokenizer.getToken(token));
                     if (affectNode->token.id == TokenId::SymEqual)
-                        SWAG_CHECK(doRawMoveExpression(affectNode));
+                        SWAG_CHECK(doMoveExpression(affectNode));
                     else
                         SWAG_CHECK(doExpression(affectNode));
                 }
@@ -1088,7 +1101,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
             SWAG_CHECK(tokenizer.getToken(token));
             if (affectNode->token.id == TokenId::SymEqual)
-                SWAG_CHECK(doRawMoveExpression(affectNode));
+                SWAG_CHECK(doMoveExpression(affectNode));
             else
                 SWAG_CHECK(doExpression(affectNode));
             if (result)

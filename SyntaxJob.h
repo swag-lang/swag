@@ -109,7 +109,7 @@ struct SyntaxJob : public Job
     bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doRawMoveExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doMoveExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr);
