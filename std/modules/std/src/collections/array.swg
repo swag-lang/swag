@@ -195,7 +195,7 @@ namespace std.collections
             count += 1
 
             for idx := count - 1; idx > index; idx -= 1
-                buffer[idx] = nodrop move buffer[idx - 1]
+                buffer[idx] = nodrop move nodrop buffer[idx - 1]
 
             buffer[index] = nodrop value
         }
@@ -212,7 +212,7 @@ namespace std.collections
             count += 1
 
             for idx := count - 1; idx > index; idx -= 1
-                buffer[idx] = nodrop move buffer[idx - 1]
+                buffer[idx] = nodrop move nodrop buffer[idx - 1]
 
             buffer[index] = nodrop move deref value
         }
@@ -265,7 +265,7 @@ namespace std.collections
                 return
             }
 
-            buffer[index] = move buffer[count]
+            buffer[index] = move nodrop buffer[count]
         }
 
         // Remove an element at 'index' by shifting all others.
@@ -282,7 +282,7 @@ namespace std.collections
             idx := index
             loop count - index
             {
-                buffer[idx] = nodrop move buffer[idx + 1]
+                buffer[idx] = nodrop move nodrop buffer[idx + 1]
                 idx += 1
             }
         }

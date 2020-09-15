@@ -4,8 +4,8 @@ namespace std.algorithms
     //#[swag.printbc]
     public func(T) swap(x, y: *T)
     {
-        tmp := move deref x
-        deref x = nodrop move deref y
-        deref y = nodrop move tmp
+        tmp := move nodrop deref x
+        deref x = nodrop move nodrop deref y
+        deref y = nodrop move nodrop tmp
     }
 }
