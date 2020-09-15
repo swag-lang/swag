@@ -3,11 +3,15 @@ namespace std.text
     using swag
     using std.collections, std.diagnostics, std.globalization
 
+    public struct ConvertFormatBase
+    {
+        value: any
+    }
+
     // Format structure to convert a float to a string
     public struct ConvertFormatFloat
     {
-        value:      f64
-        bits:       u32 = 32
+        val:        ConvertFormatBase
         precision:  u32 = 5
     }
 
@@ -16,15 +20,10 @@ namespace std.text
     // be stored in 'unsignedValue'.
     public struct ConvertFormatInt
     {
-        unsignedValue:  u64
-        #[offset("unsignedValue")]
-        signedValue:    s64
-
-        bits:           u32 = 32
-        base:           u32 = 10
-        signed:         bool
-        padding:        u8
-        width:          u8
+        val:        ConvertFormatBase
+        base:       u32 = 10
+        padding:    u8
+        width:      u8
     }
 
     impl ConvertFormatFloat
@@ -110,43 +109,30 @@ namespace std.text
                 // A special format structure
                 if type == ConvertFormatInt
                     convertInt(buf, cast(ConvertFormatInt) value)
-                else if type ==  ConvertFormatFloat
+                else if type == ConvertFormatFloat
                     convertFloat(buf, cast(ConvertFormatFloat) value)
                 else
                     convertStruct(buf, value, strFormat)
                 return
             }
 
-            switch type
+            if type.flags & TypeInfoFlags.Integer
+                convertInt(buf, value, strFormat)
+            else if type.flags & TypeInfoFlags.Float
+                convertFloat(buf, value, strFormat)
+            else
             {
-                case bool:
-                    convertBool(buf, cast(bool) value, strFormat)
-                case char:
-                    convertChar(buf, cast(char) value, strFormat)
-                case s8:
-                    convertInt(buf, cast(s8) value, strFormat)
-                case s16:
-                    convertInt(buf, cast(s16) value, strFormat)
-                case s32:
-                    convertInt(buf, cast(s32) value, strFormat)
-                case s64:
-                    convertInt(buf, cast(s64) value, strFormat)
-                case u8:
-                    convertInt(buf, cast(u8) value, strFormat)
-                case u16:
-                    convertInt(buf, cast(u16) value, strFormat)
-                case u32:
-                    convertInt(buf, cast(u32) value, strFormat)
-                case u64:
-                    convertInt(buf, cast(u64) value, strFormat)
-                case f32:
-                    convertFloat(buf, cast(f32) value, strFormat)
-                case f64:
-                    convertFloat(buf, cast(f64) value, strFormat)
-                case string:
-                    buf.addBytes(cast(string) value)
-                default:
-                    buf.addBytes("?")
+                switch type
+                {
+                    case bool:
+                        convertBool(buf, cast(bool) value, strFormat)
+                    case char:
+                        convertChar(buf, cast(char) value, strFormat)
+                    case string:
+                        buf.addBytes(cast(string) value)
+                    default:
+                        buf.addBytes("?")
+                }
             }
         }
 
@@ -176,8 +162,17 @@ namespace std.text
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
-            neg := fmt.value < 0
-            value := fmt.value
+            dataof := @dataof(fmt.val.value)
+            bits := @kindof(fmt.val.value).sizeof * 8
+
+            var value: f64
+            switch @kindof(fmt.val.value)
+            {
+                case f32: value = cast(f64) deref cast(*f32) dataof
+                case f64: value = deref cast(*f64) dataof
+            }
+
+            neg := value < 0
 
             if(neg)
             {
@@ -195,9 +190,7 @@ namespace std.text
             // Convert integer part
             intPart := cast(u64) value
             var fmtInt: ConvertFormatInt
-            fmtInt.signed = false
-            fmtInt.bits = fmt.bits
-            fmtInt.unsignedValue = intPart
+            fmtInt.val.value = intPart
             convertInt(buf, fmtInt)
 
             // Decimal part
@@ -214,22 +207,11 @@ namespace std.text
             }
         }
 
-        // Convert a 'f64' to a string, and put the result in a ConcatBuffer
-        func convertFloat(buf: *ConcatBuffer, value: f64, strFormat: string = null)
+        // Convert a float to an utf8 string, and put the result in a ConcatBuffer
+        func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
         {
             var fmt: ConvertFormatFloat
-            fmt.value = value
-            fmt.bits = 64
-            fmt.setFormat(strFormat)
-            convertFloat(buf, fmt)
-        }
-
-        // Convert a 'f32' to a string, and put the result in a ConcatBuffer
-        func convertFloat(buf: *ConcatBuffer, value: f32, strFormat: string = null)
-        {
-            var fmt: ConvertFormatFloat
-            fmt.value = cast(f64) value
-            fmt.bits = 32
+            fmt.val.value = value
             fmt.setFormat(strFormat)
             convertFloat(buf, fmt)
         }
@@ -238,13 +220,31 @@ namespace std.text
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             const tbl = "0123456789ABCDEF"
-            var value: u64 = fmt.signed ? cast(u64) math.abs(fmt.signedValue) : fmt.unsignedValue
 
-            debug.assert(0 < fmt.bits <= 64, "bad 'bits' value (should be > 0 and <= 64)")
+            dataof := @dataof(fmt.val.value)
+            bits := @kindof(fmt.val.value).sizeof * 8
+
+            var value: u64
+            var signedValue: s64
+            var signed: bool
+
+            kindof := @kindof(fmt.val.value)
+
+            switch(@kindof(fmt.val.value))
+            {
+                case s8:    signedValue = cast(s64) deref cast(*s8) dataof; value = cast(u64) math.abs(signedValue)
+                case s16:   signedValue = cast(s64) deref cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
+                case s32:   signedValue = cast(s64) deref cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
+                case s64:   signedValue = deref cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
+                case u8:    value = cast(u64) deref cast(*u8) dataof;
+                case u16:   value = cast(u64) deref cast(*u16) dataof
+                case u32:   value = cast(u64) deref cast(*u32) dataof
+                case u64:   value = deref cast(*u64) dataof
+            }
 
             var tmp: [64] u8
             cpt := 63'u32
-            loop fmt.bits
+            loop bits
             {
                 c := tbl[value % fmt.base]
                 tmp[cpt] = c
@@ -267,7 +267,7 @@ namespace std.text
             }
 
             // Prepend the negative character
-            if fmt.signed && fmt.signedValue < 0
+            if signedValue < 0
             {
                 tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.negativeSign
                 cpt -= 1
@@ -276,102 +276,23 @@ namespace std.text
             buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], 63 - cpt));
         }
 
-        // Convert a 's8' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: s8, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.signedValue = acast value
-            fmt.bits = 8
-            fmt.signed = true
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 's16' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: s16, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.signedValue = acast value
-            fmt.bits = 16
-            fmt.signed = true
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 's32' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: s32, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.signedValue = acast value
-            fmt.bits = 32
-            fmt.signed = true
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 's64' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: s64, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.signedValue = acast value
-            fmt.bits = 64
-            fmt.signed = true
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 'u8' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: u8, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.unsignedValue = acast value
-            fmt.signed = false
-            fmt.bits = 8
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 'u16' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: u16, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.unsignedValue = acast value
-            fmt.signed = false
-            fmt.bits = 16
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
-        // Convert a 'u32' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: u32, strFormat: string = null)
-        {
-            var fmt: ConvertFormatInt
-            fmt.unsignedValue = acast value
-            fmt.signed = false
-            fmt.bits = 32
-            fmt.setFormat(strFormat)
-            convertInt(buf, fmt)
-        }
-
         // Convert a 'u64' integer to a string, and put the result in a ConcatBuffer
-        func convertInt(buf: *ConcatBuffer, value: u64, strFormat: string = null)
+        func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
         {
             var fmt: ConvertFormatInt
-            fmt.unsignedValue = acast value
-            fmt.signed = false
-            fmt.bits = 64
+            fmt.val.value = value
             fmt.setFormat(strFormat)
             convertInt(buf, fmt)
         }
 
         // Convert a 'bool' to a string, and put the result in a ConcatBuffer
-        func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string = null)
+        func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string)
         {
             buf.addBytes(value ? "true" : "false")
         }
 
         // Convert a 'char' to a string, and put the result in a ConcatBuffer
-        func convertChar(buf: *ConcatBuffer, value: char, strFormat: string = null)
+        func convertChar(buf: *ConcatBuffer, value: char, strFormat: string)
         {
             if value <= 0xFF
                 buf.addByte(cast(u8) value)

@@ -4,13 +4,13 @@ using std.text, std.collections
 #test
 {
     var buf: ConcatBuffer
-    convertInt(&buf, 123's32)
+    convertInt(&buf, 123's32, null)
 }
 
 #test
 {
     var buf: ConcatBuffer
-    convertInt(&buf, 123456's32)
+    convertInt(&buf, 123456's32, null)
     str := buf.toString()
     @assert(str == "123456")
 }
@@ -20,10 +20,8 @@ using std.text, std.collections
     var buf: ConcatBuffer
     var fmt: ConvertFormatInt
 
-    fmt.unsignedValue = 0xFFFFFFFF
-    fmt.signed = false
+    fmt.val.value = 0xFFFFFFFF
     fmt.base = 16
-    fmt.bits = 32
     convertInt(&buf, fmt)
     str := buf.toString()
     @assert(str == "FFFFFFFF")

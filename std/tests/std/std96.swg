@@ -13,9 +13,9 @@ impl IConvert for TOTO
     func convert(using self, buf: *ConcatBuffer, strFormat: string)
     {
         buf.addBytes("! x = ");
-        convertInt(buf, x)
+        convertInt(buf, x, null)
         buf.addBytes(", y = ");
-        convertInt(buf, y)
+        convertInt(buf, y, null)
         buf.addBytes(" !");
     }
 }

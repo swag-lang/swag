@@ -1444,9 +1444,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
-    if (node->name == "toto")
-        node = node;
-
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
     {
