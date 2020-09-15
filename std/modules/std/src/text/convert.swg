@@ -85,7 +85,7 @@ namespace std.text
     public
     {
         // Convert a value to an utf8 string, and append the result in a ConcatBuffer
-        func convertAny(buf: *ConcatBuffer, value: any, strFormat: string = null)
+        func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         {
             type := cast(const *TypeInfo) @kindof(value)
 
@@ -120,32 +120,29 @@ namespace std.text
                 convertInt(buf, value, strFormat)
             else if type.flags & TypeInfoFlags.Float
                 convertFloat(buf, value, strFormat)
-            else
+            else switch type
             {
-                switch type
-                {
-                    case bool:
-                        convertBool(buf, cast(bool) value, strFormat)
-                    case char:
-                        convertChar(buf, cast(char) value, strFormat)
-                    case string:
-                        buf.addBytes(cast(string) value)
-                    default:
-                        buf.addBytes("?")
-                }
+                case bool:
+                    convertBool(buf, cast(bool) value, strFormat)
+                case char:
+                    convertChar(buf, cast(char) value, strFormat)
+                case string:
+                    buf.addBytes(cast(string) value)
+                default:
+                    buf.addBytes("?")
             }
         }
 
         // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
-        func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string = null)
+        func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
         {
-            typeOf := @kindof(value)
-            debug.assert(typeOf.kind == TypeInfoKind.Struct, "this is not a structure")
+            kindof := @kindof(value)
+            debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
 
             buf.addBytes("{")
 
             ptr := @dataof(value)
-            type := cast(const *TypeInfoStruct) typeOf
+            type := cast(const *TypeInfoStruct) kindof
             visit field: type.fields
             {
                 if(@index != 0)
@@ -153,7 +150,7 @@ namespace std.text
                 buf.addBytes(field.name)
                 buf.addBytes("=")
                 val := @mkany(ptr + field.offset, field.pointedType)
-                convertAny(buf, val)
+                convertAny(buf, val, strFormat)
             }
 
             buf.addBytes("}")
