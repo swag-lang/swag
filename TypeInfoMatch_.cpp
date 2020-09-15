@@ -295,6 +295,15 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
                 context.cptResolved++;
                 break;
             }
+
+            // Search inside a sub structure marked with 'using'
+            if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->node->flags & AST_DECL_USING)
+            {
+                auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
+                matchNamedParameters(context, subStruct->fields);
+                if (param->resolvedParameter)
+                    break;
+            }
         }
 
         if (!param->resolvedParameter)
