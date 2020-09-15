@@ -587,7 +587,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
             continue;
         if (other->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
             continue;
-        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
+        auto type1 = TypeManager::concreteReference(parameters[i]->typeInfo);
+        auto type2 = TypeManager::concreteReference(other->parameters[i]->typeInfo);
+        if (!type1->isSame(type2, isSameFlags))
             return false;
     }
 
