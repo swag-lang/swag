@@ -126,11 +126,12 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
+bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety)
 {
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
-        emitSafetyNullPointer(context, r0);
+        if (safety)
+            emitSafetyNullPointer(context, r0);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         return true;
     }
@@ -140,7 +141,8 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
     if (typeInfo->numRegisters() == 2)
     {
-        emitSafetyNullPointer(context, r0);
+        if (safety)
+            emitSafetyNullPointer(context, r0);
         transformResultToLinear2(context, r0);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
@@ -154,7 +156,9 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
-    emitSafetyNullPointer(context, r0);
+    if (safety)
+        emitSafetyNullPointer(context, r0);
+
     switch (typeInfo->sizeOf)
     {
     case 1:
@@ -212,9 +216,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfoSlice->pointedType->isNative(NativeTypeKind::String))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType, false));
         else if (!(node->flags & AST_TAKE_ADDRESS) || typeInfoSlice->pointedType->kind == TypeInfoKind::Pointer)
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -237,9 +241,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfoPointer->finalType->isNative(NativeTypeKind::String))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->finalType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->finalType, false));
         else if (!(node->flags & AST_TAKE_ADDRESS))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -264,9 +268,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfoArray->pointedType->isNative(NativeTypeKind::String))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
         else if ((!(node->flags & AST_TAKE_ADDRESS) && typeInfoArray->pointedType->kind != TypeInfoKind::Array) || (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -317,7 +321,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Offset pointer to the parameter
         emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType, false));
         node->resultRegisterRC = node->array->resultRegisterRC;
 
         freeRegisterRC(context, node->access);
