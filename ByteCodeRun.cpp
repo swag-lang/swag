@@ -1221,6 +1221,33 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::CompareOp3WayS32:
+    case ByteCodeOp::CompareOp3WayU32:
+    {
+        auto sub                   = IMMA_S32(ip) - IMMB_S32(ip);
+        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        break;
+    }
+    case ByteCodeOp::CompareOp3WayU64:
+    case ByteCodeOp::CompareOp3WayS64:
+    {
+        auto sub                   = IMMA_S64(ip) - IMMB_S64(ip);
+        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        break;
+    }
+    case ByteCodeOp::CompareOp3WayF32:
+    {
+        auto sub                   = IMMA_F32(ip) - IMMB_F32(ip);
+        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        break;
+    }
+    case ByteCodeOp::CompareOp3WayF64:
+    {
+        auto sub                   = IMMA_F64(ip) - IMMB_F64(ip);
+        registersRC[ip->c.u32].s32 = (int32_t)((sub > 0) - (sub < 0));
+        break;
+    }
+
     case ByteCodeOp::CompareOpLowerS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) < IMMB_S32(ip);
