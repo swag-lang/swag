@@ -87,7 +87,7 @@ void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* me
     swag_runtime_print("error: ");
     swag_runtime_print_n(location->fileName.buffer, (SwagU32) location->fileName.count);
     swag_runtime_print(":");
-    swag_runtime_print_i64(location->lineStart);
+    swag_runtime_print_i64(location->lineStart + 1);
     swag_runtime_print(": ");
     swag_runtime_print_n(message, size);
     swag_runtime_print("\n");

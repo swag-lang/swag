@@ -1075,6 +1075,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3WayU32:
         case ByteCodeOp::CompareOp3WayS32:
             BackendX64Inst::emit_BinOpInt32(pp, ip, X64Op::SUB);
+            BackendX64Inst::emit_Clear32(pp, RAX);
             BackendX64Inst::emit_Test32(pp, RCX, RCX);
             BackendX64Inst::emit_SetG(pp);
             pp.concat.addString3("\xC1\xE9\x1F"); // shr ecx, 31
@@ -1084,10 +1085,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3WayU64:
         case ByteCodeOp::CompareOp3WayS64:
             BackendX64Inst::emit_BinOpInt64(pp, ip, X64Op::SUB);
-            BackendX64Inst::emit_Test32(pp, RCX, RCX);
+            BackendX64Inst::emit_Clear64(pp, RAX);
+            BackendX64Inst::emit_Test64(pp, RCX, RCX);
             BackendX64Inst::emit_SetG(pp);
-            pp.concat.addString3("\xC1\xE9\x1F"); // shr ecx, 31
-            pp.concat.addString2("\x29\xC8");     // sub eax, ecx
+            pp.concat.addString4("\x48\xC1\xE9\x3F"); // shr rcx, 63
+            pp.concat.addString2("\x29\xC8");         // sub eax, ecx
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayF32:
