@@ -6,7 +6,7 @@ using std.text, std.collections
     var buf: ConcatBuffer
     //format(&buf, "value: %", ConvertFormatFloat(-3.1415))
     var fmt: ConvertFormatFloat
-    fmt.val.value = -3.1415
+    fmt.value = -3.1415
     convertAny(&buf, fmt, null)
     str := buf.toString()
     //@print(cast(string) str)

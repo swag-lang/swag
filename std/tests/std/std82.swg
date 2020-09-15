@@ -20,7 +20,7 @@ using std.text, std.collections
     var buf: ConcatBuffer
     var fmt: ConvertFormatInt
 
-    fmt.val.value = 0xFFFFFFFF
+    fmt.value = 0xFFFFFFFF
     fmt.base = 16
     convertInt(&buf, fmt)
     str := buf.toString()

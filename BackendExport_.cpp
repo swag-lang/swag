@@ -355,6 +355,9 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     {
         SWAG_CHECK(emitAttributes(p, indent + 1));
         bufferSwg.addIndent(indent + 1);
+
+        if (p->node->flags & AST_DECL_USING)
+            CONCAT_FIXED_STR(bufferSwg, "using ");
         if (p->node->attributeFlags & ATTRIBUTE_READWRITE)
             CONCAT_FIXED_STR(bufferSwg, "readwrite ");
         else if (p->node->attributeFlags & ATTRIBUTE_INTERNAL)
@@ -362,6 +365,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         else if (p->node->attributeFlags & ATTRIBUTE_READONLY)
             CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);
+
         CONCAT_FIXED_STR(bufferSwg, ": ");
         emitType(p->typeInfo);
 

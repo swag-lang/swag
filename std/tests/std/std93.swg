@@ -5,7 +5,7 @@ using std.text, std.collections
 {
     var buf: ConcatBuffer
     var fmt: ConvertFormatFloat
-    fmt.val.value = -3.1415
+    fmt.value = -3.1415
     format(&buf, "%", fmt)
     str := buf.toString()
     @assert(str == "-3.14150")

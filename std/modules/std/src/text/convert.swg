@@ -11,7 +11,7 @@ namespace std.text
     // Format structure to convert a float to a string
     public struct ConvertFormatFloat
     {
-        val:        ConvertFormat
+        using val:  ConvertFormat
         precision:  u32 = 5
     }
 
@@ -20,7 +20,7 @@ namespace std.text
     // be stored in 'unsignedValue'.
     public struct ConvertFormatInt
     {
-        val:        ConvertFormat
+        using val:  ConvertFormat
         base:       u32 = 10
         padding:    u8
         width:      u8
@@ -159,10 +159,10 @@ namespace std.text
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
-            kindof := @kindof(fmt.val.value)
+            kindof := @kindof(fmt.value)
             debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
-            dataof := @dataof(fmt.val.value)
+            dataof := @dataof(fmt.value)
             bits := kindof.sizeof * 8
 
             var value: f64
@@ -190,7 +190,7 @@ namespace std.text
             // Convert integer part
             intPart := cast(u64) value
             var fmtInt: ConvertFormatInt
-            fmtInt.val.value = intPart
+            fmtInt.value = intPart
             convertInt(buf, fmtInt)
 
             // Decimal part
@@ -210,11 +210,11 @@ namespace std.text
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
-            kindof := @kindof(fmt.val.value)
+            kindof := @kindof(fmt.value)
             debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
             debug.assert(0 < fmt.base <= 16, "invalid convert base")
 
-            dataof := @dataof(fmt.val.value)
+            dataof := @dataof(fmt.value)
             bits := kindof.sizeof * 8
 
             var value: u64
@@ -274,7 +274,7 @@ namespace std.text
             debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
             var fmt: ConvertFormatFloat
-            fmt.val.value = value
+            fmt.value = value
             fmt.setFormat(strFormat)
             convertFloat(buf, fmt)
         }
@@ -285,7 +285,7 @@ namespace std.text
             debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 
             var fmt: ConvertFormatInt
-            fmt.val.value = value
+            fmt.value = value
             fmt.setFormat(strFormat)
             convertInt(buf, fmt)
         }
