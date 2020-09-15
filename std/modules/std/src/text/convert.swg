@@ -162,11 +162,14 @@ namespace std.text
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
+            kindof := @kindof(fmt.val.value)
+            debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "this is not a float value")
+
             dataof := @dataof(fmt.val.value)
-            bits := @kindof(fmt.val.value).sizeof * 8
+            bits := kindof.sizeof * 8
 
             var value: f64
-            switch @kindof(fmt.val.value)
+            switch kindof
             {
                 case f32: value = cast(f64) deref cast(*f32) dataof
                 case f64: value = deref cast(*f64) dataof
@@ -219,18 +222,17 @@ namespace std.text
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
-            const tbl = "0123456789ABCDEF"
+            kindof := @kindof(fmt.val.value)
+            debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "this is not an integer value")
 
             dataof := @dataof(fmt.val.value)
-            bits := @kindof(fmt.val.value).sizeof * 8
+            bits := kindof.sizeof * 8
 
             var value: u64
             var signedValue: s64
             var signed: bool
 
-            kindof := @kindof(fmt.val.value)
-
-            switch(@kindof(fmt.val.value))
+            switch kindof
             {
                 case s8:    signedValue = cast(s64) deref cast(*s8) dataof; value = cast(u64) math.abs(signedValue)
                 case s16:   signedValue = cast(s64) deref cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
@@ -242,6 +244,7 @@ namespace std.text
                 case u64:   value = deref cast(*u64) dataof
             }
 
+            const tbl = "0123456789ABCDEF"
             var tmp: [64] u8
             cpt := 63'u32
             loop bits
