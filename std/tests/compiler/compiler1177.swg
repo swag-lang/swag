@@ -15,7 +15,7 @@ func fromName(name: string)->X
         param := t.values[@index]
         if(param.name == name)
         {
-            ptr := cast(*TOTO) param.value
+            ptr := cast(const *TOTO) param.value
             return ptr[0]
         }
     }

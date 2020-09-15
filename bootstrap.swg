@@ -280,7 +280,7 @@ namespace swag
     {
         name:		    string
         pointedType:	const *TypeInfo
-        value:			*void
+        value:			const *void
         attributes:	    const [..] TypeInfoAttribute
         offset:			u32
         padding:		u32

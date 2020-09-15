@@ -15,6 +15,6 @@ enum A : f32
 	@assert(@countof(ptr.values) == 1)
 	@assert(@countof(ptr.attributes) == 0)
 	ptr1 := cast(const *TypeInfoParam) ptr.values[0]
-	ptrVal := cast(*f32) ptr1.value
+	ptrVal := cast(const *f32) ptr1.value
 	@assert(ptrVal[0] == 666)
 }
