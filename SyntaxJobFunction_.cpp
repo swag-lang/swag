@@ -340,6 +340,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerGeneratedRun:
             funcNode->token.text = "#run";
             funcNode->name       = "__run" + to_string(id);
+            funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerFuncMain:
@@ -356,6 +357,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
             funcNode->name       = "__ast" + to_string(id);
+            funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
             break;
         }
@@ -534,6 +536,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
+    funcNode->flags |= AST_GENERATED;
     if (result)
         *result = funcNode;
     int id         = g_Global.uniqueID.fetch_add(1);

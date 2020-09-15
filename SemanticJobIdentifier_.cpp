@@ -389,6 +389,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+            varNode->flags |= AST_GENERATED;
             varNode->type        = typeNode;
             typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
             auto back            = typeNode->identifier->childs.back();
@@ -1443,6 +1444,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
+    if (node->name == "toto")
+        node = node;
+
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
     {
@@ -1522,7 +1526,26 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
-                    dependentSymbols.insert(symbol);
+                {
+                    // Do not register symbol it it's defined later, in a local scope
+                    if (!scope->isGlobalOrImpl())
+                    {
+                        if (!symbol->nodes.empty() && !(node->flags & AST_GENERATED) && node->ownerScope == scope && !node->ownerInline)
+                        {
+                            auto first = symbol->nodes.front();
+                            if (!(first->flags & AST_GENERATED))
+                            {
+                                if (first->token.startLocation.line > node->token.startLocation.line)
+                                    symbol = nullptr;
+                                else if (first->token.startLocation.line == node->token.startLocation.line && first->token.startLocation.column > node->token.startLocation.column)
+                                    symbol = nullptr;
+                            }
+                        }
+                    }
+
+                    if (symbol)
+                        dependentSymbols.insert(symbol);
+                }
             }
 
             if (!dependentSymbols.empty())
@@ -1530,7 +1553,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
             // from the previous symbol
-            if (oneTry)
+            if (oneTry || !identifierRef->startScope)
             {
                 if (identifierRef->startScope)
                 {

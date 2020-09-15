@@ -915,6 +915,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
             else
             {
+                ScopedFlags lk(this, AST_GENERATED);
                 varNode->assignment = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
             }
 
@@ -945,7 +946,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         varNode->assignment = assign;
         if (assign)
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-        varNode->flags |= AST_R_VALUE;
+        varNode->flags |= AST_R_VALUE | AST_GENERATED;
         SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
 
         // And reference that variable, in the form value = __tmp_0.item?
@@ -1073,6 +1074,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
             AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
             varNode->token         = savedtoken;
+            varNode->flags |= AST_GENERATED;
             SWAG_CHECK(tokenizer.getToken(token));
             SWAG_CHECK(doExpression(varNode, &varNode->assignment));
 

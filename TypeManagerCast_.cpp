@@ -2095,6 +2095,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     // Declare a variable
     auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
     varNode->inheritTokenLocation(fromNode->token);
+    varNode->flags |= AST_GENERATED;
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->inheritTokenLocation(fromNode->token);
