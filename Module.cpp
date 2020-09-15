@@ -81,7 +81,7 @@ bool Module::setup(const Utf8& moduleName)
     // Setup build configuration
     if (g_CommandLine.buildCfg == "debug")
     {
-        buildCfg.byteCodeOptimize         = 1;
+        buildCfg.byteCodeOptimize         = 2;
         buildCfg.safetyGuards             = true;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;

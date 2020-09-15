@@ -79,9 +79,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     if (module->mustOptimizeBC(job->originalNode) < 2)
         return true;
 
-    //if (job->originalNode->sourceFile->name != "compiler1931.swg")
-    //    return;
-
     Timer tm(g_Stats.optimBCTime);
     tm.start();
 

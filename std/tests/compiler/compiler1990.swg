@@ -1,3 +1,5 @@
+//#[swag.printbc]
+#[swag.optimizebc(0)]
 #test
 {
     {
