@@ -100,6 +100,15 @@ namespace std.text
             return memory.compare(buffer, other.buffer, length) == 0
         }
 
+        func opCmp(using self, other: Self)->s32
+        {
+            minLen := math.min(length, other.length)
+            result := memory.compare(buffer, other.buffer, minLen)
+            if result != 0 || length == other.length return result
+            if length < other.length return -1
+            return 1
+        }
+
         func(op: string) opAssign(using self, value: string)
         {
             #if op == "+="
