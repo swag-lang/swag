@@ -79,7 +79,7 @@ namespace std.text
     // Interface to implement a custom conversion function
     public interface IConvert
     {
-        convert: func(self, *ConcatBuffer, *ConvertFormat, string)
+        convert: func(self, *ConcatBuffer, const *ConvertFormat, string)
     }
 
     public
