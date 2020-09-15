@@ -163,7 +163,7 @@ namespace std.text
         func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         {
             kindof := @kindof(fmt.val.value)
-            debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "this is not a float value")
+            debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
             dataof := @dataof(fmt.val.value)
             bits := kindof.sizeof * 8
@@ -210,20 +210,12 @@ namespace std.text
             }
         }
 
-        // Convert a float to an utf8 string, and put the result in a ConcatBuffer
-        func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
-        {
-            var fmt: ConvertFormatFloat
-            fmt.val.value = value
-            fmt.setFormat(strFormat)
-            convertFloat(buf, fmt)
-        }
-
         // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         {
             kindof := @kindof(fmt.val.value)
-            debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "this is not an integer value")
+            debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
+            debug.assert(0 < fmt.base <= 16, "invalid convert base")
 
             dataof := @dataof(fmt.val.value)
             bits := kindof.sizeof * 8
@@ -279,9 +271,22 @@ namespace std.text
             buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], 63 - cpt));
         }
 
-        // Convert a 'u64' integer to a string, and put the result in a ConcatBuffer
+        // Convert a float to an utf8 string, and put the result in a ConcatBuffer
+        func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
+        {
+            debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
+
+            var fmt: ConvertFormatFloat
+            fmt.val.value = value
+            fmt.setFormat(strFormat)
+            convertFloat(buf, fmt)
+        }
+
+        // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
         func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
         {
+            debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
+
             var fmt: ConvertFormatInt
             fmt.val.value = value
             fmt.setFormat(strFormat)
