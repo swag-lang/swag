@@ -91,6 +91,49 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterLis
     return true;
 }
 
+bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayU32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U64:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F32:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayF32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOp3WayF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOp3Way, type not supported");
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOp3Way, type not native");
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
@@ -224,10 +267,10 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
-        auto &r0 = node->childs[0]->resultRegisterRC;
-        auto &r1 = node->childs[1]->resultRegisterRC;
+        auto& r0 = node->childs[0]->resultRegisterRC;
+        auto& r1 = node->childs[1]->resultRegisterRC;
 
-        RegisterList r2 = reserveRegisterRC(context);
+        RegisterList r2        = reserveRegisterRC(context);
         node->resultRegisterRC = r2;
 
         switch (node->token.id)
@@ -238,6 +281,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         case TokenId::SymExclamEqual:
             SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
             emitInstruction(context, ByteCodeOp::NegBool, r2);
+            break;
+        case TokenId::SymLowerEqualGreater:
+            SWAG_CHECK(emitCompareOp3Way(context, r0, r1, r2));
             break;
         case TokenId::SymLower:
             SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));

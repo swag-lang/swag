@@ -5,6 +5,7 @@
 #include "Log.h"
 
 #define OK() context->passHasDoneSomething = true;
+#define CMP3(__a, __b) __a < __b ? -1 : (__a > __b ? 1 : 0)
 
 #define BINOP_S32(__op)                     \
     ip->op    = ByteCodeOp::SetImmediate32; \
@@ -196,6 +197,43 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::CompareOpEqual64:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u32 = (ip->a.u64 == ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+
+            case ByteCodeOp::CompareOp3WayU32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.u32, ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayU64:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.u64, ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayS32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.s32, ip->b.s32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayS64:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.s64, ip->b.s64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayF32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.f32, ip->b.f32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOp3WayF64:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = CMP3(ip->a.f64, ip->b.f64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

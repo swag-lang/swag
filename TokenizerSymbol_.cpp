@@ -255,6 +255,13 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
             token.id = TokenId::SymLowerEqual;
             ADDC2(c);
             treatChar(c, offset);
+            c = getCharNoSeek(offset);
+            if (c == '>')
+            {
+                token.id = TokenId::SymLowerEqualGreater;
+                treatChar(c, offset);
+                ADDC3(c);
+            }
         }
         else if (c == '<')
         {

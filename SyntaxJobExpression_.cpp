@@ -388,6 +388,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     if ((token.id == TokenId::SymEqualEqual) ||
         (token.id == TokenId::SymExclamEqual) ||
         (token.id == TokenId::SymLowerEqual) ||
+        (token.id == TokenId::SymLowerEqualGreater) ||
         (token.id == TokenId::SymGreaterEqual) ||
         (token.id == TokenId::SymLower) ||
         (token.id == TokenId::SymGreater))
@@ -396,6 +397,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         while ((token.id == TokenId::SymEqualEqual) ||
                (token.id == TokenId::SymExclamEqual) ||
                (token.id == TokenId::SymLowerEqual) ||
+               (token.id == TokenId::SymLowerEqualGreater) ||
                (token.id == TokenId::SymGreaterEqual) ||
                (token.id == TokenId::SymLower) ||
                (token.id == TokenId::SymGreater))
