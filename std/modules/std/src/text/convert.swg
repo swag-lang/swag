@@ -98,21 +98,21 @@ namespace std.text
 
             if type.kind == TypeInfoKind.Struct
             {
-                // A structure with an implementation of IConvert
-                itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
-                if itf != null
-                {
-                    itf.convert(buf, strFormat)
-                    return
-                }
-
                 // A special format structure
                 if type == ConvertFormatInt
                     convertInt(buf, cast(ConvertFormatInt) value)
                 else if type == ConvertFormatFloat
                     convertFloat(buf, cast(ConvertFormatFloat) value)
                 else
-                    convertStruct(buf, value, strFormat)
+                {
+                    // A structure with an implementation of IConvert
+                    itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
+                    if itf != null
+                        itf.convert(buf, strFormat)
+                    else
+                        convertStruct(buf, value, strFormat)
+                }
+
                 return
             }
 
