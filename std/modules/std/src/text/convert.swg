@@ -100,6 +100,17 @@ namespace std.text
                 return
             }
 
+            // An enum value
+            if type.kind == TypeInfoKind.Enum
+            {
+                enumName := reflection.getEnumName(type, @dataof(value))
+                if enumName != null
+                    buf.addBytes(enumName)
+                else
+                    buf.addBytes("?")
+                return
+            }
+
             if type.kind == TypeInfoKind.Struct
             {
                 // A special format structure
@@ -231,7 +242,7 @@ namespace std.text
                 case s16:   signedValue = cast(s64) deref cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
                 case s32:   signedValue = cast(s64) deref cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
                 case s64:   signedValue = deref cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
-                case u8:    value = cast(u64) deref cast(*u8) dataof;
+                case u8:    value = cast(u64) deref cast(*u8) dataof
                 case u16:   value = cast(u64) deref cast(*u16) dataof
                 case u32:   value = cast(u64) deref cast(*u32) dataof
                 case u64:   value = deref cast(*u64) dataof
