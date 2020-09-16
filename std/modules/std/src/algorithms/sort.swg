@@ -81,4 +81,13 @@ namespace std.algorithms
         }
     }
 
+    // Sort, by picking the right algorithm depending on the type and the
+    // number of elements
+    public func(T) sort(values: [..] T, cb: func(T, T)->s32)
+    {
+        if(@countof(values) <= 10)
+            sortInsertion(values, cb)
+        else
+            sortQuick(values, cb)
+    }
 }

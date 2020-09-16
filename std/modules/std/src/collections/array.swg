@@ -299,5 +299,11 @@ namespace std.collections
 
             return false
         }
+
+        // Sort array
+        func sort(using self, cb: func(T, T)->s32)
+        {
+            std.algorithms.sort(@mkslice(buffer, count), cb)
+        }
     }
 }
