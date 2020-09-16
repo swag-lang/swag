@@ -406,6 +406,10 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
             binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
             binaryNode->token       = move(token);
 
+            // Need to duplicate the left node to replace for example '? <= A <= ?' by '(? <= A) && (A <= N)'
+            if (leftBinary)
+                leftNode = Ast::clone(leftNode, nullptr);
+
             Ast::addChildBack(binaryNode, leftNode);
             SWAG_CHECK(tokenizer.getToken(token));
             AstNode* rightNode;

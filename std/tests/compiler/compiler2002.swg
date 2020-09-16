@@ -1,7 +1,5 @@
-#[swag.inline]
-func isDigit(c: u8) => "0"'u8 <= c <= "9"'u8
-
 #test
 {
-    @assert(isDigit("0"'u8))
+    c := "0"'u8
+    b := ("a"'u8 <= (c+1) <= "z"'u8)
 }
