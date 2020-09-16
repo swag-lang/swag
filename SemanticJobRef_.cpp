@@ -266,6 +266,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->typeInfo = newTypePtr;
         }
 
+        arrayNode->flags |= AST_ARRAY_POINTER_REF;
+        arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
         break;
     }

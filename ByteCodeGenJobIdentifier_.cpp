@@ -96,6 +96,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
+            if (node->parent->flags & AST_ARRAY_POINTER_REF)
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -174,6 +176,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u32     = resolved->storageOffset;
             inst->c.pointer = (uint8_t*) resolved;
+            if (node->parent->flags & AST_ARRAY_POINTER_REF)
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -242,11 +246,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->kind == TypeInfoKind::TypeListArray ||
                  typeInfo->kind == TypeInfoKind::Struct)
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
         }
         else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+            if (node->parent->flags & AST_ARRAY_POINTER_REF)
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -295,8 +303,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->flags |= BCI_IMM_B;
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
         }
+
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
+        else if (node->parent->flags & AST_ARRAY_POINTER_REF)
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;

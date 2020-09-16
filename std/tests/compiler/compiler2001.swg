@@ -1,4 +1,4 @@
-#module "compiler1940"
+#module "compiler2001"
 #unittest error
 
 struct(T) B
@@ -11,7 +11,7 @@ impl B
     //#[swag.printbc]
     func toto(using self)
     {
-        xxx[0] = 0
+        deref xxx = 0
     }
 }
 

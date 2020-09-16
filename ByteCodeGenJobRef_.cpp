@@ -9,9 +9,7 @@
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-
     emitSafetyNullPointer(context, node->array->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
     if (!node->isDeref)
@@ -19,7 +17,6 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
         int sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-        emitSafetyNullPointer(context, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     }
 
