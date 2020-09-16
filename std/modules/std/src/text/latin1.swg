@@ -41,44 +41,45 @@ namespace std.text.latin1
     public
     {
         func isAscii(c: u8)         => c <= 0x7F
-        func isDigit(c: u8)         => c >= cast(u8) "0"'char && c <= cast(u8) "9"'char
+        func isDigit(c: u8)         => c >= "0"'u8 && c <= "9"'u8
+        func isBinDigit(c: u8)      => c == "0"'u8 || c == "1"'u8
         func isUpper(c: u8)         => charCategory[c] == unicode.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode.UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
 
         func isLetter(c: u8)->bool
         {
-            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) ||
-                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) ||
+            return  (c >= "a"'u8 && c <= "z"'u8) ||
+                    (c >= "A"'u8 && c <= "Z"'u8) ||
                     (c >= 0x80 && unicode.isLetter(charCategory[c]))
         }
 
         func isLetterOrDigit(c: u8)->bool
         {
-            return  (c >= cast(u8) "a"'char && c <= cast(u8) "z"'char) ||
-                    (c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char) ||
-                    (c >= cast(u8) "0"'char && c <= cast(u8) "9"'char) ||
+            return  (c >= "a"'u8 && c <= "z"'u8) ||
+                    (c >= "A"'u8 && c <= "Z"'u8) ||
+                    (c >= "0"'u8 && c <= "9"'u8) ||
                     (c >= 0x80 && unicode.isLetterOrDigit(charCategory[c]))
         }
 
 		func isWhiteSpace(c: u8)->bool
         {
-            return  c == cast(u8) " "'char ||
-                    (c >= cast(u8) "\x09"'char && c <= cast(u8) "\x0d"'char) ||
-                    c == cast(u8) "\xa0"'char ||
-                    c == cast(u8) "\x85"'char
+            return  c == " "'u8 ||
+                    (c >= "\x09"'u8 && c <= "\x0d"'u8) ||
+                    c == "\xa0"'u8 ||
+                    c == "\x85"'u8
         }
 
         func toUpper(c: u8)->u8
         {
-            if c >= cast(u8) "a"'char && c <= cast(u8) "z"'char
+            if c >= "a"'u8 && c <= "z"'u8
                 return cast(u8) (c & ~0x20)
             return c;
         }
 
         func toLower(c: u8)->u8
         {
-            if c >= cast(u8) "A"'char && c <= cast(u8) "Z"'char
+            if c >= "A"'u8 && c <= "Z"'u8
                 return cast(u8) (c | 0x20)
             return c;
         }
