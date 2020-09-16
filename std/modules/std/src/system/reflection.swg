@@ -6,6 +6,27 @@ namespace std.reflection
     {
         #[swag.constexpr]
         {
+            // Type names are scoped (i.e. "A.B.C"). This function will return the last
+            // part, which is in fact the real simple name
+            func scopedNameToName(type: typeinfo)->string
+            {
+                dataof := @dataof(type.name)
+                countof := @countof(type.name)
+                if !countof return type.name
+
+                buffer := dataof + (countof - 1)
+                count := 0'u32
+                while buffer != dataof && deref buffer != "."'u8
+                {
+                    buffer -= 1
+                    count += 1
+                }
+
+                if buffer == dataof
+                    return type.name
+                return cast(string) @mkslice(buffer + 1, count)
+            }
+
             // Get information about a specific method in a given struct
             // Returns null if the method does not exist
             func getMethod(type: typeinfo, name: string)->const* TypeInfoParam
@@ -101,6 +122,7 @@ namespace std.reflection
                 default: return result
                 }
 
+                simpleName := scopedNameToName(type)
                 visit it: typeEnum.values
                 {
                     // Get the enum value, as an 'u64' or a string
@@ -118,6 +140,8 @@ namespace std.reflection
                     // For a normal enum, stop if this is a match
                     if !isFlags && val1 == val2 && val1s == val2s
                     {
+                        result += simpleName
+                        result += "."
                         result += it.name
                         return result
                     }
@@ -126,6 +150,8 @@ namespace std.reflection
                     if isFlags && (val1 & val2)
                     {
                         if !result.isEmpty() result += " | "
+                        result += simpleName
+                        result += "."
                         result += it.name
                     }
                 }

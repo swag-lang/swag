@@ -6,14 +6,14 @@ using std.text, std.diagnostics
     enum RGB { Red; Green; Blue; }
     v := RGB.Green
     str := format("%", v)
-    //@print(cast(string) str)
-    @assert(str == "Green")
+    //console.write("%\n", str)
+    @assert(str == "RGB.Green")
 
     enum RGBS: string { Red = "A"; Green = "B"; Blue = "C"; }
     v1 := RGBS.Blue
     str = format("%", v1)
-    //@print(cast(string) str)
-    @assert(str == "Blue")
+    //console.write("%\n", str)
+    @assert(str == "RGBS.Blue")
 
     #[swag.flags]
     enum Flags
@@ -25,6 +25,6 @@ using std.text, std.diagnostics
 
     v2 := Flags.Red | Flags.Blue
     str = format("%", v2)
-    @assert(str == "Red | Blue")
-    //@print(cast(string) str)
+    //console.write("%\n", str)
+    @assert(str == "Flags.Red | Flags.Blue")
 }
