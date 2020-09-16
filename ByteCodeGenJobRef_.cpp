@@ -12,11 +12,17 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
     emitSafetyNullPointer(context, node->array->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
-    int sizeOf = node->typeInfo->sizeOf;
-    if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitSafetyNullPointer(context, node->array->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+
+    // In case of a deref, no need to increment pointer because we are sure that index is 0
+    if (!node->isDeref)
+    {
+        int sizeOf = node->typeInfo->sizeOf;
+        if (sizeOf > 1)
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
+        emitSafetyNullPointer(context, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+    }
+
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
 
