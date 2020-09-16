@@ -90,7 +90,13 @@ namespace std.text
             // A pointer, whatever type
             if type.kind == TypeInfoKind.Pointer
             {
-                buf.addBytes("?")
+                var fmt: ConvertFormatInt
+                fmt.base = 16
+                fmt.width = 16
+                fmt.padding = "0"'u8
+                fmt.setFormat(strFormat)
+                fmt.value = deref cast(const *u64) @dataof(value)
+                convertInt(buf, fmt)
                 return
             }
 
