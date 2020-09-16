@@ -1,4 +1,4 @@
 struct A
 {
-    internal x: u32
+    x: u32
 }

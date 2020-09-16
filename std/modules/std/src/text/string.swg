@@ -12,8 +12,7 @@ namespace std.text
         length:     u32
         capacity:   u32
         allocator:  IAllocator
-
-        internal padding: [SmallSizeInternal] u8
+        padding:    [SmallSizeInternal] u8
     }
 
     impl String
@@ -329,11 +328,6 @@ namespace std.text
         }
 
         // Removes all leading and trailing white-space characters from the current String
-        // The `trim` function removes from the current string all leading and trailing white-space characters. Each leading and trailing
-        // trim operation stops when a non-white-space character is encountered. For example, if the current string is " abc xyz ", the `trim`
-        // function returns "abc xyz".
-        // White-space characters are defined by the Unicode standard. The `trim` function removes any leading and trailing characters
-        // that produce a return value of true when they are passed to the [std.text.unicode.isWhiteSpace] function.
         func trim(using self)
         {
             trimStart()

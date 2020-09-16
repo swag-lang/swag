@@ -315,7 +315,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
-        case TokenId::KwdInternal:
         case TokenId::KwdReadOnly:
         case TokenId::KwdReadWrite:
         {
@@ -326,8 +325,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
                 attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
             else if (token.id == TokenId::KwdReadWrite)
                 attrBlockNode->attributeFlags |= ATTRIBUTE_READWRITE;
-            else if (token.id == TokenId::KwdInternal)
-                attrBlockNode->attributeFlags |= ATTRIBUTE_INTERNAL;
 
             SWAG_CHECK(eatToken());
 

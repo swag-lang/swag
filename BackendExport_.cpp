@@ -360,8 +360,6 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
             CONCAT_FIXED_STR(bufferSwg, "using ");
         if (p->node->attributeFlags & ATTRIBUTE_READWRITE)
             CONCAT_FIXED_STR(bufferSwg, "readwrite ");
-        else if (p->node->attributeFlags & ATTRIBUTE_INTERNAL)
-            CONCAT_FIXED_STR(bufferSwg, "internal ");
         else if (p->node->attributeFlags & ATTRIBUTE_READONLY)
             CONCAT_FIXED_STR(bufferSwg, "readonly ");
         bufferSwg.addString(p->namedParam);

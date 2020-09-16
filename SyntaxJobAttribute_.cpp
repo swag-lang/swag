@@ -71,10 +71,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
     switch (token.id)
     {
-    case TokenId::KwdInternal:
-        attr |= ATTRIBUTE_INTERNAL;
-        SWAG_CHECK(tokenizer.getToken(token));
-        break;
     case TokenId::KwdReadOnly:
         attr |= ATTRIBUTE_READONLY;
         SWAG_CHECK(tokenizer.getToken(token));

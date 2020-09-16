@@ -5,6 +5,6 @@
 {
     private struct A
     {
-        internal x: s32
+        x: s32
     }
 }
