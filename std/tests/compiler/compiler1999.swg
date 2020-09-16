@@ -1,22 +1,78 @@
-struct A
+func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 {
-    x: s32
-}
+    if(@countof(values) == 0)
+        return
 
-impl A
-{
-    func toto()
+    begin := 0'u32
+    end := @countof(values) - 1
+    buffer := @dataof(values)
+
+    while true
     {
-        @print("toto\n")
+        // Pick a pivot and move it out of the way
+        pivot := (begin + end) / 2
+
+        med := buffer[pivot]
+        buffer[pivot] = buffer[end]
+        buffer[end] = med
+
+        low := begin
+        high := end
+        while true
+        {
+            while low < high && cb(buffer[low], med) <= 0
+                low += 1
+            while low < high && cb(buffer[high], med) >= 0
+                high -= 1
+            if low >= high
+                break
+            tmp := low
+            low = high
+            high = tmp
+        }
+
+        // Put the median in the "center" of the list
+        buffer[end] = buffer[high]
+        buffer[high] = med
+
+        // To avoid too much recursions, we recurse only for the smaller partition
+        set1 := cast(s32) ((low - 1) - begin)
+        set2 := cast(s32) (end - (high + 1))
+        if set1 > 0 && set2 > 0
+        {
+            if set1 <= set2
+            {
+                sortQuick(@mkslice(buffer + begin, (low - begin) + 1), cb);
+                begin = high + 1
+            }
+            else
+            {
+                sortQuick(@mkslice(buffer + high + 1, (end - high) + 1), cb);
+                end = low - 1
+            }
+        }
+        else if set1 > 0
+            end = low - 1
+        else if set2 > 0
+            begin = high + 1
+        else
+            break
     }
 }
 
 #test
 {
-    ptr := @typeof(A)
-    //f := cast(func()) ptr.methods[0]
-    visit it: ptr.methods
+    x := @[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    sortQuick(cast([..] s32) x, @(x, y) => x <=> y)
+    loop i: x
     {
-        @print(it.name)
+        if i != @countof(x) - 1
+            @assert(x[i] <= x[i + 1])
     }
-}
+
+    sortQuick(cast([..] s32) x, @(x, y) => y <=> x)
+    loop i: x
+    {
+        if i != @countof(x) - 1
+            @assert(x[i] >= x[i + 1])
+    }}
