@@ -358,7 +358,7 @@ namespace std.text
                 return 0
             if latin1.isAscii(buffer[0])
                 return cast(char) buffer[0]
-            let (b, c) = utf8.nextChar(buffer)
+            (b, c) := utf8.nextChar(buffer)
             return c
         }
 
@@ -370,7 +370,7 @@ namespace std.text
                 return 0
             if latin1.isAscii(buffer[length - 1])
                 return cast(char) buffer[length - 1]
-            let (b, c) = utf8.previousChar(buffer, buffer + length)
+            (b, c) := utf8.previousChar(buffer, buffer + length)
             return c
         }
 

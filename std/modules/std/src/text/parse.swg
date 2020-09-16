@@ -129,7 +129,7 @@ namespace std.text
 
         // Does the number starts with the negative/positive sign ?
         signed := false
-        var (nextBuffer, c) = utf8.nextChar(buffer)
+        (nextBuffer, c) := utf8.nextChar(buffer)
         if c == g_CultureInfo.numberFormat.negativeSign
         {
             // Skip negative sign
