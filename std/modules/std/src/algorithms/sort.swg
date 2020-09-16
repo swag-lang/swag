@@ -36,18 +36,15 @@ namespace std.algorithms
         {
             // Pick a pivot and move it out of the way
             pivot := (begin + end) / 2
-
-            med := buffer[pivot]
-            buffer[pivot] = buffer[end]
-            buffer[end] = med
+            swap(&buffer[pivot], &buffer[end])
 
             low := begin
             high := end
             while true
             {
-                while low < high && cb(buffer[low], med) <= 0
+                while low < high && cb(buffer[low], buffer[end]) <= 0
                     low += 1
-                while low < high && cb(buffer[high], med) >= 0
+                while low < high && cb(buffer[high], buffer[end]) >= 0
                     high -= 1
                 if low >= high
                     break
@@ -57,8 +54,7 @@ namespace std.algorithms
             }
 
             // Put the median in the "center" of the list
-            buffer[end] = buffer[high]
-            buffer[high] = med
+            swap(&buffer[end], &buffer[high])
 
             // To avoid too much recursions, we recurse only for the smaller partition
             set1 := cast(s32) ((low - 1) - begin)

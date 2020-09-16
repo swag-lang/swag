@@ -75,4 +75,5 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     {
         if i != @countof(x) - 1
             @assert(x[i] >= x[i + 1])
-    }}
+    }
+}
