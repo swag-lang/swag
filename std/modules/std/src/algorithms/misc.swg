@@ -1,7 +1,7 @@
 namespace std.algorithms
 {
     // Swap two values
-    //#[swag.inline]
+    #[swag.inline]
     public func(T) swap(x, y: *T)
     {
         tmp := move nodrop deref x
