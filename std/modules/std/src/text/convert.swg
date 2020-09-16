@@ -68,7 +68,7 @@ namespace std.text
             // Next comes the padding width
             if cpt >= countof
                 return
-            (userWidth, eatCount) := parse.toU64(@mkslice(buffer + cpt, countof - cpt))
+            (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
             debug.assert(userWidth <= 255, "padding width overflow")
             width = cast(u8) userWidth
         }

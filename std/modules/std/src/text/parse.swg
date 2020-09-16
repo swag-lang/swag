@@ -1,8 +1,8 @@
-namespace std.text.parse
+namespace std.text
 {
     // Convert an utf8 buffer to an unsigned integer value
     // Returns the value and the number of bytes used to make the conversion
-    public func toU64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
+    public func parseU64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
     {
         result := 0'u64
         countof := @countof(str)
