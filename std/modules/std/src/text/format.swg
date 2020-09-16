@@ -40,7 +40,7 @@ namespace std.text
                     continue
                 }
 
-                // Optional string format, lie "%{whatever}"
+                // Optional string format, like '%{whatever}'
                 var strFormat: const [..] u8
                 if ptr[nextIdx] == "{"'u8
                 {

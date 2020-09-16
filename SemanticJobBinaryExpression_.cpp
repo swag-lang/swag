@@ -820,6 +820,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
     }
 
+    // Cannot compare tuples
+    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return context->report({left, format("invalid operation '%s' on a tuple type", node->token.text.c_str())});
+    if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return context->report({right, format("invalid operation '%s' on a tuple type", node->token.text.c_str())});
+
     // Remember left type info before promotion, because for enum flags, we should
     // not transform them to an u32
     auto leftTypeInfoBeforePromote = left->typeInfo;

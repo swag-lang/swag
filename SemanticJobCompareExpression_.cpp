@@ -301,24 +301,25 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
     }
 
+    // Cannot compare tuples
+    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return context->report({left, "comparison operations are invalid on tuple types"});
+    if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return context->report({right, "comparison operations are invalid on tuple types"});
+
     // Slice can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr.typeInfoNull)
-    {
         return context->report({left, "a slice can only be compared to 'null'"});
-    }
 
+    // Interface can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr.typeInfoNull)
-    {
         return context->report({left, "an interface can only be compared to 'null'"});
-    }
 
     // Some types can only be compared for equality
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-        {
             return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
-        }
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)
