@@ -297,7 +297,7 @@ namespace std.text
             ptr := cast(const *u8) buffer
             while true
             {
-                var (nextPtr, c) = utf8.nextChar(ptr)
+                (nextPtr, c) := utf8.nextChar(ptr)
                 if !unicode.isWhiteSpace(c)
                     break
                 length -= cast(u32) (nextPtr - ptr)
@@ -317,7 +317,7 @@ namespace std.text
             ptr := cast(const *u8) buffer + length
             while true
             {
-                var (previousPtr, c) = utf8.previousChar(buffer, ptr)
+                (previousPtr, c) := utf8.previousChar(buffer, ptr)
                 if !unicode.isWhiteSpace(c)
                     break
                 length -= cast(u32) (ptr - previousPtr)
@@ -374,7 +374,7 @@ namespace std.text
             return c
         }
 
-        // Convert string to an 16 bits unicode array
+        // Convert string to a 16 bits unicode array
         func toUnicode16(using self)->Array'u16
         {
             var utf16: Array'u16

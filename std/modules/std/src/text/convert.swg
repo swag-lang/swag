@@ -46,11 +46,13 @@ namespace std.text
         // => width of the output, in characters
         public func setFormat(using self, strFormat: string)
         {
-            if strFormat == null || @countof(strFormat) == 0
+            buffer := @dataof(strFormat)
+            countof := @countof(strFormat)
+            if buffer == null || countof == 0
                 return
 
             cpt := 0'u32
-            switch strFormat[cpt]
+            switch buffer[cpt]
             {
                 case "B"'u8: base = 2; cpt += 1
                 case "D"'u8: base = 10; cpt += 1
@@ -58,21 +60,17 @@ namespace std.text
             }
 
             // Next comes the padding characters
-            if cpt >= @countof(strFormat)
+            if cpt >= countof
                 return
-            padding = strFormat[cpt]
+            padding = buffer[cpt]
             cpt += 1
 
-            // Next comes the width
-            if cpt >= @countof(strFormat)
+            // Next comes the padding width
+            if cpt >= countof
                 return
-            width = 0
-            while latin1.isDigit(strFormat[cpt]) && cpt < @countof(strFormat)
-            {
-                width *= 10
-                width += cast(u8) (strFormat[cpt] - "0"'u8)
-                cpt += 1
-            }
+            (userWidth, eatCount) := parse.toU64(@mkslice(buffer + cpt, countof - cpt))
+            debug.assert(userWidth <= 255, "padding width overflow")
+            width = cast(u8) userWidth
         }
     }
 
