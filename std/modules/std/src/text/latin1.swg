@@ -43,7 +43,7 @@ namespace std.text.latin1
         func isAscii(c: u8)         => c <= 0x7F
         func isDigit(c: u8)         => c >= "0"'u8 && c <= "9"'u8
         func isBinDigit(c: u8)      => c == "0"'u8 || c == "1"'u8
-        func isHexDigit(c: u8)      => isDigit(c) || (c >= "a"'u8 && c <= "z"'u8) || (c >= "A"'u8 && c <= "Z"'u8)
+        func isHexDigit(c: u8)      => (c >= "0"'u8 && c <= "9"'u8) || (c >= "a"'u8 && c <= "z"'u8) || (c >= "A"'u8 && c <= "Z"'u8)
         func isUpper(c: u8)         => charCategory[c] == unicode.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode.UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
