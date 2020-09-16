@@ -417,6 +417,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
                 andNode->semanticFct = SemanticJob::resolveBoolExpression;
                 andNode->token       = rightNode->token;
                 andNode->token.id    = TokenId::SymAmpersandAmpersand;
+                andNode->token.text  = "&&";
                 Ast::removeFromParent(leftBinary);
                 Ast::addChildBack(andNode, leftBinary);
                 Ast::addChildBack(andNode, binaryNode);
