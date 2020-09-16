@@ -22,7 +22,7 @@ func testInline(type: const* TypeInfoFunc)
     msg := itf.getMessage()
     @assert(msg != null)
 
-    if(msg.type.kind == TypeInfoKind.FuncAttr)
+    if(msg.type.kind == TypeInfoKind.Func)
         testInline(cast(const* TypeInfoFunc) msg.type)
 
     cpt += 1

@@ -45,6 +45,39 @@ namespace std.reflection
                 return false
             }
 
+            // Returns true if the given 'type' has the associated 'atttribute'
+            func hasAttribute(type: typeinfo, attribute: string)->bool
+            {
+                switch type.kind
+                {
+                case TypeInfoKind.Func:
+                    typeFunc := cast(const *TypeInfoFunc) type
+                    visit it: typeFunc.attributes
+                    {
+                        if attribute == it.name
+                            return true
+                    }
+
+                case TypeInfoKind.Struct:
+                    typeStruct := cast(const *TypeInfoStruct) type
+                    visit it: typeStruct.attributes
+                    {
+                        if attribute == it.name
+                            return true
+                    }
+
+                case TypeInfoKind.Enum:
+                    typeEnum := cast(const *TypeInfoEnum) type
+                    visit it: typeEnum.attributes
+                    {
+                        if attribute == it.name
+                            return true
+                    }
+                }
+
+                return false
+            }
+
             // Returns the enum value name corresponding (exactly) to the value pointed by 'valueAddr'
             func getEnumName(type: typeinfo, valueAddr: const* void)->string
             {
@@ -86,7 +119,8 @@ namespace std.reflection
                 return null
             }
 
-            // Returns the enum value name corresponding (exactly) to the value pointed by 'valueAddr'
+            // Returns the enum values names corresponding to the value pointed by 'valueAddr'
+            // Can have multiple, because enum is supposed to be #[swag.flags]
             func getEnumFlagsName(type: typeinfo, valueAddr: const* void)->std.text.String
             {
                 var result: std.text.String

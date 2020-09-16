@@ -103,11 +103,23 @@ namespace std.text
             // An enum value
             if type.kind == TypeInfoKind.Enum
             {
-                enumName := reflection.getEnumName(type, @dataof(value))
-                if enumName != null
-                    buf.addBytes(enumName)
+                if reflection.hasAttribute(type, "swag.flags")
+                {
+                    enumName := reflection.getEnumFlagsName(type, @dataof(value))
+                    if !enumName.isEmpty()
+                        buf.addBytes(@mkslice(enumName.buffer, enumName.length))
+                    else
+                        buf.addBytes("?")
+                }
                 else
-                    buf.addBytes("?")
+                {
+                    enumName := reflection.getEnumName(type, @dataof(value))
+                    if enumName != null
+                        buf.addBytes(enumName)
+                    else
+                        buf.addBytes("?")
+                }
+
                 return
             }
 

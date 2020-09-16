@@ -189,7 +189,7 @@ namespace swag
         Native
         Namespace
         Enum
-        FuncAttr
+        Func
         Param
         Lambda
         Pointer

@@ -25,5 +25,6 @@ using std.text, std.diagnostics
 
     v2 := Flags.Red | Flags.Blue
     str = format("%", v2)
-    @print(cast(string) str)
+    @assert(str == "Red | Blue")
+    //@print(cast(string) str)
 }
