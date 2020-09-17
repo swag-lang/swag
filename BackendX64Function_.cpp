@@ -2306,54 +2306,6 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         paramsTypes.push_back(g_TypeMgr.typeInfoUndefined);
     }
 
-    // Store all parameters after 4 on the stack, with an offset of 4 * sizeof(uint64_t)
-    // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
-    // registers, this is the x64 cdecl convention...)
-    if (paramsRegisters.size() > 4)
-    {
-        BackendX64Inst::emit_Copy64(pp, RSP, RBX);
-        uint32_t offsetStack = 4 * sizeof(uint64_t);
-        for (int i = 4; i < (int) paramsRegisters.size(); i++)
-        {
-            if (paramsTypes[i] == g_TypeMgr.typeInfoUndefined)
-            {
-                if (returnByCopy)
-                    BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
-                else
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, paramsRegisters[i], RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RBX);
-            }
-            else
-            {
-                auto sizeOf = paramsTypes[i]->sizeOf;
-                switch (sizeOf)
-                {
-                case 1:
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RBX);
-                    break;
-                case 2:
-                    BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RBX);
-                    break;
-                case 4:
-                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RBX);
-                    break;
-                case 8:
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RBX);
-                    break;
-                default:
-                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
-                }
-            }
-
-            // Push is always aligned
-            offsetStack += 8;
-        }
-    }
-
     // Set the first 4 parameters. Can be return register, or function parameter.
     for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
     {
@@ -2389,9 +2341,6 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
                 else
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, r, R9, RDI);
                 break;
-            default:
-                SWAG_ASSERT(false);
-                break;
             }
         }
 
@@ -2425,6 +2374,56 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
                 break;
             }
+        }
+    }
+
+    // Store all parameters after 4 on the stack, with an offset of 4 * sizeof(uint64_t)
+    // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
+    // registers, this is the x64 cdecl convention...)
+    if (paramsRegisters.size() > 4)
+    {
+        uint32_t offsetStack = 4 * sizeof(uint64_t);
+        for (int i = 4; i < (int) paramsRegisters.size(); i++)
+        {
+            // This is for a return value
+            if (paramsTypes[i] == g_TypeMgr.typeInfoUndefined)
+            {
+                if (returnByCopy)
+                    BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
+                else
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, paramsRegisters[i], RAX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            }
+
+            // This is for a normal parameter
+            else
+            {
+                auto sizeOf = paramsTypes[i]->sizeOf;
+                switch (sizeOf)
+                {
+                case 1:
+                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
+                    break;
+                case 4:
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
+                    break;
+                case 8:
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                    break;
+                default:
+                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+                }
+            }
+
+            // Push is always aligned
+            offsetStack += 8;
         }
     }
 
