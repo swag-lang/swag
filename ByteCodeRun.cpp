@@ -1843,6 +1843,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
+
     // Special exception raised by swag_runtime_error, to simply log an error message
     // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 0x666)
@@ -1857,6 +1858,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append((const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]);
         else
             userMsg.append("assertion failed");
+
+        // Add current call context
+        runContext->bc->addCallStack(runContext);
 
         SourceFile dummyFile;
         dummyFile.path = fileName;
