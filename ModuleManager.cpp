@@ -110,15 +110,25 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     typeFunc->attributes.getValue("swag.foreign", "module", moduleName);
     SWAG_ASSERT(!moduleName.text.empty());
 
-    PatchOffset newPatch;
-    newPatch.patchAddress = patchAddress;
-    newPatch.funcDecl     = func;
-
-    auto it = patchOffsets.find(moduleName.text);
-    if (it == patchOffsets.end())
-        patchOffsets[moduleName.text] = {newPatch};
+    // Apply patch now, because module is already loaded
+    if (isModuleLoaded(moduleName.text))
+    {
+        auto fnPtr = getFnPointerNoLock(moduleName.text, func->fullnameForeign);
+        SWAG_ASSERT(fnPtr);
+        *patchAddress = doForeignLambda(fnPtr);
+    }
     else
-        it->second.push_back(newPatch);
+    {
+        PatchOffset newPatch;
+        newPatch.patchAddress = patchAddress;
+        newPatch.funcDecl     = func;
+
+        auto it = patchOffsets.find(moduleName.text);
+        if (it == patchOffsets.end())
+            patchOffsets[moduleName.text] = {newPatch};
+        else
+            it->second.push_back(newPatch);
+    }
 }
 
 void ModuleManager::applyPatches(const Utf8& moduleName)
