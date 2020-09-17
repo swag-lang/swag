@@ -20,4 +20,5 @@ y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 -------------------------------------
 slice, strings & co, passer le count en 64 bits une bonne fois pour toute
 -------------------------------------
-text convert new method
+ByteCodeOp::LambdaCall, mettre des jump 8 bits
+-------------------------------------
