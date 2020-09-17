@@ -1702,21 +1702,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopySPVaargs:
-            variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
-            MK_ALIGN16(variadicStackSize);
-            BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, variadicStackSize);
-            for (int idxParam = (int) pushRAParams.size() - 1, offset = 8; idxParam >= 0; idxParam--, offset += 8)
+        {
+            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+            bool foreign      = ip->c.b;
+            if (!foreign)
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
-                concat.addU32(offset);
+                concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
+                concat.addU8(8 + (typeFuncCall->numReturnRegisters() * 8));
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
+            else
+            {
+                variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
+                MK_ALIGN16(variadicStackSize);
+                BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, variadicStackSize);
+                for (int idxParam = (int) pushRAParams.size() - 1, offset = 8; idxParam >= 0; idxParam--, offset += 8)
+                {
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
+                    concat.addU32(offset);
+                }
 
-            concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
-            concat.addU8(8);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
+                concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
+                concat.addU8(8);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
+            }
             break;
+        }
 
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
@@ -2168,6 +2181,8 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizePara
         }
     }
 
+    popRAidx = 0;
+
     uint32_t sizeStack = (uint32_t)((pushRAParams.size() - popRAidx) * sizeof(Register));
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
 
@@ -2175,7 +2190,7 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizePara
     auto offset = sizeStack;
     MK_ALIGN16(sizeStack);
     SWAG_ASSERT(sizeStack <= sizeParamsStack);
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
+    //BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
 
     for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
     {
@@ -2193,7 +2208,7 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizePara
     }
 
     SWAG_ASSERT(offset == 0);
-    return sizeStack;
+    return 0; // sizeStack;
 }
 
 void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)

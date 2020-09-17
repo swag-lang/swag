@@ -725,7 +725,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
-            emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
+            auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
+            inst->c.b       = foreign;
+            inst->d.pointer = (uint8_t*) typeInfoFunc;
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
             maxCallParams++;
 
@@ -747,7 +749,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
-            emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
+            auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
+            inst->c.b       = foreign;
+            inst->d.pointer = (uint8_t*) typeInfoFunc;
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
             maxCallParams++;
 
