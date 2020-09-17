@@ -309,13 +309,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Symbol
     auto symbolFunc = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
 
-    // Reserve registers
-    uint32_t sizeStack   = 0;
-    uint32_t offsetFLT   = 0;
-    uint32_t offsetStack = 0;
-    uint32_t offsetRT    = 0;
-    uint32_t offsetRR    = 0;
-
     // For float load
     // (should be reserved only if we have floating point operations in that function)
     // In order we have :
@@ -323,11 +316,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // RT (max call results)
     // Local function stack
     // FLT
-    offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
-    offsetStack = offsetRT + bc->maxCallResults * sizeof(Register);
-    offsetRR    = offsetStack + typeFunc->stackSize;
-    offsetFLT   = offsetRR + 2 * sizeof(Register);
-    sizeStack   = offsetFLT + 8;
+    uint32_t offsetRT        = bc->maxReservedRegisterRC * sizeof(Register);
+    uint32_t offsetStack     = offsetRT + bc->maxCallResults * sizeof(Register);
+    uint32_t offsetRR        = offsetStack + typeFunc->stackSize;
+    uint32_t offsetFLT       = offsetRR + 2 * sizeof(Register);
+    uint32_t sizeStack       = offsetFLT + 8;
+    uint32_t sizeParamsStack = 4 * sizeof(Register);
 
     auto beforeProlog = concat.totalCount();
 
@@ -337,14 +331,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     MK_ALIGN16(sizeStack);
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
     auto sizeProlog = concat.totalCount() - beforeProlog;
 
     uint16_t unwind0 = 0;
     uint16_t unwind1 = 0;
-    computeUnwind(sizeStack + 4 * sizeof(uint64_t) + 8, sizeProlog, unwind0, unwind1);
+    computeUnwind(sizeStack + sizeParamsStack + 8, sizeProlog, unwind0, unwind1);
 
-    pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
+    pp.concat.addString4("\x48\x8D\xBC\x24");
+    pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + 32]
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -1907,7 +1902,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::Ret:
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
             BackendX64Inst::emit_Pop(pp, RDI);
             BackendX64Inst::emit_Ret(pp);
             break;
@@ -2158,8 +2153,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
 uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams)
 {
-    auto& concat = pp.concat;
-
     int popRAidx      = (int) pushRAParams.size();
     int numCallParams = (int) typeFuncBC->parameters.size();
     for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
