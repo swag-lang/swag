@@ -189,7 +189,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* params[] = {
             llvm::Type::getInt8Ty(context),
             llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt32Ty(context),
+            llvm::Type::getInt64Ty(context),
             llvm::Type::getInt8PtrTy(context)};
         modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }

@@ -15,7 +15,7 @@ extern "C" void*            swag_runtime_tlsGetValue(SwagU64 id);
 extern "C" void             swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
 extern "C" bool             swag_runtime_compareType(const void* type1, const void* type2);
 extern "C" void*            swag_runtime_interfaceof(const void* structType, const void* itfType);
-extern "C" void             swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* msg);
+extern "C" void             swag_runtime_assert(bool expr, const void* file, SwagU64 colline, const void* msg);
 extern "C" void             swag_runtime_assert_msg(struct ConcreteCompilerSourceLocation* location, const void* message);
 extern "C" void*            swag_runtime_memcpy(void* destination, const void* source, size_t size);
 extern "C" void             swag_runtime_error(struct ConcreteCompilerSourceLocation* location, const void* message, SwagU32 size);

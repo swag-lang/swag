@@ -1989,7 +1989,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto         r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
             auto         v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
-            auto         r2 = builder.getInt32(ip->node->token.startLocation.line);
+            auto         r2 = builder.getInt64(ip->node->token.startLocation.line | ((uint64_t) ip->node->token.startLocation.column << 32));
             llvm::Value* r3;
             if (ip->d.pointer)
             {

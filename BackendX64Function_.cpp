@@ -1531,18 +1531,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicAssert:
+        {
             if (ip->flags & BCI_IMM_A)
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u8, RCX);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RDX);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line, R8);
+            uint64_t colline = ip->node->token.startLocation.line | ((uint64_t) ip->node->token.startLocation.column << 32);
+            BackendX64Inst::emit_Load64_Immediate(pp, colline, R8);
             if (ip->d.pointer)
-                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, R9);
+                emitGlobalString(pp, precompileIndex, (const char*)ip->d.pointer, R9);
             else
                 BackendX64Inst::emit_Clear64(pp, R9);
             emitCall(pp, "swag_runtime_assert");
             break;
+        }
 
         case ByteCodeOp::IntrinsicGetContext:
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_contextTlsId, 0);

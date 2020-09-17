@@ -55,13 +55,13 @@ EXTERN_C void swag_runtime_assert_msg(ConcreteCompilerSourceLocation* location, 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagS32 line, const void* message)
+EXTERN_C void swag_runtime_assert(bool expr, const void* file, SwagU64 colline, const void* message)
 {
     if (expr)
         return;
     ConcreteCompilerSourceLocation loc;
-    loc.lineStart = loc.lineEnd = line;
-    loc.colStart = loc.colEnd = 0;
+    loc.lineStart = loc.lineEnd = (SwagU32)(colline & 0xFFFFFFFF);
+    loc.colStart = loc.colEnd = (SwagU32)(colline >> 32);
     loc.fileName.buffer       = (void*) file;
     loc.fileName.count        = strlen((const char*) file);
     swag_runtime_assert_msg(&loc, message);
