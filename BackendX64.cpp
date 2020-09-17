@@ -108,7 +108,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // This is not readonly because we can patch some stuff during the initialization stage of the module
         /////////////////////////////////////////////
         pp.sectionIndexCS = secIndex++;
-        concat.addString(".data\0\0", 8);                         // .Name
+        concat.addString(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchCSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -164,7 +164,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // type section
         /////////////////////////////////////////////
         pp.sectionIndexTS = secIndex++;
-        concat.addString(".rdata\0\0\0", 8);                      // .Name
+        concat.addString(".rdata\0\0", 8);                        // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchTSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -237,6 +237,12 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
+void BackendX64::alignConcat(Concat& concat, uint32_t align)
+{
+    while (concat.totalCount() % align)
+        concat.addU8(0);
+}
+
 JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     int   ct              = buildParameters.compileType;
@@ -271,8 +277,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.pass = BackendPreCompilePass::End;
 
         // Align .text section to 16 bytes
-        while (concat.totalCount() % 16)
-            concat.addU8(0);
+        alignConcat(concat, 16);
         pp.textSectionOffset       = concat.totalCount();
         *pp.patchTextSectionOffset = pp.textSectionOffset;
 
@@ -307,12 +312,14 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
         if (!pp.relocTableTextSection.table.empty())
         {
+            alignConcat(concat, 4);
             *pp.patchTextSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
         }
 
         if (!pp.relocTablePDSection.table.empty())
         {
+            alignConcat(concat, 4);
             *pp.patchPDSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTablePDSection, pp.patchPDSectionFlags, pp.patchPDSectionRelocTableCount);
         }
@@ -479,18 +486,11 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    // Align to 4 bytes
-    uint32_t offset = concat.totalCount();
-    while (offset % 4)
-    {
-        offset += 1;
-        concat.addU8(0);
-    }
-
-    *pp.patchXDOffset = offset;
+    alignConcat(concat, 4);
+    *pp.patchXDOffset = concat.totalCount();
 
     // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
-    offset = 0;
+    uint32_t offset = 0;
     for (auto& f : pp.functions)
     {
         f.xdataOffset = offset;
@@ -523,17 +523,10 @@ bool BackendX64::emitPData(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    // Align to 4 bytes
-    uint32_t offset = concat.totalCount();
-    while (offset % 4)
-    {
-        offset += 1;
-        concat.addU8(0);
-    }
+    alignConcat(concat, 4);
+    *pp.patchPDOffset = concat.totalCount();
 
-    *pp.patchPDOffset = offset;
-
-    offset = 0;
+    uint32_t offset = 0;
     for (auto& f : pp.functions)
     {
         CoffRelocation reloc;

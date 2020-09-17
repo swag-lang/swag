@@ -166,6 +166,7 @@ struct BackendX64 : public Backend
     }
 
     bool                    createRuntime(const BuildParameters& buildParameters);
+    void                    alignConcat(Concat& concat, uint32_t align);
     JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                    generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJob* newFunctionJob() override;
