@@ -1870,9 +1870,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 default:
                 {
                     BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
-                    auto stackOffset = (int) pushRAParams.size() - idxParam;
-                    concat.addU32(regOffset(stackOffset));
+                    int idx = (int) pushRAParams.size() - idxParam;
+                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(idx), RAX, RSP);
                     break;
                 }
                 }
