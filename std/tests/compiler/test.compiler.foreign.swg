@@ -169,7 +169,7 @@ func tcf_assert1(x, y, z: s32)
     @error(#location, "message")
 }
 
-public func tcf_assert()
+public func tcf_assert(values: ...)
 {
     //tcf_assert1(0,0,0)
 }
