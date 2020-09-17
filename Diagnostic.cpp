@@ -34,6 +34,11 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::White);
         g_Log.print("note: ");
         break;
+    case DiagnosticLevel::CallStack:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("callstack: ");
+        break;
     }
 
     // Source file and location

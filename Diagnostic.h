@@ -10,6 +10,7 @@ enum DiagnosticLevel
     Verbose,
     Message,
     Note,
+    CallStack,
 };
 
 struct Diagnostic

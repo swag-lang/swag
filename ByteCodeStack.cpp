@@ -14,16 +14,12 @@ void ByteCodeStack::log()
 {
     if (steps.empty())
         return;
-
-    g_Log.setColor(LogColor::DarkYellow);
     for (int i = (int) steps.size() - 1; i >= 0; i--)
     {
         const auto& step = steps[i];
-        Diagnostic  diag{step.ip->node->sourceFile, *step.ip->getLocation(step.bc), step.bc->name, DiagnosticLevel::Note};
+        Diagnostic  diag{step.ip->node->sourceFile, *step.ip->getLocation(step.bc), step.bc->name, DiagnosticLevel::CallStack};
         diag.report();
     }
-
-    g_Log.setDefaultColor();
 }
 
 void ByteCodeStack::reportError(const Utf8& msg)
