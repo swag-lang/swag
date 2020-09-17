@@ -8,6 +8,8 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+#define UWOP_ALLOC_SMALL 2
+
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
@@ -147,6 +149,10 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         sizeStack += sizeof(Register);
     }
 
+    // Prolog
+    uint16_t unwind0      = 0;
+    uint16_t unwind1      = 0;
+    auto     beforeProlog = concat.totalCount();
     if (sizeStack)
     {
         BackendX64Inst::emit_Push(pp, RDI);
@@ -157,8 +163,16 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
     else
     {
-        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 5 * sizeof(Register));
+        uint8_t unwindStackAlloc = 5 * sizeof(Register);
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, unwindStackAlloc);
+        unwindStackAlloc -= 8;
+        unwindStackAlloc /= 8;
+        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (unwindStackAlloc << 4));
+        unwind0 <<= 8;
+        unwind0 |= (uint8_t)(concat.totalCount() - beforeProlog);
     }
+
+    auto sizeProlog = concat.totalCount() - beforeProlog;
 
     // Need to save return register if needed
     if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
@@ -248,7 +262,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFunc->index, startAddress, endAddress);
+    registerFunction(pp, symbolFunc->index, startAddress, endAddress, sizeProlog, unwind0, unwind1);
     return true;
 }
 
@@ -293,6 +307,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     offsetFLT   = offsetRR + 2 * sizeof(Register);
     sizeStack   = offsetFLT + 8;
 
+    auto beforeProlog = concat.totalCount();
+
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     BackendX64Inst::emit_Push(pp, RDI);
@@ -300,7 +316,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
+    auto sizeProlog = concat.totalCount() - beforeProlog;
     pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
+
+    // Unwind informations
+    uint16_t unwind0          = 0;
+    uint16_t unwind1          = 0;
+    uint32_t unwindStackAlloc = sizeStack + 4 * sizeof(uint64_t);
+    unwindStackAlloc += 8; // cause of the push rdi
+    if (unwindStackAlloc <= 128)
+    {
+        unwindStackAlloc -= 8;
+        unwindStackAlloc /= 8;
+        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (unwindStackAlloc << 4));
+        unwind0 <<= 8;
+        unwind0 |= 1 + 5; // Offset of the end of the sub rsp since the prolog start
+    }
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -2107,7 +2138,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFunc->index, startAddress, endAddress);
+    registerFunction(pp, symbolFunc->index, startAddress, endAddress, sizeProlog, unwind0, unwind1);
     return ok;
 }
 

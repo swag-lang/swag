@@ -54,6 +54,9 @@ struct CoffFunction
     uint32_t startAddress;
     uint32_t endAddress;
     uint32_t xdataOffset = 0;
+    uint32_t sizeProlog  = 0;
+    uint16_t unwind0     = 0;
+    uint16_t unwind1     = 0;
 };
 
 struct X64PerThread
@@ -202,7 +205,7 @@ struct BackendX64 : public Backend
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, uint32_t variadicStackSize);
     bool emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 
-    void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress);
+    void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, uint16_t unwind0 = 0, uint16_t unwind1 = 0);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

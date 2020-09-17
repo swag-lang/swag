@@ -397,12 +397,15 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     return JobResult::ReleaseJob;
 }
 
-void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress)
+void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, uint16_t unwind0, uint16_t unwind1)
 {
     CoffFunction cf;
     cf.symbolIndex  = symbolIndex;
     cf.startAddress = startAddress;
     cf.endAddress   = endAddress;
+    cf.sizeProlog   = sizeProlog;
+    cf.unwind0      = unwind0;
+    cf.unwind1      = unwind1;
     pp.functions.push_back(cf);
 }
 
@@ -491,14 +494,20 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     for (auto& f : pp.functions)
     {
         f.xdataOffset = offset;
-        concat.addU8(1); // Version
-        concat.addU8(0); // Size of prolog
-        concat.addU8(0); // Count of unwind codes
+        concat.addU8(1);            // Version
+        concat.addU8(f.sizeProlog); // Size of prolog
+
+        // Count of unwind codes
+        if (!f.unwind0 && !f.unwind1)
+            concat.addU8(0);
+        else if (!f.unwind1)
+            concat.addU8(1);
+        else
+            concat.addU8(2);
+
         concat.addU8(0); // Frame register | offset
-        concat.addU8(0);
-        concat.addU8(0);
-        concat.addU8(0);
-        concat.addU8(0);
+        concat.addU16(f.unwind0);
+        concat.addU16(f.unwind1);
         offset += 8;
     }
 
