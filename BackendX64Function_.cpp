@@ -345,7 +345,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
-    uint32_t               variadicStackSize = 0;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -1717,20 +1716,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
+                uint32_t variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
                 MK_ALIGN16(variadicStackSize);
-                BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, variadicStackSize);
-                int offset = 8;
+                uint32_t offset = sizeParamsStack - variadicStackSize;
                 for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--)
                 {
+                    offset += 8;
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
                     BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
-                    offset += 8;
                 }
 
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, 8, RAX, RSP);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (sizeParamsStack - variadicStackSize) + 8, RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+                BackendX64Inst::emit_Store64_Indirect(pp, (sizeParamsStack - variadicStackSize), RAX, RSP);
             }
             break;
         }
@@ -1823,7 +1821,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Copy64(pp, RAX, R12);
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
             concat.addString3("\x41\xFF\xD4"); // call r12
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, variadicStackSize);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -1837,10 +1834,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
             BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Copy64(pp, RAX, R12);
-            uint32_t sizeCallStack = 0;
-            SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+            SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD4"); // call r12
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
             emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
@@ -1855,7 +1850,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
 
             // Reserve room for additional parameters (the one that cannot stored in registers)
-            sizeCallStack = pushRAParams.size() > 3 ? ((int) pushRAParams.size() - 3) * sizeof(Register) : 0;
+            uint32_t sizeCallStack = pushRAParams.size() > 3 ? ((int) pushRAParams.size() - 3) * sizeof(Register) : 0;
             MK_ALIGN16(sizeCallStack);
             BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeCallStack);
 
@@ -1893,14 +1888,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpBCToAfterAddr      = concat.totalCount() - jumpBCToAfterOffset;
             *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
 
-            variadicStackSize = 0;
             pushRAParams.clear();
             break;
         }
 
         case ByteCodeOp::IncSPPostCall:
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, variadicStackSize);
-            variadicStackSize = 0;
             pushRAParams.clear();
             break;
 
@@ -1915,8 +1907,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
 
         case ByteCodeOp::ForeignCall:
-            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams, variadicStackSize);
-            variadicStackSize = 0;
+            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
             pushRAParams.clear();
             break;
 
@@ -2218,7 +2209,7 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
     }
 }
 
-bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, uint32_t variadicStackSize)
+bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
@@ -2232,10 +2223,8 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
         funcName = nodeFunc->name;
 
     // Push parameters
-    uint32_t exceededStack = 0;
-    SWAG_CHECK(emitForeignCallParameters(pp, exceededStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+    SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
     emitCall(pp, funcName);
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, exceededStack + variadicStackSize);
 
     // Store result
     emitForeignCallResult(pp, typeFuncBC, offsetRT);
@@ -2243,7 +2232,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     return true;
 }
 
-bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -2394,15 +2383,8 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededS
         }
     }
 
-    exceededStack = 0;
     if (paramsRegisters.size() > 4)
     {
-        // Need to reserve additional room in the stack for all other parameters
-        // (remember: we already have reserved 4 x uint64_t for the first four parameters)
-        for (int i = 4; i < (int) paramsRegisters.size(); i++)
-            exceededStack += 8;
-        MK_ALIGN16(exceededStack);
-        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, exceededStack);
         BackendX64Inst::emit_Copy64(pp, RSP, RBX);
 
         // Then we store all the parameters on the stack, with an offset of 4 * sizeof(uint64_t)

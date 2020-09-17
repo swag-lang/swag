@@ -203,8 +203,8 @@ struct BackendX64 : public Backend
     void emitCall(X64PerThread& pp, const Utf8& name);
 
     void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
-    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, uint32_t variadicStackSize);
-    bool emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
+    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    bool emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 
     void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, uint16_t unwind0 = 0, uint16_t unwind1 = 0);
 
