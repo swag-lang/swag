@@ -48,6 +48,14 @@ struct LabelToSolve
     uint8_t* patch;
 };
 
+struct CoffFunction
+{
+    uint32_t symbolIndex;
+    uint32_t startAddress;
+    uint32_t endAddress;
+    uint32_t xdataOffset = 0;
+};
+
 struct X64PerThread
 {
     string filename;
@@ -59,6 +67,7 @@ struct X64PerThread
     CoffRelocationTable        relocTableCSSection;
     CoffRelocationTable        relocTableMSSection;
     CoffRelocationTable        relocTableTSSection;
+    CoffRelocationTable        relocTablePDSection;
     vector<CoffSymbol>         allSymbols;
     map<Utf8Crc, uint32_t>     mapSymbols;
     map<Utf8Crc, uint32_t>     globalStrings;
@@ -67,6 +76,7 @@ struct X64PerThread
     DataSegment                stringSegment;
     VectorNative<LabelToSolve> labelsToSolve;
     Utf8                       directives;
+    vector<CoffFunction>       functions;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -89,6 +99,10 @@ struct X64PerThread
     uint16_t* patchTSSectionRelocTableCount  = nullptr;
     uint32_t* patchTSSectionFlags            = nullptr;
 
+    uint32_t* patchPDSectionRelocTableOffset = nullptr;
+    uint16_t* patchPDSectionRelocTableCount  = nullptr;
+    uint32_t* patchPDSectionFlags            = nullptr;
+
     uint32_t* patchCSOffset = nullptr;
     uint32_t* patchCSCount  = nullptr;
     uint32_t* patchSSOffset = nullptr;
@@ -101,11 +115,16 @@ struct X64PerThread
     uint32_t* patchTSCount  = nullptr;
     uint32_t* patchDRCount  = nullptr;
     uint32_t* patchDROffset = nullptr;
+    uint32_t* patchPDCount  = nullptr;
+    uint32_t* patchPDOffset = nullptr;
+    uint32_t* patchXDCount  = nullptr;
+    uint32_t* patchXDOffset = nullptr;
 
     uint32_t symBSIndex = 0;
     uint32_t symMSIndex = 0;
     uint32_t symCSIndex = 0;
     uint32_t symTSIndex = 0;
+    uint32_t symXDIndex = 0;
 
     uint32_t symMC_mainContext                  = 0;
     uint32_t symMC_mainContext_allocator_addr   = 0;
@@ -130,6 +149,8 @@ struct X64PerThread
     uint16_t sectionIndexSS   = 0;
     uint16_t sectionIndexTS   = 0;
     uint16_t sectionIndexDR   = 0;
+    uint16_t sectionIndexPD   = 0;
+    uint16_t sectionIndexXD   = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
@@ -155,6 +176,8 @@ struct BackendX64 : public Backend
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str, uint8_t reg);
 
+    bool emitXData(const BuildParameters& buildParameters);
+    bool emitPData(const BuildParameters& buildParameters);
     bool emitDirectives(const BuildParameters& buildParameters);
     bool emitSymbolTable(const BuildParameters& buildParameters);
     bool emitStringTable(const BuildParameters& buildParameters);
@@ -178,6 +201,8 @@ struct BackendX64 : public Backend
     void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, uint32_t variadicStackSize);
     bool emitForeignCallParameters(X64PerThread& pp, uint32_t& exceededStack, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
+
+    void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

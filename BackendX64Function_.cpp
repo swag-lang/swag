@@ -71,15 +71,16 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
 
 bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    int      ct              = buildParameters.compileType;
+    int      precompileIndex = buildParameters.precompileIndex;
+    auto&    pp              = perThread[ct][precompileIndex];
+    auto&    concat          = pp.concat;
+    uint32_t startAddress    = concat.totalCount();
 
     node->computeFullNameForeign(true);
 
     // Symbol
-    getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    auto symbolFunc = getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
     pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
 
     VectorNative<TypeInfo*> pushRAParams;
@@ -245,6 +246,9 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(pp, symbolFunc->index, startAddress, endAddress);
     return true;
 }
 
@@ -254,19 +258,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
 
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
-    auto  typeFunc        = bc->callType();
-    bool  ok              = true;
+    int      ct              = buildParameters.compileType;
+    int      precompileIndex = buildParameters.precompileIndex;
+    auto&    pp              = perThread[ct][precompileIndex];
+    auto&    concat          = pp.concat;
+    auto     typeFunc        = bc->callType();
+    bool     ok              = true;
+    uint32_t startAddress    = concat.totalCount();
 
     pp.labels.clear();
     pp.labelsToSolve.clear();
     bc->markLabels();
 
     // Symbol
-    getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    auto symbolFunc = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
 
     // Reserve registers
     uint32_t sizeStack   = 0;
@@ -1540,7 +1545,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             uint64_t colline = ip->node->token.startLocation.line | ((uint64_t) ip->node->token.startLocation.column << 32);
             BackendX64Inst::emit_Load64_Immediate(pp, colline, R8);
             if (ip->d.pointer)
-                emitGlobalString(pp, precompileIndex, (const char*)ip->d.pointer, R9);
+                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, R9);
             else
                 BackendX64Inst::emit_Clear64(pp, R9);
             emitCall(pp, "swag_runtime_assert");
@@ -2101,6 +2106,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         *(uint32_t*) toSolve.patch = relOffset;
     }
 
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(pp, symbolFunc->index, startAddress, endAddress);
     return ok;
 }
 

@@ -23,7 +23,8 @@ bool OutputFile::openWrite()
 
 void OutputFile::close()
 {
-    SWAG_ASSERT(winHandle != INVALID_HANDLE_VALUE);
+    if (winHandle == INVALID_HANDLE_VALUE)
+        return;
     ::CloseHandle(winHandle);
     winHandle = INVALID_HANDLE_VALUE;
 }

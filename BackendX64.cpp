@@ -18,9 +18,9 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.init();
     concat.addU16(IMAGE_FILE_MACHINE_AMD64); // .Machine
     if (precompileIndex == 0)
-        concat.addU16(8); // .NumberOfSections
+        concat.addU16(10); // .NumberOfSections
     else
-        concat.addU16(3); // .NumberOfSections
+        concat.addU16(5); // .NumberOfSections
 
     time_t now;
     time(&now);
@@ -36,11 +36,11 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     // Code section
     /////////////////////////////////////////////
-    pp.sectionIndexText = 1;
-    concat.addString(".text\0\0\0", 8); // .Name
-    concat.addU32(0);                   // .VirtualSize
-    concat.addU32(0);                   // .VirtualAddress
-
+    uint16_t secIndex   = 1;
+    pp.sectionIndexText = secIndex++;
+    concat.addString(".text\0\0\0", 8);                         // .Name
+    concat.addU32(0);                                           // .VirtualSize
+    concat.addU32(0);                                           // .VirtualAddress
     pp.patchTextSectionSize             = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchTextSectionOffset           = concat.addU32Addr(0); // .PointerToRawData
     pp.patchTextSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
@@ -51,7 +51,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     // global strings sections
     /////////////////////////////////////////////
-    pp.sectionIndexSS = 2;
+    pp.sectionIndexSS = secIndex++;
     concat.addString(".rdata\0\0", 8);       // .Name
     concat.addU32(0);                        // .VirtualSize
     concat.addU32(0);                        // .VirtualAddress
@@ -64,7 +64,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
 
     // directive section (to register dll exported symbols)
-    pp.sectionIndexDR = 3;
+    pp.sectionIndexDR = secIndex++;
     concat.addString(".drectve", 8);         // .Name
     concat.addU32(0);                        // .VirtualSize
     concat.addU32(0);                        // .VirtualAddress
@@ -76,12 +76,38 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0);                        // .NumberOfLinenumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES | IMAGE_SCN_LNK_INFO);
 
+    // .pdata section (to register functions)
+    pp.sectionIndexPD = secIndex++;
+    concat.addString(".pdata\0\0", 8);                        // .Name
+    concat.addU32(0);                                         // .VirtualSize
+    concat.addU32(0);                                         // .VirtualAddress
+    pp.patchPDCount                   = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchPDOffset                  = concat.addU32Addr(0); // .PointerToRawData
+    pp.patchPDSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+    concat.addU32(0);                                         // .PointerToLinenumbers
+    pp.patchPDSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+    concat.addU16(0);                                         // .NumberOfLinenumbers
+    pp.patchPDSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
+
+    // .xdata section (for unwind infos)
+    pp.sectionIndexXD = secIndex++;
+    concat.addString(".xdata\0\0", 8);       // .Name
+    concat.addU32(0);                        // .VirtualSize
+    concat.addU32(0);                        // .VirtualAddress
+    pp.patchXDCount  = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchXDOffset = concat.addU32Addr(0); // .PointerToRawData
+    concat.addU32(0);                        // .PointerToRelocations
+    concat.addU32(0);                        // .PointerToLinenumbers
+    concat.addU16(0);                        // .NumberOfRelocations
+    concat.addU16(0);                        // .NumberOfLinenumbers
+    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
+
     if (precompileIndex == 0)
     {
         // constant section
         // This is not readonly because we can patch some stuff during the initialization stage of the module
         /////////////////////////////////////////////
-        pp.sectionIndexCS = 4;
+        pp.sectionIndexCS = secIndex++;
         concat.addString(".data\0\0", 8);                         // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
@@ -95,7 +121,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // bss section
         /////////////////////////////////////////////
-        pp.sectionIndexBS = 5;
+        pp.sectionIndexBS = secIndex++;
         concat.addString(".bss\0\0\0\0", 8);          // .Name
         concat.addU32(0);                             // .VirtualSize
         concat.addU32(0);                             // .VirtualAddress
@@ -109,7 +135,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // global section
         /////////////////////////////////////////////
-        pp.sectionIndexGS = 6;
+        pp.sectionIndexGS = secIndex++;
         concat.addString(".data\0\0\0", 8);      // .Name
         concat.addU32(0);                        // .VirtualSize
         concat.addU32(0);                        // .VirtualAddress
@@ -123,7 +149,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // mutable section
         /////////////////////////////////////////////
-        pp.sectionIndexMS = 7;
+        pp.sectionIndexMS = secIndex++;
         concat.addString(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
@@ -137,7 +163,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
         // type section
         /////////////////////////////////////////////
-        pp.sectionIndexTS = 8;
+        pp.sectionIndexTS = secIndex++;
         concat.addString(".rdata\0\0\0", 8);                      // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
@@ -165,6 +191,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
+        pp.symXDIndex = getOrAddSymbol(pp, "__xd", CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure swag_context_t  declared in SwagRuntime.h
         auto offset                           = pp.globalSegment.reserve(8, true);
@@ -198,6 +225,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
+        pp.symXDIndex = getOrAddSymbol(pp, "__xd", CoffSymbolKind::Extern)->index;
 
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Extern)->index;
         pp.symPI_args_count     = getOrAddSymbol(pp, "swag_process_infos_args_count", CoffSymbolKind::Extern)->index;
@@ -274,11 +302,19 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
         emitDirectives(buildParameters);
+        emitXData(buildParameters);
+        emitPData(buildParameters);
 
         if (!pp.relocTableTextSection.table.empty())
         {
             *pp.patchTextSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
+        }
+
+        if (!pp.relocTablePDSection.table.empty())
+        {
+            *pp.patchPDSectionRelocTableOffset = concat.totalCount();
+            emitRelocationTable(pp.concat, pp.relocTablePDSection, pp.patchPDSectionFlags, pp.patchPDSectionRelocTableCount);
         }
 
         // Segments
@@ -361,6 +397,15 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     return JobResult::ReleaseJob;
 }
 
+void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress)
+{
+    CoffFunction cf;
+    cf.symbolIndex  = symbolIndex;
+    cf.startAddress = startAddress;
+    cf.endAddress   = endAddress;
+    pp.functions.push_back(cf);
+}
+
 CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
 {
     auto it = pp.mapSymbols.find(name);
@@ -422,6 +467,88 @@ void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const U
     reloc.symbolIndex    = sym->index;
     reloc.type           = IMAGE_REL_AMD64_ADDR64;
     pp.relocTableTextSection.table.push_back(reloc);
+}
+
+bool BackendX64::emitXData(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    // Align to 4 bytes
+    uint32_t offset = concat.totalCount();
+    while (offset % 4)
+    {
+        offset += 1;
+        concat.addU8(0);
+    }
+
+    *pp.patchXDOffset = offset;
+
+    // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
+    offset = 0;
+    for (auto& f : pp.functions)
+    {
+        f.xdataOffset = offset;
+        concat.addU8(1); // Version
+        concat.addU8(0); // Size of prolog
+        concat.addU8(0); // Count of unwind codes
+        concat.addU8(0); // Frame register | offset
+        concat.addU8(0);
+        concat.addU8(0);
+        concat.addU8(0);
+        concat.addU8(0);
+        offset += 8;
+    }
+
+    *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
+    return true;
+}
+
+bool BackendX64::emitPData(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    // Align to 4 bytes
+    uint32_t offset = concat.totalCount();
+    while (offset % 4)
+    {
+        offset += 1;
+        concat.addU8(0);
+    }
+
+    *pp.patchPDOffset = offset;
+
+    offset = 0;
+    for (auto& f : pp.functions)
+    {
+        CoffRelocation reloc;
+        reloc.type = IMAGE_REL_AMD64_ADDR32NB;
+
+        reloc.virtualAddress = offset;
+        reloc.symbolIndex    = f.symbolIndex;
+        pp.relocTablePDSection.table.push_back(reloc);
+        concat.addU32(0);
+
+        reloc.virtualAddress = offset + 4;
+        reloc.symbolIndex    = f.symbolIndex;
+        pp.relocTablePDSection.table.push_back(reloc);
+        concat.addU32(f.endAddress - f.startAddress);
+
+        reloc.virtualAddress = offset + 8;
+        reloc.symbolIndex    = pp.symXDIndex;
+        pp.relocTablePDSection.table.push_back(reloc);
+        concat.addU32(f.xdataOffset);
+
+        offset += 12;
+    }
+
+    *pp.patchPDCount = concat.totalCount() - *pp.patchPDOffset;
+    return true;
 }
 
 bool BackendX64::emitDirectives(const BuildParameters& buildParameters)
@@ -571,7 +698,6 @@ void BackendX64::emitSymbolRelocation(X64PerThread& pp, const Utf8& name)
         reloc.symbolIndex    = callSym->index;
         reloc.type           = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
-
         concat.addU32(0);
     }
 }

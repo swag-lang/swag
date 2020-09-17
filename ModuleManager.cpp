@@ -111,13 +111,13 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     SWAG_ASSERT(!moduleName.text.empty());
 
     // Apply patch now, because module is already loaded
-    if (isModuleLoaded(moduleName.text))
+    /*if (isModuleLoaded(moduleName.text))
     {
         auto fnPtr = getFnPointerNoLock(moduleName.text, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
         *patchAddress = doForeignLambda(fnPtr);
     }
-    else
+    else*/
     {
         PatchOffset newPatch;
         newPatch.patchAddress = patchAddress;
