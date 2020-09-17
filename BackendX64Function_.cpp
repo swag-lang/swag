@@ -1712,8 +1712,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 // There's one more PushRAParam to come after CopySPVaargs, sor offset is 8. But we will
                 // also store first the return registers. So in the end, the start of the stack for vaargs is
                 // rsp + 8 (the next PushRAParam) + number of return registers.
-                concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
-                concat.addU8((uint8_t)(8 + (typeFuncCall->numReturnRegisters() * 8)));
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(8 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else
@@ -1729,10 +1728,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     offset += 8;
                 }
 
-                concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
-                concat.addU8(8);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, 8, RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                concat.addString4("\x48\x89\x04\x24"); // mov [rsp], rax
+                BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             }
             break;
         }
