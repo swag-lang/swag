@@ -2312,68 +2312,25 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         auto type = paramsTypes[i];
         auto r    = paramsRegisters[i];
 
+        static const uint8_t reg4[]  = {RCX, RDX, R8, R9};
+        static const uint8_t regf4[] = {XMM0, XMM1, XMM2, XMM3};
+
         // This is a return register
         if (type == g_TypeMgr.typeInfoUndefined)
         {
-            switch (i)
-            {
-            case 0:
-                if (returnByCopy)
-                    BackendX64Inst::emit_Load64_Indirect(pp, r, RCX, RDI);
-                else
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, RCX, RDI);
-                break;
-            case 1:
-                if (returnByCopy)
-                    BackendX64Inst::emit_Load64_Indirect(pp, r, RDX, RDI);
-                else
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, RDX, RDI);
-                break;
-            case 2:
-                if (returnByCopy)
-                    BackendX64Inst::emit_Load64_Indirect(pp, r, R8, RDI);
-                else
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, R8, RDI);
-                break;
-            case 3:
-                if (returnByCopy)
-                    BackendX64Inst::emit_Load64_Indirect(pp, r, R9, RDI);
-                else
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, r, R9, RDI);
-                break;
-            }
+            if (returnByCopy)
+                BackendX64Inst::emit_Load64_Indirect(pp, r, reg4[i], RDI);
+            else
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, r, reg4[i], RDI);
         }
 
         // This is a normal parameter, which can be float or integer
         else
         {
-            switch (i)
-            {
-            case 0:
-                if (type->flags & TYPEINFO_FLOAT)
-                    BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM0, RDI);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RCX, RDI);
-                break;
-            case 1:
-                if (type->flags & TYPEINFO_FLOAT)
-                    BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM1, RDI);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RDX, RDI);
-                break;
-            case 2:
-                if (type->flags & TYPEINFO_FLOAT)
-                    BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM2, RDI);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R8, RDI);
-                break;
-            case 3:
-                if (type->flags & TYPEINFO_FLOAT)
-                    BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), XMM3, RDI);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), R9, RDI);
-                break;
-            }
+            if (type->flags & TYPEINFO_FLOAT)
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), regf4[i], RDI);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), reg4[i], RDI);
         }
     }
 
