@@ -185,6 +185,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
         sizeStack += 4 * sizeof(Register);
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
         sizeProlog = concat.totalCount() - beforeProlog;
+        computeUnwind(sizeStack + 8, sizeProlog, unwind0, unwind1);
 
         BackendX64Inst::emit_Copy64(pp, RSP, RDI);
     }
