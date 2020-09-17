@@ -1806,8 +1806,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Local lambda
             //////////////////
+            BackendX64Inst::emit_Copy64(pp, RAX, R12);
             uint32_t sizeCallStack = emitLocalCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
-            concat.addString2("\xff\xd0"); // call rax
+            concat.addString3("\x41\xFF\xD4"); // call r12
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
@@ -2176,23 +2177,23 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, TypeInfoFuncAttr*
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
 
     // Be sure stack remains align to 16 bytes
-    if (sizeStack % 16 == 8)
-    {
-        sizeStack += 8;
-        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 8);
-    }
+    auto offset = sizeStack - 8;
+    MK_ALIGN16(sizeStack);
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
 
     for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
     {
-        concat.addString2("\xff\xb7"); // push [rdi + ????????]
-        concat.addU32(pushRAParams[iParam] * sizeof(Register));
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[iParam]), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+        offset -= 8;
     }
 
     // Return registers are push first
     for (int j = (int) typeFuncBC->numReturnRegisters() - 1; j >= 0; j--)
     {
-        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RBX, RDI);
-        BackendX64Inst::emit_Push(pp, RBX);
+        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackRR + regOffset(j), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+        offset -= 8;
     }
 
     return sizeStack;

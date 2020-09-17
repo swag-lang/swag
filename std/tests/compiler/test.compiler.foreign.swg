@@ -163,14 +163,22 @@ public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
     fct(v,w,x,y,z)
 }
 
-func tcf_assert1()
+func tcf_assert1(a,b,c,d,e,f: s32)->string
 {
-    @assert(false)
+    @print(cast(s64) a)
+    @print(cast(s64) b)
+    @print(cast(s64) c)
+    @print(cast(s64) d)
+    @print(cast(s64) e)
+    @print(cast(s64) f)
+    @error(#location, "message")
+    return "toto"
 }
 
 public func tcf_assert()
 {
-    tcf_assert1()
+    x := tcf_assert1(1,2,3,4,5,6)
+    @print(x)
 }
 
 public namespace tcf
