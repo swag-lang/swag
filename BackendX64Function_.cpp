@@ -71,6 +71,19 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
     }
 }
 
+void BackendX64::computeUnwind(uint32_t sizeStack, uint32_t offsetSubRSP, uint16_t& unwind0, uint16_t& unwind1)
+{
+    SWAG_ASSERT(offsetSubRSP <= 0xFF);
+    if (sizeStack <= 128)
+    {
+        sizeStack -= 8;
+        sizeStack /= 8;
+        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (sizeStack << 4));
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+    }
+}
+
 bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
     int      ct              = buildParameters.compileType;
@@ -153,26 +166,23 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     uint16_t unwind0      = 0;
     uint16_t unwind1      = 0;
     auto     beforeProlog = concat.totalCount();
+    auto     sizeProlog   = 0;
     if (sizeStack)
     {
         BackendX64Inst::emit_Push(pp, RDI);
         MK_ALIGN16(sizeStack);
         sizeStack += 4 * sizeof(Register);
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
+        sizeProlog = concat.totalCount() - beforeProlog;
+
         BackendX64Inst::emit_Copy64(pp, RSP, RDI);
     }
     else
     {
-        uint8_t unwindStackAlloc = 5 * sizeof(Register);
-        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, unwindStackAlloc);
-        unwindStackAlloc -= 8;
-        unwindStackAlloc /= 8;
-        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (unwindStackAlloc << 4));
-        unwind0 <<= 8;
-        unwind0 |= (uint8_t)(concat.totalCount() - beforeProlog);
+        BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 5 * sizeof(Register));
+        sizeProlog = concat.totalCount() - beforeProlog;
+        computeUnwind(5 * sizeof(Register), sizeProlog, unwind0, unwind1);
     }
-
-    auto sizeProlog = concat.totalCount() - beforeProlog;
 
     // Need to save return register if needed
     if (!returnByCopy && typeFunc->numReturnRegisters() == 2)
@@ -317,21 +327,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
     auto sizeProlog = concat.totalCount() - beforeProlog;
-    pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
 
-    // Unwind informations
-    uint16_t unwind0          = 0;
-    uint16_t unwind1          = 0;
-    uint32_t unwindStackAlloc = sizeStack + 4 * sizeof(uint64_t);
-    unwindStackAlloc += 8; // cause of the push rdi
-    if (unwindStackAlloc <= 128)
-    {
-        unwindStackAlloc -= 8;
-        unwindStackAlloc /= 8;
-        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (unwindStackAlloc << 4));
-        unwind0 <<= 8;
-        unwind0 |= 1 + 5; // Offset of the end of the sub rsp since the prolog start
-    }
+    uint16_t unwind0    = 0;
+    uint16_t unwind1    = 0;
+    computeUnwind(sizeStack + 4 * sizeof(uint64_t) + 8, sizeProlog, unwind0, unwind1);
+
+    pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
 
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;

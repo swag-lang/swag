@@ -494,8 +494,9 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     for (auto& f : pp.functions)
     {
         f.xdataOffset = offset;
-        concat.addU8(1);            // Version
-        concat.addU8(f.sizeProlog); // Size of prolog
+        concat.addU8(1); // Version
+        SWAG_ASSERT(f.sizeProlog <= 255);
+        concat.addU8((uint8_t) f.sizeProlog); // Size of prolog
 
         // Count of unwind codes
         if (!f.unwind0 && !f.unwind1)
