@@ -1799,18 +1799,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Test if it's a bytecode lambda
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RBX);
-            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RBX, RBX);
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RCX);
+            BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
+            BackendX64Inst::emit_Test64(pp, RCX, RCX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
             concat.addU32(0);
             auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToBCOffset = concat.totalCount();
 
             // Test if it's a foreign lambda
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RBX);
-            BackendX64Inst::emit_Op64(pp, RAX, RBX, X64Op::AND);
-            BackendX64Inst::emit_Test64(pp, RBX, RBX);
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+            BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
+            BackendX64Inst::emit_Test64(pp, RCX, RCX);
             concat.addString2("\x0f\x85"); // jnz ???????? => jump to foreign lambda
             concat.addU32(0);
             auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
