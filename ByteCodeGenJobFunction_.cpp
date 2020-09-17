@@ -521,6 +521,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
     }
 
+    uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();
+
     // Sort childs by parameter index
     if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
@@ -567,12 +569,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             }
 
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            maxCallParams++;
 
             // For a struct (and not a pointer to struct), or a reference, we directly set the data pointer in the 'any' instead
             // of pushing it to the stack.
             if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Reference)
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
+                maxCallParams++;
             }
             else
             {
@@ -586,6 +590,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 inst->b.u32 = offset;
                 inst->c.u32 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+                maxCallParams++;
             }
 
             precallStack += 2 * sizeof(Register);
@@ -614,6 +619,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                     {
                         emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
+                        maxCallParams++;
                         precallStack += sizeof(Register);
                         numPushParams++;
                     }
@@ -650,6 +656,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                         emitInstruction(context, ByteCodeOp::PushRAParam, regList[r--]);
                         precallStack += sizeof(Register);
                         numPushParams++;
+                        maxCallParams++;
                     }
                 }
             }
@@ -675,6 +682,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r--]);
                     precallStack += sizeof(Register);
                     numPushParams++;
+                    maxCallParams++;
                 }
             }
         }
@@ -697,6 +705,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         toFree += r0;
         precallStack += 2 * sizeof(Register);
         numPushParams += 2;
+        maxCallParams += 2;
     }
 
     // Variadic parameter is on top of stack
@@ -711,12 +720,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             toFree += r0;
             emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            maxCallParams++;
 
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
             emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            maxCallParams++;
 
             precallStack += 2 * sizeof(Register);
         }
@@ -731,12 +742,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             toFree += r0;
             emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | (offset << 32);
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            maxCallParams++;
 
             // Store address on the stack of those parameters. This must be the last push
             auto r1 = reserveRegisterRC(context);
             toFree += r1;
             emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            maxCallParams++;
 
             precallStack += 2 * sizeof(Register);
         }
@@ -779,6 +792,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[idx], idx);
         }
     }
+
+    // Save the maximum number of pushraparams in that bytecode
+    context->bc->maxCallParams = max(context->bc->maxCallParams, maxCallParams);
 
     // Restore stack as it was before the call, before the parameters
     if (precallStack)

@@ -78,6 +78,7 @@ struct ByteCode
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;
     int32_t  maxCallResults        = 0;
+    uint32_t maxCallParams         = 0;
     uint32_t maxReservedRegisterRC = 0;
     int32_t  curRC                 = -1;
     uint32_t numJumps              = 0;
