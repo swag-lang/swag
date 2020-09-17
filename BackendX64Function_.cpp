@@ -1710,10 +1710,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
                 // We need register to address the stack where all will be stored.
                 // There's one more PushRAParam to come after CopySPVaargs, sor offset is 8. But we will
-                // also store first the return registers. So in the end, the start of the stack for vaargs is 
+                // also store first the return registers. So in the end, the start of the stack for vaargs is
                 // rsp + 8 (the next PushRAParam) + number of return registers.
                 concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
-                concat.addU8((uint8_t) (8 + (typeFuncCall->numReturnRegisters() * 8)));
+                concat.addU8((uint8_t)(8 + (typeFuncCall->numReturnRegisters() * 8)));
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else
@@ -1721,11 +1721,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
                 MK_ALIGN16(variadicStackSize);
                 BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, variadicStackSize);
-                for (int idxParam = (int) pushRAParams.size() - 1, offset = 8; idxParam >= 0; idxParam--, offset += 8)
+                int offset = 8;
+                for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--)
                 {
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    concat.addString4("\x48\x89\x84\x24"); // mov [rsp + ????????], rax
-                    concat.addU32(offset);
+                    BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+                    offset += 8;
                 }
 
                 concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
