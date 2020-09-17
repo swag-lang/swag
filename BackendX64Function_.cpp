@@ -8,8 +8,6 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-#define UWOP_ALLOC_SMALL 2
-
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
@@ -73,7 +71,12 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
 
 void BackendX64::computeUnwind(uint32_t sizeStack, uint32_t offsetSubRSP, uint16_t& unwind0, uint16_t& unwind1)
 {
+#define UWOP_ALLOC_LARGE 1
+#define UWOP_ALLOC_SMALL 2
+
     SWAG_ASSERT(offsetSubRSP <= 0xFF);
+    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
+
     if (sizeStack <= 128)
     {
         sizeStack -= 8;
@@ -81,6 +84,14 @@ void BackendX64::computeUnwind(uint32_t sizeStack, uint32_t offsetSubRSP, uint16
         unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (sizeStack << 4));
         unwind0 <<= 8;
         unwind0 |= (uint16_t) offsetSubRSP;
+    }
+    else
+    {
+        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
+        unwind0 = (uint16_t)(UWOP_ALLOC_LARGE);
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind1 = (uint16_t)(sizeStack / 8);
     }
 }
 
@@ -328,8 +339,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + 4 * sizeof(uint64_t));
     auto sizeProlog = concat.totalCount() - beforeProlog;
 
-    uint16_t unwind0    = 0;
-    uint16_t unwind1    = 0;
+    uint16_t unwind0 = 0;
+    uint16_t unwind1 = 0;
     computeUnwind(sizeStack + 4 * sizeof(uint64_t) + 8, sizeProlog, unwind0, unwind1);
 
     pp.concat.addString5("\x48\x8D\x7C\x24\x20"); // lea rdi, [rsp + 32]
