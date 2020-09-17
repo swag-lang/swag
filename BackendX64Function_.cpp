@@ -1848,12 +1848,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
-
-            // Reserve room for additional parameters (the one that cannot stored in registers)
-            uint32_t sizeCallStack = pushRAParams.size() > 3 ? ((int) pushRAParams.size() - 3) * sizeof(Register) : 0;
-            MK_ALIGN16(sizeCallStack);
-            BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeCallStack);
-
             for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
             {
                 switch (idxReg)
@@ -1880,7 +1874,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\xff\xd0"); // call rax
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
 
             // End
             //////////////////
