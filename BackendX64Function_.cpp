@@ -1708,7 +1708,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (!foreign)
             {
                 concat.addString4("\x48\x8d\x44\x24"); // lea rax, [rsp + ??]
-                concat.addU8(8 + (typeFuncCall->numReturnRegisters() * 8));
+                concat.addU8((uint8_t) (8 + (typeFuncCall->numReturnRegisters() * 8)));
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else
@@ -1817,9 +1817,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Local lambda
             //////////////////
             BackendX64Inst::emit_Copy64(pp, RAX, R12);
-            uint32_t sizeCallStack = emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
+            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
             concat.addString3("\x41\xFF\xD4"); // call r12
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
+            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, variadicStackSize);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -1833,6 +1833,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
             BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
             BackendX64Inst::emit_Copy64(pp, RAX, R12);
+            uint32_t sizeCallStack = 0;
             SWAG_CHECK(emitForeignCallParameters(pp, sizeCallStack, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD4"); // call r12
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack + variadicStackSize);
@@ -1901,11 +1902,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::LocalCall:
         {
-            auto              funcBC        = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC    = (TypeInfoFuncAttr*) ip->b.pointer;
-            uint32_t          sizeCallStack = emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
+            auto              funcBC     = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
             emitCall(pp, funcBC->callName());
-            BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeCallStack);
             pushRAParams.clear();
             break;
         }
@@ -2166,33 +2166,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams)
 {
-    int popRAidx      = (int) pushRAParams.size();
-    int numCallParams = (int) typeFuncBC->parameters.size();
-    for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
-    {
-        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteReferenceType(typeParam);
-        for (int j = 0; j < typeParam->numRegisters(); j++)
-        {
-            SWAG_ASSERT(popRAidx);
-            popRAidx--;
-        }
-    }
-
-    popRAidx = 0;
-
-    uint32_t sizeStack = (uint32_t)((pushRAParams.size() - popRAidx) * sizeof(Register));
+    uint32_t sizeStack = (uint32_t)(pushRAParams.size() * sizeof(Register));
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
 
-    // Be sure stack remains align to 16 bytes
     auto offset = sizeStack;
     MK_ALIGN16(sizeStack);
     SWAG_ASSERT(sizeStack <= sizeParamsStack);
-    //BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
 
-    for (int iParam = popRAidx; iParam < pushRAParams.size(); iParam++)
+    // Emit all push params
+    for (int iParam = 0; iParam < pushRAParams.size(); iParam++)
     {
         offset -= 8;
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[iParam]), RAX, RDI);
@@ -2208,7 +2192,6 @@ uint32_t BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizePara
     }
 
     SWAG_ASSERT(offset == 0);
-    return 0; // sizeStack;
 }
 
 void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
