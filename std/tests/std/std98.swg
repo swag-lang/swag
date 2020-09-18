@@ -1,6 +1,6 @@
 #import "std"
 
-using std.collections, std.strconv
+using std, std.strconv
 
 struct TOTO
 {

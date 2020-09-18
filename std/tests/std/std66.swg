@@ -1,5 +1,5 @@
 #import "std"
-using std.collections
+using std
 
 struct BABA
 {
@@ -10,7 +10,7 @@ struct BABA
 {
     var arr: Array'BABA
     //@print(@typeof(arr).name)
-    @assert(@typeof(arr).name == "std.collections.Array'(BABA)")
+    @assert(@typeof(arr).name == "std.Array'(BABA)")
 
     var x: BABA
     arr.add(x)

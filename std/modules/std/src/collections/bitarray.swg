@@ -1,4 +1,4 @@
-namespace std.collections
+namespace std
 {
     using swag
 

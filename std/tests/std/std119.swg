@@ -1,5 +1,5 @@
 #import "std"
-using std.collections
+using std
 
 func toto(v: String)
 {

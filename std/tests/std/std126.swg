@@ -1,5 +1,5 @@
 #import "std"
-using std, std.collections
+using std
 
 #test
 {

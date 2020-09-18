@@ -1,9 +1,9 @@
 #import "std"
-using std.collections
+using std
 
 struct BB11
 {
-     g: std.collections.Array'(*u8)
+     g: std.Array'(*u8)
 }
 
 //#[swag.printbc]

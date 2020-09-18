@@ -1,6 +1,6 @@
 namespace std
 {
-    using swag, std.collections, std.crypto
+    using swag, std.crypto
 
     private const SmallSize = 24'u32
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)

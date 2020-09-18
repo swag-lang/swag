@@ -1,7 +1,7 @@
 namespace std.strconv
 {
     using swag
-    using std.collections, std.globalization
+    using std.globalization
 
     public struct ConvertFormat
     {

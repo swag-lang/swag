@@ -2,7 +2,7 @@
 #unittest error
 
 #import "std"
-using std.collections
+using std
 
 //#[swag.printbc]
 #test

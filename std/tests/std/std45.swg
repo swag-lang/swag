@@ -1,5 +1,5 @@
 #import "std"
-using std.collections
+using std
 
 //#[swag.printbc]
 #test
@@ -17,10 +17,10 @@ using std.collections
 
     @assert(!arr.get(48))
     arr.set(48, true)
-    @assert(arr.get(48))   
-    
-    arr.invert(48) 
+    @assert(arr.get(48))
+
+    arr.invert(48)
     @assert(!arr.get(48))
-    arr.invert(48) 
-    @assert(arr.get(48))    
+    arr.invert(48)
+    @assert(arr.get(48))
 }

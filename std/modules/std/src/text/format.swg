@@ -1,7 +1,5 @@
 namespace std.format
 {
-    using std.collections
-
     // Format a string and returns the result as a String
     public func toString(fmt: string, values: ...)->String
     {

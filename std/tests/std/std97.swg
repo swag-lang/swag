@@ -1,6 +1,6 @@
 #import "std"
 
-using std.collections
+using std
 
 struct TOTO
 {

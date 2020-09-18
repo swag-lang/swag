@@ -1,5 +1,5 @@
 #import "std"
-using std.collections
+using std
 
 //#[swag.printbc]
 func fromCapa(capa: u32)->BitArray
