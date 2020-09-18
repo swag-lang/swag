@@ -2,7 +2,7 @@
 
 #test
 {
-	using std.input, std.mouse
+	using std.keyboard, std.mouse
 	while !isKeyPressed(Key.Space)
     {
         pt := getPos()

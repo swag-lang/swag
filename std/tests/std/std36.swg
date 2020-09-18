@@ -1,5 +1,5 @@
 #import "std"
-using std.input
+using std.keyboard
 
 #test
 {
@@ -8,9 +8,9 @@ using std.input
     @assert(!k.isKeyJustPressed(Key.Space))
     @assert(k.isKeyReleased(Key.Space))
     @assert(!k.isKeyJustReleased(Key.Space))
-    
+
     while false
-    //while true     
+    //while true
     {
         k.update()
         if k.isKeyJustPressed(Key.Space)

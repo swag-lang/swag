@@ -8,7 +8,7 @@
 		var g_mapVKeyToKey: [256] u8 = ?
 
 		#[compiler]
-		func setupArray(key: std.input.Key, vkey: u8)
+		func setupArray(key: std.keyboard.Key, vkey: u8)
 		{
 			g_mapKeyToVKey[cast(u8) key] = vkey
 			g_mapVKeyToKey[vkey] = cast(u8) key
@@ -17,7 +17,7 @@
 
 	#run
 	{
-		using std.input.Key
+		using std.keyboard.Key
         setupArray(A,                   cast(u8) "A"'char)
         setupArray(Add,                 cast(u8) VK_ADD)
         setupArray(Apps,                cast(u8) VK_APPS)
@@ -208,27 +208,24 @@
         setupArray(Zoom,                cast(u8) VK_ZOOM)
 	}
 
-	namespace std.input
+	public namespace std.keyboard
 	{
-        public
+        func keyToVirtualKey(key: Key)-> VirtualKey
         {
-            func keyToVirtualKey(key: Key)-> VirtualKey
-            {
-                return acast g_mapKeyToVKey[cast(u8) key]
-            }
+            return acast g_mapKeyToVKey[cast(u8) key]
+        }
 
-            func virtualKeyToKey(vkey: VirtualKey)-> Key
-            {
-                if(vkey > 255) return Key.None
-                return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
-            }
+        func virtualKeyToKey(vkey: VirtualKey)-> Key
+        {
+            if(vkey > 255) return Key.None
+            return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
+        }
 
-            func isKeyPressed(key: Key)-> bool
-            {
-                vkey := g_mapKeyToVKey[cast(u8) key]
-                if vkey == 0 return false
-                return GetAsyncKeyState(cast(s32) vkey) < 0
-            }
+        func isKeyPressed(key: Key)-> bool
+        {
+            vkey := g_mapKeyToVKey[cast(u8) key]
+            if vkey == 0 return false
+            return GetAsyncKeyState(cast(s32) vkey) < 0
         }
 	}
 }
