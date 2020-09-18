@@ -409,5 +409,11 @@ namespace std
             var val: String = value
             return val
         }
+
+        // Returns a string type
+        func cstr(using self)->string
+        {
+            return cast(string) @mkslice(buffer, length)
+        }
     }
 }

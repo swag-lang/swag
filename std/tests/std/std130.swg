@@ -13,4 +13,7 @@ using std
 
     @assert(x.startsWidth("this is a string"))
     @assert(x.endsWidth("this is a string"))
+
+    var y: String = "string"
+    @assert(x.endsWidth(y.cstr()))
 }
