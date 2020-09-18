@@ -1,4 +1,4 @@
-namespace std.crc32
+namespace std.hash
 {
 	private const maxSlices = 16
 	private const lookupTable: [maxSlices, 256] u32 = @[
@@ -501,7 +501,7 @@ namespace std.crc32
 
     // Compute the crc32 of a slice of bytes
 	#[swag.constexpr]
-	public func slice(data: const [..] u8, previous: u32 = 0)->u32
+	public func crc32(data: const [..] u8, previous: u32 = 0)->u32
 	{
 		crc := ~previous
 		current := cast(const *u32) @dataof(data)

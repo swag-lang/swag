@@ -22,7 +22,7 @@ namespace std.hash
         }
         #elif @typeof(T) == string
         {
-            return crc32.slice(value)
+            return hash.crc32(value)
         }
         #elif @typeof(T).kind == TypeInfoKind.Struct
         {

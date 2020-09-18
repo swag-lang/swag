@@ -42,7 +42,7 @@ namespace std
     {
         func compute(using self)->u32
         {
-            return crc32.slice(@mkslice(buffer, length))
+            return hash.crc32(@mkslice(buffer, length))
         }
     }
 
