@@ -1,11 +1,11 @@
 #import "std"
-using std.collections, std.text, std.algorithms, std.diagnostics
+using std, std.collections, std.text
 
 #test
 {
     var arr: Array'u32
     loop 100 arr.add(@index)
-    sortQuick(@mkslice(arr.buffer, arr.count), @(x, y) => y <=> x)
+    sort.quick(@mkslice(arr.buffer, arr.count), @(x, y) => y <=> x)
     loop i: arr
     {
         if i != @countof(arr) - 1

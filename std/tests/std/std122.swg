@@ -1,5 +1,5 @@
 #import "std"
-using std.algorithms, std.text
+using std.text
 
 #test
 {

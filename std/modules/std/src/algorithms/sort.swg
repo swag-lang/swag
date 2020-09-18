@@ -1,7 +1,7 @@
-namespace std.algorithms
+namespace std.sort
 {
     // Insertion sort algorithm (slow)
-    public func(T) sortInsertion(values: [..] T, cb: func(T, T)->s32)
+    public func(T) insertion(values: [..] T, cb: func(T, T)->s32)
     {
         buffer := @dataof(values)
         count := @countof(values)
@@ -16,7 +16,7 @@ namespace std.algorithms
     }
 
     // Quick sort algorithm
-    public func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
+    public func(T) quick(values: [..] T, cb: func(T, T)->s32)
     {
         count := @countof(values)
         if(count == 0)
@@ -57,12 +57,12 @@ namespace std.algorithms
             {
                 if set1 <= set2
                 {
-                    sortQuick(@mkslice(buffer + begin, (low - begin) + 1), cb);
+                    sort.quick(@mkslice(buffer + begin, (low - begin) + 1), cb);
                     begin = high + 1
                 }
                 else
                 {
-                    sortQuick(@mkslice(buffer + high + 1, (end - high) + 1), cb);
+                    sort.quick(@mkslice(buffer + high + 1, (end - high) + 1), cb);
                     end = low - 1
                 }
             }
@@ -77,11 +77,11 @@ namespace std.algorithms
 
     // Sort, by picking the right algorithm depending on the type and the
     // number of elements
-    public func(T) sort(values: [..] T, cb: func(T, T)->s32)
+    public func(T) slice(values: [..] T, cb: func(T, T)->s32)
     {
         if(@countof(values) <= 10)
-            sortInsertion(values, cb)
+            insertion(values, cb)
         else
-            sortQuick(values, cb)
+            quick(values, cb)
     }
 }

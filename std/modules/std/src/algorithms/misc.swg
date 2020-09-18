@@ -1,4 +1,4 @@
-namespace std.algorithms
+namespace std
 {
     // Swap two values
     #[swag.inline]

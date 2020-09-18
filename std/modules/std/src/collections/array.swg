@@ -12,8 +12,6 @@ namespace std.collections
 
     public impl Array
     {
-        using std.diagnostics
-
         func opCount(using self)->u32
         {
             return count
@@ -303,7 +301,7 @@ namespace std.collections
         // Sort array
         func sort(using self, cb: func(T, T)->s32)
         {
-            std.algorithms.sort(@mkslice(buffer, count), cb)
+            sort.slice(@mkslice(buffer, count), cb)
         }
     }
 }
