@@ -6,11 +6,12 @@ using std.strconv
     var builder: StringBuilder
     builder.append("toto")
     builder.appendFormat("%", 444)
+    builder.append("假"'char)
 
     var str: String = "mystring"
     builder.append(str)
 
     s := builder.toString();
-    //console.write("%\n", s)
-    @assert(s == "toto444mystring")
+    console.write("%\n", s)
+    @assert(s == "toto444假mystring")
 }

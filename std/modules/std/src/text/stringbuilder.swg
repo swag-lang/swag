@@ -28,6 +28,9 @@ namespace std.strconv
         // Append a character
         func append(using self, value: char)
         {
+            var arr: [4] u8
+            var count = unicode.toUtf8(arr, value)
+            buf.addBytes(@mkslice(&arr[0], count))
         }
 
         // Append a formatted string
