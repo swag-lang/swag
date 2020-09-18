@@ -64,6 +64,8 @@ namespace std
         {
             #if @typeof(T) == string
                 return cast(string) @mkslice(buffer, length)
+            #elif @typeof(T) == const [..] u8
+                return @mkslice(buffer, length)
             #else
                 #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
         }
@@ -348,6 +350,22 @@ namespace std
             }
 
             return -1
+        }
+
+        // Return true if the string starts with 'str'
+        func startsWidth(using self, str: string)->bool
+        {
+            countof := @countof(str)
+            if(countof > length) return false
+            return memory.compare(buffer, @dataof(str), countof) == 0
+        }
+
+        // Return true if the string ends with 'str'
+        func endsWidth(using self, str: string)->bool
+        {
+            countof := @countof(str)
+            if(countof > length) return false
+            return memory.compare((buffer + length) - countof, @dataof(str), countof) == 0
         }
 
         // Returns the first Unicode character of the String
