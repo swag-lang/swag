@@ -14,7 +14,6 @@ namespace std.format
         ptr := @dataof(fmt)
         cpt := @countof(fmt)
 
-        buf.clear()
         idx := 0'u32
         nextIdx := 0'u32
         paramIdx := 0'u32

@@ -106,9 +106,11 @@ namespace Ast
         }
 
         case AstNodeKind::MakePointer:
+        {
             concat.addChar('&');
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
+        }
 
         case AstNodeKind::NoDrop:
             concat.addString("nodrop ");
@@ -513,7 +515,8 @@ namespace Ast
             auto identifier = static_cast<AstIdentifier*>(node);
             auto symbol     = identifier->resolvedSymbolName;
             auto overload   = identifier->resolvedSymbolOverload;
-            if (symbol && overload && symbol->name[0] != '@')
+
+            if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
             {
                 if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
                     (symbol->kind == SymbolKind::Function) ||

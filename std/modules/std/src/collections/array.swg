@@ -299,9 +299,12 @@ namespace std
         }
 
         // Sort array
-        func sort(using self, cb: func(T, T)->s32)
+        func sort(using self, cb: func(T, T)->s32 = null)
         {
-            sort.slice(@mkslice(buffer, count), cb)
+            if cb == null
+                sort.slice(@mkslice(buffer, count), cb)//@(x, y) => x <=> y)
+            else
+                sort.slice(@mkslice(buffer, count), cb)
         }
     }
 }
