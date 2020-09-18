@@ -1,45 +1,42 @@
-namespace std.input
+namespace std.mouse
 {
     using std.math
 
     // Represents one mouse state
-    public struct MouseState
+    public struct State
     {
         // Whether each button is pressed or not
-        pressed:    [@countof(MouseButton)] bool
+        pressed:    [@countof(Button)] bool
         // Mouse position, in screen coordinates
         position:   Point
     }
 
     // Represents a mouse state with cursor position and button press information
-    impl MouseState
+    public impl State
     {
-        public
+        // Compute the actual state of the mouse
+        func update(using self)
         {
-            // Compute the actual state of the mouse
-            func update(using self)
-            {
-                pressed[cast(u32) MouseButton.Left] = isMouseButtonPressed(MouseButton.Left)
-                pressed[cast(u32) MouseButton.Middle] = isMouseButtonPressed(MouseButton.Middle)
-                pressed[cast(u32) MouseButton.Right] = isMouseButtonPressed(MouseButton.Right)
-                pressed[cast(u32) MouseButton.XButton1] = isMouseButtonPressed(MouseButton.XButton1)
-                pressed[cast(u32) MouseButton.XButton2] = isMouseButtonPressed(MouseButton.XButton2)
-                position = getMousePos()
-            }
+            pressed[cast(u32) Button.Left] = isButtonPressed(Button.Left)
+            pressed[cast(u32) Button.Middle] = isButtonPressed(Button.Middle)
+            pressed[cast(u32) Button.Right] = isButtonPressed(Button.Right)
+            pressed[cast(u32) Button.XButton1] = isButtonPressed(Button.XButton1)
+            pressed[cast(u32) Button.XButton2] = isButtonPressed(Button.XButton2)
+            position = getPos()
+        }
 
-            // Reset the state to its default value
-            func clear(using self)
-            {
-                memory.clear(&pressed, @sizeof(pressed))
-                position = getMousePos()
-            }
+        // Reset the state to its default value
+        func clear(using self)
+        {
+            memory.clear(&pressed, @sizeof(pressed))
+            position = getPos()
         }
     }
 
     // Determins if one given mouse button is pressed or not
-	public func isMouseButtonPressed(button: MouseButton)->bool
+	public func isButtonPressed(button: Button)->bool
 	{
-		using input, MouseButton
+		using input, Button
 		switch button
 		{
 		case Left:		return isKeyPressed(Key.LButton)

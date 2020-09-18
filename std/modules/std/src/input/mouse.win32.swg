@@ -1,27 +1,24 @@
 #if std.WINDOWS
 {
-	namespace std.input
+	public namespace std.mouse
 	{
 		using win32, std.math
 
-		public
-		{
-			func getMousePos()->Point
-			{
-				var pt: POINT = ?
-				GetCursorPos(&pt)
-				return Point(cast(f32) pt.x, cast(f32) pt.y)
-			}
+        func getPos()->Point
+        {
+            var pt: POINT = ?
+            GetCursorPos(&pt)
+            return Point(cast(f32) pt.x, cast(f32) pt.y)
+        }
 
-			func setMousePos(x, y: s32)
-			{
-				SetCursorPos(x, y)
-			}
+        func setPos(x, y: s32)
+        {
+            SetCursorPos(x, y)
+        }
 
-			func showMouseCursor(show: bool)
-			{
-				ShowCursor(cast(BOOL) show)
-			}
-		}
+        func showCursor(show: bool)
+        {
+            ShowCursor(cast(BOOL) show)
+        }
 	}
 }

@@ -1,12 +1,12 @@
-namespace std.input
+namespace std.mouse
 {
 	using std.math
 
     // Allows reading position and button click information from mouse
 	public struct Mouse
 	{
-		previousState:	MouseState
-		currentState:	MouseState
+		previousState:	State
+		currentState:	State
 	}
 
 	public impl Mouse
@@ -26,25 +26,25 @@ namespace std.input
         }
 
         // Determines whether the specified mouse button is pressed
-        func isButtonPressed(using self, button: MouseButton)->bool
+        func isButtonPressed(using self, button: Button)->bool
         {
             return currentState.pressed[cast(u32) button]
         }
 
         // Determines whether the specified mouse button has just been pressed
-        func isButtonJustPressed(using self, button: MouseButton)->bool
+        func isButtonJustPressed(using self, button: Button)->bool
         {
             return currentState.pressed[cast(u32) button] && !previousState.pressed[cast(u32) button]
         }
 
         // Determines whether the specified mouse button is released
-        func isButtonReleased(using self, button: MouseButton)->bool
+        func isButtonReleased(using self, button: Button)->bool
         {
             return !currentState.pressed[cast(u32) button]
         }
 
         // Determines whether the specified mouse button has just been released
-        func isButtonJustReleased(using self, button: MouseButton)->bool
+        func isButtonJustReleased(using self, button: Button)->bool
         {
             return !currentState.pressed[cast(u32) button] && previousState.pressed[cast(u32) button]
         }

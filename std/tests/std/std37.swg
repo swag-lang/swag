@@ -1,13 +1,13 @@
 #import "std"
-using std.input
+using std.mouse
 
 #test
 {
     var k: Mouse
-    
+
     k.clear()
-    @assert(!k.isButtonPressed(MouseButton.Middle))
-    
+    @assert(!k.isButtonPressed(Button.Middle))
+
     //while true
     while false
     {

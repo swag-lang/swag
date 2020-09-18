@@ -2,15 +2,15 @@
 
 #test
 {
-	using std.input
-	while !isKeyPressed(Key.Space) 
+	using std.mouse, std.input
+	while !isKeyPressed(Key.Space)
     {
-        pt := getMousePos()
+        pt := getPos()
         //@print(cast(s64) pt.item0)
         //@print("\n")
         break
     }
-	
+
 	//@print("pressed")
 	while isKeyPressed(Key.Space) break
 

@@ -1,7 +1,7 @@
-namespace std.input
+namespace std.mouse
 {
     // Enumerates mouse buttons
-    public enum MouseButton
+    public enum Button
     {
         // Left button
 		Left
