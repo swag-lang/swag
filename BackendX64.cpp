@@ -493,22 +493,26 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     uint32_t offset = 0;
     for (auto& f : pp.functions)
     {
-        f.xdataOffset = offset;
-        concat.addU8(1); // Version
         SWAG_ASSERT(f.sizeProlog <= 255);
-        concat.addU8((uint8_t) f.sizeProlog); // Size of prolog
+
+        concat.ensureSpace(8);
+
+        f.xdataOffset = offset;
+        concat.addU8_safe(1);                      // Version
+        concat.addU8_safe((uint8_t) f.sizeProlog); // Size of prolog
 
         // Count of unwind codes
         if (!f.unwind0 && !f.unwind1)
-            concat.addU8(0);
+            concat.addU8_safe(0);
         else if (!f.unwind1)
-            concat.addU8(1);
+            concat.addU8_safe(1);
         else
-            concat.addU8(2);
+            concat.addU8_safe(2);
 
-        concat.addU8(0); // Frame register | offset
-        concat.addU16(f.unwind0);
-        concat.addU16(f.unwind1);
+        concat.addU8_safe(0); // Frame register | offset
+        concat.addU16_safe(f.unwind0);
+        concat.addU16_safe(f.unwind1);
+
         offset += 8;
     }
 
@@ -529,23 +533,28 @@ bool BackendX64::emitPData(const BuildParameters& buildParameters)
     uint32_t offset = 0;
     for (auto& f : pp.functions)
     {
+        SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
+        SWAG_ASSERT(f.endAddress > f.startAddress);
+
+        concat.ensureSpace(12);
+
         CoffRelocation reloc;
         reloc.type = IMAGE_REL_AMD64_ADDR32NB;
 
         reloc.virtualAddress = offset;
         reloc.symbolIndex    = f.symbolIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(0);
+        concat.addU32_safe(0);
 
         reloc.virtualAddress = offset + 4;
         reloc.symbolIndex    = f.symbolIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(f.endAddress - f.startAddress);
+        concat.addU32_safe(f.endAddress - f.startAddress);
 
         reloc.virtualAddress = offset + 8;
         reloc.symbolIndex    = pp.symXDIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(f.xdataOffset);
+        concat.addU32_safe(f.xdataOffset);
 
         offset += 12;
     }
