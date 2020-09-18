@@ -1,12 +1,12 @@
-namespace std.input
+namespace std.gamepad
 {
     using std.math
 
     // Represents a gamepad
     public struct GamePad
     {
-        previousState:  GamePadState
-        currentState:   GamePadState
+        previousState:  State
+        currentState:   State
 
         // The pad index associated with that GamePad instance
         padIndex: u32
@@ -20,7 +20,7 @@ namespace std.input
         // Update the GamePad current state
         func update(using self)
         {
-            newConnected := std.input.isGamePadConnected(padIndex)
+            newConnected := isConnected(padIndex)
             if !newConnected
             {
                 if connected
@@ -42,31 +42,31 @@ namespace std.input
         }
 
         // Determines whether specified input device button is pressed
-        func isButtonPressed(using self, button: GamePadButton)->bool
+        func isButtonPressed(using self, button: Button)->bool
         {
             return currentState.pressed[cast(u32) button]
         }
 
         // Determines whether specified input device button has just been pressed
-        func isButtonJustPressed(using self, button: GamePadButton)->bool
+        func isButtonJustPressed(using self, button: Button)->bool
         {
             return currentState.pressed[cast(u32) button] && !previousState.pressed[cast(u32) button]
         }
 
         // Determines whether specified input device button is released (not pressed)
-        func isButtonReleased(using self, button: GamePadButton)->bool
+        func isButtonReleased(using self, button: Button)->bool
         {
             return !currentState.pressed[cast(u32) button]
         }
 
         // Determines whether specified input device button has just been released
-        func isButtonJustReleased(using self, button: GamePadButton)->bool
+        func isButtonJustReleased(using self, button: Button)->bool
         {
             return !currentState.pressed[cast(u32) button] && previousState.pressed[cast(u32) button]
         }
 
         // Get the analog position of the given button
-        func getPosition(using self, button: GamePadButton)->Point
+        func getPosition(using self, button: Button)->Point
         {
             return currentState.position[cast(u32) button]
         }
@@ -74,7 +74,7 @@ namespace std.input
         // Set the vibration motor speeds
         func setVibration(using self, left, right: f32)->bool
         {
-            return std.input.setGamePadVibration(padIndex, left, right)
+            return setVibration(padIndex, left, right)
         }
     }
 }

@@ -1,7 +1,7 @@
-namespace std.input
+namespace std.gamepad
 {
     // Enumerates gamepad buttons
-    public enum GamePadButton
+    public enum Button
     {
         // **A** button
 		A

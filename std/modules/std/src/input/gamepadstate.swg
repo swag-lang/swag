@@ -1,25 +1,22 @@
-namespace std.input
+namespace std.gamepad
 {
     using std.math
 
     // Represents specific information about the state of the controller,
     // including the current state of buttons and sticks
-    public struct GamePadState
+    public struct State
     {
-        pressed:    [@countof(GamePadButton)] bool
-        position:   [@countof(GamePadButton)] Point
+        pressed:    [@countof(Button)] bool
+        position:   [@countof(Button)] Point
     }
 
-    impl GamePadState
+    public impl State
     {
-        public
+        // Reset state to its default value
+        func clear(using self)
         {
-			// Reset state to its default value
-            func clear(using self)
-            {
-                memory.clear(&pressed, @sizeof(pressed))
-                memory.clear(&position, @sizeof(position))
-            }
+            memory.clear(&pressed, @sizeof(pressed))
+            memory.clear(&position, @sizeof(position))
         }
     }
 }

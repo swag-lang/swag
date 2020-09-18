@@ -1,9 +1,9 @@
 #import "std"
-using std.input 
+using std.gamepad
 
 #test
 {
-    var k: GamePad        
+    var k: GamePad
 	while false
 		k.setVibration(0.5, 0.5)
 }

@@ -1,23 +1,23 @@
 #import "std"
-using std.input
+using std.gamepad
 
 #test
 {
     var k: GamePad
-    
+
     k.clear()
-    @assert(!k.isButtonPressed(GamePadButton.X))
-    
+    @assert(!k.isButtonPressed(Button.X))
+
     //while true
     while false
     {
         k.update()
-        if k.isButtonPressed(GamePadButton.X)
+        if k.isButtonPressed(Button.X)
         {
             //@print("X\n")
         }
-        
-        m := k.getPosition(GamePadButton.LeftTrigger)
+
+        m := k.getPosition(Button.LeftTrigger)
         //@print(cast(f64) m.y)
         //@print("\n")
     }

@@ -1,38 +1,38 @@
 #if std.WINDOWS
 {
-    using xinput, win32, std.input
+    using xinput, win32, std.gamepad
 
-    private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+    private var g_mapButtons: [@countof(Button)] Button = ?
 
     #run
     {
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = GamePadButton.A
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = GamePadButton.B
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = GamePadButton.X
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = GamePadButton.Y
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = GamePadButton.LeftStick
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = GamePadButton.RightStick
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = GamePadButton.Start
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = GamePadButton.Back
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = GamePadButton.LeftShoulder
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = GamePadButton.RightShoulder
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = GamePadButton.DPadUp
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = GamePadButton.DPadDown
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = GamePadButton.DPadLeft
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = GamePadButton.DPadRight
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = Button.A
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = Button.B
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = Button.X
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = Button.Y
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = Button.LeftStick
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = Button.RightStick
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = Button.Start
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = Button.Back
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = Button.LeftShoulder
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = Button.RightShoulder
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = Button.DPadUp
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = Button.DPadDown
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = Button.DPadLeft
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = Button.DPadRight
     }
 
-    namespace std.input
+    namespace std.gamepad
 	{
         // Returns true if the corresponding `padIndex` is connected
-		public func isGamePadConnected(padIndex: u32)->bool
+		public func isConnected(padIndex: u32)->bool
 		{
 			var state: XINPUT_STATE = ?
 			return XInputGetState(padIndex, &state) != ERROR_SUCCESS
 		}
 
         // Set the left and right vibration of the given `padIndex`
-        public func setGamePadVibration(padIndex: u32, left, right: f32)->bool
+        public func setVibration(padIndex: u32, left, right: f32)->bool
         {
             var vibration: XINPUT_VIBRATION = ?
             vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * math.saturate(left))
@@ -40,10 +40,10 @@
             return XInputSetState(padIndex, &vibration) == ERROR_SUCCESS
         }
 
-        impl GamePadState
+        public impl State
         {
             // Compute the current state of the given pad index
-            public func update(using self, padIndex: u32)->bool
+            func update(using self, padIndex: u32)->bool
             {
                 var state: XINPUT_STATE = ?
                 if XInputGetState(padIndex, &state) != ERROR_SUCCESS
@@ -54,7 +54,7 @@
                     pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
 
 				// Move
-                using GamePadButton, state.Gamepad
+                using Button, state.Gamepad
                 position[cast(u32) LeftStick].x = sThumbLX / 32767.0'f32
                 position[cast(u32) LeftStick].y = sThumbLY / 32767.0'f32
                 position[cast(u32) RightStick].x = sThumbRX / 32767.0'f32
@@ -64,7 +64,7 @@
 
 				// Simulate pressed with move
 				#[swag.inline]
-				func getToler(self, btn: GamePadButton)->f32
+				func getToler(self, btn: Button)->f32
 				{
 					const SmallToler = 0.7'f32
 					const BigToler = 0.9'f32

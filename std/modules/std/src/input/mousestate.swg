@@ -36,7 +36,7 @@ namespace std.mouse
     // Determins if one given mouse button is pressed or not
 	public func isButtonPressed(button: Button)->bool
 	{
-		using input, Button
+		using Button
 		switch button
 		{
 		case Left:		return keyboard.isKeyPressed(keyboard.Key.LButton)
