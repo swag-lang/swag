@@ -7,7 +7,7 @@ func Visit(str: string, user: code)
     var ptr: const *u8 = @dataof(str)
 	while true
 	{
-		(ptr, c) = std.text.utf8.nextChar(ptr)
+		(ptr, c) = std.utf8.nextChar(ptr)
 		if !c
 			break
 		#macro
@@ -15,7 +15,7 @@ func Visit(str: string, user: code)
             value := `c
             #mixin `user
         }
-	}    
+	}
 }
 
 //#[swag.printbc]
@@ -29,6 +29,6 @@ func Visit(str: string, user: code)
         //@print(cast(s64) value)
         cpt += 1
     }
-    
+
     @assert(cpt == 3)
 }

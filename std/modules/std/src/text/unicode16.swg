@@ -1,6 +1,4 @@
-using std.diagnostics
-
-public namespace std.text.unicode16
+public namespace std.unicode16
 {
     // Convert an utf8 buffer to a 16 bits unicode sequence
     func fromUtf8(dest: [..] u16, src: const [..] u8)->u32

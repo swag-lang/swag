@@ -1,4 +1,4 @@
-public namespace std.text.utf8
+public namespace std.utf8
 {
     // Returns the number of unicode characters in an utf8 buffer
     func countChar(buffer: const *u8)->u32
