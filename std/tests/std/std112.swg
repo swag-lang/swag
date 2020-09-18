@@ -1,5 +1,5 @@
 #import "std"
-using std.crypto, std.text
+using std.crypto
 
 #test
 {

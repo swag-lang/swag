@@ -1,5 +1,5 @@
 #import "std"
-using std.text, std.collections
+using std.collections
 
 //#[swag.printbc]
 #test

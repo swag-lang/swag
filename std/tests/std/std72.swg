@@ -1,5 +1,5 @@
 #import "std"
-using std.text
+using std
 
 //#[swag.printbc]
 #test
@@ -10,7 +10,7 @@ using std.text
 
     str.clear()
     loop 50
-        str += "    "       
+        str += "    "
     str.trimStart()
     @assert(str.length == 0)
     @assert(@countof(str) == 0)

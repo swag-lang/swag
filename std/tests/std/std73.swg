@@ -1,5 +1,5 @@
 #import "std"
-using std.text
+using std
 
 //#[swag.printbc]
 #test
@@ -9,7 +9,7 @@ using std.text
 
     result := utf8.previousChar(str.buffer, ptr)
     @assert(result.item1 == "B"'char)
-    
+
     result = utf8.previousChar(str.buffer, result.item0)
     @assert(result.item1 == "⺗"'char)
 

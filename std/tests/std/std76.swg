@@ -1,5 +1,5 @@
 #import "std"
-using std.text
+using std
 
 //#[swag.printbc]
 #test
@@ -14,7 +14,7 @@ using std.text
             case 1:
                 @assert(c == "⻨"'char)
             case 4:
-                @assert(c == "C"'char)                
+                @assert(c == "C"'char)
             default:
                 @assert(false)
         }

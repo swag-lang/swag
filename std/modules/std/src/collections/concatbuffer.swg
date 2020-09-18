@@ -1,7 +1,5 @@
 namespace std.collections
 {
-    using std.text
-
     public struct ConcatBufferBucket
     {
         datas:  *u8

@@ -1,6 +1,6 @@
 #if std.WINDOWS && std.ASSERT
 {
-    using win32, std.text, std.collections
+    using win32, std.collections
 
     public namespace std.debug
     {

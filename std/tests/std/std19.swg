@@ -1,5 +1,5 @@
 #import "std"
-using std.text
+using std
 
 //#[swag.printbc]
 #test
@@ -10,5 +10,5 @@ using std.text
     @assert(x.length == 4)
     x.reserve(0)
     x = "toto1"
-    @assert(x.length == 5)    
+    @assert(x.length == 5)
 }

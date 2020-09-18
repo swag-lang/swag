@@ -1,5 +1,5 @@
 #import "std"
-using std.text, std.collections
+using std.collections
 
 func cc(sl: const [..] u8, val: s32)
 {

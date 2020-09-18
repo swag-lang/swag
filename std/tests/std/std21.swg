@@ -1,5 +1,5 @@
 #import "std"
-using std.text
+using std
 
 //#[swag.printbc]
 func XX(v: String)->[..]u8 => @mkslice(v.buffer, v.length)

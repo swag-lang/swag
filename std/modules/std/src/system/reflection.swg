@@ -1,6 +1,6 @@
 namespace std.reflection
 {
-    using swag, std.text
+    using swag
 
     public
     {

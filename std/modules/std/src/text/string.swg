@@ -1,4 +1,4 @@
-namespace std.text
+namespace std
 {
     using swag, std.collections, std.crypto
 
