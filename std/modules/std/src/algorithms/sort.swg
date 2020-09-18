@@ -28,6 +28,13 @@ namespace std.sort
 
         while true
         {
+            // If range is too small, simple sort
+            if end - begin <= 10
+            {
+                insertion(@mkslice(buffer + begin, (end - begin) + 1), cb)
+                return
+            }
+
             // Pick a pivot and move it out of the way
             pivot := (begin + end) / 2
             swap(&buffer[pivot], &buffer[end])
@@ -42,9 +49,7 @@ namespace std.sort
                     high -= 1
                 if low >= high
                     break
-                tmp := low
-                low = high
-                high = tmp
+                swap(&buffer[low], &buffer[high])
             }
 
             // Put the median in the "center" of the list
@@ -57,12 +62,16 @@ namespace std.sort
             {
                 if set1 <= set2
                 {
-                    sort.quick(@mkslice(buffer + begin, (low - begin) + 1), cb);
+                    first := begin
+                    last := low - 1
+                    sort.quick(@mkslice(buffer + first, 1 + (last - first)), cb);
                     begin = high + 1
                 }
                 else
                 {
-                    sort.quick(@mkslice(buffer + high + 1, (end - high) + 1), cb);
+                    first := high + 1
+                    last := end
+                    sort.quick(@mkslice(buffer + first, 1 + (last - first)), cb);
                     end = low - 1
                 }
             }
@@ -83,5 +92,30 @@ namespace std.sort
             insertion(values, cb)
         else
             quick(values, cb)
+    }
+
+    // Returns true if the slice is sorted
+    public func(T) isSorted(values: const [..] T, ascending: bool = true)->bool
+    {
+        countof := @countof(values)
+
+        if ascending
+        {
+            loop i: countof - 1
+            {
+                if values[i] > values[i + 1]
+                    return false
+            }
+        }
+        else
+        {
+            loop i: countof - 1
+            {
+                if values[i] < values[i + 1]
+                    return false
+            }
+        }
+
+        return true
     }
 }
