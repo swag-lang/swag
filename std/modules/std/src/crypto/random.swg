@@ -1,4 +1,4 @@
-namespace std.crypto
+namespace std.random
 {
 	public struct(T = Mwc) Random
 	{

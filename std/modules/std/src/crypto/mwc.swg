@@ -1,5 +1,5 @@
-namespace std.crypto
-{   
+namespace std.random
+{
 	public struct Mwc
 	{
 		x: 		u32 = 1234567
