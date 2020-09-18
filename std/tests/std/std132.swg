@@ -12,6 +12,6 @@ using std.strconv
     builder.append(str)
 
     s := builder.toString();
-    console.write("%\n", s)
+    //console.write("%\n", s)
     @assert(s == "toto444假mystring")
 }

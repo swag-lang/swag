@@ -314,14 +314,9 @@ namespace std.strconv
         // Convert a 'char' to a string, and put the result in a ConcatBuffer
         func convertChar(buf: *ConcatBuffer, value: char, strFormat: string)
         {
-            if value <= 0xFF
-                buf.addByte(cast(u8) value)
-            else if(value  <= 0xFFFF)
-                buf.addBytes(@mkslice(cast(const *u8) &value, 2))
-            else if(value  <= 0xFFFFFF)
-                buf.addBytes(@mkslice(cast(const *u8) &value, 3))
-            else
-                buf.addBytes(@mkslice(cast(const *u8) &value, 4))
+            var arr: [4] u8
+            var count = unicode32.toUtf8(arr, value)
+            buf.addBytes(@mkslice(&arr[0], count))
         }
     }
 }

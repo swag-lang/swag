@@ -300,7 +300,7 @@ namespace std
             while true
             {
                 (nextPtr, c) := utf8.nextChar(ptr)
-                if !unicode.isWhiteSpace(c)
+                if !unicode32.isWhiteSpace(c)
                     break
                 length -= cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -320,7 +320,7 @@ namespace std
             while true
             {
                 (previousPtr, c) := utf8.previousChar(buffer, ptr)
-                if !unicode.isWhiteSpace(c)
+                if !unicode32.isWhiteSpace(c)
                     break
                 length -= cast(u32) (ptr - previousPtr)
                 ptr = previousPtr

@@ -1,4 +1,4 @@
-namespace std.unicode
+namespace std.unicode32
 {
     public enum UnicodeCategory : u8
     {
@@ -137,7 +137,7 @@ namespace std.unicode
         }
 
         // Convert unicode character 'src' to an utf8 sequence, and returns
-        // the number of bytes needed to make the conversion.
+        // the number of bytes that were needed to make the conversion.
         // 'dest' must be at least 4 bytes long
         func toUtf8(dest: [..] u8, src: char)->u32
         {
