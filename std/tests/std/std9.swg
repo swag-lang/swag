@@ -1,10 +1,9 @@
 #import "std"
-using std.diagnostics
 
 //#[swag.printbc]
 #test
 {
-	debugger.isAttached()
+	std.debugger.isAttached()
 	//debugger.break()
-	debugger.log("toto")
+	std.debugger.log("toto")
 }

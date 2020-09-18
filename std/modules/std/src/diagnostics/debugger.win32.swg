@@ -2,13 +2,10 @@
 {
     using win32
 
-    namespace std.diagnostics.debugger
+    public namespace std.debugger
     {
-        public
-        {
-            func isAttached() => cast(bool) IsDebuggerPresent()
-            func break() => DebugBreak()
-            func log(msg: string) => OutputDebugStringA(cast(const *u8) msg)
-        }
+        func isAttached() => cast(bool) IsDebuggerPresent()
+        func break() => DebugBreak()
+        func log(msg: string) => OutputDebugStringA(cast(const *u8) msg)
     }
 }

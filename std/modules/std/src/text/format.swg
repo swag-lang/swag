@@ -1,6 +1,6 @@
 namespace std.text
 {
-    using std.collections, std.diagnostics
+    using std.collections
 
     // Format a string and returns the result as a String
     public func format(fmt: string, values: ...)->String

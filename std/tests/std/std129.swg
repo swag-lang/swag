@@ -1,5 +1,5 @@
 #import "std"
-using std.text, std.diagnostics
+using std.text
 
 #test
 {

@@ -1,5 +1,4 @@
 #import "std"
-using std.diagnostics
 
 #test
 {

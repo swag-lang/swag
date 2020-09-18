@@ -7,8 +7,6 @@ namespace std.crypto
 
 	public impl Random
 	{
-        using std.diagnostics
-
         func seed(using self, value: u32) => rng.seed(value)
 
         func nextS32(using self)->s32 => cast(s32) rng.next()

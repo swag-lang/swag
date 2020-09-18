@@ -1,7 +1,7 @@
 namespace std.text
 {
     using swag
-    using std.collections, std.diagnostics, std.globalization
+    using std.collections, std.globalization
 
     public struct ConvertFormat
     {

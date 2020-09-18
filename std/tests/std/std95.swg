@@ -1,5 +1,5 @@
 #import "std"
-using std.collections, std.diagnostics, std.text
+using std.collections, std.text
 
 //#[swag.printbc]
 #test
@@ -8,7 +8,7 @@ using std.collections, std.diagnostics, std.text
     format(&buf, "%", false)
     @assert(buf.toString() == "false")
     format(&buf, "%", true)
-    @assert(buf.toString() == "true")    
+    @assert(buf.toString() == "true")
 
     format(&buf, "%", "1"'char)
     @assert(buf.toString() == "1")

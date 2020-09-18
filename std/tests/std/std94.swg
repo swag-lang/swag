@@ -1,9 +1,8 @@
 #import "std"
-using std.diagnostics
 
 #test
 {
-    console.silent(true)
-    console.write("toto %\n", 666)
-    console.silent(false)
+    std.console.silent(true)
+    std.console.write("toto %\n", 666)
+    std.console.silent(false)
 }

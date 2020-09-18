@@ -1,5 +1,5 @@
 #import "std"
-using std.collections, std.text, std.diagnostics
+using std.collections, std.text
 
 func toto(v: String)
 {
