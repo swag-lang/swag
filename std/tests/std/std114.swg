@@ -6,9 +6,9 @@ struct Pt
     x, y: s32
 }
 
-impl std.crypto.IHash32 for Pt
+impl hash.IHash32 for Pt
 {
-    func hash(self)->u32 => 555
+    func compute(self)->u32 => 555
 }
 
 #test
@@ -20,5 +20,5 @@ impl std.crypto.IHash32 for Pt
     @assert(arr.count == 3)
 
     let pt: Pt
-    @assert(std.crypto.hash32(pt) == 555)
+    @assert(hash.hash32(pt) == 555)
 }

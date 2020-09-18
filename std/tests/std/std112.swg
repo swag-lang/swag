@@ -1,5 +1,5 @@
 #import "std"
-using std.crypto
+using std.hash
 
 #test
 {

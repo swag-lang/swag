@@ -1,6 +1,6 @@
 namespace std
 {
-    using swag, std.crypto
+    using swag
 
     private const SmallSize = 24'u32
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
@@ -38,11 +38,11 @@ namespace std
         }
     }
 
-    public impl IHash32 for String
+    public impl hash.IHash32 for String
     {
-        func hash(using self)->u32
+        func compute(using self)->u32
         {
-            return crc32(@mkslice(buffer, length))
+            return crc32.slice(@mkslice(buffer, length))
         }
     }
 

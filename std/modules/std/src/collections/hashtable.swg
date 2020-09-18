@@ -63,9 +63,9 @@ namespace std
         }
 
         #[inline]
-        func hash(key: K)->u32
+        func hashKey(key: K)->u32
         {
-            hashVal := crypto.hash32(key)
+            hashVal := hash.hash32(key)
             if hashVal < HASH_FIRST
                 hashVal += HASH_FIRST
             return hashVal
@@ -140,7 +140,7 @@ namespace std
         {
             grow()
 
-            hashVal := hash(key)
+            hashVal := hashKey(key)
             index := hashVal % capacity
 
             while table[index].hash >= HASH_FIRST
@@ -165,7 +165,7 @@ namespace std
         // Remove the given key if it exists
         func remove(using self, key: K)
         {
-            hashVal := hash(key)
+            hashVal := hashKey(key)
             index := hashVal % capacity
 
             while table[index].hash
@@ -187,7 +187,7 @@ namespace std
         {
             if !table return false
 
-            hashVal := hash(key)
+            hashVal := hashKey(key)
             index := hashVal % capacity
 
             while table[index].hash
@@ -206,7 +206,7 @@ namespace std
         {
             if !table return null
 
-            hashVal := hash(key)
+            hashVal := hashKey(key)
             index := hashVal % capacity
 
             while table[index].hash

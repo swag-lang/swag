@@ -1,10 +1,10 @@
-namespace std.crypto
+namespace std.hash
 {
     using swag
 
     public interface IHash32
     {
-        hash: func(self)->u32
+        compute: func(self)->u32
     }
 
     // Hash the given value and returns the corresponding u32
@@ -22,12 +22,12 @@ namespace std.crypto
         }
         #elif @typeof(T) == string
         {
-            return crc32(value)
+            return crc32.slice(value)
         }
         #elif @typeof(T).kind == TypeInfoKind.Struct
         {
             #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'std.crypto.IHash32' interface")
-            #ast "return " ~ @typeof(T).name ~ ".IHash32.hash(value)"
+            #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
         }
         #else
             #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")
