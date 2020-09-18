@@ -2,10 +2,10 @@
 {
     using win32, std.text, std.collections
 
-    namespace std.diagnostics.debug
+    public namespace std.debug
     {
         // Generate an assert dialog box
-        public func assertMessage(message: string, loc: swag.CompilerSourceLocation)
+        func assertMessage(message: string, loc: swag.CompilerSourceLocation)
         {
             contextFlags := @getcontext().flags
             // If we are running bytecode, then just let the runner deal with the assertion,

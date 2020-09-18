@@ -1,7 +1,7 @@
-namespace std.diagnostics.debug
+public namespace std.debug
 {
 	#[swag.inline]
-	public func assert(expr: bool, message: string = null, loc = #callerlocation)
+	func assert(expr: bool, message: string = null, loc = #callerlocation)
 	{
 		#if std.ASSERT
 		{

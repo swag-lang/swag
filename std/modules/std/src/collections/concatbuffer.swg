@@ -1,6 +1,6 @@
 namespace std.collections
 {
-    using std.diagnostics, std.text
+    using std.text
 
     public struct ConcatBufferBucket
     {
@@ -120,7 +120,7 @@ namespace std.collections
         // The buffer will be erased before the change, even if the new size is the same as the current one.
         func setBucketSize(using self, size: u32)
         {
-            diagnostics.debug.assert(size >= 4)
+            debug.assert(size >= 4)
             self.free()
             bucketSize = size
         }

@@ -121,7 +121,7 @@ namespace std.math
             func normalize(using self)
             {
                 norm := sqrt((x * x) + (y * y))
-                diagnostics.debug.assert(!isZeroEpsilon(norm))
+                debug.assert(!isZeroEpsilon(norm))
                 norm = 1 / norm
                 x *= norm
                 y *= norm
@@ -131,7 +131,7 @@ namespace std.math
             func normalized(using self)->Vector2
             {
                 norm := sqrt((x * x) + (y * y))
-                diagnostics.debug.assert(!isZeroEpsilon(norm))
+                debug.assert(!isZeroEpsilon(norm))
                 norm = 1 / norm
                 return Vector2(x * norm, y * norm)
             }

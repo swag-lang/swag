@@ -18,15 +18,12 @@ namespace std.console
 		DarkYellow
 		DarkMagenta
 	}
-    
+
     var g_silentMode: u32
-    
-    public
+
+    public func silent(value: bool)
     {
-        func silent(value: bool)
-        {
-            diagnostics.debug.assert(value || g_silentMode > 0)
-            g_silentMode += value ? 1 : -1
-        }
+        debug.assert(value || g_silentMode > 0)
+        g_silentMode += value ? 1 : -1
     }
 }
