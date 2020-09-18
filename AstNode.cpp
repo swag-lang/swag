@@ -450,6 +450,13 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstBinaryOpNode::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc0<AstBinaryOpNode>();
+    newNode->copyFrom(context, this);
+    return newNode;
+}
+
 AstNode* AstIf::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstIf>();

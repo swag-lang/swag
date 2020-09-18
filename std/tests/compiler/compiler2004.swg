@@ -1,4 +1,24 @@
+func toto()->bool
+{
+    @assert(false)
+    return true
+}
+
+//#[swag.printbc]
+#[swag.optimizebc(0)]
 #test
 {
-    tcf_assert(0, 0, 0)
+    a := 0
+    if a != 0 && toto()
+    {
+    }
+
+    if a == 0 || toto()
+    {
+    }
+
+    var ptr: *u32
+    if ptr && toto()
+    {
+    }
 }

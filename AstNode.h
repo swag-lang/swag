@@ -455,6 +455,13 @@ struct AstFuncCallParam : public AstNode
     bool mustSortParameters;
 };
 
+struct AstBinaryOpNode : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    int seekJumpExpression;
+};
+
 struct AstIf : public AstNode
 {
     AstNode* clone(CloneContext& context) override;

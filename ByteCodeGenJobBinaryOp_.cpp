@@ -322,6 +322,66 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
     }
 }
 
+bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
+{
+    auto left    = context->node;
+    auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+
+    // We need to cast right now, in case the shortcut is activated
+    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
+    if (context->result == ContextResult::Pending)
+        return true;
+    binNode->doneFlags |= AST_DONE_CAST1;
+
+    // If the left expression is false, then we copy the result to the && operator, and we jump right after it
+    // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' is A is false.
+    // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
+    left->additionalRegisterRC = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, left->additionalRegisterRC, left->resultRegisterRC);
+    binNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
+    auto inst   = &context->bc->out[node->seekJumpExpression];
+    inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
+    return true;
+}
+
+bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
+{
+    auto left                  = context->node;
+    auto binNode               = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+
+    // We need to cast right now, in case the shortcut is activated
+    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
+    if (context->result == ContextResult::Pending)
+        return true;
+    binNode->doneFlags |= AST_DONE_CAST1;
+
+    // If the left expression is true, then we copy the result to the || operator, and we jump right after it
+    // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' is B is true.
+    // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
+    left->additionalRegisterRC = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, left->additionalRegisterRC, left->resultRegisterRC);
+    binNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
+    auto inst   = &context->bc->out[node->seekJumpExpression];
+    inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
+    return true;
+}
+
 bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
@@ -356,7 +416,19 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            auto r2                = reserveRegisterRC(context);
+            uint32_t r2 = 0;
+
+            // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
+            // So we take it as the result register.
+            if (node->token.id == TokenId::SymAmpersandAmpersand || node->token.id == TokenId::SymVerticalVertical)
+            {
+                SWAG_ASSERT(node->childs[0]->additionalRegisterRC.size() == 1);
+                r2 = node->childs[0]->additionalRegisterRC;
+                node->childs[0]->additionalRegisterRC.clear();
+            }
+            else
+                r2 = reserveRegisterRC(context);
+
             node->resultRegisterRC = r2;
 
             auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
@@ -378,12 +450,6 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             case TokenId::SymPercent:
                 SWAG_CHECK(emitBinaryOpModulo(context, typeInfoExpr, r0, r1, r2));
                 break;
-            case TokenId::SymAmpersandAmpersand:
-                emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
-                break;
-            case TokenId::SymVerticalVertical:
-                emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
-                break;
             case TokenId::SymVertical:
                 SWAG_CHECK(emitBitmaskOr(context, typeInfoExpr, r0, r1, r2));
                 break;
@@ -398,6 +464,12 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
                 break;
             case TokenId::SymCircumflex:
                 SWAG_CHECK(emitXor(context, typeInfoExpr, r0, r1, r2));
+                break;
+            case TokenId::SymAmpersandAmpersand:
+                emitLogicalAnd(context, r0, r1, r2);
+                break;
+            case TokenId::SymVerticalVertical:
+                emitLogicalOr(context, r0, r1, r2);
                 break;
             default:
                 return internalError(context, "emitBinaryOp, invalid token op");

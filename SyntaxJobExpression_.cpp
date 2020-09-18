@@ -417,7 +417,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
 
             if (leftBinary)
             {
-                auto andNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+                auto andNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
                 andNode->semanticFct = SemanticJob::resolveBoolExpression;
                 andNode->token       = rightNode->token;
                 andNode->token.id    = TokenId::SymAmpersandAmpersand;
@@ -462,7 +462,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     bool isBinary = false;
     if ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
     {
-        auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+        auto binaryNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
         binaryNode->semanticFct = SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 

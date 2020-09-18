@@ -1128,6 +1128,19 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, right, CASTFLAG_AUTO_BOOL));
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
+
+    // In case of && or ||, this is special cause we do not want to evaluate the right part if the left part
+    // fails. So we need to do some work once the left part has been emitted
+    switch (node->token.id)
+    {
+    case TokenId::SymAmpersandAmpersand:
+        left->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
+        break;
+    case TokenId::SymVerticalVertical:
+        left->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        break;
+    }
+
     node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

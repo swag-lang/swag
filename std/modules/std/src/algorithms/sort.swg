@@ -8,16 +8,10 @@ namespace std.algorithms
 
         for i := 1'u32; i < count; i += 1
         {
-            tmp := move buffer[i]
-            j := i
-            while cb(buffer[j - 1], tmp) > 0
+            for j := i; j > 0 && cb(buffer[j], buffer[j - 1]) < 0; j -= 1
             {
-                buffer[j] = move buffer[j - 1]
-                j -= 1
-                if j == 0 break
+                swap(&buffer[j], &buffer[j - 1])
             }
-
-            buffer[j] = move tmp
         }
     }
 

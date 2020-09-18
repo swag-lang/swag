@@ -3,5 +3,5 @@ using std.diagnostics
 
 #test
 {
-    //std.diagnostics.console.write("toto %", 10)
+    //std.console.write("toto %", 10)
 }
