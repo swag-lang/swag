@@ -28,7 +28,7 @@
             // Source location
             str += loc.fileName
             str += ", "
-            str += cast(string) format("line %\n\n", loc.lineStart + 1)
+            str += cast(string) format.toString("line %\n\n", loc.lineStart + 1)
 
             const info =
             #"- Press Cancel to exit

@@ -1,5 +1,5 @@
 #import "std"
-using std.text, std.collections
+using std.text, std.collections, std.strconv
 
 #test
 {

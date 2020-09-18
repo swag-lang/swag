@@ -1,6 +1,6 @@
 #import "std"
 
-using std.collections, std.text
+using std.collections, std.text, std.strconv
 
 struct TOTO
 {
@@ -21,9 +21,9 @@ impl IConvert for TOTO
     var buf: ConcatBuffer
 
     var x: TOTO
-    format(&buf, "%{ABC}toto", x)
+    format.append(&buf, "%{ABC}toto", x)
     @assert(cast(string) buf.toString() == "toto")
 
-    format(&buf, "{ABC}toto", x)
+    format.append(&buf, "{ABC}toto", x)
     @assert(cast(string) buf.toString() == "{ABC}toto")
 }

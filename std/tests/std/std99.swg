@@ -2,7 +2,7 @@
 
 #test
 {
-    using std.text, std.collections
+    using std.text, std.collections, std.strconv
     var buf: ConcatBuffer
 
     convertInt(&buf, 666's32, "X08")

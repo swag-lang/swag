@@ -1,17 +1,17 @@
-namespace std.text
+namespace std.format
 {
-    using std.collections
+    using std.collections, std.text
 
     // Format a string and returns the result as a String
-    public func format(fmt: string, values: ...)->String
+    public func toString(fmt: string, values: ...)->String
     {
         var buf: ConcatBuffer
-        format(&buf, fmt, values)
+        append(&buf, fmt, values)
         return buf.toString()
     }
 
     // Format a string and put the result in a ConcatBuffer
-    public func format(buf: *ConcatBuffer, fmt: string, values: ...)
+    public func append(buf: *ConcatBuffer, fmt: string, values: ...)
     {
         ptr := @dataof(fmt)
         cpt := @countof(fmt)
@@ -61,7 +61,7 @@ namespace std.text
 
                 // Deal with the parameter
                 debug.assert(paramIdx < numParams, "not enough 'format' parameters")
-                convertAny(buf, values[paramIdx], cast(string) strFormat)
+                strconv.convertAny(buf, values[paramIdx], cast(string) strFormat)
                 paramIdx += 1
             }
             else

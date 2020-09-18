@@ -5,12 +5,12 @@ using std.collections, std.text
 #test
 {
     var buf: ConcatBuffer
-    format(&buf, "%", false)
+    format.append(&buf, "%", false)
     @assert(buf.toString() == "false")
-    format(&buf, "%", true)
+    format.append(&buf, "%", true)
     @assert(buf.toString() == "true")
 
-    format(&buf, "%", "1"'char)
+    format.append(&buf, "%", "1"'char)
     @assert(buf.toString() == "1")
 
     //format(&buf, "%", &buf)

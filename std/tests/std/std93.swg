@@ -1,12 +1,12 @@
 #import "std"
-using std.text, std.collections
+using std.text, std.collections, std.strconv
 
 #test
 {
     var buf: ConcatBuffer
     var fmt: ConvertFormatFloat
     fmt.value = -3.1415
-    format(&buf, "%", fmt)
+    format.append(&buf, "%", fmt)
     str := buf.toString()
     @assert(str == "-3.14150")
 }

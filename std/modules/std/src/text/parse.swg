@@ -1,4 +1,4 @@
-namespace std.text
+namespace std.strconv
 {
     using globalization
 

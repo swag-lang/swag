@@ -83,7 +83,7 @@
 
             if @countof(params)
             {
-                str := std.text.format(message, params)
+                str := format.toString(message, params)
                 WriteFile(g_stdOutputHandle, @dataof(str), @countof(str), null, null)
             }
             else

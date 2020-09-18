@@ -14,7 +14,7 @@ struct TOTO
     var buf: ConcatBuffer
 
     var x: TOTO
-    format(&buf, "%", x)
+    format.append(&buf, "%", x)
     //@print(cast(string) buf.toString())
     @assert(buf.toString() == "{x=555,y=666}")
 }

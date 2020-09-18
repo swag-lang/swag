@@ -30,9 +30,9 @@ namespace std.text
         }
     }
 
-    public impl IConvert for String
+    public impl strconv.IConvert for String
     {
-        func convert(using self, buf: *ConcatBuffer, fmt: const *ConvertFormat, strFormat: string)
+        func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
         {
             buf.addBytes(@mkslice(buffer, length))
         }

@@ -1,6 +1,6 @@
 #import "std"
 
-using std.collections, std.text
+using std.collections, std.text, std.strconv
 
 struct TOTO
 {
@@ -25,7 +25,7 @@ impl IConvert for TOTO
     var buf: ConcatBuffer
 
     var x: TOTO
-    format(&buf, "%", x)
+    format.append(&buf, "%", x)
     //@print(cast(string) buf.toString())
     @assert(buf.toString() == "! x = 555, y = 666 !")
 }
