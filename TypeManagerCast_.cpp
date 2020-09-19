@@ -2164,6 +2164,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
+    SWAG_ASSERT(fromNode->typeInfo);
     auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
     if (fromType->kind == TypeInfoKind::TypeListTuple && toType->kind == TypeInfoKind::Struct)
     {

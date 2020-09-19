@@ -213,7 +213,7 @@ JobResult SemanticJob::execute()
             break;
 
         case AstNodeResolveState::ProcessingChilds:
-            if (node->semanticFct)
+            if (node->semanticFct && !(node->flags & AST_NO_SEMANTIC))
             {
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
@@ -226,7 +226,7 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            if (node->semanticAfterFct)
+            if (node->semanticAfterFct && !(node->flags & AST_NO_SEMANTIC))
             {
                 if (!node->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
