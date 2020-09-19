@@ -308,14 +308,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
-    // If a lambda function will wait for a match, then no need to deduce the return type
-    // It will be done in the same way as parameters
-    if ((funcNode->flags & AST_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
-    {
-        typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
-        funcNode->flags &= ~AST_SHORT_LAMBDA;
-    }
-
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
@@ -372,6 +364,17 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         // Register parameters
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
+    }
+
+    // If a lambda function will wait for a match, then no need to deduce the return type
+    // It will be done in the same way as parameters
+    if (!(funcNode->flags & AST_IS_GENERIC))
+    {
+        if ((funcNode->flags & AST_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr.typeInfoVoid))
+        {
+            typeNode->typeInfo = g_TypeMgr.typeInfoUndefined;
+            funcNode->flags &= ~AST_SHORT_LAMBDA;
+        }
     }
 
     // Short lambda with a return type we must deduce
@@ -447,8 +450,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->flags & AST_PENDING_LAMBDA_TYPING)
     {
-        funcNode->pendingLambdaJob = context->job;
-        context->result            = ContextResult::Pending;
+        if (!(funcNode->flags & AST_IS_GENERIC))
+        {
+            funcNode->pendingLambdaJob = context->job;
+            context->result            = ContextResult::Pending;
+        }
     }
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we

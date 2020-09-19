@@ -500,7 +500,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     // This is a lambda that was waiting for a match to have its types, and to continue solving its content
                     if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
                     {
-                        auto funcDecl         = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
+                        auto funcDecl = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
+                        SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
                         auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
                         auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
                         auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
