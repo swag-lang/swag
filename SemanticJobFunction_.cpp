@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -361,6 +362,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
         if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC))
             funcNode->flags |= AST_IS_GENERIC;
+        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC))
+            funcNode->flags |= AST_IS_GENERIC;
         if (funcNode->genericParameters)
             funcNode->flags |= AST_IS_GENERIC;
         if (funcNode->flags & AST_IS_GENERIC)
@@ -481,6 +484,27 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         context->job->decreaseMethodCount(typeStruct);
     }
 
+    // If we have sub functions, then now we can solve them
+    for (auto f : funcNode->subFunctions)
+    {
+        scoped_lock lk(f->mutex);
+        f->flags &= ~AST_NO_SEMANTIC;
+
+        // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub function, ignored it
+        // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
+        // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+        // file job will trigger the resolve itself
+        if (f->doneFlags & AST_DONE_FILE_JOB_PASS)
+        {
+            auto job          = g_Pool_semanticJob.alloc();
+            job->sourceFile   = context->sourceFile;
+            job->module       = context->sourceFile->module;
+            job->dependentJob = context->job->dependentJob;
+            job->nodes.push_back(f);
+            g_ThreadMgr.addJob(job);
+        }
+    }
+
     return true;
 }
 
@@ -514,7 +538,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     bool checkForConcrete = true;
     if (node->parent->flags & AST_NO_BYTECODE)
         checkForConcrete = false;
-    if(checkForConcrete)
+    if (checkForConcrete)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
         if (context->result == ContextResult::Pending)

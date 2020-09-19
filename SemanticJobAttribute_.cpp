@@ -252,18 +252,14 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         return false;
     }
 
-    // Need to zap doc comments, when generating doc
+    // Collect all attributes next to this one
     auto idx           = node->childParentIdx + 1;
     auto nextStatement = node->parent->childs[idx];
     while (nextStatement->kind == AstNodeKind::AttrUse)
     {
         idx++;
         if (idx >= node->parent->childs.size())
-        {
-            context->report({node, "attribute belongs to nothing (no valid statement after)"});
-            return false;
-        }
-
+            return context->report({node, "attribute belongs to nothing (no valid statement after)"});
         nextStatement = node->parent->childs[idx];
     }
 
@@ -330,12 +326,9 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     }
 
     if (nextStatement)
-    {
         nextStatement->parentAttributes = node;
-    }
 
     SymbolAttributes attributes;
     SWAG_CHECK(collectAttributes(context, attributes, node, node, AstNodeKind::AttrUse, node->attributeFlags));
-
     return true;
 }

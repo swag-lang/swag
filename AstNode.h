@@ -422,6 +422,7 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam*          methodParam;
     Job*                    pendingLambdaJob;
     map<Utf8Crc, TypeInfo*> replaceTypes;
+    VectorNative<AstNode*>  subFunctions;
 
     uint32_t stackSize = 0;
 

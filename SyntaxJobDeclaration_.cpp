@@ -362,10 +362,20 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::SymAttrStart:
         SWAG_CHECK(doAttrUse(parent));
         break;
+
     case TokenId::KwdFunc:
+    {
+        SWAG_ASSERT(parent && parent->ownerFct);
         moveAttributes(parent, sourceFile->astRoot);
-        SWAG_CHECK(doFuncDecl(sourceFile->astRoot, result));
+        AstNode* subFunc;
+        SWAG_CHECK(doFuncDecl(sourceFile->astRoot, &subFunc));
+        if (result)
+            *result = subFunc;
+        subFunc->flags |= AST_NO_SEMANTIC;
+        parent->ownerFct->subFunctions.push_back(subFunc);
         break;
+    }
+
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
     case TokenId::KwdInterface:

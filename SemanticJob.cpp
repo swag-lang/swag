@@ -70,10 +70,7 @@ JobResult SemanticJob::execute()
     scoped_lock lkExecute(executeMutex);
 
     if (!originalNode)
-    {
-        //SWAG_ASSERT(nodes.size() == 1);
         originalNode = nodes.front();
-    }
 
     auto firstNode     = nodes.front();
     baseContext        = &context;
@@ -99,7 +96,8 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
 
             // Some nodes need to spawn a new semantic job
-            if (node != firstNode && !(node->flags & AST_NO_SEMANTIC))
+            //if (node != firstNode && !(node->flags & AST_NO_SEMANTIC))
+            if (node != firstNode)
             {
                 if (firstNode->kind == AstNodeKind::Impl ||
                     firstNode->kind == AstNodeKind::File ||
@@ -108,6 +106,28 @@ JobResult SemanticJob::execute()
                     switch (node->kind)
                     {
                     case AstNodeKind::FuncDecl:
+                    {
+                        // A sub function can be waiting for the owner function to be resolved.
+                        // We inform the parent function that we have seen the sub function, and that
+                        // the attributes context is now fine for it. That way, the parent function can
+                        // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
+                        scoped_lock lk(node->mutex);
+                        node->doneFlags |= AST_DONE_FILE_JOB_PASS;
+
+                        if (!(node->flags & AST_NO_SEMANTIC))
+                        {
+                            auto job          = g_Pool_semanticJob.alloc();
+                            job->sourceFile   = sourceFile;
+                            job->module       = module;
+                            job->dependentJob = dependentJob;
+                            job->nodes.push_back(node);
+                            g_ThreadMgr.addJob(job);
+                        }
+
+                        nodes.pop_back();
+                        continue;
+                    }
+
                     case AstNodeKind::VarDecl:
                     case AstNodeKind::LetDecl:
                     case AstNodeKind::ConstDecl:
@@ -123,16 +143,19 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::CompilerIf:
                     case AstNodeKind::Impl:
                     {
-                        auto job          = g_Pool_semanticJob.alloc();
-                        job->sourceFile   = sourceFile;
-                        job->module       = module;
-                        job->dependentJob = dependentJob;
-                        job->nodes.push_back(node);
+                        if (!(node->flags & AST_NO_SEMANTIC))
+                        {
+                            auto job          = g_Pool_semanticJob.alloc();
+                            job->sourceFile   = sourceFile;
+                            job->module       = module;
+                            job->dependentJob = dependentJob;
+                            job->nodes.push_back(node);
+                            g_ThreadMgr.addJob(job);
+                        }
+
                         nodes.pop_back();
-                        g_ThreadMgr.addJob(job);
                         continue;
                     }
-                    break;
                     }
                 }
             }
@@ -170,7 +193,11 @@ JobResult SemanticJob::execute()
                     for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                     {
                         auto child = node->childs[i];
-                        if (child->flags & AST_NO_SEMANTIC)
+
+                        // If the child has the AST_NO_SEMANTIC flag, do not push it.
+                        // Special case for function in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
+                        if ((child->flags & AST_NO_SEMANTIC) &&
+                            (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
                             continue;
 
                         // Top to bottom inheritance
@@ -214,6 +241,16 @@ JobResult SemanticJob::execute()
             nodes.pop_back();
             break;
         }
+    }
+
+    for (auto p : pendingJobNodes)
+    {
+        auto job          = g_Pool_semanticJob.alloc();
+        job->sourceFile   = sourceFile;
+        job->module       = module;
+        job->dependentJob = dependentJob;
+        job->nodes.push_back(p);
+        g_ThreadMgr.addJob(job);
     }
 
     return JobResult::ReleaseJob;
