@@ -12,4 +12,11 @@ using std
         if i != @countof(arr) - 1
             @assert(arr[i] >= arr[i + 1])
     }
+
+    arr.sort()
+    loop i: arr
+    {
+        if i != @countof(arr) - 1
+            @assert(arr[i] <= arr[i + 1])
+    }
 }
