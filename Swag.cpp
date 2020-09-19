@@ -150,6 +150,29 @@ int main(int argc, const char* argv[])
     if (!cmdParser.process(argc - 2, argv + 2))
         exit(-1);
 
+    // [devmode] stuff
+    if (g_CommandLine.devMode)
+    {
+        g_Log.setColor(LogColor::DarkBlue);
+        g_Log.print("[devmode] is activated\n");
+        g_Log.setDefaultColor();
+    }
+
+    if (g_CommandLine.randomize)
+    {
+        if (!g_CommandLine.randSeed)
+        {
+            using namespace std::chrono;
+            milliseconds ms        = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
+        }
+
+        srand(g_CommandLine.randSeed);
+        g_Log.setColor(LogColor::DarkBlue);
+        g_Log.print(format("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
+        g_Log.setDefaultColor();
+    }
+
     // Output command line in verbose mode
     if (g_CommandLine.verbose && g_CommandLine.verboseCmdLine)
     {

@@ -585,8 +585,6 @@ bool Workspace::build()
 
         setup();
 
-        if (g_CommandLine.devMode)
-            g_Log.messageHeaderCentered("Developer", "Mode", LogColor::Blue, LogColor::Blue);
         if (g_CommandLine.verbose && g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 

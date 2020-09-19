@@ -39,7 +39,10 @@ struct CommandLine
     bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
-    bool devMode          = false;
+
+    bool devMode   = false;
+    bool randomize = false;
+    int  randSeed  = 0;
 
     // Language options
     uint32_t staticArrayMaxSize = 32 * 1024 * 1024;

@@ -218,11 +218,19 @@ Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
     if (queue.empty())
         return nullptr;
 
-    auto job = queue.back();
+    Job* job;
+    int  jobPickIndex = -1;
+
+    if (g_CommandLine.randomize)
+        jobPickIndex = rand() % queue.count;
+    else
+        jobPickIndex = (int) queue.size() - 1;
+
+    job = queue[jobPickIndex];
     if (!(job->affinity & affinity))
         return nullptr;
 
-    queue.pop_back();
+    queue.erase(jobPickIndex);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
     job->flags &= ~JOB_IS_IN_QUEUE;
