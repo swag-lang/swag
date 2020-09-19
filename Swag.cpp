@@ -165,6 +165,8 @@ int main(int argc, const char* argv[])
             using namespace std::chrono;
             milliseconds ms        = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
+            srand(g_CommandLine.randSeed);
+            g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
         }
 
         srand(g_CommandLine.randSeed);
