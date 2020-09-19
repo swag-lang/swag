@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Allocator.h"
+#include "CommandLine.h"
 
 thread_local Allocator g_Allocator;
 
@@ -98,6 +99,8 @@ void* Allocator::alloc(int size)
         {
             auto result         = freeBuckets[bucket];
             freeBuckets[bucket] = *(void**) result;
+            if (g_CommandLine.devMode)
+                memset(result, 0xCC, size);
             return result;
         }
     }
@@ -105,7 +108,11 @@ void* Allocator::alloc(int size)
     // Try the first free block
     auto result = tryFreeBlock(1, size);
     if (result)
+    {
+        if (g_CommandLine.devMode)
+            memset(result, 0xCC, size);
         return result;
+    }
 
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
@@ -113,7 +120,11 @@ void* Allocator::alloc(int size)
         // Magic number
         result = tryFreeBlock(8, size);
         if (result)
+        {
+            if (g_CommandLine.devMode)
+                memset(result, 0xCC, size);
             return result;
+        }
 
         // We get the remaining space in the last bucket, to be able to use it as
         // a free block
@@ -167,6 +178,9 @@ void Allocator::free(void* ptr, int size)
     if (!ptr)
         return;
     SWAG_ASSERT(!(size & 7));
+
+    if (g_CommandLine.devMode)
+        memset(ptr, 0xFE, size);
 
     auto bsize = size / 8;
     if (bsize < MAX_FREE_BUCKETS)
