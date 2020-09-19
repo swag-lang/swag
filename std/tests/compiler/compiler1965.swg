@@ -1,6 +1,3 @@
-#module "compiler.foreign"
-#import "tests.compiler.foreign"
-
 struct AA
 {
     p: s64 = 55
