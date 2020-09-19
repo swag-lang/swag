@@ -10,10 +10,9 @@ struct ModuleManager
 {
     bool  loadModule(const Utf8& moduleName, bool canBeSystem = true);
     bool  isModuleLoaded(const Utf8& moduleName);
-    void* getFnPointerNoLock(const Utf8& moduleName, const Utf8& funcName);
     void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
     void  addPatchFuncAddress(void** patchAddress, AstFuncDecl* func);
-    void  applyPatches(const Utf8& moduleName);
+    void  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
     shared_mutex     mutex;
     shared_mutex     mutexLoaded;

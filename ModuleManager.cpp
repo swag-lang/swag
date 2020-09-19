@@ -78,26 +78,21 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         ((funcCall) ptr)(&g_processInfos);
     }
 
+    applyPatches(name, h);
+
     unique_lock lk1(mutexLoaded);
     loadedModules[name] = h;
-    applyPatches(name);
-
     return true;
-}
-
-void* ModuleManager::getFnPointerNoLock(const Utf8& moduleName, const Utf8& funcName)
-{
-    auto here = loadedModules.find(moduleName);
-    if (here != loadedModules.end())
-        return OS::getProcAddress(here->second, funcName.c_str());
-    return nullptr;
 }
 
 void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
     shared_lock lk(mutexLoaded);
-    return getFnPointerNoLock(moduleName, funcName);
+    auto        here = loadedModules.find(moduleName);
+    if (here != loadedModules.end())
+        return OS::getProcAddress(here->second, funcName.c_str());
+    return nullptr;
 }
 
 void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
@@ -113,7 +108,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     // Apply patch now, because module is already loaded
     if (isModuleLoaded(moduleName.text))
     {
-        auto fnPtr = getFnPointerNoLock(moduleName.text, func->fullnameForeign);
+        auto fnPtr = getFnPointer(moduleName.text, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
         *patchAddress = doForeignLambda(fnPtr);
     }
@@ -131,7 +126,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     }
 }
 
-void ModuleManager::applyPatches(const Utf8& moduleName)
+void ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 {
     unique_lock lk(mutexPatch);
 
@@ -141,7 +136,7 @@ void ModuleManager::applyPatches(const Utf8& moduleName)
 
     for (auto& one : it->second)
     {
-        auto fnPtr = getFnPointerNoLock(moduleName, one.funcDecl->fullnameForeign);
+        auto fnPtr = OS::getProcAddress(moduleHandle, one.funcDecl->fullnameForeign.c_str());
         SWAG_ASSERT(fnPtr);
         *one.patchAddress = doForeignLambda(fnPtr);
     }
