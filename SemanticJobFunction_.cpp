@@ -280,9 +280,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto funcNode   = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
 
-    if (funcNode->name == "__lambda0")
-        funcNode = funcNode; // @remove
-
     // This is a lambda that was waiting for a match.
     // We are now awake, so everything has been done already
     if (funcNode->pendingLambdaJob)
