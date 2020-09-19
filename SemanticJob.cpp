@@ -112,9 +112,8 @@ JobResult SemanticJob::execute()
                         // the attributes context is now fine for it. That way, the parent function can
                         // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
                         scoped_lock lk(node->mutex);
-                        node->doneFlags |= AST_DONE_FILE_JOB_PASS;
 
-                        if (!(node->flags & AST_NO_SEMANTIC))
+                        if (!(node->flags & AST_NO_SEMANTIC) && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
                         {
                             auto job          = g_Pool_semanticJob.alloc();
                             job->sourceFile   = sourceFile;
@@ -124,6 +123,7 @@ JobResult SemanticJob::execute()
                             g_ThreadMgr.addJob(job);
                         }
 
+                        node->doneFlags |= AST_DONE_FILE_JOB_PASS;
                         nodes.pop_back();
                         continue;
                     }

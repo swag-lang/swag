@@ -453,8 +453,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             newTypeFunc->flags &= ~TYPEINFO_GENERIC;
             newTypeFunc->declNode = subFunc;
             subFunc->typeInfo     = newTypeFunc;
-
-            subFunc->doneFlags |= (f->doneFlags & AST_DONE_FILE_JOB_PASS);
+            subFunc->doneFlags |= AST_DONE_FILE_JOB_PASS;
             subFunc->content->flags &= ~AST_NO_SEMANTIC;
             newNode->subFunctions.push_back(subFunc);
             subFunc->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subFunc, SymbolKind::Function);
