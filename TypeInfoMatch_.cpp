@@ -94,8 +94,14 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     auto it = context.genericReplaceTypes.find(symbolTypeInfo->name);
                     if (it != context.genericReplaceTypes.end())
                     {
+                        // If user type is undefined, then we consider this is ok, because the undefined type will be changed to the generic one
+                        // Match is in fact the other way
+                        if (typeInfo->isNative(NativeTypeKind::Undefined))
+                            same = true;
+
                         // Yes, and the map is not the same, then this is an error
-                        same = TypeManager::makeCompatibles(nullptr, it->second, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                        else
+                            same = TypeManager::makeCompatibles(nullptr, it->second, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                         if (!same)
                         {
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
