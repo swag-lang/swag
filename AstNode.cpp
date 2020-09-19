@@ -388,10 +388,9 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstFuncDecl>();
 
     newNode->copyFrom(context, this, false);
-    newNode->endToken     = endToken;
-    newNode->stackSize    = stackSize;
-    newNode->methodParam  = methodParam;
-    newNode->subFunctions = subFunctions;
+    newNode->endToken    = endToken;
+    newNode->stackSize   = stackSize;
+    newNode->methodParam = methodParam;
 
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
@@ -412,6 +411,19 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
+
+        for (auto f : subFunctions)
+        {
+            scoped_lock lk(f->mutex);
+            auto        subFuncScope = bodyScope;
+            cloneContext.parent      = sourceFile->astRoot;
+            auto subFunc             = (AstFuncDecl*) f->clone(cloneContext);
+            subFunc->doneFlags |= (f->doneFlags & AST_DONE_FILE_JOB_PASS);
+            subFunc->content->flags &= ~AST_NO_SEMANTIC;
+            newNode->subFunctions.push_back(subFunc);
+            subFunc->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subFunc, SymbolKind::Function);
+            subFunc->resolvedSymbolOverload = nullptr;
+        }
     }
     else
     {

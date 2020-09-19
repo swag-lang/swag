@@ -1,13 +1,17 @@
+var G = 0
+
 func(T) toto(y: T)
 {
     func xx()
     {
+        G = 1
     }
 
-    //xx()
+    xx()
 }
 
 #test
 {
-    toto(666's32)
+    toto(666's64)
+    @assert(G == 1)
 }
