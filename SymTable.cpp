@@ -165,6 +165,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
 void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 {
+    SWAG_ASSERT(symbol->cptOverloads);
     symbol->cptOverloads--;
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();

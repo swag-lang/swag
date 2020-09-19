@@ -332,6 +332,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     // Replace generic types and values in the function generic parameters
     newTypeFunc->computeName();
 
+    scoped_lock lk(newFunc->resolvedSymbolName->mutex);
     auto newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
     structJob->dependentJobs.add(newJob);
 }
