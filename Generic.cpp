@@ -276,9 +276,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         cloneContext.ownerStructScope = structNode->scope;
     }
 
-    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserDropFct);
-    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostCopyFct);
-    instantiateSpecialFunc(context, structJob, cloneContext, newType, &newType->opUserPostMoveFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserDropFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostCopyFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostMoveFct);
 
     // Force instantiation of all special functions
     for (auto method : newType->methods)
@@ -291,13 +291,13 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
                 specFunc != oldType->opUserPostMoveFct &&
                 !specFunc->genericParameters)
             {
-                instantiateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+                instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
             }
         }
         else if (instContext.fromBake)
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
-            instantiateSpecialFunc(context, structJob, cloneContext, newType, &specFunc);
+            instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
         }
     }
 
@@ -305,7 +305,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, TypeInfoStruct* typeStruct, AstFuncDecl** specialFct)
+void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
     if (!funcNode)

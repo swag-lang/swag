@@ -1,10 +1,13 @@
-/*func(T) titi(cb: func(T)->T)
+func(T) toto(y: T)
 {
-}*/
+    func xx()
+    {
+    }
 
-func(TTT) toto(y: TTT)
+    //xx()
+}
+
+#test
 {
-    //var xxx: TTT
-    func xx(x: TTT) {}
-    //titi(@(x) => x)
+    toto(666's32)
 }
