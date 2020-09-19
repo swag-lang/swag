@@ -1,3 +1,6 @@
+#module "compiler.foreign"
+#import "tests.compiler.foreign"
+
 func thisFunc1(v, w, x, y, z: s64)
 {
     /*@print("thisFunc1: ")

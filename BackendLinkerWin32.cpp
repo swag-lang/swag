@@ -171,6 +171,7 @@ namespace OS
         auto targetPath = Backend::getCacheFolder(buildParameters);
         for (auto& file : objectFiles)
         {
+            SWAG_ASSERT(!file.empty());
             auto path = targetPath + "/" + file.c_str();
             linkArguments += path + " ";
         }

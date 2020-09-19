@@ -1,3 +1,4 @@
+#module "compiler.foreign"
 #import "tests.compiler.foreign"
 
 #test

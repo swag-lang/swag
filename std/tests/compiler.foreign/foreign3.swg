@@ -1,3 +1,6 @@
+#module "compiler.foreign"
+#import "tests.compiler.foreign"
+
 //#[swag.printbc]
 #test
 {

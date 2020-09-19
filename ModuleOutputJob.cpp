@@ -79,7 +79,10 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                preCompileJob->buildParameters.compileType     = BackendCompileType::Normal;
+                if (module->fromTestsFolder)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                else
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
                 jobsToAdd.push_back(preCompileJob);
             }
         }
@@ -134,11 +137,14 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (module->canGenerateLegit())
         {
-            auto compileJob                         = g_Pool_moduleGenOutputJob.alloc();
-            compileJob->module                      = module;
-            compileJob->dependentJob                = this;
-            compileJob->buildParameters             = module->buildParameters;
-            compileJob->buildParameters.compileType = BackendCompileType::Normal;
+            auto compileJob             = g_Pool_moduleGenOutputJob.alloc();
+            compileJob->module          = module;
+            compileJob->dependentJob    = this;
+            compileJob->buildParameters = module->buildParameters;
+            if (module->fromTestsFolder)
+                compileJob->buildParameters.compileType = BackendCompileType::Test;
+            else
+                compileJob->buildParameters.compileType = BackendCompileType::Normal;
             if (module->byteCodeMainFunc)
                 compileJob->buildParameters.outputType = BackendOutputType::Binary;
             else
