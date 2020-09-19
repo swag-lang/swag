@@ -626,6 +626,11 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda, acceptMissingType));
     lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
 
+    // Lambda sub function will be resolved by the owner function
+    SWAG_ASSERT(lambda->ownerFct);
+    lambda->ownerFct->subFunctions.push_back(lambda);
+    lambda->flags |= AST_NO_SEMANTIC;
+
     // Retrieve the point of the function
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
     exprNode->inheritTokenLocation(lambda->token);
