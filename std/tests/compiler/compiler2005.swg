@@ -1,14 +1,7 @@
-public func toto2005(cb: func()->s32)
-{
-}
+#module "compiler2005"
+#unittest error
 
-#[swag.inline]
-public func titi2005()
+func toto()
 {
-    //toto2005(@() => 555)
-}
-
-func(T) toto()
-{
-    //cb1 := @(x, y) => x <=> y
+    cb1 := @(x, y) => x <=> y
 }

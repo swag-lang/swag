@@ -112,10 +112,10 @@ struct SyntaxJob : public Job
     bool doMoveExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
-    bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr);
+    bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);
-    bool doFuncDeclParameter(AstNode* parent);
-    bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
+    bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
@@ -157,9 +157,10 @@ struct SyntaxJob : public Job
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
     uint64_t            currentFlags           = 0;
-    uint32_t            currentAttributeFlags     = 0;
+    uint32_t            currentAttributeFlags  = 0;
     bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
+    bool                inFunCall              = false;
 
     void reset() override
     {
@@ -174,9 +175,10 @@ struct SyntaxJob : public Job
         currentMainNode        = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
-        currentAttributeFlags     = 0;
+        currentAttributeFlags  = 0;
         canChangeModule        = true;
         moduleSpecified        = false;
+        inFunCall              = false;
     }
 
     void release() override

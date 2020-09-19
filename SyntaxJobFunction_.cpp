@@ -74,7 +74,10 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
             param->semanticFct = SemanticJob::resolveFuncCallParam;
             param->token       = token;
             AstNode* paramExpression;
+
+            inFunCall = true;
             SWAG_CHECK(doExpression(nullptr, &paramExpression));
+            inFunCall = false;
 
             // Name
             if (token.id == TokenId::SymColon)
@@ -102,7 +105,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
+bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 {
     auto paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
 
@@ -163,9 +166,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             otherVariables.push_back(otherVarNode);
         }
 
+        bool hasType       = false;
+        bool hasAssignment = false;
+
         // Type
         if (token.id == TokenId::SymColon)
         {
+            hasType = true;
+
             SWAG_CHECK(eatToken());
 
             // ...
@@ -201,15 +209,20 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         // Assignment
         if (token.id == TokenId::SymEqual)
         {
+            hasAssignment = true;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
         }
+
+        if (!acceptMissingType && !hasType && !hasAssignment)
+            return error(token, "missing function parameter type or assignment");
 
         // Propagate types and assignment to multiple declarations
         for (auto one : otherVariables)
         {
             CloneContext cloneContext;
             cloneContext.parent = one;
+
             if (paramNode->type)
                 one->type = (AstTypeExpression*) paramNode->type->clone(cloneContext);
             if (paramNode->assignment)
@@ -220,7 +233,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing function parameters before '{'"));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->name.c_str())));
@@ -234,7 +247,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
         while (token.id != TokenId::SymRightParen)
         {
-            SWAG_CHECK(doFuncDeclParameter(allParams));
+            SWAG_CHECK(doFuncDeclParameter(allParams, acceptMissingType));
             if (token.id == TokenId::SymRightParen)
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -532,7 +545,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
+bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
@@ -554,7 +567,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType));
     }
 
     // Return type
@@ -605,8 +618,12 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 {
+    // We accept missing types only if lambda is in a function call, because this is the only way
+    // we will be able to deduce the type
+    bool acceptMissingType = inFunCall;
+
     AstNode* lambda = nullptr;
-    SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
+    SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda, acceptMissingType));
     lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
 
     // Retrieve the point of the function

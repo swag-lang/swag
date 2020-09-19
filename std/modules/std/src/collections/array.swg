@@ -301,7 +301,6 @@ namespace std
         // Sort array
         func sort(using self, cb: func(T, T)->s32 = null)
         {
-            //cb1 := @(x, y) => x <=> y
             /*if cb == null
                 sort.slice(@mkslice(buffer, count), @(x, y) => x <=> y)
             else*/
