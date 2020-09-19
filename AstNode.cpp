@@ -209,6 +209,26 @@ AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
     return nullptr;
 }
 
+AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild)
+{
+    if (!ref)
+        return nullptr;
+    for (int i = 0; i < childs.size(); i++)
+    {
+        if (childs[i] == ref)
+            return fromChild->childs[i];
+
+        if (childs[i]->childs.count == fromChild->childs[i]->childs.count)
+        {
+            auto result = childs[i]->findChildRefRec(ref, fromChild->childs[i]);
+            if (result)
+                return result;
+        }
+    }
+
+    return nullptr;
+}
+
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 {
     kind  = from->kind;
@@ -412,10 +432,20 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
 
+        // We need to duplicate sub functions, and register the symbol in the new corresponding scope
         for (auto f : subFunctions)
         {
             scoped_lock lk(f->mutex);
-            auto        subFuncScope = bodyScope;
+
+            // A sub function node has the root of the file as parent, but has the correct scope. We need to find
+            // the duplicated parent node that corresponds to the original one, in order to get the corresponding new
+            // scope (if a sub function is declared inside an if statement scope for example, we need the duplicated
+            // sub function to be registered in the corresponding new scope).
+            auto newScopeNode = findChildRefRec(f->ownerScope->owner, newNode);
+            SWAG_ASSERT(newScopeNode);
+            auto subFuncScope = newScopeNode->ownerScope;
+
+            cloneContext.parentScope = subFuncScope;
             cloneContext.parent      = sourceFile->astRoot;
             auto subFunc             = (AstFuncDecl*) f->clone(cloneContext);
             subFunc->doneFlags |= (f->doneFlags & AST_DONE_FILE_JOB_PASS);

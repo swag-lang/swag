@@ -320,6 +320,7 @@ struct AstNode
     static Utf8      getKindName(AstNode* node);
     static Utf8      getNakedKindName(AstNode* node);
     AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
+    AstNode*         findChildRefRec(AstNode* ref, AstNode* fromChild);
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
