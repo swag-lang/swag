@@ -670,6 +670,12 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[1]));
             break;
 
+        case AstNodeKind::NullConditionalExpression:
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            concat.addString(" ?? ");
+            SWAG_CHECK(output(context, concat, node->childs[1]));
+            break;
+
         case AstNodeKind::FactorOp:
         case AstNodeKind::BinaryOp:
             concat.addChar('(');
