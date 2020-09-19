@@ -104,6 +104,7 @@ enum class AstNodeKind : uint8_t
     TypeList,
     SingleOp,
     MakePointer,
+    MakePointerLambda,
     BinaryOp,
     FactorOp,
     ExpressionList,

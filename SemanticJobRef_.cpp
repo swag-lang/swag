@@ -238,7 +238,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo, CONCRETE_ALIAS);
 
-    // When we are building a pointer, this is fine to be const, be cause in fact we do no generate an address to modify the content
+    // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {

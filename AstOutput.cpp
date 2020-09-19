@@ -112,6 +112,13 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::MakePointerLambda:
+        {
+            concat.addChar('&');
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            break;
+        }
+
         case AstNodeKind::NoDrop:
             concat.addString("nodrop ");
             SWAG_CHECK(output(context, concat, node->childs.front()));

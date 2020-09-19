@@ -799,6 +799,7 @@ anotherTry:
             {
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
+                    grandParent->kind == AstNodeKind::MakePointerLambda ||
                     grandParent->kind == AstNodeKind::Alias ||
                     (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
                     (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))

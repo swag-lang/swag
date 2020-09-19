@@ -7,3 +7,8 @@ public func titi2005()
 {
     //toto2005(@() => 555)
 }
+
+func(T) toto()
+{
+    //cb1 := @(x, y) => x <=> y
+}

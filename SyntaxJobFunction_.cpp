@@ -610,7 +610,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
 
     // Retrieve the point of the function
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
     exprNode->inheritTokenLocation(lambda->token);
     exprNode->semanticFct  = SemanticJob::resolveMakePointer;
     AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->name, exprNode, this);
