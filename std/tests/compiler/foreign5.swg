@@ -1,4 +1,4 @@
-#module "compiler.foreign"
+#module "tests.call.compiler.foreign"
 #import "tests.compiler.foreign"
 
 func thisFunc1(v, w, x, y, z: s64)

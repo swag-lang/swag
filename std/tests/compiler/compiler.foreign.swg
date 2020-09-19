@@ -1,3 +1,5 @@
+#module "tests.compiler.foreign"
+
 public func tcf_tuple()->struct{s32, s32}
 {
     return @{0, 0}
