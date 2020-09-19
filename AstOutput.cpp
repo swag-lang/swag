@@ -63,6 +63,51 @@ namespace Ast
         return true;
     }
 
+    bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
+    {
+        AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        concat.addString("@(");
+
+        if (funcDecl->parameters && !funcDecl->parameters->childs.empty())
+        {
+            for (auto p : funcDecl->parameters->childs)
+            {
+                if(p != funcDecl->parameters->childs.front())
+                    concat.addString(", ");
+                concat.addString(p->name);
+                if (!p->childs.empty())
+                {
+                    concat.addString(": ");
+                    SWAG_CHECK(output(context, concat, p->childs.front()));
+                }
+
+                auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+                if (param->assignment)
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(output(context, concat, param->assignment));
+                }
+
+            }
+        }
+
+        concat.addString(")");
+
+        if (funcDecl->flags & AST_SHORT_LAMBDA)
+        {
+            concat.addString(" => ");
+            SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
+            SWAG_CHECK(output(context, concat, funcDecl->content->childs.front()));
+        }
+        else
+        {
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, funcDecl->content));
+        }
+
+        return true;
+    }
+
     bool output(OutputContext& context, Concat& concat, AstNode* node)
     {
         if (!node)
@@ -114,8 +159,7 @@ namespace Ast
 
         case AstNodeKind::MakePointerLambda:
         {
-            concat.addChar('&');
-            SWAG_CHECK(output(context, concat, node->childs.front()));
+            outputLambdaExpression(context, concat, node->ownerMainNode);
             break;
         }
 
