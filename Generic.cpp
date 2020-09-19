@@ -301,7 +301,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         }
     }
 
-    g_ThreadMgr.addJob(structJob);
+    context->job->jobsToAdd.push_back(structJob);
     return true;
 }
 
@@ -398,7 +398,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     newTypeFunc->computeName();
 
     auto job = end(context, context->job, match.symbolName, newFunc, true);
-    g_ThreadMgr.addJob(job);
+    context->job->jobsToAdd.push_back(job);
 
     return true;
 }
