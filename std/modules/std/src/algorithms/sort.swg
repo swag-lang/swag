@@ -84,14 +84,15 @@ namespace std.sort
         }
     }
 
-    // Sort, by picking the right algorithm depending on the type and the
+    // Sort the slice, by picking the right algorithm depending on the type and the
     // number of elements
-    public func(T) slice(values: [..] T, cb: func(T, T)->s32)
+    public func(T) slice(values: [..] T, cb: func(T, T)->s32 = null)
     {
+        lambda := cb ?? @(x, y: T)->s32 => x <=> y
         if(@countof(values) <= 10)
-            insertion(values, cb)
+            insertion(values, lambda)
         else
-            quick(values, cb)
+            quick(values, lambda)
     }
 
     // Returns true if the slice is sorted
