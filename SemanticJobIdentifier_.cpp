@@ -961,8 +961,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     auto& badGenericSignature = job->cacheBadGenericSignature;
     auto& dependentSymbols    = job->cacheDependentSymbols;
 
-    if (context->sourceFile->name == "std133.swg")
-        context = context;
 anotherTry:
     matches.clear();
     genericMatches.clear();
