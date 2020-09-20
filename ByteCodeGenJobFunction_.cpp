@@ -543,7 +543,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
             auto child     = allParams->childs[i];
-            auto typeParam = child->typeInfo;
+            auto typeParam = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
 
             // Be sure to point to the first register of the type, if it has many
             offset += (typeParam->numRegisters() - 1) * sizeof(Register);

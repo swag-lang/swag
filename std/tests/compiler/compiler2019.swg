@@ -1,10 +1,18 @@
-struct(T) toto
+var arr: [4] s64 = @[10, 20, 30, 40]
+
+func toto()->const& s64 => arr[0]
+
+func tata(value: any)
 {
-    //#run @print("this is the type: ");
+    @assert(@kindof(value) == s64)
+}
+
+func titi(values: ...)
+{
+    tata(values[0])
 }
 
 #test
 {
-    var x0: toto's32
-    var x1: toto'f64
+    titi(toto())
 }
