@@ -243,15 +243,5 @@ JobResult SemanticJob::execute()
         }
     }
 
-    for (auto p : pendingJobNodes)
-    {
-        auto job          = g_Pool_semanticJob.alloc();
-        job->sourceFile   = sourceFile;
-        job->module       = module;
-        job->dependentJob = dependentJob;
-        job->nodes.push_back(p);
-        g_ThreadMgr.addJob(job);
-    }
-
     return JobResult::ReleaseJob;
 }

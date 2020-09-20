@@ -238,7 +238,6 @@ struct SemanticJob : public Job
     set<Scope*>                    cacheScopeHierarchy;
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
     VectorNative<Scope*>           scopesHere;
-    VectorNative<AstNode*>         pendingJobNodes;
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
     VectorNative<SymbolOverload*>  cacheBadSignature;
@@ -268,7 +267,6 @@ struct SemanticJob : public Job
         cacheBadGenericSignature.clear();
         symMatch.reset();
         context.reset();
-        pendingJobNodes.clear();
     }
 
     void release() override
