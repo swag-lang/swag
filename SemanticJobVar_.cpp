@@ -709,10 +709,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
-    if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
+    if (!node->typeInfo || node->typeInfo == g_TypeMgr.typeInfoUndefined)
     {
-        if (!node->typeInfo || node->typeInfo == g_TypeMgr.typeInfoUndefined)
+        // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
+        if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
         {
             node->typeInfo = g_TypeMgr.typeInfoUndefined;
             genericType    = false;
