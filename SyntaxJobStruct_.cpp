@@ -273,6 +273,10 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             SWAG_CHECK(doCompilerAssert(parent, nullptr));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
+        case TokenId::CompilerPrint:
+            SWAG_CHECK(doCompilerPrint(parent, nullptr));
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+            break;
         case TokenId::CompilerAst:
             SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::StructVarDecl));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;

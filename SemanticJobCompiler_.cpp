@@ -258,8 +258,29 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str())});
 }
 
+bool SemanticJob::preResolveCompilerPrint(SemanticContext* context)
+{
+    auto node = context->node;
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        // If we are inside a generic structure, do not evaluate the #assert. Will be done during
+        // instantiation of the struct
+        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+            node->flags |= AST_IS_GENERIC;
+    }
+
+    if (node->flags & AST_IS_GENERIC)
+        node->childs.back()->flags |= AST_NO_SEMANTIC;
+
+    return true;
+}
+
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
+    auto node = context->node;
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
     auto expr = context->node->childs[0];
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == ContextResult::Pending)

@@ -151,6 +151,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerMixin(SemanticContext* context);
     static bool preResolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
+    static bool preResolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerBake(SemanticContext* context);

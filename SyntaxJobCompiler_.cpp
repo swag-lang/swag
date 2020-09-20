@@ -315,8 +315,9 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticFct = SemanticJob::resolveCompilerPrint;
-    node->token       = move(token);
+    node->semanticFct       = SemanticJob::resolveCompilerPrint;
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerPrint;
+    node->token             = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
