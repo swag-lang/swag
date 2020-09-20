@@ -99,7 +99,6 @@ namespace std.sort
     {
         lambda := cb ?? @(x, y: T)->s32 => x <=> y
         countof := @countof(values)
-
         loop i: countof - 1
         {
             if lambda(values[i], values[i + 1]) > 0
@@ -111,6 +110,7 @@ namespace std.sort
 
     // Find 'value' in the slice by performing a binary search.
     // The slice must be sorted in ascending order
+    // Returns swag.MaxU32 if not found, otherwise returns the index of the value
     public func(T) find(values: const [..] T, value: T)->u32
     {
         min := 0'u32
@@ -131,6 +131,6 @@ namespace std.sort
                 max = mid - 1
         }
 
-        return 0xFFFFFFFF
+        return swag.MaxU32
     }
 }
