@@ -669,7 +669,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = allParams->childs[i];
-            if (param->typeInfo && (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic))
+            if (param->resultRegisterRC.size() == 0)
+                continue;
+            if (!param->typeInfo)
+                continue;
+
+            if (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 SWAG_ASSERT(i == numCallParams - 1);
             }
