@@ -1,21 +1,26 @@
-struct(T) Array
+func variadic(x: any)
 {
-
+    @print(cast(s64) cast(s32) x)
 }
-
-impl Array
+/*
+//#[swag.printbc]
+func(T) isSorted(values: const [..] T)->bool
 {
-    func add(using self, value: T)
+    countof := @countof(values)
+
+    loop i: countof - 1
     {
+        @print(cast(s64) cast(s32) values[i])
+        variadic(cast(s32) values[i])
+        @print(" ")
     }
 
-    func add(using self, values: const [..] T)
-    {
-    }
+    return true
 }
 
 #test
 {
-    var arr: Array's32
-    //loop 10 arr.add(@index)
+    var sl: [] s32 = @[1,2,3,4,5]
+    isSorted(@mkslice(&sl[0], 5))
 }
+*/

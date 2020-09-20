@@ -95,33 +95,25 @@ namespace std.sort
     }
 
     // Returns true if the slice is sorted
-    public func(T) isSorted(values: const [..] T, ascending: bool = true)->bool
+    public func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
     {
+        lambda := cb ?? @(x, y: T)->s32 => x <=> y
         countof := @countof(values)
 
-        if ascending
+        loop i: countof - 1
         {
-            loop i: countof - 1
-            {
-                if values[i] > values[i + 1]
-                    return false
-            }
-        }
-        else
-        {
-            loop i: countof - 1
-            {
-                if values[i] < values[i + 1]
-                    return false
-            }
+            if lambda(values[i], values[i + 1]) > 0
+                return false
         }
 
         return true
     }
 
-    public func(T) findQuick(values: const [..] T, value: T)->s32
+    // Find 'value' in the slice by performing a binary search.
+    // The slice must be sorted in ascending order
+    public func(T) find(values: const [..] T, value: T)->u32
     {
-        min := 0
+        min := 0'u32
         countof := @countof(values)
         max := @countof(values)
 
@@ -134,11 +126,11 @@ namespace std.sort
             if res == 0
                 return mid
             if res < 0
-                max = mid - 1
-            else
                 min = mid + 1
+            else
+                max = mid - 1
         }
 
-        return -1
+        return 0xFFFFFFFF
     }
 }
