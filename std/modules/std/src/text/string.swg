@@ -128,12 +128,14 @@ namespace std
         {
             if !buffer
                 return
+
             if capacity <= SmallSize
                 buffer = acast &allocator
             else
             {
                 oldBuffer := buffer
                 buffer = null
+                capacity = 0
                 reserve(length + 1)
                 memory.copy(buffer, oldBuffer, length + 1)
             }
