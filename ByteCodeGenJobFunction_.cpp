@@ -674,14 +674,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic)
-            {
-                SWAG_ASSERT(i == numCallParams - 1);
-            }
-            else
+            if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
                 if (freeRegistersParams)
                     toFree += param->resultRegisterRC;
+
                 for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                 {
                     emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r--]);

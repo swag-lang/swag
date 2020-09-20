@@ -162,6 +162,9 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (safety)
         emitSafetyNullPointer(context, r0);
 
+    // We now only need one register
+    truncRegisterRC(context, r0, 1);
+
     switch (typeInfo->sizeOf)
     {
     case 1:
