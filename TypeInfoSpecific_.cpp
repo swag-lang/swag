@@ -542,8 +542,14 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     if (parameters.size() != other->parameters.size())
         return false;
+
     if (genericParameters.size() != other->genericParameters.size())
-        return false;
+    {
+        // We want func's32(s32) to match func(T) when func(T) is generic
+        // This is necessary for lambdas. Perhaps that test is not enough !
+        if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
+            return false;
+    }
 
     if (isSameFlags & ISSAME_EXACT)
     {
@@ -573,12 +579,15 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
         }
     }
 
-    for (int i = 0; i < genericParameters.size(); i++)
+    if (genericParameters.size() == other->genericParameters.size())
     {
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
-            return false;
-        if (!(genericParameters[i]->value == other->genericParameters[i]->value))
-            return false;
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
+                return false;
+            if (!(genericParameters[i]->value == other->genericParameters[i]->value))
+                return false;
+        }
     }
 
     for (int i = 0; i < parameters.size(); i++)
