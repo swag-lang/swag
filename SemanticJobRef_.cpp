@@ -356,29 +356,27 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
 
-    switch (arrayType->kind)
+    // Can we dereference the string at compile time ?
+    if (arrayType->isNative(NativeTypeKind::String))
     {
-    case TypeInfoKind::Native:
-        // Can we just change the computed value to a single u8 ?
-        if (arrayType->nativeType == NativeTypeKind::String)
+        if (arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
-            if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
-                if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
-                {
-                    arrayNode->setFlagsValueIsComputed();
-                    auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
-                    SWAG_CHECK(boundCheck(context, arrayNode->access, text.length()));
-                    auto idx                        = arrayAccess->computedValue.reg.u32;
-                    arrayNode->computedValue.reg.u8 = text[idx];
-                }
+                arrayNode->setFlagsValueIsComputed();
+                auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
+                SWAG_CHECK(boundCheck(context, arrayNode->access, text.length()));
+                auto idx                        = arrayAccess->computedValue.reg.u32;
+                arrayNode->computedValue.reg.u8 = text[idx];
             }
-
-            arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
         }
 
-        break;
+        arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+        return true;
+    }
 
+    switch (arrayType->kind)
+    {
     case TypeInfoKind::Pointer:
     {
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
@@ -486,7 +484,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         break;
 
     default:
-        return context->report({arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
+        return context->report({arrayNode->array, format("%s '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
     }
 
     return true;
