@@ -674,10 +674,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->report({node->assignment, "type of expression is 'void'"}));
 
         // We need to decide which integer/float type it is
-        if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
-            node->typeInfo = g_TypeMgr.typeInfoS32;
-        else if (node->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
-            node->typeInfo = g_TypeMgr.typeInfoF32;
+        node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
@@ -720,7 +717,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->typeInfo = g_TypeMgr.typeInfoUndefined;
             genericType    = false;
 
-            // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function, 
+            // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
             node->ownerFct->flags |= AST_PENDING_LAMBDA_TYPING;
         }

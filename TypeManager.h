@@ -65,6 +65,7 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
+    static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
     void             registerTypeType();
     static TypeInfo* literalTypeToType(LiteralType literalType);

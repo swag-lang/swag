@@ -274,7 +274,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
     while (true)
     {
-        typeArray->pointedType = typeList->subTypes.front()->typeInfo;
+        typeArray->pointedType = solidifyUntyped(typeList->subTypes.front()->typeInfo);
         finalType              = typeArray->pointedType;
         typeArray->sizeOf      = typeList->sizeOf;
         typeArray->count       = (uint32_t) typeList->subTypes.size();
@@ -320,6 +320,15 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->name = typeStruct->nakedName;
 
     return typeStruct;
+}
+
+TypeInfo* TypeManager::solidifyUntyped(TypeInfo* typeInfo)
+{
+    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+        return g_TypeMgr.typeInfoS32;
+    if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+        return g_TypeMgr.typeInfoF32;
+    return typeInfo;
 }
 
 TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)

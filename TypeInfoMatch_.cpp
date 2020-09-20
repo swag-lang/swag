@@ -539,12 +539,12 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    // For a lambda
-    if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
-        return;
-
     fillUserGenericParams(context, genericParameters);
     if (context.result != MatchResult::Ok)
+        return;
+
+    // For a lambda
+    if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
         return;
 
     matchParameters(context, parameters);
