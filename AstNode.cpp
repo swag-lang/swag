@@ -281,15 +281,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         cloneChilds(context, from);
 
         // Force semantic on specific nodes on generic instantiation
-        if (from->flags & AST_IS_GENERIC)
+        if ((from->flags & AST_IS_GENERIC) && (from->flags & AST_SEMANTIC_ON_CLONE))
         {
-            if (kind == AstNodeKind::CompilerAssert ||
-                kind == AstNodeKind::CompilerAst ||
-                kind == AstNodeKind::CompilerPrint)
-            {
-                for (auto one : childs)
-                    one->flags &= ~AST_NO_SEMANTIC;
-            }
+            for (auto one : childs)
+                one->flags &= ~AST_NO_SEMANTIC;
         }
     }
 }

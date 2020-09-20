@@ -149,14 +149,12 @@ struct SemanticJob : public Job
     static bool resolveCompilerMacro(SemanticContext* context);
     static bool resolveCompilerInline(SemanticContext* context);
     static bool resolveCompilerMixin(SemanticContext* context);
-    static bool preResolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
-    static bool preResolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerBake(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
-    static bool preResolveCompilerAstExpression(SemanticContext* context);
+    static bool preResolveCompilerInstruction(SemanticContext* context);
     static bool resolveCompilerAstExpression(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal);

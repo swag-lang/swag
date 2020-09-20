@@ -89,24 +89,6 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveCompilerAstExpression(SemanticContext* context)
-{
-    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
-
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        // If we are inside a generic structure, do not evaluate the #ast. Will be done during
-        // instantiation of the struct
-        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
-            node->flags |= AST_IS_GENERIC;
-    }
-
-    if (node->flags & AST_IS_GENERIC)
-        node->childs.back()->flags |= AST_NO_SEMANTIC;
-
-    return true;
-}
-
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
@@ -135,23 +117,6 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
             job->nodes.push_back(context->node->childs[i]);
         job->nodes.push_back(context->node);
     }
-
-    return true;
-}
-
-bool SemanticJob::preResolveCompilerAssert(SemanticContext* context)
-{
-    auto node = context->node;
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        // If we are inside a generic structure, do not evaluate the #assert. Will be done during
-        // instantiation of the struct
-        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
-            node->flags |= AST_IS_GENERIC;
-    }
-
-    if (node->flags & AST_IS_GENERIC)
-        node->childs.back()->flags |= AST_NO_SEMANTIC;
 
     return true;
 }
@@ -258,19 +223,23 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str())});
 }
 
-bool SemanticJob::preResolveCompilerPrint(SemanticContext* context)
+bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 {
     auto node = context->node;
+
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        // If we are inside a generic structure, do not evaluate the #assert. Will be done during
-        // instantiation of the struct
+        // If we are inside a generic structure, do not evaluate the instruction. 
+        // Will be done during instantiation
         if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
     }
 
     if (node->flags & AST_IS_GENERIC)
+    {
         node->childs.back()->flags |= AST_NO_SEMANTIC;
+        node->flags |= AST_SEMANTIC_ON_CLONE;
+    }
 
     return true;
 }

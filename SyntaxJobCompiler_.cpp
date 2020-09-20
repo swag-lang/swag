@@ -198,7 +198,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerAssert;
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct       = SemanticJob::resolveCompilerAssert;
     node->token             = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
@@ -231,7 +231,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     if (result)
         *result = node;
     node->embeddedKind      = kind;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerAstExpression;
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct       = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
@@ -315,8 +315,8 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct       = SemanticJob::resolveCompilerPrint;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerPrint;
     node->token             = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());

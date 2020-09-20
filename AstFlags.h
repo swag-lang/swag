@@ -60,6 +60,7 @@ static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x02000000'00000000;
 static const uint64_t AST_PURE                       = 0x04000000'00000000;
 static const uint64_t AST_STRUCT_REGISTERED          = 0x08000000'00000000;
 static const uint64_t AST_FROM_BAKE                  = 0x10000000'00000000;
+static const uint64_t AST_SEMANTIC_ON_CLONE          = 0x20000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
