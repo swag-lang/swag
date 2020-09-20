@@ -4,7 +4,7 @@ func variadic(x: ...)
     @assert(cast(u8) x[0] == "t"'u8)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func isSorted(values: string)
 {
     variadic(values[0])

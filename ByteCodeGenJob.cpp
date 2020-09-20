@@ -427,6 +427,9 @@ JobResult ByteCodeGenJob::execute()
 
         while (!nodes.empty())
         {
+            if (sourceFile->numErrors)
+                return JobResult::ReleaseJob;
+
             auto node      = nodes.back();
             context.node   = node;
             context.result = ContextResult::Done;
