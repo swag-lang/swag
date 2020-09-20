@@ -250,6 +250,7 @@ struct SemanticJob : public Job
 
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;
+    SymbolOverload*   bestOverload;
     bool              matchHasGenericErrors;
     int               matchNumOverloads;
     int               matchNumOverloadsWhenChecked;
