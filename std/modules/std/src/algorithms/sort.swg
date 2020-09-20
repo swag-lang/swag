@@ -118,4 +118,27 @@ namespace std.sort
 
         return true
     }
+
+    public func(T) findQuick(values: const [..] T, value: T)->s32
+    {
+        min := 0
+        countof := @countof(values)
+        max := @countof(values)
+
+        while max >= min
+        {
+            mid := (max + min) / 2
+            if mid >= countof
+                break
+            res := values[mid] <=> value
+            if res == 0
+                return mid
+            if res < 0
+                max = mid - 1
+            else
+                min = mid + 1
+        }
+
+        return -1
+    }
 }
