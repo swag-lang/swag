@@ -202,6 +202,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
+        truncRegisterRC(context, node->resultRegisterRC, 1);
     }
 
     // Dereference of a slice
