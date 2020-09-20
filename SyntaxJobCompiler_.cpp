@@ -304,7 +304,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doEmbeddedInstruction(node));
-        SWAG_CHECK(eatSemiCol("after '#run' statement"));
+        SWAG_CHECK(eatSemiCol("after '#run' expression"));
     }
 
     return true;

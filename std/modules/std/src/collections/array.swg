@@ -27,6 +27,26 @@ namespace std
             free()
         }
 
+        func opPostCopy(using self)
+        {
+            if buffer == null
+                return
+
+            oldBuffer := buffer
+            buffer = null
+            realloc(count)
+
+            #if reflection.hasPostCopy(@typeof(T))
+            {
+                loop count
+                    buffer[@index] = nodrop oldBuffer[@index]
+            }
+            #else
+            {
+                memory.copy(buffer, oldBuffer, @sizeof(T) * count)
+            }
+        }
+
         func opIndex(using self, index: u32)->const &T
         {
             debug.assert(index < count, "index out of range")

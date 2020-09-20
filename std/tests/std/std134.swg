@@ -1,0 +1,17 @@
+#import "std"
+using std
+
+//#[swag.printbc]
+#test
+{
+    var arr: Array'u32
+    loop 10 arr.add(@index)
+
+    //console.write("result is %\n", res)
+    var arr1: Array'u32
+    arr1 = arr
+
+    loop 10 @assert(arr[@index] == arr1[@index])
+    @assert(arr.buffer != arr1.buffer)
+    @assert(arr.count == arr1.count)
+}
