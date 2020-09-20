@@ -282,8 +282,9 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticFct = SemanticJob::resolveCompilerRun;
-    node->token       = move(token);
+    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct       = SemanticJob::resolveCompilerRun;
+    node->token             = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 

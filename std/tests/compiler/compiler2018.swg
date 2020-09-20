@@ -1,6 +1,11 @@
 struct(T) toto
 {
-    #print "type is " ~@typeof(T).name
+    #run
+    {
+        @print("this is the type: ")
+        @print(@typeof(T).name)
+        @print("\n")
+    }
 }
 
 #test

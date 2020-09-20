@@ -481,6 +481,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) &&
         funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
+        funcNode->parent->kind != AstNodeKind::CompilerRun &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct))
     {
