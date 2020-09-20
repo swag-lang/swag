@@ -3,6 +3,7 @@
 #include "Generic.h"
 #include "Ast.h"
 #include "ThreadManager.h"
+#include "TypeManager.h"
 
 bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
@@ -18,7 +19,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
         }
 
         // If we have a calltype filled with the match, take it
-        else if(match.genericParametersCallTypes[i])
+        else if (match.genericParametersCallTypes[i])
         {
             param->typeInfo = match.genericParametersCallTypes[i];
         }
@@ -333,7 +334,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     newTypeFunc->computeName();
 
     scoped_lock lk(newFunc->resolvedSymbolName->mutex);
-    auto newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
+    auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
     structJob->dependentJobs.add(newJob);
 }
 
@@ -355,17 +356,47 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // We should have types to replace
+    bool noReplaceTypes = false;
     if (match.genericReplaceTypes.empty())
     {
-        if (contextualNode)
-            return context->report({contextualNode, contextualNode->token, format("cannot instantiate generic function '%s', missing generic parameters", node->name.c_str())});
-        else
-            return context->report({node, node->token, format("cannot instantiate generic function '%s', missing contextual types replacements", node->name.c_str())});
+        noReplaceTypes = true;
+
+        // If we do not have types to replace, perhaps we will be able to deduce them in case of a
+        // function call parameter
+        auto parent = node->parent;
+        while (parent && parent->kind != AstNodeKind::FuncCallParam)
+            parent = parent->parent;
+
+        if (!parent)
+        {
+            if (contextualNode)
+                return context->report({contextualNode, contextualNode->token, format("cannot instantiate generic function '%s', missing generic parameters", node->name.c_str())});
+            else
+                return context->report({node, node->token, format("cannot instantiate generic function '%s', missing contextual types replacements", node->name.c_str())});
+        }
     }
 
     // Types replacements
     CloneContext cloneContext;
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
+
+    // We replace all types and generic types with undefined for now
+    if (noReplaceTypes)
+    {
+        auto typeFunc = static_cast<TypeInfoFuncAttr*>(match.symbolOverload->node->typeInfo);
+        for (auto p : typeFunc->genericParameters)
+        {
+            cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr.typeInfoUndefined;
+        }
+
+        for (auto p : typeFunc->parameters)
+        {
+            if (p->typeInfo->flags & AST_IS_GENERIC)
+            {
+                cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr.typeInfoUndefined;
+            }
+        }
+    }
 
     // Clone original node
     auto overload = match.symbolOverload;
@@ -385,12 +416,14 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
-    if (newTypeFunc->flags & TYPEINFO_GENERIC)
+    if (newTypeFunc->flags & TYPEINFO_GENERIC || noReplaceTypes)
     {
         newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
         newTypeFunc->declNode = newFunc;
         newFunc->typeInfo     = newTypeFunc;
+        if (noReplaceTypes)
+            newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }
 
     // Replace generic types and values in the function generic parameters

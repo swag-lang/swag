@@ -547,7 +547,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     {
         // We want func's32(s32) to match func(T) when func(T) is generic
         // This is necessary for lambdas. Perhaps that test is not enough !
-        if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
+        if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC) && 
+            !(flags & TYPEINFO_UNDEFINED) && 
+            !(other->flags & TYPEINFO_UNDEFINED))
             return false;
     }
 

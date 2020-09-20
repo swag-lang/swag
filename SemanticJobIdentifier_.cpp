@@ -1485,6 +1485,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
 
+    // This will happen when trying to match an identifier without knowing its type yet
+    if (node->name == "?")
+    {
+        node->typeInfo          = g_TypeMgr.typeInfoUndefined;
+        identifierRef->typeInfo = g_TypeMgr.typeInfoUndefined;
+        return true;
+    }
+
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
     {
