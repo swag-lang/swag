@@ -387,16 +387,11 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         auto typeFunc = static_cast<TypeInfoFuncAttr*>(match.symbolOverload->node->typeInfo);
         for (auto p : typeFunc->genericParameters)
-        {
             cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr.typeInfoUndefined;
-        }
-
         for (auto p : typeFunc->parameters)
         {
-            if (p->typeInfo->flags & AST_IS_GENERIC)
-            {
+            if (p->typeInfo->flags & TYPEINFO_GENERIC)
                 cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr.typeInfoUndefined;
-            }
         }
     }
 

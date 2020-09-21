@@ -6,8 +6,6 @@ func(T) inc(x: *T)
 //#[swag.printbc]
 func(T) map(values: [..] T, cb: func(*T))
 {
-    visit *it: values
-        cb(it)
     loop values
         cb(&values[@index])
 }
@@ -15,7 +13,7 @@ func(T) map(values: [..] T, cb: func(*T))
 #test
 {
     var arr: [4] f32
-    map(arr, &inc'f32)
-    @assert(arr[0] == 2)
-    @assert(arr[3] == 2)
+    map(arr, &inc)
+    @assert(arr[0] == 1)
+    @assert(arr[3] == 1)
 }
