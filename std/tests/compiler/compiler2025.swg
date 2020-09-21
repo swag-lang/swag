@@ -1,8 +1,14 @@
+struct(T) AA
+{
+    v: T
+}
+
 func(T) inc(x: T)->T
 {
-    var y: T = 1
-    @assert(@typeof(y) == s32)
-    return x + y
+    @assert(@typeof(T) == AA'f32)
+    var ret: T
+    ret.v = 666
+    return ret
 }
 
 func(T) map(values: [..] T, cb: func(T)->T)
@@ -13,7 +19,7 @@ func(T) map(values: [..] T, cb: func(T)->T)
 
 #test
 {
-    arr := @[1,2,3,4]
+    var arr: [4] AA'f32
     map(arr, &inc)
-    @assert(arr[0] == 2)
+    @assert(arr[3].v == 666)
 }
