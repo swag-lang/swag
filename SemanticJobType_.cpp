@@ -177,19 +177,22 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->identifier)
     {
         auto child = typeNode->childs.back();
-        if (child->resolvedSymbolName)
+        if (!child->typeInfo || !child->typeInfo->isNative(NativeTypeKind::Undefined))
         {
-            auto symName = child->resolvedSymbolName;
-            auto symOver = child->resolvedSymbolOverload;
-            if (symName->kind != SymbolKind::Enum &&
-                symName->kind != SymbolKind::TypeAlias &&
-                symName->kind != SymbolKind::GenericType &&
-                symName->kind != SymbolKind::Struct &&
-                symName->kind != SymbolKind::Interface)
+            if (child->resolvedSymbolName)
             {
-                Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
-                Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto symName = child->resolvedSymbolName;
+                auto symOver = child->resolvedSymbolOverload;
+                if (symName->kind != SymbolKind::Enum &&
+                    symName->kind != SymbolKind::TypeAlias &&
+                    symName->kind != SymbolKind::GenericType &&
+                    symName->kind != SymbolKind::Struct &&
+                    symName->kind != SymbolKind::Interface)
+                {
+                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
             }
         }
     }

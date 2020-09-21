@@ -196,6 +196,47 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
     }
 }
 
+void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i)
+{
+    auto funcDecl = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
+    SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
+    auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+    auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
+    auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
+
+    for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
+    {
+        funcDecl->parameters->childs[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
+        funcDecl->parameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = typeDefinedFct->parameters[paramIdx]->typeInfo;
+        typeUndefinedFct->parameters[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
+    }
+
+    /*if (funcDecl->genericParameters)
+    {
+        for (int paramIdx = 0; paramIdx < funcDecl->genericParameters->childs.size(); paramIdx++)
+        {
+            funcDecl->genericParameters->childs[paramIdx]->typeInfo                         = g_TypeMgr.typeInfoS32;
+            funcDecl->genericParameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = g_TypeMgr.typeInfoS32;
+            typeUndefinedFct->genericParameters[paramIdx]->typeInfo                         = g_TypeMgr.typeInfoS32;
+        }
+    }*/
+
+    // Set return type
+    if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
+    {
+        typeUndefinedFct->returnType = typeDefinedFct->returnType;
+        if (funcDecl->returnType)
+            funcDecl->returnType->typeInfo = typeDefinedFct->returnType;
+    }
+
+    typeUndefinedFct->computeName();
+
+    // Wake up semantic lambda job
+    SWAG_ASSERT(funcDecl->pendingLambdaJob);
+    funcDecl->flags &= ~AST_PENDING_LAMBDA_TYPING;
+    g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     auto sourceFile = context->sourceFile;
@@ -499,34 +540,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                     // This is a lambda that was waiting for a match to have its types, and to continue solving its content
                     if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
-                    {
-                        auto funcDecl = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
-                        SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
-                        auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-                        auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
-                        auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
-                        for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
-                        {
-                            funcDecl->parameters->childs[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
-                            funcDecl->parameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = typeDefinedFct->parameters[paramIdx]->typeInfo;
-                            typeUndefinedFct->parameters[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
-                        }
-
-                        // Set return type
-                        if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
-                        {
-                            typeUndefinedFct->returnType = typeDefinedFct->returnType;
-                            if (funcDecl->returnType)
-                                funcDecl->returnType->typeInfo = typeDefinedFct->returnType;
-                        }
-
-                        typeUndefinedFct->computeName();
-
-                        // Wake up semantic lambda job
-                        SWAG_ASSERT(funcDecl->pendingLambdaJob);
-                        funcDecl->flags &= ~AST_PENDING_LAMBDA_TYPING;
-                        g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
-                    }
+                        resolvePendingLambdaTyping(nodeCall, oneMatch, i);
 
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
@@ -1484,14 +1498,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
-
-    // This will happen when trying to match an identifier without knowing its type yet
-    if (node->name == "?")
-    {
-        node->typeInfo          = g_TypeMgr.typeInfoUndefined;
-        identifierRef->typeInfo = g_TypeMgr.typeInfoUndefined;
-        return true;
-    }
 
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)

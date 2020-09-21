@@ -353,13 +353,15 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto it = context.replaceTypes.find(newNode->name);
     if (it != context.replaceTypes.end())
     {
-        newNode->name     = it->second->name;
+        if (!it->second->isNative(NativeTypeKind::Undefined))
+            newNode->name = it->second->name;
         newNode->typeInfo = it->second;
         if (newNode->typeInfo->declNode)
         {
             newNode->resolvedSymbolName     = newNode->typeInfo->declNode->resolvedSymbolName;
             newNode->resolvedSymbolOverload = newNode->typeInfo->declNode->resolvedSymbolOverload;
         }
+
         newNode->flags |= AST_FROM_GENERIC_REPLACE;
         newNode->flags |= AST_FROM_GENERIC;
     }
@@ -416,11 +418,13 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->scope        = functionScope;
 
     cloneContext.parentScope   = functionScope;
-    newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
+    newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
 
-    cloneContext.parentScope = context.parentScope;
-    newNode->returnType      = returnType ? returnType->clone(cloneContext) : nullptr;
+    //cloneContext.parentScope = context.parentScope;
+    newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
+    if (newNode->returnType)
+        newNode->returnType->ownerScope = context.parentScope ? context.parentScope : ownerScope;
 
     if (content)
     {

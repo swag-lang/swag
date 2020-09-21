@@ -666,7 +666,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // (better error message than just letting the makeCompatibles do its job)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
-        return context->report({child, format("return value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
+        return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
 

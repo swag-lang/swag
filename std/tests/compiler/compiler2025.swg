@@ -1,8 +1,13 @@
 func(T) inc(x: T)->T
 {
-    //@print(@typeof(T).name)
-    @print(cast(s64) x)
+    @print(@typeof(T).name)
     return x * x
+}
+
+func(T) inc1(x: T)->T
+{
+    var y: T = 1
+    return x + y
 }
 
 func(T) map(values: [..] T, cb: func(T)->T)
@@ -15,8 +20,5 @@ func(T) map(values: [..] T, cb: func(T)->T)
 {
     arr := @[1,2,3,4]
     map(arr, &inc)
-    @assert(arr[0] == 1)
-    @assert(arr[1] == 4)
-    @assert(arr[2] == 9)
-    @assert(arr[3] == 16)
+    //map(arr, &inc1)
 }
