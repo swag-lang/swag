@@ -488,7 +488,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     funcNode->typeInfo->computeName();
 
-    // Content of function
+    // Semi colon is valid only for foreign and intrinsics declarations
     if (token.id == TokenId::SymSemiColon || isIntrinsic)
     {
         SWAG_VERIFY(!funcForCompiler, syntaxError(token, format("special function '%s' must have a body", funcNode->token.text.c_str())));
@@ -496,6 +496,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         return true;
     }
 
+    // Content of function
     {
         newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
@@ -511,6 +512,17 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode));
+            funcNode->endToken = token;
+        }
+
+        // One single statement
+        else if (token.id == TokenId::SymEqual)
+        {
+            ScopedAttributeFlags scopedAccess(this, 0);
+            SWAG_CHECK(eatToken());
+            auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
+            funcNode->content = stmt;
+            SWAG_CHECK(doEmbeddedInstruction(stmt));
             funcNode->endToken = token;
         }
 
