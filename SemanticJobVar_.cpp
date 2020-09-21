@@ -627,7 +627,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->type->typeInfo);
 
         auto leftConcreteType  = node->type->typeInfo;
-        auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
+        auto rightConcreteType = TypeManager::concreteReferenceType(node->assignment->typeInfo);
 
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
