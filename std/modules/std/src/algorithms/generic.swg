@@ -11,9 +11,9 @@ namespace std
 
     // Transform the content of a slice with a given lambda
     #[swag.inline]
-    func(T) mapInPlace(values: [..] T, cb: func(T)->T)
+    func(T) modifyInPlace(values: [..] T, cb: func(*T))
     {
         loop i: values
-            values[i] = cb(values[i])
+            cb(&values[i])
     }
 }
