@@ -204,6 +204,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
     auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
 
+    // Replace every parameters types
     for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
         auto childType   = funcDecl->parameters->childs[paramIdx];
@@ -212,6 +213,18 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
         childType->typeInfo                              = definedType;
         childType->resolvedSymbolOverload->typeInfo      = definedType;
         typeUndefinedFct->parameters[paramIdx]->typeInfo = definedType;
+    }
+
+    // Replace generic parameters, if any
+    for (int paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
+    {
+        auto undefinedType = typeUndefinedFct->genericParameters[paramIdx];
+        auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
+        if (it != typeDefinedFct->replaceTypes.end())
+        {
+            undefinedType->name     = it->second->name;
+            undefinedType->typeInfo = it->second;
+        }
     }
 
     // Replace every types inside the function
@@ -224,17 +237,6 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
             p->resolvedSymbolOverload->typeInfo = it->second;
         p->typeInfo = it->second;
     });
-
-    // Replace generic parameters, if any
-    for (int paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
-    {
-        auto it = typeDefinedFct->replaceTypes.find(typeUndefinedFct->genericParameters[paramIdx]->name);
-        if (it != typeDefinedFct->replaceTypes.end())
-        {
-            typeUndefinedFct->genericParameters[paramIdx]->name     = it->second->name;
-            typeUndefinedFct->genericParameters[paramIdx]->typeInfo = it->second;
-        }
-    }
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
