@@ -21,15 +21,15 @@ namespace std.drawing
         #[swag.inline]
 		{
             #[swag.complete]
-			func opAffect(self, _argb: u32)
+			func opAffect(self, argb: u32)
             {
-                self.argb = _argb
+                self.argb = argb
             }
 
             #[swag.complete]
-            func opAffect(self, _argb: Argb)
+            func opAffect(self, argb: Argb)
             {
-                self.argb = cast(u32) _argb
+                self.argb = cast(u32) argb
             }
 
             #[swag.complete]
@@ -38,24 +38,24 @@ namespace std.drawing
                 argb = cast(u32) Argb.fromName(name)
             }
 
-			func opEquals(self, _argb: u32) => self.argb == _argb
-            func opEquals(self, _argb: Argb) => self.argb == cast(u32) _argb
+			func opEquals(self, argb: u32) => self.argb == argb
+            func opEquals(self, argb: Argb) => self.argb == cast(u32) argb
             func opEquals(self, other: Self) => self.argb == other.argb
 
-            func setArgb(self, _a, _r, _g, _b: u8)
+            func setArgb(self, a, r, g, b: u8)
             {
-                self.a = _a
-                self.r = _r
-                self.g = _g
-                self.b = _b
+                self.a = a
+                self.r = r
+                self.g = g
+                self.b = b
             }
 
-            func setRgb(self, _r, _g, _b: u8)
+            func setRgb(self, r, g, b: u8)
             {
                 self.a = 255
-                self.r = _r
-                self.g = _g
-                self.b = _b
+                self.r = r
+                self.g = g
+                self.b = b
             }
 		}
 	}
