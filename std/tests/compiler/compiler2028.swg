@@ -6,8 +6,7 @@ struct AA
 //#[swag.printbc]
 func inc(x: AA)->AA
 {
-    y := x
-    return y
+    return x
 }
 
 #test

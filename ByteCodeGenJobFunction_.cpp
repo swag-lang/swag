@@ -75,14 +75,15 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 if (returnType->kind == TypeInfoKind::Struct)
                 {
-                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(returnExpression->typeInfo, TypeInfoKind::Struct));
+                    auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
+                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
                     if (context->result == ContextResult::Pending)
                         return true;
                     RegisterList r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                     // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                     returnExpression->flags |= AST_NO_LEFT_DROP;
-                    SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
+                    SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
                     freeRegisterRC(context, r0);
                 }
                 else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
