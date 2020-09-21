@@ -135,7 +135,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst->b.u32 = exprNode->concreteTypeInfoStorage;
 
     RegisterList result = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, exprNode->resultRegisterRC[1], result);
+    inst                = emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, exprNode->resultRegisterRC[1], COMPARE_CAST_ANY, result);
 
     inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
     inst->d.pointer = (uint8_t*) "invalid cast from any";

@@ -1193,8 +1193,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpEqualTypeInfo:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, R8);
             emitCall(pp, "swag_runtime_compareType");
-            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::TestNotZero8:

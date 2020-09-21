@@ -150,6 +150,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* params[] = {
             llvm::Type::getInt8PtrTy(context),
             llvm::Type::getInt8PtrTy(context),
+            llvm::Type::getInt32Ty(context),
         };
         modu.getOrInsertFunction("swag_runtime_compareType", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
     }

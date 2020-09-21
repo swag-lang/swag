@@ -1,6 +1,9 @@
 #pragma once
 #include "libc/stdint.h"
 
+static const SwagU32 COMPARE_STRICT   = 0x00000000;
+static const SwagU32 COMPARE_CAST_ANY = 0x00000001;
+
 extern "C" void             swag_runtime_print(const char* msg);
 extern "C" char*            swag_runtime_itoa(char* result, SwagS64 value);
 extern "C" void             swag_runtime_ftoa(char* result, double value);
@@ -13,7 +16,7 @@ extern "C" SwagU64          swag_runtime_tlsAlloc();
 extern "C" void             swag_runtime_tlsSetValue(SwagU64 id, void* value);
 extern "C" void*            swag_runtime_tlsGetValue(SwagU64 id);
 extern "C" void             swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
-extern "C" bool             swag_runtime_compareType(const void* type1, const void* type2);
+extern "C" bool             swag_runtime_compareType(const void* type1, const void* type2, SwagU32 flags);
 extern "C" void*            swag_runtime_interfaceof(const void* structType, const void* itfType);
 extern "C" void             swag_runtime_assert(bool expr, const void* file, SwagU64 colline, const void* msg);
 extern "C" void             swag_runtime_assert_msg(struct ConcreteCompilerSourceLocation* location, const void* message);

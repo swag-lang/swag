@@ -1208,7 +1208,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqualTypeInfo:
     {
-        registersRC[ip->c.u32].b = swag_runtime_compareType(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
+        registersRC[ip->d.u32].b = swag_runtime_compareType(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, ip->c.u32);
         break;
     }
     case ByteCodeOp::CloneString:
