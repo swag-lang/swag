@@ -403,13 +403,23 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             for (int i = 0; i < wantedNumGenericParams; i++)
             {
                 auto symbolParameter = genericParameters[i];
-                auto it              = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
-                if (it == context.genericReplaceTypes.end())
+                if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
                 {
-                    if (myTypeInfo->flags & TYPEINFO_GENERIC)
+                    auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+                    if (it == context.genericReplaceTypes.end())
                     {
-                        context.result = MatchResult::NotEnoughGenericParameters;
-                        return;
+                        // When we try to match an untyped generic lambda with a typed instance, we must fail.
+                        // This will force a new instance with deduced types if necessary
+                        if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+                        {
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
+                        }
+                        else if (myTypeInfo->flags & TYPEINFO_GENERIC)
+                        {
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
+                        }
                     }
                 }
             }
@@ -545,7 +555,11 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // For a lambda
     if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+    {
+        if(!(flags & TYPEINFO_GENERIC))
+            matchGenericParameters(context, this, genericParameters);
         return;
+    }
 
     matchParameters(context, parameters);
     if (context.result != MatchResult::Ok)
@@ -573,6 +587,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     }
 
     matchGenericParameters(context, this, genericParameters);
+    if (context.result != MatchResult::Ok)
+        return;
 }
 
 void TypeInfoStruct::match(SymbolMatchContext& context)

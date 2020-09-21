@@ -214,6 +214,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
         typeUndefinedFct->parameters[paramIdx]->typeInfo = definedType;
     }
 
+    // Replace every types inside the function
     Ast::visit(funcDecl, [&](AstNode* p) {
         auto it = typeDefinedFct->replaceTypes.find(p->name);
         if (it == typeDefinedFct->replaceTypes.end())
@@ -223,6 +224,17 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
             p->resolvedSymbolOverload->typeInfo = it->second;
         p->typeInfo = it->second;
     });
+
+    // Replace generic parameters, if any
+    for (int paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
+    {
+        auto it = typeDefinedFct->replaceTypes.find(typeUndefinedFct->genericParameters[paramIdx]->name);
+        if (it != typeDefinedFct->replaceTypes.end())
+        {
+            typeUndefinedFct->genericParameters[paramIdx]->name     = it->second->name;
+            typeUndefinedFct->genericParameters[paramIdx]->typeInfo = it->second;
+        }
+    }
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
@@ -1058,17 +1070,20 @@ anotherTry:
             bool forcedFine = false;
             if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
             {
-                auto grandParent = node->parent->parent;
-                if (grandParent->kind == AstNodeKind::MakePointer ||
-                    grandParent->kind == AstNodeKind::MakePointerLambda ||
-                    grandParent->kind == AstNodeKind::Alias ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
+                if (job->symMatch.result != MatchResult::NotEnoughGenericParameters)
                 {
-                    if (callParameters)
-                        return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
-                    job->symMatch.result = MatchResult::Ok;
-                    forcedFine           = true;
+                    auto grandParent = node->parent->parent;
+                    if (grandParent->kind == AstNodeKind::MakePointer ||
+                        grandParent->kind == AstNodeKind::MakePointerLambda ||
+                        grandParent->kind == AstNodeKind::Alias ||
+                        (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
+                        (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
+                    {
+                        if (callParameters)
+                            return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
+                        job->symMatch.result = MatchResult::Ok;
+                        forcedFine           = true;
+                    }
                 }
             }
 
