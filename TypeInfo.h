@@ -358,9 +358,10 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     TypeInfo* returnType = nullptr;
 
-    int      firstDefaultValueIdx = -1;
-    int      stackSize            = 0;
-    uint32_t attributeUsage       = 0xFFFFFFFF; // All by default
+    int                     firstDefaultValueIdx = -1;
+    int                     stackSize            = 0;
+    map<Utf8Crc, TypeInfo*> replaceTypes;
+    uint32_t                attributeUsage = 0xFFFFFFFF; // All by default
 };
 
 struct TypeInfoPointer : public TypeInfo

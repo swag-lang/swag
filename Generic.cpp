@@ -150,7 +150,8 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         {
             newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
             newLambda->flags &= ~TYPEINFO_GENERIC;
-            newLambda->returnType = newType;
+            newLambda->returnType   = newType;
+            newLambda->replaceTypes = cloneContext.replaceTypes;
         }
 
         auto numParams = typeLambda->parameters.size();
@@ -164,6 +165,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
                 {
                     newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
                     newLambda->flags &= ~TYPEINFO_GENERIC;
+                    newLambda->replaceTypes = cloneContext.replaceTypes;
                 }
 
                 auto newParam      = static_cast<TypeInfoParam*>(newLambda->parameters[idx]);

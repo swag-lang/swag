@@ -206,20 +206,23 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
 
     for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
-        funcDecl->parameters->childs[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
-        funcDecl->parameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = typeDefinedFct->parameters[paramIdx]->typeInfo;
-        typeUndefinedFct->parameters[paramIdx]->typeInfo                         = typeDefinedFct->parameters[paramIdx]->typeInfo;
+        auto childType   = funcDecl->parameters->childs[paramIdx];
+        auto definedType = typeDefinedFct->parameters[paramIdx]->typeInfo;
+
+        childType->typeInfo                              = definedType;
+        childType->resolvedSymbolOverload->typeInfo      = definedType;
+        typeUndefinedFct->parameters[paramIdx]->typeInfo = definedType;
     }
 
-    /*if (funcDecl->genericParameters)
-    {
-        for (int paramIdx = 0; paramIdx < funcDecl->genericParameters->childs.size(); paramIdx++)
-        {
-            funcDecl->genericParameters->childs[paramIdx]->typeInfo                         = g_TypeMgr.typeInfoS32;
-            funcDecl->genericParameters->childs[paramIdx]->resolvedSymbolOverload->typeInfo = g_TypeMgr.typeInfoS32;
-            typeUndefinedFct->genericParameters[paramIdx]->typeInfo                         = g_TypeMgr.typeInfoS32;
-        }
-    }*/
+    Ast::visit(funcDecl, [&](AstNode* p) {
+        if (!p->typeInfo || !p->resolvedSymbolOverload)
+            return;
+        auto it = typeDefinedFct->replaceTypes.find(p->name);
+        if (it == typeDefinedFct->replaceTypes.end())
+            return;
+        p->resolvedSymbolOverload->typeInfo = it->second;
+        p->typeInfo = it->second;
+    });
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))

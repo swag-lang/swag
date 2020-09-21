@@ -1,7 +1,6 @@
 func(T) inc(x: T)->T
 {
-    //@print(@typeof(T).name)
-    @print(cast(s64) x)
+    @assert(@typeof(T) == s32)
     return x * x
 }
 
