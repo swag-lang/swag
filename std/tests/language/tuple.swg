@@ -47,7 +47,7 @@
         @assert(value1 == 2.0)
 
         tuple2 := @{"name", true}
-        var (name, value) = tuple2
+        (name, value) := tuple2
         @assert(name == "name")
         @assert(value == true)
     }

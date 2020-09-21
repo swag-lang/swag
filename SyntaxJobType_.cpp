@@ -99,7 +99,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst)
+bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst)
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
 
@@ -319,12 +319,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst));
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst));
         return true;
     }
 
