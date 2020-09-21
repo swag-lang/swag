@@ -13,10 +13,10 @@ namespace std.strconv
         cpt := 0'u32
         result := 0'u64
 
-        while cpt < countof && latin1.isDigit(deref buffer)
+        while cpt < countof && latin1.isDigit(:buffer)
         {
             result *= 10
-            result += cast(u64) (deref buffer - "0"'u8)
+            result += cast(u64) (:buffer - "0"'u8)
             buffer += 1
             cpt += 1
         }
@@ -35,10 +35,10 @@ namespace std.strconv
         cpt := 0'u32
         result := 0'u64
 
-        while cpt < countof && latin1.isHexDigit(deref buffer)
+        while cpt < countof && latin1.isHexDigit(:buffer)
         {
             result <<= 4
-            c := deref buffer
+            c := :buffer
             if latin1.isDigit(c)
                 result += cast(u64) (c - "0"'u8)
             else if c <= "F"'u8
@@ -63,10 +63,10 @@ namespace std.strconv
         cpt := 0'u32
         result := 0'u64
 
-        while cpt < countof && latin1.isBinDigit(deref buffer)
+        while cpt < countof && latin1.isBinDigit(:buffer)
         {
             result <<= 1
-            result += cast(u64) (deref buffer - "0"'u8)
+            result += cast(u64) (:buffer - "0"'u8)
             buffer += 1
             cpt += 1
         }
@@ -102,11 +102,11 @@ namespace std.strconv
 
         // Parse the rest
         hasDigits := false
-        while cpt < countof && latin1.isDigit(deref buffer)
+        while cpt < countof && latin1.isDigit(:buffer)
         {
             hasDigits = true
             result *= 10
-            result += cast(s64) (deref buffer - "0"'u8)
+            result += cast(s64) (:buffer - "0"'u8)
             buffer += 1
             cpt += 1
         }
@@ -146,11 +146,11 @@ namespace std.strconv
 
         // Integer part
         hasDigits := false
-        while cpt < countof && latin1.isDigit(deref buffer)
+        while cpt < countof && latin1.isDigit(:buffer)
         {
             hasDigits = true
             result *= 10
-            result += cast(f64) (deref buffer - "0"'u8)
+            result += cast(f64) (:buffer - "0"'u8)
             buffer += 1
             cpt += 1
         }
@@ -167,12 +167,12 @@ namespace std.strconv
 
                 fract := 0'u64
                 divisor := 1.0'f64
-                while cpt < countof && latin1.isDigit(deref buffer)
+                while cpt < countof && latin1.isDigit(:buffer)
                 {
                     hasDigits = true
                     fract *= 10
                     divisor *= 0.1'f64
-                    fract += cast(u64) (deref buffer - "0"'u8)
+                    fract += cast(u64) (:buffer - "0"'u8)
                     buffer += 1
                     cpt += 1
                 }

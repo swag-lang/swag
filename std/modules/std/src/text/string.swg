@@ -161,7 +161,7 @@ namespace std
                         #if ptr
                             let @alias0 = `scan
                         #else
-                            let @alias0 = deref `scan
+                            let @alias0 = :`scan
                         let @alias1 = @index
                         #mixin `stmt
                     }
@@ -345,7 +345,7 @@ namespace std
             if !length
                 return -1
 
-            visit c, i: deref self
+            visit c, i: :self
             {
                 if c == value
                     return i

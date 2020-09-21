@@ -72,7 +72,7 @@ namespace std
                         #if ptr
                             let @alias0 = `scan
                         #else
-                            let @alias0 = deref `scan
+                            let @alias0 = :`scan
                         let @alias1 = @index
                         #mixin `stmt
                     }
@@ -197,7 +197,7 @@ namespace std
         func emplace(using self, value: *T)
         {
             grow(count + 1)
-            buffer[count] = nodrop move deref value
+            buffer[count] = nodrop move :value
             count += 1
         }
 
@@ -232,7 +232,7 @@ namespace std
             for idx := count - 1; idx > index; idx -= 1
                 buffer[idx] = nodrop move nodrop buffer[idx - 1]
 
-            buffer[index] = nodrop move deref value
+            buffer[index] = nodrop move :value
         }
 
         // Append another array to the end of this instance

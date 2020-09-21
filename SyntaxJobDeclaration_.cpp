@@ -317,7 +317,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSetContext:
     case TokenId::IntrinsicGetContext:
     case TokenId::SymLeftParen:
-    case TokenId::KwdDeRef:
+    case TokenId::SymColon:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     case TokenId::IntrinsicInit:

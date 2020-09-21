@@ -1,6 +1,6 @@
 func(T) inc(x: *T)
 {
-    deref x += 1
+    :x += 1
 }
 
 //#[swag.printbc]

@@ -14,5 +14,5 @@ var x: A = @[5, 10]
 
     var v1: tt = @mkslice(&x[0], 2)
     var v2: tt1 = &v1[0]
-    @assert(deref v2 == 5)
+    @assert(:v2 == 5)
 }

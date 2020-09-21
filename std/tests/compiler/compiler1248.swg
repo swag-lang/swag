@@ -18,23 +18,23 @@ impl IAllocator for MyAlloc
 func toto()
 {
     cxt := @getcontext()
-    
+
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator.alloc(&req)
 }
 
 #test
-{   
+{
     GG = false
-    
+
     savedCxt := @getcontext()
-    var cxt: Context = deref savedCxt
+    var cxt: Context = :savedCxt
     var myAlloc: MyAlloc
     cxt.allocator = myAlloc
     defer @setcontext(savedCxt)
     @setcontext(cxt)
-    
+
     toto()
     @assert(GG == true)
 }

@@ -95,7 +95,7 @@ namespace std.strconv
                 fmt.width = 16
                 fmt.padding = "0"'u8
                 fmt.setFormat(strFormat)
-                fmt.value = deref cast(const *u64) @dataof(value)
+                fmt.value = :cast(const *u64) @dataof(value)
                 convertInt(buf, fmt)
                 return
             }
@@ -183,8 +183,8 @@ namespace std.strconv
             var value: f64
             switch kindof
             {
-                case f32: value = cast(f64) deref cast(*f32) dataof
-                case f64: value = deref cast(*f64) dataof
+                case f32: value = cast(f64) :cast(*f32) dataof
+                case f64: value = :cast(*f64) dataof
             }
 
             neg := value < 0
@@ -238,14 +238,14 @@ namespace std.strconv
 
             switch kindof
             {
-                case s8:    signedValue = cast(s64) deref cast(*s8) dataof; value = cast(u64) math.abs(signedValue)
-                case s16:   signedValue = cast(s64) deref cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
-                case s32:   signedValue = cast(s64) deref cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
-                case s64:   signedValue = deref cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
-                case u8:    value = cast(u64) deref cast(*u8) dataof
-                case u16:   value = cast(u64) deref cast(*u16) dataof
-                case u32:   value = cast(u64) deref cast(*u32) dataof
-                case u64:   value = deref cast(*u64) dataof
+                case s8:    signedValue = cast(s64) :cast(*s8) dataof; value = cast(u64) math.abs(signedValue)
+                case s16:   signedValue = cast(s64) :cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
+                case s32:   signedValue = cast(s64) :cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
+                case s64:   signedValue = :cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
+                case u8:    value = cast(u64) :cast(*u8) dataof
+                case u16:   value = cast(u64) :cast(*u16) dataof
+                case u32:   value = cast(u64) :cast(*u32) dataof
+                case u64:   value = :cast(*u64) dataof
             }
 
             const tbl = "0123456789ABCDEF"

@@ -11,7 +11,7 @@ impl B
     //#[swag.printbc]
     func toto(using self)
     {
-        deref xxx = 0
+        :xxx = 0
     }
 }
 

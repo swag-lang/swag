@@ -4,9 +4,9 @@ namespace std
     #[swag.inline]
     public func(T) swap(x, y: *T)
     {
-        tmp := move nodrop deref x
-        deref x = nodrop move nodrop deref y
-        deref y = nodrop move nodrop tmp
+        tmp := move nodrop :x
+        :x = nodrop move nodrop :y
+        :y = nodrop move nodrop tmp
     }
 
     // Transform the content of a slice with a given lambda

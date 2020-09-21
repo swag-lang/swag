@@ -72,7 +72,7 @@
         result := 0
         visit *it: array
         {
-            result += deref it
+            result += :it
         }
 
         @assert(result == 1+2+3+4)

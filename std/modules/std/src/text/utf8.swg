@@ -28,7 +28,7 @@ public namespace std.utf8
         ptr := buffer - 1
         while true
         {
-            c := deref ptr
+            c := :ptr
             if c >> 6 != 2
                 break
             if ptr == start
@@ -47,7 +47,7 @@ public namespace std.utf8
             return @{null, acast 0}
 
         ptr := buffer
-        c := deref ptr
+        c := :ptr
         if c == 0
             return @{ptr, acast 0}
         ptr += 1
@@ -63,7 +63,7 @@ public namespace std.utf8
         if ((c & 0xE0) == 0xC0)
         {
             wc = (c & 0x1F) << 6;
-            c = deref ptr
+            c = :ptr
             ptr += 1
             wc |= (c & 0x3F);
             return @{ptr, wc}

@@ -18,7 +18,7 @@
         arr := @[1, 2, 3, 4]
         ptr := &arr[0]
 
-        value := deref ptr
+        value := :ptr
         @assert(value == 1)
         value1 := ptr[0]
         @assert(value1 == 1)

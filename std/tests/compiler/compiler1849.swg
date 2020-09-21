@@ -7,5 +7,5 @@
     var x : string
     #[swag.safety(true)]
     ptr := &x[1]
-    @assert(deref ptr == "A"'u8)
+    @assert(:ptr == "A"'u8)
 }

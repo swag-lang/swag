@@ -4,5 +4,5 @@
     var ptr: *u8 = buffer
     ptr[0] = 66
     @assert(buffer[0] == 66)
-    @assert(deref ptr == 66)
+    @assert(:ptr == 66)
 }

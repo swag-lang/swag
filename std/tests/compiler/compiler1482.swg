@@ -8,7 +8,7 @@
     cpt := 0
     visit *xxx: arr
     {
-        cpt += cast(s32) deref xxx
+        cpt += cast(s32) :xxx
     }
 
     @assert(cpt == 100)

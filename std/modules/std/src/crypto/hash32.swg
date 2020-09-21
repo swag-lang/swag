@@ -18,7 +18,7 @@ namespace std.hash
         #elif @typeof(T).flags & TypeInfoFlags.Float
         {
             val32 := cast(f32) value
-            return deref cast(const *u32) &val32
+            return :cast(const *u32) &val32
         }
         #elif @typeof(T) == string
         {

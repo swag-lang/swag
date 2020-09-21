@@ -178,7 +178,7 @@ namespace Ast
             auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
             if (arrayNode->isDeref)
             {
-                concat.addString("deref ");
+                concat.addChar(':');
                 SWAG_CHECK(output(context, concat, arrayNode->array));
             }
             else

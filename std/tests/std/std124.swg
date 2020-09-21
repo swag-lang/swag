@@ -14,5 +14,5 @@ using std
     @assert(arr[2] == "1")
     @assert(arr[3] == "0")
     //visit *it: arr
-    //    console.write("%", deref it)
+    //    console.write("%", :it)
 }
