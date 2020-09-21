@@ -215,12 +215,12 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     }
 
     Ast::visit(funcDecl, [&](AstNode* p) {
-        if (!p->typeInfo || !p->resolvedSymbolOverload)
-            return;
         auto it = typeDefinedFct->replaceTypes.find(p->name);
         if (it == typeDefinedFct->replaceTypes.end())
             return;
-        p->resolvedSymbolOverload->typeInfo = it->second;
+        p->name = it->second->name;
+        if (p->resolvedSymbolOverload)
+            p->resolvedSymbolOverload->typeInfo = it->second;
         p->typeInfo = it->second;
     });
 
