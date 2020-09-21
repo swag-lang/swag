@@ -121,7 +121,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         AstNode*           expression;
         SWAG_CHECK(doTypeExpression(nullptr, &expression));
 
-        // Name
+        // Name followed by ':'
         if (token.id == TokenId::SymColon)
         {
             typeExpression = (AstTypeExpression*) expression;

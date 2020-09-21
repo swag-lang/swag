@@ -2091,15 +2091,12 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
-    uint32_t collectFlags = COLLECT_ALL;
+    // Zap structures. Seems to work to relax the test, as if the definition is done multiple
+    // times, it will be catch anyway
+    uint32_t collectFlags = COLLECT_NO_STRUCT;
+
     job->cacheScopeHierarchy.clear();
     job->cacheScopeHierarchyVars.clear();
-
-    // For a function parameter, we do not collect struct, because the user will have to use self.X, which 
-    // is safe. If there's a using, then we will collect the scope in 'cacheScopeHierarchyVars', and raise an
-    // error anyway
-    if (node->kind == AstNodeKind::FuncDeclParam)
-        collectFlags |= COLLECT_NO_STRUCT;
 
     collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
