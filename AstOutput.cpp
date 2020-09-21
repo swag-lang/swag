@@ -353,6 +353,30 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::Visit:
+        {
+            auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
+            CONCAT_FIXED_STR(concat, "visit ");
+
+            bool first = true;
+            for(auto& a: visitNode->aliasNames)
+            {
+                if(!first)
+                    CONCAT_FIXED_STR(concat, ", ");
+                first = false;
+                concat.addString(a);
+            }
+
+            if(!visitNode->aliasNames.empty())
+                CONCAT_FIXED_STR(concat, ": ");
+            SWAG_CHECK(output(context, concat, visitNode->expression));
+            incIndentStatement(visitNode->block, context.indent);
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, visitNode->block));
+            decIndentStatement(visitNode->block, context.indent);
+            break;
+        }
+
         case AstNodeKind::Loop:
         {
             auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);

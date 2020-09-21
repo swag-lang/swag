@@ -80,7 +80,7 @@ void Backend::emitType(TypeInfo* typeInfo)
             int idx = 0;
             for (auto field : typeStruct->fields)
             {
-                if(idx)
+                if (idx)
                     bufferSwg.addString(", ");
                 if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
                 {
@@ -534,8 +534,11 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
             auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
             bufferSwg.addStringFormat("impl %s for %s\n", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
         }
+        else if (scope->kind == ScopeKind::Enum)
+            bufferSwg.addStringFormat("impl enum %s\n", scope->name.c_str());
         else
             bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "{\n");
 

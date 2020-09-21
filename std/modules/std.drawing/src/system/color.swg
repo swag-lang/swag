@@ -16,10 +16,9 @@ namespace std.drawing
 		}
 	}
 
-	impl Color
+	public impl Color
 	{
         #[swag.inline]
-		public
 		{
             #[swag.complete]
 			func opAffect(self, _argb: u32)
@@ -33,8 +32,31 @@ namespace std.drawing
                 self.argb = cast(u32) _argb
             }
 
+            #[swag.complete]
+            func opAffect(using self, name: string)
+            {
+                argb = cast(u32) Argb.fromName(name)
+            }
+
 			func opEquals(self, _argb: u32) => self.argb == _argb
+            func opEquals(self, _argb: Argb) => self.argb == cast(u32) _argb
             func opEquals(self, other: Self) => self.argb == other.argb
+
+            func fromArgb(self, _a, _r, _g, _b: u8)
+            {
+                self.a = _a
+                self.r = _r
+                self.g = _g
+                self.b = _b
+            }
+
+            func fromRgb(self, _r, _g, _b: u8)
+            {
+                self.a = 255
+                self.r = _r
+                self.g = _g
+                self.b = _b
+            }
 		}
 	}
 }
