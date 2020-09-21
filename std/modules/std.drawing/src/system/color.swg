@@ -42,7 +42,7 @@ namespace std.drawing
             func opEquals(self, _argb: Argb) => self.argb == cast(u32) _argb
             func opEquals(self, other: Self) => self.argb == other.argb
 
-            func fromArgb(self, _a, _r, _g, _b: u8)
+            func setArgb(self, _a, _r, _g, _b: u8)
             {
                 self.a = _a
                 self.r = _r
@@ -50,7 +50,7 @@ namespace std.drawing
                 self.b = _b
             }
 
-            func fromRgb(self, _r, _g, _b: u8)
+            func setRgb(self, _r, _g, _b: u8)
             {
                 self.a = 255
                 self.r = _r
