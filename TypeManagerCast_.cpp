@@ -2092,8 +2092,18 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
             return true;
     }
 
+    // Parent of the identifier that will reference the new variable
+    auto parentForRef = fromNode;
+    if (fromNode->parent->kind == AstNodeKind::FuncCallParam)
+        parentForRef = fromNode->parent;
+
     // Declare a variable
     auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
+
+    // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
+    // Seems a little bit like a hack. Not sure this will always work.
+    fromNode->parent->flags |= AST_REVERSE_SEMANTIC;
+
     varNode->inheritTokenLocation(fromNode->token);
     varNode->flags |= AST_GENERATED;
 
@@ -2111,10 +2121,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
     // And make a reference to that variable
-    auto parent = fromNode;
-    if (fromNode->parent->kind == AstNodeKind::FuncCallParam)
-        parent = fromNode->parent;
-    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parent);
+    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parentForRef);
     identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_DONT_COLLECT;
 
     // Make parameters
@@ -2122,7 +2129,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     identifier->inheritTokenLocation(fromNode->token);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
     int countParams            = (int) fromNode->childs.size();
-    if (parent == fromNode)
+    if (parentForRef == fromNode)
         countParams--;
     for (int i = 0; i < countParams; i++)
     {
@@ -2135,13 +2142,8 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     }
 
     // For a tuple initialization, every parameters must be covered
-    if (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
-    {
-        if (countParams != typeStruct->fields.size())
-        {
-            return context->report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->fields.size(), countParams)});
-        }
-    }
+    if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && countParams != typeStruct->fields.size())
+        return context->report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->fields.size(), countParams)});
 
     // Add the 2 nodes to the semantic
     auto b = context->job->nodes.back();

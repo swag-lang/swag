@@ -1,23 +1,24 @@
-struct Argb
+struct Argb2036
 {
     a, r, g, b: u8
 }
 
-impl Argb
+impl Argb2036
 {
-    func extract(self) -> struct{f32,f32,f32,f32}
+    //#[swag.inline]
+    func extract(self) -> {f32,f32,f32,f32}
     {
-        a := self.a / 255.0'f32
-        r := self.r / 255.0'f32
-        g := self.g / 255.0'f32
-        b := self.b / 255.0'f32
-        return @{a, r, g, b}
+        _a := self.a / 255.0'f32
+        _r := self.r / 255.0'f32
+        _g := self.g / 255.0'f32
+        _b := self.b / 255.0'f32
+        return @{_a, _r, _g, _b}
     }
 }
 
 #test
 {
-    color := Argb(255, 255, 128, 0)
+    color := Argb2036(255, 255, 128, 0)
     (a, r, g, b) := color.extract()
     @assert(a == 1)
     @assert(r == 1)
