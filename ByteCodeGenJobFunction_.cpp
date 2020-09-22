@@ -639,6 +639,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (numCallParams < numTypeParams)
     {
         // Push all parameters, from end to start
+        VectorNative<uint32_t> accParams;
         for (int i = numTypeParams - 1; i >= 0; i--)
         {
             // Determine if this parameter has been covered by the call
@@ -652,7 +653,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                         toFree += param->resultRegisterRC;
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                     {
-                        emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
+                        accParams.push_back(param->resultRegisterRC[r]);
                         maxCallParams++;
                         precallStack += sizeof(Register);
                         numPushParams++;
@@ -666,7 +667,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // If not covered, then this is a default value
             if (!covered)
             {
-                // funcnode can be null in case of a lambda, so we need to retreive the function description from the type
+                // funcnode can be null in case of a lambda, so we need to retrieve the function description from the type
                 auto funcDescription = funcNode;
                 if (!funcDescription)
                 {
@@ -687,7 +688,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     toFree += regList;
                     for (int r = regList.size() - 1; r >= 0;)
                     {
-                        emitInstruction(context, ByteCodeOp::PushRAParam, regList[r--]);
+                        accParams.push_back(regList[r--]);
                         precallStack += sizeof(Register);
                         numPushParams++;
                         maxCallParams++;
@@ -695,6 +696,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 }
             }
         }
+
+        emitPushRAParams(context, accParams);
     }
 
     // Fast call. No need to do fancy things, all the parameters are covered by the call
