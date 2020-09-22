@@ -293,6 +293,7 @@
     <ClCompile Include="ByteCodeOptimizer_const_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadcode_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadstore_.cpp" />
+    <ClCompile Include="ByteCodeOptimizer_dup_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_emptyfct_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_imm_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_jumps_.cpp" />
