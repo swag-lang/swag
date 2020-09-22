@@ -944,6 +944,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
         AstVarDecl*    varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         varNode->kind             = kind;
+
+        // This will avoid to initialize the tuple before the affectation
+        varNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+
         Ast::addChildBack(varNode, type);
         varNode->type = type;
         Ast::addChildBack(varNode, assign);
