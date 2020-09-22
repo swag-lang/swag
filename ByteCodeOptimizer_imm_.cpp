@@ -87,13 +87,6 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->a.u32] = nullptr;
                 ip->a.u64       = regsRW[ip->a.u32];
             }
-            /*else if(ip->op != ByteCodeOp::PushRAParam)
-            {
-                g_Log.lock();
-                printf("%s\n", context->bc->callName().c_str());
-                context->bc->printInstruction(ip);
-                g_Log.unlock();
-            }*/
         }
 
         if (!(ip->flags & BCI_IMM_B) && (flags & OPFLAG_READ_B) && regs[ip->b.u32])

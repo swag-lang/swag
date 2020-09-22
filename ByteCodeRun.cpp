@@ -533,10 +533,24 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::PushRAParam:
-    {
         context->push(registersRC[ip->a.u32].u64);
         break;
-    }
+    case ByteCodeOp::PushRAParam2:
+        context->push(registersRC[ip->a.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        break;
+    case ByteCodeOp::PushRAParam3:
+        context->push(registersRC[ip->a.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->c.u32].u64);
+        break;
+    case ByteCodeOp::PushRAParam4:
+        context->push(registersRC[ip->a.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->c.u32].u64);
+        context->push(registersRC[ip->d.u32].u64);
+        break;
+
     case ByteCodeOp::IncSP:
     case ByteCodeOp::IncSPPostCall:
     {

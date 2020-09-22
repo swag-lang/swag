@@ -483,6 +483,35 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     return true;
 }
 
+void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams)
+{
+    int cpt = (int) accParams.size();
+    int i   = 0;
+    while (i < cpt)
+    {
+        if (cpt - i >= 4)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam4, accParams[i], accParams[i + 1], accParams[i + 2], accParams[i + 3]);
+            i += 4;
+        }
+        else if (cpt - i >= 3)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam3, accParams[i], accParams[i + 1], accParams[i + 2]);
+            i += 3;
+        }
+        else if (cpt - i >= 2)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam2, accParams[i], accParams[i + 1]);
+            i += 2;
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam, accParams[i]);
+            i += 1;
+        }
+    }
+}
+
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
@@ -671,6 +700,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Fast call. No need to do fancy things, all the parameters are covered by the call
     else if (numCallParams)
     {
+        VectorNative<uint32_t> accParams;
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = allParams->childs[i];
@@ -686,13 +716,15 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                 {
-                    emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r--]);
+                    accParams.push_back(param->resultRegisterRC[r--]);
                     precallStack += sizeof(Register);
                     numPushParams++;
                     maxCallParams++;
                 }
             }
         }
+
+        emitPushRAParams(context, accParams);
     }
 
     // Pass a variadic parameter to another function

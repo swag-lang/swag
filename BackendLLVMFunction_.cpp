@@ -2356,6 +2356,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
+        case ByteCodeOp::PushRAParam2:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            break;
+        case ByteCodeOp::PushRAParam3:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            break;
+        case ByteCodeOp::PushRAParam4:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            pushRAParams.push_back(ip->d.u32);
+            break;
         case ByteCodeOp::CopySP:
         {
             auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));

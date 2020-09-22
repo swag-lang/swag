@@ -1737,6 +1737,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
+        case ByteCodeOp::PushRAParam2:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            break;
+        case ByteCodeOp::PushRAParam3:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            break;
+        case ByteCodeOp::PushRAParam4:
+            pushRAParams.push_back(ip->a.u32);
+            pushRAParams.push_back(ip->b.u32);
+            pushRAParams.push_back(ip->c.u32);
+            pushRAParams.push_back(ip->d.u32);
+            break;
         case ByteCodeOp::GetFromStackParam64:
             // We need to add 8 because the call has pushed one register on the stack
             // We need to add 8 again, because of the first 'push edi' at the start of the function
