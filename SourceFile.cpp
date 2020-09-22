@@ -112,8 +112,7 @@ char SourceFile::loadAndGetPrivateChar()
         return 0;
     }
 
-    // First time, open and read in sync. This is faster to open files in jobs that letting
-    // the loading thread open files one by one
+    // Read one chunk of file
     {
         Timer read(g_Stats.readFiles);
         read.start();
