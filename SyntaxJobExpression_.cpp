@@ -940,11 +940,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             *result = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        auto        savedtoken = token;
-        auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
-        AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-        varNode->kind          = kind;
-        varNode->token         = savedtoken;
+        ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
+        auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
+        AstVarDecl*    varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        varNode->kind             = kind;
         Ast::addChildBack(varNode, type);
         varNode->type = type;
         Ast::addChildBack(varNode, assign);
@@ -962,13 +961,14 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
+
+            ScopedLocation scopedLoc1(this, &identifier->token);
             varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
             varNode->kind  = kind;
             varNode->token = identifier->token;
             varNode->flags |= AST_R_VALUE;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
-            identifier->token                     = savedtoken;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
