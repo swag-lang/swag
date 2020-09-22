@@ -466,7 +466,7 @@ void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const U
         sym = &pp.allSymbols[it->second];
     else
     {
-        Utf8 symName          = format("__str_%u_%s", (uint32_t) pp.globalStrings.size(), pp.filename.c_str());
+        Utf8 symName          = format("__str%u", (uint32_t) pp.globalStrings.size());
         sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
         pp.globalStrings[str] = sym->index;
         sym->value            = pp.stringSegment.addStringNoLock(str);
