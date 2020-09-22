@@ -386,3 +386,78 @@ const Utf8& SymbolName::getFullName()
     Scope::makeFullName(fullName, ownerTable->scope->getFullName(), name);
     return fullName;
 }
+
+SymbolName* SymTableHash::find(const Utf8Crc& str)
+{
+    if (!allocated)
+        return nullptr;
+
+    uint32_t idx = str.crc % allocated;
+    while (buffer[idx].hash)
+    {
+        if (buffer[idx].hash == str.crc && !strcmp((const char*) buffer[idx].symbolName->name.buffer, (const char*) str.buffer))
+            return buffer[idx].symbolName;
+        idx = idx + 1;
+        if (idx == allocated)
+            idx = 0;
+    }
+
+    return nullptr;
+}
+
+void SymTableHash::addElem(SymbolName* data)
+{
+    // Find a free slot
+    uint32_t idx = data->name.crc % allocated;
+    while (buffer[idx].hash)
+    {
+        idx = idx + 1;
+        if (idx == allocated)
+            idx = 0;
+    }
+
+    buffer[idx].hash       = data->name.crc;
+    buffer[idx].symbolName = data;
+    count += 1;
+}
+
+void SymTableHash::add(SymbolName* data)
+{
+    // First allocation
+    if (!allocated)
+    {
+        count     = 0;
+        allocated = 16;
+        buffer    = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
+        memset(buffer, 0, allocated * sizeof(Entry));
+    }
+
+    // Need to grow the hash table, and add back the old values
+    else if (count >= allocated / 2)
+    {
+        auto oldAllocated = allocated;
+        auto oldBuffer    = buffer;
+        auto oldCount     = count;
+
+        allocated *= 2;
+        buffer = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
+        memset(buffer, 0, allocated * sizeof(Entry));
+
+        count = 0;
+        for (uint32_t i = 0; i < oldAllocated; i++)
+        {
+            if (oldBuffer[i].hash)
+            {
+                oldCount--;
+                addElem(oldBuffer[i].symbolName);
+                if (!oldCount)
+                    break;
+            }
+        }
+
+        g_Allocator.free(oldBuffer, oldAllocated * sizeof(Entry));
+    }
+
+    // Find a free slot
+    addElem(data);
+}

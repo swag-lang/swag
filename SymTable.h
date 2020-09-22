@@ -89,28 +89,19 @@ struct SymbolName
 
 struct SymTableHash
 {
-    static const int          MAX_HASH = 47;
-    VectorNative<SymbolName*> map[MAX_HASH];
-
-    SymbolName* find(const Utf8Crc& str)
+    struct Entry
     {
-        int idx = str.crc % MAX_HASH;
-        for (auto one : map[idx])
-        {
-            if (one->name.crc != str.crc)
-                continue;
-            if (!strcmp((const char*) one->name.buffer, (const char*) str.buffer))
-                return one;
-        }
+        SymbolName* symbolName;
+        uint32_t    hash;
+    };
 
-        return nullptr;
-    }
+    Entry*   buffer;
+    uint32_t allocated = 0;
+    uint32_t count;
 
-    void add(SymbolName* data)
-    {
-        int idx = data->name.crc % MAX_HASH;
-        map[idx].push_back(data);
-    }
+    SymbolName* find(const Utf8Crc& str);
+    void        addElem(SymbolName* data);
+    void        add(SymbolName* data);
 };
 
 struct SymTable
