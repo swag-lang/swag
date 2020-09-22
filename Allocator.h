@@ -2,7 +2,7 @@
 #include "Assert.h"
 #include "Stats.h"
 #define ALLOCATOR_BUCKET_SIZE 1024 * 1024
-#define MAX_FREE_BUCKETS 512 / 8
+#define MAX_FREE_BUCKETS 1024 / 8
 
 struct AllocatorBucket
 {

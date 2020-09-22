@@ -336,6 +336,8 @@ namespace Ast
 
         vector<Utf8> subNames;
         tokenize(name.c_str(), '.', subNames);
+        node->childs.reserve((int) subNames.size());
+
         for (int i = 0; i < subNames.size(); i++)
         {
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
