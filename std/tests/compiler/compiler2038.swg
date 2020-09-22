@@ -15,7 +15,8 @@ impl Argb
 //#[swag.printbc]
 #test
 {
-    var color: Argb{
+    var color: Argb
+    {
         x := 0
     }
     (a,b) := color.extract()
