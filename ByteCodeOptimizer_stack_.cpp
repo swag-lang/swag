@@ -13,6 +13,8 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
         if (ip->flags & BCI_START_STMT || isJump(ip))
             mapCst.clear();
 
+        // Try to detect when we store a constant on the stack, followed by a get of the value. The get
+        // is then useless, as we can change it to an immediate constant copy
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
             (ip[1].op == ByteCodeOp::SetAtPointer8 || ip[1].op == ByteCodeOp::SetAtPointer16 || ip[1].op == ByteCodeOp::SetAtPointer32 || ip[1].op == ByteCodeOp::SetAtPointer64) &&
             ip[0].a.u32 == ip[1].a.u32 &&
@@ -53,8 +55,8 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             }
         }
 
-        // MakeStackPointer followed by an increment of the pointer, we can just
-        // make the increment now and remove the instruction
+        // If MakeStackPointer is followed by an increment of the pointer, we can just
+        // make the increment now and remove the increment instruction
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::IncPointer32 &&
             ip[0].a.u32 == ip[1].a.u32 &&
@@ -69,7 +71,8 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             setNop(context, &ip[1]);
         }
 
-        // Testing if a stack pointer is not null is irrelevant.
+        // Testing if a stack pointer is not null is irrelevant. This can happen often because of
+        // safety checks, when dereferencing a struct on the stack
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::TestNotZero64 &&
             ip[0].a.u32 == ip[1].b.u32)
