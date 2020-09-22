@@ -51,7 +51,7 @@ struct Token
 struct Tokenizer
 {
     void setFile(SourceFile* file);
-    bool getToken(Token& token, bool keepEol = false);
+    bool getToken(Token& token);
 
     char32_t getChar();
     char32_t getCharNoSeek(unsigned& offset);

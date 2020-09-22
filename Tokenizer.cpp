@@ -161,17 +161,8 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
     return false;
 }
 
-bool Tokenizer::getToken(Token& token, bool keepEol)
+bool Tokenizer::getToken(Token& token)
 {
-    if ((lastTokenIsEOL || forceLastTokenIsEOL) && keepEol)
-    {
-        lastTokenIsEOL      = false;
-        forceLastTokenIsEOL = false;
-        token.id            = TokenId::EndOfLine;
-        token.text          = "\n";
-        return true;
-    }
-
     lastTokenIsEOL      = forceLastTokenIsEOL;
     forceLastTokenIsEOL = false;
 
@@ -192,13 +183,6 @@ bool Tokenizer::getToken(Token& token, bool keepEol)
         // Blank
         if (SWAG_IS_EOL(c))
         {
-            if (keepEol)
-            {
-                token.text += c;
-                token.id = TokenId::EndOfLine;
-                return true;
-            }
-
             lastTokenIsEOL = true;
             continue;
         }

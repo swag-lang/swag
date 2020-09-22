@@ -31,7 +31,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         identifier->flags |= AST_IDENTIFIER_BACKTICK;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    if (acceptParameters)
+    if (acceptParameters && !tokenizer.lastTokenIsEOL)
     {
         // Generic arguments
         if (token.id == TokenId::SymQuote)
@@ -42,9 +42,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         }
 
         // Function call parameters
-        if (token.id == TokenId::SymLeftParen)
+        if (!tokenizer.lastTokenIsEOL)
         {
-            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+            if (token.id == TokenId::SymLeftParen)
+            {
+                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+            }
         }
     }
 
