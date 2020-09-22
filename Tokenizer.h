@@ -48,15 +48,10 @@ struct Token
     TokenId        id = TokenId::Invalid;
 };
 
-static const uint32_t TOKENIZER_KEEP_EOL              = 0x00000001;
-static const uint32_t TOKENIZER_KEEP_BLANKS           = 0x00000002;
-static const uint32_t TOKENIZER_KEEP_KEYWORDS         = 0x00000004;
-static const uint32_t TOKENIZER_NO_LITERAL_CONVERSION = 0x00000008;
-
 struct Tokenizer
 {
     void setFile(SourceFile* file);
-    bool getToken(Token& token);
+    bool getToken(Token& token, bool keepEol = false);
 
     char32_t getChar();
     char32_t getCharNoSeek(unsigned& offset);
@@ -83,7 +78,6 @@ struct Tokenizer
     SourceFile*    sourceFile         = nullptr;
     char32_t       cacheChar[2]       = {0};
     unsigned       cacheCharOffset[2] = {0};
-    uint32_t       parseFlags         = 0;
     SourceLocation location;
     bool           endReached          = false;
     bool           forceLastTokenIsEOL = false;

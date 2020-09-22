@@ -161,11 +161,9 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
     return false;
 }
 
-bool Tokenizer::getToken(Token& token)
+bool Tokenizer::getToken(Token& token, bool keepEol)
 {
-    unsigned offset;
-
-    if ((lastTokenIsEOL || forceLastTokenIsEOL) && (parseFlags & TOKENIZER_KEEP_EOL))
+    if ((lastTokenIsEOL || forceLastTokenIsEOL) && keepEol)
     {
         lastTokenIsEOL      = false;
         forceLastTokenIsEOL = false;
@@ -177,6 +175,7 @@ bool Tokenizer::getToken(Token& token)
     lastTokenIsEOL      = forceLastTokenIsEOL;
     forceLastTokenIsEOL = false;
 
+    unsigned offset;
     while (true)
     {
         token.startLocation = location;
@@ -193,7 +192,7 @@ bool Tokenizer::getToken(Token& token)
         // Blank
         if (SWAG_IS_EOL(c))
         {
-            if (parseFlags & TOKENIZER_KEEP_EOL)
+            if (keepEol)
             {
                 token.text += c;
                 token.id = TokenId::EndOfLine;
@@ -206,13 +205,6 @@ bool Tokenizer::getToken(Token& token)
 
         if (SWAG_IS_BLANK(c))
         {
-            if (parseFlags & TOKENIZER_KEEP_BLANKS)
-            {
-                token.text += c;
-                token.id = TokenId::Blank;
-                return true;
-            }
-
             continue;
         }
 

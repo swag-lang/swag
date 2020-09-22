@@ -15,5 +15,5 @@ impl Argb
 #test
 {
     var color: Argb
-    var (a) = color.extract()
+    //(a) := color.extract()
 }

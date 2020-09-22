@@ -11,8 +11,7 @@ struct ConvertFormatInt
 //#[swag.printbc]
 #test
 {
-    var format: ConvertFormatInt
-                (
+    var format: ConvertFormatInt(
                     signedValue: 5,
                     bits: 8,
                     signed: true
