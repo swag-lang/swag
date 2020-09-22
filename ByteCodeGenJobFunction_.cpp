@@ -55,10 +55,14 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
             {
                 auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
-                if (inlineReturnType->kind == TypeInfoKind::Struct)
-                    return internalError(context, "emitReturn, invalid inline return");
-                else if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
-                    return internalError(context, "emitReturn, invalid inline return");
+                if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+                {
+                    auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
+                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                    SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
+                }
                 else
                 {
                     for (auto child : node->childs)

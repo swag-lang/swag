@@ -14,6 +14,15 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
     node->parent->resultRegisterRC = node->resultRegisterRC;
 
+    // If the inline returns a copy, then initialize the register with the address of the temporary
+    // variable on the stack, so that the inline block can copy it's result to it. Of course, this is
+    // not the top for speed, but anyway there's room for improvement for inline in all cases.
+    if (node->func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+        inst->b.u32 = node->fctCallStorageOffset;
+    }
+
     AstNode* allParams     = nullptr;
     int      numCallParams = 0;
     if (node->parent->kind == AstNodeKind::Identifier)

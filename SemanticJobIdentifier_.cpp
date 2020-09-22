@@ -600,6 +600,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
         // The expansion will be done at the lowest level possible
+        auto returnType = TypeManager::concreteType(identifier->typeInfo);
         if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
         {
             if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
@@ -620,6 +621,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     identifier->doneFlags |= AST_DONE_INLINED;
                     SWAG_CHECK(makeInline(context, funcDecl, identifier));
+                }
+
+                // For a return by copy, need to reserve room on the stack for the return result
+                if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+                {
+                    identifier->flags |= AST_TRANSIENT;
+                    identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
+                    identifier->ownerScope->startStackSize += returnType->sizeOf;
+                    identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
                 }
 
                 identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
@@ -658,7 +668,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
         // Setup parent if necessary
-        auto returnType = TypeManager::concreteType(identifier->typeInfo);
         if (returnType->kind == TypeInfoKind::Struct)
         {
             identifier->flags |= AST_IS_CONST_ASSIGN_INHERIT;

@@ -1,19 +1,22 @@
 struct Argb
 {
-    a: u8
+    a: u64
 }
 
 impl Argb
 {
-    //#[swag.inline]
-    func extract(self) -> {f32}
+    #[swag.inline]
+    func extract(self) -> {s64,s64}
     {
-        return @{0}
+        return @{666,555}
     }
 }
 
+#[swag.printbc]
 #test
 {
-    var color: Argb
-    //(a) := color.extract()
+    var color: Argb;
+    (a,b) := color.extract()
+    @assert(a == 666)
+    @assert(b == 555)
 }
