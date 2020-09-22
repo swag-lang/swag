@@ -103,56 +103,64 @@ void Scope::setHasExports()
 void Scope::addPublicFunc(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicFunc.insert(node);
+    allocPublicSet();
+    publicSet->publicFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicGenericFunc(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicGenericFunc.insert(node);
+    allocPublicSet();
+    publicSet->publicGenericFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicStruct(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicStruct.insert(node);
+    allocPublicSet();
+    publicSet->publicStruct.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicInterface(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicInterface.insert(node);
+    allocPublicSet();
+    publicSet->publicInterface.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicEnum(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicEnum.insert(node);
+    allocPublicSet();
+    publicSet->publicEnum.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicConst(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicConst.insert(node);
+    allocPublicSet();
+    publicSet->publicConst.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicNode(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicNodes.insert(node);
+    allocPublicSet();
+    publicSet->publicNodes.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicNamespace(AstNode* node)
 {
     unique_lock lk(mutex);
-    publicNamespace.insert(node);
+    allocPublicSet();
+    publicSet->publicNamespace.insert(node);
 }
 
 bool Scope::isParentOf(Scope* child)

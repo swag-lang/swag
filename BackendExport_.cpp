@@ -416,10 +416,14 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
 bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent)
 {
+    auto publicSet = scope->publicSet;
+    if (!publicSet)
+        return true;
+
     // Consts
-    if (!scope->publicConst.empty())
+    if (!publicSet->publicConst.empty())
     {
-        for (auto one : scope->publicConst)
+        for (auto one : publicSet->publicConst)
         {
             AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
             SWAG_CHECK(emitPublicConstSwg(node, indent));
@@ -427,9 +431,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Stuff (alias, using will go there)
-    if (!scope->publicNodes.empty())
+    if (!publicSet->publicNodes.empty())
     {
-        for (auto one : scope->publicNodes)
+        for (auto one : publicSet->publicNodes)
         {
             bufferSwg.addIndent(indent);
             SWAG_CHECK(Ast::output(outputContext, bufferSwg, one));
@@ -438,9 +442,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Structures
-    if (!scope->publicStruct.empty())
+    if (!publicSet->publicStruct.empty())
     {
-        for (auto one : scope->publicStruct)
+        for (auto one : publicSet->publicStruct)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -448,9 +452,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         }
     }
 
-    if (!scope->publicInterface.empty())
+    if (!publicSet->publicInterface.empty())
     {
-        for (auto one : scope->publicInterface)
+        for (auto one : publicSet->publicInterface)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
@@ -459,9 +463,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Enums
-    if (!scope->publicEnum.empty())
+    if (!publicSet->publicEnum.empty())
     {
-        for (auto one : scope->publicEnum)
+        for (auto one : publicSet->publicEnum)
         {
             TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
             SWAG_CHECK(emitPublicEnumSwg(typeEnum, one, indent));
@@ -469,9 +473,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Generic functions
-    if (!scope->publicGenericFunc.empty())
+    if (!publicSet->publicGenericFunc.empty())
     {
-        for (auto func : scope->publicGenericFunc)
+        for (auto func : publicSet->publicGenericFunc)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -480,9 +484,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Functions
-    if (!scope->publicFunc.empty())
+    if (!publicSet->publicFunc.empty())
     {
-        for (auto func : scope->publicFunc)
+        for (auto func : publicSet->publicFunc)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);

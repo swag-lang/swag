@@ -39,6 +39,18 @@ struct AlternativeScope
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 
+struct ScopePublicSet
+{
+    set<AstNode*> publicFunc;
+    set<AstNode*> publicGenericFunc;
+    set<AstNode*> publicStruct;
+    set<AstNode*> publicInterface;
+    set<AstNode*> publicEnum;
+    set<AstNode*> publicConst;
+    set<AstNode*> publicNodes;
+    set<AstNode*> publicNamespace;
+};
+
 struct Scope
 {
     Scope()
@@ -77,27 +89,26 @@ struct Scope
         return isGlobal() || kind == ScopeKind::Struct || kind == ScopeKind::Impl || kind == ScopeKind::Enum;
     }
 
+    void allocPublicSet()
+    {
+        if (!publicSet)
+            publicSet = g_Allocator.alloc<ScopePublicSet>();
+    }
+
     SymTable               symTable;
     Utf8Crc                name;
     Utf8                   fullname;
     VectorNative<Scope*>   childScopes;
     VectorNative<AstNode*> deferredNodes;
-    set<AstNode*>          publicFunc;
-    set<AstNode*>          publicGenericFunc;
-    set<AstNode*>          publicStruct;
-    set<AstNode*>          publicInterface;
-    set<AstNode*>          publicEnum;
-    set<AstNode*>          publicConst;
-    set<AstNode*>          publicNodes;
-    set<AstNode*>          publicNamespace;
     set<AstNode*>          doneLeaveScopeDefer;
     set<AstNode*>          doneLeaveScopeDrop;
     RegisterList           registersToRelease;
     DependentJobs          dependentJobs;
     shared_mutex           mutex;
 
-    AstNode* owner       = nullptr;
-    Scope*   parentScope = nullptr;
+    ScopePublicSet* publicSet   = nullptr;
+    AstNode*        owner       = nullptr;
+    Scope*          parentScope = nullptr;
 
     ScopeKind kind           = ScopeKind::Invalid;
     uint32_t  indexInParent  = UINT32_MAX;
