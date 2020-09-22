@@ -210,17 +210,16 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 {
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
     tmpFile->externalContent = content;
-    tmpFile->externalBuffer  = (uint8_t*) tmpFile->externalContent.c_str();
-    tmpFile->externalSize    = (uint32_t) tmpFile->externalContent.length();
-    tmpFile->module          = parent->sourceFile->module;
-    tmpFile->name            = "<generated>";
-    tmpFile->path            = "<generated>";
-    tmpFile->sourceNode      = fromNode;
-    sourceFile               = tmpFile;
-    currentScope             = parent->ownerScope;
-    currentStructScope       = parent->ownerStructScope;
-    currentMainNode          = parent->ownerMainNode;
-    currentFct               = parent->ownerFct;
+    tmpFile->setExternalBuffer((char*) tmpFile->externalContent.c_str(), tmpFile->externalContent.length());
+    tmpFile->module     = parent->sourceFile->module;
+    tmpFile->name       = "<generated>";
+    tmpFile->path       = "<generated>";
+    tmpFile->sourceNode = fromNode;
+    sourceFile          = tmpFile;
+    currentScope        = parent->ownerScope;
+    currentStructScope  = parent->ownerStructScope;
+    currentMainNode     = parent->ownerMainNode;
+    currentFct          = parent->ownerFct;
 
     tokenizer.setFile(sourceFile);
     tokenizer.location.line = parent->token.endLocation.line;

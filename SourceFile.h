@@ -34,14 +34,13 @@ struct SourceFile : public File
     char loadAndGetPrivateChar();
     char getPrivateChar();
     bool checkFormat();
+    void setExternalBuffer(char* buf, uint32_t size);
 
     vector<string> allLines;
     Module*        module  = nullptr;
     AstNode*       astRoot = nullptr;
     Utf8           externalContent;
-    uint8_t*       externalBuffer = nullptr;
-    uint32_t       externalSize   = 0;
-    uint32_t       seekExternal   = 0;
+    bool           isExternal     = false;
     bool           lastBuffer     = true;
 
     uint64_t  writeTime       = 0;

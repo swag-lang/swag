@@ -78,8 +78,7 @@ void Workspace::addBootstrap()
     file->path            = p.parent_path().string() + "/bootstrap.swg";
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
-    file->externalBuffer  = (uint8_t*) ptr;
-    file->externalSize    = size;
+    file->setExternalBuffer((char*) ptr, size);
     bootstrapModule->addFile(file);
     bootstrapModule->isBootStrap = true;
     job->sourceFile              = file;

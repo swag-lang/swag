@@ -89,9 +89,23 @@ void SourceFile::loadRequest()
         close();
 }
 
+void SourceFile::setExternalBuffer(char* buf, uint32_t size)
+{
+    buffer        = buf;
+    bufferCurSeek = 0;
+    bufferSize    = size;
+    isExternal    = true;
+}
+
 char SourceFile::loadAndGetPrivateChar()
 {
     // Done
+    if (isExternal)
+    {
+        doneLoading = true;
+        return 0;
+    }
+
     if (doneLoading)
     {
         close();
@@ -134,26 +148,14 @@ char SourceFile::loadAndGetPrivateChar()
 
 char SourceFile::getPrivateChar()
 {
-    if (externalBuffer)
-    {
-        if (seekExternal >= externalSize)
-        {
-            doneLoading = true;
-            return 0;
-        }
-
-        return externalBuffer[seekExternal++];
-    }
-
     if (bufferCurSeek >= bufferSize)
         return loadAndGetPrivateChar();
-
     return buffer[bufferCurSeek++];
 }
 
 char32_t SourceFile::getChar(unsigned& offset)
 {
-    char c = getPrivateChar();
+    char c = bufferCurSeek >= bufferSize ? loadAndGetPrivateChar() : buffer[bufferCurSeek++];
     offset = 1;
     if ((c & 0x80) == 0)
         return c;
@@ -217,11 +219,11 @@ char32_t SourceFile::getCharExtended(char c, unsigned& offset)
 Utf8 SourceFile::getLine(long lineNo)
 {
     scoped_lock lk(mutexGetLine);
-    if (externalBuffer)
+    if (isExternal)
     {
         if (allLines.empty())
         {
-            const char* pz = (const char*) externalBuffer;
+            const char* pz = (const char*) buffer;
             string      line;
             while (*pz)
             {
