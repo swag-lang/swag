@@ -2,4 +2,4 @@
 ;
 #unittest error;
 type b: bool;
-var a: b();
+var a: b{};

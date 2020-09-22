@@ -54,9 +54,9 @@ namespace std.math
         }
 
         // Represents a Point with all coordinates to zero
-        const Zero: Point(0, 0)
+        const Zero: Point{0, 0}
         // Represents a Point with all coordinates to one
-        const One: Point(1, 1)
+        const One: Point{1, 1}
 
         // Set Point to (0, 0)
         func clear(using self)

@@ -11,7 +11,7 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	var pt : Point(x: 0, y: 1, z: 666)
+	var pt : Point{x: 0, y: 1, z: 666}
 	@assert(pt.x == 0)
 	@assert(pt.y == 1)
 	@assert(pt.z == 666)

@@ -9,12 +9,12 @@ namespace std.math
 	{
 		public
 		{
-			const Zero:     Vector2(0, 0)
-			const One:      Vector2(1, 1)
-			const UnitX:    Vector2(1, 0)
-			const UnitY:    Vector2(0, 1)
-			const UnitNX:   Vector2(-1, 0)
-			const UnitNY:   Vector2(0, -1)
+			const Zero:     Vector2{0, 0}
+			const One:      Vector2{1, 1}
+			const UnitX:    Vector2{1, 0}
+			const UnitY:    Vector2{0, 1}
+			const UnitNX:   Vector2{-1, 0}
+			const UnitNY:   Vector2{0, -1}
         }
 
 		public

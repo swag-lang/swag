@@ -10,5 +10,5 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	var pt : Point(1.0, 1.0)
+	var pt : Point{1.0, 1.0}
 }

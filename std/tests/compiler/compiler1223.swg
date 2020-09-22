@@ -5,7 +5,7 @@ struct Vector2
 
 impl Vector2
 {
-	const Null: Vector2(0, 0)
+	const Null: Vector2{0, 0}
 	/*
 	{
 		const Null:  Vector2(0, 0)

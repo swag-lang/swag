@@ -53,7 +53,7 @@ struct SyntaxJob : public Job
 
     bool doLabel(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
-    bool doFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerBake(AstNode* parent, AstNode** result = nullptr);
@@ -148,37 +148,39 @@ struct SyntaxJob : public Job
     SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
-    SourceFile*         sourceFile             = nullptr;
-    Scope*              currentScope           = nullptr;
-    AstFuncDecl*        currentFct             = nullptr;
-    AstBreakable*       currentBreakable       = nullptr;
-    Scope*              currentStructScope     = nullptr;
-    AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
-    Token*              currentTokenLocation   = nullptr;
-    AstNode*            currentMainNode        = nullptr;
-    uint64_t            currentFlags           = 0;
-    uint32_t            currentAttributeFlags  = 0;
-    bool                canChangeModule        = true;
-    bool                moduleSpecified        = false;
-    bool                inFunCall              = false;
+    SourceFile*         sourceFile              = nullptr;
+    Scope*              currentScope            = nullptr;
+    AstFuncDecl*        currentFct              = nullptr;
+    AstBreakable*       currentBreakable        = nullptr;
+    Scope*              currentStructScope      = nullptr;
+    AstCompilerIfBlock* currentCompilerIfBlock  = nullptr;
+    Token*              currentTokenLocation    = nullptr;
+    AstNode*            currentMainNode         = nullptr;
+    uint64_t            currentFlags            = 0;
+    uint32_t            currentAttributeFlags   = 0;
+    bool                canChangeModule         = true;
+    bool                moduleSpecified         = false;
+    bool                inFunCall               = false;
+    bool                identifierCallForStruct = false;
 
     void reset() override
     {
         Job::reset();
         context.reset();
-        sourceFile             = nullptr;
-        currentScope           = nullptr;
-        currentFct             = nullptr;
-        currentBreakable       = nullptr;
-        currentStructScope     = nullptr;
-        currentCompilerIfBlock = nullptr;
-        currentMainNode        = nullptr;
-        currentTokenLocation   = nullptr;
-        currentFlags           = 0;
-        currentAttributeFlags  = 0;
-        canChangeModule        = true;
-        moduleSpecified        = false;
-        inFunCall              = false;
+        sourceFile              = nullptr;
+        currentScope            = nullptr;
+        currentFct              = nullptr;
+        currentBreakable        = nullptr;
+        currentStructScope      = nullptr;
+        currentCompilerIfBlock  = nullptr;
+        currentMainNode         = nullptr;
+        currentTokenLocation    = nullptr;
+        currentFlags            = 0;
+        currentAttributeFlags   = 0;
+        canChangeModule         = true;
+        moduleSpecified         = false;
+        inFunCall               = false;
+        identifierCallForStruct = false;
     }
 
     void release() override

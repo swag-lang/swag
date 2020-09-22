@@ -9,7 +9,7 @@ struct(T) Point
 //#[swag.printbc]
 #test
 {
-	var pt : Point'f32(1.0, 2.0)
+	var pt : Point'f32{1.0, 2.0}
 	@assert(pt.x == 1)
 	@assert(pt.y == 2)
 }

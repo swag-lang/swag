@@ -15,16 +15,16 @@ impl Point
 		G += 1
 	}
 }
-	
+
 //#[swag.printbc]
 #test
 {
 	G = 0
-	
+
 	{
-		var pt: Point(1)
-		var pt1: Point(1)
+		var pt: Point{1}
+		var pt1: Point{1}
 	}
-	
+
 	@assert(G == 2)
 }

@@ -10,7 +10,7 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	var pt : [2, 2] Point(100, 500)
+	var pt : [2, 2] Point{100, 500}
 	@assert(pt[1, 1].x == 100)
 	@assert(pt[1, 1].y == 500)
 }

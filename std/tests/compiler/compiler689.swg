@@ -10,7 +10,7 @@ struct(T) Point
 //#[swag.printbc]
 #test
 {
-	var pt : Point'u64(100'u64, 500'u64)
+	var pt : Point'u64{100'u64, 500'u64}
 	@assert(pt.x == 100)
 	@assert(pt.y == 500)
 }

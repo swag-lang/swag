@@ -10,7 +10,7 @@ struct(T, loc: Loc) TOTO
 
 #test
 {
-    var x: TOTO'(s32, #location)()
+    var x: TOTO'(s32, #location){}
 }
 
 alias Loc = swag.CompilerSourceLocation

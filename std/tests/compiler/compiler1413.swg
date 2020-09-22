@@ -7,4 +7,4 @@ struct A
     x: s32
 }
 
-const C: A(0)
+const C: A{0}

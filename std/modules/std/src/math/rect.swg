@@ -50,7 +50,7 @@ namespace std.math
         }
 
         // Represents a rectangle with all coordinates to zero
-        const Zero: Rect(0, 0, 0, 0)
+        const Zero: Rect{0, 0, 0, 0}
 
         // Set rectangle to (0, 0, 0, 0)
         func clear(using self)

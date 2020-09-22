@@ -12,5 +12,5 @@ struct(T, loc: s64 /*swag.CompilerSourceLocation*/) TOTO
 #test
 {
     //var x: TOTO'(s32, #location)()
-    var x: TOTO'(s32, 666)()
+    var x: TOTO'(s32, 666){}
 }

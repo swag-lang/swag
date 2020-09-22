@@ -33,7 +33,7 @@ public namespace std.memory
         if !buffer
             return
         debug.assert(allocator != null)
-        var req: AllocatorRequest(mode: AllocatorMode.Free, address: buffer)
+        var req: AllocatorRequest{mode: AllocatorMode.Free, address: buffer}
         allocator.alloc(&req)
     }
 
@@ -41,7 +41,7 @@ public namespace std.memory
     func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
     {
         debug.assert(allocator != null)
-        var req: AllocatorRequest(mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer)
+        var req: AllocatorRequest{mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer}
         allocator.alloc(&req)
         return req.address
     }
@@ -50,7 +50,7 @@ public namespace std.memory
     func alloc(allocator: *IAllocator, sizeInBytes: u32)->*void
     {
         debug.assert(allocator != null)
-        var req: AllocatorRequest(mode: AllocatorMode.Alloc, size: sizeInBytes)
+        var req: AllocatorRequest{mode: AllocatorMode.Alloc, size: sizeInBytes}
         allocator.alloc(&req)
         return req.address
     }

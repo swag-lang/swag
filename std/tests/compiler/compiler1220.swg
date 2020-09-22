@@ -4,7 +4,7 @@ struct Vector2
 	y: f32
 }
 
-let XAxis: Vector2(y: 1.0)
+let XAxis: Vector2{y: 1.0}
 
 #test
 {

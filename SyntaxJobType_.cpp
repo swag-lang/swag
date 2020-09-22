@@ -311,7 +311,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
+        // Call parameters of an identifier must be '{' and not '(', because this can only be a struct, so this
+        // is more logic
+        identifierCallForStruct = inTypeVarDecl;
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+        identifierCallForStruct = false;
+
         if (inTypeVarDecl)
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;

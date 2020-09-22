@@ -59,14 +59,13 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken)
 {
     auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
     *result                 = callParams;
     callParams->semanticFct = SemanticJob::resolveFuncCallParams;
 
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    while (token.id != TokenId::SymRightParen)
+    while (token.id != closeToken)
     {
         while (true)
         {
@@ -94,14 +93,13 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
                 Ast::addChildBack(param, paramExpression);
             }
 
-            if (token.id == TokenId::SymRightParen)
+            if (token.id == closeToken)
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
         }
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
+    SWAG_CHECK(eatToken(closeToken));
     return true;
 }
 

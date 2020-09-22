@@ -72,7 +72,7 @@ namespace Ast
         {
             for (auto p : funcDecl->parameters->childs)
             {
-                if(p != funcDecl->parameters->childs.front())
+                if (p != funcDecl->parameters->childs.front())
                     concat.addString(", ");
                 concat.addString(p->name);
                 if (!p->childs.empty())
@@ -87,7 +87,6 @@ namespace Ast
                     CONCAT_FIXED_STR(concat, " = ");
                     SWAG_CHECK(output(context, concat, param->assignment));
                 }
-
             }
         }
 
@@ -359,15 +358,15 @@ namespace Ast
             CONCAT_FIXED_STR(concat, "visit ");
 
             bool first = true;
-            for(auto& a: visitNode->aliasNames)
+            for (auto& a : visitNode->aliasNames)
             {
-                if(!first)
+                if (!first)
                     CONCAT_FIXED_STR(concat, ", ");
                 first = false;
                 concat.addString(a);
             }
 
-            if(!visitNode->aliasNames.empty())
+            if (!visitNode->aliasNames.empty())
                 CONCAT_FIXED_STR(concat, ": ");
             SWAG_CHECK(output(context, concat, visitNode->expression));
             incIndentStatement(visitNode->block, context.indent);
@@ -617,9 +616,15 @@ namespace Ast
 
             if (identifier->callParameters)
             {
-                concat.addChar('(');
+                if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
+                    concat.addChar('{');
+                else
+                    concat.addChar('(');
                 SWAG_CHECK(output(context, concat, identifier->callParameters));
-                concat.addChar(')');
+                if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
+                    concat.addChar('}');
+                else
+                    concat.addChar(')');
             }
 
             break;

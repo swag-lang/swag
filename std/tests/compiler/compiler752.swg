@@ -9,7 +9,7 @@ struct Point
 //#[swag.printbc]
 func toto()->Point
 {
-	var pt: Point(10, 20)
+	var pt: Point{10, 20}
 	return pt
 }
 

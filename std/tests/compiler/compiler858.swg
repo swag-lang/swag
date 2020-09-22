@@ -15,16 +15,16 @@ impl Point
 		G += 1
 	}
 }
-	
+
 //#[swag.printbc]
 #test
 {
 	G = 0
-	
+
 	loop(10)
 	{
-		var pt: Point(10)
+		var pt: Point{10}
 	}
-	
+
 	@assert(G == 10)
 }

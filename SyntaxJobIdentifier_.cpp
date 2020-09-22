@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
+#include "Scoped.h"
 
 bool SyntaxJob::checkIsSingleIdentifier(AstNode* node)
 {
@@ -44,9 +45,16 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         // Function call parameters
         if (!tokenizer.lastTokenIsEOL)
         {
-            if (token.id == TokenId::SymLeftParen)
+            if (!identifierCallForStruct && token.id == TokenId::SymLeftParen)
             {
-                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+                SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            }
+            else if (identifierCallForStruct && token.id == TokenId::SymLeftCurly)
+            {
+                ScopedFlags sk(this, AST_CALL_FOR_STRUCT);
+                SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
             }
         }
     }

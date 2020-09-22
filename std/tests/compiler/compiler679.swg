@@ -10,7 +10,7 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	var pt : Point(1, 666)
+	var pt : Point{1, 666}
 	@assert(pt.x == 1)
 	@assert(pt.y == 666)
 }

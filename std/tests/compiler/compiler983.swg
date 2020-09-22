@@ -17,7 +17,7 @@ struct Pair
 #test
 {
 	//var pair: Pair("toto", {10,20})
-	var pair: Pair("toto", 1)
+	var pair: Pair{"toto", 1}
 	@assert(pair.x == "toto")
 	@assert(pair.y == 1.0)
 	//@assert(pair.y.x == 10)
@@ -25,4 +25,3 @@ struct Pair
 	//var pair : {string, Point} = {"toto", {0, 0}}
 	//var pair : {string, string} = {"toto", "toto"}
 }
-
