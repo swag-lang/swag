@@ -52,5 +52,21 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
                 ip->b.u64                     = it->second.first;
             }
         }
+
+        // MakeStackPointer followed by an increment of the pointer, we can just
+        // make the increment now and remove the instruction
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::IncPointer32 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].c.u32 &&
+            ip[1].flags & BCI_IMM_B)
+        {
+            auto it = mapCst.find(ip->b.u32);
+            if (it != mapCst.end())
+                mapCst.erase(it);
+
+            ip[0].b.u32 += ip[1].b.u32;
+            setNop(context, &ip[1]);
+        }
     }
 }
