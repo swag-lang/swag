@@ -68,5 +68,15 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             ip[0].b.u32 += ip[1].b.u32;
             setNop(context, &ip[1]);
         }
+
+        // Testing if a stack pointer is not null is irrelevant.
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::TestNotZero64 &&
+            ip[0].a.u32 == ip[1].b.u32)
+        {
+            context->passHasDoneSomething = true;
+            ip[1].op                      = ByteCodeOp::SetImmediate32;
+            ip[1].b.u32                   = 1;
+        }
     }
 }
