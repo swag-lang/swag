@@ -31,6 +31,7 @@ struct SourceFile : public File
     void seekTo(long seek);
     long readTo();
     void loadRequest();
+    char loadAndGetPrivateChar();
     char getPrivateChar();
     bool checkFormat();
 
@@ -41,6 +42,7 @@ struct SourceFile : public File
     uint8_t*       externalBuffer = nullptr;
     uint32_t       externalSize   = 0;
     uint32_t       seekExternal   = 0;
+    bool           lastBuffer     = true;
 
     uint64_t  writeTime       = 0;
     int       numErrors       = 0;

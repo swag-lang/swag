@@ -89,6 +89,49 @@ void SourceFile::loadRequest()
         close();
 }
 
+char SourceFile::loadAndGetPrivateChar()
+{
+    // Done
+    if (doneLoading)
+    {
+        close();
+        return 0;
+    }
+
+    // First time, open and read in sync. This is faster to open files in jobs that letting
+    // the loading thread open files one by one
+    {
+        Timer read(g_Stats.readFiles);
+        read.start();
+        if (!openedOnce)
+        {
+            if (!openRead())
+                return 0;
+            bufferSize = readTo();
+            if (!checkFormat())
+                return false;
+            if (bufferSize != BUF_SIZE)
+                lastBuffer = true;
+            fileSeek = BUF_SIZE;
+        }
+        else
+        {
+            loadRequest();
+            bufferCurSeek = 0;
+        }
+        read.stop();
+    }
+
+    // Be sure there's something in the current buffer
+    if (bufferCurSeek >= bufferSize)
+    {
+        close();
+        return 0;
+    }
+
+    return buffer[bufferCurSeek++];
+}
+
 char SourceFile::getPrivateChar()
 {
     if (externalBuffer)
@@ -103,46 +146,9 @@ char SourceFile::getPrivateChar()
     }
 
     if (bufferCurSeek >= bufferSize)
-    {
-        // Done
-        if (doneLoading)
-        {
-            close();
-            return 0;
-        }
+        return loadAndGetPrivateChar();
 
-        // First time, open and read in sync. This is faster to open files in jobs that letting
-        // the loading thread open files one by one
-        {
-            Timer read(g_Stats.readFiles);
-            read.start();
-            if (!openedOnce)
-            {
-                if (!openRead())
-                    return 0;
-                bufferSize = readTo();
-                if (!checkFormat())
-                    return false;
-                fileSeek = BUF_SIZE;
-            }
-            else
-            {
-                loadRequest();
-                bufferCurSeek = 0;
-            }
-            read.stop();
-        }
-
-        // Be sure there's something in the current buffer
-        if (bufferCurSeek >= bufferSize)
-        {
-            close();
-            return 0;
-        }
-    }
-
-    char c = buffer[bufferCurSeek++];
-    return c;
+    return buffer[bufferCurSeek++];
 }
 
 char32_t SourceFile::getChar(unsigned& offset)
