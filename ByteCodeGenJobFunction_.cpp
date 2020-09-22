@@ -742,8 +742,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         emitInstruction(context, ByteCodeOp::DecPointer32, lastParam->resultRegisterRC, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[1]);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0[0]);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0[1]);
+        emitInstruction(context, ByteCodeOp::PushRAParam2, r0[0], r0[1]);
         toFree += r0;
         precallStack += 2 * sizeof(Register);
         numPushParams += 2;
