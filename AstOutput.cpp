@@ -279,37 +279,27 @@ namespace Ast
         case AstNodeKind::CompilerIf:
         {
             auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
-            if (compilerIf->flags & AST_COMPILER_IF_DONE)
-            {
-                if (compilerIf->ifBlock->flags & AST_NO_SEMANTIC)
-                    SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
-                else
-                    SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
-            }
-            else
-            {
-                CONCAT_FIXED_STR(concat, "#if ");
-                SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
+            CONCAT_FIXED_STR(concat, "#if ");
+            SWAG_CHECK(output(context, concat, compilerIf->boolExpression));
 
-                incIndentStatement(compilerIf->ifBlock, context.indent);
+            incIndentStatement(compilerIf->ifBlock, context.indent);
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
+            decIndentStatement(compilerIf->ifBlock, context.indent);
+
+            if (compilerIf->elseBlock)
+            {
                 concat.addEolIndent(context.indent);
-                SWAG_CHECK(output(context, concat, compilerIf->ifBlock));
-                decIndentStatement(compilerIf->ifBlock, context.indent);
-
-                if (compilerIf->elseBlock)
+                CONCAT_FIXED_STR(concat, "#else ");
+                if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
                 {
+                    incIndentStatement(compilerIf->elseBlock, context.indent);
                     concat.addEolIndent(context.indent);
-                    CONCAT_FIXED_STR(concat, "#else ");
-                    if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
-                    {
-                        incIndentStatement(compilerIf->elseBlock, context.indent);
-                        concat.addEolIndent(context.indent);
-                    }
-                    SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
-                    if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
-                    {
-                        decIndentStatement(compilerIf->elseBlock, context.indent);
-                    }
+                }
+                SWAG_CHECK(output(context, concat, compilerIf->elseBlock));
+                if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
+                {
+                    decIndentStatement(compilerIf->elseBlock, context.indent);
                 }
             }
             break;
