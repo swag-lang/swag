@@ -546,6 +546,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        // Be sure it's () and not {}
+        if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+        {
+            return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->name.c_str())});
+        }
+
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
         {
