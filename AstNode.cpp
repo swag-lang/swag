@@ -397,8 +397,15 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     SWAG_ASSERT(ownerScope);
 
     auto nameForeign = computeScopedName();
-    nameForeign += "@@";
-    nameForeign += typeFunc->name;
+
+    // If the symbol has overload, i.e. more than one definition, then we
+    // append the type
+    if (resolvedSymbolName && resolvedSymbolName->overloads.size() > 1)
+    {
+        nameForeign += "@@";
+        nameForeign += typeFunc->name;
+    }
+
     fullnameForeign = nameForeign;
 
     // Normalize name
