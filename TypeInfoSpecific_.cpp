@@ -507,7 +507,6 @@ void TypeInfoFuncAttr::computeName()
     unique_lock lk(mutex);
 
     nakedName.clear();
-    nakedName = "func";
     if (genericParameters.size())
     {
         nakedName += "'(";
@@ -530,10 +529,8 @@ void TypeInfoFuncAttr::computeName()
     }
 
     nakedName += ")";
-    if (returnType)
+    if (returnType && !returnType->isNative(NativeTypeKind::Void))
         nakedName += format("->%s", returnType->name.c_str());
-    else
-        nakedName += "->void";
 
     name = nakedName;
 }
