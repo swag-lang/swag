@@ -396,11 +396,33 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     SWAG_ASSERT(ownerScope);
 
-    fullnameForeign = computeScopedName();
-    fullnameForeign += "_";
-    fullnameForeign += name;
-    fullnameForeign += typeFunc->name;
-    Ast::normalizeIdentifierName(fullnameForeign);
+    auto nameForeign = computeScopedName();
+    nameForeign += "@@";
+    nameForeign += typeFunc->name;
+    fullnameForeign = nameForeign;
+
+    // Normalize name
+    auto len = nameForeign.length();
+    auto pz  = nameForeign.buffer;
+    auto pzd = fullnameForeign.buffer;
+    for (int i = 0; i < len; i++)
+    {
+        if (*pz == ' ')
+        {
+            pz++;
+        }
+        else if (*pz == ',')
+        {
+            *pzd++ = '@';
+            pz++;
+        }
+        else
+            *pzd++ = *pz++;
+    }
+
+    *pzd++ = 0;
+
+    fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer);
 }
 
 AstNode* AstFuncDecl::clone(CloneContext& context)
