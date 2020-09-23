@@ -50,14 +50,16 @@ namespace std.drawing
                 self.b = b
             }
 
-            /*func extract(self) -> {a: f32, r: f32, g: f32, b: f32}
+            // Retreive all components as floating point values
+            // between 0 and 1.
+            func toFloat(self) -> {a: f32, r: f32, g: f32, b: f32}
             {
                 a := self.a / 255.0'f32
                 r := self.r / 255.0'f32
                 g := self.g / 255.0'f32
                 b := self.b / 255.0'f32
                 return @{a, r, g, b}
-            }*/
+            }
 		}
 	}
 }

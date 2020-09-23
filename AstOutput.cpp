@@ -201,6 +201,8 @@ namespace Ast
             int idx = 0;
             for (auto child : exprNode->childs)
             {
+                if (child->flags & AST_GENERATED)
+                    continue;
                 if (idx++)
                     concat.addChar(',');
                 SWAG_CHECK(output(context, concat, child));

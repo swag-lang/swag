@@ -231,7 +231,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint3
 {
     for (auto child : node->childs)
     {
-        if (child->flags & AST_DONT_COLLECT)
+        if (child->flags & AST_GENERATED)
             continue;
 
         if (child->kind == AstNodeKind::ExpressionList)

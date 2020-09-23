@@ -2122,7 +2122,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
 
     // And make a reference to that variable
     auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parentForRef);
-    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_DONT_COLLECT;
+    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_GENERATED;
 
     // Make parameters
     auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
