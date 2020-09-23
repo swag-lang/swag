@@ -254,6 +254,42 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
+void SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifier* identifier)
+{
+    auto sourceFile = context->sourceFile;
+    identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
+
+    auto varParent = identifier->identifierRef->parent;
+    while (varParent->kind == AstNodeKind::ExpressionList)
+        varParent = varParent->parent;
+
+    // Declare a variable
+    auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
+    auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
+    typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+    varNode->flags |= AST_GENERATED;
+    varNode->type        = typeNode;
+    typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
+    auto back            = typeNode->identifier->childs.back();
+    back->flags &= ~AST_NO_BYTECODE;
+    back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+
+    // And make a reference to that variable
+    auto identifierRef = identifier->identifierRef;
+    identifierRef->childs.clear();
+    auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifierRef, identifierRef);
+    idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
+
+    // Reset parsing
+    identifierRef->startScope = nullptr;
+
+    // Add the 2 nodes to the semantic
+    context->job->nodes.pop_back();
+    context->job->nodes.push_back(idNode);
+    context->job->nodes.push_back(varNode);
+    context->job->nodes.push_back(identifier);
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     auto sourceFile = context->sourceFile;
@@ -434,39 +470,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // A struct with parameters is in fact the creation of a temporary local variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
-        {
-            identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
-
-            auto varParent = identifier->identifierRef->parent;
-            while (varParent->kind == AstNodeKind::ExpressionList)
-                varParent = varParent->parent;
-
-            // Declare a variable
-            auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
-            auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
-            typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-            varNode->flags |= AST_GENERATED;
-            varNode->type        = typeNode;
-            typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
-            auto back            = typeNode->identifier->childs.back();
-            back->flags &= ~AST_NO_BYTECODE;
-            back->flags |= AST_IN_TYPE_VAR_DECLARATION;
-
-            // And make a reference to that variable
-            auto identifierRef = identifier->identifierRef;
-            identifierRef->childs.clear();
-            auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifierRef, identifierRef);
-            idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
-
-            // Reset parsing
-            identifierRef->startScope = nullptr;
-
-            // Add the 2 nodes to the semantic
-            context->job->nodes.pop_back();
-            context->job->nodes.push_back(idNode);
-            context->job->nodes.push_back(varNode);
-            context->job->nodes.push_back(identifier);
-        }
+            createTmpLocalVarStruct(context, identifier);
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)
