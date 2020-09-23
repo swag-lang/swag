@@ -48,15 +48,16 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     {
     case TokenId::KwdPrivate:
         attr = ATTRIBUTE_PRIVATE;
-        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PUBLIC), error(token, "attribute 'private' and attribute 'public' are mutually exclusive"));
+        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PUBLIC), error(token, "'private' and 'public' attributes are mutually exclusive"));
         SWAG_VERIFY(currentScope->isGlobal(), error(token, "a private definition must appear at file or namespace scope"));
         newScope = sourceFile->scopePrivate;
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdPublic:
         attr = ATTRIBUTE_PUBLIC;
-        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PRIVATE), error(token, "attribute 'private' and attribute 'public' are mutually exclusive"));
+        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PRIVATE), error(token, "'private' and 'public' attributes are mutually exclusive"));
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
+        SWAG_VERIFY(!sourceFile->publish, error(token, "'public' attribute cannot be used in a file marked with '#publish', because the whole file is implicitly public"));
         if (currentScope->name == "SS")
             currentScope = currentScope;
         if (currentScope->kind == ScopeKind::File)
