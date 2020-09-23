@@ -1,7 +1,8 @@
+#publish
+#foreignlib "icuuc"
+
 namespace icu
 {
-    #foreignlib "icuuc"
-
     using swag
 
     alias UBool = u8

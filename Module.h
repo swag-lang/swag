@@ -42,6 +42,7 @@ struct Module
 {
     bool     setup(const Utf8& moduleName);
     void     allocateBackend();
+    void     addPublishFile(SourceFile* file);
     void     addFile(SourceFile* file);
     void     removeFile(SourceFile* file);
     bool     error(const Utf8& msg);
@@ -122,11 +123,13 @@ struct Module
     bool      hasUnittestError = false;
     bool      setupDone        = false;
     bool      dependenciesDone = false;
+    int       numConcreteBC    = 0;
 
     void     addForeignLib(const Utf8& text);
     void     addDependency(AstNode* importNode);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
+    bool     mustOutputSomething();
 
     shared_mutex                    mutexDependency;
     VectorNative<ModuleDependency*> moduleDependencies;

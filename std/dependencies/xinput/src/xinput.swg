@@ -1,6 +1,7 @@
+#publish
 #import "win32"
-
 #foreignlib "xinput"
+
 using swag, win32
 
 namespace xinput

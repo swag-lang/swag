@@ -33,29 +33,45 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         dep->module = depModule;
     }
 
-    auto node       = dep->node;
     dep->importDone = true;
 
-    // Now the .swg export file should be in the cache
-    if (depModule->backend && !depModule->backend->timeExportFile)
+    VectorNative<SourceFile*> files;
+    SWAG_ASSERT(depModule->backend);
+
+    // Add export generated file
+    depModule->backend->setupExportFile();
+    if (depModule->backend->timeExportFile)
     {
-        depModule->backend->setupExportFile();
-        if (!depModule->backend->timeExportFile)
-            return node->sourceFile->report({node, format("cannot find module export file for '%s'", dep->name.c_str())});
+        auto file       = g_Allocator.alloc<SourceFile>();
+        file->name      = depModule->backend->bufferSwg.name;
+        file->path      = depModule->backend->bufferSwg.path;
+        file->generated = depModule->backend->exportFileGenerated;
+        dep->generated  = depModule->backend->exportFileGenerated;
+        files.push_back(file);
     }
 
-    // Then do syntax on it
-    auto syntaxJob          = g_Pool_syntaxJob.alloc();
-    auto file               = g_Allocator.alloc<SourceFile>();
-    syntaxJob->sourceFile   = file;
-    syntaxJob->module       = module;
-    syntaxJob->dependentJob = this;
-    file->name              = depModule->backend->bufferSwg.name;
-    file->path              = depModule->backend->bufferSwg.path;
-    file->generated         = true;
-    dep->generated          = depModule->backend->exportFileGenerated;
-    module->addFile(file);
-    jobsToAdd.push_back(syntaxJob);
+    // Add all #publish files
+    for (auto one : depModule->filesPublish)
+    {
+        auto file      = g_Allocator.alloc<SourceFile>();
+        file->name     = one->name;
+        file->path     = one->path;
+        file->imported = true;
+        files.push_back(file);
+    }
+
+    // One syntax job per dependency file
+    for (auto one : files)
+    {
+        module->addFile(one);
+
+        auto syntaxJob          = g_Pool_syntaxJob.alloc();
+        syntaxJob->sourceFile   = one;
+        syntaxJob->module       = module;
+        syntaxJob->dependentJob = this;
+        jobsToAdd.push_back(syntaxJob);
+    }
+
     return true;
 }
 
@@ -392,22 +408,7 @@ JobResult ModuleBuildJob::execute()
         else
             pass = ModuleBuildPass::RunNative;
 
-        // Do not generate an executable that have been run in script mode
-        bool mustOutput = true;
-        if (module->byteCodeMainFunc && g_CommandLine.script)
-            mustOutput = false;
-        else if (module->name.empty()) // bootstrap
-            mustOutput = false;
-        else if (module->buildPass < BuildPass::Backend)
-            mustOutput = false;
-        else if (module->files.empty())
-            mustOutput = false;
-        else if (module->hasUnittestError) // module must have unittest errors, so not output
-            mustOutput = false;
-        else if (module->fromTestsFolder && !g_CommandLine.outputTest)
-            mustOutput = false;
-
-        if (mustOutput)
+        if (module->mustOutputSomething())
         {
             if (g_CommandLine.output)
             {

@@ -412,7 +412,13 @@ bool SyntaxJob::doCompilerModule()
 
 bool SyntaxJob::doCompilerPublish()
 {
-    sourceFile->publish = true;
+    SWAG_VERIFY(!sourceFile->publish, sourceFile->report({sourceFile, token, "#publish can only be specified once per file"}));
+    if (!sourceFile->imported)
+    {
+        sourceFile->publish = true;
+        sourceFile->module->addPublishFile(sourceFile);
+    }
+
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatSemiCol("after '#publish'"));
     return true;

@@ -1,3 +1,4 @@
+#publish
 #foreignlib "user32"
 
 namespace win32

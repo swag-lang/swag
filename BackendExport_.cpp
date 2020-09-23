@@ -596,33 +596,18 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
 
 void Backend::setupExportFile()
 {
-    if (bufferSwg.path.empty())
-    {
-        exportFileGenerated = true;
-        Utf8 targetName     = module->name + ".import.swg";
-        auto targetPath     = g_Workspace.cachePath;
-        targetPath.append(targetName.c_str());
-        bool exists = fs::exists(targetPath.c_str());
-        if (!exists)
-        {
-            exportFileGenerated = false;
-            targetName          = module->name + ".swg";
-            targetPath          = g_Workspace.targetPath.c_str();
-            auto otherName      = module->name + ".swg";
-            targetPath.append(otherName.c_str());
-            exists = fs::exists(targetPath.c_str());
-        }
+    if (!bufferSwg.path.empty())
+        return;
 
-        if (exists)
-        {
-            bufferSwg.name = targetName;
-            bufferSwg.path = normalizePath(fs::path(targetPath.string().c_str()));
-            timeExportFile = OS::getFileWriteTime(targetPath.string().c_str());
-        }
-    }
-    else
+    exportFileGenerated = true;
+    Utf8 targetName     = module->name + ".import.swg";
+    auto targetPath     = g_Workspace.cachePath;
+    targetPath.append(targetName.c_str());
+    if (fs::exists(targetPath.c_str()))
     {
-        SWAG_ASSERT(timeExportFile);
+        bufferSwg.name = targetName;
+        bufferSwg.path = normalizePath(fs::path(targetPath.string().c_str()));
+        timeExportFile = OS::getFileWriteTime(targetPath.string().c_str());
     }
 }
 

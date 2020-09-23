@@ -149,6 +149,12 @@ void Module::allocateBackend()
     }
 }
 
+void Module::addPublishFile(SourceFile* file)
+{
+    scoped_lock lk(mutexFile);
+    filesPublish.insert(file);
+}
+
 void Module::addFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
@@ -348,6 +354,10 @@ void Module::addByteCodeFunc(ByteCode* bc)
     {
         auto attributeFlags = bc->node->attributeFlags;
         auto flags          = bc->node->flags;
+
+        // This is a real function
+        if (!(attributeFlags & ATTRIBUTE_FOREIGN))
+            numConcreteBC++;
 
         // Register for export
         if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
@@ -551,4 +561,32 @@ bool Module::WaitForDependenciesDone(Job* job)
 
     dependenciesDone = true;
     return true;
+}
+
+bool Module::mustOutputSomething()
+{
+    bool mustOutput = true;
+    // do not generate an executable that have been run in script mode
+    if (byteCodeMainFunc && g_CommandLine.script)
+        mustOutput = false;
+    // bootstrap
+    else if (name.empty())
+        mustOutput = false;
+    else if (buildPass < BuildPass::Backend)
+        mustOutput = false;
+    else if (files.empty())
+        mustOutput = false;
+    // every files are published
+    else if (files.size() == filesPublish.size())
+        mustOutput = false;
+    // module must have unittest errors, so not output
+    else if (hasUnittestError)
+        mustOutput = false;
+    else if (fromTestsFolder && !g_CommandLine.outputTest)
+        mustOutput = false;
+    // only foreign functions, or no function at all
+    else if (numConcreteBC == 0)
+        mustOutput = false;
+
+    return mustOutput;
 }
