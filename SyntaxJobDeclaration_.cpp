@@ -515,6 +515,10 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));
         break;
+    case TokenId::CompilerPublish:
+        SWAG_CHECK(doCompilerPublish());
+        break;
+
     default:
         return invalidTokenError(InvalidTokenError::TopLevelInstruction);
     }

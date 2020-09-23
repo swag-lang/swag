@@ -44,7 +44,7 @@ struct Module
     void     allocateBackend();
     void     addFile(SourceFile* file);
     void     removeFile(SourceFile* file);
-    void     error(const Utf8& msg);
+    bool     error(const Utf8& msg);
     bool     internalError(const Utf8& msg);
     bool     internalError(AstNode* node, Token& token, const Utf8& msg);
     uint32_t mustOptimizeBC(AstNode* node);
@@ -86,6 +86,7 @@ struct Module
 
     shared_mutex     mutexCompilerPass;
     set<SourceFile*> filesForCompilerPass;
+    set<SourceFile*> filesPublish;
 
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;

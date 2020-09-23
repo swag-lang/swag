@@ -6,6 +6,7 @@ LanguageSpec g_LangSpec;
 
 void LanguageSpec::setup()
 {
+    keywords["#publish"]        = TokenId::CompilerPublish;
     keywords["#skip"]           = TokenId::CompilerSkip;
     keywords["#module"]         = TokenId::CompilerModule;
     keywords["#unittest"]       = TokenId::CompilerUnitTest;

@@ -169,6 +169,10 @@ void Module::addFile(SourceFile* file)
             filesForCompilerPass.insert(file);
         }
     }
+
+    // If the file is flagged as #publish, register it
+    if (file->publish)
+        filesPublish.insert(file);
 }
 
 void Module::removeFile(SourceFile* file)
@@ -194,6 +198,11 @@ void Module::removeFile(SourceFile* file)
         if (it != filesForCompilerPass.end())
             filesForCompilerPass.erase(it);
     }
+
+    // If the file is flagged as #publish, unregister it
+    auto it = filesPublish.find(file);
+    if (it != filesPublish.end())
+        filesPublish.erase(it);
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
@@ -418,7 +427,7 @@ uint32_t Module::getHasBeenBuilt()
     return hasBeenBuilt;
 }
 
-void Module::error(const Utf8& msg)
+bool Module::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
@@ -431,6 +440,7 @@ void Module::error(const Utf8& msg)
 
     g_Workspace.numErrors++;
     numErrors++;
+    return false;
 }
 
 bool Module::internalError(const Utf8& msg)

@@ -70,6 +70,7 @@ struct SyntaxJob : public Job
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
     bool doCompilerModule();
+    bool doCompilerPublish();
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerImport(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result = nullptr);
@@ -148,7 +149,6 @@ struct SyntaxJob : public Job
     SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
-    SourceFile*         sourceFile              = nullptr;
     Scope*              currentScope            = nullptr;
     AstFuncDecl*        currentFct              = nullptr;
     AstBreakable*       currentBreakable        = nullptr;

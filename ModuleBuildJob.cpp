@@ -17,6 +17,48 @@
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
+bool ModuleBuildJob::addDependency(ModuleDependency* dep)
+{
+    auto depModule = dep->module;
+    if (dep->importDone)
+        return true;
+
+    // Some dependencies can have been added by the this stage
+    if (!depModule)
+    {
+        depModule = g_Workspace.getModuleByName(dep->name);
+        depModule->allocateBackend();
+        if (!depModule)
+            return module->error(format("unknown module dependency '%s'", dep->name.c_str()));
+        dep->module = depModule;
+    }
+
+    auto node       = dep->node;
+    dep->importDone = true;
+
+    // Now the .swg export file should be in the cache
+    if (depModule->backend && !depModule->backend->timeExportFile)
+    {
+        depModule->backend->setupExportFile();
+        if (!depModule->backend->timeExportFile)
+            return node->sourceFile->report({node, format("cannot find module export file for '%s'", dep->name.c_str())});
+    }
+
+    // Then do syntax on it
+    auto syntaxJob          = g_Pool_syntaxJob.alloc();
+    auto file               = g_Allocator.alloc<SourceFile>();
+    syntaxJob->sourceFile   = file;
+    syntaxJob->module       = module;
+    syntaxJob->dependentJob = this;
+    file->name              = depModule->backend->bufferSwg.name;
+    file->path              = depModule->backend->bufferSwg.path;
+    file->generated         = true;
+    dep->generated          = depModule->backend->exportFileGenerated;
+    module->addFile(file);
+    jobsToAdd.push_back(syntaxJob);
+    return true;
+}
+
 JobResult ModuleBuildJob::execute()
 {
     // Wait for dependencies to be build
@@ -67,50 +109,8 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto& dep : module->moduleDependencies)
             {
-                auto depModule = dep->module;
-                if (dep->importDone)
-                    continue;
-
-                // Some dependencies can have been added by the this stage
-                if (!depModule)
-                {
-                    depModule = g_Workspace.getModuleByName(dep->name);
-                    depModule->allocateBackend();
-                    if (!depModule)
-                    {
-                        module->error(format("unknown module dependency '%s'", dep->name.c_str()));
-                        return JobResult::ReleaseJob;
-                    }
-
-                    dep->module = depModule;
-                }
-
-                auto node       = dep->node;
-                dep->importDone = true;
-
-                // Now the .swg export file should be in the cache
-                if (depModule->backend && !depModule->backend->timeExportFile)
-                {
-                    depModule->backend->setupExportFile();
-                    if (!depModule->backend->timeExportFile)
-                    {
-                        node->sourceFile->report({node, format("cannot find module export file for '%s'", dep->name.c_str())});
-                        continue;
-                    }
-                }
-
-                // Then do syntax on it
-                auto syntaxJob          = g_Pool_syntaxJob.alloc();
-                auto file               = g_Allocator.alloc<SourceFile>();
-                syntaxJob->sourceFile   = file;
-                syntaxJob->module       = module;
-                syntaxJob->dependentJob = this;
-                file->name              = depModule->backend->bufferSwg.name;
-                file->path              = depModule->backend->bufferSwg.path;
-                file->generated         = true;
-                dep->generated          = depModule->backend->exportFileGenerated;
-                module->addFile(file);
-                jobsToAdd.push_back(syntaxJob);
+                if (!addDependency(dep))
+                    return JobResult::ReleaseJob;
             }
 
             // Sync with all jobs

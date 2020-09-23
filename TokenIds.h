@@ -58,6 +58,7 @@ DEFINE_TOKEN_ID(SymLiteralBracket)
 DEFINE_TOKEN_ID(SymLiteralCurly)
 DEFINE_TOKEN_ID(SymLiteralParen)
 
+DEFINE_TOKEN_ID(CompilerPublish)
 DEFINE_TOKEN_ID(CompilerSkip)
 DEFINE_TOKEN_ID(CompilerModule)
 DEFINE_TOKEN_ID(CompilerUnitTest)

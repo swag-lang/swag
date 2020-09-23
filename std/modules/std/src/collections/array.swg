@@ -1,3 +1,5 @@
+#publish
+
 namespace std
 {
     using swag

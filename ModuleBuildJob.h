@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "Stats.h"
 struct Module;
+struct ModuleDependency;
 
 enum class ModuleBuildPass
 {
@@ -30,6 +31,7 @@ struct ModuleBuildJob : public Job
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
 
+    bool      addDependency(ModuleDependency* dep);
     JobResult execute() override;
 
     ModuleBuildPass pass = ModuleBuildPass::Dependencies;

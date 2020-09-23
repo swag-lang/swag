@@ -123,8 +123,6 @@ char SourceFile::loadAndGetPrivateChar()
             bufferSize = readTo();
             if (!checkFormat())
                 return false;
-            if (bufferSize != BUF_SIZE)
-                lastBuffer = true;
             fileSeek = BUF_SIZE;
         }
         else

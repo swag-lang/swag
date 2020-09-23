@@ -40,8 +40,7 @@ struct SourceFile : public File
     Module*        module  = nullptr;
     AstNode*       astRoot = nullptr;
     Utf8           externalContent;
-    bool           isExternal     = false;
-    bool           lastBuffer     = true;
+    bool           isExternal = false;
 
     uint64_t  writeTime       = 0;
     int       numErrors       = 0;
@@ -69,5 +68,6 @@ struct SourceFile : public File
     bool         formatDone    = false;
     bool         fromTests     = false;
     bool         generated     = false;
+    bool         publish       = false;
     shared_mutex mutexGetLine;
 };

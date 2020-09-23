@@ -410,6 +410,14 @@ bool SyntaxJob::doCompilerModule()
     return true;
 }
 
+bool SyntaxJob::doCompilerPublish()
+{
+    sourceFile->publish = true;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after '#publish'"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
