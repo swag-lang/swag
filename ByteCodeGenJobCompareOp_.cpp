@@ -13,8 +13,8 @@
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -180,7 +180,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
 bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)

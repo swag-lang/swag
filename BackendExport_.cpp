@@ -94,11 +94,12 @@ void Backend::emitType(TypeInfo* typeInfo)
             return;
         }
 
-        // Be sure to keep the original baked name
+        // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
+        // we take the 'converted' original struct type
         if (typeInfo->kind == TypeInfoKind::Reference)
         {
             auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-            if (typeRef->originalType->flags & TYPEINFO_BAKE)
+            if (typeRef->originalType)
                 typeInfo = typeRef->originalType;
         }
 
@@ -111,7 +112,7 @@ void Backend::emitType(TypeInfo* typeInfo)
         }
         else
         {
-            typeInfo = TypeManager::concreteReference(typeInfo);
+            //typeInfo = TypeManager::concreteReference(typeInfo);
             typeInfo->computeScopedName();
             bufferSwg.addString(typeInfo->scopedName);
         }

@@ -212,6 +212,7 @@ TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo, uint32_t flags)
 {
     typeInfo = concreteReference(typeInfo);
     typeInfo = concreteType(typeInfo, flags);
+    typeInfo = concreteReference(typeInfo);
     return typeInfo;
 }
 
