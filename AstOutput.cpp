@@ -659,20 +659,38 @@ namespace Ast
         }
 
         case AstNodeKind::Statement:
-            concat.addChar('{');
-            concat.addEol();
-            for (auto child : node->childs)
+            if (node->childs.count == 1 &&
+                node->parent->kind != AstNodeKind::FuncDecl &&
+                node->childs.front()->kind != AstNodeKind::For &&
+                node->childs.front()->kind != AstNodeKind::If &&
+                node->childs.front()->kind != AstNodeKind::While &&
+                node->childs.front()->kind != AstNodeKind::Visit &&
+                node->childs.front()->kind != AstNodeKind::Loop &&
+                node->childs.front()->kind != AstNodeKind::Switch)
             {
-                concat.addIndent(context.indent + 1);
                 context.indent++;
-                SWAG_CHECK(output(context, concat, child));
+                concat.addIndent(1);
+                SWAG_CHECK(output(context, concat, node->childs.front()));
                 context.indent--;
+            }
+            else
+            {
+                concat.addChar('{');
                 concat.addEol();
+                for (auto child : node->childs)
+                {
+                    concat.addIndent(context.indent + 1);
+                    context.indent++;
+                    SWAG_CHECK(output(context, concat, child));
+                    context.indent--;
+                    concat.addEol();
+                }
+
+                concat.addIndent(context.indent);
+                concat.addChar('}');
+                concat.addEolIndent(context.indent);
             }
 
-            concat.addIndent(context.indent);
-            concat.addChar('}');
-            concat.addEolIndent(context.indent);
             break;
 
         case AstNodeKind::FuncCallParam:
