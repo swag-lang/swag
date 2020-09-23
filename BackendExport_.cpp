@@ -9,7 +9,7 @@
 #include "Profile.h"
 #include "ModuleSaveExportJob.h"
 
-bool Backend::emitAttributes(AstNode* node, int indent)
+bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
 {
 #define ADD_ATTR(__test, __name)                   \
     {                                              \
@@ -29,7 +29,7 @@ bool Backend::emitAttributes(AstNode* node, int indent)
         }                                          \
     }
 
-    bool first = true;
+    bool first = isFirst;
     ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
     ADD_ATTR((node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "mixin");
@@ -493,8 +493,8 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             node->computeFullNameForeign(true);
             bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str());
-            SWAG_CHECK(emitAttributes(node, indent));
+            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")", module->name.c_str(), node->fullnameForeign.c_str());
+            SWAG_CHECK(emitAttributes(node, indent, false));
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }

@@ -57,7 +57,7 @@
     "attributes": {
       "patterns": [
         {
-          "name": "entity.name.tag",
+          "name": "entity.name.function.preprocessor",
           "match": "(#\\[)(\\w+)(.*)(\\])"
         }
       ]

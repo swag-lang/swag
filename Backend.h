@@ -48,7 +48,7 @@ struct Backend
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
     void      setupExportFile();
-    bool      emitAttributes(AstNode* node, int indent);
+    bool      emitAttributes(AstNode* node, int indent, bool isFirst = true);
     bool      emitAttributes(TypeInfoParam* param, int indent);
     void      emitType(TypeInfo* typeInfo);
     bool      emitGenericParameters(AstNode* node);
