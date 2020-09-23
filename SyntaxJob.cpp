@@ -178,34 +178,6 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
-bool SyntaxJob::recoverError()
-{
-    while (true)
-    {
-        sourceFile->silent++;
-        if (!tokenizer.getToken(token))
-        {
-            sourceFile->silent--;
-            return false;
-        }
-
-        sourceFile->silent--;
-        if (token.id == TokenId::CompilerUnitTest)
-            break;
-        if (token.id == TokenId::SymSemiColon)
-        {
-            while (token.id == TokenId::SymSemiColon || token.id == TokenId::SymRightCurly)
-                tokenizer.getToken(token);
-            break;
-        }
-
-        if (token.id == TokenId::EndOfFile)
-            return false;
-    }
-
-    return true;
-}
-
 bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind)
 {
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
@@ -284,9 +256,8 @@ JobResult SyntaxJob::execute()
     sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
 
-    bool result = true;
-    bool ok     = tokenizer.getToken(token);
-    bool skip   = false;
+    bool ok   = tokenizer.getToken(token);
+    bool skip = false;
     while (!skip)
     {
         // Recover from last syntax error
@@ -295,10 +266,7 @@ JobResult SyntaxJob::execute()
             // If there's an error, then we must stop at syntax pass
             sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
             sourceFile->module->setBuildPass(sourceFile->buildPass);
-            if (!recoverError())
-                return JobResult::ReleaseJob;
-            result = false;
-            ok     = true;
+            return JobResult::ReleaseJob;
         }
 
         if (token.id == TokenId::EndOfFile)

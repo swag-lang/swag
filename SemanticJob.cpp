@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "SourceFile.h"
+#include "Module.h"
 
 thread_local Pool<SemanticJob> g_Pool_semanticJob;
 
@@ -79,7 +80,7 @@ JobResult SemanticJob::execute()
     context.sourceFile = sourceFile;
     context.result     = ContextResult::Done;
 
-    while (!nodes.empty())
+    while (!nodes.empty() && !module->numErrors)
     {
         auto node    = nodes.back();
         context.node = node;

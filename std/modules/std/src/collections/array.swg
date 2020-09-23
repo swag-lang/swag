@@ -1,8 +1,10 @@
+#publish
+
 namespace std
 {
     using swag
 
-    public struct(T) Array
+    struct(T) Array
     {
         allocator:  const IAllocator
         buffer:     *T
@@ -10,7 +12,7 @@ namespace std
         capacity:   u32
     }
 
-    public impl Array
+    impl Array
     {
         func opCount(using self)->u32
         {

@@ -47,7 +47,6 @@ struct SyntaxJob : public Job
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);
-    bool recoverError();
     bool checkIsSingleIdentifier(AstNode* node);
     void moveAttributes(AstNode* from, AstNode* to);
 
