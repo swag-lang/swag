@@ -942,22 +942,25 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         // Generate an expression of the form "var __tmp_0 = assignment"
         ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
         auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
-        AstVarDecl*    varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-        varNode->kind             = kind;
+        AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        orgVarNode->kind             = kind;
 
         // This will avoid to initialize the tuple before the affectation
-        varNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+        orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+        orgVarNode->flags |= AST_R_VALUE;
 
-        Ast::addChildBack(varNode, type);
-        varNode->type = type;
-        Ast::addChildBack(varNode, assign);
-        varNode->assignment = assign;
+        Ast::addChildBack(orgVarNode, type);
+        orgVarNode->type = type;
+        Ast::addChildBack(orgVarNode, assign);
+        orgVarNode->assignment = assign;
         if (assign)
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-        varNode->flags |= AST_R_VALUE | AST_GENERATED;
-        SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+            orgVarNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+
+        SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
 
         // And reference that variable, in the form value = __tmp_0.item?
+        orgVarNode->publicName = "(";
+
         int idx = 0;
         for (auto child : leftNode->childs)
         {
@@ -966,16 +969,22 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
 
+            if (idx)
+                orgVarNode->publicName += ", ";
+            orgVarNode->publicName += identifier->name;
+
             ScopedLocation scopedLoc1(this, &identifier->token);
-            varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-            varNode->kind  = kind;
-            varNode->token = identifier->token;
-            varNode->flags |= AST_R_VALUE;
+            auto           varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->kind          = kind;
+            varNode->token         = identifier->token;
+            varNode->flags |= AST_R_VALUE | AST_GENERATED;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
+
+        orgVarNode->publicName += ")";
     }
 
     // Single declaration/affectation

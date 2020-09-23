@@ -383,6 +383,7 @@ struct AstVarDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
+    Utf8     publicName;
     AstNode* type;
     AstNode* assignment;
 };

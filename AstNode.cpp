@@ -303,6 +303,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstVarDecl>();
     newNode->copyFrom(context, this);
+    newNode->publicName = publicName;
 
     newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);

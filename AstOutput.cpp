@@ -111,6 +111,8 @@ namespace Ast
     {
         if (!node)
             return true;
+        if (node->flags & AST_GENERATED)
+            return true;
 
         if (node->flags & AST_IDENTIFIER_BACKTICK)
             concat.addChar('`');
@@ -204,7 +206,7 @@ namespace Ast
                 if (child->flags & AST_GENERATED)
                     continue;
                 if (idx++)
-                    concat.addChar(',');
+                    concat.addString(", ");
                 SWAG_CHECK(output(context, concat, child));
             }
 
@@ -448,13 +450,26 @@ namespace Ast
             concat.addChar(')');
             break;
 
+        case AstNodeKind::Alias:
+        {
+            CONCAT_FIXED_STR(concat, "alias ");
+            concat.addString(node->name.c_str());
+            CONCAT_FIXED_STR(concat, " = ");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            break;
+        }
+
         case AstNodeKind::VarDecl:
         {
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+
             if (varDecl->type)
             {
                 CONCAT_FIXED_STR(concat, "var ");
-                concat.addString(node->name);
+                if (!varDecl->publicName.empty())
+                    concat.addString(varDecl->publicName);
+                else
+                    concat.addString(varDecl->name);
                 CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(output(context, concat, varDecl->type));
                 if (varDecl->assignment)
@@ -465,21 +480,15 @@ namespace Ast
             }
             else
             {
-                concat.addString(node->name);
+                if (!varDecl->publicName.empty())
+                    concat.addString(varDecl->publicName);
+                else
+                    concat.addString(varDecl->name);
                 CONCAT_FIXED_STR(concat, " := ");
                 if (varDecl->assignment)
                     SWAG_CHECK(output(context, concat, varDecl->assignment));
             }
 
-            break;
-        }
-
-        case AstNodeKind::Alias:
-        {
-            CONCAT_FIXED_STR(concat, "alias ");
-            concat.addString(node->name.c_str());
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
         }
 
@@ -497,7 +506,11 @@ namespace Ast
                 break;
             }
 
-            concat.addString(node->name);
+            if (!varDecl->publicName.empty())
+                concat.addString(varDecl->publicName);
+            else
+                concat.addString(varDecl->name);
+
             if (varDecl->type)
             {
                 CONCAT_FIXED_STR(concat, ": ");
@@ -633,16 +646,19 @@ namespace Ast
         }
 
         case AstNodeKind::StatementNoScope:
+        {
             for (auto child : node->childs)
             {
-                concat.addIndent(context.indent);
+                if (child->flags & AST_GENERATED)
+                    continue;
                 context.indent++;
                 SWAG_CHECK(output(context, concat, child));
                 context.indent--;
-                concat.addEol();
+                concat.addEolIndent(context.indent);
             }
 
             break;
+        }
 
         case AstNodeKind::Statement:
             concat.addChar('{');
