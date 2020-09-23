@@ -165,6 +165,10 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     // We now only need one register
     truncRegisterRC(context, r0, 1);
 
+    // Register list can be stored in the parent, so we need to update it, otherwise we
+    // will free one register twice
+    context->node->parent->resultRegisterRC = r0;
+
     switch (typeInfo->sizeOf)
     {
     case 1:
