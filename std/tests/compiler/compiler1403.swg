@@ -6,7 +6,7 @@ impl A
 {
     func(op: string) opBinary(self, other: Self)->Self
     {
-        return A()
+        return A{}
     }
 }
 

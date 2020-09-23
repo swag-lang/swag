@@ -25,7 +25,7 @@ impl ST
             /*var res: ST
             res.x = self.x + other.x
             return res*/
-            return ST(self.x + other.x)
+            return ST{self.x + other.x}
         }
         #else
             return 0

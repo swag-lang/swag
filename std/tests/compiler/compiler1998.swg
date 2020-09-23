@@ -11,7 +11,7 @@ struct B
 
 #test
 {
-    pt := B(v: 555, x: 666's32)
+    pt := B{v: 555, x: 666's32}
     @assert(pt.x == 666)
     @assert(pt.val.x == 666)
     @assert(pt.v == 555)

@@ -9,7 +9,7 @@ impl Vector2
     //#[swag.printbc]
     func normalize(using self)->Vector2
     {
-        return Vector2(x + 1, y + 1)
+        return Vector2{x + 1, y + 1}
     }
 }
 

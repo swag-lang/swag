@@ -18,7 +18,7 @@ impl Argb2036
 
 #test
 {
-    color := Argb2036(255, 255, 128, 0)
+    color := Argb2036{255, 255, 128, 0}
     (a, r, g, b) := color.extract()
     @assert(a == 1)
     @assert(r == 1)

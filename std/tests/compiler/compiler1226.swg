@@ -6,8 +6,8 @@ struct Vector2
 
 func normalize()->Vector2
 {
-	return Vector2(1, 1)
-}   
+	return Vector2{1, 1}
+}
 
 impl Vector2
 {

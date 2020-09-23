@@ -15,8 +15,8 @@ impl A
 
 #test
 {
-    x := A(10)
-    y := A(20)
+    x := A{10}
+    y := A{20}
     @assert((x <=> y) == -1)
     x.x = 30
     @assert((x <=> y) == 1)

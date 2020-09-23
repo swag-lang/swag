@@ -363,7 +363,7 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 Utf8 TypeInfoList::computeTupleName(JobContext* context)
 {
-    Utf8 structName = "__" + context->sourceFile->scopePrivate->name + "_tuple_";
+    Utf8 structName = context->sourceFile->scopePrivate->name + "_tuple_";
 
     int numChilds = (int) subTypes.size();
     for (int idx = 0; idx < numChilds; idx++)

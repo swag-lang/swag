@@ -45,12 +45,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         // Function call parameters
         if (!tokenizer.lastTokenIsEOL)
         {
-            if (!identifierCallForStruct && token.id == TokenId::SymLeftParen)
+            if (token.id == TokenId::SymLeftParen)
             {
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
-            else if (identifierCallForStruct && token.id == TokenId::SymLeftCurly)
+            else if (!tokenizer.lastTokenIsBlank && token.id == TokenId::SymLeftCurly)
             {
                 ScopedFlags sk(this, AST_CALL_FOR_STRUCT);
                 SWAG_CHECK(eatToken(TokenId::SymLeftCurly));

@@ -82,4 +82,5 @@ struct Tokenizer
     bool           endReached          = false;
     bool           forceLastTokenIsEOL = false;
     bool           lastTokenIsEOL      = false;
+    bool           lastTokenIsBlank    = false;
 };

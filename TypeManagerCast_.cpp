@@ -2079,7 +2079,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 }
 
-bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* fromNode)
+bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo* toType, AstNode* fromNode)
 {
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
@@ -2128,7 +2128,9 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->inheritTokenLocation(fromNode->token);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
-    int countParams            = (int) fromNode->childs.size();
+    identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
+
+    int countParams = (int) fromNode->childs.size();
     if (parentForRef == fromNode)
         countParams--;
     for (int i = 0; i < countParams; i++)
@@ -2170,7 +2172,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
     if (fromType->kind == TypeInfoKind::TypeListTuple && toType->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(convertExpressionListToVarDecl(context, toType, fromNode));
+        SWAG_CHECK(convertLiteralTupleToStruct(context, toType, fromNode));
         return true;
     }
 

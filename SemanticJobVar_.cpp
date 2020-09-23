@@ -481,6 +481,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     context->node = savedNode;
 
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR);
+    identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
     varDecl->type->flags &= ~AST_NO_BYTECODE_CHILDS;
     varDecl->type->flags |= AST_HAS_STRUCT_PARAMETERS;

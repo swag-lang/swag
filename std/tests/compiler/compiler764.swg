@@ -8,8 +8,8 @@ struct Point
 
 //#[swag.printbc]
 #test
-{	
-	cpt := Point()
+{
+	cpt := Point{}
 	@assert(cpt.x == 666)
 	@assert(cpt.y == 0)
 }

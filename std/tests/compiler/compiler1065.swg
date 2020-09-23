@@ -7,6 +7,6 @@ struct Point
 
 #test
 {
-	pt := Point()
+	pt := Point{}
 	@assert(pt.x == 4)
 }

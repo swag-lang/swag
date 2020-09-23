@@ -39,17 +39,17 @@ namespace std.math
 
         func(op: string) opBinary(using self, other: Self)->Self
         {
-            #if   op == "+" return Point(x + other.x, y + other.y)
-            #elif op == "-" return Point(x - other.x, y - other.y)
-            #elif op == "*" return Point(x * other.x, y * other.y)
+            #if   op == "+" return Point{x + other.x, y + other.y}
+            #elif op == "-" return Point{x - other.x, y - other.y}
+            #elif op == "*" return Point{x * other.x, y * other.y}
             #else           #assert(false, "unsupported binary operation '" ~op~ "'")
         }
 
         func(op: string) opBinary(using self, value: f32)->Self
         {
-            #if   op == "+" return Point(x + value, y + value)
-            #elif op == "-" return Point(x - value, y - value)
-            #elif op == "*" return Point(x * value, y * value)
+            #if   op == "+" return Point{x + value, y + value}
+            #elif op == "-" return Point{x - value, y - value}
+            #elif op == "*" return Point{x * value, y * value}
             #else           #assert(false, "unsupported binary operation '" ~op~ "'")
         }
 

@@ -110,7 +110,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    Utf8 name = "__" + sourceFile->scopePrivate->name + "_tuple_";
+    Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
     int  idx  = 0;
     while (token.id != TokenId::EndOfFile)
     {
@@ -311,12 +311,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
-        // Call parameters of an identifier must be '{' and not '(', because this can only be a struct, so this
-        // is more logic
-        identifierCallForStruct = inTypeVarDecl;
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-        identifierCallForStruct = false;
-
         if (inTypeVarDecl)
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;

@@ -254,10 +254,17 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
-void SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifier* identifier)
+bool SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifier* identifier)
 {
     auto sourceFile = context->sourceFile;
+    auto callP      = identifier->callParameters;
     identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
+
+    // Be sure it's the NAME{} syntax
+    if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+    {
+        return context->report({callP, callP->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
+    }
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
@@ -288,6 +295,7 @@ void SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifie
     context->job->nodes.push_back(idNode);
     context->job->nodes.push_back(varNode);
     context->job->nodes.push_back(identifier);
+    return true;
 }
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
@@ -470,7 +478,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // A struct with parameters is in fact the creation of a temporary local variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
-            createTmpLocalVarStruct(context, identifier);
+            SWAG_CHECK(createTmpLocalVarStruct(context, identifier));
+
+        // Be sure it's the NAME{} syntax
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+            return context->report({identifier->callParameters, identifier->callParameters->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)

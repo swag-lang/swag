@@ -160,7 +160,6 @@ struct SyntaxJob : public Job
     bool                canChangeModule         = true;
     bool                moduleSpecified         = false;
     bool                inFunCall               = false;
-    bool                identifierCallForStruct = false;
 
     void reset() override
     {
@@ -179,7 +178,6 @@ struct SyntaxJob : public Job
         canChangeModule         = true;
         moduleSpecified         = false;
         inFunCall               = false;
-        identifierCallForStruct = false;
     }
 
     void release() override

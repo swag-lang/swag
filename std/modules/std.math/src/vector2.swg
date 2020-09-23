@@ -49,17 +49,17 @@ namespace std.math
 
             func(op: string) opBinary(using self, other: Self)->Self
             {
-                #if   op == "+" return Vector2(x + other.x, y + other.y)
-                #elif op == "-" return Vector2(x - other.x, y - other.y)
-                #elif op == "*" return Vector2(x * other.x, y * other.y)
+                #if   op == "+" return Vector2{x + other.x, y + other.y}
+                #elif op == "-" return Vector2{x - other.x, y - other.y}
+                #elif op == "*" return Vector2{x * other.x, y * other.y}
                 #else           #assert(false, "unsupported binary operation '" ~op~ "'")
             }
 
             func(op: string) opBinary(using self, value: Float)->Self
             {
-                #if   op == "+" return Vector2(x + value, y + value)
-                #elif op == "-" return Vector2(x - value, y - value)
-                #elif op == "*" return Vector2(x * value, y * value)
+                #if   op == "+" return Vector2{x + value, y + value}
+                #elif op == "-" return Vector2{x - value, y - value}
+                #elif op == "*" return Vector2{x * value, y * value}
                 #else           #assert(false, "unsupported binary operation '" ~op~ "'")
             }
         }
@@ -133,7 +133,7 @@ namespace std.math
                 norm := sqrt((x * x) + (y * y))
                 debug.assert(!isZeroEpsilon(norm))
                 norm = 1 / norm
-                return Vector2(x * norm, y * norm)
+                return Vector2{x * norm, y * norm}
             }
 
             // Normalize this vector (set its length to 1) even if its length is almost null
@@ -159,7 +159,7 @@ namespace std.math
                 if isZeroEpsilon(norm)
                     return Zero
                 norm = 1 / norm
-                return Vector2(x * norm, y * norm)
+                return Vector2{x * norm, y * norm}
             }
 		}
 	}

@@ -15,5 +15,5 @@ func toto(pt: Point)
 //#[swag.printbc]
 #test
 {
-	toto(Point(1.0, 2.0))
+	toto(Point{1.0, 2.0})
 }

@@ -165,6 +165,7 @@ bool Tokenizer::getToken(Token& token)
 {
     lastTokenIsEOL      = forceLastTokenIsEOL;
     forceLastTokenIsEOL = false;
+    lastTokenIsBlank    = false;
 
     unsigned offset;
     while (true)
@@ -189,6 +190,7 @@ bool Tokenizer::getToken(Token& token)
 
         if (SWAG_IS_BLANK(c))
         {
+            lastTokenIsBlank = true;
             continue;
         }
 
