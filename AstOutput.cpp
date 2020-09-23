@@ -138,7 +138,6 @@ namespace Ast
             auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
             concat.addString("break ");
             concat.addString(nodeBreak->label);
-            concat.addEolIndent(context.indent);
             break;
         }
 
@@ -147,7 +146,6 @@ namespace Ast
             auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
             concat.addString("continue ");
             concat.addString(nodeContinue->label);
-            concat.addEolIndent(context.indent);
             break;
         }
 
