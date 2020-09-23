@@ -1,15 +1,17 @@
+#publish
+
 namespace std
 {
     using swag
 
-    public struct(K, V) HashTableEntry
+    struct(K, V) HashTableEntry
     {
         hash:   u32
         key:    K
         value:  V
     }
 
-    public struct(K, V) HashTable
+    struct(K, V) HashTable
     {
         allocator:  const IAllocator
         table:      *HashTableEntry
@@ -18,7 +20,7 @@ namespace std
         deleted:    u32 // Number of deleted entries
     }
 
-    public impl HashTable
+    impl HashTable
     {
         const HASH_FREE = 0'u32
         const HASH_DELETED = 1'u32
