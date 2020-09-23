@@ -421,7 +421,11 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 {
     auto savedNode = context->node;
-    auto varDecl   = static_cast<AstVarDecl*>(context->node->parent);
+    auto parent    = context->node->parent;
+    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::LetDecl)
+        parent = parent->parent;
+    SWAG_ASSERT(parent);
+    auto varDecl = (AstVarDecl*) parent;
 
     auto assign = varDecl->assignment;
     if (!assign || assign->kind != AstNodeKind::ExpressionList)

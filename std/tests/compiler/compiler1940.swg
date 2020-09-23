@@ -8,7 +8,7 @@ struct(T) B
 
 impl B
 {
-    //#[swag.printbc]
+    #[swag.safety(true)]
     func toto(using self)
     {
         xxx[0] = 0
