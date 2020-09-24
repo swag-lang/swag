@@ -27,9 +27,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     int      numCallParams = 0;
     if (node->parent->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
-        allParams       = identifier->callParameters;
-        numCallParams   = allParams ? (int) allParams->childs.size() : 0;
+        auto identifier                             = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        allParams                                   = identifier->callParameters;
+        numCallParams                               = allParams ? (int) allParams->childs.size() : 0;
     }
     else
     {

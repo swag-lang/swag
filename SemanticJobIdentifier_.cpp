@@ -639,19 +639,26 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     }
                 }
 
+                // First pass, we inline the function.
+                // The identifier for the function call will be reresolved later when the content
+                // of the inline os done.
                 if (!(identifier->doneFlags & AST_DONE_INLINED))
                 {
                     identifier->doneFlags |= AST_DONE_INLINED;
                     SWAG_CHECK(makeInline(context, funcDecl, identifier));
                 }
-
-                // For a return by copy, need to reserve room on the stack for the return result
-                if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+                else
                 {
-                    identifier->flags |= AST_TRANSIENT;
-                    identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
-                    identifier->ownerScope->startStackSize += returnType->sizeOf;
-                    identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
+                    SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
+
+                    // For a return by copy, need to reserve room on the stack for the return result
+                    if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+                    {
+                        identifier->flags |= AST_TRANSIENT;
+                        identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
+                        identifier->ownerScope->startStackSize += returnType->sizeOf;
+                        identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
+                    }
                 }
 
                 identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
