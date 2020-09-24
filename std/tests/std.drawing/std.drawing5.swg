@@ -1,9 +1,12 @@
 #import "std.drawing"
 using std.drawing
 
-//#[swag.printbc]
 #test
 {
 	var y: Color
-    //y.setRgb(1.0, 1.0, 1.0)
+    y.setRgb(1.0, 1.0, 1.0)
+    @assert(cast(s64) y.a == 255)
+    @assert(cast(s64) y.r == 255)
+    @assert(cast(s64) y.g == 255)
+    @assert(cast(s64) y.b == 255)
 }

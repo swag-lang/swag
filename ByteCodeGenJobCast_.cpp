@@ -832,7 +832,7 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
     AstNode* node         = context->node;
-    auto     typeInfo     = TypeManager::concreteType(node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo);
+    auto     typeInfo     = TypeManager::concreteType(node->typeInfo);
     auto     exprNode     = node->childs[0];
     auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));

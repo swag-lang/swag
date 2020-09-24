@@ -248,7 +248,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (typeInfo != from->typeInfo)
         flags |= AST_FROM_GENERIC;
 
-    castedTypeInfo         = from->castedTypeInfo;
+    // This should not be copied. If will be recomputed if necessary.
+    // This can cause some problems with inline functions and autocast, as inline functions are evaluated
+    // as functions, and also each time they are inlined.
+    //castedTypeInfo = from->castedTypeInfo;
+
     resolvedSymbolName     = from->resolvedSymbolName;
     resolvedSymbolOverload = from->resolvedSymbolOverload;
 
