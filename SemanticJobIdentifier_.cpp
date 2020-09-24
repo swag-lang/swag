@@ -650,15 +650,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 else
                 {
                     SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
-
-                    // For a return by copy, need to reserve room on the stack for the return result
-                    if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-                    {
-                        identifier->flags |= AST_TRANSIENT;
-                        identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
-                        identifier->ownerScope->startStackSize += returnType->sizeOf;
-                        identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
-                    }
                 }
 
                 identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;

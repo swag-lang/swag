@@ -72,10 +72,19 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         return true;
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;
 
+    auto func                   = node->func;
     node->scope->startStackSize = node->ownerScope->startStackSize;
 
+    // For a return by copy, need to reserve room on the stack for the return result
+    if (func->returnType && func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        node->flags |= AST_TRANSIENT;
+        node->fctCallStorageOffset = node->scope->startStackSize;
+        node->scope->startStackSize += func->returnType->typeInfo->sizeOf;
+        node->ownerFct->stackSize  = max(node->ownerFct->stackSize, node->scope->startStackSize);
+    }
+
     // Register all function parameters as inline symbols
-    auto func = node->func;
     if (func->parameters)
     {
         for (auto funcParam : func->parameters->childs)

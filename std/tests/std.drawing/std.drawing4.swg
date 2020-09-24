@@ -5,5 +5,24 @@ using std.drawing
 #test
 {
 	var y: Color = 0xFFFF0000
-    //@assert(y.toFloat().a == 1)
+    /*@print(cast(f64) y.toFloat().a)
+    @print("\n")
+    @print(cast(f64) y.r)
+    @print("\n")
+    @print(cast(f64) y.g)
+    @print("\n")
+    @print(cast(f64) y.b)*/
+
+    /*@print(cast(f64) y.toFloat().a)
+    @print("\n")
+    @print(cast(f64) y.toFloat().r)
+    @print("\n")
+    @print(cast(f64) y.toFloat().g)
+    @print("\n")
+    @print(cast(f64) y.toFloat().b)*/
+
+    /*@assert(y.toFloat().a == 1)
+    @assert(y.toFloat().r == 1)
+    @assert(y.toFloat().g == 0)
+    @assert(y.toFloat().b == 0)*/
 }
