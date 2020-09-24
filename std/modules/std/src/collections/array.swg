@@ -1,4 +1,4 @@
-#publish
+#public
 
 namespace std
 {

@@ -42,7 +42,7 @@ struct Module
 {
     bool     setup(const Utf8& moduleName);
     void     allocateBackend();
-    void     addPublishFile(SourceFile* file);
+    void     addPublicSourceFile(SourceFile* file);
     void     addFile(SourceFile* file);
     void     removeFile(SourceFile* file);
     bool     error(const Utf8& msg);
@@ -87,7 +87,7 @@ struct Module
 
     shared_mutex     mutexCompilerPass;
     set<SourceFile*> filesForCompilerPass;
-    set<SourceFile*> filesPublish;
+    set<SourceFile*> publicSourceFiles;
 
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;

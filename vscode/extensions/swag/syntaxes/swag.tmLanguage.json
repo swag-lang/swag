@@ -146,7 +146,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(ast|skip|publish|module|unittest|assert|print|run|bake|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
+          "match": "(#)\\b(ast|skip|public|module|unittest|assert|print|run|bake|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib)"
         }
       ]
     },

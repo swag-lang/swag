@@ -50,8 +50,8 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         files.push_back(file);
     }
 
-    // Add all #publish files
-    for (auto one : depModule->filesPublish)
+    // Add all #public files
+    for (auto one : depModule->publicSourceFiles)
     {
         auto file      = g_Allocator.alloc<SourceFile>();
         file->name     = one->name;

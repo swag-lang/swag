@@ -1,4 +1,4 @@
-#publish
+#public
 #foreignlib "icuuc"
 
 namespace icu

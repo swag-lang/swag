@@ -68,7 +68,7 @@ struct SourceFile : public File
     bool         formatDone    = false;
     bool         fromTests     = false;
     bool         generated     = false;
-    bool         publish       = false;
+    bool         forcedPublic       = false;
     bool         imported      = false;
     shared_mutex mutexGetLine;
 };

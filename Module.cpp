@@ -149,10 +149,10 @@ void Module::allocateBackend()
     }
 }
 
-void Module::addPublishFile(SourceFile* file)
+void Module::addPublicSourceFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
-    filesPublish.insert(file);
+    publicSourceFiles.insert(file);
 }
 
 void Module::addFile(SourceFile* file)
@@ -176,9 +176,9 @@ void Module::addFile(SourceFile* file)
         }
     }
 
-    // If the file is flagged as #publish, register it
-    if (file->publish)
-        filesPublish.insert(file);
+    // If the file is flagged as #public, register it
+    if (file->forcedPublic)
+        publicSourceFiles.insert(file);
 }
 
 void Module::removeFile(SourceFile* file)
@@ -205,10 +205,10 @@ void Module::removeFile(SourceFile* file)
             filesForCompilerPass.erase(it);
     }
 
-    // If the file is flagged as #publish, unregister it
-    auto it = filesPublish.find(file);
-    if (it != filesPublish.end())
-        filesPublish.erase(it);
+    // If the file is flagged as #public, unregister it
+    auto it = publicSourceFiles.find(file);
+    if (it != publicSourceFiles.end())
+        publicSourceFiles.erase(it);
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
@@ -577,7 +577,7 @@ bool Module::mustOutputSomething()
     else if (files.empty())
         mustOutput = false;
     // every files are published
-    else if (files.size() == filesPublish.size())
+    else if (files.size() == publicSourceFiles.size())
         mustOutput = false;
     // module must have unittest errors, so not output
     else if (hasUnittestError)

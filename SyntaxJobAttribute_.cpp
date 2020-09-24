@@ -57,7 +57,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
         attr = ATTRIBUTE_PUBLIC;
         SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PRIVATE), error(token, "'private' and 'public' attributes are mutually exclusive"));
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
-        SWAG_VERIFY(!sourceFile->publish, error(token, "'public' attribute cannot be used in a file marked with '#publish', because the whole file is implicitly public"));
+        SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'public' attribute cannot be used in a file marked with '#public', because the whole file is implicitly public"));
         if (currentScope->kind == ScopeKind::File)
             newScope = currentScope->parentScope;
         else

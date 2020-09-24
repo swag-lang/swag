@@ -410,17 +410,17 @@ bool SyntaxJob::doCompilerModule()
     return true;
 }
 
-bool SyntaxJob::doCompilerPublish()
+bool SyntaxJob::doCompilerPublic()
 {
-    SWAG_VERIFY(!sourceFile->publish, sourceFile->report({sourceFile, token, "#publish can only be specified once per file"}));
+    SWAG_VERIFY(!sourceFile->forcedPublic, sourceFile->report({sourceFile, token, "#public can only be specified once per file"}));
     if (!sourceFile->imported)
     {
-        sourceFile->publish = true;
-        sourceFile->module->addPublishFile(sourceFile);
+        sourceFile->forcedPublic = true;
+        sourceFile->module->addPublicSourceFile(sourceFile);
     }
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after '#publish'"));
+    SWAG_CHECK(eatSemiCol("after '#public'"));
     return true;
 }
 

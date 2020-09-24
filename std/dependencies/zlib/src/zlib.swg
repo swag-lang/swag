@@ -1,4 +1,4 @@
-#publish
+#public
 
 // zlib general purpose compression library
 // version 1.2.11, January 15th, 2017
