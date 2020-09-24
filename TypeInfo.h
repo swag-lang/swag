@@ -405,6 +405,7 @@ struct TypeInfoArray : public TypeInfo
     TypeInfoArray()
     {
         kind = TypeInfoKind::Array;
+        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     int numRegisters() override

@@ -413,8 +413,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Interface &&
         typeInfo->returnType->kind != TypeInfoKind::Reference &&
+        typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->report({typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
+        return context->report({typeNode->childs.front(), format("a function cannot return a value of type '%s'", typeInfo->returnType->name.c_str())});
 
     typeInfo->computeName();
 
