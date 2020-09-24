@@ -9,7 +9,7 @@
 
 thread_local Pool<SemanticJob> g_Pool_semanticJob;
 
-bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNode* node)
+bool SemanticJob::internalError(JobContext* context, const char* msg, AstNode* node)
 {
     if (!node)
         node = context->node;

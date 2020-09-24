@@ -6,6 +6,7 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
 {
@@ -141,6 +142,16 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     }
     else
     {
+        // Be sure it has been collected to the constant segment. Usually, this is done after casting, because
+        // be could need to change the values before the collect. If it's not done yet, that means that the cast
+        // did not take place (when passing to a varargs for example).
+        if (!(node->doneFlags & AST_DONE_EXPRLIST_CST))
+        {
+            node->doneFlags |= AST_DONE_EXPRLIST_CST;
+            auto module = node->sourceFile->module;
+            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.reg.offset, &module->constantSegment, nullptr, typeList, node));
+        }
+
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.offset;
         emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32         = (uint32_t) typeList->subTypes.size();
     }

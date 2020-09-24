@@ -8,9 +8,14 @@ func toto(x: ...)
     @assert(v[3] == 4)
 }
 
+/*func toto(x: const [4] s32)
+{
+    @print(cast(s64) x[0])
+}
+*/
+
 //#[swag.printbc]
 #test
 {
-    arr := @[1,2,3,4]
-    toto(arr)
+    toto(@[1,2,3,4])
 }

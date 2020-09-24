@@ -425,6 +425,9 @@
     <ClCompile Include="ByteCodeOptimizer_stack_.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticJobCollect_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

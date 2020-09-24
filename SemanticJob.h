@@ -63,7 +63,7 @@ struct SemanticJob : public Job
 
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool         error(SemanticContext* context, const Utf8& msg);
-    static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
+    static bool         internalError(JobContext* context, const char* msg, AstNode* node = nullptr);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
@@ -89,12 +89,12 @@ struct SemanticJob : public Job
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
-    static bool reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t baseOffset, uint32_t& offset, AstNode* node, DataSegment* segment);
-    static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool collectStructLiteralsNoLock(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
+    static bool collectLiteralsToSegmentNoLock(JobContext* context, uint32_t baseOffset, uint32_t& offset, AstNode* node, DataSegment* segment);
+    static bool reserveAndStoreToSegmentNoLock(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool storeToSegmentNoLock(JobContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static void setupContextualGenericTypeReplacement(SemanticContext* context);
     static bool matchIdentifierError(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node);

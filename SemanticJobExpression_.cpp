@@ -72,7 +72,9 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeInfo;
 
-    // Reserve
+    // If the literal tuple is not constant, then we need to reserve some space in the
+    // stack in order to store it.
+    // Otherwise the tuple will come from the constant segment.
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
         node->computedValue.reg.offset = node->ownerScope->startStackSize;
@@ -111,7 +113,9 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeInfo;
 
-    // Reserve
+    // If the literal array is not constant, then we need to reserve some space in the
+    // stack in order to store it.
+    // Otherwise the array will come from the constant segment.
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
         node->computedValue.reg.offset = node->ownerScope->startStackSize;
