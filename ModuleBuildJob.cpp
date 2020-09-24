@@ -177,40 +177,9 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::SemanticModule;
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
-            string publishPath = module->path + "/publish";
-            if (fs::exists(publishPath))
-            {
-                // Everything at the root of the /publish folder will be copied "as is" in the output directory
-                OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
-                    auto job          = g_Pool_copyFileJob.alloc();
-                    job->module       = module;
-                    job->sourcePath   = publishPath + "/" + cFileName;
-                    job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
-                    job->dependentJob = this;
-                    jobsToAdd.push_back(job);
-                });
-
-                // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
-                auto osArchPath = publishPath;
-                osArchPath += "/";
-                osArchPath += g_Workspace.GetOsName();
-                osArchPath += "-";
-                osArchPath += g_Workspace.GetArchName();
-                if (fs::exists(osArchPath))
-                {
-                    OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
-                        auto job          = g_Pool_copyFileJob.alloc();
-                        job->module       = module;
-                        job->sourcePath   = osArchPath + "/" + cFileName;
-                        job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
-                        job->dependentJob = this;
-                        jobsToAdd.push_back(job);
-                    });
-                }
-
-                // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and the scheduler will
-                // execute them when possible
-            }
+            publishFilesToTarget();
+            // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and the scheduler will
+            // execute them when possible
         }
     }
 
@@ -492,4 +461,40 @@ JobResult ModuleBuildJob::execute()
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;
+}
+
+void ModuleBuildJob::publishFilesToTarget()
+{
+    string publishPath = module->path + "/publish";
+    if (!fs::exists(publishPath))
+        return;
+
+    // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
+    // current target is
+    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+        auto job          = g_Pool_copyFileJob.alloc();
+        job->module       = module;
+        job->sourcePath   = publishPath + "/" + cFileName;
+        job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+        job->dependentJob = this;
+        jobsToAdd.push_back(job);
+    });
+
+    // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
+    auto osArchPath = publishPath;
+    osArchPath += "/";
+    osArchPath += g_Workspace.GetOsName();
+    osArchPath += "-";
+    osArchPath += g_Workspace.GetArchName();
+    if (fs::exists(osArchPath))
+    {
+        OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
+            auto job          = g_Pool_copyFileJob.alloc();
+            job->module       = module;
+            job->sourcePath   = osArchPath + "/" + cFileName;
+            job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+            job->dependentJob = this;
+            jobsToAdd.push_back(job);
+        });
+    }
 }
