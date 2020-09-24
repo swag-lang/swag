@@ -9,40 +9,30 @@
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
+    // Two registers. One for the pointer to the value, and one for the typeinfo.
     RegisterList r0;
     reserveLinearRegisterRC2(context, r0);
     SWAG_ASSERT(exprNode->resultRegisterRC.size() <= 2);
 
+    // This is the value part.
     // Make a pointer to the value
-    if (fromTypeInfo->kind == TypeInfoKind::Native)
+    if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
     {
-        if (exprNode->resultRegisterRC.size() == 2)
-        {
-            // Be sure registers are contiguous, as we address the first of them
-            SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
-        }
-        else
-        {
-            SWAG_ASSERT(exprNode->resultRegisterRC.size() == 1);
-            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
-        }
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Slice)
+    else if (exprNode->resultRegisterRC.size() == 2)
     {
         // Be sure registers are contiguous, as we address the first of them
         SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
     }
-    else if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
-    {
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
-    }
     else
     {
-        return internalError(context, "emitCastToNativeAny, invalid type", exprNode);
+        SWAG_ASSERT(exprNode->resultRegisterRC.size() == 1);
+        emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
     }
 
+    // This is the type part.
     // Get concrete typeinfo from constant segment
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
