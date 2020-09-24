@@ -36,9 +36,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                 {
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job          = g_Pool_syntaxJob.alloc();
                         auto file         = g_Allocator.alloc<SourceFile>();
-                        job->sourceFile   = file;
                         file->fromTests   = theModule->fromTestsFolder;
                         file->name        = cFileName;
                         fs::path pathFile = tmp.c_str();
@@ -46,6 +44,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                         file->path      = normalizePath(pathFile);
                         file->writeTime = writeTime;
                         theModule->addFile(file);
+
+                        auto job        = g_Pool_syntaxJob.alloc();
+                        job->sourceFile = file;
                         g_ThreadMgr.addJob(job);
                     }
                 }
@@ -66,8 +67,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     moduleName += cFileName;
 
     // Create theModule
-    auto theModule             = g_Workspace.createOrUseModule(moduleName);
-    theModule->fromTestsFolder = parent == "tests";
+    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == "tests");
 
     // Parse all files in the "src" sub folder, except for tests where all the source code
     // is at the root folder

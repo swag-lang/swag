@@ -40,9 +40,11 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
+    void     addRuntime();
     bool     setup(const Utf8& moduleName);
     void     allocateBackend();
     void     addPublicSourceFile(SourceFile* file);
+    void     addFileNoLock(SourceFile* file);
     void     addFile(SourceFile* file);
     void     removeFile(SourceFile* file);
     bool     error(const Utf8& msg);

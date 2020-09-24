@@ -56,6 +56,34 @@ bool Module::canGenerateLegit()
     return true;
 }
 
+void Module::addRuntime()
+{
+    if (isBootStrap)
+        return;
+
+    // Get swag.runtime.swg file
+    void*    ptr;
+    uint32_t size;
+    if (!OS::getEmbeddedTextFile(OS::ResourceFile::SwagRuntime, &ptr, &size))
+    {
+        g_Log.error("internal fatal error: unable to load internal 'swag.runtime.swg' file");
+        exit(-1);
+    }
+
+    auto     file       = g_Allocator.alloc<SourceFile>();
+    fs::path p          = g_CommandLine.exePath;
+    file->name          = "swag.runtime.swg";
+    file->path          = p.parent_path().string() + "/swag.runtime.swg";
+    file->module        = this;
+    file->isRuntimeFile = true;
+    file->setExternalBuffer((char*) ptr, size);
+    addFileNoLock(file);
+
+    auto job        = g_Pool_syntaxJob.alloc();
+    job->sourceFile = file;
+    g_ThreadMgr.addJob(job);
+}
+
 bool Module::setup(const Utf8& moduleName)
 {
     unique_lock lk(mutexFile);
@@ -116,6 +144,7 @@ bool Module::setup(const Utf8& moduleName)
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
 
+    addRuntime();
     return true;
 }
 
@@ -155,9 +184,8 @@ void Module::addPublicSourceFile(SourceFile* file)
     publicSourceFiles.insert(file);
 }
 
-void Module::addFile(SourceFile* file)
+void Module::addFileNoLock(SourceFile* file)
 {
-    scoped_lock lk(mutexFile);
     file->module        = this;
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
@@ -179,6 +207,14 @@ void Module::addFile(SourceFile* file)
     // If the file is flagged as #public, register it
     if (file->forcedPublic)
         publicSourceFiles.insert(file);
+}
+
+void Module::addFile(SourceFile* file)
+{
+    scoped_lock lk(mutexFile);
+    scoped_lock lk1(scopeRoot->mutex);
+
+    addFileNoLock(file);
 }
 
 void Module::removeFile(SourceFile* file)

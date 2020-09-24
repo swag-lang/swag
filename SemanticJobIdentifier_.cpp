@@ -682,13 +682,20 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_PURE;
         }
 
-        if (identifier->name[0] == '@')
+        if (identifier->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
+        {
+            dealWithIntrinsic(context, identifier);
+            identifier->byteCodeFct = ByteCodeGenJob::emitCall;
+        }
+        else if (identifier->name[0] == '@')
         {
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         }
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
+        }
         else
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 

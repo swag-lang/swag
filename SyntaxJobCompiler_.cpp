@@ -394,9 +394,8 @@ bool SyntaxJob::doCompilerModule()
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#module' must be followed by a string"}));
 
-    moduleSpecified            = true;
-    auto newModule             = g_Workspace.createOrUseModule(token.text);
-    newModule->fromTestsFolder = sourceFile->module->fromTestsFolder;
+    moduleSpecified = true;
+    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->fromTestsFolder);
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
 

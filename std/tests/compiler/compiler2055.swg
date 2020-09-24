@@ -14,4 +14,5 @@ func toto(r: f32)
 #test
 {
     toto(1)
+    @smiley()
 }

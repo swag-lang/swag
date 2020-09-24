@@ -468,8 +468,8 @@ namespace OS
         case ResourceFile::SwagBootstrap:
             hResource = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_SWAG_BOOTSTRAP), L"TEXTFILE");
             break;
-        case ResourceFile::DocCss:
-            hResource = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_SWAG_DOCSSS), L"TEXTFILE");
+        case ResourceFile::SwagRuntime:
+            hResource = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_SWAG_RUNTIME), L"TEXTFILE");
             break;
         }
 

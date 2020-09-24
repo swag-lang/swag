@@ -3,7 +3,7 @@
 // Used by Swag.rc
 //
 #define IDR_SWAG_BOOTSTRAP	104
-#define IDR_SWAG_DOCSSS		105
+#define IDR_SWAG_RUNTIME 105
 
 // Next default values for new objects
 // 

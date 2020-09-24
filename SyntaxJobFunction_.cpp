@@ -387,7 +387,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
-            SWAG_VERIFY(sourceFile->isBootstrapFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
+        {
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
+        }
         else
         {
             if (token.id != TokenId::Identifier &&
@@ -493,12 +495,15 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     funcNode->typeInfo->computeName();
 
     // Semi colon is valid only for foreign and intrinsics declarations
-    if (token.id == TokenId::SymSemiColon || isIntrinsic)
+    if (token.id == TokenId::SymSemiColon)
     {
         SWAG_VERIFY(!funcForCompiler, syntaxError(token, format("special function '%s' must have a body", funcNode->token.text.c_str())));
         SWAG_CHECK(eatSemiCol("after function declaration"));
         return true;
     }
+
+    if (isIntrinsic)
+        funcNode->flags |= AST_DEFINED_INTRINSIC;
 
     // Content of function
     {

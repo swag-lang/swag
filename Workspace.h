@@ -20,7 +20,7 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
-    Module* createOrUseModule(const Utf8& moduleName);
+    Module* createOrUseModule(const Utf8& moduleName, bool fromTestsFolder);
 
     void    addBootstrap();
     void    setupPaths();

@@ -39,7 +39,7 @@ namespace OS
     enum class ResourceFile
     {
         SwagBootstrap,
-        DocCss,
+        SwagRuntime,
     };
 
     extern bool getEmbeddedTextFile(ResourceFile resFile, void** ptr, uint32_t* size);

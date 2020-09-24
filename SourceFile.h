@@ -49,6 +49,7 @@ struct SourceFile : public File
     uint32_t  indexInModule   = UINT32_MAX;
     BuildPass buildPass       = BuildPass::Full;
     bool      isBootstrapFile = false;
+    bool      isRuntimeFile   = false;
 
     char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;
@@ -68,7 +69,7 @@ struct SourceFile : public File
     bool         formatDone    = false;
     bool         fromTests     = false;
     bool         generated     = false;
-    bool         forcedPublic       = false;
+    bool         forcedPublic  = false;
     bool         imported      = false;
     shared_mutex mutexGetLine;
 };

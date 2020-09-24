@@ -1,0 +1,5 @@
+
+func @smiley()
+{
+	@print("toto")
+}

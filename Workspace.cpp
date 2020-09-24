@@ -22,7 +22,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName)
+Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolder)
 {
     Module* module = nullptr;
 
@@ -41,6 +41,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName)
         mapModulesNames[moduleName] = module;
     }
 
+    module->fromTestsFolder = fromTestsFolder;
     module->setup(moduleName);
 
     // Is this the module we want to build ?
@@ -55,33 +56,34 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName)
 
 void Workspace::addBootstrap()
 {
-    // Get bootstrap.swg file
+    // Get swag.bootstrap.swg file
     void*    ptr;
     uint32_t size;
     if (!OS::getEmbeddedTextFile(OS::ResourceFile::SwagBootstrap, &ptr, &size))
     {
-        g_Log.error("internal fatal error: unable to load internal 'bootstrap.swg' file");
+        g_Log.error("internal fatal error: unable to load internal 'swag.bootstrap.swg' file");
         exit(-1);
     }
 
-    // Runtime will be compiled in the workspace scope, in order to be defined once
+    // Bootstrap will be compiled in the workspace scope, in order to be defined once
     // for all modules
     bootstrapModule = g_Allocator.alloc<Module>();
+    bootstrapModule->isBootStrap = true;
     if (!bootstrapModule->setup(""))
         exit(-1);
     modules.push_back(bootstrapModule);
 
     auto     file         = g_Allocator.alloc<SourceFile>();
-    auto     job          = g_Pool_syntaxJob.alloc();
     fs::path p            = g_CommandLine.exePath;
-    file->name            = "bootstrap.swg";
-    file->path            = p.parent_path().string() + "/bootstrap.swg";
+    file->name            = "swag.bootstrap.swg";
+    file->path            = p.parent_path().string() + "/swag.bootstrap.swg";
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
     file->setExternalBuffer((char*) ptr, size);
     bootstrapModule->addFile(file);
-    bootstrapModule->isBootStrap = true;
-    job->sourceFile              = file;
+
+    auto job        = g_Pool_syntaxJob.alloc();
+    job->sourceFile = file;
     g_ThreadMgr.addJob(job);
 }
 

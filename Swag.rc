@@ -50,8 +50,8 @@ END
 // Text
 //
 
-IDR_SWAG_BOOTSTRAP TEXTFILE "bootstrap.swg"
-IDR_SWAG_DOCSSS    TEXTFILE "documentation.css"
+IDR_SWAG_BOOTSTRAP TEXTFILE "swag.bootstrap.swg"
+IDR_SWAG_RUNTIME TEXTFILE "swag.runtime.swg"
 
 #endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
