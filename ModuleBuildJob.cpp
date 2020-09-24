@@ -190,17 +190,18 @@ JobResult ModuleBuildJob::execute()
                     jobsToAdd.push_back(job);
                 });
 
-                // Everything in a sub folder named os-arch will be copied only if this matches the current target
-                publishPath += "/";
-                publishPath += g_Workspace.GetOsName();
-                publishPath += "-";
-                publishPath += g_Workspace.GetArchName();
-                if (fs::exists(publishPath))
+                // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
+                auto osArchPath = publishPath;
+                osArchPath += "/";
+                osArchPath += g_Workspace.GetOsName();
+                osArchPath += "-";
+                osArchPath += g_Workspace.GetArchName();
+                if (fs::exists(osArchPath))
                 {
-                    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+                    OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
                         auto job          = g_Pool_copyFileJob.alloc();
                         job->module       = module;
-                        job->sourcePath   = publishPath + "/" + cFileName;
+                        job->sourcePath   = osArchPath + "/" + cFileName;
                         job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
                         job->dependentJob = this;
                         jobsToAdd.push_back(job);
