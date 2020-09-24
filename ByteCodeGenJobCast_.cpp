@@ -28,13 +28,9 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
             emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
         }
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Struct)
+    else if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
     {
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
-    }
-    else if (exprNode->flags & AST_VALUE_IS_TYPEINFO)
-    {
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
     }
     else
     {
@@ -606,7 +602,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
     if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
-        auto         typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
         emitInstruction(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u32 = typeArray->count;
         return true;

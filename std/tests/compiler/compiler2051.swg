@@ -1,0 +1,21 @@
+//#[swag.printbc]
+func toto(x: any)
+{
+    v := cast(*s32) @dataof(x)
+    @assert(v[0] == 1)
+    @assert(v[1] == 2)
+    @assert(v[2] == 3)
+    @assert(v[3] == 4)
+}
+
+/*func toto(x: const [4] s32)
+{
+    @print(cast(s64) x[0])
+}
+*/
+
+//#[swag.printbc]
+#test
+{
+    toto(@[1,2,3,4])
+}
