@@ -319,6 +319,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
+        SWAG_ASSERT(resolved->registers.size());
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[i], resolved->registers[i]);

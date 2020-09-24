@@ -40,6 +40,15 @@ namespace std.drawing
                 self.b = b
             }
 
+            // Set all components with floats in the range [0 1]
+            /*func setArgb(self, a, r, g, b: f32)
+            {
+                self.a = acast (math.clamp(a, 0, 1) * 255)
+                self.r = acast (math.clamp(r, 0, 1) * 255)
+                self.g = acast (math.clamp(g, 0, 1) * 255)
+                self.b = acast (math.clamp(b, 0, 1) * 255)
+            }*/
+
             // Just set r, g and b components.
             // Alpha will be opaque
             func setRgb(self, r, g, b: u8)
@@ -50,8 +59,17 @@ namespace std.drawing
                 self.b = b
             }
 
-            // Retreive all components as floating point values
-            // between 0 and 1.
+            // Set r,g,b with floats in the range [0 1]
+            // Alpha will be opaque
+            /*func setRgb(self, r, g, b: f32)
+            {
+                self.a = 255
+                self.r = acast (math.clamp(r, 0, 1) * 255)
+                self.g = acast (math.clamp(g, 0, 1) * 255)
+                self.b = acast (math.clamp(b, 0, 1) * 255)
+            }*/
+
+            // Retreive all components as floating point values between 0 and 1.
             func toFloat(self) -> {a: f32, r: f32, g: f32, b: f32}
             {
                 _a := self.a / 255.0'f32

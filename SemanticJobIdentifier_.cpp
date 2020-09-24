@@ -620,12 +620,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             break;
         }
 
-        // Expand inline function. Do not expand an inline call inside a function marked as inline.
-        // The expansion will be done at the lowest level possible
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
-        if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
+        if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
         {
-            if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
+            // Expand inline function. Do not expand an inline call inside a function marked as inline.
+            // The expansion will be done at the lowest level possible
+            if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
             {
                 // Need to wait for function full semantic resolve
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
@@ -645,6 +645,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 if (!(identifier->doneFlags & AST_DONE_INLINED))
                 {
                     identifier->doneFlags |= AST_DONE_INLINED;
+
+                    // In case of an inline call inside an inline function, the identifier kind has been changed to
+                    // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
+                    identifier->kind = AstNodeKind::Identifier;
+
                     SWAG_CHECK(makeInline(context, funcDecl, identifier));
                 }
                 else
@@ -2079,14 +2084,23 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // For an inline scope, jump right to the function
-        if (scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro)
+        if (scope->kind == ScopeKind::Inline)
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
-                bool wasMacro = scope->kind == ScopeKind::Macro;
+                while (scope && scope->kind != ScopeKind::Function)
+                    scope = scope->parentScope;
+            }
+
+            flags &= ~COLLECT_PASS_INLINE;
+        }
+        else if (scope->kind == ScopeKind::Macro)
+        {
+            if (!(flags & COLLECT_PASS_INLINE))
+            {
                 while (scope && scope->kind != ScopeKind::Function && scope->parentScope->kind != ScopeKind::Inline)
                     scope = scope->parentScope;
-                if (wasMacro && scope->parentScope->kind == ScopeKind::Inline)
+                if (scope->parentScope->kind == ScopeKind::Inline)
                     scope = scope->parentScope;
             }
 
