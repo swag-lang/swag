@@ -62,6 +62,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     if (context->result == ContextResult::Pending)
                         return true;
                     SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
+                    freeRegisterRC(context, returnExpression);
                 }
                 else
                 {
@@ -69,9 +70,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     {
                         auto sizeChilds = child->resultRegisterRC.size();
                         for (int r = 0; r < sizeChilds; r++)
-                        {
                             emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
-                        }
+                        freeRegisterRC(context, child);
                     }
                 }
             }

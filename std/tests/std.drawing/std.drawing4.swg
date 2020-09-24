@@ -5,13 +5,13 @@ using std.drawing
 #test
 {
 	var y: Color = 0xFFFF0000
-    /*@print(cast(f64) y.toFloat().a)
+    @print(cast(f64) y.toFloat().a)
     @print("\n")
-    @print(cast(f64) y.r)
+    @print(cast(f64) y.toFloat().r)
     @print("\n")
-    @print(cast(f64) y.g)
+    @print(cast(f64) y.toFloat().g)
     @print("\n")
-    @print(cast(f64) y.b)*/
+    @print(cast(f64) y.toFloat().b)
 
     /*@print(cast(f64) y.toFloat().a)
     @print("\n")
