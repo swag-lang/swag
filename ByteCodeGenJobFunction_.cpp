@@ -605,9 +605,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
 
-            // For a struct (and not a pointer to struct), or a reference, we directly set the data pointer in the 'any' instead
+            // For a big data, or a reference, we directly set the data pointer in the 'any' instead
             // of pushing it to the stack.
-            if (typeParam->kind == TypeInfoKind::Struct || typeParam->kind == TypeInfoKind::Reference)
+            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->kind == TypeInfoKind::Reference)
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;
