@@ -47,8 +47,6 @@ void Backend::setup()
 string Backend::getCacheFolder(const BuildParameters& buildParameters)
 {
     auto targetPath = g_Workspace.cachePath.string();
-    if (buildParameters.compileType == BackendCompileType::Test)
-        targetPath += "/test/";
     return targetPath;
 }
 

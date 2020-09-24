@@ -417,14 +417,6 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    auto testCachePath = cachePath;
-    testCachePath.append("test");
-    if (!fs::exists(testCachePath) && !fs::create_directories(testCachePath, errorCode))
-    {
-        g_Log.error(format("fatal error: cannot cache target directory '%s'", testCachePath.string().c_str()));
-        exit(-1);
-    }
-
     if (g_CommandLine.verbose && g_CommandLine.verbosePath)
     {
         g_Log.verbose(format("cache path is '%s'", cachePath.string().c_str()));
@@ -435,8 +427,6 @@ void Workspace::setupTarget()
     {
         if (fs::exists(cachePath))
             deleteFolderContent(cachePath);
-        if (fs::exists(testCachePath))
-            deleteFolderContent(testCachePath);
     }
 
     targetPath += "/";
