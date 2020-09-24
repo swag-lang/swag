@@ -177,10 +177,10 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::SemanticModule;
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
-            // Everything in a /publish folder will be copied "as is" in the output directory
             string publishPath = module->path + "/publish";
             if (fs::exists(publishPath))
             {
+                // Everything at the root of the /publish folder will be copied "as is" in the output directory
                 OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
                     auto job          = g_Pool_copyFileJob.alloc();
                     job->module       = module;
@@ -190,7 +190,24 @@ JobResult ModuleBuildJob::execute()
                     jobsToAdd.push_back(job);
                 });
 
-                // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and we the scheduler will
+                // Everything in a sub folder named os-arch will be copied only if this matches the current target
+                publishPath += "/";
+                publishPath += g_Workspace.GetOsName();
+                publishPath += "-";
+                publishPath += g_Workspace.GetArchName();
+                if (fs::exists(publishPath))
+                {
+                    OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+                        auto job          = g_Pool_copyFileJob.alloc();
+                        job->module       = module;
+                        job->sourcePath   = publishPath + "/" + cFileName;
+                        job->destPath     = g_Workspace.targetPath.string() + "/" + cFileName;
+                        job->dependentJob = this;
+                        jobsToAdd.push_back(job);
+                    });
+                }
+
+                // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and the scheduler will
                 // execute them when possible
             }
         }
