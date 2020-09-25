@@ -601,7 +601,7 @@ void Backend::setupExportFile()
         return;
 
     exportFileGenerated = true;
-    Utf8 targetName     = module->name + ".import.swg";
+    Utf8 targetName     = module->name + ".swg";
     auto targetPath     = g_Workspace.targetPath;
     targetPath.append(targetName.c_str());
     if (fs::exists(targetPath.c_str()))
@@ -619,7 +619,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     {
         passExport          = BackendPreCompilePass::GenerateObj;
         exportFileGenerated = true;
-        bufferSwg.name      = module->name + ".import.swg";
+        bufferSwg.name      = module->name + ".swg";
         auto targetPath     = g_Workspace.targetPath;
         targetPath.append(bufferSwg.name.c_str());
         bufferSwg.path = normalizePath(targetPath);

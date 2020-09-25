@@ -89,14 +89,13 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (dep->generated)
-        {
-            auto nameDown = dep->name;
-            Ast::normalizeIdentifierName(nameDown);
-            auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-            auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
-            builder.CreateCall(funcInit, pp.processInfos);
-        }
+        if (!dep->generated || !dep->module->mustOutputSomething())
+            continue;
+        auto nameDown = dep->name;
+        Ast::normalizeIdentifierName(nameDown);
+        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+        auto funcInit = modu.getOrInsertFunction(format("%s_globalInit", nameDown.c_str()).c_str(), funcType);
+        builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global init of this module
@@ -136,7 +135,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep->generated)
+        if (!dep->generated || !dep->module->mustOutputSomething())
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);

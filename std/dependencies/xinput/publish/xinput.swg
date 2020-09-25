@@ -1,4 +1,3 @@
-#public
 #import "win32"
 #foreignlib "xinput"
 

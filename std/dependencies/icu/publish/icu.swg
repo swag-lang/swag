@@ -1,4 +1,3 @@
-#public
 #foreignlib "icuuc"
 
 namespace icu
