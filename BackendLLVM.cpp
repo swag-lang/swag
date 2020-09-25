@@ -71,6 +71,15 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         SWAG_ASSERT(pp.processInfosTy->isSized());
     }
 
+    // local intrinsic f32 func(f32)
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
+        };
+        pp.tfn_f32x1 = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
+    }
+
     // mainContext
     if (precompileIndex == 0)
     {
@@ -186,8 +195,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     }
 
     // Embedded runtime functions
-
     {
+
         llvm::Type* params[] = {
             llvm::Type::getInt64PtrTy(context),
             llvm::Type::getInt64PtrTy(context),
@@ -210,6 +219,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
     // LIBC functions
     {
+
         pp.fn_malloc  = modu.getOrInsertFunction("malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
         pp.fn_free    = modu.getOrInsertFunction("free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
         pp.fn_realloc = modu.getOrInsertFunction("realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));

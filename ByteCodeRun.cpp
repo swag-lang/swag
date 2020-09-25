@@ -202,7 +202,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f32 = roundf(rb.f32);
             break;
         case TokenId::IntrinsicAbs:
-            ra.f32 = fabsf(rb.f32);
+            ra.f32 = Runtime::abs(rb.f32);
             break;
         case TokenId::IntrinsicExp:
             ra.f32 = expf(rb.f32);

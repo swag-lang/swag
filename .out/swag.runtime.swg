@@ -24,3 +24,9 @@ func @strcmp(str1, str2: const *void, num1, num2: u32)->bool
         return str1 == str2
     return !@memcmp(str1, str2, num1)
 }
+
+////////////////////////////////////////////////////////////
+func @abs(value: f32)->f32
+{
+    return value < 0 ? -value : value
+}

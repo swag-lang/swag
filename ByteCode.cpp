@@ -54,7 +54,12 @@ Utf8 ByteCode::callName()
 {
     Utf8 callName;
     if (node && node->flags & AST_DEFINED_INTRINSIC)
-        return name;
+    {
+        // Cannot have overloads
+        if(name == "@memcmp" || name == "@strcmp")
+            return name;
+    }
+
     if (name.empty())
         callName = node->computeScopedName();
     else

@@ -334,6 +334,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
         emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
         break;
     }
@@ -391,6 +392,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
         emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
         break;
     }

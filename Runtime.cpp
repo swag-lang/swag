@@ -2,6 +2,7 @@
 
 namespace Runtime
 {
+    ////////////////////////////////////////////////////////////
     int memcmp(const void* b1, const void* b2, size_t n)
     {
         if (!n)
@@ -18,6 +19,7 @@ namespace Runtime
         return 0;
     }
 
+    ////////////////////////////////////////////////////////////
     bool strcmp(const void* str1, const void* str2, uint32_t num1, uint32_t num2)
     {
         if (num1 != num2)
@@ -25,6 +27,12 @@ namespace Runtime
         if (!str1 || !str2)
             return str1 == str2;
         return !memcmp((void*) str1, (void*) str2, num1);
+    }
+
+    ////////////////////////////////////////////////////////////
+    float abs(float value)
+    {
+        return value < 0 ? -value : value;
     }
 
 } // namespace Runtime
