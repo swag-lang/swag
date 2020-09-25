@@ -53,6 +53,8 @@ SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
 Utf8 ByteCode::callName()
 {
     Utf8 callName;
+    if (node && node->flags & AST_DEFINED_INTRINSIC)
+        return name;
     if (name.empty())
         callName = node->computeScopedName();
     else

@@ -69,14 +69,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (dep->generated)
-        {
-            auto nameDown = dep->name;
-            Ast::normalizeIdentifierName(nameDown);
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-            auto initFunc = format("%s_globalInit", nameDown.c_str());
-            emitCall(pp, initFunc);
-        }
+        if (!dep->generated)
+            continue;
+        auto nameDown = dep->name;
+        Ast::normalizeIdentifierName(nameDown);
+        BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+        auto initFunc = format("%s_globalInit", nameDown.c_str());
+        emitCall(pp, initFunc);
     }
 
     // Call to global init of this module

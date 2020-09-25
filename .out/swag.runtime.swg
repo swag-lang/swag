@@ -13,3 +13,13 @@ func @memcmp(dst, src: const *void, size: u32)->s32
 
     return 0
 }
+
+////////////////////////////////////////////////////////////
+func @strcmp(str1, str2: const *void, num1, num2: u32)->bool
+{
+    if num1 != num2
+        return false
+    if !str1 || !str2
+        return str1 == str2
+    return !@memcmp(str1, str2, num1)
+}

@@ -1796,15 +1796,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualString:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto r2  = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto r3  = TO_PTR_I32(GEP_I32(allocR, ip->d.u32));
-            r0       = builder.CreateLoad(r0);
-            r1       = builder.CreateLoad(r1);
-            auto rs0 = builder.CreateLoad(r2);
-            auto rs1 = builder.CreateLoad(r3);
-            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_compareString"), {r0, r1, rs0, rs1}), TO_PTR_I8(r2));
+            auto rr  = GEP_I32(allocR, ip->c.u32);
+            auto r0  = GEP_I32(allocR, ip->a.u32);
+            auto r1  = GEP_I32(allocR, ip->b.u32);
+            auto r2  = GEP_I32(allocR, ip->c.u32);
+            auto r3  = GEP_I32(allocR, ip->d.u32);
+            builder.CreateCall(modu.getFunction("@strcmp"), {rr, r0, r1, r2, r3});
             break;
         }
         case ByteCodeOp::CompareOpEqualTypeInfo:

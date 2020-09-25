@@ -138,12 +138,13 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
     {
         llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt32Ty(context),
-            llvm::Type::getInt32Ty(context),
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
+            llvm::Type::getInt64PtrTy(context),
         };
-        modu.getOrInsertFunction("swag_runtime_compareString", llvm::FunctionType::get(llvm::Type::getInt8Ty(context), params, false));
+        modu.getOrInsertFunction("@strcmp", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }
 
     {

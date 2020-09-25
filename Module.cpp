@@ -381,8 +381,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
         auto attributeFlags = bc->node->attributeFlags;
         auto flags          = bc->node->flags;
 
-        // This is a real function
-        if (!(attributeFlags & ATTRIBUTE_FOREIGN))
+        // This is a real user function
+        if (!(attributeFlags & ATTRIBUTE_FOREIGN) && !(bc->node->flags & AST_DEFINED_INTRINSIC))
             numConcreteBC++;
 
         // Register for export

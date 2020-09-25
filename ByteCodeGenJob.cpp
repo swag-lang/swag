@@ -357,7 +357,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             node->bc             = g_Allocator.alloc<ByteCode>();
             node->bc->node       = node;
             node->bc->sourceFile = node->sourceFile;
-            node->bc->name       = node->ownerScope->getFullName() + "_" + node->name.c_str();
+            if (node->flags & AST_DEFINED_INTRINSIC)
+                node->bc->name = node->name;
+            else
+                node->bc->name = node->ownerScope->getFullName() + "_" + node->name.c_str();
             node->bc->name.replaceAll('.', '_');
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->bc);

@@ -251,7 +251,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = true;
     if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (node->name[0] == '@')
+    if (node->name[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
@@ -259,7 +259,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (!node->content)
         genByteCode = false;
-
     if (genByteCode)
         ByteCodeGenJob::askForByteCode(context->job, node, 0);
 

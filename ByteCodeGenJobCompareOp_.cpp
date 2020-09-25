@@ -43,6 +43,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeTypeKind::String:
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
             emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2, r1[1]);
+            context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // CompareOpEqualString is a runtime call
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");

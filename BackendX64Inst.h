@@ -88,7 +88,6 @@ namespace BackendX64Inst
                 pp.concat.addU8(0x24);
             pp.concat.addU32(stackOffset);
         }
-
     }
 
     inline void emit_Load8_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
