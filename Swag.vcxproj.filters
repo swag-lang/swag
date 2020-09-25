@@ -428,6 +428,9 @@
     <ClCompile Include="SemanticJobCollect_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="Runtime.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -709,6 +712,9 @@
     </ClInclude>
     <ClInclude Include="ByteCodeOptimizer.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

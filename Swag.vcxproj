@@ -214,6 +214,7 @@
     <ClInclude Include="ProfileWin32.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
+    <ClInclude Include="Runtime.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
@@ -349,6 +350,7 @@
     <ClCompile Include="OutputFile.cpp" />
     <ClCompile Include="ProfileWin32.cpp" />
     <ClCompile Include="RaceCondition.cpp" />
+    <ClCompile Include="Runtime.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAffectExpression_.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />

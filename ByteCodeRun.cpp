@@ -10,6 +10,7 @@
 #include "Module.h"
 #include "CompilerItf.h"
 #include "ByteCodeStack.h"
+#include "Runtime.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -1209,7 +1210,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqualString:
     {
-        registersRC[ip->c.u32].b = swag_runtime_compareString(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32, registersRC[ip->d.u32].u32);
+        registersRC[ip->c.u32].b = Runtime::strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32, registersRC[ip->d.u32].u32);
         break;
     }
     case ByteCodeOp::CompareOpEqualTypeInfo:
