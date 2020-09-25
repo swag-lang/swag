@@ -1281,6 +1281,25 @@ anotherTry:
     if (matches.size() == 0)
         return matchIdentifierError(context, genericParameters, callParameters, node);
 
+    // There is more than one possible match, but they are all foreign, this is fine
+    if (matches.size() > 1)
+    {
+        bool allForeign = true;
+        for (auto m : matches)
+        {
+            if (!(m.symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+            {
+                allForeign = false;
+                break;
+            }
+        }
+        if (allForeign)
+        {
+            while (matches.size() > 1)
+                matches.erase(matches.begin());
+        }
+    }
+
     // There is more than one possible match
     if (matches.size() > 1)
     {

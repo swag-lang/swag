@@ -30,3 +30,16 @@ func @abs(value: f32)->f32
 {
     return value < 0 ? -value : value
 }
+
+////////////////////////////////////////////////////////////
+#if #os == "windows"
+{
+    #[swag.foreign("kernel32")]
+    func GetStdHandle(nStdHandle: u32)->*void;
+    #[swag.foreign("kernel32")]
+    func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+
+    func @print(message: const *void, len: u32)
+    {
+    }
+}

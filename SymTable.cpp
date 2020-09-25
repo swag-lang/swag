@@ -231,15 +231,19 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        auto       firstOverload = overload;
-        Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
-        Diagnostic diag{node, token, msg};
-        Utf8       note = "this is the other definition";
-        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        if (typeInfo->kind == TypeInfoKind::FuncAttr)
-            diagNote.codeComment = Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters);
-        context->report(diag, &diagNote);
-        return false;
+        // This is fine to define a foreign thing multiple times, if they have the same signature
+        if (!(node->attributeFlags & ATTRIBUTE_FOREIGN) || !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+        {
+            auto       firstOverload = overload;
+            Utf8       msg = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+            Diagnostic diag{ node, token, msg };
+            Utf8       note = "this is the other definition";
+            Diagnostic diagNote{ firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note };
+            if (typeInfo->kind == TypeInfoKind::FuncAttr)
+                diagNote.codeComment = Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*)typeInfo)->genericParameters);
+            context->report(diag, &diagNote);
+            return false;
+        }
     }
 
     return true;
