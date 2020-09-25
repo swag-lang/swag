@@ -98,7 +98,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|print|error|assert|alloc|realloc|free|memcpy|memset|memcmp|getcontext|setcontext|args|compiler|isbytecode)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|getcontext|setcontext|args|compiler|isbytecode)\\b"
         }
       ]
     },
@@ -106,7 +106,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow)\\b"
+          "match": "(@)\\b(sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|print|error|assert|alloc|realloc|free|memcpy|memset|strcmp|memcmp|)\\b"
         }
       ]
     },

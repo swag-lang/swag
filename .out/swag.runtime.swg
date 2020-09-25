@@ -48,20 +48,15 @@ private func itoa(result: *u8, value: s64)->*u8
             break
     }
 
-    // Negative value
     if value < 0
     {
         :ptr = "-"'u8
         ptr += 1
     }
 
-    // Returns the end address
     retVal := ptr
-
-    // Zero terminated
     :ptr = 0; ptr -= 1
 
-    // Invert result
     ptr1 := result
     while ptr1 < ptr
     {
@@ -71,6 +66,43 @@ private func itoa(result: *u8, value: s64)->*u8
     }
 
     return retVal
+}
+
+////////////////////////////////////////////////////////////
+private func ftoa(result: *u8, value: f64)
+{
+    ipart := cast(s64) value
+    fpart := value - cast(f64) ipart
+
+    n := result
+    if ipart == 0
+    {
+        if value < 0
+        {
+            :n = "-"'u8
+            n += 1
+        }
+
+        :n = "0"'u8
+        n += 1
+    }
+    else
+        n = itoa(result, ipart);
+
+    :n = "."'u8; n += 1
+
+    afterPoint := 5
+    if fpart < 0
+        fpart = -fpart
+    while afterPoint
+    {
+        fpart *= 10
+        afterPoint -= 1
+    }
+
+    ipart = cast(s64) fpart
+    if fpart - ipart > 0.5 ipart += 1
+    itoa(n, ipart)
 }
 
 ////////////////////////////////////////////////////////////
