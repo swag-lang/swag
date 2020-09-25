@@ -214,7 +214,6 @@
     <ClInclude Include="ProfileWin32.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
@@ -447,11 +446,8 @@ ml64.exe /c /Cx /Fo $(SolutionDir)/.tmp/swag/$(Configuration)/win64.obj ffi/win6
     <None Include=".clang-format" />
     <ClCompile Include="CopyFileJob.cpp" />
     <ClInclude Include="CopyFileJob.h" />
-    <None Include="bootstrap.swg" />
-    <None Include="documentation.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Swag.rc" />
+    <None Include=".out\swag.bootstrap.swg" />
+    <None Include=".out\swag.runtime.swg" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

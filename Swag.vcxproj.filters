@@ -584,9 +584,6 @@
     <ClInclude Include="ModuleBuildJob.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="File.h">
       <Filter>Main</Filter>
     </ClInclude>
@@ -757,17 +754,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include="bootstrap.swg">
+    <None Include=".out\swag.bootstrap.swg">
       <Filter>Resource</Filter>
     </None>
-    <None Include="documentation.css">
+    <None Include=".out\swag.runtime.swg">
       <Filter>Resource</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Swag.rc">
-      <Filter>Resource</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

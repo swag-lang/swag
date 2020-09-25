@@ -264,6 +264,11 @@ __pycache__/
 *.pyc
 
 *.tlog
-.out/
-std/output/
+.out/*.exe
+.out/*.lib
+.out/*.iobj
+.out/*.ipdb
+.out/*.bat
+.out/.vs/
 doc/
+std/output/

@@ -61,22 +61,12 @@ void Module::addRuntime()
     if (isBootStrap)
         return;
 
-    // Get swag.runtime.swg file
-    void*    ptr;
-    uint32_t size;
-    if (!OS::getEmbeddedTextFile(OS::ResourceFile::SwagRuntime, &ptr, &size))
-    {
-        g_Log.error("internal fatal error: unable to load internal 'swag.runtime.swg' file");
-        exit(-1);
-    }
-
     auto     file       = g_Allocator.alloc<SourceFile>();
     fs::path p          = g_CommandLine.exePath;
     file->name          = "swag.runtime.swg";
     file->path          = p.parent_path().string() + "/swag.runtime.swg";
     file->module        = this;
     file->isRuntimeFile = true;
-    file->setExternalBuffer((char*) ptr, size);
     addFileNoLock(file);
 
     auto job        = g_Pool_syntaxJob.alloc();

@@ -1,5 +1,4 @@
-
 func @smiley()
 {
-	@print("toto")
+	@print("titi")
 }

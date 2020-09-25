@@ -56,18 +56,9 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolde
 
 void Workspace::addBootstrap()
 {
-    // Get swag.bootstrap.swg file
-    void*    ptr;
-    uint32_t size;
-    if (!OS::getEmbeddedTextFile(OS::ResourceFile::SwagBootstrap, &ptr, &size))
-    {
-        g_Log.error("internal fatal error: unable to load internal 'swag.bootstrap.swg' file");
-        exit(-1);
-    }
-
     // Bootstrap will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    bootstrapModule = g_Allocator.alloc<Module>();
+    bootstrapModule              = g_Allocator.alloc<Module>();
     bootstrapModule->isBootStrap = true;
     if (!bootstrapModule->setup(""))
         exit(-1);
@@ -79,7 +70,6 @@ void Workspace::addBootstrap()
     file->path            = p.parent_path().string() + "/swag.bootstrap.swg";
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
-    file->setExternalBuffer((char*) ptr, size);
     bootstrapModule->addFile(file);
 
     auto job        = g_Pool_syntaxJob.alloc();
