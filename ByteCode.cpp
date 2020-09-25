@@ -52,16 +52,17 @@ SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
 
 Utf8 ByteCode::callName()
 {
-    Utf8 callName;
+    // If this is an intrinsic that can be called by the compiler itself, it should not
+    // have overloads, and the name will be the name alone (without the node address which is
+    // used to differentiate overloads)
     if (node && node->flags & AST_DEFINED_INTRINSIC)
     {
-        // Cannot have overloads
-        if(name == "@memcmp" || name == "@strcmp")
+        SWAG_ASSERT(node->resolvedSymbolName);
+        if(node->resolvedSymbolName->overloads.size() == 1)
             return name;
-        if (name == "@print")
-            callName = name;
     }
 
+    Utf8 callName;
     if (name.empty())
         callName = node->computeScopedName();
     else
