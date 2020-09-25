@@ -730,6 +730,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateMemSet(r0, r1, r2, llvm::MaybeAlign(0));
             break;
         }
+        case ByteCodeOp::MemCmp:
+        {
+            auto rr = GEP_I32(allocR, ip->a.u32);
+            auto r0 = GEP_I32(allocR, ip->b.u32);
+            auto r1 = GEP_I32(allocR, ip->c.u32);
+            auto r2 = GEP_I32(allocR, ip->d.u32);
+            builder.CreateCall(modu.getFunction("@memcmp"), {rr, r0, r1, r2});
+            break;
+        }
+
         case ByteCodeOp::IntrinsicMkInterface:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
