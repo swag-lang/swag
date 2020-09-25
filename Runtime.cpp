@@ -35,4 +35,14 @@ namespace Runtime
         return value < 0 ? -value : value;
     }
 
+    ////////////////////////////////////////////////////////////
+    void print(const void* message, uint32_t len)
+    {
+        if (!message || !len)
+            return;
+#ifdef _WIN32
+        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
+#endif
+    }
+
 } // namespace Runtime

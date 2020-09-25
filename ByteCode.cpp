@@ -58,6 +58,8 @@ Utf8 ByteCode::callName()
         // Cannot have overloads
         if(name == "@memcmp" || name == "@strcmp")
             return name;
+        if (name == "@print")
+            callName = name;
     }
 
     if (name.empty())

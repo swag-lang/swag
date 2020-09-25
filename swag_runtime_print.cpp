@@ -61,11 +61,8 @@ EXTERN_C void swag_runtime_ftoa(char* result, double value)
 /////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_print_n(const void* message, SwagS32 len)
 {
-    if (!message)
-    {
-        message = "<null>";
-        len     = 6;
-    }
+    if (!message || !len)
+        return;
 #ifdef _WIN32
     WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), (void*) message, len, 0, 0);
 #endif

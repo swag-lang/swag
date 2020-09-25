@@ -1651,9 +1651,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, "swag_runtime_print_n");
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName());
             break;
         case ByteCodeOp::IntrinsicPrintS64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

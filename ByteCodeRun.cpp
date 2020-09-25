@@ -1162,7 +1162,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicPrintString:
     {
         g_Log.lock();
-        swag_runtime_print_n(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+        Runtime::print(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
         g_Log.unlock();
         break;
     }

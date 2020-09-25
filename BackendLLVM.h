@@ -48,8 +48,6 @@ struct LLVMPerThread
     llvm::Value* cst0_f64 = nullptr;
     llvm::Value* cst_null = nullptr;
 
-    llvm::FunctionType* tfn_f32x1 = nullptr;
-
     llvm::FunctionCallee fn_malloc;
     llvm::FunctionCallee fn_free;
     llvm::FunctionCallee fn_realloc;
@@ -112,6 +110,7 @@ struct BackendLLVM : public Backend
 
     bool                createRuntime(const BuildParameters& buildParameters);
     bool                swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
+    llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, int numReturn, int numParams);
     llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC);
     bool                createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::FunctionType** result);
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);

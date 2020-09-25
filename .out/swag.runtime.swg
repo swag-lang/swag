@@ -32,14 +32,24 @@ func @abs(value: f32)->f32
 }
 
 ////////////////////////////////////////////////////////////
+func @print(message: string)
+{
+    @print(@dataof(message), @countof(message))
+}
+
+////////////////////////////////////////////////////////////
 #if #os == "windows"
 {
     #[swag.foreign("kernel32")]
-    func GetStdHandle(nStdHandle: u32)->*void;
+    private func GetStdHandle(nStdHandle: u32)->*void;
     #[swag.foreign("kernel32")]
-    func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+    private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+    private const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
 
     func @print(message: const *void, len: u32)
     {
+        if !message || !len
+            return
+        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), message, len, null, null);
     }
 }

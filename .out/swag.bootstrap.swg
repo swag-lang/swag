@@ -1,6 +1,5 @@
 func @print(value: s64);
 func @print(value: f64);
-func @print(value: const [..] u8);
 func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @realloc(ptr: *void, size: u32)->*void;
@@ -458,7 +457,6 @@ namespace swag
     func @round(value: f32)->f32;
     func @round(value: f64)->f64;
 
-    //func @abs(value: f32)->f32;
     func @abs(value: f64)->f64;
     func @exp(value: f32)->f32;
     func @abs(value: s8)->s8;

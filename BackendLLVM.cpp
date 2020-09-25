@@ -71,15 +71,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         SWAG_ASSERT(pp.processInfosTy->isSized());
     }
 
-    // local intrinsic f32 func(f32)
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-        };
-        pp.tfn_f32x1 = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
-    }
-
     // mainContext
     if (precompileIndex == 0)
     {
@@ -161,14 +152,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt32Ty(context),
         };
         modu.getOrInsertFunction("swag_runtime_error", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt32Ty(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_print_n", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }
 
     {

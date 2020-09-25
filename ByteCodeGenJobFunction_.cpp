@@ -161,6 +161,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
     auto callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
+    // If the intrinsic is defined in runtime, then need to wait for the function bytecode
+    // to be generated
+    if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
+    {
+        askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
     switch (node->token.id)
     {
     case TokenId::IntrinsicPrint:
@@ -188,11 +197,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
         }
-        else
+        else if (typeInfo->kind == TypeInfoKind::Pointer)
         {
-            return internalError(context, "emitIntrinsic, @print invalid type");
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], callParams->childs[1]->resultRegisterRC);
         }
 
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
         freeRegisterRC(context, child0);
         break;
     }
@@ -334,7 +344,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
+        context->bc->maxCallParams                                                                                      = max(context->bc->maxCallParams, 3); // Runtime call
         emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
         break;
     }
@@ -392,7 +402,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
+        context->bc->maxCallParams                                                           = max(context->bc->maxCallParams, 2); // Runtime call
         emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
         break;
     }

@@ -1962,9 +1962,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicPrintString:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            builder.CreateCall(modu.getFunction("swag_runtime_print_n"), {builder.CreateLoad(r0), builder.CreateLoad(r1)});
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto typeF = createFunctionTypeInternal(buildParameters, 2, 0);
+            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1});
             break;
         }
         case ByteCodeOp::IntrinsicError:
@@ -2600,10 +2602,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             if ((TokenId) ip->d.u32 == TokenId::IntrinsicAbs)
             {
-                auto rr = GEP_I32(allocR, ip->a.u32);
-                auto r0 = GEP_I32(allocR, ip->b.u32);
-                auto name = ((AstFuncDecl*)ip->node->resolvedSymbolOverload->node)->bc->callName();
-                builder.CreateCall(modu.getOrInsertFunction(name.c_str(), pp.tfn_f32x1), {rr, r0});
+                auto rr    = GEP_I32(allocR, ip->a.u32);
+                auto r0    = GEP_I32(allocR, ip->b.u32);
+                auto name  = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName();
+                auto typeF = createFunctionTypeInternal(buildParameters, 1, 1);
+                builder.CreateCall(modu.getOrInsertFunction(name.c_str(), typeF), {rr, r0});
             }
             else
             {
@@ -2788,6 +2791,21 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             params.push_back(r0);
         }
     }
+}
+
+llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, int numReturn, int numParams)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& context         = *perThread[ct][precompileIndex].context;
+
+    VectorNative<llvm::Type*> params;
+    for (int i = 0; i < numReturn; i++)
+        params.push_back(llvm::Type::getInt64PtrTy(context));
+    for (int i = 0; i < numParams; i++)
+        params.push_back(llvm::Type::getInt64PtrTy(context));
+
+    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
 }
 
 llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
@@ -3075,7 +3093,11 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
     auto func = modu.getOrInsertFunction(funcName.c_str(), typeF);
     auto F    = llvm::dyn_cast<llvm::Function>(func.getCallee());
-    F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
+
+    // Why this can be null ????
+    if (F)
+        F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
+
     auto result = builder.CreateCall(func, {params.begin(), params.end()});
 
     // Store result to rt0
