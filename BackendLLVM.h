@@ -51,7 +51,6 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_malloc;
     llvm::FunctionCallee fn_free;
     llvm::FunctionCallee fn_realloc;
-    llvm::FunctionCallee fn_memcmp;
     llvm::FunctionCallee fn_acosf32;
     llvm::FunctionCallee fn_acosf64;
     llvm::FunctionCallee fn_asinf32;

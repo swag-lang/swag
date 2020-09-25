@@ -7,7 +7,6 @@ func @realloc(ptr: *void, size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: const *void, size: u32);
 func @memset(dst: *void, value: u8, size: u32);
-func @memcmp(dst, src: const *void, size: u32)->s32;
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;

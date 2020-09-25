@@ -1568,13 +1568,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, "memset");
             break;
-        case ByteCodeOp::MemCmp:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->d.u32), R8, RDI);
-            emitCall(pp, "memcmp");
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
 
         case ByteCodeOp::IntrinsicAssert:
         {

@@ -259,20 +259,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
-    case TokenId::IntrinsicMemCmp:
-    {
-        auto childDest = callParams->childs[0];
-        auto childSrc  = callParams->childs[1];
-        auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "first pointer of '@memcmp' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "second pointer of '@memcmp' is null");
-        node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::MemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
-        freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childSrc);
-        freeRegisterRC(context, childSize);
-        break;
-    }
     case TokenId::IntrinsicGetContext:
     {
         node->resultRegisterRC = reserveRegisterRC(context);

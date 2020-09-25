@@ -584,14 +584,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memset(dst, value, size);
         break;
     }
-    case ByteCodeOp::MemCmp:
-    {
-        void*    dst               = registersRC[ip->b.u32].pointer;
-        void*    src               = registersRC[ip->c.u32].pointer;
-        uint32_t size              = registersRC[ip->d.u32].u32;
-        registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
-        break;
-    }
 
     case ByteCodeOp::CopyRBtoRA:
     {
