@@ -174,6 +174,13 @@ namespace swag
     // Type reflection
     // #########################################################
 
+    #[flags]
+    enum TypeCmpFlags
+    {
+        Strict = 0
+        CastAny = 1
+    }
+
     enum TypeInfoKind: u16
     {
         Invalid
@@ -378,13 +385,6 @@ namespace swag
         PassAllDone
         SemanticFunc
 	}
-
-    #[flags]
-    enum TypeCmpFlags
-    {
-        Strict = 0
-        CastAny = 1
-    }
 
     #[flags]
     enum CompilerMsgKindMask : u64
