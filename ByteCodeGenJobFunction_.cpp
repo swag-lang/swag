@@ -109,14 +109,11 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 }
                 else
                 {
-                    for (auto child : node->childs)
-                    {
-                        auto sizeChilds = child->resultRegisterRC.size();
-                        for (int r = 0; r < sizeChilds; r++)
-                        {
-                            emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
-                        }
-                    }
+                    SWAG_ASSERT(node->childs.size() == 1);
+                    auto child = node->childs.front();
+                    SWAG_ASSERT(child->resultRegisterRC.size() >= returnType->numRegisters());
+                    for (int r = 0; r < returnType->numRegisters(); r++)
+                        emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
                 }
             }
         }
