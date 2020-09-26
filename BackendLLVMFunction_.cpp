@@ -741,7 +741,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicMkInterface:
+        case ByteCodeOp::IntrinsicInterfaceOf:
         {
             auto rr    = GEP_I32(allocR, ip->c.u32);
             auto r0    = GEP_I32(allocR, ip->a.u32);

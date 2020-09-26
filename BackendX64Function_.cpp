@@ -1680,7 +1680,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, "swag_runtime_error");
             break;
-        case ByteCodeOp::IntrinsicMkInterface:
+        case ByteCodeOp::IntrinsicInterfaceOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);

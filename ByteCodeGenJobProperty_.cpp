@@ -41,7 +41,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
 
     // Get interface itable pointer in the second result register
-    emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);
+    emitInstruction(context, ByteCodeOp::IntrinsicInterfaceOf, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);
     context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
 
     freeRegisterRC(context, params->childs[0]);

@@ -24,9 +24,7 @@
     <ClCompile Include="libc\win32\memcmp.cpp" />
     <ClCompile Include="libc\win32\memcpy.cpp" />
     <ClCompile Include="swag_runtime_assert.cpp" />
-    <ClCompile Include="swag_runtime_compareString.cpp" />
     <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
-    <ClCompile Include="swag_runtime_interfaceof.cpp" />
     <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
     <ClCompile Include="swag_runtime_print.cpp" />
     <ClCompile Include="swag_runtime_tls.cpp" />
