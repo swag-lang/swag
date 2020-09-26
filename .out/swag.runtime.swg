@@ -1,5 +1,3 @@
-using swag
-
 ////////////////////////////////////////////////////////////
 private func itoa(result: *u8, value: s64)->*u8
 {
@@ -150,7 +148,7 @@ func @print(value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
+func @typecmp(type1, type2: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
 {
     if cast(const*u8) type1 == cast(const*u8) type2
         return true
@@ -160,17 +158,17 @@ func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return false
 
     // Fine to convert from concrete to ref, or the other way
-    if cmpFlags & TypeCmpFlags.CastAny
+    if cmpFlags & swag.TypeCmpFlags.CastAny
     {
-        if type1.kind == TypeInfoKind.Reference && type2.kind != TypeInfoKind.Reference
+        if type1.kind == swag.TypeInfoKind.Reference && type2.kind != swag.TypeInfoKind.Reference
         {
-            ref := cast(const *TypeInfoReference) type1
+            ref := cast(const *swag.TypeInfoReference) type1
             return @typecmp(ref.pointedType, type2, cmpFlags)
         }
 
-        if type1.kind != TypeInfoKind.Reference && type2.kind == TypeInfoKind.Reference
+        if type1.kind != swag.TypeInfoKind.Reference && type2.kind == swag.TypeInfoKind.Reference
         {
-            ref := cast(const *TypeInfoReference) type2
+            ref := cast(const *swag.TypeInfoReference) type2
             return @typecmp(type1, ref.pointedType, cmpFlags)
         }
     }
