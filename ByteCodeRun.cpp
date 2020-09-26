@@ -1148,14 +1148,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();
-        swag_runtime_print_f64(registersRC[ip->a.u32].f64);
+        Runtime::print(registersRC[ip->a.u32].f64);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintS64:
     {
         g_Log.lock();
-        swag_runtime_print_i64(registersRC[ip->a.u32].s64);
+        Runtime::print(registersRC[ip->a.u32].s64);
         g_Log.unlock();
         break;
     }

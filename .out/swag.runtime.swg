@@ -106,9 +106,31 @@ private func ftoa(result: *u8, value: f64)
 }
 
 ////////////////////////////////////////////////////////////
+private func strlen(value: const *u8)->u32
+{
+    idx := 0'u32
+    while value[idx] idx += 1
+    return idx
+}
+
+////////////////////////////////////////////////////////////
 func @print(message: string)
 {
     @print(@dataof(message), @countof(message))
+}
+
+func @print(value: s64)
+{
+    var buf: [100] u8
+    itoa(&buf[0], value)
+    @print(&buf[0], strlen(&buf[0]))
+}
+
+func @print(value: f64)
+{
+    var buf: [100] u8
+    ftoa(&buf[0], value)
+    @print(&buf[0], strlen(&buf[0]))
 }
 
 ////////////////////////////////////////////////////////////

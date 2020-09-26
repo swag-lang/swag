@@ -6,10 +6,8 @@ static const SwagU32 COMPARE_CAST_ANY = 0x00000001;
 
 extern "C" void             swag_runtime_print(const char* msg);
 extern "C" char*            swag_runtime_itoa(char* result, SwagS64 value);
-extern "C" void             swag_runtime_ftoa(char* result, double value);
 extern "C" void             swag_runtime_print_n(const void* message, SwagS32 len);
 extern "C" void             swag_runtime_print_i64(SwagS64 value);
-extern "C" void             swag_runtime_print_f64(double value);
 extern "C" bool             swag_runtime_compareString(const void* str1, const void* str2, SwagU32 num1, SwagU32 num2);
 extern "C" void*            swag_runtime_loadDynamicLibrary(const void* name);
 extern "C" SwagU64          swag_runtime_tlsAlloc();

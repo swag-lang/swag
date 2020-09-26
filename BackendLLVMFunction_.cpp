@@ -1949,15 +1949,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            builder.CreateCall(modu.getFunction("swag_runtime_print_i64"), {builder.CreateLoad(r0)});
-            break;
-        }
         case ByteCodeOp::IntrinsicPrintF64:
         {
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            builder.CreateCall(modu.getFunction("swag_runtime_print_f64"), {builder.CreateLoad(r0)});
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto typeF = createFunctionTypeInternal(buildParameters, 1, 0);
+            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0});
             break;
         }
         case ByteCodeOp::IntrinsicPrintString:

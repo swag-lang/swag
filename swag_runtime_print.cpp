@@ -34,31 +34,6 @@ EXTERN_C char* swag_runtime_itoa(char* result, SwagS64 value)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_ftoa(char* result, double value)
-{
-    SwagS64 ipart = (SwagS64) value;
-    double  fpart = value - (double) ipart;
-
-    char* n = result;
-    if (ipart == 0)
-    {
-        if (value < 0)
-            *n++ = '-';
-        *n++ = '0';
-    }
-    else
-        n = swag_runtime_itoa(result, ipart);
-    *n++ = '.';
-
-    SwagS32 afterPoint = 5;
-    if (fpart < 0)
-        fpart = -fpart;
-    while (afterPoint--)
-        fpart *= 10;
-    swag_runtime_itoa(n, (SwagS64) fpart);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 EXTERN_C void swag_runtime_print_n(const void* message, SwagS32 len)
 {
     if (!message || !len)
@@ -73,13 +48,5 @@ EXTERN_C void swag_runtime_print_i64(SwagS64 value)
 {
     char buf[100];
     swag_runtime_itoa(buf, (SwagS32) value);
-    swag_runtime_print(buf);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-EXTERN_C void swag_runtime_print_f64(double value)
-{
-    char buf[100];
-    swag_runtime_ftoa(buf, value);
     swag_runtime_print(buf);
 }

@@ -1,17 +1,15 @@
-func @print(value: s64);
-func @print(value: f64);
 func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @realloc(ptr: *void, size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: const *void, size: u32);
 func @memset(dst: *void, value: u8, size: u32);
+func @error(loc: swag.CompilerSourceLocation, msg: string)->swag.ICompiler;
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
-func @error(loc: swag.CompilerSourceLocation, msg: string)->swag.ICompiler;
 
 namespace swag
 {
