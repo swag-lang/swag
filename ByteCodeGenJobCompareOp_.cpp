@@ -10,6 +10,7 @@
 #include "ByteCode.h"
 #include "CommandLine.h"
 #include "SymTable.h"
+#include "Runtime.h"
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
@@ -55,7 +56,14 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
-            emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, r1, COMPARE_STRICT, r2);
+        {
+            auto rflags = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
+            inst->b.u32 = Runtime::COMPARE_STRICT;
+            inst        = emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, r1, rflags, r2);
+            freeRegisterRC(context, rflags);
+            context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
+        }
 
         // Simple pointer compare
         else

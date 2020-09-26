@@ -159,12 +159,12 @@ enum TypeCmpFlags
 
 func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
-    if type1 == type2
-        return true;
+    if cast(const*u8) type1 == cast(const*u8) type2
+        return true
     if !type1 && !type2
-        return true;
+        return true
     if !type1 || !type2
-        return false;
+        return false
 
     // Fine to convert from concrete to ref, or the other way
     if cmpFlags & TypeCmpFlags.CastAny
@@ -183,6 +183,6 @@ func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
     }
 
     if (type1.kind != type2.kind) || (type1.sizeof != type2.sizeof) || (type1.flags != type2.flags)
-        return false;
+        return false
     return @strcmp(@dataof(type1.name), @dataof(type2.name), @countof(type1.name), @countof(type2.name))
 }

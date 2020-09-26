@@ -1816,13 +1816,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualTypeInfo:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto r2 = builder.getInt32(ip->c.u32);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->d.u32));
-            r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateLoad(r1);
-            builder.CreateStore(builder.CreateCall(modu.getFunction("swag_runtime_compareType"), {r0, r1, r2}), r3);
+            auto rr = GEP_I32(allocR, ip->d.u32);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto r2 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateCall(modu.getFunction("@typecmp"), { rr, r0, r1, r2 });
             break;
         }
 
