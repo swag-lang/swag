@@ -33,7 +33,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    int size  = (int) moduleToGen->byteCodeFunc.size();
+    int size = (int) moduleToGen->byteCodeFunc.size();
 
     int precompileIndex = buildParameters.precompileIndex;
 
@@ -66,12 +66,14 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     job->buildParameters        = buildParameters;
     job->backend                = this;
 
-    // Put the bootstrap in the first file
+    // Put the bootstrap and the runtime in the first file
     int precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 0)
     {
         SWAG_ASSERT(g_Workspace.bootstrapModule);
         addFunctionsToJob(g_Workspace.bootstrapModule, job, 0, (int) g_Workspace.bootstrapModule->byteCodeFunc.size());
+        SWAG_ASSERT(g_Workspace.runtimeModule);
+        addFunctionsToJob(g_Workspace.runtimeModule, job, 0, (int) g_Workspace.runtimeModule->byteCodeFunc.size());
     }
 
     addFunctionsToJob(moduleToGen, job, start, end);

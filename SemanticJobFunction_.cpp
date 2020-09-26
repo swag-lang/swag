@@ -120,7 +120,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (module->isBootStrap || !module->canSendCompilerMessages)
+    if (module->isBootStrap || module->isRuntime || !module->canSendCompilerMessages)
         return true;
     if (!module->hasCompilerFuncFor(CompilerMsgKind::SemanticFunc))
         return true;

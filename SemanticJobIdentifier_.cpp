@@ -2093,10 +2093,20 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         here.push_back(startScope);
     }
 
+    // Add bootstrap
     SWAG_ASSERT(g_Workspace.bootstrapModule);
-    auto runTime = g_Workspace.bootstrapModule->scopeRoot;
-    scopes.insert(runTime);
-    here.push_back(runTime);
+    scopes.insert(g_Workspace.bootstrapModule->scopeRoot);
+    here.push_back(g_Workspace.bootstrapModule->scopeRoot);
+
+    // Add runtime, except for the bootstrap
+    if (!sourceFile->isBootstrapFile)
+    {
+        SWAG_ASSERT(g_Workspace.runtimeModule);
+        scopes.insert(g_Workspace.runtimeModule->scopeRoot);
+        here.push_back(g_Workspace.runtimeModule->scopeRoot);
+    }
+
+    // Add current private scope
     scopes.insert(sourceFile->scopePrivate);
     here.push_back(sourceFile->scopePrivate);
 

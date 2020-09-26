@@ -23,6 +23,7 @@ struct Workspace
     Module* createOrUseModule(const Utf8& moduleName, bool fromTestsFolder);
 
     void    addBootstrap();
+    void    addRuntime();
     void    setupPaths();
     void    setupInternalTags();
     void    setupUserTags();
@@ -45,14 +46,13 @@ struct Workspace
     shared_mutex          mutexModules;
     atomic<int>           numErrors = 0;
     VectorNative<Module*> modules;
-    char*                 runtimeBuf = nullptr;
-    uint32_t              runtimeLen = 0;
 
     vector<OneTag> tags;
 
     map<Utf8, Module*> mapModulesNames;
     Module*            filteredModule = nullptr;
     Module*            bootstrapModule;
+    Module*            runtimeModule;
     SwagScope          swagScope;
 };
 

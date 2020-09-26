@@ -75,25 +75,29 @@ void Workspace::addBootstrap()
     auto job        = g_Pool_syntaxJob.alloc();
     job->sourceFile = file;
     g_ThreadMgr.addJob(job);
+}
 
-    // Read swag.runtime.swg once
-    auto runTimePath = g_CommandLine.exePath;
-    runTimePath      = runTimePath.parent_path().string() + "/swag.runtime.swg";
-    FILE* h          = nullptr;
-    fopen_s(&h, runTimePath.string().c_str(), "rb");
-    if (!h)
-    {
-        g_Log.error(format("fatal error: cannot read file '%s'", runTimePath.string().c_str()));
+void Workspace::addRuntime()
+{
+    // Runtime will be compiled in the workspace scope, in order to be defined once
+    // for all modules
+    runtimeModule            = g_Allocator.alloc<Module>();
+    runtimeModule->isRuntime = true;
+    if (!runtimeModule->setup(""))
         exit(-1);
-    }
-    fseek(h, 0, SEEK_END);
-    runtimeLen = ftell(h);
-    rewind(h);
+    modules.push_back(runtimeModule);
 
-    runtimeLen = g_Allocator.alignSize(runtimeLen);
-    runtimeBuf = (char*) g_Allocator.alloc(runtimeLen);
-    fread(runtimeBuf, runtimeLen, 1, h);
-    fclose(h);
+    auto     file       = g_Allocator.alloc<SourceFile>();
+    fs::path p          = g_CommandLine.exePath;
+    file->name          = "swag.runtime.swg";
+    file->path          = p.parent_path().string() + "/swag.runtime.swg";
+    file->module        = runtimeModule;
+    file->isRuntimeFile = true;
+    runtimeModule->addFile(file);
+
+    auto job        = g_Pool_syntaxJob.alloc();
+    job->sourceFile = file;
+    g_ThreadMgr.addJob(job);
 }
 
 void Workspace::setupPaths()
@@ -504,11 +508,9 @@ bool Workspace::buildTarget()
     if (g_CommandLine.verbose)
         g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
 
-    // Runtime swag module semantic pass
+    // Bootstrap module semantic pass
     //////////////////////////////////////////////////
-    if (bootstrapModule)
     {
-        // Errors in swag.swg !!!
         if (bootstrapModule->numErrors)
         {
             g_Log.error("some errors have been found in 'swag.bootstrap.swg' ! exiting...");
@@ -529,11 +531,33 @@ bool Workspace::buildTarget()
         }
     }
 
-    VectorNative<Module*>  toBuild;
-    VectorNative<Module*>* modulesToBuild = &modules;
+    // Runtime module semantic pass
+    //////////////////////////////////////////////////
+    {
+        if (runtimeModule->numErrors)
+        {
+            g_Log.error("some errors have been found in 'swag.runtime.swg' ! exiting...");
+            return false;
+        }
+
+        auto job    = g_Pool_moduleSemanticJob.alloc();
+        job->module = runtimeModule;
+        g_ThreadMgr.addJob(job);
+        g_ThreadMgr.waitEndJobs();
+        checkPendingJobs();
+
+        // Errors in swag.swg !!!
+        if (runtimeModule->numErrors)
+        {
+            g_Log.error("some errors have been found in 'swag.runtime.swg' ! exiting...");
+            return false;
+        }
+    }
 
     // Filter modules to build
     //////////////////////////////////////////////////
+    VectorNative<Module*>  toBuild;
+    VectorNative<Module*>* modulesToBuild = &modules;
     if (!g_CommandLine.moduleFilter.empty())
     {
         if (!filteredModule)
@@ -590,6 +614,7 @@ bool Workspace::build()
 
         g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetOsName().c_str(), g_Workspace.GetArchName().c_str()));
         addBootstrap();
+        addRuntime();
         setupTarget();
         SWAG_CHECK(buildTarget());
 

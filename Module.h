@@ -40,7 +40,6 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    void     addRuntime();
     bool     setup(const Utf8& moduleName);
     void     allocateBackend();
     void     addPublicSourceFile(SourceFile* file);
@@ -122,6 +121,7 @@ struct Module
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
     bool      isBootStrap      = false;
+    bool      isRuntime        = false;
     bool      hasUnittestError = false;
     bool      setupDone        = false;
     bool      dependenciesDone = false;

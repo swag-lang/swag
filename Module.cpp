@@ -56,25 +56,6 @@ bool Module::canGenerateLegit()
     return true;
 }
 
-void Module::addRuntime()
-{
-    if (isBootStrap)
-        return;
-
-    auto     file       = g_Allocator.alloc<SourceFile>();
-    fs::path p          = g_CommandLine.exePath;
-    file->name          = "swag.runtime.swg";
-    file->path          = p.parent_path().string() + "/swag.runtime.swg";
-    file->module        = this;
-    file->isRuntimeFile = true;
-    file->setExternalBuffer(g_Workspace.runtimeBuf, g_Workspace.runtimeLen);
-    addFileNoLock(file);
-
-    auto job        = g_Pool_syntaxJob.alloc();
-    job->sourceFile = file;
-    g_ThreadMgr.addJob(job);
-}
-
 bool Module::setup(const Utf8& moduleName)
 {
     unique_lock lk(mutexFile);
@@ -135,7 +116,6 @@ bool Module::setup(const Utf8& moduleName)
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
 
-    addRuntime();
     return true;
 }
 
