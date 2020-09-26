@@ -1,37 +1,4 @@
 ////////////////////////////////////////////////////////////
-func @memcmp(dst, src: const *void, size: u32)->s32
-{
-    if !size
-        return 0
-
-    p1 := cast(const *s8) dst
-    p2 := cast(const *s8) src
-    loop i: size
-    {
-        if p1[i] != p2[i]
-            return p1[i] - p2[i]
-    }
-
-    return 0
-}
-
-////////////////////////////////////////////////////////////
-func @strcmp(str1, str2: const *void, num1, num2: u32)->bool
-{
-    if num1 != num2
-        return false
-    if !str1 || !str2
-        return str1 == str2
-    return !@memcmp(str1, str2, num1)
-}
-
-////////////////////////////////////////////////////////////
-func @abs(value: f32)->f32
-{
-    return value < 0 ? -value : value
-}
-
-////////////////////////////////////////////////////////////
 private func itoa(result: *u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
@@ -68,7 +35,6 @@ private func itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
-////////////////////////////////////////////////////////////
 private func ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -105,12 +71,44 @@ private func ftoa(result: *u8, value: f64)
     itoa(n, ipart)
 }
 
-////////////////////////////////////////////////////////////
 private func strlen(value: const *u8)->u32
 {
     idx := 0'u32
     while value[idx] idx += 1
     return idx
+}
+
+////////////////////////////////////////////////////////////
+func @memcmp(dst, src: const *void, size: u32)->s32
+{
+    if !size
+        return 0
+
+    p1 := cast(const *s8) dst
+    p2 := cast(const *s8) src
+    loop i: size
+    {
+        if p1[i] != p2[i]
+            return p1[i] - p2[i]
+    }
+
+    return 0
+}
+
+////////////////////////////////////////////////////////////
+func @strcmp(str1, str2: const *void, num1, num2: u32)->bool
+{
+    if num1 != num2
+        return false
+    if !str1 || !str2
+        return str1 == str2
+    return !@memcmp(str1, str2, num1)
+}
+
+////////////////////////////////////////////////////////////
+func @abs(value: f32)->f32
+{
+    return value < 0 ? -value : value
 }
 
 ////////////////////////////////////////////////////////////
@@ -133,7 +131,6 @@ func @print(value: f64)
     @print(&buf[0], strlen(&buf[0]))
 }
 
-////////////////////////////////////////////////////////////
 #if #os == "windows"
 {
     #[swag.foreign("kernel32")]
