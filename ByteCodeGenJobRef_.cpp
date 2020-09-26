@@ -121,6 +121,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
     if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::FuncAttr)
     {
+        truncRegisterRC(context, node->resultRegisterRC, 1);
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
