@@ -77,10 +77,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return true;
 
     auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(firstTypeInfo->isPointer1() || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({node, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
-    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({node, "'@mkinterface' must have a typeinfo as a second parameter"}));
+    SWAG_VERIFY(firstTypeInfo->isPointer1() || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
+    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, "'@mkinterface' must have a typeinfo as a second parameter"}));
     auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({node, "'@mkinterface' must have an interface as a third parameter"}));
+    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, "'@mkinterface' must have an interface as a third parameter"}));
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
