@@ -20,7 +20,6 @@
     <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
     <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
     <ClCompile Include="swag_runtime_compareString.cpp" />
-    <ClCompile Include="swag_runtime_compareType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">
