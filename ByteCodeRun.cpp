@@ -1168,7 +1168,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicMkInterface:
     {
-        registersRC[ip->c.u32].pointer = (uint8_t*) swag_runtime_interfaceof(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
+        registersRC[ip->c.u32].pointer = (uint8_t*) Runtime::interfaceOf(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
         break;
     }
 

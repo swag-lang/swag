@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child3);
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
         break;
     }
     case TokenId::IntrinsicGetContext:

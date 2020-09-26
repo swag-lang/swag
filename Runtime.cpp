@@ -147,4 +147,23 @@ namespace Runtime
         return strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count, (uint32_t) ctype2->name.count);
     }
 
+    ////////////////////////////////////////////////////////////
+    void* interfaceOf(const void* structType, const void* itfType)
+    {
+        auto ctype  = (ConcreteTypeInfoStruct*) structType;
+        auto itype  = (ConcreteTypeInfoStruct*) itfType;
+        auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
+
+        for (SwagS32 i = 0; i < ctype->interfaces.count; i++)
+        {
+            if (strcmp(buffer[i].name.buffer,
+                       itype->base.name.buffer,
+                       (SwagU32) buffer[i].name.count,
+                       (SwagU32) itype->base.name.count))
+                return buffer[i].value;
+        }
+
+        return nullptr;
+    }
+
 } // namespace Runtime

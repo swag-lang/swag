@@ -21,7 +21,7 @@ EXTERN_C void swag_runtime_assert_msg(ConcreteCompilerSourceLocation* location, 
     const char* msg = (const char*) message;
     buf[0]          = 0;
     if (msg && msg[0])
-    {
+    { 
         strcat(buf, msg);
         strcat(buf, "\n\n");
     }

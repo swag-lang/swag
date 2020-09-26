@@ -177,3 +177,20 @@ func @typecmp(type1, type2: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
         return false
     return @strcmp(@dataof(type1.name), @dataof(type2.name), @countof(type1.name), @countof(type2.name))
 }
+
+////////////////////////////////////////////////////////////
+func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
+{
+    loop i: structType.interfaces
+    {
+        if @strcmp(@dataof(structType.interfaces[i].name),
+                   @dataof(itfType.name),
+                   @countof(structType.interfaces[i].name),
+                   @countof(itfType.name))
+        {
+            return structType.interfaces[i].value
+        }
+    }
+
+    return null
+}

@@ -25,7 +25,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
 
     reserveLinearRegisterRC2(context, node->resultRegisterRC);
@@ -42,6 +42,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     // Get interface itable pointer in the second result register
     emitInstruction(context, ByteCodeOp::IntrinsicMkInterface, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);
+    context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
 
     freeRegisterRC(context, params->childs[0]);
     freeRegisterRC(context, params->childs[1]);
