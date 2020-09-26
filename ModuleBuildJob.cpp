@@ -77,6 +77,18 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
 
 JobResult ModuleBuildJob::execute()
 {
+    // Init module
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::Init)
+    {
+        // Need to get the constant segment from runtime
+        //SWAG_ASSERT(g_Workspace.bootstrapModule->constantSegment.totalCount == 0);
+        SWAG_ASSERT(g_Workspace.bootstrapModule->mutableSegment.totalCount == 0);
+        SWAG_ASSERT(g_Workspace.runtimeModule->mutableSegment.totalCount == 0);
+        module->constantSegment.initFrom(&g_Workspace.runtimeModule->constantSegment);
+        pass = ModuleBuildPass::Dependencies;
+    }
+
     // Wait for dependencies to be build
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)

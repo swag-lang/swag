@@ -7,6 +7,7 @@ struct ModuleDependency;
 
 enum class ModuleBuildPass
 {
+    Init,
     Dependencies,
     IncludeSwg,
     WaitForDependencies,
@@ -35,7 +36,7 @@ struct ModuleBuildJob : public Job
     void      publishFilesToTarget();
     JobResult execute() override;
 
-    ModuleBuildPass pass = ModuleBuildPass::Dependencies;
+    ModuleBuildPass pass = ModuleBuildPass::Init;
     Timer           timerSemanticCompiler;
     Timer           timerSemanticModule;
     Timer           timerRun;

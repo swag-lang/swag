@@ -31,6 +31,7 @@ struct DataSegmentRef
 
 struct DataSegment
 {
+    void                            initFrom(DataSegment* other);
     uint32_t                        reserve(uint32_t size, bool setZero = false);
     uint32_t                        reserveNoLock(uint32_t size, bool setZero = false);
     uint32_t                        offset(uint8_t* location);

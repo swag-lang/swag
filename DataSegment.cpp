@@ -15,6 +15,12 @@ uint32_t DataSegment::reserve(uint32_t size, bool setZero)
     return reserveNoLock(size, setZero);
 }
 
+void DataSegment::initFrom(DataSegment* other)
+{
+    reserve(other->totalCount);
+    memcpy(buckets[0].buffer, other->buckets[0].buffer, other->totalCount);
+}
+
 uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
 {
     SWAG_ASSERT(size);
