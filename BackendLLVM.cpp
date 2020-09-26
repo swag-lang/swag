@@ -154,40 +154,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         modu.getOrInsertFunction("swag_runtime_assert", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
     }
 
-    // Embedded runtime functions
-    {
-
-        llvm::Type* params[] = {
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-        };
-        modu.getOrInsertFunction("@memcmp", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
-    {
-
-        llvm::Type* params[] = {
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-        };
-        modu.getOrInsertFunction("@typecmp", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
-        };
-        modu.getOrInsertFunction("@strcmp", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
     // LIBC functions
     {
 

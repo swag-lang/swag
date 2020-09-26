@@ -110,7 +110,7 @@ struct BackendLLVM : public Backend
 
     bool                createRuntime(const BuildParameters& buildParameters);
     bool                swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType);
-    llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, int numReturn, int numParams);
+    llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, int numParams);
     llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC);
     bool                createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::FunctionType** result);
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);

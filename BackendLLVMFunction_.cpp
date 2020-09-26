@@ -732,11 +732,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemCmp:
         {
-            auto rr = GEP_I32(allocR, ip->a.u32);
-            auto r0 = GEP_I32(allocR, ip->b.u32);
-            auto r1 = GEP_I32(allocR, ip->c.u32);
-            auto r2 = GEP_I32(allocR, ip->d.u32);
-            builder.CreateCall(modu.getFunction("@memcmp"), {rr, r0, r1, r2});
+            auto rr    = GEP_I32(allocR, ip->a.u32);
+            auto r0    = GEP_I32(allocR, ip->b.u32);
+            auto r1    = GEP_I32(allocR, ip->c.u32);
+            auto r2    = GEP_I32(allocR, ip->d.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 4);
+            builder.CreateCall(modu.getOrInsertFunction("@memcmp", typeF), {rr, r0, r1, r2});
             break;
         }
 
@@ -1806,21 +1807,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CompareOpEqualString:
         {
-            auto rr = GEP_I32(allocR, ip->c.u32);
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto r2 = GEP_I32(allocR, ip->c.u32);
-            auto r3 = GEP_I32(allocR, ip->d.u32);
-            builder.CreateCall(modu.getFunction("@strcmp"), {rr, r0, r1, r2, r3});
+            auto rr    = GEP_I32(allocR, ip->c.u32);
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
+            auto r2    = GEP_I32(allocR, ip->c.u32);
+            auto r3    = GEP_I32(allocR, ip->d.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 5);
+            builder.CreateCall(modu.getOrInsertFunction("@strcmp", typeF), {rr, r0, r1, r2, r3});
             break;
         }
         case ByteCodeOp::CompareOpEqualTypeInfo:
         {
-            auto rr = GEP_I32(allocR, ip->d.u32);
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto r2 = GEP_I32(allocR, ip->c.u32);
-            builder.CreateCall(modu.getFunction("@typecmp"), { rr, r0, r1, r2 });
+            auto rr    = GEP_I32(allocR, ip->d.u32);
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
+            auto r2    = GEP_I32(allocR, ip->c.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 4);
+            builder.CreateCall(modu.getOrInsertFunction("@typecmp", typeF), {rr, r0, r1, r2});
             break;
         }
 
@@ -1951,7 +1954,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 1, 0);
+            auto typeF = createFunctionTypeInternal(buildParameters, 1);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0});
             break;
         }
@@ -1960,7 +1963,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
             auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 2, 0);
+            auto typeF = createFunctionTypeInternal(buildParameters, 2);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1});
             break;
         }
@@ -2600,7 +2603,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto rr    = GEP_I32(allocR, ip->a.u32);
                 auto r0    = GEP_I32(allocR, ip->b.u32);
                 auto name  = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName();
-                auto typeF = createFunctionTypeInternal(buildParameters, 1, 1);
+                auto typeF = createFunctionTypeInternal(buildParameters, 2);
                 builder.CreateCall(modu.getOrInsertFunction(name.c_str(), typeF), {rr, r0});
             }
             else
@@ -2788,15 +2791,13 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     }
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, int numReturn, int numParams)
+llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, int numParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& context         = *perThread[ct][precompileIndex].context;
 
     VectorNative<llvm::Type*> params;
-    for (int i = 0; i < numReturn; i++)
-        params.push_back(llvm::Type::getInt64PtrTy(context));
     for (int i = 0; i < numParams; i++)
         params.push_back(llvm::Type::getInt64PtrTy(context));
 
