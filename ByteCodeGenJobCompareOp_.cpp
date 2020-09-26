@@ -43,7 +43,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             return true;
         case NativeTypeKind::String:
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
-            emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2, r1[1]);
+            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0, r1, r2, r1[1]);
             context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
             return true;
         default:
@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             auto rflags = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
             inst->b.u32 = Runtime::COMPARE_STRICT;
-            inst        = emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, r1, rflags, r2);
+            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
             freeRegisterRC(context, rflags);
             context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         }

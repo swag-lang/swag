@@ -730,7 +730,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateMemSet(r0, r1, r2, llvm::MaybeAlign(0));
             break;
         }
-        case ByteCodeOp::MemCmp:
+        case ByteCodeOp::IntrinsicMemCmp:
         {
             auto rr    = GEP_I32(allocR, ip->a.u32);
             auto r0    = GEP_I32(allocR, ip->b.u32);
@@ -1805,7 +1805,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CompareOpEqualString:
+        case ByteCodeOp::IntrinsicStrCmp:
         {
             auto rr    = GEP_I32(allocR, ip->c.u32);
             auto r0    = GEP_I32(allocR, ip->a.u32);
@@ -1816,7 +1816,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getOrInsertFunction("@strcmp", typeF), {rr, r0, r1, r2, r3});
             break;
         }
-        case ByteCodeOp::CompareOpEqualTypeInfo:
+        case ByteCodeOp::IntrinsicTypeCmp:
         {
             auto rr    = GEP_I32(allocR, ip->d.u32);
             auto r0    = GEP_I32(allocR, ip->a.u32);

@@ -138,7 +138,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     RegisterList result        = reserveRegisterRC(context);
     inst                       = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32                = Runtime::COMPARE_CAST_ANY;
-    inst                       = emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, r0, exprNode->resultRegisterRC[1], result, result);
+    inst                       = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
     context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
 
     inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);

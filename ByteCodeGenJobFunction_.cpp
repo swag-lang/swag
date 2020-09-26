@@ -277,7 +277,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitSafetyNullPointer(context, childDest->resultRegisterRC, "first pointer of '@memcmp' is null");
         emitSafetyNullPointer(context, childSrc->resultRegisterRC, "second pointer of '@memcmp' is null");
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::MemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -290,7 +290,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child1            = callParams->childs[1];
         auto child2            = callParams->childs[2];
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child2);
@@ -304,7 +304,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child2            = callParams->childs[2];
         auto child3            = callParams->childs[3];
         node->resultRegisterRC = child2->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::CompareOpEqualString, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, child3->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, child3->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child3);

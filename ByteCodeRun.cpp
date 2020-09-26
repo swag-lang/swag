@@ -586,7 +586,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MemCmp:
+    case ByteCodeOp::IntrinsicMemCmp:
     {
         void*    dst               = registersRC[ip->b.u32].pointer;
         void*    src               = registersRC[ip->c.u32].pointer;
@@ -1217,12 +1217,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].b = IMMA_U64(ip) == IMMB_U64(ip);
         break;
     }
-    case ByteCodeOp::CompareOpEqualString:
+    case ByteCodeOp::IntrinsicStrCmp:
     {
         registersRC[ip->c.u32].b = Runtime::strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32, registersRC[ip->d.u32].u32);
         break;
     }
-    case ByteCodeOp::CompareOpEqualTypeInfo:
+    case ByteCodeOp::IntrinsicTypeCmp:
     {
         registersRC[ip->d.u32].b = Runtime::compareType(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, ip->c.u32);
         break;
