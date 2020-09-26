@@ -75,6 +75,25 @@ void Workspace::addBootstrap()
     auto job        = g_Pool_syntaxJob.alloc();
     job->sourceFile = file;
     g_ThreadMgr.addJob(job);
+
+    // Read swag.runtime.swg once
+    auto runTimePath = g_CommandLine.exePath;
+    runTimePath      = runTimePath.parent_path().string() + "/swag.runtime.swg";
+    FILE* h          = nullptr;
+    fopen_s(&h, runTimePath.string().c_str(), "rb");
+    if (!h)
+    {
+        g_Log.error(format("fatal error: cannot read file '%s'", runTimePath.string().c_str()));
+        exit(-1);
+    }
+    fseek(h, 0, SEEK_END);
+    runtimeLen = ftell(h);
+    rewind(h);
+
+    runtimeLen = g_Allocator.alignSize(runtimeLen);
+    runtimeBuf = (char*) g_Allocator.alloc(runtimeLen);
+    fread(runtimeBuf, runtimeLen, 1, h);
+    fclose(h);
 }
 
 void Workspace::setupPaths()

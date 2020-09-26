@@ -67,6 +67,7 @@ void Module::addRuntime()
     file->path          = p.parent_path().string() + "/swag.runtime.swg";
     file->module        = this;
     file->isRuntimeFile = true;
+    file->setExternalBuffer(g_Workspace.runtimeBuf, g_Workspace.runtimeLen);
     addFileNoLock(file);
 
     auto job        = g_Pool_syntaxJob.alloc();

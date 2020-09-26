@@ -150,13 +150,6 @@ func @print(value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-#[flags]
-enum TypeCmpFlags
-{
-    Strict = 0
-    CastAny = 1
-}
-
 func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
     if cast(const*u8) type1 == cast(const*u8) type2

@@ -380,6 +380,13 @@ namespace swag
 	}
 
     #[flags]
+    enum TypeCmpFlags
+    {
+        Strict = 0
+        CastAny = 1
+    }
+
+    #[flags]
     enum CompilerMsgKindMask : u64
     {
         PassBeforeSemantic =    1 << cast(u32) CompilerMsgKind.PassBeforeSemantic
