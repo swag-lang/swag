@@ -174,6 +174,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCompiler:
     case TokenId::IntrinsicIsByteCode:
     case TokenId::IntrinsicMemCmp:
+    case TokenId::IntrinsicStrCmp:
+    case TokenId::IntrinsicTypeCmp:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

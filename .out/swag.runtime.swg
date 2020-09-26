@@ -1,3 +1,5 @@
+using swag
+
 ////////////////////////////////////////////////////////////
 private func itoa(result: *u8, value: s64)->*u8
 {
@@ -96,7 +98,7 @@ func @memcmp(dst, src: const *void, size: u32)->s32
 }
 
 ////////////////////////////////////////////////////////////
-func @strcmp(str1, str2: const *void, num1, num2: u32)->bool
+func @strcmp(str1, str2: const *u8, num1, num2: u32)->bool
 {
     if num1 != num2
         return false
@@ -145,4 +147,42 @@ func @print(value: f64)
             return
         WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), message, len, null, null);
     }
+}
+
+////////////////////////////////////////////////////////////
+#[flags]
+enum TypeCmpFlags
+{
+    Strict = 0
+    CastAny = 1
+}
+
+func @typecmp(type1, type2: typeinfo, cmpFlags: TypeCmpFlags)->bool
+{
+    if type1 == type2
+        return true;
+    if !type1 && !type2
+        return true;
+    if !type1 || !type2
+        return false;
+
+    // Fine to convert from concrete to ref, or the other way
+    if cmpFlags & TypeCmpFlags.CastAny
+    {
+        if type1.kind == TypeInfoKind.Reference && type2.kind != TypeInfoKind.Reference
+        {
+            ref := cast(const *TypeInfoReference) type1
+            return @typecmp(ref.pointedType, type2, cmpFlags)
+        }
+
+        if type1.kind != TypeInfoKind.Reference && type2.kind == TypeInfoKind.Reference
+        {
+            ref := cast(const *TypeInfoReference) type2
+            return @typecmp(type1, ref.pointedType, cmpFlags)
+        }
+    }
+
+    if (type1.kind != type2.kind) || (type1.sizeof != type2.sizeof) || (type1.flags != type2.flags)
+        return false;
+    return @strcmp(@dataof(type1.name), @dataof(type2.name), @countof(type1.name), @countof(type2.name))
 }

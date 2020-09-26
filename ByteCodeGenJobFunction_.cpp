@@ -284,6 +284,33 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         break;
     }
+    case TokenId::IntrinsicTypeCmp:
+    {
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto child2            = callParams->childs[2];
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CompareOpEqualTypeInfo, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        freeRegisterRC(context, child2);
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
+        break;
+    }
+    case TokenId::IntrinsicStrCmp:
+    {
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto child2            = callParams->childs[2];
+        auto child3            = callParams->childs[3];
+        node->resultRegisterRC = child2->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::CompareOpEqualString, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, child3->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        freeRegisterRC(context, child3);
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
+        break;
+    }
     case TokenId::IntrinsicGetContext:
     {
         node->resultRegisterRC = reserveRegisterRC(context);

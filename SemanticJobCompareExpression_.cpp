@@ -5,6 +5,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "TypeTable.h"
+#include "Runtime.h"
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -12,7 +13,6 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     // Compile time compare of two types
-    // We need to use swag_runtime_compareType to be coherent with runtime !
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
         node->setFlagsValueIsComputed();
@@ -23,7 +23,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             auto module               = context->sourceFile->module;
             auto ptr1                 = module->typeSegment.address(left->computedValue.reg.offset);
             auto ptr2                 = module->typeSegment.address(right->computedValue.reg.offset);
-            node->computedValue.reg.b = swag_runtime_compareType(ptr1, ptr2, COMPARE_STRICT);
+            node->computedValue.reg.b = Runtime::compareType(ptr1, ptr2, Runtime::COMPARE_STRICT);
         }
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

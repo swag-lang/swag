@@ -123,6 +123,8 @@ void LanguageSpec::setup()
     keywords["@memcpy"]      = TokenId::IntrinsicMemCpy;
     keywords["@memset"]      = TokenId::IntrinsicMemSet;
     keywords["@memcmp"]      = TokenId::IntrinsicMemCmp;
+    keywords["@strcmp"]      = TokenId::IntrinsicStrCmp;
+    keywords["@typecmp"]     = TokenId::IntrinsicTypeCmp;
     keywords["@getcontext"]  = TokenId::IntrinsicGetContext;
     keywords["@setcontext"]  = TokenId::IntrinsicSetContext;
     keywords["@args"]        = TokenId::IntrinsicArguments;
