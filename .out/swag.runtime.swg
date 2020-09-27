@@ -140,31 +140,28 @@ func @abs(value: f32)->f32
 }
 
 ////////////////////////////////////////////////////////////
-func @print(message: string)
-{
-    @print(@dataof(message), @countof(message))
-}
-
 func @print(value: s64)
 {
     var buf: [100] u8
     itoa(&buf[0], value)
-    @print(&buf[0], strlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], strlen(&buf[0]))
+    @print(str)
 }
 
 func @print(value: f64)
 {
     var buf: [100] u8
     ftoa(&buf[0], value)
-    @print(&buf[0], strlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], strlen(&buf[0]))
+    @print(str)
 }
 
-func @print(message: const *void, len: u32)
+func @print(message: string)
 {
-    if !message || !len
+    if !@dataof(message) || !@countof(message)
         return
     #if #os == "windows"
-        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), message, len, null, null);
+        WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), @countof(message), null, null);
 }
 
 ////////////////////////////////////////////////////////////
