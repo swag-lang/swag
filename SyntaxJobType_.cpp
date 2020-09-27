@@ -278,7 +278,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
 
             if (node->arrayDim == 254)
-                return syntaxError(node, "too many array dimensions (max is 254)");
+                return syntaxError(token, "too many array dimensions (max is 254)");
             node->arrayDim++;
             SWAG_CHECK(doExpression(node));
             if (token.id != TokenId::SymComma)
@@ -287,17 +287,26 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+
+        // Array of const stuff
+        if (token.id == TokenId::KwdConst)
+        {
+            node->typeFlags |= TYPEFLAG_ISPTRCONST;
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, return syntaxError(token, "'const' must be followed by a pointer or a reference"));
+        }
     }
 
     // Pointers
     while (token.id == TokenId::SymAsterisk)
     {
         if (node->ptrCount == 254)
-            return syntaxError(node, "too many pointer dimensions (max is 254)");
+            return syntaxError(token, "too many pointer dimensions (max is 254)");
         node->ptrCount++;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
+    // Reference
     if (token.id == TokenId::SymAmpersand)
     {
         node->typeFlags |= TYPEFLAG_ISREF;
