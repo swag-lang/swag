@@ -540,6 +540,10 @@ bool Workspace::buildTarget()
             return false;
         }
 
+        runtimeModule->constantSegment.initFrom(&bootstrapModule->constantSegment);
+        runtimeModule->mutableSegment.initFrom(&bootstrapModule->mutableSegment);
+        runtimeModule->typeSegment.initFrom(&bootstrapModule->typeSegment);
+
         auto job    = g_Pool_moduleSemanticJob.alloc();
         job->module = runtimeModule;
         g_ThreadMgr.addJob(job);

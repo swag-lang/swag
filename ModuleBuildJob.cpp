@@ -81,11 +81,13 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Init)
     {
-        // Need to get the constant segment from runtime
-        //SWAG_ASSERT(g_Workspace.bootstrapModule->constantSegment.totalCount == 0);
-        SWAG_ASSERT(g_Workspace.bootstrapModule->mutableSegment.totalCount == 0);
-        SWAG_ASSERT(g_Workspace.runtimeModule->mutableSegment.totalCount == 0);
-        module->constantSegment.initFrom(&g_Workspace.runtimeModule->constantSegment);
+        if (module != g_Workspace.bootstrapModule && module != g_Workspace.runtimeModule)
+        {
+            module->constantSegment.initFrom(&g_Workspace.runtimeModule->constantSegment);
+            module->mutableSegment.initFrom(&g_Workspace.runtimeModule->mutableSegment);
+            module->typeSegment.initFrom(&g_Workspace.runtimeModule->typeSegment);
+        }
+
         pass = ModuleBuildPass::Dependencies;
     }
 
