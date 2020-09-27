@@ -6,7 +6,7 @@
     private func GetStdHandle(nStdHandle: u32)->*void;
     private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
     private func ExitProcess(uExitCode: u32);
-    private func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const *u32);
+    private func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
     }
 }
 
@@ -200,7 +200,7 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 }
 
 ////////////////////////////////////////////////////////////
-/*func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 {
     contextFlags := @getcontext().flags
     if(contextFlags & swag.ContextFlags.ByteCode)
@@ -226,4 +226,4 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 
     #if #os == "windows"
         ExitProcess(cast(u32) -666)
-}*/
+}
