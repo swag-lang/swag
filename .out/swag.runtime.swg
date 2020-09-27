@@ -1,12 +1,21 @@
+////////////////////////////////////////////////////////////
 #if #os == "windows"
 {
     private const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
+    private const MB_CANCELTRYCONTINUE  = 0x00000006
+    private const MB_ICONERROR          = 0x00000010
+    private const IDCANCEL    = 2
+    private const IDTRYAGAIN  = 10
+    private const IDCONTINUE  = 11
+
     #[swag.foreign("kernel32")]
     {
     private func GetStdHandle(nStdHandle: u32)->*void;
     private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
     private func ExitProcess(uExitCode: u32);
     private func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
+    private func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
+    private func DebugBreak();
     }
 }
 
@@ -226,4 +235,69 @@ func @error(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 
     #if #os == "windows"
         ExitProcess(cast(u32) -666)
+}
+
+////////////////////////////////////////////////////////////
+func @assertmsg(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+{
+    contextFlags := @getcontext().flags
+    // If we are running bytecode, then just let the runner deal with the assertion,
+    // we will have more usefull information
+    if(contextFlags & swag.ContextFlags.ByteCode)
+        @error(message, loc)
+    // During tests, and if not in devmode, then just raise an error without
+    // a dialog box
+    else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
+        @error(message, loc)
+
+    // Build message
+    var str: [1024] u8
+    var len: u32
+
+    if message != null
+    {
+        len = @countof(message)
+        @memcpy(&str[0], @dataof(message), len)
+        str[len]     = "\n"'u8
+        str[len + 1] = "\n"'u8
+        len += 2;
+    }
+
+    // Source location
+    @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
+    len += @countof(loc.fileName)
+    @memcpy(&str[len], @dataof(", line "), 7);
+    len += 7;
+    dstLine := &str[len]
+    cptLine := cast(u32) (itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
+    len += cptLine
+    @memcpy(&str[len], @dataof("\n\n"), 2)
+    len += 2
+
+    // Message to the user
+    const title = "Swag Assertion Failed !"
+    const info =
+    #"- Press Cancel to exit
+      - Press Retry to debug the application
+      - Press Continue to ignore the assert
+      "#
+
+    @memcpy(&str[len], @dataof(info), @countof(info))
+    len += @countof(info)
+
+    str[len] = 0
+
+    #if #os == "windows"
+    {
+        result := MessageBoxA(null, @dataof(str), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
+        switch result
+        {
+            case IDCANCEL:
+                ExitProcess(cast(u32) -666)
+            case IDTRYAGAIN:
+                DebugBreak();
+            case IDCONTINUE:
+                break
+        }
+    }
 }

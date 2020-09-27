@@ -235,6 +235,7 @@ namespace Runtime
         memcpy(&str[len], "\n\n", 2);
         len += 2;
 
+        // Message to the user
         static auto info    = "- Press Cancel to exit\n- Press Retry to debug the application\n- Press Continue to ignore the assert";
         auto        lenInfo = (uint32_t) strlen(info);
         memcpy(&str[len], info, lenInfo);
