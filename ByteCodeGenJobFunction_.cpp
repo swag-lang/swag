@@ -212,6 +212,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child1);
         break;
     }
+    case TokenId::IntrinsicAssertMsg:
+    {
+        auto child0 = callParams->childs.front();
+        auto child1 = callParams->childs.back();
+        emitInstruction(context, ByteCodeOp::IntrinsicAssertMsg, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        break;
+    }
     case TokenId::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();

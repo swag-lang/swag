@@ -281,12 +281,14 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     case ByteCodeOp::IntrinsicPrintString:
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
+       context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
         break;
 
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     case ByteCodeOp::IntrinsicInterfaceOf:
+    case ByteCodeOp::IntrinsicError:
+    case ByteCodeOp::IntrinsicAssertMsg:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
         break;
 

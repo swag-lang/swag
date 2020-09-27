@@ -116,6 +116,7 @@ void LanguageSpec::setup()
     keywords["@index"]       = TokenId::IntrinsicIndex;
     keywords["@print"]       = TokenId::IntrinsicPrint;
     keywords["@assert"]      = TokenId::IntrinsicAssert;
+    keywords["@assertmsg"]   = TokenId::IntrinsicAssertMsg;
     keywords["@error"]       = TokenId::IntrinsicError;
     keywords["@alloc"]       = TokenId::IntrinsicAlloc;
     keywords["@realloc"]     = TokenId::IntrinsicRealloc;

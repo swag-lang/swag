@@ -209,7 +209,7 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 }
 
 ////////////////////////////////////////////////////////////
-func @error(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+func @error(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
     if(contextFlags & swag.ContextFlags.ByteCode)
@@ -238,12 +238,14 @@ func @error(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 }
 
 ////////////////////////////////////////////////////////////
-func @assert1(expr: bool, file: const *void, line: u32, col: u32, message: const *void)
+func @assert(expr: bool, file: const *void, line: u32, col: u32, message: const *void)
 {
+    if expr return
+    @error("toto", #location)
 }
 
 ////////////////////////////////////////////////////////////
-func @assertmsg(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
     // If we are running bytecode, then just let the runner deal with the assertion,

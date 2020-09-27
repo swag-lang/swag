@@ -155,6 +155,7 @@ DEFINE_TOKEN_ID(IntrinsicMakeInterface)
 
 DEFINE_TOKEN_ID(IntrinsicPrint)
 DEFINE_TOKEN_ID(IntrinsicAssert)
+DEFINE_TOKEN_ID(IntrinsicAssertMsg)
 DEFINE_TOKEN_ID(IntrinsicError)
 DEFINE_TOKEN_ID(IntrinsicAlloc)
 DEFINE_TOKEN_ID(IntrinsicRealloc)

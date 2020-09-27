@@ -1927,26 +1927,58 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
             break;
         }
+        case ByteCodeOp::IntrinsicAssertMsg:
+        {
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
+            auto r2    = GEP_I32(allocR, ip->c.u32);
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
+            break;
+        }
 
         case ByteCodeOp::IntrinsicAssert:
         {
+            // Expr
             llvm::Value* r0;
             if (ip->flags & BCI_IMM_A)
                 r0 = builder.getInt8(ip->a.b);
             else
                 r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto         r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
-            auto         v1 = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32, pp.cst0_i32}));
-            auto         r2 = builder.getInt64(ip->node->token.startLocation.line | ((uint64_t) ip->node->token.startLocation.column << 32));
-            llvm::Value* r3;
+
+            // Filename
+            llvm::Value* r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
+            r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
+
+            // Line & column
+            auto r2 = builder.getInt64(ip->node->token.startLocation.line);
+            auto r3 = builder.getInt64(ip->node->token.startLocation.column);
+
+            // Message
+            llvm::Value* r4;
             if (ip->d.pointer)
             {
-                r3 = builder.CreateGlobalString((const char*) ip->d.pointer);
-                r3 = TO_PTR_I8(builder.CreateInBoundsGEP(r3, {pp.cst0_i32}));
+                r4 = builder.CreateGlobalString((const char*) ip->d.pointer);
+                r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
             }
             else
-                r3 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
-            builder.CreateCall(modu.getFunction("swag_runtime_assert"), {r0, v1, r2, r3});
+                r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
+
+            // The intrinsic function needs pointers to u64 values, so we need to convert
+            auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(5)));
+            builder.CreateStore(builder.CreateIntCast(r0, builder.getInt64Ty(), false), GEP_I32(allocT, 0));
+            builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), GEP_I32(allocT, 1));
+            builder.CreateStore(r2, GEP_I32(allocT, 2));
+            builder.CreateStore(r3, GEP_I32(allocT, 3));
+            builder.CreateStore(builder.CreatePtrToInt(r4, builder.getInt64Ty()), GEP_I32(allocT, 4));
+            auto p0    = GEP_I32(allocT, 0);
+            auto p1    = GEP_I32(allocT, 1);
+            auto p2    = GEP_I32(allocT, 2);
+            auto p3    = GEP_I32(allocT, 3);
+            auto p4    = GEP_I32(allocT, 4);
+            auto typeF = createFunctionTypeInternal(buildParameters, 5);
+            builder.CreateCall(modu.getOrInsertFunction("@assert", typeF), {p0, p1, p2, p3, p4});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:

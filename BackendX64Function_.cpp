@@ -1612,22 +1612,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Clear64(pp, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
-            emitCall(pp, "@assert1");
-
-            /*
-            if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u8, RCX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RDX);
-            uint64_t colline = ip->node->token.startLocation.line | ((uint64_t) ip->node->token.startLocation.column << 32);
-            BackendX64Inst::emit_Load64_Immediate(pp, colline, R8);
-            if (ip->d.pointer)
-                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, R9);
-            else
-                BackendX64Inst::emit_Clear64(pp, R9);
-            emitCall(pp, "swag_runtime_assert");
-            */
+            emitCall(pp, "@assert");
             break;
         }
 
@@ -1704,6 +1689,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             emitCall(pp, "@error");
+            break;
+        case ByteCodeOp::IntrinsicAssertMsg:
+            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+            emitCall(pp, "@assertmsg");
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));

@@ -1102,6 +1102,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Runtime::error(msg.c_str(), msg.length(), location);
         break;
     }
+    case ByteCodeOp::IntrinsicAssertMsg:
+    {
+        Utf8 msg;
+        msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+        Runtime::assertMsg(msg.c_str(), msg.length(), location);
+        break;
+    }
     case ByteCodeOp::IntrinsicAssert:
     {
         if (IMMA_U8(ip))

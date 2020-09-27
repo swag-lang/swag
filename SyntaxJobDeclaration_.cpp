@@ -310,6 +310,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicAssertMsg:
     case TokenId::IntrinsicError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:
