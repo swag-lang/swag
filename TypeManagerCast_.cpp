@@ -1797,6 +1797,21 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
+    // u64 to whatever pointer
+    if (fromType->isNative(NativeTypeKind::U64))
+    {
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toType;
+            }
+
+            return true;
+        }
+    }
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 

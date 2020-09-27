@@ -733,7 +733,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Struct ||
             fromTypeInfo->kind == TypeInfoKind::Interface ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
-            fromTypeInfo->kind == TypeInfoKind::Reference)
+            fromTypeInfo->kind == TypeInfoKind::Reference ||
+            fromTypeInfo->isNative(NativeTypeKind::U64))
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
