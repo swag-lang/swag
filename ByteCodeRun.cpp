@@ -1861,7 +1861,6 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
-
     // Special exception raised by @error, to simply log an error message
     // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)

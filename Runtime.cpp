@@ -259,6 +259,8 @@ namespace Runtime
         case IDCONTINUE:
             break;
         }
+#else
+        exit(-666);
 #endif
     }
 
