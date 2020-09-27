@@ -238,6 +238,11 @@ func @error(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 }
 
 ////////////////////////////////////////////////////////////
+func @assert1(expr: bool, file: const *void, line: u32, col: u32, message: const *void)
+{
+}
+
+////////////////////////////////////////////////////////////
 func @assertmsg(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 {
     contextFlags := @getcontext().flags
@@ -257,6 +262,7 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation = #callerlocat
     if message != null
     {
         len = @countof(message)
+        if(len > 512) len = 512
         @memcpy(&str[0], @dataof(message), len)
         str[len]     = "\n"'u8
         str[len + 1] = "\n"'u8

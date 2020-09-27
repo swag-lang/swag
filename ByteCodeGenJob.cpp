@@ -268,6 +268,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::JumpIfZero64:
         bc->numJumps++;
         break;
+
+    case ByteCodeOp::IntrinsicAssert:
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
+        break;
     }
 
     return &ins;
