@@ -55,10 +55,10 @@ Utf8 ByteCode::callName()
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
-    if (node && node->flags & AST_DEFINED_INTRINSIC)
+    if (node && node->sourceFile->isRuntimeFile)
     {
         SWAG_ASSERT(node->resolvedSymbolName);
-        if(node->resolvedSymbolName->overloads.size() == 1)
+        if (node->resolvedSymbolName->overloads.size() == 1)
             return name;
     }
 

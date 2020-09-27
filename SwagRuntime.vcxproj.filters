@@ -7,15 +7,11 @@
     <ClCompile Include="libc\win32\crt.cpp">
       <Filter>LibC\Win32</Filter>
     </ClCompile>
-    <ClCompile Include="libc\win32\memcmp.cpp">
-      <Filter>LibC\Win32</Filter>
-    </ClCompile>
     <ClCompile Include="libc\win32\memcpy.cpp">
       <Filter>LibC\Win32</Filter>
     </ClCompile>
     <ClCompile Include="swag_runtime_tls.cpp" />
     <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
-    <ClCompile Include="swag_runtime_loadDynamicLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">

@@ -4,7 +4,6 @@
 static const SwagU32 COMPARE_STRICT   = 0x00000000;
 static const SwagU32 COMPARE_CAST_ANY = 0x00000001;
 
-extern "C" void*            swag_runtime_loadDynamicLibrary(const void* name);
 extern "C" SwagU64          swag_runtime_tlsAlloc();
 extern "C" void             swag_runtime_tlsSetValue(SwagU64 id, void* value);
 extern "C" void*            swag_runtime_tlsGetValue(SwagU64 id);

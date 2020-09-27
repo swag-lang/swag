@@ -62,8 +62,11 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
-        emitGlobalString(pp, precompileIndex, nameLib, RCX);
-        emitCall(pp, "swag_runtime_loadDynamicLibrary");
+        emitGlobalString(pp, precompileIndex, nameLib, RAX);
+        BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+        BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RAX);
+        BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+        emitCall(pp, "__swag_runtime_loaddll");
     }
 
     // Call to global init of all dependencies

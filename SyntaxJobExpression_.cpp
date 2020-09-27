@@ -828,7 +828,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
 bool SyntaxJob::isValidUserName(AstNode* node)
 {
     // An identifier that starts with '__' is reserved for internal usage !
-    if (!sourceFile->generated && !(node->parent->flags & AST_GENERATED))
+    if (!sourceFile->generated && !(node->parent->flags & AST_GENERATED) && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->name.length() > 1 && node->name[0] == '_' && node->name[1] == '_')
             return syntaxError(node->token, format("identifier '%s' starts with '__', and this is reserved by the language", node->name.c_str()));

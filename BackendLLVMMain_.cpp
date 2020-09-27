@@ -27,6 +27,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
 
+    // Reserve room to pass parameters to embedded intrinsics
+    auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2)));
+
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);
@@ -83,7 +86,13 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
-        builder.CreateCall(modu.getFunction("swag_runtime_loadDynamicLibrary"), {ptrStr});
+
+        builder.CreateStore(builder.CreatePtrToInt(ptrStr, builder.getInt64Ty()), GEP_I32(allocT, 0));
+        builder.CreateStore(builder.getInt64(nameLib.length()), GEP_I32(allocT, 1));
+        auto typeF = createFunctionTypeInternal(buildParameters, 2);
+        auto p0    = GEP_I32(allocT, 0);
+        auto p1    = GEP_I32(allocT, 1);
+        builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_loaddll", typeF), {p0, p1});
     }
 
     // Call to global init of all dependencies

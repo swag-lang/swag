@@ -18,6 +18,7 @@
             func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
             func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
             func DebugBreak();
+            func LoadLibraryA(name: const *u8);
         }
     }
 }
@@ -316,4 +317,11 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
                 break
         }
     }
+}
+
+////////////////////////////////////////////////////////////
+private func loaddll(name: string)
+{
+    #if #os == "windows"
+        LoadLibraryA(@dataof(name))
 }
