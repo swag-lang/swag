@@ -543,6 +543,13 @@ AstNode* AstBinaryOpNode::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstConditionalOpNode::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc0<AstConditionalOpNode>();
+    newNode->copyFrom(context, this);
+    return newNode;
+}
+
 AstNode* AstIf::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstIf>();

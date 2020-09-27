@@ -247,7 +247,7 @@ func @assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col
 
-    var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : ""
+    var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : "assertion failed"
     @assertmsg(msg, loc)
 }
 

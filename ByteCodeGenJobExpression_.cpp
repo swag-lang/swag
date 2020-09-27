@@ -52,36 +52,62 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
+{
+    auto expr    = context->node;
+    auto binNode = CastAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
+
+    // We need to cast right now, in case the shortcut is activated
+    SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
+    if (context->result == ContextResult::Pending)
+        return true;
+    binNode->doneFlags |= AST_DONE_CAST1;
+
+    // Jump to ifFalse child
+    binNode->seekJumpIfFalse = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, expr->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
+{
+    auto ifTrue  = context->node;
+    auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
+
+    // Reserve registers in the main node to copy the result
+    reserveRegisterRC(context, binNode->resultRegisterRC, ifTrue->resultRegisterRC.size());
+    for (int r = 0; r < ifTrue->resultRegisterRC.size(); r++)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, binNode->resultRegisterRC[r], ifTrue->resultRegisterRC[r]);
+
+    // Jump after ifFalse block
+    binNode->seekJumpAfterIfFalse = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump, ifTrue->resultRegisterRC);
+
+    // After this, this is the IfFalse block, so update jump value after the expression
+    auto inst   = &context->bc->out[binNode->seekJumpIfFalse];
+    inst->b.s32 = context->bc->numInstructions - binNode->seekJumpIfFalse - 1;
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
 {
-    auto node   = context->node;
-    auto child0 = node->childs[0];
-    auto child1 = node->childs[1];
-    auto child2 = node->childs[2];
+    auto node       = CastAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
+    auto expression = node->childs[0];
+    auto ifTrue     = node->childs[1];
+    auto ifFalse    = node->childs[2];
 
-    if (!(child0->doneFlags & AST_DONE_CAST1))
-    {
-        SWAG_CHECK(emitCast(context, child0, child0->typeInfo, child0->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
-            return true;
-        child0->doneFlags |= AST_DONE_CAST1;
-    }
-
-    reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
-
-    // If true
+    // Copy If false result
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
-    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = node->resultRegisterRC.size();
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], ifFalse->resultRegisterRC[r]);
 
-    // If false
-    for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child2->resultRegisterRC[r]);
+    // Update jump after the IfTrue block
+    auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];
+    inst->b.s32 = context->bc->numInstructions - node->seekJumpAfterIfFalse - 1;
 
-    freeRegisterRC(context, child0);
-    freeRegisterRC(context, child1);
-    freeRegisterRC(context, child2);
+    freeRegisterRC(context, expression);
+    freeRegisterRC(context, ifTrue);
+    freeRegisterRC(context, ifFalse);
 
     return true;
 }

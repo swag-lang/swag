@@ -334,8 +334,8 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     binNode->doneFlags |= AST_DONE_CAST1;
 
     // If the left expression is false, then we copy the result to the && operator, and we jump right after it
-    // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' is A is false.
-    // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
+    // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
+    // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
     left->additionalRegisterRC = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, left->additionalRegisterRC, left->resultRegisterRC);
     binNode->seekJumpExpression = context->bc->numInstructions;
@@ -364,7 +364,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     binNode->doneFlags |= AST_DONE_CAST1;
 
     // If the left expression is true, then we copy the result to the || operator, and we jump right after it
-    // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' is B is true.
+    // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
     // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
     left->additionalRegisterRC = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, left->additionalRegisterRC, left->resultRegisterRC);

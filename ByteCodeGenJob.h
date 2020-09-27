@@ -284,6 +284,8 @@ struct ByteCodeGenJob : public Job
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
+    static bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
+    static bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);
     static bool emitConditionalOp(ByteCodeGenContext* context);
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);

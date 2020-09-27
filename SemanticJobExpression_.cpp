@@ -166,7 +166,9 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
             node->inheritComputedValue(ifFalse);
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitConditionalOp;
+    expression->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
+    ifTrue->byteCodeAfterFct     = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
+    node->byteCodeFct            = ByteCodeGenJob::emitConditionalOp;
     return true;
 }
 

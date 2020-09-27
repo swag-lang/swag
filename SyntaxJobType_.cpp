@@ -293,7 +293,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         {
             node->typeFlags |= TYPEFLAG_ISPTRCONST;
             SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, return syntaxError(token, "'const' must be followed by a pointer or a reference"));
+            SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, "'const' must be followed by a pointer or a reference"));
         }
     }
 

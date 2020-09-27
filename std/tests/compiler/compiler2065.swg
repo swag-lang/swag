@@ -5,8 +5,8 @@ func strlen(value: const *u8)->u32
     return idx
 }
 
-#[swag.printbc]
-#[swag.optimizebc(0)]
+//#[swag.printbc]
+//#[swag.optimizebc(0)]
 func toto(message: const *u8)
 {
     var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : ""

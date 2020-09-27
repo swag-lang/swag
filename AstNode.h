@@ -466,6 +466,14 @@ struct AstBinaryOpNode : public AstNode
     int seekJumpExpression;
 };
 
+struct AstConditionalOpNode : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    int seekJumpIfFalse;
+    int seekJumpAfterIfFalse;
+};
+
 struct AstIf : public AstNode
 {
     AstNode* clone(CloneContext& context) override;

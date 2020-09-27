@@ -575,7 +575,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymQuestion)
     {
         SWAG_CHECK(eatToken());
-        auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::ConditionalExpression, sourceFile, parent, 3);
+        auto triNode         = Ast::newNode<AstConditionalOpNode>(this, AstNodeKind::ConditionalExpression, sourceFile, parent, 3);
         triNode->semanticFct = SemanticJob::resolveConditionalOp;
         if (result)
             *result = triNode;
@@ -946,7 +946,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
         auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-        orgVarNode->kind             = kind;
+        orgVarNode->kind          = kind;
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
