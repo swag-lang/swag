@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "swag_runtime.h"
+#include "assert.h"
 
 namespace Runtime
 {
@@ -172,10 +173,10 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    void error(const void* message, SwagU32 size, ConcreteCompilerSourceLocation* location)
+    void error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
         SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
-        if (context->flags & (SwagU64) ContextFlags::ByteCode)
+        if (context->flags & (uint64_t) ContextFlags::ByteCode)
         {
 #ifdef _WIN32
             // Raise an exception that will be catched by the runner.
@@ -183,7 +184,7 @@ namespace Runtime
             static ULONG_PTR params[3];
             params[0] = (ULONG_PTR) location;
             params[1] = (ULONG_PTR) message;
-            params[2] = (ULONG_PTR)(SwagSizeT) size;
+            params[2] = (ULONG_PTR)(size_t) size;
             RaiseException(666, 0, 3, params);
 #endif
         }
@@ -196,6 +197,69 @@ namespace Runtime
         print(message, size);
         print("\n");
         exit(-666);
+    }
+
+    // Generate an assert dialog box
+    void assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
+    {
+        SwagContext* context      = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+        auto         contextFlags = context->flags;
+        if (contextFlags & (uint64_t) ContextFlags::ByteCode)
+            error(message, size, location);
+        else if ((contextFlags & (uint64_t) ContextFlags::Test) && !(contextFlags & (uint64_t) ContextFlags::DevMode))
+            error(message, size, location);
+
+        // Build message
+        char     str[1024];
+        uint32_t len = 0;
+        if (message != nullptr)
+        {
+            len = size;
+            memcpy(&str[0], message, len);
+            str[len]     = '\n';
+            str[len + 1] = '\n';
+            len += 2;
+        }
+
+        // Source location
+        memcpy(&str[len], (char*) location->fileName.buffer, location->fileName.count);
+        len += (uint32_t) location->fileName.count;
+
+        memcpy(&str[len], ", line ", 7);
+        len += 7;
+
+        auto     dstLine = &str[len];
+        uint32_t cptLine = (uint32_t)(itoa(dstLine, location->lineStart + 1) - dstLine);
+        len += cptLine;
+
+        memcpy(&str[len], "\n\n", 2);
+        len += 2;
+
+        static auto info    = "- Press Cancel to exit\n- Press Retry to debug the application\n- Press Continue to ignore the assert";
+        auto        lenInfo = (uint32_t) strlen(info);
+        memcpy(&str[len], info, lenInfo);
+        len += lenInfo;
+
+        SWAG_ASSERT(len < sizeof(str) - 1);
+        str[len] = 0;
+
+        // Message box title
+        auto title = "Swag Assertion Failed !";
+
+#ifdef _WIN32
+        auto result = MessageBoxA(nullptr, str, title, MB_ICONERROR | MB_CANCELTRYCONTINUE);
+        switch (result)
+        {
+        case IDCANCEL:
+            ExitProcess((uint32_t) -666);
+            break;
+        case IDTRYAGAIN:
+            DebugBreak();
+            break;
+        case IDCONTINUE:
+            break;
+        }
+#endif
     }
 
 } // namespace Runtime

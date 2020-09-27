@@ -5,5 +5,6 @@
     @assert(y == 666)
     z := &y
     //@print(@typeof(z).name)
-    @error("toto", #location)
+    //@error("toto", #location)
+    @assert(false)
 }

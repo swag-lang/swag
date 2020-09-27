@@ -1116,7 +1116,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             loc.colStart = loc.colEnd = ipLocation->column;
             loc.fileName.buffer       = (void*) ip->node->sourceFile->path.c_str();
             loc.fileName.count        = ip->node->sourceFile->path.length();
-            swag_runtime_assert_msg(&loc, (const char*) ip->d.pointer);
+            auto msg                  = (const char*) ip->d.pointer;
+            auto lenMsg               = msg ? (uint32_t) strlen(msg) : 0;
+            Runtime::assertMsg(msg, lenMsg, &loc);
         }
         break;
     }
