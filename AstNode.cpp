@@ -707,17 +707,11 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstTypeExpression>();
     newNode->copyFrom(context, this);
 
-    newNode->identifier     = findChildRef(identifier, newNode);
-    newNode->literalType    = literalType;
-    newNode->ptrCount       = ptrCount;
-    newNode->arrayDim       = arrayDim;
-    newNode->isRef          = isRef;
-    newNode->isSlice        = isSlice;
-    newNode->isConst        = isConst;
-    newNode->isCode         = isCode;
-    newNode->forceConstType = forceConstType;
-    newNode->isSelf         = isSelf;
-    newNode->isTypeOf       = isTypeOf;
+    newNode->identifier  = findChildRef(identifier, newNode);
+    newNode->literalType = literalType;
+    newNode->ptrCount    = ptrCount;
+    newNode->arrayDim    = arrayDim;
+    newNode->typeFlags   = typeFlags;
     return newNode;
 }
 

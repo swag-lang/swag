@@ -1,3 +1,15 @@
+#if #os == "windows"
+{
+    private const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
+    #[swag.foreign("kernel32")]
+    {
+    private func GetStdHandle(nStdHandle: u32)->*void;
+    private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+    private func ExitProcess(uExitCode: u32);
+    private func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const *u32);
+    }
+}
+
 ////////////////////////////////////////////////////////////
 private func itoa(result: *u8, value: s64)->*u8
 {
@@ -131,20 +143,12 @@ func @print(value: f64)
     @print(&buf[0], strlen(&buf[0]))
 }
 
-#if #os == "windows"
+func @print(message: const *void, len: u32)
 {
-    #[swag.foreign("kernel32")]
-    private func GetStdHandle(nStdHandle: u32)->*void;
-    #[swag.foreign("kernel32")]
-    private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
-    private const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
-
-    func @print(message: const *void, len: u32)
-    {
-        if !message || !len
-            return
+    if !message || !len
+        return
+    #if #os == "windows"
         WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), message, len, null, null);
-    }
 }
 
 ////////////////////////////////////////////////////////////
@@ -194,3 +198,32 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 
     return null
 }
+
+////////////////////////////////////////////////////////////
+/*func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+{
+    contextFlags := @getcontext().flags
+    if(contextFlags & swag.ContextFlags.ByteCode)
+    {
+        #if #os == "windows"
+        {
+            l := loc
+            var params: [3] const *void
+            params[0] = cast(const *void) &l
+            params[1] = cast(const *void) @dataof(message)
+            params[2] = cast(const *void) cast(u64) @countof(message)
+            RaiseException(0x666, 0, 3, &params[0])
+        }
+    }
+
+    @print("error: ")
+    @print(loc.fileName)
+    @print(":")
+    @print(cast(s64) (loc.lineStart + 1))
+    @print(":")
+    @print(message)
+    @print("\n")
+
+    #if #os == "windows"
+        ExitProcess(cast(u32) -666)
+}*/

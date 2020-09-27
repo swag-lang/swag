@@ -174,7 +174,7 @@ namespace Ast
     void setForceConstType(AstNode* node)
     {
         if (node && node->kind == AstNodeKind::TypeExpression)
-            ((AstTypeExpression*) node)->forceConstType = true;
+            ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCECONST;
     }
 
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)

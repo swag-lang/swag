@@ -138,19 +138,19 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, "'self' can only be used in an 'impl' block"));
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
-            auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->isConst    = true;
-            typeNode->isSelf     = true;
+            auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->typeFlags |= TYPEFLAG_ISCONST;
+            typeNode->typeFlags |= TYPEFLAG_ISSELF;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
         else
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, "'self' can only be used in an 'impl' block"));
-            auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->ptrCount   = 1;
-            typeNode->isConst    = isConst;
-            typeNode->isSelf     = true;
+            auto typeNode      = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->ptrCount = 1;
+            typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
+            typeNode->typeFlags |= TYPEFLAG_ISSELF;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }

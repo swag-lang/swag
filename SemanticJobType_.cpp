@@ -106,10 +106,10 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
 {
     if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        if (node->forceConstType)
-            node->isConst = true;
+        if (node->typeFlags & TYPEFLAG_FORCECONST)
+            node->typeFlags |= TYPEFLAG_ISCONST;
 
-        if (node->isConst)
+        if (node->typeFlags & TYPEFLAG_ISCONST)
             forceConstNode(context, node);
     }
 }
@@ -125,14 +125,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
         return true;
     }
 
-    if (typeNode->isTypeOf)
+    if (typeNode->typeFlags & TYPEFLAG_ISTYPEOF)
     {
         typeNode->typeInfo = typeNode->childs.front()->typeInfo;
         return true;
     }
 
     // Code
-    if (typeNode->isCode)
+    if (typeNode->typeFlags & TYPEFLAG_ISCODE)
     {
         typeNode->typeInfo = g_TypeMgr.typeInfoCode;
         return true;
@@ -204,9 +204,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrPointer->ptrCount  = typeNode->ptrCount;
         ptrPointer->finalType = typeNode->typeInfo;
         ptrPointer->sizeOf    = sizeof(void*);
-        if (typeNode->isConst)
+        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
             ptrPointer->flags |= TYPEINFO_CONST;
-        if (typeNode->isSelf)
+        if (typeNode->typeFlags & TYPEFLAG_ISSELF)
             ptrPointer->flags |= TYPEINFO_SELF;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
@@ -215,14 +215,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // In fact, this is a reference
-    else if (typeNode->isRef)
+    else if (typeNode->typeFlags & TYPEFLAG_ISREF)
     {
         auto ptrRef          = g_Allocator.alloc<TypeInfoReference>();
         ptrRef->pointedType  = typeNode->typeInfo;
         ptrRef->originalType = nullptr;
-        SWAG_VERIFY(typeNode->isConst, context->report({typeNode, "a reference must be declared as 'const'"}));
-        if (typeNode->isConst)
-            ptrRef->flags |= TYPEINFO_CONST;
+        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, "a reference must be declared as 'const'"}));
+        ptrRef->flags |= TYPEINFO_CONST;
         ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
         ptrRef->computeName();
         typeNode->typeInfo = ptrRef;
@@ -238,14 +237,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->arrayDim)
     {
         // Array without a specified size
-        if (typeNode->arrayDim == UINT32_MAX)
+        if (typeNode->arrayDim == UINT8_MAX)
         {
             auto ptrArray         = g_Allocator.alloc<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
             ptrArray->finalType   = typeNode->typeInfo;
-            if (typeNode->isConst)
+            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
                 ptrArray->flags |= TYPEINFO_CONST;
             ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
@@ -271,7 +270,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrArray->pointedType = typeNode->typeInfo;
                 ptrArray->finalType   = rawType;
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                if (typeNode->isConst)
+                if (typeNode->typeFlags & TYPEFLAG_ISCONST)
                     ptrArray->flags |= TYPEINFO_CONST;
                 ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
                 ptrArray->computeName();
@@ -279,11 +278,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
             }
         }
     }
-    else if (typeNode->isSlice)
+    else if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
     {
         auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
-        if (typeNode->isConst)
+        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         ptrSlice->computeName();

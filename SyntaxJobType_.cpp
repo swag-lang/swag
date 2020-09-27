@@ -70,17 +70,17 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "invalid 'self' usage in that context"}));
-                auto typeNode        = Ast::newTypeExpression(sourceFile, params);
-                typeNode->ptrCount   = 1;
-                typeNode->isConst    = isConst;
-                typeNode->isSelf     = true;
+                auto typeNode      = Ast::newTypeExpression(sourceFile, params);
+                typeNode->ptrCount = 1;
+                typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
+                typeNode->typeFlags |= TYPEFLAG_ISSELF;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
             }
             else
             {
                 AstNode* typeExpr;
                 SWAG_CHECK(doTypeExpression(params, &typeExpr));
-                ((AstTypeExpression*) typeExpr)->isConst = isConst;
+                ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
             }
 
             if (token.id != TokenId::SymComma)
@@ -215,7 +215,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             *result = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeInfo = g_TypeMgr.typeInfoCode;
-        node->isCode   = true;
+        node->typeFlags |= TYPEFLAG_ISCODE;
         SWAG_CHECK(eatToken());
         return true;
     }
@@ -240,17 +240,16 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
-    node->isConst  = isConst;
+    node->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
     node->arrayDim = 0;
     node->ptrCount = 0;
-    node->isRef    = false;
 
     // This is a @typeof
     if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
     {
         AstNode* typeOfNode = nullptr;
         SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
-        node->isTypeOf          = true;
+        node->typeFlags |= TYPEFLAG_ISTYPEOF;
         auto typeNode           = CastAst<AstIntrinsicProp>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
         typeNode->typeOfAsType  = true;
         typeNode->typeOfAsConst = isConst;
@@ -266,18 +265,20 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             // Size of array can be nothing
             if (token.id == TokenId::SymRightSquare)
             {
-                node->arrayDim = UINT32_MAX;
+                node->arrayDim = UINT8_MAX;
                 break;
             }
 
             // Slice
             if (token.id == TokenId::SymDotDot)
             {
-                node->isSlice = true;
+                node->typeFlags |= TYPEFLAG_ISSLICE;
                 SWAG_CHECK(tokenizer.getToken(token));
                 break;
             }
 
+            if (node->arrayDim == 254)
+                return syntaxError(node, "too many array dimensions (max is 254)");
             node->arrayDim++;
             SWAG_CHECK(doExpression(node));
             if (token.id != TokenId::SymComma)
@@ -291,13 +292,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Pointers
     while (token.id == TokenId::SymAsterisk)
     {
+        if (node->ptrCount == 254)
+            return syntaxError(node, "too many pointer dimensions (max is 254)");
         node->ptrCount++;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
     if (token.id == TokenId::SymAmpersand)
     {
-        node->isRef = true;
+        node->typeFlags |= TYPEFLAG_ISREF;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(!node->ptrCount, syntaxError(token, "'&' is invalid for a pointer"));
     }

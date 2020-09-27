@@ -755,11 +755,11 @@ namespace Ast
         case AstNodeKind::TypeExpression:
         {
             AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
-            if (typeNode->isConst)
+            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
                 CONCAT_FIXED_STR(concat, "const ");
-            if (typeNode->isSlice)
+            if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
                 CONCAT_FIXED_STR(concat, "[..] ");
-            if (typeNode->arrayDim == UINT32_MAX)
+            if (typeNode->arrayDim == UINT8_MAX)
                 CONCAT_FIXED_STR(concat, "[] ");
             else if (typeNode->arrayDim)
                 concat.addStringFormat("[%u] ", typeNode->arrayDim);
