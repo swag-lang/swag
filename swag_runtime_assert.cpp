@@ -80,7 +80,7 @@ void swag_runtime_error(ConcreteCompilerSourceLocation* location, const void* me
         params[0] = (void*) location;
         params[1] = (void*) message;
         params[2] = (void*) (SwagSizeT) size;
-        RaiseException(0x666, 0, 3, &params);
+        RaiseException(666, 0, 3, &params);
 #endif
     }
 

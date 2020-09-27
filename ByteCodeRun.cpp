@@ -1097,9 +1097,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicError:
     {
         Utf8 msg;
-        msg.append((const char*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
-        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
-        swag_runtime_error(location, msg.c_str(), msg.length());
+        msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+        Runtime::error(msg.c_str(), msg.length(), location);
         break;
     }
     case ByteCodeOp::IntrinsicAssert:
@@ -1860,9 +1860,9 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
 
-    // Special exception raised by swag_runtime_error, to simply log an error message
+    // Special exception raised by @error, to simply log an error message
     // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
-    if (args->ExceptionRecord->ExceptionCode == 0x666)
+    if (args->ExceptionRecord->ExceptionCode == 666)
     {
         auto location = (ConcreteCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
 

@@ -8,6 +8,7 @@ namespace Runtime
     void  print(const void* message, uint32_t len);
     void  print(int64_t value);
     void  print(double value);
+    void  error(const void* message, SwagU32 size, ConcreteCompilerSourceLocation* location);
 
     static const uint32_t COMPARE_STRICT   = 0x00000000;
     static const uint32_t COMPARE_CAST_ANY = 0x00000001;

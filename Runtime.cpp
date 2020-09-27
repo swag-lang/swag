@@ -113,6 +113,11 @@ namespace Runtime
         print(buf, (int) strlen(buf));
     }
 
+    void print(const char* message)
+    {
+        print(message, (int) strlen(message));
+    }
+
     ////////////////////////////////////////////////////////////
     bool compareType(const void* type1, const void* type2, uint32_t flags)
     {
@@ -164,6 +169,33 @@ namespace Runtime
         }
 
         return nullptr;
+    }
+
+    ////////////////////////////////////////////////////////////
+    void error(const void* message, SwagU32 size, ConcreteCompilerSourceLocation* location)
+    {
+        SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+        if (context->flags & (SwagU64) ContextFlags::ByteCode)
+        {
+#ifdef _WIN32
+            // Raise an exception that will be catched by the runner.
+            // The runner is in charge of displaying the user error message and location
+            static ULONG_PTR params[3];
+            params[0] = (ULONG_PTR) location;
+            params[1] = (ULONG_PTR) message;
+            params[2] = (ULONG_PTR)(SwagSizeT) size;
+            RaiseException(666, 0, 3, params);
+#endif
+        }
+
+        print("error: ");
+        print(location->fileName.buffer, (SwagU32) location->fileName.count);
+        print(":");
+        print((int64_t)(location->lineStart + 1));
+        print(": ");
+        print(message, size);
+        print("\n");
+        exit(-666);
     }
 
 } // namespace Runtime

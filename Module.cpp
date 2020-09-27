@@ -478,7 +478,9 @@ bool Module::internalError(const Utf8& msg)
 
 bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
-    return node->sourceFile->report({node, node->token, msg});
+    Utf8 msg1 = "internal error: ";
+    msg1 += msg;
+    return node->sourceFile->report({node, node->token, msg1});
 }
 
 void Module::printUserMessage(const BuildParameters& bp)

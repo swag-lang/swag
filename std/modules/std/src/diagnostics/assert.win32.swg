@@ -11,11 +11,11 @@
             // If we are running bytecode, then just let the runner deal with the assertion,
             // we will have more usefull information
             if(contextFlags & swag.ContextFlags.ByteCode)
-                @error(loc, message)
+                @error(message, loc)
             // During tests, and if not in devmode, then just raise an error without
             // a dialog box
             else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
-                @error(loc, message)
+                @error(message, loc)
 
             // Build message
             var str: String

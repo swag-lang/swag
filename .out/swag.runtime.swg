@@ -200,7 +200,7 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 }
 
 ////////////////////////////////////////////////////////////
-func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
+func @error(message: string, loc: swag.CompilerSourceLocation = #callerlocation)
 {
     contextFlags := @getcontext().flags
     if(contextFlags & swag.ContextFlags.ByteCode)
@@ -212,7 +212,7 @@ func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation
             params[0] = cast(const *void) &l
             params[1] = cast(const *void) @dataof(message)
             params[2] = cast(const *void) cast(u64) @countof(message)
-            RaiseException(0x666, 0, 3, &params[0])
+            RaiseException(666, 0, 3, &params[0])
         }
     }
 
@@ -220,7 +220,7 @@ func @error1(message: string, loc: swag.CompilerSourceLocation = #callerlocation
     @print(loc.fileName)
     @print(":")
     @print(cast(s64) (loc.lineStart + 1))
-    @print(":")
+    @print(": ")
     @print(message)
     @print("\n")
 
