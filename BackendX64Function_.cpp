@@ -1193,7 +1193,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             emitCall(pp, "@strcmp");
             break;

@@ -303,15 +303,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicStrCmp:
     {
-        auto child0            = callParams->childs[0];
-        auto child1            = callParams->childs[1];
-        auto child2            = callParams->childs[2];
-        auto child3            = callParams->childs[3];
-        node->resultRegisterRC = child2->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, child3->resultRegisterRC);
+        auto child0 = callParams->childs[0];
+        auto child1 = callParams->childs[1];
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, callParams->childs[1]->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], node->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
-        freeRegisterRC(context, child3);
         break;
     }
     case TokenId::IntrinsicGetContext:

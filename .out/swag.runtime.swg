@@ -120,13 +120,16 @@ func @memcmp(dst, src: const *void, size: u32)->s32
 }
 
 ////////////////////////////////////////////////////////////
-func @strcmp(str1, str2: const *u8, num1, num2: u32)->bool
+func @strcmp(str1: string, str2: string)->bool
 {
-    if num1 != num2
+    num1 := @countof(str1)
+    if num1 != @countof(str2)
         return false
-    if !str1 || !str2
-        return str1 == str2
-    return !@memcmp(str1, str2, num1)
+    data1 := @dataof(str1)
+    data2 := @dataof(str2)
+    if data1 == null || data2 == null
+        return data1 == data2
+    return !@memcmp(data1, data2, num1)
 }
 
 ////////////////////////////////////////////////////////////
@@ -191,7 +194,7 @@ func @typecmp(type1, type2: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
 
     if (type1.kind != type2.kind) || (type1.sizeof != type2.sizeof) || (type1.flags != type2.flags)
         return false
-    return @strcmp(@dataof(type1.name), @dataof(type2.name), @countof(type1.name), @countof(type2.name))
+    return @strcmp(type1.name, type2.name)
 }
 
 ////////////////////////////////////////////////////////////
@@ -199,13 +202,8 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
-        if @strcmp(@dataof(structType.interfaces[i].name),
-                   @dataof(itfType.name),
-                   @countof(structType.interfaces[i].name),
-                   @countof(itfType.name))
-        {
+        if @strcmp(structType.interfaces[i].name, itfType.name)
             return structType.interfaces[i].value
-        }
     }
 
     return null

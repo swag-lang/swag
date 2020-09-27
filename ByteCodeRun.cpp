@@ -1229,7 +1229,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicStrCmp:
     {
-        registersRC[ip->c.u32].b = Runtime::strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32, registersRC[ip->d.u32].u32);
+        registersRC[ip->d.u32].b = Runtime::strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32, registersRC[ip->c.u32].pointer, registersRC[ip->d.u32].u32);
         break;
     }
     case ByteCodeOp::IntrinsicTypeCmp:

@@ -4,8 +4,7 @@
 {
     x := "toto"
     y := "toto"
-    @assert(@strcmp(@dataof(x), @dataof(y), 4, 4))
+    @assert(@strcmp(x, y))
     z := "titi"
-    @assert(!@strcmp(@dataof(x), @dataof(z), 4, 4))
-    @assert(@strcmp(@dataof(x), @dataof(z), 1, 1))
+    @assert(!@strcmp(x, z))
 }

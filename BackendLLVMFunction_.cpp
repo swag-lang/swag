@@ -1757,7 +1757,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicStrCmp:
         {
-            auto rr    = GEP_I32(allocR, ip->c.u32);
+            auto rr    = GEP_I32(allocR, ip->d.u32);
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
             auto r2    = GEP_I32(allocR, ip->c.u32);

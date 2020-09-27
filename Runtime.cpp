@@ -75,7 +75,7 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    bool strcmp(const void* str1, const void* str2, uint32_t num1, uint32_t num2)
+    bool strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2)
     {
         if (num1 != num2)
             return false;
@@ -150,7 +150,7 @@ namespace Runtime
 
         if ((ctype1->kind != ctype2->kind) || (ctype1->sizeOf != ctype2->sizeOf) || (ctype1->flags != ctype2->flags))
             return false;
-        return strcmp(ctype1->name.buffer, ctype2->name.buffer, (uint32_t) ctype1->name.count, (uint32_t) ctype2->name.count);
+        return strcmp(ctype1->name.buffer, (uint32_t) ctype1->name.count, ctype2->name.buffer, (uint32_t) ctype2->name.count);
     }
 
     ////////////////////////////////////////////////////////////
@@ -163,8 +163,8 @@ namespace Runtime
         for (SwagS32 i = 0; i < ctype->interfaces.count; i++)
         {
             if (strcmp(buffer[i].name.buffer,
-                       itype->base.name.buffer,
                        (SwagU32) buffer[i].name.count,
+                       itype->base.name.buffer,
                        (SwagU32) itype->base.name.count))
                 return buffer[i].value;
         }

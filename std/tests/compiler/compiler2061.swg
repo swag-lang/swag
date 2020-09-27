@@ -31,10 +31,7 @@ func interfaceOf(structType, itfType: const *swag.TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
-        if @strcmp(@dataof(structType.interfaces[i].name),
-                   @dataof(itfType.name),
-                   @countof(structType.interfaces[i].name),
-                   @countof(itfType.name))
+        if @strcmp(structType.interfaces[i].name, itfType.name)
         {
             return structType.interfaces[i].value
         }
