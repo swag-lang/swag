@@ -142,7 +142,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveCondtionalOp(SemanticContext* context)
+bool SemanticJob::resolveConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 3);
@@ -170,7 +170,7 @@ bool SemanticJob::resolveCondtionalOp(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveNullCondtionalOp(SemanticContext* context)
+bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 2);

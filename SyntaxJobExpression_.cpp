@@ -576,7 +576,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::ConditionalExpression, sourceFile, parent, 3);
-        triNode->semanticFct = SemanticJob::resolveCondtionalOp;
+        triNode->semanticFct = SemanticJob::resolveConditionalOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
@@ -591,7 +591,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::NullConditionalExpression, sourceFile, parent, 2);
-        triNode->semanticFct = SemanticJob::resolveNullCondtionalOp;
+        triNode->semanticFct = SemanticJob::resolveNullConditionalOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);

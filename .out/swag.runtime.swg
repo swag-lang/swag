@@ -238,10 +238,17 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func @assert(expr: bool, file: const *void, line: u32, col: u32, message: const *void)
+func @assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
 {
     if expr return
-    @error("toto", #location)
+
+    var loc: swag.CompilerSourceLocation
+    loc.fileName = cast(string) @mkslice(file, strlen(file))
+    loc.lineStart, loc.lineEnd = line
+    loc.colStart, loc.colEnd = col
+
+    var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : ""
+    @assertmsg(msg, loc)
 }
 
 ////////////////////////////////////////////////////////////

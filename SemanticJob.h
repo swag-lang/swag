@@ -230,8 +230,8 @@ struct SemanticJob : public Job
     static bool resolveArrayPointerIndex(SemanticContext* context);
     static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
-    static bool resolveCondtionalOp(SemanticContext* context);
-    static bool resolveNullCondtionalOp(SemanticContext* context);
+    static bool resolveConditionalOp(SemanticContext* context);
+    static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
