@@ -44,7 +44,6 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeTypeKind::String:
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r0[1]);
             emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0, r1, r2, r1[1]);
-            context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");
@@ -62,7 +61,6 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             inst->b.u32 = Runtime::COMPARE_STRICT;
             inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
             freeRegisterRC(context, rflags);
-            context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         }
 
         // Simple pointer compare

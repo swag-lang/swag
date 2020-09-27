@@ -135,14 +135,12 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     inst->b.u32 = exprNode->concreteTypeInfoStorage;
 
-    RegisterList result        = reserveRegisterRC(context);
-    inst                       = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
-    inst->b.u32                = Runtime::COMPARE_CAST_ANY;
-    inst                       = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
-
-    inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
-    inst->d.pointer = (uint8_t*) "invalid cast from any";
+    RegisterList result = reserveRegisterRC(context);
+    inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
+    inst->b.u32         = Runtime::COMPARE_CAST_ANY;
+    inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
+    inst                = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
+    inst->d.pointer     = (uint8_t*) "invalid cast from any";
     inherhitLocation(inst, exprNode);
 
     freeRegisterRC(context, result);

@@ -269,7 +269,33 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         bc->numJumps++;
         break;
 
+    case ByteCodeOp::IntrinsicPrintS64:
+    case ByteCodeOp::IntrinsicPrintF64:
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 1); // Runtime call
+        break;
+
+    case ByteCodeOp::IntrinsicS8x1:
+    case ByteCodeOp::IntrinsicS16x1:
+    case ByteCodeOp::IntrinsicS32x1:
+    case ByteCodeOp::IntrinsicS64x1:
+    case ByteCodeOp::IntrinsicF32x1:
+    case ByteCodeOp::IntrinsicF64x1:
+    case ByteCodeOp::IntrinsicPrintString:
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
+        break;
+
+    case ByteCodeOp::IntrinsicF32x2:
+    case ByteCodeOp::IntrinsicF64x2:
+    case ByteCodeOp::IntrinsicInterfaceOf:
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
+        break;
+
+    case ByteCodeOp::IntrinsicTypeCmp:
+    case ByteCodeOp::IntrinsicMemCmp:
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
+        break;
     case ByteCodeOp::IntrinsicAssert:
+    case ByteCodeOp::IntrinsicStrCmp:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
         break;
     }

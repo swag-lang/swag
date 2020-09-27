@@ -278,7 +278,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         break;
     }
     case TokenId::IntrinsicTypeCmp:
@@ -291,7 +290,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child2);
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         break;
     }
     case TokenId::IntrinsicStrCmp:
@@ -305,7 +303,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         freeRegisterRC(context, child3);
-        context->bc->maxCallParams = max(context->bc->maxCallParams, 5); // Runtime call
         break;
     }
     case TokenId::IntrinsicGetContext:
@@ -368,8 +365,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
-        context->bc->maxCallParams                                                                                      = max(context->bc->maxCallParams, 3); // Runtime call
-        emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->token.id;
         break;
     }
 
@@ -426,8 +423,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
 
-        context->bc->maxCallParams                                                           = max(context->bc->maxCallParams, 2); // Runtime call
-        emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC)->d.u32 = (uint32_t) node->token.id;
+        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->token.id;
         break;
     }
 
