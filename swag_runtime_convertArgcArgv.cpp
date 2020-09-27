@@ -4,7 +4,6 @@
 EXTERN_C void swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[])
 {
     static SwagU64 argumentsStr[MAX_COMMAND_ARGUMENTS];
-    swag_runtime_assert(argc <= MAX_COMMAND_ARGUMENTS, __FILE__, __LINE__, "too many application arguments");
 
     for (SwagS32 i = 0; i < argc; i++)
     {
