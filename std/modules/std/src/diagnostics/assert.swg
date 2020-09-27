@@ -6,7 +6,7 @@ public namespace std.debug
 		#if std.ASSERT
 		{
 			if !expr
-				assertMessage(message, loc)
+				@assertmsg(message, loc)
 		}
 	}
 }

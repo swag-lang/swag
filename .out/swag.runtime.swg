@@ -1,21 +1,24 @@
 ////////////////////////////////////////////////////////////
 #if #os == "windows"
 {
-    private const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
-    private const MB_CANCELTRYCONTINUE  = 0x00000006
-    private const MB_ICONERROR          = 0x00000010
-    private const IDCANCEL    = 2
-    private const IDTRYAGAIN  = 10
-    private const IDCONTINUE  = 11
-
-    #[swag.foreign("kernel32")]
+    private
     {
-    private func GetStdHandle(nStdHandle: u32)->*void;
-    private func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
-    private func ExitProcess(uExitCode: u32);
-    private func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
-    private func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
-    private func DebugBreak();
+        const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
+        const MB_CANCELTRYCONTINUE  = 0x00000006
+        const MB_ICONERROR          = 0x00000010
+        const IDCANCEL    = 2
+        const IDTRYAGAIN  = 10
+        const IDCONTINUE  = 11
+
+        #[swag.foreign("kernel32")]
+        {
+            func GetStdHandle(nStdHandle: u32)->*void;
+            func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+            func ExitProcess(uExitCode: u32);
+            func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
+            func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
+            func DebugBreak();
+        }
     }
 }
 
