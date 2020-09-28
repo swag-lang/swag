@@ -11,9 +11,9 @@ namespace Runtime
     void  assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
     void  error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
 
-    static const uint32_t COMPARE_STRICT   = 0x00000000;
-    static const uint32_t COMPARE_CAST_ANY = 0x00000001;
-    bool                  compareType(const void* type1, const void* type2, uint32_t flags);
-    void*                 interfaceOf(const void* structType, const void* itfType);
+    const uint32_t COMPARE_STRICT   = 0x00000000;
+    const uint32_t COMPARE_CAST_ANY = 0x00000001;
+    bool           compareType(const void* type1, const void* type2, uint32_t flags);
+    void*          interfaceOf(const void* structType, const void* itfType);
 
 } // namespace Runtime

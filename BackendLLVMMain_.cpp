@@ -235,12 +235,6 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         builder.CreateMemCpy(dest, llvm::MaybeAlign(0), src, llvm::MaybeAlign(0), size);
     }
 
-    // Inform runtime about my processInfos
-    {
-        auto dest = builder.CreatePointerCast(pp.processInfos, llvm::Type::getInt8PtrTy(context));
-        builder.CreateCall(modu.getFunction("swag_runtime_setProcessInfos"), {dest});
-    }
-
     // Initialize data segments
     builder.CreateCall(modu.getFunction("initMutableSeg"));
     builder.CreateCall(modu.getFunction("initTypeSeg"));

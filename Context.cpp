@@ -73,7 +73,6 @@ void initDefaultContext()
     g_processInfos.contextTlsId    = g_tlsContextId;
     g_processInfos.defaultContext  = &g_defaultContext;
     g_processInfos.byteCodeRun     = byteCodeRun;
-    swag_runtime_setProcessInfos(&g_processInfos);
 }
 
 uint64_t getDefaultContextFlags(Module* module)

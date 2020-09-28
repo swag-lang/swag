@@ -175,10 +175,6 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
 
-    // Inform runtime about my processInfos
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    emitCall(pp, "swag_runtime_setProcessInfos");
-
     // Reloc functions
     for (auto& k : module->constantSegment.initFuncPtr)
     {
