@@ -177,7 +177,7 @@ namespace Runtime
     ////////////////////////////////////////////////////////////
     void error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
-        SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_tlsContextId);
+        SwagContext* context = (SwagContext*) tlsGetValue(g_tlsContextId);
         if (context->flags & (uint64_t) ContextFlags::ByteCode)
         {
 #ifdef _WIN32
@@ -201,10 +201,10 @@ namespace Runtime
         exit(-666);
     }
 
-    // Generate an assert dialog box
+    ////////////////////////////////////////////////////////////
     void assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
-        SwagContext* context      = (SwagContext*) swag_runtime_tlsGetValue(g_tlsContextId);
+        SwagContext* context      = (SwagContext*) tlsGetValue(g_tlsContextId);
         auto         contextFlags = context->flags;
         if (contextFlags & (uint64_t) ContextFlags::ByteCode)
             error(message, size, location);
@@ -264,6 +264,30 @@ namespace Runtime
         }
 #else
         exit(-666);
+#endif
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    uint64_t tlsAlloc()
+    {
+#ifdef _WIN32
+        return TlsAlloc();
+#endif
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    void tlsSetValue(uint64_t id, void* value)
+    {
+#ifdef _WIN32
+        TlsSetValue((uint32_t) id, value);
+#endif
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    void* tlsGetValue(uint64_t id)
+    {
+#ifdef _WIN32
+        return TlsGetValue((uint32_t) id);
 #endif
     }
 

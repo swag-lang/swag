@@ -294,14 +294,17 @@ struct ConcreteCompilerSourceLocation
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 namespace Runtime
 {
-    int   memcmp(const void* b1, const void* b2, size_t n);
-    bool  strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2);
-    float abs(float value);
-    void  print(const void* message, uint32_t len);
-    void  print(int64_t value);
-    void  print(double value);
-    void  assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
-    void  error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
+    int      memcmp(const void* b1, const void* b2, size_t n);
+    bool     strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2);
+    float    abs(float value);
+    void     print(const void* message, uint32_t len);
+    void     print(int64_t value);
+    void     print(double value);
+    void     assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
+    void     error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
+    uint64_t tlsAlloc();
+    void     tlsSetValue(uint64_t id, void* value);
+    void*    tlsGetValue(uint64_t id);
 
     const uint32_t COMPARE_STRICT   = 0x00000000;
     const uint32_t COMPARE_CAST_ANY = 0x00000001;

@@ -1148,12 +1148,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicGetContext:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) swag_runtime_tlsGetValue(g_tlsContextId);
+        registersRC[ip->a.u32].pointer = (uint8_t*) Runtime::tlsGetValue(g_tlsContextId);
         break;
     }
     case ByteCodeOp::IntrinsicSetContext:
     {
-        swag_runtime_tlsSetValue(g_tlsContextId, registersRC[ip->a.u32].pointer);
+        Runtime::tlsSetValue(g_tlsContextId, registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::IntrinsicPrintF64:
