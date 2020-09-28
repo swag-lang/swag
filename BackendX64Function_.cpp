@@ -1681,8 +1681,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName());
             break;
         case ByteCodeOp::IntrinsicPrintF64:
-            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            BackendX64Inst::emit_StoreF64_Indirect(pp, 0, XMM0, RSP);
             emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName());
             break;
         case ByteCodeOp::IntrinsicError:
