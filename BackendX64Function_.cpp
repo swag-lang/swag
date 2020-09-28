@@ -2072,7 +2072,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
-                emitCall(pp, "sqrtf");
+                concat.addString3("\x0F\x51\xC0"); // sqrtps xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
                 emitCall(pp, "sinf");
@@ -2145,7 +2145,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
-                emitCall(pp, "sqrt");
+                concat.addString4("\x66\x0F\x51\xC0"); // sqrtpd xmm0, xmm0
                 break;
             case TokenId::IntrinsicSin:
                 emitCall(pp, "sin");
