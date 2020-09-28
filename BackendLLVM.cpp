@@ -85,26 +85,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.processInfos      = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
     }
 
-    // Runtime functions
-    {
-        modu.getOrInsertFunction("swag_runtime_tlsAlloc", llvm::FunctionType::get(llvm::Type::getInt64Ty(context), false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt64Ty(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_tlsGetValue", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false));
-    }
-
-    {
-        llvm::Type* params[] = {
-            llvm::Type::getInt64Ty(context),
-            llvm::Type::getInt8PtrTy(context),
-        };
-        modu.getOrInsertFunction("swag_runtime_tlsSetValue", llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false));
-    }
-
     // LIBC functions
     {
 

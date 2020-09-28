@@ -1617,15 +1617,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
 
         case ByteCodeOp::IntrinsicGetContext:
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_contextTlsId, 0);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RCX, RAX);
-            emitCall(pp, "swag_runtime_tlsGetValue");
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            emitCall(pp, "__swag_runtime_tlsGetValue");
             break;
         case ByteCodeOp::IntrinsicSetContext:
-            BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
-            emitCall(pp, "swag_runtime_tlsSetValue");
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            emitCall(pp, "__swag_runtime_tlsSetValue");
             break;
 
         case ByteCodeOp::IntrinsicArguments:
