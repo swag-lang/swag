@@ -7,7 +7,7 @@
 #include "BackendX64Inst.h"
 #include "Workspace.h"
 
-bool BackendX64::emitMain(const BuildParameters& buildParameters)
+bool BackendX64::emitOS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -16,17 +16,40 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     if (g_CommandLine.os == BackendOs::Windows)
     {
+        // int _DllMainCRTStartup(void*, int, void*)
         getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
         BackendX64Inst::emit_Load64_Immediate(pp, 1, RAX);
         BackendX64Inst::emit_Ret(pp);
-        getOrAddSymbol(pp, "mainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+        return true;
     }
     else
     {
+        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        return false;
+    }
+}
+
+bool BackendX64::emitMain(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    SWAG_CHECK(emitOS(buildParameters));
+
+    const char* entryPoint = nullptr;
+    switch (g_CommandLine.os)
+    {
+    case BackendOs::Windows:
+        entryPoint = "mainCRTStartup";
+        break;
+    default:
         module->error(format("x64 backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
         return false;
     }
 
+    getOrAddSymbol(pp, entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;

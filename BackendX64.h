@@ -197,6 +197,7 @@ struct BackendX64 : public Backend
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
+    bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
     void emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams);

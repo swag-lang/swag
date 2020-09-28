@@ -7,44 +7,63 @@
 #include "Context.h"
 #include "Workspace.h"
 
-bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
+bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    auto& pp      = perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
 
     if (g_CommandLine.os == BackendOs::Windows)
     {
-        {
-            // int _DllMainCRTStartup(void*, int, void*)
-            VectorNative<llvm::Type*> params;
-            params.push_back(llvm::Type::getInt8PtrTy(context));
-            params.push_back(llvm::Type::getInt32Ty(context));
-            params.push_back(llvm::Type::getInt8PtrTy(context));
-            llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
-            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
-            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
-            builder.SetInsertPoint(BB);
-            builder.CreateRet(builder.getInt32(1));
-        }
-
-        {
-            // void mainCRTStartup()
-            llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
-            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "mainCRTStartup", modu);
-            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
-            builder.SetInsertPoint(BB);
-        }
+        // int _DllMainCRTStartup(void*, int, void*)
+        VectorNative<llvm::Type*> params;
+        params.push_back(llvm::Type::getInt8PtrTy(context));
+        params.push_back(llvm::Type::getInt32Ty(context));
+        params.push_back(llvm::Type::getInt8PtrTy(context));
+        llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
+        llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
+        llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+        builder.SetInsertPoint(BB);
+        builder.CreateRet(builder.getInt32(1));
+        return true;
     }
     else
     {
         module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
         return false;
     }
+}
+
+bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+
+    SWAG_CHECK(emitOS(buildParameters));
+
+    const char* entryPoint = nullptr;
+    switch (g_CommandLine.os)
+    {
+    case BackendOs::Windows:
+        entryPoint = "mainCRTStartup";
+        break;
+    default:
+        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        return false;
+    }
+
+    // void mainCRTStartup()
+    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+    llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, entryPoint, modu);
+    llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+    builder.SetInsertPoint(BB);
 
     // Reserve room to pass parameters to embedded intrinsics
     auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2)));
