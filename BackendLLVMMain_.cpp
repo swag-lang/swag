@@ -40,6 +40,9 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
             builder.CreateRetVoid();
         }
 
+        // int _fltused = 0;
+        new llvm::GlobalVariable(modu, builder.getInt32Ty(), false, llvm::GlobalValue::ExternalLinkage, builder.getInt32(0), "_fltused");
+
         return true;
     }
     else
