@@ -61,6 +61,8 @@ using namespace std;
 namespace fs = std::experimental::filesystem;
 #pragma warning(disable : 4100)
 
+extern void* Memcpy(void* destination, const void* source, size_t size);
+
 #ifndef SWAG_IS_FINAL
 #define SWAG_HAS_ASSERT
 //#define SWAG_HAS_PROFILE

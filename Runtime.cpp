@@ -2,7 +2,6 @@
 #include "runtime.h"
 #include "assert.h"
 #include "context.h"
-#include "swag_runtime.h"
 
 namespace Runtime
 {

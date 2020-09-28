@@ -65,12 +65,6 @@ namespace BackendLinkerWin32
         arguments.push_back("ucrt.lib");
         arguments.push_back("user32.lib");
 
-        // Add swag.runtime
-        if (buildParameters.buildCfg->backendDebugInformations)
-            arguments.push_back("swag.runtime_d.lib");
-        else
-            arguments.push_back("swag.runtime.lib");
-
         for (const auto& oneLibPath : libPath)
         {
             if (addQuote)

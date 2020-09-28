@@ -230,12 +230,18 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32});
-        toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
-        auto size      = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), modu.getDataLayout().getTypeStoreSize(pp.processInfosTy));
-        auto dest      = builder.CreatePointerCast(pp.processInfos, llvm::Type::getInt8PtrTy(context));
-        auto src       = builder.CreatePointerCast(fct->getArg(0), llvm::Type::getInt8PtrTy(context));
-        builder.CreateMemCpy(dest, llvm::MaybeAlign(0), src, llvm::MaybeAlign(0), size);
+        auto typeF  = createFunctionTypeInternal(buildParameters, 3);
+        auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(3)));
+        auto r0     = builder.CreatePtrToInt(pp.processInfos, builder.getInt64Ty());
+        auto r1     = builder.CreatePtrToInt(fct->getArg(0), builder.getInt64Ty());
+        auto r2     = builder.getInt64(sizeof(SwagProcessInfos));
+        auto p0     = GEP_I32(allocT, 0);
+        auto p1     = GEP_I32(allocT, 1);
+        auto p2     = GEP_I32(allocT, 2);
+        builder.CreateStore(r0, p0);
+        builder.CreateStore(r1, p1);
+        builder.CreateStore(r2, p2);
+        builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {p0, p1, p2});
     }
 
     // Initialize data segments

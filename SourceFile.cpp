@@ -8,7 +8,6 @@
 #include "Timer.h"
 #include "ByteCodeStack.h"
 #include "Context.h"
-#include "swag_runtime.h"
 
 const auto BUF_SIZE = 2048;
 

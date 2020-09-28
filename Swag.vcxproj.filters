@@ -431,6 +431,9 @@
     <ClCompile Include="Runtime.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="Memcpy.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

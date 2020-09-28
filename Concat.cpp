@@ -2,7 +2,6 @@
 #include "Concat.h"
 #include "Allocator.h"
 #include "Runtime.h"
-#include "swag_runtime.h"
 
 void Concat::init(int size)
 {
@@ -195,7 +194,7 @@ void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
     ensureSpace(len);
-    swag_runtime_memcpy(currentSP, v.c_str(), len);
+    Memcpy(currentSP, v.c_str(), len);
     currentSP += len;
 }
 
@@ -239,7 +238,7 @@ void Concat::addString5(const char* v)
 void Concat::addString(const char* v, int len)
 {
     ensureSpace(len);
-    swag_runtime_memcpy(currentSP, v, len);
+    Memcpy(currentSP, v, len);
     currentSP += len;
 }
 
@@ -247,7 +246,7 @@ void Concat::addString(const char* v)
 {
     auto len = (int) strlen(v);
     ensureSpace(len);
-    swag_runtime_memcpy(currentSP, v, len);
+    Memcpy(currentSP, v, len);
     currentSP += len;
 }
 

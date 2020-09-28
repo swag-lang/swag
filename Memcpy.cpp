@@ -1,3 +1,4 @@
+#include "pch.h"
 #ifdef _WIN32
 #include <emmintrin.h>
 #include <stdint.h>
@@ -688,12 +689,7 @@ extern "C" void* memcpy_fast(void* destination, const void* source, size_t size)
     return destination;
 }
 
-extern "C" void* memcpy(void* destination, const void* source, size_t size)
-{
-    return memcpy_fast(destination, source, size);
-}
-
-extern "C" void* swag_runtime_memcpy(void* destination, const void* source, size_t size)
+void* Memcpy(void* destination, const void* source, size_t size)
 {
     return memcpy_fast(destination, source, size);
 }

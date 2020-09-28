@@ -2,7 +2,6 @@
 #include "Utf8.h"
 #include "Allocator.h"
 #include "Runtime.h"
-#include "swag_runtime.h"
 
 void Utf8::reserve(int newSize)
 {
@@ -20,7 +19,7 @@ void Utf8::reserve(int newSize)
     allocated      = g_Allocator.alignSize(allocated);
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
-        swag_runtime_memcpy(newBuffer, buffer, count + 1);
+        Memcpy(newBuffer, buffer, count + 1);
 
     if (lastAllocated != UTF8_SMALL_SIZE)
         g_Allocator.free(buffer, lastAllocated);
@@ -63,7 +62,7 @@ Utf8::Utf8(const char* from)
         return;
 
     reserve(len + 1);
-    swag_runtime_memcpy(buffer, from, len + 1);
+    Memcpy(buffer, from, len + 1);
     count = len;
 }
 
@@ -79,7 +78,7 @@ Utf8::Utf8(const string& from)
         return;
 
     reserve(len + 1);
-    swag_runtime_memcpy(buffer, from.c_str(), len + 1);
+    Memcpy(buffer, from.c_str(), len + 1);
     count = len;
 }
 
@@ -95,7 +94,7 @@ Utf8::Utf8(const Utf8& from)
         return;
 
     reserve(len + 1);
-    swag_runtime_memcpy(buffer, from.buffer, len + 1);
+    Memcpy(buffer, from.buffer, len + 1);
     count = len;
 }
 
@@ -170,7 +169,7 @@ void Utf8::append(const char* txt, int len)
         return;
     SWAG_ASSERT(txt);
     reserve(count + len + 1);
-    swag_runtime_memcpy(buffer + count, txt, len + 1);
+    Memcpy(buffer + count, txt, len + 1);
     count += len;
     buffer[count] = 0;
 }
@@ -183,7 +182,7 @@ void Utf8::append(const char* txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    swag_runtime_memcpy(buffer + count, txt, len + 1);
+    Memcpy(buffer + count, txt, len + 1);
     count += len;
 }
 
@@ -193,7 +192,7 @@ void Utf8::append(const Utf8& txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    swag_runtime_memcpy(buffer + count, txt.buffer, len + 1);
+    Memcpy(buffer + count, txt.buffer, len + 1);
     count += len;
 }
 

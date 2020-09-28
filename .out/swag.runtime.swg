@@ -108,6 +108,17 @@ private func strlen(value: const *u8)->u32
 }
 
 ////////////////////////////////////////////////////////////
+func @memcpy(dst: *void, src: const *void, size: u32)
+{
+    p1 := cast(*s8) dst
+    p2 := cast(const *s8) src
+    loop i: size
+    {
+        p1[i] = p2[i]
+    }
+}
+
+////////////////////////////////////////////////////////////
 func @memcmp(dst, src: const *void, size: u32)->s32
 {
     if !size

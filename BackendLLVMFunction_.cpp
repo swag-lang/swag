@@ -653,21 +653,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MemCpy:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateLoad(r1);
-
-            llvm::Value* r2;
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
-                r2 = builder.getInt64(ip->c.u32);
+            {
+                auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1)));
+                auto r2 = builder.getInt64(ip->c.u32);
+                auto p0 = GEP_I32(allocT, 0);
+                builder.CreateStore(r2, p0);
+                builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, p0});
+            }
             else
             {
-                r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-                r2 = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
+                auto r2 = GEP_I32(allocR, ip->c.u32);
+                builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, r2});
             }
 
-            builder.CreateMemCpy(r0, llvm::MaybeAlign(0), r1, llvm::MaybeAlign(0), r2);
             break;
         }
         case ByteCodeOp::MemSet:
@@ -2008,8 +2010,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto rr = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
+            auto rr    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto v0    = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
             auto typeF = createFunctionTypeInternal(buildParameters, 2);
             builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_tlsGetValue", typeF), {rr, v0});
             break;
