@@ -209,6 +209,8 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 }
 
 ////////////////////////////////////////////////////////////
+private var g_exceptionLocation: swag.CompilerSourceLocation
+private var g_exceptionParams: [3] const *void
 func @error(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
@@ -216,12 +218,11 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
     {
         #if #os == "windows"
         {
-            l := loc
-            var params: [3] const *void
-            params[0] = cast(const *void) &l
-            params[1] = cast(const *void) @dataof(message)
-            params[2] = cast(const *void) cast(u64) @countof(message)
-            RaiseException(666, 0, 3, &params[0])
+            g_exceptionLocation = loc
+            g_exceptionParams[0] = cast(const *void) &g_exceptionLocation
+            g_exceptionParams[1] = cast(const *void) @dataof(message)
+            g_exceptionParams[2] = cast(const *void) cast(u64) @countof(message)
+            RaiseException(666, 0, 3, &g_exceptionParams[0])
         }
     }
 

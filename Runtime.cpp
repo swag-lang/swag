@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "swag_runtime.h"
 #include "assert.h"
+#include "context.h"
 
 namespace Runtime
 {
@@ -175,7 +176,7 @@ namespace Runtime
     ////////////////////////////////////////////////////////////
     void error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
-        SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+        SwagContext* context = (SwagContext*) swag_runtime_tlsGetValue(g_tlsContextId);
         if (context->flags & (uint64_t) ContextFlags::ByteCode)
         {
 #ifdef _WIN32
@@ -202,7 +203,7 @@ namespace Runtime
     // Generate an assert dialog box
     void assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
-        SwagContext* context      = (SwagContext*) swag_runtime_tlsGetValue(g_SwagProcessInfos.contextTlsId);
+        SwagContext* context      = (SwagContext*) swag_runtime_tlsGetValue(g_tlsContextId);
         auto         contextFlags = context->flags;
         if (contextFlags & (uint64_t) ContextFlags::ByteCode)
             error(message, size, location);
