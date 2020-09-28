@@ -417,5 +417,21 @@ namespace std
         {
             return cast(string) @mkslice(buffer, length)
         }
+
+        // Convert the string to upper case.
+        // Only deal with latin1 (not unicode)
+        func makeUpperLatin1(using self)
+        {
+            loop i: length
+                buffer[i] = latin1.toUpper(buffer[i])
+        }
+
+        // Convert the string to lower case.
+        // Only deal with latin1 (not unicode)
+        func makeLowerLatin1(using self)
+        {
+            loop i: length
+                buffer[i] = latin1.toLower(buffer[i])
+        }
     }
 }
