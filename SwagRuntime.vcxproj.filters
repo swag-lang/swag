@@ -4,7 +4,6 @@
     <ClCompile Include="libc\win32\memcpy.cpp">
       <Filter>LibC\Win32</Filter>
     </ClCompile>
-    <ClCompile Include="swag_runtime_tls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">

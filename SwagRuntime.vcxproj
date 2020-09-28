@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libc\win32\memcpy.cpp" />
-    <ClCompile Include="swag_runtime_tls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h" />
