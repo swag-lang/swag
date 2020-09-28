@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "swag_runtime.h"
 #include "runtime.h"
 #include "assert.h"
 #include "context.h"
+#include "swag_runtime.h"
 
 namespace Runtime
 {
@@ -162,12 +162,12 @@ namespace Runtime
         auto itype  = (ConcreteTypeInfoStruct*) itfType;
         auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
 
-        for (SwagS32 i = 0; i < ctype->interfaces.count; i++)
+        for (uint32_t i = 0; i < ctype->interfaces.count; i++)
         {
             if (strcmp(buffer[i].name.buffer,
-                       (SwagU32) buffer[i].name.count,
+                       (uint32_t) buffer[i].name.count,
                        itype->base.name.buffer,
-                       (SwagU32) itype->base.name.count))
+                       (uint32_t) itype->base.name.count))
                 return buffer[i].value;
         }
 
@@ -192,7 +192,7 @@ namespace Runtime
         }
 
         print("error: ");
-        print(location->fileName.buffer, (SwagU32) location->fileName.count);
+        print(location->fileName.buffer, (uint32_t) location->fileName.count);
         print(":");
         print((int64_t)(location->lineStart + 1));
         print(": ");

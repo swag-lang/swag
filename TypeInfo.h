@@ -5,7 +5,7 @@
 #include "Register.h"
 #include "Attribute.h"
 #include "VectorNative.h"
-#include "swag_runtime.h"
+#include "Runtime.h"
 
 struct Scope;
 struct TypeInfo;

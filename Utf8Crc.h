@@ -1,6 +1,6 @@
 #pragma once
 #include "Utf8.h"
-#include "swag_runtime.h"
+#include "Runtime.h"
 
 struct Utf8Crc : public Utf8
 {

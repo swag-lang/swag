@@ -5,6 +5,7 @@
 #include "RaceCondition.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Runtime.h"
 #include "swag_runtime.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;

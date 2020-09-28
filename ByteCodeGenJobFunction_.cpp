@@ -6,7 +6,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
-#include "swag_runtime.h"
+#include "Runtime.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {

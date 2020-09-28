@@ -6,11 +6,12 @@
 #include "Workspace.h"
 #include "Context.h"
 #include "Diagnostic.h"
-#include "swag_runtime.h"
+#include "Runtime.h"
 #include "Module.h"
 #include "CompilerItf.h"
 #include "ByteCodeStack.h"
 #include "Runtime.h"
+#include "swag_runtime.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
