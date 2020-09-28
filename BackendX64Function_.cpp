@@ -1570,7 +1570,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            if(ip->flags & BCI_IMM_C)
+            if (ip->flags & BCI_IMM_C)
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u32, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
@@ -2058,79 +2058,73 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicF32x1:
         {
             MK_IMMB_F32(XMM0);
-            if ((TokenId) ip->d.u32 == TokenId::IntrinsicAbs)
+            switch ((TokenId) ip->d.u32)
             {
-                SWAG_ASSERT(sizeParamsStack >= 2 * sizeof(Register));
-                BackendX64Inst::emit_StoreF64_Indirect(pp, 8, XMM0, RSP);
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-                emitCall(pp, ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName());
+            case TokenId::IntrinsicSqrt:
+                emitCall(pp, "sqrtf");
+                break;
+            case TokenId::IntrinsicSin:
+                emitCall(pp, "sinf");
+                break;
+            case TokenId::IntrinsicCos:
+                emitCall(pp, "cosf");
+                break;
+            case TokenId::IntrinsicTan:
+                emitCall(pp, "tanf");
+                break;
+            case TokenId::IntrinsicSinh:
+                emitCall(pp, "sinhf");
+                break;
+            case TokenId::IntrinsicCosh:
+                emitCall(pp, "coshf");
+                break;
+            case TokenId::IntrinsicTanh:
+                emitCall(pp, "tanhf");
+                break;
+            case TokenId::IntrinsicASin:
+                emitCall(pp, "asinf");
+                break;
+            case TokenId::IntrinsicACos:
+                emitCall(pp, "acosf");
+                break;
+            case TokenId::IntrinsicATan:
+                emitCall(pp, "atanf");
+                break;
+            case TokenId::IntrinsicLog:
+                emitCall(pp, "logf");
+                break;
+            case TokenId::IntrinsicLog2:
+                emitCall(pp, "log2f");
+                break;
+            case TokenId::IntrinsicLog10:
+                emitCall(pp, "log10f");
+                break;
+            case TokenId::IntrinsicFloor:
+                emitCall(pp, "floorf");
+                break;
+            case TokenId::IntrinsicCeil:
+                emitCall(pp, "ceilf");
+                break;
+            case TokenId::IntrinsicTrunc:
+                emitCall(pp, "truncf");
+                break;
+            case TokenId::IntrinsicRound:
+                emitCall(pp, "roundf");
+                break;
+            case TokenId::IntrinsicAbs:
+                BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF, RAX);
+                BackendX64Inst::emit_CopyF64(pp, RAX, XMM1);
+                concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
+                break;
+            case TokenId::IntrinsicExp:
+                emitCall(pp, "expf");
+                break;
+            case TokenId::IntrinsicExp2:
+                emitCall(pp, "exp2f");
+                break;
             }
-            else
-            {
-                switch ((TokenId) ip->d.u32)
-                {
-                case TokenId::IntrinsicSqrt:
-                    emitCall(pp, "sqrtf");
-                    break;
-                case TokenId::IntrinsicSin:
-                    emitCall(pp, "sinf");
-                    break;
-                case TokenId::IntrinsicCos:
-                    emitCall(pp, "cosf");
-                    break;
-                case TokenId::IntrinsicTan:
-                    emitCall(pp, "tanf");
-                    break;
-                case TokenId::IntrinsicSinh:
-                    emitCall(pp, "sinhf");
-                    break;
-                case TokenId::IntrinsicCosh:
-                    emitCall(pp, "coshf");
-                    break;
-                case TokenId::IntrinsicTanh:
-                    emitCall(pp, "tanhf");
-                    break;
-                case TokenId::IntrinsicASin:
-                    emitCall(pp, "asinf");
-                    break;
-                case TokenId::IntrinsicACos:
-                    emitCall(pp, "acosf");
-                    break;
-                case TokenId::IntrinsicATan:
-                    emitCall(pp, "atanf");
-                    break;
-                case TokenId::IntrinsicLog:
-                    emitCall(pp, "logf");
-                    break;
-                case TokenId::IntrinsicLog2:
-                    emitCall(pp, "log2f");
-                    break;
-                case TokenId::IntrinsicLog10:
-                    emitCall(pp, "log10f");
-                    break;
-                case TokenId::IntrinsicFloor:
-                    emitCall(pp, "floorf");
-                    break;
-                case TokenId::IntrinsicCeil:
-                    emitCall(pp, "ceilf");
-                    break;
-                case TokenId::IntrinsicTrunc:
-                    emitCall(pp, "truncf");
-                    break;
-                case TokenId::IntrinsicRound:
-                    emitCall(pp, "roundf");
-                    break;
-                case TokenId::IntrinsicExp:
-                    emitCall(pp, "expf");
-                    break;
-                case TokenId::IntrinsicExp2:
-                    emitCall(pp, "exp2f");
-                    break;
-                }
 
-                BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-            }
+            BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         }
 

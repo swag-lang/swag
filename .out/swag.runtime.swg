@@ -149,12 +149,6 @@ func @strcmp(str1: string, str2: string)->bool
 }
 
 ////////////////////////////////////////////////////////////
-func @abs(value: f32)->f32
-{
-    return value < 0 ? -value : value
-}
-
-////////////////////////////////////////////////////////////
 func @print(value: s64)
 {
     var buf: [100] u8

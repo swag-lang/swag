@@ -659,8 +659,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (ip->flags & BCI_IMM_C)
             {
                 auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1)));
-                auto r2 = builder.getInt64(ip->c.u32);
-                auto p0 = GEP_I32(allocT, 0);
+                auto r2     = builder.getInt64(ip->c.u32);
+                auto p0     = GEP_I32(allocT, 0);
                 builder.CreateStore(r2, p0);
                 builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, p0});
             }
@@ -2583,84 +2583,74 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            if ((TokenId) ip->d.u32 == TokenId::IntrinsicAbs)
+            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMB_F32();
+            switch ((TokenId) ip->d.u32)
             {
-                auto rr    = GEP_I32(allocR, ip->a.u32);
-                auto r0    = GEP_I32(allocR, ip->b.u32);
-                auto name  = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc->callName();
-                auto typeF = createFunctionTypeInternal(buildParameters, 2);
-                builder.CreateCall(modu.getOrInsertFunction(name.c_str(), typeF), {rr, r0});
-            }
-            else
-            {
-                auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-                auto r1 = MK_IMMB_F32();
-                switch ((TokenId) ip->d.u32)
-                {
-                case TokenId::IntrinsicSqrt:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicSin:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicCos:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicTan:
-                    builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicSinh:
-                    builder.CreateStore(builder.CreateCall(pp.fn_sinhf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicCosh:
-                    builder.CreateStore(builder.CreateCall(pp.fn_coshf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicTanh:
-                    builder.CreateStore(builder.CreateCall(pp.fn_tanhf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicASin:
-                    builder.CreateStore(builder.CreateCall(pp.fn_asinf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicACos:
-                    builder.CreateStore(builder.CreateCall(pp.fn_acosf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicATan:
-                    builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
-                    break;
-                case TokenId::IntrinsicLog:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicLog2:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicLog10:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicFloor:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicCeil:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicTrunc:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicRound:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicAbs:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicExp:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, builder.getFloatTy(), r1), r0);
-                    break;
-                case TokenId::IntrinsicExp2:
-                    builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, builder.getFloatTy(), r1), r0);
-                    break;
-                }
+            case TokenId::IntrinsicSqrt:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicSin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCos:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicTan:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
+                break;
+            case TokenId::IntrinsicSinh:
+                builder.CreateStore(builder.CreateCall(pp.fn_sinhf32, r1), r0);
+                break;
+            case TokenId::IntrinsicCosh:
+                builder.CreateStore(builder.CreateCall(pp.fn_coshf32, r1), r0);
+                break;
+            case TokenId::IntrinsicTanh:
+                builder.CreateStore(builder.CreateCall(pp.fn_tanhf32, r1), r0);
+                break;
+            case TokenId::IntrinsicASin:
+                builder.CreateStore(builder.CreateCall(pp.fn_asinf32, r1), r0);
+                break;
+            case TokenId::IntrinsicACos:
+                builder.CreateStore(builder.CreateCall(pp.fn_acosf32, r1), r0);
+                break;
+            case TokenId::IntrinsicATan:
+                builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
+                break;
+            case TokenId::IntrinsicLog:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog2:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicLog10:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicFloor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCeil:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicTrunc:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicRound:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicAbs:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicExp:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicExp2:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, builder.getFloatTy(), r1), r0);
+                break;
             }
             break;
         }
+
         case ByteCodeOp::IntrinsicF64x1:
         {
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
