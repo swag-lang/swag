@@ -149,9 +149,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, funcDrop);
     }
 
+    emitCall(pp, "__swag_runtime_exit");
+
     BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    emitCall(pp, "__swag_runtime_exit");
     BackendX64Inst::emit_Ret(pp);
     return true;
 }
