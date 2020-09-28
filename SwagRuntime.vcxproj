@@ -22,7 +22,6 @@
     <ClCompile Include="libc\main.cpp" />
     <ClCompile Include="libc\win32\crt.cpp" />
     <ClCompile Include="libc\win32\memcpy.cpp" />
-    <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
     <ClCompile Include="swag_runtime_tls.cpp" />
   </ItemGroup>
   <ItemGroup>

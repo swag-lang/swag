@@ -1,5 +1,4 @@
-
-
+//#[swag.printbc]
 #test
 {
 	args := @args()

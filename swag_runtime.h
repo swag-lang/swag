@@ -7,7 +7,6 @@ static const SwagU32 COMPARE_CAST_ANY = 0x00000001;
 extern "C" SwagU64          swag_runtime_tlsAlloc();
 extern "C" void             swag_runtime_tlsSetValue(SwagU64 id, void* value);
 extern "C" void*            swag_runtime_tlsGetValue(SwagU64 id);
-extern "C" void             swag_runtime_convertArgcArgv(void* dest, SwagS32 argc, void* argv[]);
 extern "C" void*            swag_runtime_memcpy(void* destination, const void* source, size_t size);
 extern "C" void             swag_runtime_setProcessInfos(struct SwagProcessInfos* infos);
 extern "C" SwagProcessInfos g_SwagProcessInfos;

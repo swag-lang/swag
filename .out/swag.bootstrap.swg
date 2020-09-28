@@ -6,7 +6,6 @@ func @memcpy(dst: *void, src: const *void, size: u32);
 func @memset(dst: *void, value: u8, size: u32);
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
-func @args()->[..] string;
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
 

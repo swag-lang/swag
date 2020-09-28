@@ -71,14 +71,6 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateCall(modu.getFunction("swag_runtime_tlsSetValue"), {toTlsId, toContext});
     }
 
-    // Arguments
-    {
-        // swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, argv)
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst0_i32});
-        toContext      = builder.CreatePointerCast(toContext, llvm::Type::getInt8PtrTy(context));
-        builder.CreateCall(modu.getFunction("swag_runtime_convertArgcArgv"), {toContext, F->getArg(0), F->getArg(1)});
-    }
-
     // Load all dependencies
     for (const auto& dep : module->moduleDependencies)
     {

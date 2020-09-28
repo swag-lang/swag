@@ -85,6 +85,7 @@ JobResult ModuleBuildJob::execute()
         {
             module->constantSegment.initFrom(&g_Workspace.runtimeModule->constantSegment);
             module->mutableSegment.initFrom(&g_Workspace.runtimeModule->mutableSegment);
+            module->bssSegment.initFrom(&g_Workspace.runtimeModule->bssSegment);
             module->typeSegment.initFrom(&g_Workspace.runtimeModule->typeSegment);
         }
 

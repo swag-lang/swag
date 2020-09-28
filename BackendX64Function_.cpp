@@ -1629,12 +1629,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicArguments:
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_args_addr, 0);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_args_count, 0);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            emitCall(pp, "@args");
             break;
 
         case ByteCodeOp::IntrinsicAlloc:

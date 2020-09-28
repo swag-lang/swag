@@ -16,13 +16,6 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
-    //swag_runtime_convertArgcArgv(&__process_infos.arguments, argc, (void**)argv);
-    // Must be done first ! We need to have rcx (argc) and rdx (argv) valid
-    BackendX64Inst::emit_Copy64(pp, RDX, R8);
-    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_args_addr, 0);
-    emitCall(pp, "swag_runtime_convertArgcArgv");
-
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;
     SWAG_ASSERT(g_defaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) undoByteCodeLambda(((void**) g_defaultContext.allocator.itable)[0]);

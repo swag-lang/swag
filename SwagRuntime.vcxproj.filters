@@ -11,7 +11,6 @@
       <Filter>LibC\Win32</Filter>
     </ClCompile>
     <ClCompile Include="swag_runtime_tls.cpp" />
-    <ClCompile Include="swag_runtime_convertArgcArgv.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libc\libc.h">

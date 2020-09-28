@@ -19,6 +19,7 @@
             func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
             func DebugBreak();
             func LoadLibraryA(name: const *u8);
+            func GetCommandLineA()->const *u8;
         }
     }
 }
@@ -314,6 +315,51 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
                 break
         }
     }
+}
+
+////////////////////////////////////////////////////////////
+private const MAX_ARGUMENTS = 512
+private var g_Argv: [MAX_ARGUMENTS] string
+private var g_Argc = 0'u32
+
+private func convertArgcArgv()
+{
+    #if #os == "windows"
+        cmdLine := GetCommandLineA()
+
+    g_Argc = 0
+    while :cmdLine
+    {
+        while :cmdLine == " "'u8 cmdLine += 1
+        if :cmdLine == 0 break
+
+        if :cmdLine == "\""'u8
+        {
+            cmdLine += 1
+            start := cmdLine
+            while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+            if :cmdLine cmdLine += 1
+        }
+        else
+        {
+            start := cmdLine
+            while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+        }
+
+        g_Argc += 1
+        if g_Argc == MAX_ARGUMENTS
+            return
+        while :cmdLine && :cmdLine == " "'u8 cmdLine += 1
+    }
+}
+
+func @args()->[..] string
+{
+    if g_Argc == 0
+        convertArgcArgv()
+    return @mkslice(&g_Argv[0], g_Argc)
 }
 
 ////////////////////////////////////////////////////////////
