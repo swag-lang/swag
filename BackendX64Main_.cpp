@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "Context.h"
 #include "BackendX64Inst.h"
+#include "Workspace.h"
 
 bool BackendX64::emitMain(const BuildParameters& buildParameters)
 {
@@ -13,7 +14,19 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    getOrAddSymbol(pp, "main", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    if (g_CommandLine.os == BackendOs::Windows)
+    {
+        getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+        BackendX64Inst::emit_Load64_Immediate(pp, 1, RAX);
+        BackendX64Inst::emit_Ret(pp);
+        getOrAddSymbol(pp, "mainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    }
+    else
+    {
+        module->error(format("x64 backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        return false;
+    }
+
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
 
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;
@@ -115,6 +128,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
+    emitCall(pp, "__swag_runtime_exit");
     BackendX64Inst::emit_Ret(pp);
     return true;
 }

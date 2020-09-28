@@ -368,3 +368,9 @@ private func loaddll(name: string)
     #if #os == "windows"
         LoadLibraryA(@dataof(name))
 }
+
+private func exit()
+{
+    #if #os == "windows"
+        ExitProcess(0)
+}

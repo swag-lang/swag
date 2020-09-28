@@ -11,7 +11,7 @@ EXTERN_C
     {
     }
 
-    void mainCRTStartup()
+    /*void mainCRTStartup()
     {
         void swag_runtime_main(const char* cmdLine);
         swag_runtime_main(GetCommandLineA());
@@ -20,7 +20,7 @@ EXTERN_C
     int _DllMainCRTStartup(void*, int, void*)
     {
         return 1;
-    }
+    }*/
 }
 
 #endif // SWAG_RUNTIME_COMPILER

@@ -5,6 +5,7 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "Context.h"
+#include "Workspace.h"
 
 bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 {
@@ -16,16 +17,34 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    // Prototype
-    VectorNative<llvm::Type*> params;
-    params.push_back(llvm::Type::getInt32Ty(context));
-    params.push_back(llvm::Type::getInt8PtrTy(context)->getPointerTo());
-    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
-    llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", modu);
+    if (g_CommandLine.os == BackendOs::Windows)
+    {
+        {
+            // int _DllMainCRTStartup(void*, int, void*)
+            VectorNative<llvm::Type*> params;
+            params.push_back(llvm::Type::getInt8PtrTy(context));
+            params.push_back(llvm::Type::getInt32Ty(context));
+            params.push_back(llvm::Type::getInt8PtrTy(context));
+            llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
+            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
+            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+            builder.SetInsertPoint(BB);
+            builder.CreateRet(builder.getInt32(1));
+        }
 
-    // Start of block
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", F);
-    builder.SetInsertPoint(BB);
+        {
+            // void mainCRTStartup()
+            llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "mainCRTStartup", modu);
+            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+            builder.SetInsertPoint(BB);
+        }
+    }
+    else
+    {
+        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        return false;
+    }
 
     // Reserve room to pass parameters to embedded intrinsics
     auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2)));
@@ -143,6 +162,10 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         funcDrop = modu.getOrInsertFunction(format("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);
     }
+
+    // Call exit
+    auto typeF = createFunctionTypeInternal(buildParameters, 0);
+    builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_exit", typeF), {});
 
     uint32_t value  = 0;
     auto     retVal = llvm::ConstantInt::get(context, llvm::APInt(32, value));
