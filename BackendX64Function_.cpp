@@ -1993,39 +1993,49 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            MK_IMMB_16(RCX);
-            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
+            MK_IMMB_16(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Copy16(pp, RAX, RCX);
+                concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
+                concat.addString3("\x66\x31\xC8");     // xor ax, cx
+                concat.addString3("\x66\x29\xC8");     // sub ax, cx
                 break;
             }
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+
+            BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS32x1:
         {
-            MK_IMMB_32(RCX);
+            MK_IMMB_16(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Copy32(pp, RAX, RCX);
+                concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
+                concat.addString2("\x31\xC8");     // xor eax, ecx
+                concat.addString2("\x29\xC8");     // sub eax, ecx
                 break;
             }
+
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            MK_IMMB_64(RCX);
+            MK_IMMB_64(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                emitCall(pp, "llabs");
+                BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+                concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
+                concat.addString3("\x48\x31\xC8");     // xor rax, rcx
+                concat.addString3("\x48\x29\xC8");     // sub rax, rcx
                 break;
             }
+
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
