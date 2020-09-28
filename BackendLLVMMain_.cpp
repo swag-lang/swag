@@ -19,15 +19,27 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     if (g_CommandLine.os == BackendOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
-        VectorNative<llvm::Type*> params;
-        params.push_back(llvm::Type::getInt8PtrTy(context));
-        params.push_back(llvm::Type::getInt32Ty(context));
-        params.push_back(llvm::Type::getInt8PtrTy(context));
-        llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {params.begin(), params.end()}, false);
-        llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
-        llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
-        builder.SetInsertPoint(BB);
-        builder.CreateRet(builder.getInt32(1));
+        {
+            VectorNative<llvm::Type*> params;
+            params.push_back(builder.getInt8PtrTy());
+            params.push_back(builder.getInt32Ty());
+            params.push_back(builder.getInt8PtrTy());
+            llvm::FunctionType* FT = llvm::FunctionType::get(builder.getInt32Ty(), {params.begin(), params.end()}, false);
+            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
+            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+            builder.SetInsertPoint(BB);
+            builder.CreateRet(builder.getInt32(1));
+        }
+
+        // void __chkstk()
+        {
+            llvm::FunctionType* FT = llvm::FunctionType::get(builder.getVoidTy(), {}, false);
+            llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "__chkstk", modu);
+            llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
+            builder.SetInsertPoint(BB);
+            builder.CreateRetVoid();
+        }
+
         return true;
     }
     else

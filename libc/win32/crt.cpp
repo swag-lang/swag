@@ -6,9 +6,6 @@
 EXTERN_C
 {
     int _fltused = 0;
-    void __chkstk()
-    {
-    }
 }
 
 #endif // SWAG_RUNTIME_COMPILER
