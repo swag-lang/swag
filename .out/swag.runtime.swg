@@ -20,6 +20,9 @@
             func DebugBreak();
             func LoadLibraryA(name: const *u8);
             func GetCommandLineA()->const *u8;
+            func TlsAlloc()->u32;
+            func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
+            func TlsGetValue(dwTlsIndex: u32)->*void;
         }
     }
 }
@@ -364,14 +367,37 @@ func @args()->[..] string
 }
 
 ////////////////////////////////////////////////////////////
-private func loaddll(name: string)
+// Privates functions called by the runtime
+////////////////////////////////////////////////////////////
+private
 {
-    #if #os == "windows"
-        LoadLibraryA(@dataof(name))
-}
+    func loaddll(name: string)
+    {
+        #if #os == "windows"
+            LoadLibraryA(@dataof(name))
+    }
 
-private func exit()
-{
-    #if #os == "windows"
-        ExitProcess(0)
+    func exit()
+    {
+        #if #os == "windows"
+            ExitProcess(0)
+    }
+
+    func tlsAlloc()->u64
+    {
+        #if #os == "windows"
+            return cast(u64) TlsAlloc()
+    }
+
+    func tlsSetValue(id: u64, value: *void)
+    {
+        #if #os == "windows"
+            TlsSetValue(cast(u32) id, value)
+    }
+
+    func tlsGetValue(id: u64)->*void
+    {
+        #if #os == "windows"
+            return TlsGetValue(cast(u32) id)
+    }
 }
