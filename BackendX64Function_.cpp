@@ -1977,17 +1977,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            MK_IMMB_8(RCX);
-            BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
-            BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);
-            BackendX64Inst::emit_Copy32(pp, RAX, RCX);
+            MK_IMMB_8(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                emitCall(pp, "abs");
+                BackendX64Inst::emit_Copy8(pp, RAX, RCX);
+                concat.addString3("\xC0\xF9\x07"); // sar cl, 7
+                concat.addString2("\x30\xC8");     // xor al, cl
+                concat.addString2("\x28\xC8");     // sub al, cl
                 break;
             }
-            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS16x1:
@@ -2185,7 +2186,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitCall(pp, "round");
                 break;
             case TokenId::IntrinsicAbs:
-                emitCall(pp, "fabs");
+                BackendX64Inst::emit_Load64_Immediate(pp, 0x7FFFFFFF'FFFFFFFF, RAX);
+                BackendX64Inst::emit_CopyF64(pp, RAX, XMM1);
+                concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
                 break;
             case TokenId::IntrinsicExp:
                 emitCall(pp, "exp");
