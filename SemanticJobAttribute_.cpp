@@ -188,19 +188,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_NORETURN;
             else if (child->name == "global")
                 flags |= ATTRIBUTE_GLOBAL;
+            else if (child->name == "nooptim")
+                flags |= ATTRIBUTE_OPTIMIZEBC_OFF;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
-            }
-            else if (child->name == "optimizebc")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.optimizebc", "level", attrValue);
-                if (attrValue.reg.u32 > 2)
-                    return context->report({child, format("invalid 'optimizebc' level of optimization (maximum is 2, '%d was provided)", attrValue.reg.u32)});
-                flags |= ATTRIBUTE_OPTIMIZEBC_0 << attrValue.reg.u32;
             }
         }
 

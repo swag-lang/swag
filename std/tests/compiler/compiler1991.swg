@@ -1,5 +1,5 @@
 //#[swag.printbc]
-#[swag.optimizebc(0)]
+#[swag.nooptim]
 func(T) way(x1, x2: T)
 {
     var s: s32

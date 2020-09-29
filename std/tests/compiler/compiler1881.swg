@@ -1,7 +1,6 @@
 using swag
 
 //#[printbc]
-#[optimizebc(1)]
 #test
 {
     a := 10
@@ -15,7 +14,6 @@ using swag
     @assert(b == a)
 }
 
-#[optimizebc(1)]
 #test
 {
     a := 10
@@ -29,7 +27,6 @@ using swag
     @assert(b == 0)
 }
 
-#[optimizebc(1)]
 #test
 {
     a := 1

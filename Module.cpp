@@ -518,16 +518,13 @@ bool Module::mustEmitSafety(AstNode* node)
     return safety;
 }
 
-uint32_t Module::mustOptimizeBC(AstNode* node)
+bool Module::mustOptimizeBC(AstNode* node)
 {
-    uint32_t level = buildCfg.byteCodeOptimize;
-    if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_0)
-        level = 0;
-    else if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_1)
-        level = 1;
-    else if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_2)
-        level = 2;
-    return level;
+    if (!node)
+        return buildCfg.byteCodeOptimize != 0;
+    if (node->attributeFlags & ATTRIBUTE_OPTIMIZEBC_OFF)
+        return false;
+    return true;
 }
 
 bool Module::hasBytecodeToRun()
@@ -598,4 +595,10 @@ bool Module::mustOutputSomething()
         mustOutput = false;
 
     return mustOutput;
+}
+
+void Module::printBC()
+{
+    for (auto bc : byteCodePrintBC)
+        bc->print();
 }

@@ -68,23 +68,15 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
         jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
 }
 
-bool ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
+bool ByteCodeOptimizer::optimize(Module* module)
 {
-    if (!context->bc)
+    if (module->buildCfg.byteCodeOptimize == 0)
         return true;
-
-    auto job    = context->job;
-    auto module = job->originalNode->sourceFile->module;
-
-    if (module->mustOptimizeBC(job->originalNode) < 2)
+    if (module->hasUnittestError || module->numErrors)
         return true;
 
     Timer tm(g_Stats.optimBCTime);
     tm.start();
-
-    ByteCodeOptContext optContext;
-    optContext.bc         = context->bc;
-    optContext.semContext = context;
 
     vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(optimizePassJumps);
@@ -96,23 +88,42 @@ bool ByteCodeOptimizer::optimize(ByteCodeGenContext* context)
     passes.push_back(optimizePassConst);
     passes.push_back(optimizePassDupCopyRBRA);
 
-    // Get all jumps
-    setJumps(&optContext);
+    ByteCodeOptContext optContext;
 
     while (true)
     {
-        if (optContext.hasError)
-            return false;
-        optContext.allPassesHaveDoneSomething = false;
-        for (auto pass : passes)
+        bool restart = false;
+        for (auto bc : module->byteCodeFunc)
         {
-            optContext.passHasDoneSomething = false;
-            pass(&optContext);
-            optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+            if (!module->mustOptimizeBC(bc->node))
+                continue;
+            optContext.bc = bc;
+
+            // Get all jumps
+            setJumps(&optContext);
+
+            while (true)
+            {
+                if (optContext.hasError)
+                    return false;
+                optContext.allPassesHaveDoneSomething = false;
+                for (auto pass : passes)
+                {
+                    optContext.passHasDoneSomething = false;
+                    pass(&optContext);
+                    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+                }
+
+                removeNops(&optContext);
+                if (!optContext.allPassesHaveDoneSomething)
+                    break;
+
+                restart = true;
+            }
         }
 
-        removeNops(&optContext);
-        if (!optContext.allPassesHaveDoneSomething)
+        // Restart everything if something has been done during this pass
+        if (!restart || module->buildCfg.byteCodeOptimize == 1)
             break;
     }
 

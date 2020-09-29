@@ -59,7 +59,7 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
         }
 
         // If we have a MakeStackPointer identical to a previous one, and no read of the register between them,
-        // then se second MakeStackPointer is useless
+        // then the second MakeStackPointer is useless
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
         if (ip[0].op == ByteCodeOp::MakeStackPointer)
         {
@@ -73,10 +73,10 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
                 lastOffset = ip->b.u32;
             }
         }
-        else if ((flags & OPFLAG_WRITE_A && ip->a.u32 == lastReg && !(ip->flags & BCI_IMM_A)) ||
-                 (flags & OPFLAG_WRITE_B && ip->b.u32 == lastReg && !(ip->flags & BCI_IMM_B)) ||
-                 (flags & OPFLAG_WRITE_C && ip->c.u32 == lastReg && !(ip->flags & BCI_IMM_C)) ||
-                 (flags & OPFLAG_WRITE_D && ip->d.u32 == lastReg && !(ip->flags & BCI_IMM_D)))
+        else if ((flags & OPFLAG_READ_A && ip->a.u32 == lastReg && !(ip->flags & BCI_IMM_A)) ||
+                 (flags & OPFLAG_READ_B && ip->b.u32 == lastReg && !(ip->flags & BCI_IMM_B)) ||
+                 (flags & OPFLAG_READ_C && ip->c.u32 == lastReg && !(ip->flags & BCI_IMM_C)) ||
+                 (flags & OPFLAG_READ_D && ip->d.u32 == lastReg && !(ip->flags & BCI_IMM_D)))
         {
             lastReg    = 0xFFFFFFFF;
             lastOffset = 0xFFFFFFFF;

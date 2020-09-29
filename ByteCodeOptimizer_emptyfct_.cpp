@@ -12,10 +12,25 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
         if (context->bc->out[0].op == ByteCodeOp::Ret)
         {
             SWAG_ASSERT(context->bc->callType()->returnType == g_TypeMgr.typeInfoVoid);
-            context->bc->isEmpty = true;
+            if (!context->bc->isEmpty)
+            {
+                context->bc->isEmpty          = true;
+                context->passHasDoneSomething = true;
+            }
         }
+    }
 
-        return;
+    if (context->bc->numInstructions == 3)
+    {
+        if (context->bc->out[0].op == ByteCodeOp::GetFromStackParam64 && context->bc->out[1].op == ByteCodeOp::Ret)
+        {
+            SWAG_ASSERT(context->bc->callType()->returnType == g_TypeMgr.typeInfoVoid);
+            if (!context->bc->isEmpty)
+            {
+                context->bc->isEmpty          = true;
+                context->passHasDoneSomething = true;
+            }
+        }
     }
 
     if (context->bc->numInstructions == 4)
@@ -25,10 +40,12 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
             context->bc->out[2].op == ByteCodeOp::Ret)
         {
             SWAG_ASSERT(context->bc->callType()->returnType == g_TypeMgr.typeInfoVoid);
-            context->bc->isEmpty = true;
+            if (!context->bc->isEmpty)
+            {
+                context->bc->isEmpty          = true;
+                context->passHasDoneSomething = true;
+            }
         }
-
-        return;
     }
 
     // Eliminate local calls to empty functions

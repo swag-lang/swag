@@ -14,6 +14,7 @@
 #include "ThreadManager.h"
 #include "Profile.h"
 #include "Context.h"
+#include "ByteCodeOptimizer.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -267,6 +268,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::RunByteCode)
     {
+        if(!ByteCodeOptimizer::optimize(module))
+            return JobResult::ReleaseJob;
+        module->printBC();
+
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
             timerRun.start();

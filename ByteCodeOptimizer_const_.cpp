@@ -311,13 +311,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
-
-            default:
-                /*g_Log.lock();
-                printf("%s\n", context->bc->callName().c_str());
-                context->bc->printInstruction(ip);
-                g_Log.unlock();*/
-                break;
             }
         }
         else if (ip->flags & BCI_IMM_A)
@@ -327,12 +320,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicAssert:
                 if (ip->a.u8)
                     setNop(context, ip);
-                break;
-            default:
-                /*g_Log.lock();
-            printf("%s\n", context->bc->callName().c_str());
-            context->bc->printInstruction(ip);
-            g_Log.unlock();*/
                 break;
             }
         }

@@ -4,6 +4,7 @@
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
+struct Module;
 
 struct ByteCodeOptContext
 {
@@ -54,5 +55,5 @@ struct ByteCodeOptimizer
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
-    static bool optimize(ByteCodeGenContext* context);
+    static bool optimize(Module* module);
 };

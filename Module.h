@@ -40,19 +40,19 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    bool     setup(const Utf8& moduleName);
-    void     allocateBackend();
-    void     addPublicSourceFile(SourceFile* file);
-    void     addFileNoLock(SourceFile* file);
-    void     addFile(SourceFile* file);
-    void     removeFile(SourceFile* file);
-    bool     error(const Utf8& msg);
-    bool     internalError(const Utf8& msg);
-    bool     internalError(AstNode* node, Token& token, const Utf8& msg);
-    uint32_t mustOptimizeBC(AstNode* node);
-    bool     mustEmitSafety(AstNode* node);
-    bool     mustGenerateTestExe();
-    bool     canGenerateLegit();
+    bool setup(const Utf8& moduleName);
+    void allocateBackend();
+    void addPublicSourceFile(SourceFile* file);
+    void addFileNoLock(SourceFile* file);
+    void addFile(SourceFile* file);
+    void removeFile(SourceFile* file);
+    bool error(const Utf8& msg);
+    bool internalError(const Utf8& msg);
+    bool internalError(AstNode* node, Token& token, const Utf8& msg);
+    bool mustOptimizeBC(AstNode* node);
+    bool mustEmitSafety(AstNode* node);
+    bool mustGenerateTestExe();
+    bool canGenerateLegit();
 
     string                    path;
     fs::path                  documentPath;
@@ -105,6 +105,7 @@ struct Module
     void registerForeign(AstFuncDecl* node);
     bool hasBytecodeToRun();
     bool WaitForDependenciesDone(Job* job);
+    void printBC();
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;
@@ -115,6 +116,7 @@ struct Module
     VectorNative<ByteCode*>    byteCodeInitFunc;
     VectorNative<ByteCode*>    byteCodeDropFunc;
     VectorNative<ByteCode*>    byteCodeRunFunc;
+    VectorNative<ByteCode*>    byteCodePrintBC;
     VectorNative<AstFuncDecl*> allForeign;
     ByteCodeRunContext         runContext;
     ByteCodeRun                runner;

@@ -190,7 +190,7 @@
       "patterns": [
         {
           "name": "invalid",
-          "match": "\\b(op\\w+)\\b"
+          "match": "\\b(op)[A-Z]\\w*\\b"
         }
       ]
     },

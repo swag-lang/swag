@@ -82,7 +82,7 @@ namespace swag
     attr safety(value: bool)
 
     #[attributeUsage(AttributeUsage.All)]
-    attr optimizebc(level: u32)
+    attr nooptim()
 
     // #########################################################
     // Constants

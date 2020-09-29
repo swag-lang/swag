@@ -281,7 +281,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     case ByteCodeOp::IntrinsicPrintString:
-       context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
+        context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
         break;
 
     case ByteCodeOp::IntrinsicF32x2:
@@ -546,13 +546,12 @@ JobResult ByteCodeGenJob::execute()
                 if (g_CommandLine.stats)
                     g_Stats.numInstructions += context.bc->numInstructions;
 
-                // Optims
-                if (!ByteCodeOptimizer::optimize(&context))
-                    return JobResult::ReleaseJob;
-
                 // Print resulting bytecode
                 if (originalNode && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-                    context.bc->print();
+                {
+                    unique_lock lk(module->mutexByteCode);
+                    module->byteCodePrintBC.push_back(context.bc);
+                }
             }
         }
 
