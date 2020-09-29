@@ -122,20 +122,6 @@ namespace std.unicode32
             return getCategory(c) == UnicodeCategory.DecimalDigitNumber
         }
 
-        func toUpper(c: char)->char
-        {
-            if isAscii(c)
-                return cast(char) latin1.toUpper(cast(u8) c)
-            return c; // @todo
-        }
-
-        func toLower(c: char)->char
-        {
-            if isAscii(c)
-                return cast(char) latin1.toLower(cast(u8) c)
-            return c; // @todo
-        }
-
         // Convert unicode character 'src' to an utf8 sequence, and returns
         // the number of bytes that were needed to make the conversion.
         // 'dest' must be at least 4 bytes long

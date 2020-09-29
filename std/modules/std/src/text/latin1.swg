@@ -46,23 +46,8 @@ namespace std.latin1
         func isUpper(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode32.isPunctuation(charCategory[c])
-
         func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
         func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
 		func isWhiteSpace(c: u8)    => ascii.isWhiteSpace(c) || (c == "\x85"'u8) || (c == "\xa0"'u8)
-
-        func toUpper(c: u8)->u8
-        {
-            if ("a"'u8 <= c <= "z"'u8) || (0x80 <= c <= 0xBF)
-                return cast(u8) (c & ~0x20)
-            return c;
-        }
-
-        func toLower(c: u8)->u8
-        {
-            if ("A"'u8 <= c <= "Z"'u8) || (0x80 <= c <= 0xBF)
-                return cast(u8) (c | 0x20)
-            return c;
-        }
     }
 }
