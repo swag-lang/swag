@@ -5,14 +5,14 @@ using std
 #test
 {
     var x: String = "élémenT"
-    x.makeUpperLatin1()
+    x.makeUpper(String.CharacterSet.Latin1)
     @assert(x == "ÉLÉMENT")
-    x.makeLowerLatin1()
+    x.makeLower(String.CharacterSet.Latin1)
     @assert(x == "élément")
 
     var x1: String = "âäàéèëî"
-    x1.makeUpperLatin1()
+    x1.makeUpper(String.CharacterSet.Latin1)
     @assert(x1 == "ÂÄÀÉÈËÎ")
-    x1.makeLowerLatin1()
+    x1.makeLower(String.CharacterSet.Latin1)
     @assert(x1 == "âäàéèëî")
 }

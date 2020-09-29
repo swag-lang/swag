@@ -424,18 +424,36 @@ namespace std
             return cast(string) @mkslice(buffer, length)
         }
 
+        enum CharacterSet
+        {
+            Ascii
+            Latin1
+        }
+
         // Convert the string inplace to upper case.
         // Only deal with latin1 (not unicode)
-        func makeUpperLatin1(using self)
+        func makeUpper(using self, set: CharacterSet = CharacterSet.Ascii)
         {
-            utf8.makeUpperLatin1(@mkslice(buffer, length))
+            switch set
+            {
+                case CharacterSet.Ascii:
+                    ascii.makeUpper(@mkslice(buffer, length))
+                case CharacterSet.Latin1:
+                    utf8.makeUpperLatin1(@mkslice(buffer, length))
+            }
         }
 
         // Convert the string inplace to lower case.
         // Only deal with latin1 (not unicode)
-        func makeLowerLatin1(using self)
+        func makeLower(using self, set: CharacterSet = CharacterSet.Ascii)
         {
-            utf8.makeLowerLatin1(@mkslice(buffer, length))
+            switch set
+            {
+                case CharacterSet.Ascii:
+                    ascii.makeLower(@mkslice(buffer, length))
+                case CharacterSet.Latin1:
+                    utf8.makeLowerLatin1(@mkslice(buffer, length))
+            }
         }
     }
 }
