@@ -48,9 +48,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
-                RegisterList r0                                                     = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::MakeStackPointer, r0)->b.s32 = resolved->storageOffset;
-                node->type->resultRegisterRC                                        = r0;
+                RegisterList r0              = reserveRegisterRC(context);
+                auto         inst            = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+                inst->b.s32                  = resolved->storageOffset;
+                node->type->resultRegisterRC = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
 
