@@ -15,4 +15,8 @@ using std
     @assert(x1 == "ÂÄÀÉÈËÎ")
     x1.makeLower(String.CharacterSet.Latin1)
     @assert(x1 == "âäàéèëî")
+
+    var x2: String = "AbCdEf"
+    x2.makeUpper()
+    @assert(x2 == "ABCDEF")
 }
