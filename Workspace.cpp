@@ -10,6 +10,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "ByteCodeOptimizer.h"
 
 Workspace g_Workspace;
 
@@ -522,6 +523,7 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
+        ByteCodeOptimizer::optimize(bootstrapModule);
 
         // Errors in swag.swg !!!
         if (bootstrapModule->numErrors)
@@ -549,6 +551,7 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
+        ByteCodeOptimizer::optimize(runtimeModule);
 
         // Errors in swag.swg !!!
         if (runtimeModule->numErrors)

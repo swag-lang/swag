@@ -19,7 +19,6 @@ func toto()->AA
 }
 
 #[swag.printbc]
-#[swag.nooptim]
 #test
 {
     x := toto()
