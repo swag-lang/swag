@@ -9,17 +9,10 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
     map<uint32_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
     map<uint32_t, uint32_t>                             mapCstReg;
 
-    uint32_t lastReg    = 0xFFFFFFFF;
-    uint32_t lastOffset = 0xFFFFFFFF;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->flags & BCI_START_STMT || isJump(ip))
-        {
             mapCst.clear();
-            lastReg    = 0xFFFFFFFF;
-            lastOffset = 0xFFFFFFFF;
-        }
 
         // If MakeStackPointer is followed by an increment of the pointer, we can just
         // make the increment now and remove the increment instruction
@@ -39,12 +32,6 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             it = mapCst.find(ip->b.u32);
             if (it != mapCst.end())
                 mapCst.erase(it);
-
-            if (lastReg == ip->a.u32)
-            {
-                lastReg    = 0xFFFFFFFF;
-                lastOffset = 0xFFFFFFFF;
-            }
         }
 
         // Testing if a stack pointer is not null is irrelevant. This can happen often because of
@@ -58,29 +45,7 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             ip[1].b.u32                   = 1;
         }
 
-        // If we have a MakeStackPointer identical to a previous one, and no read of the register between them,
-        // then the second MakeStackPointer is useless
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
-        if (ip[0].op == ByteCodeOp::MakeStackPointer)
-        {
-            if (lastReg == ip->a.u32 && lastOffset == ip->b.u32)
-            {
-                setNop(context, ip);
-            }
-            else
-            {
-                lastReg    = ip->a.u32;
-                lastOffset = ip->b.u32;
-            }
-        }
-        else if ((flags & OPFLAG_READ_A && ip->a.u32 == lastReg && !(ip->flags & BCI_IMM_A)) ||
-                 (flags & OPFLAG_READ_B && ip->b.u32 == lastReg && !(ip->flags & BCI_IMM_B)) ||
-                 (flags & OPFLAG_READ_C && ip->c.u32 == lastReg && !(ip->flags & BCI_IMM_C)) ||
-                 (flags & OPFLAG_READ_D && ip->d.u32 == lastReg && !(ip->flags & BCI_IMM_D)))
-        {
-            lastReg    = 0xFFFFFFFF;
-            lastOffset = 0xFFFFFFFF;
-        }
 
         // Try to detect when we store a constant on the stack, followed by a get of the value. The get
         // is then useless, as we can change it to an immediate constant copy
