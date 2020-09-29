@@ -18,9 +18,6 @@
 // ... post move stuff
 void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
 {
-    if (context->bc->sourceFile->name == "compiler2073.swg")
-        context = context;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         // Detect pushing pointer to the stack for a return value
