@@ -434,11 +434,12 @@ namespace std
         // Only deal with latin1 (not unicode)
         func makeUpper(using self, set: CharacterSet = CharacterSet.Ascii)
         {
+            using CharacterSet
             switch set
             {
-                case CharacterSet.Ascii:
+                case Ascii:
                     ascii.makeUpper(@mkslice(buffer, length))
-                case CharacterSet.Latin1:
+                case Latin1:
                     utf8.makeUpperLatin1(@mkslice(buffer, length))
             }
         }
@@ -447,11 +448,12 @@ namespace std
         // Only deal with latin1 (not unicode)
         func makeLower(using self, set: CharacterSet = CharacterSet.Ascii)
         {
+            using CharacterSet
             switch set
             {
-                case CharacterSet.Ascii:
+                case Ascii:
                     ascii.makeLower(@mkslice(buffer, length))
-                case CharacterSet.Latin1:
+                case Latin1:
                     utf8.makeLowerLatin1(@mkslice(buffer, length))
             }
         }
