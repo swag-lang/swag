@@ -1,7 +1,7 @@
-namespace std.format;
+public namespace std.format;
 
 // Format a string and returns the result as a String
-public func toString(fmt: string, values: ...)->String
+func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
     append(&buf, fmt, values)
@@ -9,7 +9,7 @@ public func toString(fmt: string, values: ...)->String
 }
 
 // Format a string and put the result in a ConcatBuffer
-public func append(buf: *ConcatBuffer, fmt: string, values: ...)
+func append(buf: *ConcatBuffer, fmt: string, values: ...)
 {
     ptr := @dataof(fmt)
     cpt := @countof(fmt)

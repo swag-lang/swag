@@ -75,7 +75,7 @@ public func parseB64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-public func parseS64(str: const [..] u8) -> struct{value: s64, eatCount: u32}
+public func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -115,9 +115,9 @@ public func parseS64(str: const [..] u8) -> struct{value: s64, eatCount: u32}
     return @{result, cpt}
 }
 
-// Convert an utf8 buffer to an floating point value
+// Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-public func parseF64(str: const [..] u8) -> struct{value: f64, eatCount: u32}
+public func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}

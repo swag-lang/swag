@@ -17,6 +17,6 @@ impl DateTime
 {
     public func opEquals(self, other: Self)->bool
     {
-        return std.memory.compare(self, other, @sizeof(Self)) == 0
+        return memory.compare(self, other, @sizeof(Self)) == 0
     }
 }

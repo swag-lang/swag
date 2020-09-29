@@ -1,6 +1,7 @@
 public namespace std.ascii;
+using swag
 
-#[swag.inline, swag.constexpr]
+#[inline, constexpr]
 {
     func isDigit(c: u8)         => ("0"'u8 <= c <= "9"'u8)
     func isBinDigit(c: u8)      => ("0"'u8 <= c <= "1"'u8)

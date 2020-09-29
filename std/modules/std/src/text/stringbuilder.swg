@@ -1,11 +1,11 @@
-namespace std.strconv;
+public namespace std.strconv;
 
-public struct StringBuilder
+struct StringBuilder
 {
     buf: ConcatBuffer
 }
 
-public impl StringBuilder
+impl StringBuilder
 {
     // Set sizes of buckets of the string builder
     func setBucketSize(using self, size: u32)

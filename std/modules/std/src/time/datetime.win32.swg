@@ -1,7 +1,7 @@
 namespace std.time;
 using win32
 
-#if std.WINDOWS
+#if WINDOWS
 {
     impl DateTime
     {
