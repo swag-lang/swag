@@ -24,6 +24,7 @@ static const uint16_t BCI_IMM_C          = 0x0040;
 static const uint16_t BCI_IMM_D          = 0x0080;
 static const uint16_t BCI_OPT_FLAG       = 0x0100;
 static const uint16_t BCI_START_STMT     = 0x0200;
+static const uint16_t BCI_POST_MOVE      = 0x0400;
 
 struct ByteCodeInstruction
 {
@@ -84,6 +85,7 @@ struct ByteCode
     uint32_t numJumps              = 0;
 
     bool         compilerGenerated = false;
+    bool         isPostMove        = false;
     bool         addedToList       = false;
     atomic<bool> isEmpty;
 

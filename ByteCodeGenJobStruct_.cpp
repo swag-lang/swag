@@ -387,6 +387,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
+    opPostMove->isPostMove            = true;
     sourceFile->module->addByteCodeFunc(opPostMove);
 
     ByteCodeGenContext cxt{*context};
@@ -577,6 +578,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // A move
     else
     {
+        PushICFlags sf(context, BCI_POST_MOVE);
         if (typeInfoStruct->opPostMove)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);

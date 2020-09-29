@@ -2,6 +2,7 @@
 using std
 
 //#[swag.printbc]
+//#[swag.nooptim]
 #test
 {
     var x: String = "élémenT"

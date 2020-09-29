@@ -1,6 +1,7 @@
 struct AA
 {
     val: u64
+    val1: u64
 }
 
 impl AA
@@ -18,8 +19,9 @@ func toto()->AA
     return x
 }
 
-#[swag.printbc]
+//#[swag.printbc]
+//#[swag.nooptim]
 #test
 {
-    x := toto()
+    x, y := toto()
 }
