@@ -72,18 +72,14 @@ namespace std.latin1
 
         func toUpper(c: u8)->u8
         {
-            if "a"'u8 <= c <= "z"'u8
-                return cast(u8) (c & ~0x20)
-            if 0x80 <= c <= 0xBF
+            if ("a"'u8 <= c <= "z"'u8) || (0x80 <= c <= 0xBF)
                 return cast(u8) (c & ~0x20)
             return c;
         }
 
         func toLower(c: u8)->u8
         {
-            if "A"'u8 <= c <= "Z"'u8
-                return cast(u8) (c | 0x20)
-            if 0x80 <= c <= 0xBF
+            if ("A"'u8 <= c <= "Z"'u8) || (0x80 <= c <= 0xBF)
                 return cast(u8) (c | 0x20)
             return c;
         }

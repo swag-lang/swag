@@ -32,6 +32,13 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         allParams                                   = identifier->callParameters;
         numCallParams                               = allParams ? (int) allParams->childs.size() : 0;
     }
+    else if (node->parent->kind == AstNodeKind::Loop)
+    {
+        // This should be opCount
+        SWAG_ASSERT(node->parent->resolvedUserOpSymbolOverload);
+        allParams     = node->parent;
+        numCallParams = 1;
+    }
     else
     {
         allParams     = node->parent;
@@ -140,6 +147,9 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     // Release persistent list of registers
     freeRegisterRC(context, node->scope->registersToRelease);
 
+    // Be sure this is done only once
+    node->flags |= AST_NO_BYTECODE;
+
     return true;
 }
 
@@ -216,8 +226,14 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     if (loopNode->resolvedUserOpSymbolName && loopNode->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
+
+        // If opCount has been inlined, then the register of the inline block contains the result
+        if (loopNode->childs.back()->kind == AstNodeKind::Inline)
+        {
+            node->resultRegisterRC = loopNode->childs.back()->resultRegisterRC;
+        }
     }
 
     // To store the 'index' of the loop

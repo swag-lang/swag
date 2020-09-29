@@ -791,8 +791,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_NO_SEMANTIC;
 
-    identifier->semanticState = AstNodeResolveState::Enter;
-    identifier->bytecodeState = AstNodeResolveState::Enter;
+    // Need to reevaluate the identifier, if this is an identifier, cause the makeInline can be called
+    // for something else, like a loop node for example (opCount). In that case, we let the specific node
+    // deal with th (re)evaluation.
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        identifier->semanticState = AstNodeResolveState::Enter;
+        identifier->bytecodeState = AstNodeResolveState::Enter;
+    }
+
     return true;
 }
 

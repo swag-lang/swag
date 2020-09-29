@@ -535,9 +535,8 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
         {
             node->doneFlags |= AST_DONE_RESOLVE_INLINED;
-            context->job->nodes.pop_back();
             context->job->nodes.push_back(node->childs.back());
-            context->job->nodes.push_back(node);
+            context->result = ContextResult::NewChilds;
         }
 
         return true;

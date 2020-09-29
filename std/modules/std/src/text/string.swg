@@ -147,6 +147,12 @@ namespace std
                 free()
         }
 
+        func opIndex(using self, index: u32)->u8
+        {
+            if !length return 0
+            return buffer[index]
+        }
+
         // Visit the String utf8 bytes
         #[swag.macro, swag.noreturn]
         func(ptr: bool) opVisitBytes(using self, stmt: code)
