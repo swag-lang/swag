@@ -146,7 +146,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 RegisterList r0 = reserveRegisterRC(&cxt);
 
                 emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
-                auto seekJump                                              = cxt.bc->numInstructions;
+                auto seekJump                                                = cxt.bc->numInstructions;
 
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                 emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
@@ -180,6 +180,44 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     //opInit->print();
     return true;
+}
+
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset)
+{
+    if (!funcDecl && !bc)
+        return;
+
+    if (pushParam)
+    {
+        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
+        if (offset)
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u32 = offset;
+        }
+
+        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+    }
+
+    if (funcDecl && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcDecl;
+        inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
+        funcDecl->flags |= AST_USED_FOREIGN;
+        SWAG_ASSERT(inst->a.pointer);
+    }
+    else
+    {
+
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        inst->a.pointer = (uint8_t*) (funcDecl ? funcDecl->bc : bc);
+        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+        SWAG_ASSERT(inst->a.pointer);
+    }
+
+    emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 }
 
 bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -259,6 +297,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
 
+    opDrop->isEmpty = true;
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
@@ -266,54 +305,21 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
+        opDrop->isEmpty = opDrop->isEmpty && typeStructVar->opDrop->isEmpty;
     }
 
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
+    if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->bc)
+        opDrop->isEmpty = opDrop->isEmpty && typeInfoStruct->opUserDropFct->bc->isEmpty;
+    else if (typeInfoStruct->opUserDropFct)
+        opDrop->isEmpty = false; // foreign
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
     //opDrop->print();
     return true;
-}
-
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset)
-{
-    if (!funcDecl && !bc)
-        return;
-
-    if (pushParam)
-    {
-        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
-        if (offset)
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
-            inst->flags |= BCI_IMM_B;
-            inst->b.u32 = offset;
-        }
-
-        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
-    }
-
-    if (funcDecl && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
-    {
-        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer = (uint8_t*) funcDecl;
-        inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
-        funcDecl->flags |= AST_USED_FOREIGN;
-        SWAG_ASSERT(inst->a.pointer);
-    }
-    else
-    {
-
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
-        inst->a.pointer = (uint8_t*) (funcDecl ? funcDecl->bc : bc);
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        SWAG_ASSERT(inst->a.pointer);
-    }
-
-    emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 }
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -392,6 +398,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
 
+    opPostMove->isEmpty = true;
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
@@ -399,10 +406,15 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
+        opPostMove->isEmpty = opPostMove->isEmpty && typeStructVar->opPostMove->isEmpty;
     }
 
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
+    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->bc)
+        opPostMove->isEmpty = opPostMove->isEmpty && typeInfoStruct->opUserPostMoveFct->bc->isEmpty;
+    else if (typeInfoStruct->opUserPostMoveFct)
+        opPostMove->isEmpty = false; // foreign
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -485,6 +497,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
 
+    opPostCopy->isEmpty = true;
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
@@ -492,10 +505,15 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
+        opPostCopy->isEmpty = opPostCopy->isEmpty && typeStructVar->opPostCopy->isEmpty;
     }
 
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
+    if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->bc)
+        opPostCopy->isEmpty = opPostCopy->isEmpty && typeInfoStruct->opUserPostCopyFct->bc->isEmpty;
+    else if (typeInfoStruct->opUserPostCopyFct)
+        opPostCopy->isEmpty = false; // foreign
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);

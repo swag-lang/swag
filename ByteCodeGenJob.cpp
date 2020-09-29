@@ -541,7 +541,7 @@ JobResult ByteCodeGenJob::execute()
         {
             emitInstruction(&context, ByteCodeOp::End);
 
-            if (originalNode->kind == AstNodeKind::FuncDecl)
+            if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->compilerGenerated)
             {
                 if (g_CommandLine.stats)
                     g_Stats.numInstructions += context.bc->numInstructions;
@@ -551,7 +551,7 @@ JobResult ByteCodeGenJob::execute()
                     return JobResult::ReleaseJob;
 
                 // Print resulting bytecode
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+                if (originalNode && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
                     context.bc->print();
             }
         }
