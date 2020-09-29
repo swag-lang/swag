@@ -26,8 +26,8 @@ impl Mwc
         chi := carry >> 16
         clo := carry & 0xFFFF
 
-        x    = (xlo * mlo) + clo
-        axc  := (xlo * mhi) + (xhi * mlo) + chi + (x >> 16)
+        x = (xlo * mlo) + clo
+        axc := (xlo * mhi) + (xhi * mlo) + chi + (x >> 16)
         carry = (xhi * mhi) + (axc >> 16)
 
         x = (x & 0xFFFF) + (axc << 16)
