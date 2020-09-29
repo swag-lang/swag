@@ -289,11 +289,10 @@ JobResult ModuleBuildJob::execute()
                 for (auto func : module->byteCodeInitFunc)
                 {
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
+                    if (module->numErrors)
+                        return JobResult::ReleaseJob;
                 }
             }
-
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
 
             // #run functions are always executed
             if (!module->byteCodeRunFunc.empty())
@@ -308,13 +307,12 @@ JobResult ModuleBuildJob::execute()
                 {
                     g_Stats.runFunctions++;
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
+                    if (module->numErrors)
+                        return JobResult::ReleaseJob;
                 }
 
                 module->bssCannotChange = false;
             }
-
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
 
             // #test functions are only executed in test mode
             if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
@@ -332,6 +330,8 @@ JobResult ModuleBuildJob::execute()
                     {
                         g_Stats.testFunctions++;
                         module->executeNode(func->node->sourceFile, func->node, baseContext);
+                        if (module->numErrors)
+                            return JobResult::ReleaseJob;
                     }
 
                     module->bssSegment.restoreAllValues();
@@ -341,17 +341,13 @@ JobResult ModuleBuildJob::execute()
                 }
             }
 
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
-
             // #main function, in script mode
             if (module->byteCodeMainFunc && g_CommandLine.script)
             {
                 module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
+                if (module->numErrors)
+                    return JobResult::ReleaseJob;
             }
-
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
 
             // #drop functions are only executed in script mode, if the module has a #main
             if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)

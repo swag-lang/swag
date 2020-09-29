@@ -1,7 +1,7 @@
 #import "std"
 using std
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var x: String = "élémenT"
