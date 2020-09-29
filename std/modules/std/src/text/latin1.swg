@@ -40,35 +40,16 @@ namespace std.latin1
     public
     {
         func isAscii(c: u8)         => c <= 0x7F
-        func isDigit(c: u8)         => "0"'u8 <= c <= "9"'u8
-        func isBinDigit(c: u8)      => "0"'u8 <= c <= "1"'u8
-        func isHexDigit(c: u8)      => ("0"'u8 <= c <= "9"'u8) || ("a"'u8 <= c <= "z"'u8) || ("A"'u8 <= c <= "Z"'u8)
+        func isDigit(c: u8)         => ascii.isDigit(c)
+        func isBinDigit(c: u8)      => ascii.isBinDigit(c)
+        func isHexDigit(c: u8)      => ascii.isHexDigit(c)
         func isUpper(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode32.isPunctuation(charCategory[c])
 
-        func isLetter(c: u8)->bool
-        {
-            return  ("a"'u8 <= c <= "z"'u8) ||
-                    ("A"'u8 <= c <= "Z"'u8) ||
-                    (c >= 0x80 && unicode32.isLetter(charCategory[c]))
-        }
-
-        func isLetterOrDigit(c: u8)->bool
-        {
-            return  ("a"'u8 <= c <= "z"'u8) ||
-                    ("A"'u8 <= c <= "Z"'u8) ||
-                    ("0"'u8 <= c <= "9"'u8) ||
-                    (c >= 0x80 && unicode32.isLetterOrDigit(charCategory[c]))
-        }
-
-		func isWhiteSpace(c: u8)->bool
-        {
-            return  c == " "'u8 ||
-                    ("\x09"'u8 <= c <= "\x0d"'u8) ||
-                    c == "\xa0"'u8 ||
-                    c == "\x85"'u8
-        }
+        func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
+        func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
+		func isWhiteSpace(c: u8)    => ascii.isWhiteSpace(c) || (c == "\x85"'u8) || (c == "\xa0"'u8)
 
         func toUpper(c: u8)->u8
         {

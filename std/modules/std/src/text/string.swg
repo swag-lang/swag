@@ -424,14 +424,14 @@ namespace std
             return cast(string) @mkslice(buffer, length)
         }
 
-        // Convert the string to upper case.
+        // Convert the string inplace to upper case.
         // Only deal with latin1 (not unicode)
         func makeUpperLatin1(using self)
         {
             utf8.makeUpperLatin1(@mkslice(buffer, length))
         }
 
-        // Convert the string to lower case.
+        // Convert the string inplace to lower case.
         // Only deal with latin1 (not unicode)
         func makeLowerLatin1(using self)
         {
