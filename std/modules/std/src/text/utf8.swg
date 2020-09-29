@@ -20,7 +20,7 @@ public namespace std.utf8
     }
 
     // Get the address of the previous utf8 character, and the corresponding unicode character
-    func previousChar(start, buffer: const *u8)->struct{const *u8, char}
+    func previousChar(start, buffer: const *u8) -> {const *u8, char}
     {
         if buffer == null || buffer == start
             return @{buffer, acast 0}
@@ -41,7 +41,7 @@ public namespace std.utf8
     }
 
     // Get the unicode character pointed by `buffer`, and the address of the next utf8 character
-    func nextChar(buffer: const *u8) -> struct{const *u8, char}
+    func nextChar(buffer: const *u8) -> {const *u8, char}
     {
         if buffer == null
             return @{null, acast 0}
@@ -110,5 +110,49 @@ public namespace std.utf8
         }
 
         return @{ptr, acast c}
+    }
+
+    // Make an utf8 buffer upper case, dealing only with latin1 table
+    func makeUpperLatin1(buffer: [..] u8)
+    {
+        p := @dataof(buffer)
+        loop @countof(buffer)
+        {
+            c := :p
+            if (0x61 <= c <= 0x7A)
+                :p -= 0x20
+            else if c == 0xC3
+            {
+                ce := c
+                p += 1
+                c = :p
+                if 0xA0 <= c <= 0xBE && c != 0xB7
+                    :p -= 0x20
+            }
+
+            p += 1
+        }
+    }
+
+    // Make an utf8 buffer lower case, dealing only with latin1 table
+    func makeLowerLatin1(buffer: [..] u8)
+    {
+        p := @dataof(buffer)
+        loop @countof(buffer)
+        {
+            c := :p
+            if (0x41 <= c <= 0x5A)
+                :p += 0x20
+            else if c == 0xC3
+            {
+                ce := c
+                p += 1
+                c = :p
+                if 0x80 <= c <= 0x9E && c != 0x97
+                    :p += 0x20
+            }
+
+            p += 1
+        }
     }
 }

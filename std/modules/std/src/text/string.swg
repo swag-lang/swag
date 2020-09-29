@@ -428,16 +428,14 @@ namespace std
         // Only deal with latin1 (not unicode)
         func makeUpperLatin1(using self)
         {
-            loop i: length
-                buffer[i] = latin1.toUpper(buffer[i])
+            utf8.makeUpperLatin1(@mkslice(buffer, length))
         }
 
         // Convert the string to lower case.
         // Only deal with latin1 (not unicode)
         func makeLowerLatin1(using self)
         {
-            loop i: length
-                buffer[i] = latin1.toLower(buffer[i])
+            utf8.makeLowerLatin1(@mkslice(buffer, length))
         }
     }
 }

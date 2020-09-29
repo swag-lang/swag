@@ -13,10 +13,6 @@ using std
     var x1: String = "âäàéèëî"
     x1.makeUpperLatin1()
     @assert(x1 == "ÂÄÀÉÈËÎ")
-
-    //loop i: x1
-    //    @assert(latin1.isUpper(x1[i]))
-
     x1.makeLowerLatin1()
     @assert(x1 == "âäàéèëî")
 }
