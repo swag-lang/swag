@@ -607,6 +607,8 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
+    auto result = true;
+
     {
         Timer timer(g_Stats.totalTime);
         timer.start(true);
@@ -620,7 +622,7 @@ bool Workspace::build()
         addBootstrap();
         addRuntime();
         setupTarget();
-        SWAG_CHECK(buildTarget());
+        result = buildTarget();
 
         timer.stop(true);
     }
@@ -630,7 +632,7 @@ bool Workspace::build()
     else
         g_Log.messageHeaderCentered("Done", format("%.3fs", g_Stats.totalTime.load()));
 
-    return true;
+    return result;
 }
 
 bool Workspace::watch()
