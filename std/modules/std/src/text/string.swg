@@ -6,6 +6,12 @@ namespace std
     private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
     #assert @sizeof(String) == 40
 
+    public enum CharacterSet
+    {
+        Ascii
+        Latin1
+    }
+
     public readonly struct String
     {
         buffer:     *u8
@@ -424,12 +430,6 @@ namespace std
             return cast(string) @mkslice(buffer, length)
         }
 
-        enum CharacterSet
-        {
-            Ascii
-            Latin1
-        }
-
         // Convert the string inplace to upper case.
         // Only deal with latin1 (not unicode)
         func makeUpper(using self, set: CharacterSet = CharacterSet.Ascii)
@@ -456,6 +456,22 @@ namespace std
                 case Latin1:
                     utf8.makeLowerLatin1(@mkslice(buffer, length))
             }
+        }
+
+        // Returns a new String in upper case
+        func toUpper(using self, set: CharacterSet = CharacterSet.Ascii)->String
+        {
+            result := :self
+            result.makeUpper(set)
+            return result
+        }
+
+        // Returns a new String in lower case
+        func toLower(using self, set: CharacterSet = CharacterSet.Ascii)->String
+        {
+            result := :self
+            result.makeLower(set)
+            return result
         }
     }
 }
