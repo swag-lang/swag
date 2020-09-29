@@ -59,7 +59,8 @@ struct Module
     Utf8                      name;
     Utf8                      nameDown;
     Utf8                      nameUp;
-    atomic<int>               numErrors = 0;
+    atomic<int>               numErrors      = 0;
+    atomic<int>               criticalErrors = 0;
     shared_mutex              mutexFile;
     VectorNative<SourceFile*> files;
     BuildCfg                  buildCfg;

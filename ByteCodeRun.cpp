@@ -1840,7 +1840,6 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 SourceLocation start = {context->errorLoc->lineStart, context->errorLoc->colStart};
                 SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
-                diag.criticalError = true;
                 errorContext->report(diag);
             }
             else
@@ -1849,13 +1848,11 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 if (location)
                 {
                     Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
-                    diag.criticalError = true;
                     errorContext->report(diag);
                 }
                 else
                 {
                     Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
-                    diag.criticalError = true;
                     errorContext->report(diag);
                 }
             }
@@ -1901,7 +1898,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // Hardware exception
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
-    diag.criticalError  = true;
     diag.exceptionError = true;
     runContext->bc->sourceFile->report(diag);
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;

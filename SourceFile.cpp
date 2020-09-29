@@ -268,6 +268,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     scoped_lock lock(g_Log.mutexAccess);
     numErrors++;
     module->numErrors++;
+    if (diag.exceptionError)
+        module->criticalErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
     if (unittestError && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
