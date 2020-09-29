@@ -1,35 +1,33 @@
-namespace std.hash
+namespace std.hash;
+using swag
+
+public interface IHash32
 {
-    using swag
+    compute: func(self)->u32
+}
 
-    public interface IHash32
+// Hash the given value and returns the corresponding u32
+#[constexpr]
+public func(T) hash32(value: T)->u32
+{
+    #if @typeof(T).flags & TypeInfoFlags.Integer
     {
-        compute: func(self)->u32
+        return cast(u32) value
     }
-
-    // Hash the given value and returns the corresponding u32
-    #[constexpr]
-    public func(T) hash32(value: T)->u32
+    #elif @typeof(T).flags & TypeInfoFlags.Float
     {
-        #if @typeof(T).flags & TypeInfoFlags.Integer
-        {
-            return cast(u32) value
-        }
-        #elif @typeof(T).flags & TypeInfoFlags.Float
-        {
-            val32 := cast(f32) value
-            return :cast(const *u32) &val32
-        }
-        #elif @typeof(T) == string
-        {
-            return hash.crc32(value)
-        }
-        #elif @typeof(T).kind == TypeInfoKind.Struct
-        {
-            #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'std.crypto.IHash32' interface")
-            #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
-        }
-        #else
-            #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")
+        val32 := cast(f32) value
+        return :cast(const *u32) &val32
     }
+    #elif @typeof(T) == string
+    {
+        return hash.crc32(value)
+    }
+    #elif @typeof(T).kind == TypeInfoKind.Struct
+    {
+        #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'std.crypto.IHash32' interface")
+        #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
+    }
+    #else
+        #assert(false, "cannot hash a value of type '" ~ @typeof(T).name ~ "'")
 }

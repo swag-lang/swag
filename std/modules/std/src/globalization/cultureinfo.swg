@@ -1,15 +1,14 @@
-namespace std.globalization
+namespace std.globalization;
+
+public struct CultureInfo
 {
-    public struct CultureInfo
-    {
-        numberFormat: NumberFormatInfo
-    }
+    numberFormat: NumberFormatInfo
+}
 
-    var g_CultureInfo: CultureInfo
+var g_CultureInfo: CultureInfo
 
-    // Returns the global culture info structure
-    public func getCultureInfo()->*CultureInfo
-    {
-        return &g_CultureInfo
-    }
+// Returns the global culture info structure
+public func getCultureInfo()->*CultureInfo
+{
+    return &g_CultureInfo
 }

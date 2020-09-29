@@ -1,12 +1,11 @@
-public namespace std.debug
+public namespace std.debug;
+
+#[swag.inline]
+func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
-	#[swag.inline]
-	func assert(expr: bool, message: string = null, loc = #callerlocation)
-	{
-		#if std.ASSERT
-		{
-			if !expr
-				@assertmsg(message, loc)
-		}
-	}
+    #if std.ASSERT
+    {
+        if !expr
+            @assertmsg(message, loc)
+    }
 }

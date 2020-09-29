@@ -1,10 +1,9 @@
-namespace std.math
+namespace std.math;
+
+#[swag.constexpr, swag.inline]
+public
 {
-	#[swag.constexpr, swag.inline]
-    public
-	{
-		func(T) clamp(x, low, up: T) => x < low ? low : (x > up ? up : x)
-		func(T) min(x, y: T) => x < y ? x : y
-		func(T) max(x, y: T) => x > y ? x : y
-	}
+    func(T) clamp(x, low, up: T) => x < low ? low : (x > up ? up : x)
+    func(T) min(x, y: T) => x < y ? x : y
+    func(T) max(x, y: T) => x > y ? x : y
 }

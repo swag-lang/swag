@@ -71,6 +71,8 @@ bool SyntaxJob::doNamespace(AstNode* parent)
             break;
         case TokenId::SymLeftCurly:
             return syntaxError(token, "missing namespace name before '{'");
+        case TokenId::SymSemiColon:
+            return syntaxError(token, "missing namespace name before ';'");
         default:
             return syntaxError(token, format("invalid namespace name '%s'", token.text.c_str()));
         }
@@ -117,19 +119,31 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
     currentScope   = oldScope;
     auto openCurly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    // Content of namespace is toplevel
+    if (token.id == TokenId::SymSemiColon)
     {
+        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        Scoped scoped(this, newScope);
+        while (token.id != TokenId::EndOfFile)
+        {
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode));
+        }
+    }
+    else
+    {
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+        // Content of namespace is toplevel
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(namespaceNode));
         }
+
+        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 

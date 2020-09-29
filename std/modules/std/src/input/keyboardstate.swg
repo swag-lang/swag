@@ -1,27 +1,26 @@
-namespace std.keyboard
+namespace std.keyboard;
+
+// Represents one keyboard state
+public struct State
 {
-    // Represents one keyboard state
-    public struct State
+    // Whether each key is pressed or not
+    pressed: [@countof(Key)] bool
+}
+
+public impl State
+{
+    // Compute current keyboard state
+    func update(using self)
     {
-        // Whether each key is pressed or not
-        pressed: [@countof(Key)] bool
+        loop i: @countof(Key)
+        {
+            pressed[i] = isKeyPressed(cast(Key) i)
+        }
     }
 
-    public impl State
+    // Reset keyboard state
+    func clear(using self)
     {
-        // Compute current keyboard state
-        func update(using self)
-        {
-            loop i: @countof(Key)
-            {
-                pressed[i] = isKeyPressed(cast(Key) i)
-            }
-        }
-
-        // Reset keyboard state
-        func clear(using self)
-        {
-            memory.clear(&pressed, @sizeof(pressed))
-        }
+        memory.clear(&pressed, @sizeof(pressed))
     }
 }
