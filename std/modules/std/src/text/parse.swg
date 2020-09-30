@@ -1,9 +1,9 @@
-namespace std.strconv;
+public namespace std.strconv;
 using globalization
 
 // Convert an utf8 buffer in decimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-public func parseU64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
+func parseU64(str: const [..] u8) -> {value: u64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -25,7 +25,7 @@ public func parseU64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-public func parseX64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
+func parseX64(str: const [..] u8) -> {value: u64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -53,7 +53,7 @@ public func parseX64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
 
 // Convert an utf8 buffer in binary to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-public func parseB64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
+func parseB64(str: const [..] u8) -> {value: u64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -75,7 +75,7 @@ public func parseB64(str: const [..] u8) -> struct{value: u64, eatCount: u32}
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-public func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
+func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -117,7 +117,7 @@ public func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-public func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
+func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
