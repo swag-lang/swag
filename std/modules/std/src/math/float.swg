@@ -1,51 +1,45 @@
 namespace std.math;
 
-namespace constF64
+public namespace constF64
 {
-    public
-    {
-        const Pi: f64           = 3.1415927410125732421875
-        const E: f64            = 2.71828174591064453125
-        const TwoPi: f64        = 2 * Pi
-        const PiBy2: f64        = Pi / 2
-        const PiBy3: f64        = Pi / 3
-        const PiBy4: f64        = Pi / 4
-        const PiBy6: f64        = Pi / 6
-        const PiBy8: f64        = Pi / 8
-        const OneByPi: f64      = 1 / Pi
-        const TwoByPi: f64      = 2 / Pi
-        const Sqrt2: f64        = sqrt(2'f64)
-        const OneBySqrt2: f64   = 1 / Sqrt2
-        const Ln2 : f64         = log(2'f64)
-        const Ln10 : f64        = log(10'f64)
-        const Log2E : f64       = log2(E)
-        const Log10E : f64      = log10(E)
-        const Epsilon: f64      = 1e-06'f64
-    }
+    const Pi: f64           = 3.1415927410125732421875
+    const E: f64            = 2.71828174591064453125
+    const TwoPi: f64        = 2 * Pi
+    const PiBy2: f64        = Pi / 2
+    const PiBy3: f64        = Pi / 3
+    const PiBy4: f64        = Pi / 4
+    const PiBy6: f64        = Pi / 6
+    const PiBy8: f64        = Pi / 8
+    const OneByPi: f64      = 1 / Pi
+    const TwoByPi: f64      = 2 / Pi
+    const Sqrt2: f64        = sqrt(2'f64)
+    const OneBySqrt2: f64   = 1 / Sqrt2
+    const Ln2 : f64         = log(2'f64)
+    const Ln10 : f64        = log(10'f64)
+    const Log2E : f64       = log2(E)
+    const Log10E : f64      = log10(E)
+    const Epsilon: f64      = 1e-06'f64
 }
 
-namespace constF32
+public namespace constF32
 {
-    public
-    {
-        const Pi            = cast(f32) constF64.Pi
-        const E             = cast(f32) constF64.E
-        const TwoPi         = cast(f32) constF64.TwoPi
-        const PiBy2         = cast(f32) constF64.PiBy2
-        const PiBy3         = cast(f32) constF64.PiBy3
-        const PiBy4         = cast(f32) constF64.PiBy4
-        const PiBy6         = cast(f32) constF64.PiBy6
-        const PiBy8         = cast(f32) constF64.PiBy8
-        const OneByPi       = cast(f32) constF64.OneByPi
-        const TwoByPi       = cast(f32) constF64.TwoByPi
-        const Sqrt2         = cast(f32) constF64.Sqrt2
-        const OneBySqrt2    = cast(f32) constF64.OneBySqrt2
-        const Ln2           = cast(f32) constF64.Ln2
-        const Ln10          = cast(f32) constF64.Ln10
-        const Log2E         = cast(f32) constF64.Log2E
-        const Log10E        = cast(f32) constF64.Log10E
-        const Epsilon       = cast(f32) constF64.Epsilon
-    }
+    const Pi            = cast(f32) constF64.Pi
+    const E             = cast(f32) constF64.E
+    const TwoPi         = cast(f32) constF64.TwoPi
+    const PiBy2         = cast(f32) constF64.PiBy2
+    const PiBy3         = cast(f32) constF64.PiBy3
+    const PiBy4         = cast(f32) constF64.PiBy4
+    const PiBy6         = cast(f32) constF64.PiBy6
+    const PiBy8         = cast(f32) constF64.PiBy8
+    const OneByPi       = cast(f32) constF64.OneByPi
+    const TwoByPi       = cast(f32) constF64.TwoByPi
+    const Sqrt2         = cast(f32) constF64.Sqrt2
+    const OneBySqrt2    = cast(f32) constF64.OneBySqrt2
+    const Ln2           = cast(f32) constF64.Ln2
+    const Ln10          = cast(f32) constF64.Ln10
+    const Log2E         = cast(f32) constF64.Log2E
+    const Log10E        = cast(f32) constF64.Log10E
+    const Epsilon       = cast(f32) constF64.Epsilon
 }
 
 #[swag.constexpr]

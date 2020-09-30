@@ -1,7 +1,8 @@
+namespace std.keyboard;
+using swag, win32
+
 #if std.WINDOWS
 {
-	using swag, win32
-
 	private
 	{
 		var g_mapKeyToVKey: [256] u8 = ?
@@ -17,7 +18,7 @@
 
 	#run
 	{
-		using std.keyboard.Key
+		using Key
         setupArray(A,                   cast(u8) "A"'char)
         setupArray(Add,                 cast(u8) VK_ADD)
         setupArray(Apps,                cast(u8) VK_APPS)
@@ -208,20 +209,20 @@
         setupArray(Zoom,                cast(u8) VK_ZOOM)
 	}
 
-	public namespace std.keyboard
+	public
 	{
-        func keyToVirtualKey(key: Key)-> VirtualKey
+        func keyToVirtualKey(key: Key)->VirtualKey
         {
             return acast g_mapKeyToVKey[cast(u8) key]
         }
 
-        func virtualKeyToKey(vkey: VirtualKey)-> Key
+        func virtualKeyToKey(vkey: VirtualKey)->Key
         {
             if(vkey > 255) return Key.None
             return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
         }
 
-        func isKeyPressed(key: Key)-> bool
+        func isKeyPressed(key: Key)->bool
         {
             vkey := g_mapKeyToVKey[cast(u8) key]
             if vkey == 0 return false

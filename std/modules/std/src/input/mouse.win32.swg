@@ -1,5 +1,5 @@
 public namespace std.mouse;
-using win32, std.math
+using win32, math
 
 #if std.WINDOWS
 {
