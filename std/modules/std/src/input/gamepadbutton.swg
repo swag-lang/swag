@@ -3,11 +3,11 @@ namespace std.gamepad;
 // Enumerates gamepad buttons
 public enum Button
 {
-    // **A** button
+    // A button
     A
-    // **B** button
+    // B button
     B
-    // **BACK** button
+    // BACK button
     Back
     // Big button
     BigButton
@@ -47,10 +47,10 @@ public enum Button
     RightThumbstickUp
     // Right trigger
     RightTrigger
-    // **START** button
+    // START button
     Start
-    // **X** button
+    // X button
     X
-    // **Y** button
+    // Y button
     Y
 }
