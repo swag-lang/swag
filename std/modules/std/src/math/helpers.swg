@@ -1,6 +1,7 @@
 namespace std.math;
+using swag
 
-#[swag.constexpr, swag.inline]
+#[constexpr, inline]
 public
 {
     func(T) clamp(x, low, up: T) => x < low ? low : (x > up ? up : x)

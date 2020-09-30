@@ -67,7 +67,7 @@ public impl Point
     // Returns `true` if the Point is `null`
     func isZero(using self)->bool
     {
-        return x == 0 && y == 0
+        return x == y == 0
     }
 
     // Returns `true` if the Point is `null` with an epsilon
