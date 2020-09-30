@@ -1,7 +1,7 @@
 namespace std.time;
 
 // Provides a set of methods and properties that you can use to accurately measure elapsed time
-public readonly struct Stopwatch
+public struct Stopwatch
 {
     isRunning:		bool
     startTimeStamp:	u64

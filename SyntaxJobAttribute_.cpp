@@ -70,20 +70,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
     switch (token.id)
     {
-    case TokenId::KwdReadOnly:
-        attr |= ATTRIBUTE_READONLY;
-        SWAG_CHECK(tokenizer.getToken(token));
-        break;
-    case TokenId::KwdReadWrite:
-        attr |= ATTRIBUTE_READWRITE;
-        SWAG_CHECK(tokenizer.getToken(token));
-        break;
-    default:
-        break;
-    }
-
-    switch (token.id)
-    {
     case TokenId::SymLeftCurly:
     case TokenId::KwdFunc:
     case TokenId::KwdVar:

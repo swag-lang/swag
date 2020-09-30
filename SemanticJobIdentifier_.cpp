@@ -345,13 +345,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_R_VALUE;
     }
 
-    // Can access a private member of a struct only from the same scope (impl or struct)
-    if ((overload->flags & OVERLOAD_VAR_STRUCT) && (overload->node->ownerScope != identifier->ownerStructScope))
-    {
-        if ((overload->attributeFlags & ATTRIBUTE_READONLY) && (identifier->flags & AST_TAKE_ADDRESS) && !(overload->attributeFlags & ATTRIBUTE_READWRITE))
-            return context->report({identifier, identifier->token, format("member '%s' of structure '%s' is 'readonly'", overload->node->name.c_str(), overload->node->ownerScope->owner->name.c_str())});
-    }
-
     // If this a L or R value
     if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
     {

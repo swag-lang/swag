@@ -9,7 +9,7 @@ public struct ConcatBufferBucket
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
 // the buffer needs to increase its size. This is the main difference with Array
-public readonly struct ConcatBuffer
+public struct ConcatBuffer
 {
     allocator:      const swag.IAllocator
 

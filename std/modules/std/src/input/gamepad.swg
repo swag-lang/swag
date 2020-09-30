@@ -11,7 +11,7 @@ public struct GamePad
     padIndex: u32
 
     // true if the corresponding padIndex is connected
-    readonly connected: bool
+    connected: bool
 }
 
 public impl GamePad

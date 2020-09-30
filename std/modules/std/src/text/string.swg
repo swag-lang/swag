@@ -11,7 +11,7 @@ public enum CharacterSet
     Latin1
 }
 
-public readonly struct String
+public struct String
 {
     buffer:     *u8
     length:     u32

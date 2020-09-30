@@ -1,7 +1,7 @@
-readonly struct A
+struct A
 {
-    x: u32    
-    readwrite y: u32
+    x: u32
+    y: u32
 }
 
 #run

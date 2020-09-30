@@ -323,31 +323,6 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
-        case TokenId::KwdReadOnly:
-        case TokenId::KwdReadWrite:
-        {
-            auto attrBlockNode         = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-            attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
-
-            if (token.id == TokenId::KwdReadOnly)
-                attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
-            else if (token.id == TokenId::KwdReadWrite)
-                attrBlockNode->attributeFlags |= ATTRIBUTE_READWRITE;
-
-            SWAG_CHECK(eatToken());
-
-            if (token.id == TokenId::SymLeftCurly)
-                continue;
-
-            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-
-            SWAG_CHECK(doVarDecl(stmt, nullptr, AstNodeKind::VarDecl));
-            if (!waitCurly)
-                return true;
-            break;
-        }
-
         default:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
             if (!waitCurly)
