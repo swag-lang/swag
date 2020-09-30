@@ -202,8 +202,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -233,8 +232,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, left, leftTypeInfo));
-        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, right, rightTypeInfo));
+        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -277,8 +275,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -299,8 +296,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -323,8 +319,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)

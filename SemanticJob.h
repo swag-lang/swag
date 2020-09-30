@@ -64,6 +64,7 @@ struct SemanticJob : public Job
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         internalError(JobContext* context, const char* msg, AstNode* node = nullptr);
+    static bool         checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);

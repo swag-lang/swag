@@ -17,6 +17,14 @@ bool SemanticJob::internalError(JobContext* context, const char* msg, AstNode* n
     return false;
 }
 
+bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
+{
+    if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
+        return true;
+    auto node = context->node;
+    return context->report({node, node->token, format("operation '%s' not allowed, left type is '%s' and right type is '%s'", node->token.text.c_str(), leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str())});
+}
+
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, notAllowed(context, node, typeInfo));
@@ -25,7 +33,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return context->report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
+    return context->report({node, node->token, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
