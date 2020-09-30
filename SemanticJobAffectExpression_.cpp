@@ -217,7 +217,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymAmpersandEqual:
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
-    case TokenId::SymTildeEqual:
         if (forTuple)
             return context->report({node, node->token, "invalid operation on a tuple type"});
         else if (forStruct)
@@ -227,8 +226,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 op = "|=";
             else if (tokenId == TokenId::SymCircumflexEqual)
                 op = "^=";
-            else if (tokenId == TokenId::SymTildeEqual)
-                op = "~=";
             if (arrayNode)
                 SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams, false));
             else

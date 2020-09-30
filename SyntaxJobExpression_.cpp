@@ -1038,7 +1038,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
              token.id == TokenId::SymAmpersandEqual ||
              token.id == TokenId::SymVerticalEqual ||
              token.id == TokenId::SymCircumflexEqual ||
-             token.id == TokenId::SymTildeEqual ||
              token.id == TokenId::SymPercentEqual ||
              token.id == TokenId::SymLowerLowerEqual ||
              token.id == TokenId::SymGreaterGreaterEqual)

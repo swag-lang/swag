@@ -20,7 +20,6 @@ impl Point
 	pt &= 1
 	pt |= 1
 	pt ^= 1
-	pt ~= 1
 	pt %= 1
 	pt *= 1
 }
