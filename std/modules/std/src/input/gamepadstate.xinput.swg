@@ -63,11 +63,11 @@ using xinput, win32, std.gamepad
 
             // Simulate pressed with move
             #[swag.inline]
-            func getToler(self, btn: Button)->f32
+            func getToler(using self, btn: Button)->f32
             {
                 const SmallToler = 0.7'f32
                 const BigToler = 0.9'f32
-                return self.pressed[cast(u32) btn] ? SmallToler : BigToler
+                return pressed[btn] ? SmallToler : BigToler
             }
 
             pressed[LeftThumbstickDown] = position[LeftStick].y < -getToler(self, LeftThumbstickDown)

@@ -213,7 +213,7 @@ using swag, win32
 	{
         func keyToVirtualKey(key: Key)->VirtualKey
         {
-            return acast g_mapKeyToVKey[key]
+            return cast(VirtualKey) g_mapKeyToVKey[key]
         }
 
         func virtualKeyToKey(vkey: VirtualKey)->Key
