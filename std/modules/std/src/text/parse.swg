@@ -16,8 +16,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eatCount: u32}
     {
         result *= 10
         result += cast(u64) (:buffer - "0"'u8)
-        buffer += 1
-        cpt += 1
+        buffer, cpt += 1
     }
 
     return @{result, cpt}
@@ -44,8 +43,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eatCount: u32}
             result += cast(u64) 10 + (c - "A"'u8)
         else
             result += cast(u64) 10 + (c - "a"'u8)
-        buffer += 1
-        cpt += 1
+        buffer, cpt += 1
     }
 
     return @{result, cpt}
@@ -66,8 +64,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eatCount: u32}
     {
         result <<= 1
         result += cast(u64) (:buffer - "0"'u8)
-        buffer += 1
-        cpt += 1
+        buffer, cpt += 1
     }
 
     return @{result, cpt}
@@ -106,8 +103,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
         hasDigits = true
         result *= 10
         result += cast(s64) (:buffer - "0"'u8)
-        buffer += 1
-        cpt += 1
+        buffer, cpt += 1
     }
 
     if !hasDigits return @{0, 0}
@@ -150,8 +146,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
         hasDigits = true
         result *= 10
         result += cast(f64) (:buffer - "0"'u8)
-        buffer += 1
-        cpt += 1
+        buffer, cpt += 1
     }
 
     // Fractional part
@@ -172,8 +167,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
                 fract *= 10
                 divisor *= 0.1'f64
                 fract += cast(u64) (:buffer - "0"'u8)
-                buffer += 1
-                cpt += 1
+                buffer, cpt += 1
             }
 
             result += fract * divisor
