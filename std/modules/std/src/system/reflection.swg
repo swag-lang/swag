@@ -1,7 +1,7 @@
 namespace std.reflection;
 using swag
 
-#[swag.constexpr]
+#[constexpr]
 public
 {
     // Type names are scoped (i.e. "A.B.C"). This function will return the last
