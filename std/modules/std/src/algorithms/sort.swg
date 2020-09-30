@@ -1,7 +1,7 @@
-namespace std.sort;
+public namespace std.sort;
 
 // Insertion sort algorithm (slow)
-public func(T) insertion(values: [..] T, cb: func(T, T)->s32)
+func(T) insertion(values: [..] T, cb: func(T, T)->s32)
 {
     buffer := @dataof(values)
     count := @countof(values)
@@ -16,7 +16,7 @@ public func(T) insertion(values: [..] T, cb: func(T, T)->s32)
 }
 
 // Quick sort algorithm
-public func(T) quick(values: [..] T, cb: func(T, T)->s32)
+func(T) quick(values: [..] T, cb: func(T, T)->s32)
 {
     count := @countof(values)
     if(count == 0)
@@ -86,7 +86,7 @@ public func(T) quick(values: [..] T, cb: func(T, T)->s32)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
-public func(T) slice(values: [..] T, cb: func(T, T)->s32 = null)
+func(T) slice(values: [..] T, cb: func(T, T)->s32 = null)
 {
     lambda := cb ?? @(x, y: T)->s32 => x <=> y
     if(@countof(values) <= 10)
@@ -96,7 +96,7 @@ public func(T) slice(values: [..] T, cb: func(T, T)->s32 = null)
 }
 
 // Returns true if the slice is sorted
-public func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
+func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 {
     lambda := cb ?? @(x, y: T)->s32 => x <=> y
     countof := @countof(values)
@@ -112,7 +112,7 @@ public func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 // Find 'value' in the slice by performing a binary search.
 // The slice must be sorted in ascending order
 // Returns swag.MaxU32 if not found, otherwise returns the index of the value
-public func(T) find(values: const [..] T, value: T)->u32
+func(T) find(values: const [..] T, value: T)->u32
 {
     min := 0'u32
     countof := @countof(values)

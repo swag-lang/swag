@@ -4,7 +4,6 @@ namespace std.environment;
 public func getCommandLineArgs() => g_cmdLineArgs
 
 private var g_cmdLineArgs: [..] string
-
 #init
 {
     g_cmdLineArgs = @args()

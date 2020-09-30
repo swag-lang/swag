@@ -5,7 +5,7 @@ using std.console
 #test
 {
     silent(true)
-    ptr := &write
+    ptr := &print
     ptr("toto")
     silent(false)
 }

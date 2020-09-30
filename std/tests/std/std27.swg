@@ -5,6 +5,6 @@ using std
 #test
 {
     console.silent(true)
-	console.write("あああ")
+	console.print("あああ")
     console.silent(false)
 }

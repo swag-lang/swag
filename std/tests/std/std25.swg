@@ -7,6 +7,6 @@ using std
     x += "_titiあ"
     @assert(x == "toto_titiあ")
     console.silent(true)
-    console.write(cast(string) x)
+    console.print(cast(string) x)
     console.silent(false)
 }

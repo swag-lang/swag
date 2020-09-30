@@ -10,6 +10,6 @@ func XX(v: String)->[..]u8 => @mkslice(v.buffer, v.length)
     var x: String = "coucou㐁㐄㐅"
     y := XX(x)
     console.silent(true)
-    console.write(cast(string) y)
+    console.print(cast(string) y)
     console.silent(false)
 }

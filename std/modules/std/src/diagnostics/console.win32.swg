@@ -75,7 +75,7 @@ using win32
     }
 
     // Write a message to the console
-    public func write(message: string, params: ...)
+    public func print(message: string, params: ...)
     {
         if g_silentMode
             return

@@ -15,7 +15,6 @@
         }
 
         private var g_sysInfo: SYSTEM_INFO
-
         #init
         {
             GetSystemInfo(&g_sysInfo)

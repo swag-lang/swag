@@ -64,7 +64,7 @@ public
         return false
     }
 
-    // Returns true if the given 'type' has the associated 'atttribute'
+    // Returns true if the given 'type' has the associated 'attribute'
     func hasAttribute(type: typeinfo, attribute: string)->bool
     {
         switch type.kind
