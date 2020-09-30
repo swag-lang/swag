@@ -26,7 +26,7 @@ using xinput, win32, std.gamepad
     public func isConnected(padIndex: u32)->bool
     {
         var state: XINPUT_STATE = ?
-        return XInputGetState(padIndex, &state) != ERROR_SUCCESS
+        return XInputGetState(padIndex, &state) == ERROR_SUCCESS
     }
 
     // Set the left and right vibration of the given `padIndex`
