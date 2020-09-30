@@ -1,7 +1,7 @@
 #module "compiler1085"
 #unittest error
 
-#[swag.flags]
+#[swag.enumflags]
 enum TOTO : string
 {
 	F1

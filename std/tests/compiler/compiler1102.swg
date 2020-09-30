@@ -1,6 +1,6 @@
 #module "compiler1102"
 
-//#[swag.flags]
+//#[swag.enumflags]
 enum Days
 {
 	A = 1

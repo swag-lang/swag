@@ -1,5 +1,5 @@
 #module "compiler1092"
-#[swag.flags]
+#[swag.enumflags]
 enum TITI
 {
 	F1

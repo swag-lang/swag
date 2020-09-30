@@ -32,7 +32,7 @@ func free(allocator: *IAllocator, buffer: *void)
     if !buffer
         return
     debug.assert(allocator != null)
-    var req: AllocatorRequest{mode: AllocatorMode.Free, address: buffer}
+    req := AllocatorRequest{mode: AllocatorMode.Free, address: buffer}
     allocator.alloc(&req)
 }
 
@@ -40,7 +40,7 @@ func free(allocator: *IAllocator, buffer: *void)
 func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
 {
     debug.assert(allocator != null)
-    var req: AllocatorRequest{mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer}
+    req := AllocatorRequest{mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer}
     allocator.alloc(&req)
     return req.address
 }
@@ -49,7 +49,7 @@ func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
 func alloc(allocator: *IAllocator, sizeInBytes: u32)->*void
 {
     debug.assert(allocator != null)
-    var req: AllocatorRequest{mode: AllocatorMode.Alloc, size: sizeInBytes}
+    req := AllocatorRequest{mode: AllocatorMode.Alloc, size: sizeInBytes}
     allocator.alloc(&req)
     return req.address
 }

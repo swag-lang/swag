@@ -98,7 +98,7 @@ public
     }
 
     // Returns the enum value name corresponding to the value pointed by 'valueAddr'
-    // Can have multiple names if the enum is tagged with #[swag.flags]
+    // Can have multiple names if the enum is tagged with #[swag.enumflags]
     func getEnumName(type: typeinfo, valueAddr: const* void)->String
     {
         var result: String

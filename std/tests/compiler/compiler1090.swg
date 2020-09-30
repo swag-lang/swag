@@ -7,7 +7,7 @@ enum TITI
 	F3
 }
 
-/*#[swag.flags]
+/*#[swag.enumflags]
 enum TOTO : u32
 {
 	F1 = 0x00000001
