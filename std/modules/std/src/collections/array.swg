@@ -1,5 +1,4 @@
 #public
-
 namespace std;
 using swag
 
