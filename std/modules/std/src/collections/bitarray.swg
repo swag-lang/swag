@@ -89,7 +89,7 @@ public impl BitArray
     }
 
     // Visit all the booleans
-    #[swag.macro, swag.noreturn]
+    #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         #assert(ptr == false, "pointer visit not supported for BitArray")

@@ -18,7 +18,7 @@ public impl Random
 
     func nextS32(using self, min, max: s32)->s32
     {
-        debug.assert(max > min)
+        debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u32) (max - min)
         value := cast(s32) (rng.next() % range)
         return min + value
@@ -26,7 +26,7 @@ public impl Random
 
     func nextS64(using self, min, max: s64)->s64
     {
-        debug.assert(max > min)
+        debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u64) (max - min)
         value := cast(s64) (nextU64() % range)
         return min + value

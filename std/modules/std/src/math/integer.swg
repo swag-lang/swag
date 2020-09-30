@@ -36,7 +36,6 @@ func roundDownToPowerOf2(x: u32)->u32
 
 #[swag.constexpr, swag.inline]
 {
-    // Returns the absolute value
     func abs(x: s8) => @abs(x)
     func abs(x: s16) => @abs(x)
     func abs(x: s32) => @abs(x)

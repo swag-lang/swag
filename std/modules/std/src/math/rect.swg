@@ -1,4 +1,5 @@
 namespace std.math;
+using swag
 
 // A simple rectangle with 4 coordinates
 public struct Rect
@@ -11,7 +12,7 @@ public struct Rect
 
 public impl Rect
 {
-    #[swag.complete]
+    #[complete]
     func opAffect(using self, value: f32)
     {
         x, y, width, height = value
@@ -22,7 +23,7 @@ public impl Rect
         return x == other.x && y == other.y && width == other.width && height == other.height
     }
 
-    #[swag.property, swag.inline]
+    #[property, inline]
     {
         // right coordinate (x + width)
         func right(using self)->f32
