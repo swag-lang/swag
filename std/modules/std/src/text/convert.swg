@@ -14,6 +14,26 @@ public struct ConvertFormatFloat
     precision:  u32 = 5
 }
 
+impl ConvertFormatFloat
+{
+    // Set some format options with a given user string
+    // Format is :
+    // [precision]
+    // => precision of the fractional part
+    public func setFormat(using self, strFormat: string)
+    {
+        buffer := @dataof(strFormat)
+        countof := @countof(strFormat)
+        if buffer == null || countof == 0
+            return
+
+        cpt := 0'u32
+        (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
+        debug.assert(userWidth <= 255, "precision overflow")
+        precision = cast(u32) userWidth
+    }
+}
+
 // Format structure to convert an integer to a string
 // If 'signed' is 'true', the value to convert must be stored in 'signedValue', otherwise it must
 // be stored in 'unsignedValue'.
@@ -23,16 +43,6 @@ public struct ConvertFormatInt
     base:       u32 = 10
     padding:    u8
     width:      u8
-}
-
-impl ConvertFormatFloat
-{
-    // Set some format options with a given user string
-    public func setFormat(using self, strFormat: string)
-    {
-        if strFormat == null
-            return
-    }
 }
 
 impl ConvertFormatInt

@@ -31,6 +31,12 @@ impl StringBuilder
         convertChar(&buf, value, null)
     }
 
+    // Append a value
+    func appendAny(using self, value: any, strFormat: string = null)
+    {
+        convertAny(&buf, value, strFormat)
+    }
+
     // Append a formatted string
     func appendFormat(using self, fmt: string, values: ...)
     {
