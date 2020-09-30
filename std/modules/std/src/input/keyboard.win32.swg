@@ -11,7 +11,7 @@ using swag, win32
 		#[compiler]
 		func setupArray(key: std.keyboard.Key, vkey: u8)
 		{
-			g_mapKeyToVKey[cast(u8) key] = vkey
+			g_mapKeyToVKey[key] = vkey
 			g_mapVKeyToKey[vkey] = cast(u8) key
 		}
 	}
@@ -213,18 +213,18 @@ using swag, win32
 	{
         func keyToVirtualKey(key: Key)->VirtualKey
         {
-            return acast g_mapKeyToVKey[cast(u8) key]
+            return acast g_mapKeyToVKey[key]
         }
 
         func virtualKeyToKey(vkey: VirtualKey)->Key
         {
             if(vkey > 255) return Key.None
-            return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
+            return cast(Key) g_mapVKeyToKey[vkey]
         }
 
         func isKeyPressed(key: Key)->bool
         {
-            vkey := g_mapKeyToVKey[cast(u8) key]
+            vkey := g_mapKeyToVKey[key]
             if vkey == 0 return false
             return GetAsyncKeyState(cast(s32) vkey) < 0
         }

@@ -4,6 +4,7 @@ namespace std.keyboard;
 public alias VirtualKey = u32
 
 // Defines the keys on a keyboard
+#[swag.enumindex]
 public enum Key
 {
     // No key

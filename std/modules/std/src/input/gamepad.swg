@@ -43,31 +43,31 @@ public impl GamePad
     // Determines whether specified input device button is pressed
     func isButtonPressed(using self, button: Button)->bool
     {
-        return currentState.pressed[cast(u32) button]
+        return currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been pressed
     func isButtonJustPressed(using self, button: Button)->bool
     {
-        return currentState.pressed[cast(u32) button] && !previousState.pressed[cast(u32) button]
+        return currentState.pressed[button] && !previousState.pressed[button]
     }
 
     // Determines whether specified input device button is released (not pressed)
     func isButtonReleased(using self, button: Button)->bool
     {
-        return !currentState.pressed[cast(u32) button]
+        return !currentState.pressed[button]
     }
 
     // Determines whether specified input device button has just been released
     func isButtonJustReleased(using self, button: Button)->bool
     {
-        return !currentState.pressed[cast(u32) button] && previousState.pressed[cast(u32) button]
+        return !currentState.pressed[button] && previousState.pressed[button]
     }
 
     // Get the analog position of the given button
     func getPosition(using self, button: Button)->Point
     {
-        return currentState.position[cast(u32) button]
+        return currentState.position[button]
     }
 
     // Set the vibration motor speeds

@@ -70,24 +70,24 @@ public impl Keyboard
     // Determines whether given key is currently being pressed
     func isKeyPressed(using self, key: Key)->bool
     {
-        return currentState.pressed[cast(u32) key]
+        return currentState.pressed[key]
     }
 
     // Determines whether given key has just been pressed
     func isKeyJustPressed(using self, key: Key)->bool
     {
-        return currentState.pressed[cast(u32) key] && !previousState.pressed[cast(u32) key]
+        return currentState.pressed[key] && !previousState.pressed[key]
     }
 
     // Determines whether given key is currently being released
     func isKeyReleased(using self, key: Key)->bool
     {
-        return !currentState.pressed[cast(u32) key]
+        return !currentState.pressed[key]
     }
 
     // Determines whether given key has just been released
     func isKeyJustReleased(using self, key: Key)->bool
     {
-        return !currentState.pressed[cast(u32) key] && previousState.pressed[cast(u32) key]
+        return !currentState.pressed[key] && previousState.pressed[key]
     }
 }

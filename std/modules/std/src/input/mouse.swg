@@ -27,25 +27,25 @@ public impl Mouse
     // Determines whether the specified mouse button is pressed
     func isButtonPressed(using self, button: Button)->bool
     {
-        return currentState.pressed[cast(u32) button]
+        return currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been pressed
     func isButtonJustPressed(using self, button: Button)->bool
     {
-        return currentState.pressed[cast(u32) button] && !previousState.pressed[cast(u32) button]
+        return currentState.pressed[button] && !previousState.pressed[button]
     }
 
     // Determines whether the specified mouse button is released
     func isButtonReleased(using self, button: Button)->bool
     {
-        return !currentState.pressed[cast(u32) button]
+        return !currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been released
     func isButtonJustReleased(using self, button: Button)->bool
     {
-        return !currentState.pressed[cast(u32) button] && previousState.pressed[cast(u32) button]
+        return !currentState.pressed[button] && previousState.pressed[button]
     }
 
     // Returns the previous mouse position, before the last update
