@@ -13,21 +13,21 @@
 
     // 'any' is in fact a pointer to the value, and a const *TypeInfo
     {
-        let a: any = 6
+        var a: any = 6
         ptr := cast(const *s32) @dataof(a)
         @assert(:ptr == 6)
     }
 
     // '@typeof' will give you 'any', but '@kindof' will give you the real type
     {
-        let a: any = "string"
+        var a: any = "string"
         @assert(@typeof(a) == any)
         @assert(@kindof(a) == string)
     }
 
     // You can declare an array with multiple types, with 'any'
     {
-        let array: [] any = @[true, 2, 3.0, "4"]
+        var array: [] any = @[true, 2, 3.0, "4"]
         @assert(@kindof(array[0]) == bool)
         @assert(@kindof(array[1]) == s32)
         @assert(@kindof(array[2]) == f32)

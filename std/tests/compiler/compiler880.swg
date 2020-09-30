@@ -16,13 +16,13 @@ func chooseStepFunction(backward: bool) -> func(s32)->s32 {
 #test
 {
 	var currentValue = 3
-	let moveNearerToZero = chooseStepFunction(backward: currentValue > 0)
-	
+	var moveNearerToZero = chooseStepFunction(backward: currentValue > 0)
+
 	cpt := 0
 	while currentValue != 0 {
 		cpt += currentValue
 		currentValue = moveNearerToZero(currentValue)
-	}	
-	
+	}
+
 	@assert(cpt == 6)
 }

@@ -1,15 +1,15 @@
-let decimalDouble = 12.1875
-let exponentDouble = 1.21875e1
-let paddedDouble = 000123.456
-let oneMillion = 1_000_000
-let justOverOneMillion = 1_000_000.000_000_1
-let orangesAreOrange = true
-let turnipsAreDelicious = false
+var decimalDouble = 12.1875
+var exponentDouble = 1.21875e1
+var paddedDouble = 000123.456
+var oneMillion = 1_000_000
+var justOverOneMillion = 1_000_000.000_000_1
+var orangesAreOrange = true
+var turnipsAreDelicious = false
 
-let http404Error = @{404, "Not Found"}
+var http404Error = @{404, "Not Found"}
 #test
 {
-    let (statusCode, statusMessage) = http404Error
+    var (statusCode, statusMessage) = http404Error
     @assert(statusCode == 404)
     @assert(statusMessage == "Not Found")
 }

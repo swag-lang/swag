@@ -72,13 +72,13 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
-    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl))
     {
         if (checkNode->ownerScope->isGlobal())
             return true;
     }
 
-    if ((typeInfo->attributeUsage & AttributeUsage::LocalVariable) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::LocalVariable) && (kind == AstNodeKind::VarDecl))
     {
         if (!checkNode->ownerScope->isGlobal())
             return true;

@@ -480,19 +480,10 @@ namespace Ast
             break;
         }
 
-        case AstNodeKind::LetDecl:
         case AstNodeKind::ConstDecl:
         {
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-            switch (node->kind)
-            {
-            case AstNodeKind::LetDecl:
-                CONCAT_FIXED_STR(concat, "let ");
-                break;
-            case AstNodeKind::ConstDecl:
-                CONCAT_FIXED_STR(concat, "const ");
-                break;
-            }
+            CONCAT_FIXED_STR(concat, "const ");
 
             if (!varDecl->publicName.empty())
                 concat.addString(varDecl->publicName);

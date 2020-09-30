@@ -170,10 +170,10 @@ public impl String
                 #macro
                 {
                     #if ptr
-                        let @alias0 = `scan
+                        var @alias0 = `scan
                     #else
-                        let @alias0 = :`scan
-                    let @alias1 = @index
+                        var @alias0 = :`scan
+                    var @alias1 = @index
                     #mixin `stmt
                 }
 
@@ -198,10 +198,10 @@ public impl String
                 #macro
                 {
                     #if ptr
-                        let @alias0 = `scan
+                        var @alias0 = `scan
                     #else
-                        let @alias0 = `c
-                    let @alias1 = `idx
+                        var @alias0 = `c
+                    var @alias1 = `idx
                     #mixin `stmt
                 }
 

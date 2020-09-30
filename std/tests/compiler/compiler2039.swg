@@ -13,7 +13,7 @@ public impl Argb2039
     #[swag.inline]
     func toto2039()
     {
-        let a = 0
-        let (x, y) = extract()
+        var a = 0
+        var (x, y) = extract()
     }
 }

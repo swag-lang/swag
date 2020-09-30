@@ -8,5 +8,5 @@ enum TITI
 
 #test
 {
-	let x : TITI = TITI.F1 | TITI.F2
+	var x : TITI = TITI.F1 | TITI.F2
 }

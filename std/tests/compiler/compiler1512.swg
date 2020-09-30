@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    let x: u32 = 2
-    let a = cast(bool) (x & 2)
+    var x: u32 = 2
+    var a = cast(bool) (x & 2)
     @assert(a == true)
 }

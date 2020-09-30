@@ -145,7 +145,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 {
     auto savedNode = context->node;
     auto parent    = context->node->parent;
-    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::LetDecl)
+    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
         parent = parent->parent;
     SWAG_ASSERT(parent);
     auto varDecl = (AstVarDecl*) parent;
@@ -262,7 +262,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     else
         isLocalConstant = true;
-    if (node->kind == AstNodeKind::LetDecl)
+    if(node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
 
     // Check public
@@ -346,7 +346,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
         SWAG_VERIFY(!isCompilerConstant, context->report({node, "a constant must be explicitly initialized"}));
-        SWAG_VERIFY(node->kind != AstNodeKind::LetDecl, context->report({node, "a 'let' declaration must be explicitly initialized"}));
     }
 
     // Find type

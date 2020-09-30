@@ -86,7 +86,7 @@ public func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    let (nextBuffer, c) = utf8.nextChar(buffer)
+    (nextBuffer, c) := utf8.nextChar(buffer)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         cpt += cast(u32) (nextBuffer - buffer)

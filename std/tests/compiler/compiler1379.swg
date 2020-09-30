@@ -10,7 +10,7 @@ struct TITI
 
 #test
 {
-    let p: TITI
+    var p: TITI
     p.x = 666
     @assert(p.base.x == 666)
     @assert(p.x == 666)

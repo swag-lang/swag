@@ -31,26 +31,26 @@
 
     // A float value has the usual format
     {
-        let a = 1.5
+        var a = 1.5
         @assert(a == 1.5)
 
-        let b = 0.11
+        var b = 0.11
         @assert(b == 0.11)
 
-        let c = 15e2
+        var c = 15e2
         @assert(c == 15e2)
 
-        let d = 15e+2
+        var d = 15e+2
         @assert(d == 15e2)
 
-        let e = -1E-1
+        var e = -1E-1
         @assert(e == -0.1)
 
     }
 
     // By default, a floating point value is 'f32', not 'f64' (aka double) like in c++
     {
-        let a = 1.5
+        var a = 1.5
         @assert(a == 1.5)
         @assert(@typeof(a) == f32)
         @assert(@typeof(a) != f64)
@@ -58,7 +58,7 @@
 
     // You can postfix a number by a type, to force it
     {
-        let a = 1.5'f64
+        var a = 1.5'f64
         @assert(a == 1.5)
         @assert(a == 1.5'f64)
         @assert(@typeof(a) == f64)

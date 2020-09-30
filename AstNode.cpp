@@ -121,7 +121,6 @@ Utf8 AstNode::getKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
-    case AstNodeKind::LetDecl:
     case AstNodeKind::ConstDecl:
     case AstNodeKind::FuncDecl:
     case AstNodeKind::Namespace:
@@ -145,7 +144,6 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
-    case AstNodeKind::LetDecl:
         if (node->ownerScope && node->ownerScope->isGlobal())
             return "global variable";
         if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
@@ -307,7 +305,8 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstVarDecl>();
     newNode->copyFrom(context, this);
-    newNode->publicName = publicName;
+    newNode->publicName  = publicName;
+    newNode->constAssign = constAssign;
 
     newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);

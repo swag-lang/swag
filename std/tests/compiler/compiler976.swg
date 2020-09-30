@@ -4,7 +4,7 @@ struct Point
 	y: s32
 }
 
-let pt: Point = @{1, 2}
+var pt: Point = @{1, 2}
 
 #test
 {

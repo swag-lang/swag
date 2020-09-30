@@ -44,13 +44,13 @@ impl HashTable
                 {
                     #if ptr
                     {
-                        let @alias0 = &table[@index].key
-                        let @alias1 = &table[@index].value
+                        var @alias0 = &table[@index].key
+                        var @alias1 = &table[@index].value
                     }
                     #else
                     {
-                        let @alias0 = table[@index].key
-                        let @alias1 = table[@index].value
+                        var @alias0 = table[@index].key
+                        var @alias1 = table[@index].value
                     }
 
                     #mixin `stmt

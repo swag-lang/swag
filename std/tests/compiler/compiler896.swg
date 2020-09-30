@@ -8,8 +8,8 @@ func arithmeticMean(numbers: const [..] f64) -> f64 {
 
 #test
 {
-	let x = 1.0'f64
-	let y = 2.0'f64
-	let result = arithmeticMean(@[x, y])
+	var x = 1.0'f64
+	var y = 2.0'f64
+	var result = arithmeticMean(@[x, y])
 	@assert(result == 1.5)
 }

@@ -3,8 +3,8 @@ using std
 
 #test
 {
-    let rand: random.Random
-    let arr: Array's32
+    var rand: random.Random
+    var arr: Array's32
 
     rand.seed(0)
     loop 10

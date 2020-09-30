@@ -317,14 +317,14 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
         auto typeArray = (TypeInfoArray*) typeInfo;
-        content += format("{ let __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
+        content += format("{ var __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count = @sizeof(%s) / %d; ", (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count { ", (const char*) concat.firstBucket->datas);
         if (node->wantPointer)
-            content += format("let %s = __addr + @index; ", alias0Name.c_str());
+            content += format("var %s = __addr + @index; ", alias0Name.c_str());
         else
-            content += format("let %s = __addr[@index]; ", alias0Name.c_str());
-        content += format("let %s = @index; ", alias1Name.c_str());
+            content += format("var %s = __addr[@index]; ", alias0Name.c_str());
+        content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;
         syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
@@ -349,13 +349,13 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // One dimensional array
     else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
     {
-        content += format("{ let __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
+        content += format("{ var __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
         if (node->wantPointer)
-            content += format("let %s = __addr + @index; ", alias0Name.c_str());
+            content += format("var %s = __addr + @index; ", alias0Name.c_str());
         else
-            content += format("let %s = __addr[@index]; ", alias0Name.c_str());
-        content += format("let %s = @index; ", alias1Name.c_str());
+            content += format("var %s = __addr[@index]; ", alias0Name.c_str());
+        content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
         SyntaxJob syntaxJob;
         syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);

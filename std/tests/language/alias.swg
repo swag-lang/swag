@@ -13,8 +13,8 @@
     {
         alias Float32 = f32
         alias Float64 = f64
-        let x: Float32 = 1.0
-        let y: Float64 = 1.0
+        var x: Float32 = 1.0
+        var y: Float64 = 1.0
     }
 
     // you can alias a function name

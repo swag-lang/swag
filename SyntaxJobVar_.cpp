@@ -10,16 +10,11 @@
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 {
     // First variable
-    AstNodeKind kind = AstNodeKind::VarDecl;
-    switch (token.id)
-    {
-    case TokenId::KwdConst:
+    AstNodeKind kind;
+    if (token.id == TokenId::KwdConst)
         kind = AstNodeKind::ConstDecl;
-        break;
-    case TokenId::KwdLet:
-        kind = AstNodeKind::LetDecl;
-        break;
-    }
+    else
+        kind = AstNodeKind::VarDecl;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doVarDecl(parent, result, kind));

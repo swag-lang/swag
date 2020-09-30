@@ -70,10 +70,10 @@ impl Array
                 #macro
                 {
                     #if ptr
-                        let @alias0 = `scan
+                        var @alias0 = `scan
                     #else
-                        let @alias0 = :`scan
-                    let @alias1 = @index
+                        var @alias0 = :`scan
+                    var @alias1 = @index
                     #mixin `stmt
                 }
 

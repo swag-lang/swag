@@ -63,7 +63,7 @@
         @assert(result.item0 == 1.0)
         @assert(result.item1 == 2.0)
 
-        let (x, y) = myFunction()
+        var (x, y) = myFunction()
         @assert(x == 1.0)
         @assert(y == 2.0)
 

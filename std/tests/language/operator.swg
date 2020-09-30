@@ -49,9 +49,9 @@
 
     // Ternary operator
     {
-        let x = true ? 1 : 666
+        var x = true ? 1 : 666
         @assert(x == 1)
-        let y = (x == 1) ? 1 : 666
+        var y = (x == 1) ? 1 : 666
         @assert(y == 1)
     }
 

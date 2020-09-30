@@ -13,7 +13,7 @@ impl S
         {
             #macro
             {
-                let @alias0 = `v
+                var @alias0 = `v
                 #mixin `stmt
             }
         }
@@ -28,7 +28,7 @@ impl S
     {
         xx := 666
         cpt += i
-    }  
+    }
 
     @assert(cpt == 165)
 }

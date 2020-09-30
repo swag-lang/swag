@@ -11,10 +11,10 @@ impl S
     {
         for v := down; v <= up; v += 1
         {
-            let @alias0 = v
-            let @alias1 = @index
+            var @alias0 = v
+            var @alias1 = @index
             #mixin stmt
-        
+
             /*#macro
             {
                 let alias0 = x
@@ -27,14 +27,14 @@ impl S
 
 #test
 {
-    var x: S    
+    var x: S
     cpt := 0
     cpt1 := 0
     visit i, j: x
     {
         cpt +=  i
         cpt1 += cast(s32) j
-    }  
+    }
 
     @assert(cpt == 165)
     @assert(cpt1 == 55)

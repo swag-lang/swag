@@ -7,7 +7,7 @@ enum TOTO : s64
 
 func fromName(name: string)->TOTO
 {
-    let t = cast(const *TypeInfoEnum) @typeof(TOTO)
+    var t = cast(const *TypeInfoEnum) @typeof(TOTO)
     loop t.values
     {
         if(t.values[@index].name == name)

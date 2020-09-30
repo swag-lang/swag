@@ -115,7 +115,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
             {
-                msg += ", do you miss 'var', 'let' or 'const' to declare a global variable ?";
+                msg += ", do you miss 'var' or 'const' to declare a global variable ?";
             }
         }
         break;

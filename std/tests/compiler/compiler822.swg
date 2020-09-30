@@ -9,6 +9,6 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	let pt: Point{1, 2}
+	var pt: Point{1, 2}
 	pt.x = 0
 }

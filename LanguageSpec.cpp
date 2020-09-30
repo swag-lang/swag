@@ -45,7 +45,6 @@ void LanguageSpec::setup()
     keywords["#bake"]           = TokenId::CompilerBake;
 
     keywords["var"]         = TokenId::KwdVar;
-    keywords["let"]         = TokenId::KwdLet;
     keywords["const"]       = TokenId::KwdConst;
     keywords["namespace"]   = TokenId::KwdNamespace;
     keywords["public"]      = TokenId::KwdPublic;

@@ -1,8 +1,5 @@
-
-
-
 //#[swag.printbc]
 #test
 {
-	let d = 6;
+	var d = 6;
 }

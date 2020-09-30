@@ -1,6 +1,6 @@
 #test
 {
-    let arr : [] u32 = @[10, 20, 30, 40]
+    var arr : [] u32 = @[10, 20, 30, 40]
     cpt := 0
     visit xxx: arr
     {

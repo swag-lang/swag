@@ -93,7 +93,7 @@
             {
                 #macro
                 {
-                    let index = `a
+                    var index = `a
                     #mixin `what
                 }
 

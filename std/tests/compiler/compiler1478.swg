@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    let arr : const [..] u32 = @[10, 20, 30, 40]
+    var arr : const [..] u32 = @[10, 20, 30, 40]
     cpt := 0
     visit xxx: arr
     {

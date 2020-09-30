@@ -98,14 +98,14 @@
 
     // If you use 'let' instead of 'var', the variable is immutable and cannot be changed after
     {
-        let a = 666
+        var a = 666
         // 'a = 0'  would raise en error
     }
 
     // You can use '@typeof' or '@kindof' to get the type of another expression
     {
-        let a = 0
-        let b: @typeof(a) = 1
+        var a = 0
+        var b: @typeof(a) = 1
         @assert(@typeof(a) == @typeof(b))
     }
 

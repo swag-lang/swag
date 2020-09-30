@@ -53,7 +53,6 @@ enum class AstNodeKind : uint8_t
     File,
     VarDecl,
     ConstDecl,
-    LetDecl,
     IdentifierRef,
     Identifier,
     TypeExpression,
@@ -386,6 +385,7 @@ struct AstVarDecl : public AstNode
     Utf8     publicName;
     AstNode* type;
     AstNode* assignment;
+    bool     constAssign = false;
 };
 
 struct AstIdentifierRef : public AstNode

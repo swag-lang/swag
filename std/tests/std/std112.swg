@@ -15,12 +15,12 @@ using std.hash
     v1 := hash32("this is a string")
     @assert(v1 != 0)
 
-    let x: String = "this is a string"
+    var x: String = "this is a string"
     v2 := hash32(x)
 
     @assert(v1 == v2)
 
-    let y: String
+    var y: String
     v3 := hash32(y)
     @assert(v3 == 0)
 

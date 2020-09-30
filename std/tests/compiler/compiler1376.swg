@@ -32,7 +32,7 @@ func changeContext(user: code)
 
     #macro
     {
-        let cxt = &`newCxt
+        var cxt = &`newCxt
 
         #mixin `user
     }
