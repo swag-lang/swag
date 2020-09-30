@@ -7,5 +7,5 @@ func toto() {}
 //#[swag.nooptim]
 #test
 {
-    console.print("type is: %\n", @typeof(toto))
+    //console.print("type is: %\n", @typeof(toto))
 }

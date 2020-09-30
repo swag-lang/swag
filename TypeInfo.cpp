@@ -35,10 +35,7 @@ void TypeInfo::computeScopedNameNoLock()
     // Function types are scoped with the name, because two functions of the exact same type
     // (parameters and return value) should have a different concrete type info, because of attributes
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-    {
         newName += declNode->name;
-        newName += ".";
-    }
 
     newName += nakedName;
     scopedName = newName;
