@@ -156,7 +156,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", node->typeInfo->name.c_str())});
+        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", typeInfo->name.c_str())});
     }
 
     return true;

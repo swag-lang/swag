@@ -86,6 +86,14 @@ public
     {
         type := cast(const *TypeInfo) @kindof(value)
 
+        // This is a type
+        if type.flags & TypeInfoFlags.TypeInfoPtr
+        {
+            ptrType := :cast(*typeinfo) @dataof(value)
+            buf.addBytes(ptrType.name)
+            return
+        }
+
         // A pointer, whatever type
         if type.kind == TypeInfoKind.Pointer
         {
