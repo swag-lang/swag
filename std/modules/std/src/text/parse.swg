@@ -12,7 +12,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eatCount: u32}
     cpt := 0'u32
     result := 0'u64
 
-    while cpt < countof && latin1.isDigit(:buffer)
+    while cpt < countof && ascii.isDigit(:buffer)
     {
         result *= 10
         result += cast(u64) (:buffer - "0"'u8)
@@ -34,7 +34,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eatCount: u32}
     cpt := 0'u32
     result := 0'u64
 
-    while cpt < countof && latin1.isHexDigit(:buffer)
+    while cpt < countof && ascii.isHexDigit(:buffer)
     {
         result <<= 4
         c := :buffer
@@ -62,7 +62,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eatCount: u32}
     cpt := 0'u32
     result := 0'u64
 
-    while cpt < countof && latin1.isBinDigit(:buffer)
+    while cpt < countof && ascii.isBinDigit(:buffer)
     {
         result <<= 1
         result += cast(u64) (:buffer - "0"'u8)
@@ -101,7 +101,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 
     // Parse the rest
     hasDigits := false
-    while cpt < countof && latin1.isDigit(:buffer)
+    while cpt < countof && ascii.isDigit(:buffer)
     {
         hasDigits = true
         result *= 10
@@ -145,7 +145,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
 
     // Integer part
     hasDigits := false
-    while cpt < countof && latin1.isDigit(:buffer)
+    while cpt < countof && ascii.isDigit(:buffer)
     {
         hasDigits = true
         result *= 10
@@ -166,7 +166,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
 
             fract := 0'u64
             divisor := 1.0'f64
-            while cpt < countof && latin1.isDigit(:buffer)
+            while cpt < countof && ascii.isDigit(:buffer)
             {
                 hasDigits = true
                 fract *= 10
