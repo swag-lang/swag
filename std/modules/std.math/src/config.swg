@@ -1,6 +1,4 @@
 #import "std"
+namespace std.math;
 
-namespace std.math
-{
-	 public alias Float = f32
-}
+public alias Float = f32
