@@ -38,6 +38,8 @@ bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_FLAGS, "enumflags");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
     if (!first)
         CONCAT_FIXED_STR(bufferSwg, "]\n");
     return true;
@@ -283,6 +285,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
 
 bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent)
 {
+    SWAG_CHECK(emitAttributes(node, indent));
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "enum ");
     bufferSwg.addString(node->name.c_str());

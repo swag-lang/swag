@@ -1,6 +1,6 @@
 public namespace std.mouse;
 
-// Enumerates mouse buttons
+#[swag.enumindex]
 enum Button
 {
     Left

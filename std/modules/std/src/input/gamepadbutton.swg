@@ -1,6 +1,7 @@
 namespace std.gamepad;
 
 // Enumerates gamepad buttons
+#[swag.enumindex]
 public enum Button
 {
     // A button

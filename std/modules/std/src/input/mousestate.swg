@@ -16,11 +16,12 @@ public impl State
     // Compute the actual state of the mouse
     func update(using self)
     {
-        pressed[cast(u32) Button.Left] = isButtonPressed(Button.Left)
-        pressed[cast(u32) Button.Middle] = isButtonPressed(Button.Middle)
-        pressed[cast(u32) Button.Right] = isButtonPressed(Button.Right)
-        pressed[cast(u32) Button.XButton1] = isButtonPressed(Button.XButton1)
-        pressed[cast(u32) Button.XButton2] = isButtonPressed(Button.XButton2)
+        using Button
+        pressed[Left] = isButtonPressed(Left)
+        pressed[Middle] = isButtonPressed(Middle)
+        pressed[Right] = isButtonPressed(Right)
+        pressed[XButton1] = isButtonPressed(XButton1)
+        pressed[XButton2] = isButtonPressed(XButton2)
         position = getPos()
     }
 
