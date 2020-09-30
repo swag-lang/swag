@@ -53,13 +53,13 @@ public impl hash.IHash32 for String
 
 public impl String
 {
-    #[swag.inline]
+    #[inline]
     func opCount(using self)->u32
     {
         return length
     }
 
-    #[swag.inline]
+    #[inline]
     func opData(using self)->const *void
     {
         return buffer
@@ -159,7 +159,7 @@ public impl String
     }
 
     // Visit the String utf8 bytes
-    #[swag.macro, swag.noreturn]
+    #[macro, noreturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
         if length
@@ -183,7 +183,7 @@ public impl String
     }
 
     // Visit the String unicode characters
-    #[swag.macro, swag.noreturn]
+    #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         if length
