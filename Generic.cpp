@@ -67,9 +67,21 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     if (!(typeInfo->flags & TYPEINFO_GENERIC))
         return typeInfo;
 
+    // Search if the type has a corresponding replacement
     auto it = cloneContext.replaceTypes.find(typeInfo->name);
     if (it != cloneContext.replaceTypes.end())
-        return it->second;
+    {
+        // We can have a match on a lambda for a function attribute, when function has been generated
+        // In that case, we want to be sure that the kind is function
+        if (typeInfo->kind == TypeInfoKind::FuncAttr && it->second->kind == TypeInfoKind::Lambda)
+        {
+            auto t  = it->second->clone();
+            t->kind = TypeInfoKind::FuncAttr;
+            return t;
+        }
+        else
+            return it->second;
+    }
 
     // When type is a compound, we do substitution in the raw type
     switch (typeInfo->kind)
