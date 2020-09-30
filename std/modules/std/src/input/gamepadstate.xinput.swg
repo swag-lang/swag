@@ -6,20 +6,21 @@ using xinput, win32, std.gamepad
     private var g_mapButtons: [@countof(Button)] Button = ?
     #run
     {
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = Button.A
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = Button.B
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = Button.X
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = Button.Y
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = Button.LeftStick
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = Button.RightStick
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = Button.Start
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = Button.Back
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = Button.LeftShoulder
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = Button.RightShoulder
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = Button.DPadUp
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = Button.DPadDown
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = Button.DPadLeft
-        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = Button.DPadRight
+        using Button
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = A
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = B
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = X
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = Y
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = Start
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = Back
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
+        g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
     }
 
     // Returns true if the corresponding `padIndex` is connected
