@@ -42,7 +42,8 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             enumNode->attributeFlags |= ATTRIBUTE_FLAGS;
     }
 
-    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & ATTRIBUTE_FLAGS) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
+    // By default, raw type is s32, except for flags and index
+    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_FLAGS | ATTRIBUTE_INDEX)) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
     if (!typeNode->childs.empty())
         rawTypeInfo = typeNode->childs[0]->typeInfo;
 
@@ -59,7 +60,20 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             concreteType != g_TypeMgr.typeInfoU32 &&
             concreteType != g_TypeMgr.typeInfoU64)
         {
-            return context->report({typeNode->childs[0], format("invalid type '%s' for flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
+        }
+    }
+
+    if (enumNode->attributeFlags & ATTRIBUTE_INDEX)
+    {
+        typeInfo->flags |= TYPEINFO_ENUM_INDEX;
+
+        auto concreteType = TypeManager::concreteType(rawTypeInfo);
+        if (concreteType != g_TypeMgr.typeInfoU8 &&
+            concreteType != g_TypeMgr.typeInfoU16 &&
+            concreteType != g_TypeMgr.typeInfoU32)
+        {
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be u8, u16 or u32)", rawTypeInfo->name.c_str())});
         }
     }
 

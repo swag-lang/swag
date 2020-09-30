@@ -1,4 +1,4 @@
-#[swag.flags]
+#[swag.enumflags]
 enum TOTO : u8
 {
 	F1 = 3

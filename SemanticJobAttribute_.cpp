@@ -168,8 +168,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_COMPILER;
             else if (child->name == "pack")
                 flags |= ATTRIBUTE_PACK;
-            else if (child->name == "flags")
+            else if (child->name == "enumflags")
                 flags |= ATTRIBUTE_FLAGS;
+            else if (child->name == "enumindex")
+                flags |= ATTRIBUTE_INDEX;
             else if (child->name == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
             else if (child->name == "inline")

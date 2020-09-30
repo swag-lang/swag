@@ -105,7 +105,7 @@ public
         if type.kind != TypeInfoKind.Enum
             return result
         typeEnum := cast(const *TypeInfoEnum) type
-        isFlags := hasAttribute(type, "swag.flags")
+        isFlags := hasAttribute(type, "swag.enumflags")
 
         // Get the user value, as an 'u64' or a string
         var val1: u64

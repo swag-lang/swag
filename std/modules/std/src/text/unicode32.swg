@@ -34,7 +34,7 @@ public enum UnicodeCategory : u8
     OtherNotAssigned
 }
 
-#[swag.flags]
+#[swag.enumflags]
 enum SubCateg
 {
     None

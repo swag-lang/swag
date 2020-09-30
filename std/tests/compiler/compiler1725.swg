@@ -1,6 +1,6 @@
 #test
 {
-    #[swag.flags]
+    #[swag.enumflags]
     enum MyFlags: u8
     {
         A

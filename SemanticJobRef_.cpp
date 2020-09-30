@@ -351,7 +351,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->flags |= AST_R_VALUE;
 
-    if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
+    auto accessType = arrayNode->access->typeInfo;
+    if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
 
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;

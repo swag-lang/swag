@@ -1,5 +1,5 @@
-#[swag.flags]
-enum TOTO 
+#[swag.enumflags]
+enum TOTO
 {
 	F1
 	F2

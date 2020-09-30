@@ -125,10 +125,10 @@
         @assert(Value.C == 2)
     }
 
-    // Enum can be a set of flags with the #[swag.flags] attribute
+    // Enum can be a set of flags with the #[swag.enumflags] attribute
     // Type should be u8, u16, u32 or u64
     {
-        #[swag.flags]
+        #[swag.enumflags]
         enum MyFlags: u8
         {
             A

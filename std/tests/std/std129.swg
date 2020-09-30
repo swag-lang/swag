@@ -15,7 +15,7 @@ using std
     //console.write("%\n", str)
     @assert(str == "RGBS.Blue")
 
-    #[swag.flags]
+    #[swag.enumflags]
     enum Flags
     {
         Red = 1

@@ -1,4 +1,4 @@
-#[swag.flags]
+#[swag.enumflags]
 enum DrawFilters
 {
 	None
