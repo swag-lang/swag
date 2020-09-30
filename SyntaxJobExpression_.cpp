@@ -1053,9 +1053,13 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             ScopedLocation lk(this, &token);
 
             // Generate an expression of the form "var firstVar = assignment", and "secondvar = firstvar" for the rest
-            bool firstDone  = false;
-            auto savedtoken = token;
-            auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+            // This avoid to do the right expression multiple times (if this is a function call for example).
+            //
+            // If this is not '=' operator, then we have to duplicate the affectation for each variable
+            AstNode* affectExpression = nullptr;
+            bool     firstDone        = false;
+            auto     savedtoken       = token;
+            auto     front            = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
             front->computeName();
             while (!leftNode->childs.empty())
             {
@@ -1066,15 +1070,25 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
 
+                // First create 'firstVar = assignment'
                 if (!firstDone)
                 {
                     firstDone = true;
                     SWAG_CHECK(tokenizer.getToken(token));
                     if (affectNode->token.id == TokenId::SymEqual)
-                        SWAG_CHECK(doMoveExpression(affectNode));
+                        SWAG_CHECK(doMoveExpression(affectNode, &affectExpression));
                     else
-                        SWAG_CHECK(doExpression(affectNode));
+                        SWAG_CHECK(doExpression(affectNode, &affectExpression));
                 }
+
+                // This is not an initialization, so we need to duplicate the right expression
+                else if (affectNode->token.id != TokenId::SymEqual)
+                {
+                    auto newAffect = Ast::clone(affectExpression, affectNode);
+                    newAffect->inheritTokenLocation(affectExpression->token);
+                }
+
+                // In case of an affectation, create 'otherVar = firstVar'
                 else
                 {
                     Ast::newIdentifierRef(sourceFile, front->name, affectNode, this)->token = savedtoken;
