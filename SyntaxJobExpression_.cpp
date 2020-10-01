@@ -240,11 +240,13 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(eatToken());
     auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
     auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
     arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
     arrayNode->isDeref     = true;
+    Token savedToken       = token;
+    SWAG_CHECK(eatToken());
+
     SWAG_CHECK(doUnaryExpression(arrayNode, &arrayNode->array));
 
     auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
@@ -252,7 +254,8 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     literal->token.literalType     = LiteralType::TT_S32;
     literal->setFlagsValueIsComputed();
     literal->semanticFct = SemanticJob::resolveLiteral;
-    arrayNode->access    = literal;
+    literal->inheritTokenLocation(savedToken);
+    arrayNode->access = literal;
 
     if (result)
         *result = identifierRef;
