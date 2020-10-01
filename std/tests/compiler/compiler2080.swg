@@ -1,12 +1,13 @@
-#[swag.printbc]
-func convertFloat(value1: any)
+#module "compiler2080"
+#unittest error
+
+//#[swag.printbc]
+ #test
 {
-    kindof := @kindof(value1)
-    dataof := @dataof(value1)
-    var value: f64
-    switch kindof
+    var value: any = 1
+    switch value
     {
-        case f32: value = cast(f64) :cast(*f32) dataof
-        case f64: value = :cast(*f64) dataof
+        case 1: break
+        case 2: break
     }
 }

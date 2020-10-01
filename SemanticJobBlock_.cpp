@@ -81,7 +81,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         node->flags |= AST_TRANSIENT;
         node->fctCallStorageOffset = node->scope->startStackSize;
         node->scope->startStackSize += func->returnType->typeInfo->sizeOf;
-        node->ownerFct->stackSize  = max(node->ownerFct->stackSize, node->scope->startStackSize);
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->scope->startStackSize);
     }
 
     // Register all function parameters as inline symbols
@@ -144,6 +144,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::Switch, node->attributeFlags));
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({ node->expression, "invalid switch type 'any', you need to cast to a concrete type" }));
 
     // Collect constant expressions, to avoid double definitions
     set<uint64_t> val64;
