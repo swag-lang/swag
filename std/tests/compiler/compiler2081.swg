@@ -2,6 +2,6 @@
 //#unittest error
 
 //#[swag.printbc]
- #test
+#test
 {
 }

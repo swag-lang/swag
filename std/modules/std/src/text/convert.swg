@@ -12,13 +12,15 @@ public struct ConvertFormatFloat
 {
     using val:  ConvertFormat
     precision:  u8 = 5
+    forceSign:  bool
 }
 
 impl ConvertFormatFloat
 {
     // Set some format options with a given user string
     // Format is :
-    // [precision]
+    // [+][precision]
+    // => force the positive sign if number is positive
     // => precision of the fractional part
     public func setFormat(using self, strFormat: string)
     {
@@ -28,9 +30,18 @@ impl ConvertFormatFloat
             return
 
         cpt := 0'u32
+
+        // Force sign for positive numbers
+        if(buffer[cpt] == "+"'u8)
+        {
+            forceSign = true
+            cpt += 1
+        }
+
+        // Precision
         (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
         debug.assert(userWidth <= 255, "precision overflow")
-        precision = cast(u8) userWidth
+        if eatCount precision = cast(u8) userWidth
     }
 }
 
@@ -49,7 +60,7 @@ impl ConvertFormatInt
 {
     // Set some format options with a given user string
     // Format is :
-    // [B|D|X] [padding] [width]
+    // [B|D|X][padding][width]
     // => binary, decimal, hexadecimal
     // => padding character, in ascii, mandatory before the next field
     // => width of the output, in characters
@@ -79,7 +90,7 @@ impl ConvertFormatInt
             return
         (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
         debug.assert(userWidth <= 255, "padding width overflow")
-        width = cast(u8) userWidth
+        if eatCount width = cast(u8) userWidth
     }
 }
 
@@ -210,6 +221,10 @@ public
         {
             value = -value
             buf.addByte(cast(u8) g_CultureInfo.numberFormat.negativeSign)
+        }
+        else if(fmt.forceSign)
+        {
+            buf.addByte(cast(u8) g_CultureInfo.numberFormat.positiveSign)
         }
 
         // Round with precision

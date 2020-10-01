@@ -6,7 +6,7 @@ using std.strconv
 #test
 {
     var str: StringBuilder
-    str.appendAny(3.14, "20")
+    str.appendAny(3.14, "+2")
     str.append(" ")
     str.appendAny(666)
     //console.print("%", str.toString())
