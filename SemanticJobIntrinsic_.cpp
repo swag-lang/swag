@@ -239,7 +239,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         }
         else
         {
-            SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, context->report({node, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, typeInfo, nullptr, node));
         }
     }
 

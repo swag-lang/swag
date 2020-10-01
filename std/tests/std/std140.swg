@@ -9,5 +9,5 @@ using std.strconv
     str.appendAny(3.14, "20")
     str.append(" ")
     str.appendAny(666)
-    console.print("%", str.toString())
+    //console.print("%", str.toString())
 }

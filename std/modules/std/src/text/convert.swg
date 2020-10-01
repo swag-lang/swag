@@ -11,7 +11,7 @@ public struct ConvertFormat
 public struct ConvertFormatFloat
 {
     using val:  ConvertFormat
-    precision:  u32 = 5
+    precision:  u8 = 5
 }
 
 impl ConvertFormatFloat
@@ -30,7 +30,7 @@ impl ConvertFormatFloat
         cpt := 0'u32
         (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
         debug.assert(userWidth <= 255, "precision overflow")
-        precision = cast(u32) userWidth
+        precision = cast(u8) userWidth
     }
 }
 
@@ -230,7 +230,7 @@ public
         if precision
             buf.addByte(cast(u8) g_CultureInfo.numberFormat.decimalSeparator);
 
-        loop precision
+        loop acast precision
         {
             value *= 10
             c := cast(u32) value
