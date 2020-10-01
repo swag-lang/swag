@@ -8,6 +8,6 @@ using std.strconv
     var str: StringBuilder
     str.appendAny(3.14, "+2")
     str.append(" ")
-    str.appendAny(666)
+    str.appendAny(-666, "+010")
     //console.print("%", str.toString())
 }

@@ -54,6 +54,7 @@ public struct ConvertFormatInt
     base:       u32 = 10
     padding:    u8
     width:      u8
+    forceSign:  bool
 }
 
 impl ConvertFormatInt
@@ -72,6 +73,15 @@ impl ConvertFormatInt
             return
 
         cpt := 0'u32
+
+        // Force sign for positive numbers
+        if(buffer[cpt] == "+"'u8)
+        {
+            forceSign = true
+            cpt += 1
+        }
+
+        // Base
         switch buffer[cpt]
         {
             case "B"'u8: base = 2; cpt += 1
@@ -309,6 +319,11 @@ public
         if signedValue < 0
         {
             tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.negativeSign
+            cpt -= 1
+        }
+        else if fmt.forceSign
+        {
+            tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.positiveSign
             cpt -= 1
         }
 
