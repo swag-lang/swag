@@ -290,6 +290,10 @@ bool SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifie
     // Reset parsing
     identifierRef->startScope = nullptr;
 
+    // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
+    // Seems a little bit like a hack. Not sure this will always work.
+    varParent->flags |= AST_REVERSE_SEMANTIC;
+
     // Add the 2 nodes to the semantic
     context->job->nodes.pop_back();
     context->job->nodes.push_back(idNode);
@@ -1683,9 +1687,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     if (!displayName.empty())
                         return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
                 }
-
-                if (identifierRef->typeInfo)
-                    return context->report({node, node->token, format("identifier '%s' cannot be found in type '%s'", node->name.c_str(), identifierRef->typeInfo->name.c_str())});
 
                 return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
             }
