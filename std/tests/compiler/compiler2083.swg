@@ -3,11 +3,13 @@ struct AA
     x: u64
 }
 
+var G = 0
+
 impl AA
 {
     func opDrop(using self)
     {
-        @print("drop\n")
+        G = 1
     }
 }
 
@@ -17,8 +19,11 @@ func toto()->AA
     return AA{}; 
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    toto()
+    {
+        toto()
+    }
+    @assert(G == 1)
 }

@@ -61,6 +61,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
                     if (context->result == ContextResult::Pending)
                         return true;
+                    // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                    returnExpression->flags |= AST_NO_LEFT_DROP;
                     SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
                     freeRegisterRC(context, returnExpression);
                 }
