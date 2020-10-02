@@ -38,10 +38,17 @@ void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
             {
                 // Change the original stack pointer offset to reference the variable instead of the temporary
                 // copy
+                auto orgOffset = ipOrg->b.u32;
                 ipOrg->b.u32 = ip->b.u32;
 
                 // Remove the MakeStackPointer
-                setNop(context, ip);
+                // For now we replace it with a reinit of the variable, because of opDrop that can be called
+                // on it.
+                //setNop(context, ip);
+                ip->op = ByteCodeOp::SetZeroStackX;
+                ip->a.u32 = orgOffset;
+                ip->b.u32 = ip[1].c.u32; // Copy the size from the following memcpy
+
                 // Remove the memcpy
                 setNop(context, ip + 1);
                 // We need to remove every instructions related to the post move

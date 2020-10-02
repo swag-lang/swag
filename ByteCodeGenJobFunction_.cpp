@@ -303,8 +303,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicStrCmp:
     {
-        auto child0 = callParams->childs[0];
-        auto child1 = callParams->childs[1];
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
         node->resultRegisterRC = child1->resultRegisterRC[1];
         emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC[0], child1->resultRegisterRC[1]);
         freeRegisterRC(context, child0);
@@ -586,13 +586,24 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Store in RR0 the address of the stack to store the result
-    if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    auto returnType = typeInfoFunc->returnType;
+    if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+
+        // Need to drop the temporary variable
+        if (returnType->kind == TypeInfoKind::Struct)
+        {
+            StructToDrop st;
+            st.overload      = nullptr;
+            st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
+            st.storageOffset = node->fctCallStorageOffset;
+            node->ownerScope->symTable.structVarsToDrop.push_back(st);
+        }
     }
 
     uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();

@@ -17,10 +17,21 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     // If the inline returns a copy, then initialize the register with the address of the temporary
     // variable on the stack, so that the inline block can copy it's result to it. Of course, this is
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
-    if (node->func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    auto returnType = node->func->returnType->typeInfo;
+    if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u32 = node->fctCallStorageOffset;
+
+        // Need to drop the temporary variable
+        if (returnType->kind == TypeInfoKind::Struct)
+        {
+            StructToDrop st;
+            st.overload = nullptr;
+            st.typeStruct = CastTypeInfo<TypeInfoStruct>(returnType, TypeInfoKind::Struct);
+            st.storageOffset = node->fctCallStorageOffset;
+            node->ownerScope->symTable.structVarsToDrop.push_back(st);
+        }
     }
 
     AstNode* allParams     = nullptr;
@@ -596,9 +607,8 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table.structVarsToDrop[i];
-        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
-        waitStructGenerated(context, typeInfoStruct);
+        auto one = table.structVarsToDrop[i];
+        waitStructGenerated(context, one.typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -606,16 +616,15 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     for (int i = count; i >= 0; i--)
     {
         auto one = table.structVarsToDrop[i];
-        if (one == forceNoDrop)
+        if (one.overload && one.overload == forceNoDrop)
             continue;
-        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
-        if (typeInfoStruct->opDrop)
+        if (one.typeStruct->opDrop)
         {
             auto r0 = reserveRegisterRC(context);
 
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0)->b.u32 = one->storageOffset;
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0)->b.u32 = one.storageOffset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
+            emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
 
             freeRegisterRC(context, r0);
         }

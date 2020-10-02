@@ -2,11 +2,12 @@ struct A
 {
 }
 
+var G = 0
 impl A
 {
     func opDrop(using self)
     {
-        @assert(false)
+        G += 1
     }
 }
 
@@ -20,5 +21,9 @@ func toto()->A
 //#[swag.printbc]
 #test
 {
-    toto()
+    {
+        toto()
+    }
+    
+    @assert(G == 1)
 }

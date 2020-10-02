@@ -6,19 +6,24 @@ struct AA
 
 }
 
+var G = 0
+
 impl AA
 {
     func opDrop(using self)
     {
-        @print("drop\n")
+        G += 1
     }
 }
 
 func toto()->AA  { return AA{}; }
 func titi(x: AA) { }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    titi(toto())
+    {
+        titi(toto())
+    }
+    @assert(G == 1)
 }

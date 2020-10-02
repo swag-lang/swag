@@ -138,7 +138,13 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
             // Remember all variables of type struct, to drop them when leaving the scope
             if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
-                structVarsToDrop.push_back(result);
+            {
+                StructToDrop st;
+                st.overload      = result;
+                st.typeStruct    = CastTypeInfo<TypeInfoStruct>(result->typeInfo, TypeInfoKind::Struct);
+                st.storageOffset = storageOffset;
+                structVarsToDrop.push_back(st);
+            }
         }
 
         result->flags |= flags;
@@ -235,12 +241,12 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         if (!(node->attributeFlags & ATTRIBUTE_FOREIGN) || !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
             auto       firstOverload = overload;
-            Utf8       msg = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
-            Diagnostic diag{ node, token, msg };
+            Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+            Diagnostic diag{node, token, msg};
             Utf8       note = "this is the other definition";
-            Diagnostic diagNote{ firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note };
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
             if (typeInfo->kind == TypeInfoKind::FuncAttr)
-                diagNote.codeComment = Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*)typeInfo)->genericParameters);
+                diagNote.codeComment = Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters);
             context->report(diag, &diagNote);
             return false;
         }

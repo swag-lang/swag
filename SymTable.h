@@ -18,6 +18,7 @@ struct AstNode;
 struct SymTable;
 struct JobContext;
 struct SymbolName;
+struct TypeInfoStruct;
 
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
@@ -104,6 +105,13 @@ struct SymTableHash
     void        add(SymbolName* data);
 };
 
+struct StructToDrop
+{
+    SymbolOverload* overload;
+    TypeInfoStruct* typeStruct;
+    uint32_t        storageOffset;
+};
+
 struct SymTable
 {
     SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
@@ -120,9 +128,9 @@ struct SymTable
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
 
-    SymTableHash                  mapNames;
-    VectorNative<SymbolOverload*> structVarsToDrop;
-    shared_mutex                  mutex;
+    SymTableHash               mapNames;
+    VectorNative<StructToDrop> structVarsToDrop;
+    shared_mutex               mutex;
 
     Scope* scope;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
