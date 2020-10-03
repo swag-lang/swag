@@ -424,6 +424,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
         }
 
         // Var is an array of structs

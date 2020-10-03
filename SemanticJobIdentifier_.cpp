@@ -829,6 +829,13 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
             SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl)));
         }
 
+        // Nice name to reference it
+        Utf8 refNiceName;
+        if (overload->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            refNiceName = "the tuple";
+        else
+            refNiceName = format("%s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
+
         switch (match.result)
         {
 
@@ -896,16 +903,15 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
         {
             SWAG_ASSERT(callParameters);
             Diagnostic diag{match.parameters[bi.badSignatureParameterIdx],
-                            format("bad type of parameter '%d' for %s '%s', generic type '%s' is assigned to '%s' ('%s' provided)",
+                            format("bad type of parameter '%d' for %s, generic type '%s' is assigned to '%s' ('%s' provided)",
                                    badParamIdx,
-                                   SymTable::getNakedKindName(symbol->kind),
-                                   symbol->name.c_str(),
+                                   refNiceName.c_str(),
                                    bi.badGenMatch.c_str(),
                                    bi.badSignatureRequestedType->name.c_str(),
                                    bi.badSignatureGivenType->name.c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                 diag.codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-            Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -913,15 +919,14 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
         {
             SWAG_ASSERT(callParameters);
             Diagnostic diag{match.parameters[bi.badSignatureParameterIdx],
-                            format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                            format("bad type of parameter '%d' for %s ('%s' expected, '%s' provided)",
                                    badParamIdx,
-                                   SymTable::getNakedKindName(symbol->kind),
-                                   symbol->name.c_str(),
+                                   refNiceName.c_str(),
                                    bi.badSignatureRequestedType->name.c_str(),
                                    bi.badSignatureGivenType->name.c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                 diag.codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-            Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -931,35 +936,32 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
             if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
             {
                 Diagnostic diag{match.genericParameters[bi.badSignatureParameterIdx],
-                                format("bad generic parameter '%d' for %s '%s' (type expected, value provided)",
+                                format("bad generic parameter '%d' for %s (type expected, value provided)",
                                        badParamIdx,
-                                       SymTable::getNakedKindName(symbol->kind),
-                                       symbol->name.c_str())};
-                Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                                       refNiceName.c_str())};
+                Diagnostic note{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
             {
                 Diagnostic diag{match.genericParameters[bi.badSignatureParameterIdx],
-                                format("bad generic parameter '%d' for %s '%s' (value expected, type provided)",
+                                format("bad generic parameter '%d' for %s (value expected, type provided)",
                                        badParamIdx,
-                                       SymTable::getNakedKindName(symbol->kind),
-                                       symbol->name.c_str())};
-                Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                                       refNiceName.c_str())};
+                Diagnostic note{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{match.genericParameters[bi.badSignatureParameterIdx],
-                                format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                format("bad type of generic parameter '%d' for %s ('%s' expected, '%s' provided)",
                                        badParamIdx,
-                                       SymTable::getNakedKindName(symbol->kind),
-                                       symbol->name.c_str(),
+                                       refNiceName.c_str(),
                                        bi.badSignatureRequestedType->name.c_str(),
                                        bi.badSignatureGivenType->name.c_str())};
                 if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                     diag.codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-                Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
         }

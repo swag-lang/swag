@@ -77,6 +77,12 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             inst->b.u32 = param->offset;
         }
 
+        // A structure initialized with a literal
+        if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+        {
+            return internalError(context, "generateStructInit, invalid assignment type", varDecl);
+        }
+
         if (varDecl->assignment)
         {
             if (typeVar->kind == TypeInfoKind::Array)
@@ -211,7 +217,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     else
     {
 
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->bc));
         inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->bc);
         inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;

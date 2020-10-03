@@ -194,6 +194,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
             param->namedParam = move(child->name);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
+        param->inheritTokenLocation(child->token);
 
         context->node = param;
         SWAG_CHECK(resolveFuncCallParam(context));
