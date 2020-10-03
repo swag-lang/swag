@@ -200,6 +200,8 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         SWAG_CHECK(resolveFuncCallParam(context));
     }
 
+    identifier->callParameters->inheritTokenLocation(varDecl->assignment->token);
+
     context->node = identifier->callParameters;
     SWAG_CHECK(resolveFuncCallParams(context));
     context->node = savedNode;

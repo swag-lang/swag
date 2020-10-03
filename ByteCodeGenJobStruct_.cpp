@@ -80,9 +80,16 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // A structure initialized with a literal
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
-            return internalError(context, "generateStructInit, invalid assignment type", varDecl);
+            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = varDecl->type->computedValue.reg.offset;
+
+            auto inst = emitInstruction(&cxt, ByteCodeOp::MemCpy, 0, 1);
+            inst->flags |= BCI_IMM_C;
+            inst->c.u32 = typeVar->sizeOf;
+            continue;
+
         }
 
+        // User initialization
         if (varDecl->assignment)
         {
             if (typeVar->kind == TypeInfoKind::Array)

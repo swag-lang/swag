@@ -1,14 +1,16 @@
+var G: u32 = 4
+
 struct AA
 {
-    x: u32 = 666
-    y: {a: u32, b: u32} = @{666, 666}
+    x: u32 = 444
+    y: {a: u32, b: u32} = @{555, 666}
 }
 
 //#[swag.printbc]
 #test
 {
     var tt: AA
-    @assert(tt.x == 666)
-    @print(cast(s64) @sizeof(tt))
-    @print(cast(s64) tt.y.a)
+    @assert(tt.x == 444)
+    @assert(tt.y.a == 555)
+    @assert(tt.y.b == 666)
 }
