@@ -1,5 +1,3 @@
-var G: u32 = 4
-
 struct AA
 {
     x: u32 = 444

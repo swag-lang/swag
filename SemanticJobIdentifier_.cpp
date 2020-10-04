@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "pch.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
@@ -1683,8 +1684,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (identifierRef->startScope)
                 {
-                    auto displayName = identifierRef->startScope->getFullName();
-                    if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
+                    if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                        return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->name.c_str())});
+                    Utf8 displayName;
+                    if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
+                        displayName = identifierRef->startScope->getFullName();
+                    if (displayName.empty() && identifierRef->typeInfo)
                         displayName = identifierRef->typeInfo->name;
                     if (!displayName.empty())
                         return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
