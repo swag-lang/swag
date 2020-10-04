@@ -29,6 +29,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
         node->kind == AstNodeKind::TypeLambda ||
         (node->kind == AstNodeKind::IdentifierRef && (node->flags & AST_FROM_GENERIC_REPLACE)) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct) ||
+        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::TypeAlias) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Interface) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Enum))
     {

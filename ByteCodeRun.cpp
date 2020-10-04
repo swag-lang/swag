@@ -1881,8 +1881,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             userMsg.append("assertion failed");
 
-        // Add current call context
-        runContext->bc->addCallStack(runContext);
+        // Add current context
+        if(!g_byteCodeStack.steps.empty())
+            runContext->bc->addCallStack(runContext);
 
         SourceFile dummyFile;
         dummyFile.path = fileName;

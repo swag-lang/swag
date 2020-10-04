@@ -1,0 +1,23 @@
+struct BB
+{
+    alias x = struct{u32}
+    alias y = struct{u32, u32}
+}
+
+#test
+{
+    var v: any
+    v = BB.x{5}
+    v = BB.y{5, 10}
+
+    switch @kindof(v)
+    {
+    case BB.y:
+        vv := cast(BB.y) v   
+        @assert(vv.item0 == 5)
+        @assert(vv.item1 == 10)
+    default:    
+        @assert(false)
+    }
+}
+

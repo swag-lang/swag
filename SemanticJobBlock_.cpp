@@ -132,7 +132,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
-    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch); 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     node->typeInfo                     = node->expression->typeInfo;

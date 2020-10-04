@@ -4,7 +4,7 @@
 alias toto = s32
 
 //#[swag.printbc]
-#unittest error
+//#unittest error
 #test
 {
 	pt := toto
