@@ -8,6 +8,16 @@ struct BB
 {
     var v: any
     v = BB.x{5}
+
+    switch @kindof(v)
+    {
+    case BB.x:
+        vv := cast(BB.x) v           
+        @assert(vv.item0 == 5)
+    default:    
+        @assert(false)
+    }
+
     v = BB.y{5, 10}
 
     switch @kindof(v)
