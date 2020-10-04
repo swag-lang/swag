@@ -214,6 +214,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymLeftSquare:
+    case TokenId::SymLeftCurly:
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
