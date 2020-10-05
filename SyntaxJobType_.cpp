@@ -175,6 +175,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         rootScope = sourceFile->scopePrivate;
     else
         rootScope = sourceFile->module->scopeRoot;
+    structNode->alternativeScopes.push_back(currentScope);
 
     scoped_lock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->name);
