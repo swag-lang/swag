@@ -121,12 +121,18 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
 
     case TypeInfoKind::Array:
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto newType   = doTypeSubstitution(cloneContext, typeArray->pointedType);
-        if (newType != typeArray->pointedType)
+        auto      typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto      newPointedType = doTypeSubstitution(cloneContext, typeArray->pointedType);
+        TypeInfo* newFinalType;
+        if (typeArray->pointedType == typeArray->finalType)
+            newFinalType = newPointedType;
+        else
+            newFinalType = doTypeSubstitution(cloneContext, typeArray->finalType);
+        if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
         {
             typeArray              = static_cast<TypeInfoArray*>(typeArray->clone());
-            typeArray->pointedType = newType;
+            typeArray->pointedType = newPointedType;
+            typeArray->finalType   = newFinalType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
             typeArray->computeName();
             return typeArray;

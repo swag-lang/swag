@@ -290,7 +290,7 @@ void TypeInfoArray::computeScopedName()
 
     pointedType->computeScopedName();
     scopedName = preName;
-    scopedName += finalType->scopedName;
+    scopedName += pointedType->scopedName;
 }
 
 void TypeInfoArray::computeName()
