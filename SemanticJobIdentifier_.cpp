@@ -1243,7 +1243,7 @@ anotherTry:
                     instContext.fromBake     = true;
                     instContext.bakeIsPublic = node->parent->parent->attributeFlags & ATTRIBUTE_PUBLIC;
                     instContext.bakeName     = node->parent->parent->name;
-                    node->parent->parent->flags |= AST_FROM_GENERIC; // This is tell the #bake that is has worked
+                    node->parent->parent->flags |= AST_FROM_GENERIC; // This will tell the #bake that it has worked
                 }
 
                 if (!Generic::instantiateStruct(context, genericParameters, firstMatch, instContext))
@@ -1445,7 +1445,8 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         }
 
         // Error this is ambiguous
-        if (pickedSymbol->kind != oneSymbol->kind || oneSymbol->kind != SymbolKind::Function)
+        if (pickedSymbol->kind != oneSymbol->kind ||
+            (oneSymbol->kind != SymbolKind::Function && oneSymbol->kind != SymbolKind::GenericType && oneSymbol->kind != SymbolKind::TypeAlias))
         {
             Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", pickedSymbol->name.c_str())};
             Diagnostic note1{pickedSymbol->overloads[0]->node, pickedSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};

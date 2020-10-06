@@ -290,6 +290,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     {
         if (node->genericParameters)
         {
+            node->flags |= AST_IS_GENERIC;
             typeInfo->flags |= TYPEINFO_GENERIC;
             symbolFlags |= OVERLOAD_GENERIC;
             for (auto param : node->genericParameters->childs)
@@ -586,6 +587,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     node->typeInfo               = typeInfo;
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
+
+    // If there's an alias, register it also
+    if (node->nodeAlias)
+        SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node->nodeAlias, node->typeInfo, SymbolKind::TypeAlias));
 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)

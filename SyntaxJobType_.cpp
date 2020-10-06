@@ -103,6 +103,17 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
 
+    // If we are inside a generic struct, make the tuple struct generic too
+    // This is incomplete and will not work in all cases
+    if (parent->ownerStructScope)
+    {
+        auto parentStruct = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        if (parentStruct->genericParameters)
+        {
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
+        }
+    }
+
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content            = contentNode;
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
@@ -201,6 +212,15 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
         });
+
+        if (structNode->genericParameters)
+        {
+            Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+                n->ownerStructScope = newScope;
+                n->ownerScope       = newScope;
+                n->flags |= AST_IS_GENERIC;
+            });
+        }
     }
 
     return true;

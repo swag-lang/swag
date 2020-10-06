@@ -251,9 +251,30 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Clone original node
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
+
+    // Can be a type alias
+    // In that case, we need to retrieve the real struct
+    auto     oldType      = static_cast<TypeInfoStruct*>(overload->typeInfo);
+    auto     sourceSymbol = match.symbolName;
+    AstNode* nodeAlias    = nullptr;
+    if (sourceNode->kind == AstNodeKind::Alias)
+    {
+        // When the duplicated struct will register its symbol, it will also register
+        // the corresponding type alias
+        nodeAlias = sourceNode;
+
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(sourceNode->typeInfo, TypeInfoKind::Alias);
+        oldType        = CastTypeInfo<TypeInfoStruct>(typeAlias->rawType, TypeInfoKind::Struct);
+        sourceNode     = oldType->declNode;
+        SWAG_ASSERT(sourceNode->kind == AstNodeKind::StructDecl);
+        SWAG_ASSERT(sourceNode->resolvedSymbolOverload);
+        sourceSymbol = sourceNode->resolvedSymbolOverload->symbol;
+    }
+
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
+    structNode->nodeAlias = nodeAlias;
     Ast::addChildBack(sourceNode->parent, structNode);
 
     if (instContext.fromBake)
@@ -264,7 +285,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     // Make a new type
-    auto oldType = static_cast<TypeInfoStruct*>(overload->typeInfo);
     auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope           = structNode->scope;
@@ -286,7 +306,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         newType->forceComputeName();
     }
 
-    auto structJob = end(context, context->job, match.symbolName, structNode, true);
+    auto structJob = end(context, context->job, sourceSymbol, structNode, true);
 
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 

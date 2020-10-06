@@ -692,6 +692,7 @@ struct AstStruct : public AstNode
     Scope*   scope;
     AstNode* ownerGeneric;
     Utf8     bakeName;
+    AstNode* nodeAlias;
 
     uint32_t packing = sizeof(uint64_t);
 };
