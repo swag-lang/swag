@@ -717,7 +717,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context)
+void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, SymbolOverload *symOverload)
 {
     auto job  = context->job;
     auto node = context->node;
@@ -735,6 +735,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
     // when instantiating function B
     if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == node->ownerStructScope)
+        toCheck.push_back(node->ownerFct);
+
+    if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
         toCheck.push_back(node->ownerFct);
 
     if (node->kind == AstNodeKind::Identifier)
@@ -1063,9 +1066,9 @@ anotherTry:
 
             // If this is a type alias that already has a generic instance, accept to not have generic
             // parameters on the source symbol
-            if (overload->typeInfo->kind == TypeInfoKind::Alias)
+            if (rawTypeInfo->kind == TypeInfoKind::Alias)
             {
-                rawTypeInfo = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+                rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
                 if (rawTypeInfo->kind == TypeInfoKind::Struct)
                 {
                     auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
@@ -1075,7 +1078,7 @@ anotherTry:
             }
 
             // We collect type replacements depending on where the identifier is
-            setupContextualGenericTypeReplacement(context);
+            setupContextualGenericTypeReplacement(context, overload);
 
             if (rawTypeInfo->kind == TypeInfoKind::Struct)
             {
