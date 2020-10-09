@@ -687,12 +687,13 @@ struct AstStruct : public AstNode
 
     DependentJobs dependentJobs;
 
-    AstNode* genericParameters;
-    AstNode* content;
-    Scope*   scope;
-    AstNode* ownerGeneric;
-    Utf8     bakeName;
-    AstNode* nodeAlias;
+    AstNode*                genericParameters;
+    AstNode*                content;
+    Scope*                  scope;
+    AstNode*                ownerGeneric;
+    Utf8                    bakeName;
+    AstNode*                nodeAlias;
+    map<Utf8Crc, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);
 };

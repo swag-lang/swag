@@ -750,7 +750,6 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // Collect from the owner structure
     for (auto one : toCheck)
     {
-        // Inherit the type replacements from the owner function
         if (one->kind == AstNodeKind::FuncDecl)
         {
             auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
@@ -760,19 +759,12 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             }
         }
 
-        // Inherit the generic parameters from the owner struct
-        if (one->typeInfo && one->typeInfo->kind == TypeInfoKind::Struct)
+        if (one->kind == AstNodeKind::StructDecl)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
-            if (!(typeStruct->flags & TYPEINFO_GENERIC))
+            auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+            for (auto oneReplace : nodeStruct->replaceTypes)
             {
-                int idx = 0;
-                for (auto genParam : typeStruct->genericParameters)
-                {
-                    job->symMatch.genericReplaceTypes[genParam->name]  = genParam->typeInfo;
-                    job->symMatch.mapGenericTypesIndex[genParam->name] = idx;
-                    idx++;
-                }
+                job->symMatch.genericReplaceTypes[oneReplace.first] = oneReplace.second;
             }
         }
     }

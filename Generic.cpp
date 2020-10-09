@@ -274,7 +274,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
-    structNode->nodeAlias = nodeAlias;
+    structNode->nodeAlias    = nodeAlias;
+    structNode->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(sourceNode->parent, structNode);
 
     if (instContext.fromBake)
