@@ -103,22 +103,27 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
 
-    // If we are inside a generic struct, make the tuple struct generic too
-    // This is incomplete and will not work in all cases
-    if (parent->ownerStructScope)
-    {
-        auto parentStruct = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
-        if (parentStruct->genericParameters)
-        {
-            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
-        }
-    }
-    else if (parent->ownerFct)
+    // We convert the {...} expression to a structure. As the structure can contain generic parameters,
+    // we need to copy them. But from the function or the structure ?
+    if (parent->ownerFct)
     {
         auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
         if (parentFunc->genericParameters)
         {
             structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode);
+        }
+    }
+
+    // For now, be give the priority to the generic parameters from the function, if there are any
+    // But this will not work in all cases
+    if (parent->ownerStructScope)
+    {
+        auto parentStruct = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        if (parentStruct->genericParameters)
+        {
+            if (structNode->genericParameters)
+                return error(parent, "cannot decide which generic parameter to use for tuple creation");
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
         }
     }
 
