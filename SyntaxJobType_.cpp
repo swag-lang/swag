@@ -113,6 +113,14 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
         }
     }
+    else if (parent->ownerFct)
+    {
+        auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
+        if (parentFunc->genericParameters)
+        {
+            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode);
+        }
+    }
 
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content            = contentNode;
