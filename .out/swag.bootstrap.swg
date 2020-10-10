@@ -297,6 +297,7 @@ namespace swag
     struct TypeInfoFunc
     {
         using base: 	TypeInfo
+        generics:		const [..] TypeInfoParam
         parameters:		const [..] TypeInfoParam
         rawType:		const *TypeInfo
         returnType:		const *TypeInfo

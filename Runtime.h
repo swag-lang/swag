@@ -220,6 +220,7 @@ struct ConcreteTypeInfoList
 struct ConcreteTypeInfoFunc
 {
     ConcreteTypeInfo  base;
+    ConcreteSlice     generics;
     ConcreteSlice     parameters;
     ConcreteTypeInfo* rawType;
     ConcreteTypeInfo* returnType;
