@@ -18,6 +18,22 @@ bool TypeTableJob::computeStruct()
 
         SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
 
+        // Generics
+        concreteType->generics.buffer = nullptr;
+        concreteType->generics.count  = realType->genericParameters.size();
+        if (concreteType->generics.count)
+        {
+            uint32_t               storageArray = segment->reserveNoLock((uint32_t) concreteType->generics.count * sizeof(ConcreteTypeInfoParam));
+            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
+            concreteType->generics.buffer       = addrArray;
+            segment->addInitPtr(OFFSETOF(concreteType->generics.buffer), storageArray);
+            for (int param = 0; param < concreteType->generics.count; param++)
+            {
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->genericParameters[param], cflags));
+                storageArray += sizeof(ConcreteTypeInfoParam);
+            }
+        }
+
         // Fields
         concreteType->fields.buffer = nullptr;
         concreteType->fields.count  = realType->fields.size();

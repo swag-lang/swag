@@ -204,6 +204,7 @@ struct ConcreteTypeInfoParam
 struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo base;
+    ConcreteSlice    generics;
     ConcreteSlice    fields;
     ConcreteSlice    methods;
     ConcreteSlice    interfaces;

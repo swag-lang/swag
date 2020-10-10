@@ -1,11 +1,18 @@
 -------------------------------------
-if expression/switch expression
+if expression/switch expression ?
 var a: s32 = if b == 0 6 else 5
 -------------------------------------
 attribute, erreur si le caller n'utilise pas la valeur de retour du called (attribute de fonction)
 -------------------------------------
-
-
+sum types (typeset/variant)
+-------------------------------------
+enumcrc
+-------------------------------------
+crc value pour chaque field d'une structure en reflection ?
+-------------------------------------
+ajout des arguments generics struct/function
+-------------------------------------
+ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 
 
 -------------------------------------
@@ -20,5 +27,5 @@ y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 -------------------------------------
 slice, strings & co, passer le count en 64 bits une bonne fois pour toute
 -------------------------------------
-ByteCodeOp::LambdaCall, mettre des jump 8 bits
+x64: ByteCodeOp::LambdaCall, mettre des jump 8 bits
 -------------------------------------

@@ -287,6 +287,7 @@ namespace swag
     struct TypeInfoStruct
     {
         using base: 	TypeInfo
+        generics:		const [..] TypeInfoParam
         fields:		    const [..] TypeInfoParam
         methods:	    const [..] TypeInfoParam
         interfaces:     const [..] TypeInfoParam
