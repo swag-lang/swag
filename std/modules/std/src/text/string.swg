@@ -11,6 +11,11 @@ public enum CharacterSet
     Latin1
 }
 
+public enum StringComparison
+{
+    Ascii
+}
+
 public struct String
 {
     buffer:     *u8
@@ -108,11 +113,7 @@ public impl String
 
     func opCmp(using self, other: Self)->s32
     {
-        minLen := math.min(length, other.length)
-        result := memory.compare(buffer, other.buffer, minLen)
-        if result != 0 || length == other.length return result
-        if length < other.length return -1
-        return 1
+        return compare(other, StringComparison.Ascii)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -471,5 +472,17 @@ public impl String
         result := :self
         result.makeLower(set)
         return result
+    }
+
+    // Compare with another string
+    func compare(using self, other: Self, comparisonType: StringComparison)->s32
+    {
+        switch comparisonType
+        {
+        case StringComparison.Ascii:
+            return ascii.compare(@mkslice(buffer, length), @mkslice(other.buffer, other.length))
+        }
+
+        return 0
     }
 }

@@ -42,3 +42,17 @@ func makeLower(buffer: [..] u8)
         p += 1
     }
 }
+
+// Compare two ascii strings, and returns -1, 0 or 1
+func compare(src, dst: const [..] u8)->s32
+{
+    length := @countof(src)
+    otherLength := @countof(dst)
+    minLen := math.min(length, otherLength)
+
+    result := memory.compare(@dataof(src), @dataof(dst), minLen)
+
+    if result != 0 || length == otherLength return result
+    if length < otherLength return -1
+    return 1        
+}

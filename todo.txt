@@ -10,8 +10,6 @@ enumcrc
 -------------------------------------
 crc value pour chaque field d'une structure en reflection ?
 -------------------------------------
-ajout des arguments generics struct/function
--------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 
 
