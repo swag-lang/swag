@@ -7,4 +7,6 @@ using std
     @assert(arr.count == 5)
     @assert(arr[0] == 1)
     @assert(arr[4] == 5)
+    arr.clear()
+    @assert(arr.count == 0)
 }
