@@ -61,11 +61,11 @@ impl Array
 
     func opAffect(using self, arr: const [..] T)
     {
+        clear()
         countof := @countof(arr)
         if !countof return
         dataof := @dataof(arr)
 
-        clear()
         grow(countof)
         #if reflection.hasPostCopy(@typeof(T))
         {
