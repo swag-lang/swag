@@ -435,13 +435,15 @@ public impl String
     // Only deal with latin1 (not unicode)
     func makeUpper(using self, set: CharacterSet = CharacterSet.Ascii)
     {
+        sl := @mkslice(buffer, length)
+
         using CharacterSet
         switch set
         {
             case Ascii:
-                ascii.makeUpper(@mkslice(buffer, length))
+                ascii.makeUpper(sl)
             case Latin1:
-                utf8.makeUpperLatin1(@mkslice(buffer, length))
+                utf8.makeUpperLatin1(sl)
         }
     }
 
@@ -449,13 +451,15 @@ public impl String
     // Only deal with latin1 (not unicode)
     func makeLower(using self, set: CharacterSet = CharacterSet.Ascii)
     {
+        sl := @mkslice(buffer, length)
+
         using CharacterSet
         switch set
         {
             case Ascii:
-                ascii.makeLower(@mkslice(buffer, length))
+                ascii.makeLower(sl)
             case Latin1:
-                utf8.makeLowerLatin1(@mkslice(buffer, length))
+                utf8.makeLowerLatin1(sl)
         }
     }
 
@@ -480,11 +484,13 @@ public impl String
     {
         sl1 := @mkslice(buffer, length)
         sl2 := @mkslice(other.buffer, other.length)
+
+        using StringComparison
         switch comparisonType
         {
-        case StringComparison.Ascii:
+        case Ascii:
             return ascii.compare(sl1, sl2)
-        case StringComparison.AsciiIgnoreCase:
+        case AsciiIgnoreCase:
             return ascii.compare(sl1, sl2, true)
         }
 
