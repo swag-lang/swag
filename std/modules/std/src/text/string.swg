@@ -13,6 +13,7 @@ public enum CharacterSet
 
 public enum StringComparison
 {
+    Raw
     Ascii
     AsciiIgnoreCase
 }
@@ -367,22 +368,6 @@ public impl String
         return -1
     }
 
-    // Return true if the string starts with 'str'
-    func startsWidth(using self, str: string)->bool
-    {
-        countof := @countof(str)
-        if(countof > length) return false
-        return memory.compare(buffer, @dataof(str), countof) == 0
-    }
-
-    // Return true if the string ends with 'str'
-    func endsWidth(using self, str: string)->bool
-    {
-        countof := @countof(str)
-        if(countof > length) return false
-        return memory.compare((buffer + length) - countof, @dataof(str), countof) == 0
-    }
-
     // Returns the first Unicode character of the String
     // This function will return 0 if the String is null or empty
     func front(using self)->char
@@ -479,21 +464,47 @@ public impl String
         return result
     }
 
-    // Compare with another string
-    func compare(using self, other: Self, comparisonType: StringComparison)->s32
+    // Return true if the string starts with 'str'
+    func startsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
     {
-        sl1 := @mkslice(buffer, length)
-        sl2 := @mkslice(other.buffer, other.length)
+        countof := @countof(str)
+        if(countof > length) return false
+        return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+    }
 
+    // Return true if the string ends with 'str'
+    func endsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
+    {
+        countof := @countof(str)
+        if(countof > length) return false
+        return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+    }
+
+    // Compare two strings
+    func compare(src, dst: string, comparisonType: StringComparison = StringComparison.Raw)->s32
+    {
         using StringComparison
+        #[complete]
         switch comparisonType
         {
-        case Ascii:
-            return ascii.compare(sl1, sl2)
+        case Raw, Ascii:
+            return ascii.compare(src, dst)
         case AsciiIgnoreCase:
-            return ascii.compare(sl1, sl2, true)
+            return ascii.compare(src, dst, true)
         }
 
         return 0
+    }
+
+    // Compare with another string
+    func compare(using self, other: string, comparisonType: StringComparison = StringComparison.Raw)->s32
+    {
+        return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
+    }
+
+    // Compare with another string
+    func compare(using self, other: Self, comparisonType: StringComparison = StringComparison.Raw)->s32
+    {
+        return compare(cast(string) @mkslice(other.buffer, other.length), comparisonType)
     }
 }
