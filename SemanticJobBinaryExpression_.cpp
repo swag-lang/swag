@@ -868,19 +868,22 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymVertical:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
+        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
+        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-        node->typeInfo = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(left->typeInfo);
+        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
+        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveXor(context, left, right));
         break;
     case TokenId::SymTilde:

@@ -47,7 +47,7 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
         return @{null, acast 0}
 
     ptr := buffer
-    c := :ptr
+    c := cast(char) :ptr
     if c == 0
         return @{ptr, acast 0}
     ptr += 1
@@ -55,7 +55,7 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
     // Ascii
     if ((c & 0x80) == 0)
     {
-        return @{ptr, acast c}
+        return @{ptr, c}
     }
 
     // Utf8
@@ -63,7 +63,7 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
     if ((c & 0xE0) == 0xC0)
     {
         wc = (c & 0x1F) << 6;
-        c = :ptr
+        c = cast(char) :ptr
         ptr += 1
         wc |= (c & 0x3F);
         return @{ptr, wc}
@@ -72,8 +72,8 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
     if ((c & 0xF0) == 0xE0)
     {
         wc = (c & 0xF) << 12;
-        wc |= (ptr[0] & 0x3F) << 6;
-        wc |= (ptr[1] & 0x3F);
+        wc |= cast(char) (ptr[0] & 0x3F) << 6;
+        wc |= cast(char) (ptr[1] & 0x3F);
         ptr += 2;
         return @{ptr, wc}
     }
@@ -81,9 +81,9 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
     if ((c & 0xF8) == 0xF0)
     {
         wc = (c & 0x7) << 18;
-        wc |= (ptr[0] & 0x3F) << 12;
-        wc |= (ptr[1] & 0x3F) << 6;
-        wc |= (ptr[2] & 0x3F);
+        wc |= cast(char) (ptr[0] & 0x3F) << 12;
+        wc |= cast(char) (ptr[1] & 0x3F) << 6;
+        wc |= cast(char) (ptr[2] & 0x3F);
         ptr += 3;
         return @{ptr, wc}
     }

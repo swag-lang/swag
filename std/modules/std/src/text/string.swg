@@ -14,6 +14,7 @@ public enum CharacterSet
 public enum StringComparison
 {
     Ascii
+    AsciiIgnoreCase
 }
 
 public struct String
@@ -477,10 +478,14 @@ public impl String
     // Compare with another string
     func compare(using self, other: Self, comparisonType: StringComparison)->s32
     {
+        sl1 := @mkslice(buffer, length)
+        sl2 := @mkslice(other.buffer, other.length)
         switch comparisonType
         {
         case StringComparison.Ascii:
-            return ascii.compare(@mkslice(buffer, length), @mkslice(other.buffer, other.length))
+            return ascii.compare(sl1, sl2)
+        case StringComparison.AsciiIgnoreCase:
+            return ascii.compare(sl1, sl2, true)
         }
 
         return 0
