@@ -480,6 +480,18 @@ public impl String
         return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
     }
 
+    // Compare with another string
+    func compare(using self, other: string, comparisonType: StringComparison = StringComparison.Raw)->s32
+    {
+        return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
+    }
+
+    // Compare with another string
+    func compare(using self, other: Self, comparisonType: StringComparison = StringComparison.Raw)->s32
+    {
+        return compare(cast(string) @mkslice(other.buffer, other.length), comparisonType)
+    }
+
     // Compare two strings
     func compare(src, dst: string, comparisonType: StringComparison = StringComparison.Raw)->s32
     {
@@ -494,17 +506,5 @@ public impl String
         }
 
         return 0
-    }
-
-    // Compare with another string
-    func compare(using self, other: string, comparisonType: StringComparison = StringComparison.Raw)->s32
-    {
-        return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
-    }
-
-    // Compare with another string
-    func compare(using self, other: Self, comparisonType: StringComparison = StringComparison.Raw)->s32
-    {
-        return compare(cast(string) @mkslice(other.buffer, other.length), comparisonType)
     }
 }
