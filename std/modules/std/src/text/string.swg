@@ -468,7 +468,7 @@ public impl String
     func startsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
     {
         countof := @countof(str)
-        if(countof > length) return false
+        if countof > length return false
         return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
     }
 
@@ -476,7 +476,7 @@ public impl String
     func endsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
     {
         countof := @countof(str)
-        if(countof > length) return false
+        if countof > length return false
         return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
     }
 

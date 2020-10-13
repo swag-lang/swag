@@ -59,6 +59,27 @@ impl Array
         buffer[index] = value
     }
 
+    func opAffect(using self, arr: const [..] T)
+    {
+        countof := @countof(arr)
+        if !countof return
+        dataof := @dataof(arr)
+
+        clear()
+        grow(countof)
+        #if reflection.hasPostCopy(@typeof(T))
+        {
+            loop countof
+                buffer[count + @index] = nodrop dataof[@index]
+        }
+        #else
+        {
+            memory.copy(buffer + count, dataof, @sizeof(T) * countof)
+        }
+
+        count += countof
+    }
+
     #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
@@ -164,7 +185,7 @@ impl Array
         #if reflection.hasDrop(@typeof(T))
         {
             loop count
-                @drop(table[@index])
+                @drop(buffer + @index)
         }
 
         count = 0
