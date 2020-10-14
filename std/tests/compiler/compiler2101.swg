@@ -1,7 +1,7 @@
 typeset AA
 {
     struct T {x: s32;}
-    //y: {s32, f32}
+    struct T1 {x: s32; y: f32;}
 }
 
 //#[swag.printbc]
@@ -11,7 +11,9 @@ typeset AA
     v = AA.T{666}
     ptr := @kindof(v)
 
-    @print(ptr.name)
+    //@print(ptr.name)
     @assert(ptr == AA.T)
-    //vv := cast(AA.T) v
+
+    vv := cast(AA.T) v
+    @assert(vv.x == 666)
 }

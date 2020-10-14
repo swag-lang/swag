@@ -684,7 +684,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     // Cast from any to something real
     auto node = context->node;
-    if (fromTypeInfo->isNative(NativeTypeKind::Any))
+    if (fromTypeInfo->isNative(NativeTypeKind::Any) || fromTypeInfo->kind == TypeInfoKind::TypeSet)
     {
         // Check that the type is correct
         if (isExplicit)
