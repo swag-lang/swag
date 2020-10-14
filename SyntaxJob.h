@@ -26,6 +26,14 @@ enum class InvalidTokenError
     LeftExpressionVar,
 };
 
+enum class SyntaxStructType
+{
+    Struct,
+    Interface,
+    TypeSet,
+    Tuple
+};
+
 struct SyntaxContext : public JobContext
 {
     SyntaxJob* job = nullptr;
@@ -92,9 +100,9 @@ struct SyntaxJob : public Job
     bool doEnumContent(AstNode* parent);
     bool doEnumValue(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-    bool doStructBody(AstNode* parent, AstNodeKind kind);
+    bool doStructBody(AstNode* parent, SyntaxStructType structType);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
-    bool doStructContent(AstStruct* structNode, SymbolKind symbolKind);
+    bool doStructContent(AstStruct* structNode, SyntaxStructType structType);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionListTuple(AstNode* parent, AstNode** result = nullptr);
@@ -149,36 +157,36 @@ struct SyntaxJob : public Job
     SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
-    Scope*              currentScope            = nullptr;
-    AstFuncDecl*        currentFct              = nullptr;
-    AstBreakable*       currentBreakable        = nullptr;
-    Scope*              currentStructScope      = nullptr;
-    AstCompilerIfBlock* currentCompilerIfBlock  = nullptr;
-    Token*              currentTokenLocation    = nullptr;
-    AstNode*            currentMainNode         = nullptr;
-    uint64_t            currentFlags            = 0;
-    uint32_t            currentAttributeFlags   = 0;
-    bool                canChangeModule         = true;
-    bool                moduleSpecified         = false;
-    bool                inFunCall               = false;
+    Scope*              currentScope           = nullptr;
+    AstFuncDecl*        currentFct             = nullptr;
+    AstBreakable*       currentBreakable       = nullptr;
+    Scope*              currentStructScope     = nullptr;
+    AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
+    Token*              currentTokenLocation   = nullptr;
+    AstNode*            currentMainNode        = nullptr;
+    uint64_t            currentFlags           = 0;
+    uint32_t            currentAttributeFlags  = 0;
+    bool                canChangeModule        = true;
+    bool                moduleSpecified        = false;
+    bool                inFunCall              = false;
 
     void reset() override
     {
         Job::reset();
         context.reset();
-        sourceFile              = nullptr;
-        currentScope            = nullptr;
-        currentFct              = nullptr;
-        currentBreakable        = nullptr;
-        currentStructScope      = nullptr;
-        currentCompilerIfBlock  = nullptr;
-        currentMainNode         = nullptr;
-        currentTokenLocation    = nullptr;
-        currentFlags            = 0;
-        currentAttributeFlags   = 0;
-        canChangeModule         = true;
-        moduleSpecified         = false;
-        inFunCall               = false;
+        sourceFile             = nullptr;
+        currentScope           = nullptr;
+        currentFct             = nullptr;
+        currentBreakable       = nullptr;
+        currentStructScope     = nullptr;
+        currentCompilerIfBlock = nullptr;
+        currentMainNode        = nullptr;
+        currentTokenLocation   = nullptr;
+        currentFlags           = 0;
+        currentAttributeFlags  = 0;
+        canChangeModule        = true;
+        moduleSpecified        = false;
+        inFunCall              = false;
     }
 
     void release() override

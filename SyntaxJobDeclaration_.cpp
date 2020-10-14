@@ -247,7 +247,7 @@ bool SyntaxJob::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind ki
     case AstNodeKind::EnumDecl:
         return doEnumContent(parent);
     case AstNodeKind::StructDecl:
-        return doStructBody(parent, kind);
+        return doStructBody(parent, SyntaxStructType::Struct);
 
     default:
         SWAG_ASSERT(false);

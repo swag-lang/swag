@@ -143,20 +143,20 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         *result = structNode;
 
     // Special case
-    SymbolKind symbolKind = SymbolKind::Struct;
+    SyntaxStructType structType = SyntaxStructType::Struct;
     if (token.id == TokenId::KwdUnion)
     {
         structNode->packing = 0;
     }
     else if (token.id == TokenId::KwdInterface)
     {
-        symbolKind              = SymbolKind::Interface;
+        structType              = SyntaxStructType::Interface;
         structNode->kind        = AstNodeKind::InterfaceDecl;
         structNode->semanticFct = SemanticJob::resolveInterface;
     }
     else if (token.id == TokenId::KwdTypeSet)
     {
-        symbolKind              = SymbolKind::TypeSet;
+        structType              = SyntaxStructType::TypeSet;
         structNode->kind        = AstNodeKind::TypeSet;
         structNode->semanticFct = SemanticJob::resolveTypeSet;
     }
@@ -170,12 +170,12 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
     }
 
-    return doStructContent(structNode, symbolKind);
+    return doStructContent(structNode, structType);
 }
 
-bool SyntaxJob::doStructContent(AstStruct* structNode, SymbolKind symbolKind)
+bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid name '%s'", token.text.c_str())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(isValidUserName(structNode));
 
@@ -212,13 +212,25 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SymbolKind symbolKind)
             }
 
             SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);
-            structNode->typeInfo           = newScope->owner->typeInfo;
-            typeInfo->declNode             = structNode;
-            newScope->owner                = structNode;
-            typeInfo->name                 = structNode->name;
-            typeInfo->nakedName            = structNode->name;
-            typeInfo->structName           = structNode->name;
-            typeInfo->scope                = newScope;
+            structNode->typeInfo = newScope->owner->typeInfo;
+            typeInfo->declNode   = structNode;
+            newScope->owner      = structNode;
+            typeInfo->name       = structNode->name;
+            typeInfo->nakedName  = structNode->name;
+            typeInfo->structName = structNode->name;
+            typeInfo->scope      = newScope;
+
+            SymbolKind symbolKind = SymbolKind::Struct;
+            switch (structType)
+            {
+            case SyntaxStructType::Interface:
+                symbolKind = SymbolKind::Interface;
+                break;
+            case SyntaxStructType::TypeSet:
+                symbolKind = SymbolKind::TypeSet;
+                break;
+            }
+
             structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
         }
         else
@@ -246,7 +258,6 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SymbolKind symbolKind)
         });
     }
 
-    // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Content of struct
@@ -259,13 +270,13 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SymbolKind symbolKind)
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-        SWAG_CHECK(doStructBody(contentNode, structNode->kind));
+        SWAG_CHECK(doStructBody(contentNode, structType));
     }
 
     return true;
 }
 
-bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
+bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
 {
     bool waitCurly = false;
     if (token.id == TokenId::SymLeftCurly)
@@ -277,7 +288,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
-            return syntaxError(token, "no matching '}' found in struct declaration");
+            return syntaxError(token, "no matching '}' found in declaration");
 
         switch (token.id)
         {
@@ -305,7 +316,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
         case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            SWAG_CHECK(doStructBody(stmt, kind));
+            SWAG_CHECK(doStructBody(stmt, structType));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
         }
@@ -319,15 +330,15 @@ bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
 
         // A user alias
         case TokenId::KwdAlias:
-            SWAG_VERIFY(kind != AstNodeKind::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
+            SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
             SWAG_CHECK(doAlias(parent));
             break;
 
         // Using on a struct member
         case TokenId::KwdUsing:
         {
-            SWAG_VERIFY(kind != AstNodeKind::InterfaceDecl, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
-            SWAG_VERIFY(kind != AstNodeKind::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
+            SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
             SWAG_CHECK(eatToken());
 
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
@@ -343,11 +354,11 @@ bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
 
         // A normal declaration
         default:
-            if (kind == AstNodeKind::TypeSet)
+            if (structType == SyntaxStructType::TypeSet)
             {
                 auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
                 structNode->semanticFct = SemanticJob::resolveStruct;
-                SWAG_CHECK(doStructContent(structNode, SymbolKind::Struct));
+                SWAG_CHECK(doStructContent(structNode, SyntaxStructType::Tuple));
             }
             else
             {
