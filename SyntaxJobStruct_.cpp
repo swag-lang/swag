@@ -170,6 +170,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
     }
 
+    return doStructContent(structNode, symbolKind);
+}
+
+bool SyntaxJob::doStructContent(AstStruct* structNode, SymbolKind symbolKind)
+{
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(isValidUserName(structNode));
@@ -254,13 +259,13 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-        SWAG_CHECK(doStructContent(contentNode, structNode->kind));
+        SWAG_CHECK(doStructBody(contentNode, structNode->kind));
     }
 
     return true;
 }
 
-bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
+bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
 {
     bool waitCurly = false;
     if (token.id == TokenId::SymLeftCurly)
@@ -300,7 +305,7 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
         case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            SWAG_CHECK(doStructContent(stmt, kind));
+            SWAG_CHECK(doStructBody(stmt, kind));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
         }
