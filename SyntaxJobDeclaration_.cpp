@@ -392,6 +392,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
+    case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         moveAttributes(parent, sourceFile->astRoot);
         SWAG_CHECK(doStruct(sourceFile->astRoot, result));
@@ -477,6 +478,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
+    case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent));
         break;

@@ -143,14 +143,22 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         *result = structNode;
 
     // Special case
+    SymbolKind symbolKind = SymbolKind::Struct;
     if (token.id == TokenId::KwdUnion)
     {
         structNode->packing = 0;
     }
     else if (token.id == TokenId::KwdInterface)
     {
+        symbolKind              = SymbolKind::Interface;
         structNode->kind        = AstNodeKind::InterfaceDecl;
         structNode->semanticFct = SemanticJob::resolveInterface;
+    }
+    else if (token.id == TokenId::KwdTypeSet)
+    {
+        symbolKind              = SymbolKind::TypeSet;
+        structNode->kind        = AstNodeKind::TypeSet;
+        structNode->semanticFct = SemanticJob::resolveTypeSet;
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -206,7 +214,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->nakedName            = structNode->name;
             typeInfo->structName           = structNode->name;
             typeInfo->scope                = newScope;
-            auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
             structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
         }
         else

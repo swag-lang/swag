@@ -281,7 +281,8 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
-    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    auto node = (AstStruct*) context->node->parent;
+    SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl || node->kind == AstNodeKind::TypeSet);
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     // Add generic parameters
@@ -313,9 +314,24 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, node->kind, node->attributeFlags));
 
     // Register symbol with its type
-    auto symbolKind = node->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
+    SymbolKind symbolKind = SymbolKind::Struct;
+    switch (node->kind)
+    {
+    case AstNodeKind::StructDecl:
+        symbolKind = SymbolKind::Struct;
+        break;
+    case AstNodeKind::InterfaceDecl:
+        symbolKind = SymbolKind::Interface;
+        break;
+    case AstNodeKind::TypeSet:
+        symbolKind = SymbolKind::TypeSet;
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
 
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
     return true;
 }
 
@@ -756,5 +772,10 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
+    return true;
+}
+
+bool SemanticJob::resolveTypeSet(SemanticContext* context)
+{
     return true;
 }

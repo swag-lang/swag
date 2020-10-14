@@ -112,7 +112,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         SymbolOverload* result = nullptr;
 
         // A structure is defined the first time as incomplete (so that it can reference itself)
-        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::Function)
+        if (symbol->kind == SymbolKind::Struct ||
+            symbol->kind == SymbolKind::Interface ||
+            symbol->kind == SymbolKind::TypeSet ||
+            symbol->kind == SymbolKind::Function)
         {
             for (auto resolved : symbol->overloads)
             {

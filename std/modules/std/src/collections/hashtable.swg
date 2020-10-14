@@ -25,9 +25,9 @@ impl HashTable
     const HASH_DELETED = 1'u32
     const HASH_FIRST = 2'u32
 
-    func opDrop(self)
+    func opDrop(using self)
     {
-        self.free()
+        free()
     }
 
     #[macro, noreturn]
@@ -173,7 +173,7 @@ impl HashTable
         {
             if table[index].hash == hashVal && table[index].key == key
             {
-                table[index].hash = HASH_DELETED;
+                table[index].hash = HASH_DELETED
                 count -= 1
                 deleted += 1
                 return

@@ -59,6 +59,7 @@ impl Array
         buffer[index] = value
     }
 
+    // Initializes an Array that contains values copied from the specified array
     func opAffect(using self, arr: const [..] T)
     {
         clear()
@@ -80,6 +81,7 @@ impl Array
         count += countof
     }
 
+    // Vist every elements of the array
     #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {

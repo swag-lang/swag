@@ -76,6 +76,7 @@ enum class AstNodeKind : uint8_t
     EnumDecl,
     StructDecl,
     InterfaceDecl,
+    TypeSet,
     Inline,
     StructContent,
     TupleContent,

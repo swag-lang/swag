@@ -64,7 +64,7 @@ public impl BitArray
     }
 
     // Initializes a BitArray that contains bit values copied from the specified array of booleans
-    func opAffect(using self, slice: [..] bool)
+    func opAffect(using self, slice: const [..] bool)
     {
         len := @countof(slice)
         self.reserve(len)
