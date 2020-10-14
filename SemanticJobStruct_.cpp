@@ -777,10 +777,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
 bool SemanticJob::resolveTypeSet(SemanticContext* context)
 {
-    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::TypeSet);
-    auto sourceFile = context->sourceFile;
-    auto typeSet    = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto job        = context->job;
+    auto node    = CastAst<AstStruct>(context->node, AstNodeKind::TypeSet);
+    auto typeSet = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job     = context->job;
 
     typeSet->declNode   = node;
     typeSet->name       = node->name;
@@ -809,10 +808,8 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        if (child->kind != AstNodeKind::VarDecl)
+        if (child->kind != AstNodeKind::Alias)
             continue;
-
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
@@ -831,8 +828,6 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
         typeParam->index    = storageIndex;
-
-        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
 
         if (!(node->flags & AST_IS_GENERIC))
         {

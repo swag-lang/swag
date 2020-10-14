@@ -312,10 +312,13 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
             SWAG_CHECK(doAttrUse(parent));
             break;
 
+        // A user alias
         case TokenId::KwdAlias:
+            SWAG_VERIFY(kind != AstNodeKind::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
             SWAG_CHECK(doAlias(parent));
             break;
 
+        // Using on a struct member
         case TokenId::KwdUsing:
         {
             SWAG_VERIFY(kind != AstNodeKind::InterfaceDecl, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
@@ -333,8 +336,30 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
             break;
         }
 
+        // A normal declaration
         default:
-            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+            if (kind == AstNodeKind::TypeSet)
+            {
+                auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
+                node->semanticFct = SemanticJob::resolveTypeAlias;
+
+                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
+                node->inheritTokenName(token);
+                SWAG_CHECK(isValidUserName(node));
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymColon));
+
+                AstNode* expr;
+                SWAG_CHECK(doTypeExpression(node, &expr));
+                SWAG_CHECK(eatSemiCol("after type"));
+
+                currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+            }
+            else
+            {
+                SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+            }
+
             if (!waitCurly)
                 return true;
             break;
