@@ -132,6 +132,14 @@ void Scope::addPublicInterface(AstNode* node)
     setHasExports();
 }
 
+void Scope::addPublicTypeSet(AstNode* node)
+{
+    unique_lock lk(mutex);
+    allocPublicSet();
+    publicSet->publicTypeSet.insert(node);
+    setHasExports();
+}
+
 void Scope::addPublicEnum(AstNode* node)
 {
     unique_lock lk(mutex);

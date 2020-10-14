@@ -254,13 +254,13 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-        SWAG_CHECK(doStructContent(contentNode));
+        SWAG_CHECK(doStructContent(contentNode, structNode->kind));
     }
 
     return true;
 }
 
-bool SyntaxJob::doStructContent(AstNode* parent)
+bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
 {
     bool waitCurly = false;
     if (token.id == TokenId::SymLeftCurly)
@@ -300,7 +300,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            SWAG_CHECK(doStructContent(stmt));
+            SWAG_CHECK(doStructContent(stmt, kind));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
             break;
         }
@@ -315,8 +315,11 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         case TokenId::KwdAlias:
             SWAG_CHECK(doAlias(parent));
             break;
+
         case TokenId::KwdUsing:
         {
+            SWAG_VERIFY(kind != AstNodeKind::InterfaceDecl, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
+            SWAG_VERIFY(kind != AstNodeKind::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
             SWAG_CHECK(eatToken());
 
             auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);

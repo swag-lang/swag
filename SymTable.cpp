@@ -212,7 +212,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         return true;
 
     // Overloads are not allowed on certain types
-    bool canOverload = kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct || kind == SymbolKind::Interface;
+    bool canOverload = false;
+    if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct || kind == SymbolKind::Interface || kind == SymbolKind::TypeSet)
+        canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];

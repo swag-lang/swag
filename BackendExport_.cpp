@@ -462,6 +462,16 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         }
     }
 
+    if (!publicSet->publicTypeSet.empty())
+    {
+        for (auto one : publicSet->publicTypeSet)
+        {
+            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::TypeSet);
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
+            SWAG_CHECK(emitPublicStructSwg(typeStruct, node, indent));
+        }
+    }
+
     // Enums
     if (!publicSet->publicEnum.empty())
     {

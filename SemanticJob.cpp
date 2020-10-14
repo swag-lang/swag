@@ -143,6 +143,7 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::EnumDecl:
                     case AstNodeKind::StructDecl:
                     case AstNodeKind::InterfaceDecl:
+                    case AstNodeKind::TypeSet:
                     case AstNodeKind::CompilerAssert:
                     case AstNodeKind::CompilerPrint:
                     case AstNodeKind::CompilerRun:

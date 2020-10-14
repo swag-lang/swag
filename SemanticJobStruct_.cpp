@@ -492,7 +492,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instantiate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve struct because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         auto realStorageOffset = storageOffset;
@@ -703,7 +703,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instantiate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve interface because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))
@@ -777,5 +777,84 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
 bool SemanticJob::resolveTypeSet(SemanticContext* context)
 {
+    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::TypeSet);
+    auto sourceFile = context->sourceFile;
+    auto typeSet    = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job        = context->job;
+
+    typeSet->declNode   = node;
+    typeSet->name       = node->name;
+    typeSet->nakedName  = node->name;
+    typeSet->structName = node->name;
+    typeSet->kind       = TypeInfoKind::TypeSet;
+
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    if (node->flags & AST_STRUCT_COMPOUND)
+    {
+        job->tmpNodes.clear();
+        flattenStructChilds(context, node->content, job->tmpNodes);
+    }
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (!node->ownerScope->isGlobal())
+            return context->report({node, node->token, format("embedded typeset '%s' cannot be public", node->name.c_str())});
+
+        if (!(node->flags & AST_FROM_GENERIC))
+            node->ownerScope->addPublicInterface(node);
+    }
+
+    uint32_t storageIndex = 0;
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto child = childs[i];
+        if (child->kind != AstNodeKind::VarDecl)
+            continue;
+
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+
+        TypeInfoParam* typeParam = nullptr;
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            typeParam             = g_Allocator.alloc<TypeInfoParam>();
+            typeParam->namedParam = child->name;
+            typeParam->name       = child->typeInfo->name;
+            typeParam->sizeOf     = 0;
+            typeParam->node       = child;
+            if (child->parentAttributes)
+                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            typeSet->fields.push_back(typeParam);
+        }
+
+        typeParam           = typeSet->fields[storageIndex];
+        typeParam->typeInfo = child->typeInfo;
+        typeParam->node     = child;
+        typeParam->index    = storageIndex;
+
+        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
+
+        if (!(node->flags & AST_IS_GENERIC))
+        {
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve typeset because type '%s' is generic", child->typeInfo->name.c_str())}));
+        }
+
+        if (typeParam->attributes.hasAttribute("swag.offset"))
+        {
+            auto attr = typeParam->attributes.getAttribute("swag.offset");
+            SWAG_ASSERT(attr);
+            return context->report({attr->node, "cannot relocate a typeset member"});
+        }
+
+        storageIndex++;
+    }
+
+    SWAG_VERIFY(!typeSet->fields.empty(), context->report({node, node->token, format("typeset '%s' is empty", node->name.c_str())}));
+
+    // Register symbol with its type
+    node->typeInfo               = typeSet;
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeSet);
+    SWAG_CHECK(node->resolvedSymbolOverload);
+
     return true;
 }

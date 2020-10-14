@@ -45,6 +45,7 @@ struct ScopePublicSet
     set<AstNode*> publicGenericFunc;
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
+    set<AstNode*> publicTypeSet;
     set<AstNode*> publicEnum;
     set<AstNode*> publicConst;
     set<AstNode*> publicNodes;
@@ -63,6 +64,7 @@ struct Scope
     void               addPublicGenericFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);
+    void               addPublicTypeSet(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
     void               addPublicNode(AstNode* node);

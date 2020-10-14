@@ -92,7 +92,7 @@ struct SyntaxJob : public Job
     bool doEnumContent(AstNode* parent);
     bool doEnumValue(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-    bool doStructContent(AstNode* parent);
+    bool doStructContent(AstNode* parent, AstNodeKind kind);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
