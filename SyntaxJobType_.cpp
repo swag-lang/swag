@@ -114,11 +114,11 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         }
     }
 
-    // For now, be give the priority to the generic parameters from the function, if there are any
+    // For now, we give the priority to the generic parameters from the function, if there are any
     // But this will not work in all cases
     if (parent->ownerStructScope)
     {
-        auto parentStruct = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
         if (parentStruct->genericParameters)
         {
             if (structNode->genericParameters)
