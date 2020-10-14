@@ -1551,9 +1551,7 @@ bool TypeManager::castToTypeSet(SemanticContext* context, TypeInfo* toType, Type
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::TypeSet);
     for (auto p : typeStruct->fields)
     {
-        auto typeChild = p->typeInfo;
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeChild, TypeInfoKind::TypeSetAlias);
-        if (typeAlias->rawType == fromType)
+        if (p->typeInfo == fromType)
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {

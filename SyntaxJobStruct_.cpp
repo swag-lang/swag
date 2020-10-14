@@ -340,7 +340,8 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
         default:
             if (kind == AstNodeKind::TypeSet)
             {
-                auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
+                SWAG_CHECK(doStruct(parent));
+                /*auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
                 node->semanticFct = SemanticJob::resolveTypeSetAlias;
 
                 SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
@@ -353,7 +354,7 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
                 SWAG_CHECK(doTypeExpression(node, &expr));
                 SWAG_CHECK(eatSemiCol("after type"));
 
-                currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+                currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);*/
             }
             else
             {

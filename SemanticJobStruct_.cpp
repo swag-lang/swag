@@ -809,7 +809,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        if (child->kind != AstNodeKind::Alias)
+        if (child->kind != AstNodeKind::StructDecl)
             continue;
 
         TypeInfoParam* typeParam = nullptr;
