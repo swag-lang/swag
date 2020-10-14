@@ -9,4 +9,6 @@ typeset AA
 {
     var v: AA
     v = AA.x{666}
+    ptr := @kindof(v)
+    @print(ptr.name)
 }
