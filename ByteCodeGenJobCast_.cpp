@@ -765,6 +765,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::TypeSet)
+    {
+        SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
+        exprNode->castedTypeInfo = nullptr;
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
 

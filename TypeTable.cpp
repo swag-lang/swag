@@ -259,6 +259,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         break;
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
+    case TypeInfoKind::TypeSet:
         typeStruct = swagScope.regTypeInfoStruct;
         break;
     case TypeInfoKind::Param:
@@ -357,6 +358,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
+    case TypeInfoKind::TypeSet:
     {
         auto job                   = g_Pool_typeTableJob.alloc();
         job->module                = module;

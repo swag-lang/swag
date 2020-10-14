@@ -42,23 +42,30 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         SWAG_ASSERT(fromNode);
 
+        auto fromTypeName = fromType->name;
+        if (fromType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            fromTypeName = "tuple";
+        auto toTypeName = toType->name;
+        if (toType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            toTypeName = "tuple";
+
         // Is there an explicit cast possible ?
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()};
+                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()};
                 diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
                 context->report(diag);
             }
             else
             {
-                context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+                context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
             }
         }
         else
         {
-            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
         }
     }
 
@@ -1539,6 +1546,30 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToTypeSet(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::TypeSet);
+    for (auto p : typeStruct->fields)
+    {
+        auto typeChild = p->typeInfo;
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeChild, TypeInfoKind::Alias);
+        if (typeAlias->rawType == fromType)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = toType;
+                auto& typeTable          = context->sourceFile->module->typeTable;
+                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, nullptr, &fromNode->concreteTypeInfoStorage, CONCRETE_ZERO));
+            }
+
+            return true;
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     if (toType->isNative(NativeTypeKind::Any))
@@ -2361,6 +2392,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Cast to interface
     case TypeInfoKind::Interface:
         return castToInterface(context, toType, fromType, fromNode, castFlags);
+
+    // Cast to typeset
+    case TypeInfoKind::TypeSet:
+        return castToTypeSet(context, toType, fromType, fromNode, castFlags);
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);

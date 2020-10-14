@@ -123,7 +123,9 @@ JobResult TypeTableJob::execute()
     context.node       = nodes.front();
     baseContext        = &context;
 
-    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->kind == TypeInfoKind::TypeSet)
     {
         // Need to wait for all interfaces & methods to be registered
         auto realType = (TypeInfoStruct*) typeInfo;

@@ -786,6 +786,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
     typeSet->nakedName  = node->name;
     typeSet->structName = node->name;
     typeSet->kind       = TypeInfoKind::TypeSet;
+    typeSet->sizeOf     = 2 * sizeof(Register);
 
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
