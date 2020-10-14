@@ -253,6 +253,11 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
             return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);
         break;
 
+    case TypeInfoKind::TypeSetAlias:
+        if (flags & CONCRETE_TYPESETALIAS)
+            return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);
+        break;
+
     case TypeInfoKind::Generic:
         if (flags & CONCRETE_GENERIC)
         {

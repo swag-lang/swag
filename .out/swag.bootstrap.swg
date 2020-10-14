@@ -203,6 +203,8 @@ namespace swag
         Alias
         Code
         Interface
+        TypeSet
+        TypeSetAlias
     }
 
     enum TypeInfoNativeKind
@@ -254,6 +256,12 @@ namespace swag
         finalType:		const *TypeInfo
         pointedType:	const *TypeInfo
         ptrCount:		u32
+    }
+
+    struct TypeInfoAlias
+    {
+        using base: 	TypeInfo
+        rawType:		const *TypeInfo
     }
 
     struct TypeInfoReference

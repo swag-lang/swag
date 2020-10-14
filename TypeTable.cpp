@@ -286,6 +286,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Code:
         typeStruct = swagScope.regTypeInfoGeneric;
         break;
+    case TypeInfoKind::TypeSetAlias:
+        typeStruct = swagScope.regTypeInfoAlias;
+        break;
     default:
         context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
@@ -356,6 +359,14 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         break;
     }
 
+    case TypeInfoKind::TypeSetAlias:
+    {
+        auto concreteType = (ConcreteTypeInfoAlias*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoAlias*) typeInfo;
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType, false, cflags));
+        break;
+    }
+
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     case TypeInfoKind::TypeSet:
@@ -397,12 +408,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
         // Generics
         concreteType->generics.buffer = nullptr;
-        concreteType->generics.count = realType->genericParameters.size();
+        concreteType->generics.count  = realType->genericParameters.size();
         if (concreteType->generics.count)
         {
-            uint32_t               storageArray = segment->reserveNoLock((uint32_t)concreteType->generics.count * sizeof(ConcreteTypeInfoParam));
-            ConcreteTypeInfoParam* addrArray = (ConcreteTypeInfoParam*)segment->addressNoLock(storageArray);
-            concreteType->generics.buffer = addrArray;
+            uint32_t               storageArray = segment->reserveNoLock((uint32_t) concreteType->generics.count * sizeof(ConcreteTypeInfoParam));
+            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
+            concreteType->generics.buffer       = addrArray;
             segment->addInitPtr(OFFSETOF(concreteType->generics.buffer), storageArray);
             for (int param = 0; param < concreteType->generics.count; param++)
             {

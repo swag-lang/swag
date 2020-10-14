@@ -341,7 +341,7 @@ bool SyntaxJob::doStructContent(AstNode* parent, AstNodeKind kind)
             if (kind == AstNodeKind::TypeSet)
             {
                 auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
-                node->semanticFct = SemanticJob::resolveTypeAlias;
+                node->semanticFct = SemanticJob::resolveTypeSetAlias;
 
                 SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
                 node->inheritTokenName(token);

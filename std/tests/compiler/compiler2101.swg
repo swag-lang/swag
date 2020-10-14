@@ -4,7 +4,7 @@ typeset AA
     y: {s32, f32}
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var v: AA

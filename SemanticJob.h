@@ -128,6 +128,7 @@ struct SemanticJob : public Job
     static bool convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
+    static bool resolveTypeSetAlias(SemanticContext* context);
     static bool resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveIntrinsicMakeInterface(SemanticContext* context);

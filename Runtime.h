@@ -103,6 +103,7 @@ enum class TypeInfoKind : uint16_t
     Code,
     Interface,
     TypeSet,
+    TypeSetAlias,
     Count,
 };
 
@@ -190,6 +191,12 @@ struct ConcreteTypeInfoReference
 {
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;
+};
+
+struct ConcreteTypeInfoAlias
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* rawType;
 };
 
 struct ConcreteTypeInfoParam
