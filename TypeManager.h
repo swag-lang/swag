@@ -21,12 +21,11 @@ static const uint32_t CASTFLAG_STRICT        = 0x00000100;
 static const uint32_t CASTFLAG_FORCE_UNCONST = 0x00000200;
 static const uint32_t CASTFLAG_COMPARE       = 0x00000400;
 
-static const uint32_t CONCRETE_ALL          = 0xFFFFFFFF;
-static const uint32_t CONCRETE_ENUM         = 0x00000001;
-static const uint32_t CONCRETE_FUNC         = 0x00000002;
-static const uint32_t CONCRETE_GENERIC      = 0x00000004;
-static const uint32_t CONCRETE_ALIAS        = 0x00000008;
-static const uint32_t CONCRETE_TYPESETALIAS = 0x00000010;
+static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
+static const uint32_t CONCRETE_ENUM    = 0x00000001;
+static const uint32_t CONCRETE_FUNC    = 0x00000002;
+static const uint32_t CONCRETE_GENERIC = 0x00000004;
+static const uint32_t CONCRETE_ALIAS   = 0x00000008;
 
 struct TypeManager
 {

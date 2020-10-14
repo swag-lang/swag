@@ -286,7 +286,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     case TypeInfoKind::Code:
         typeStruct = swagScope.regTypeInfoGeneric;
         break;
-    case TypeInfoKind::TypeSetAlias:
+    case TypeInfoKind::Alias:
         typeStruct = swagScope.regTypeInfoAlias;
         break;
     default:
@@ -359,7 +359,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         break;
     }
 
-    case TypeInfoKind::TypeSetAlias:
+    case TypeInfoKind::Alias:
     {
         auto concreteType = (ConcreteTypeInfoAlias*) concreteTypeInfoValue;
         auto realType     = (TypeInfoAlias*) typeInfo;

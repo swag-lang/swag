@@ -315,7 +315,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         !parent->startScope &&
         parent->previousResolvedNode &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
-        parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::TypeSetAlias &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
         return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->name.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
@@ -441,7 +440,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     auto symbolKind = symbol->kind;
     if (symbol->kind == SymbolKind::TypeAlias)
     {
-        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS | CONCRETE_TYPESETALIAS);
+        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS);
         if (typeAlias->kind == TypeInfoKind::Struct)
             symbolKind = SymbolKind::Struct;
     }
@@ -1070,10 +1069,6 @@ anotherTry:
                     if (!(typeInfo->flags & TYPEINFO_GENERIC))
                         job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
                 }
-            }
-            else if (rawTypeInfo->kind == TypeInfoKind::TypeSetAlias)
-            {
-                rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_TYPESETALIAS);
             }
 
             // We collect type replacements depending on where the identifier is

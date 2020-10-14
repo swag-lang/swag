@@ -103,7 +103,6 @@ enum class TypeInfoKind : uint16_t
     Code,
     Interface,
     TypeSet,
-    TypeSetAlias,
     Count,
 };
 

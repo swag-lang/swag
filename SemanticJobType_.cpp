@@ -377,36 +377,6 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeSetAlias(SemanticContext* context)
-{
-    auto node = context->node;
-
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
-    if (context->result == ContextResult::Pending)
-        return true;
-
-    auto typeInfo       = g_Allocator.alloc<TypeInfoAlias>();
-    typeInfo->kind      = TypeInfoKind::TypeSetAlias;
-    typeInfo->declNode  = node;
-    typeInfo->rawType   = node->childs.front()->typeInfo;
-    typeInfo->nakedName = node->name;
-    typeInfo->name      = node->name;
-    typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
-
-    typeInfo->computeName();
-    node->typeInfo = typeInfo;
-
-    uint32_t symbolFlags = 0;
-    if (node->typeInfo->flags & TYPEINFO_GENERIC)
-        symbolFlags |= OVERLOAD_GENERIC;
-
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
-    return true;
-}
-
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;

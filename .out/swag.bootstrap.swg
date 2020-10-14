@@ -204,7 +204,6 @@ namespace swag
         Code
         Interface
         TypeSet
-        TypeSetAlias
     }
 
     enum TypeInfoNativeKind
