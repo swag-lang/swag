@@ -54,7 +54,7 @@
 
     // A tuple can be used to return multiple values in a function
     {
-        func myFunction()->{f32, f32}
+        func myFunction() -> {f32, f32}
         {
             return @{1.0, 2.0}
         }
@@ -74,7 +74,7 @@
 
     // You can name the fields of the function result too
     {
-        func myFunction()->{x: f32, y: bool}
+        func myFunction() -> {x: f32, y: bool}
         {
             return @{x: 1.0, y: true}
         }
