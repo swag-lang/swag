@@ -437,10 +437,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // If this is a typealias, find the right thing
+    auto typeAlias  = identifier->typeInfo;
     auto symbolKind = symbol->kind;
     if (symbol->kind == SymbolKind::TypeAlias)
     {
-        auto typeAlias = TypeManager::concreteType(identifier->typeInfo);
+        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS | CONCRETE_TYPESETALIAS);
         if (typeAlias->kind == TypeInfoKind::Struct)
             symbolKind = SymbolKind::Struct;
     }
@@ -473,7 +474,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::TypeSet:
         if (!(overload->flags & OVERLOAD_IMPL))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
-        parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
+        parent->startScope = static_cast<TypeInfoStruct*>(typeAlias)->scope;
         identifier->flags |= AST_CONST_EXPR;
 
         // A struct with parameters is in fact the creation of a temporary local variable
