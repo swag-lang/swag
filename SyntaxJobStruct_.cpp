@@ -270,9 +270,24 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-        SWAG_CHECK(doStructBody(contentNode, structType));
+        if (structType == SyntaxStructType::Tuple)
+            SWAG_CHECK(doStructBodyTuple(contentNode));
+        else
+            SWAG_CHECK(doStructBody(contentNode, structType));
     }
 
+    return true;
+}
+
+bool SyntaxJob::doStructBodyTuple(AstNode* parent)
+{
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    while (token.id != TokenId::SymRightCurly)
+    {
+        SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 
