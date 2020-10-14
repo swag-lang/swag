@@ -499,7 +499,7 @@ struct TypeInfoStruct : public TypeInfo
 
     int numRegisters() override
     {
-        if (kind == TypeInfoKind::Interface)
+        if (kind == TypeInfoKind::Interface || kind == TypeInfoKind::TypeSet)
             return 2;
         return 1;
     }

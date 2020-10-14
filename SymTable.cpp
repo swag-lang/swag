@@ -331,6 +331,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a struct";
     case SymbolKind::Interface:
         return "an interface";
+    case SymbolKind::TypeSet:
+        return "a typeset";
     case SymbolKind::GenericType:
         return "a generic type";
     }
@@ -362,6 +364,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "struct";
     case SymbolKind::Interface:
         return "interface";
+    case SymbolKind::TypeSet:
+        return "typeset";
     case SymbolKind::GenericType:
         return "generic type";
     }

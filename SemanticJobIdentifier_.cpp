@@ -469,6 +469,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Struct:
     case SymbolKind::Interface:
+    case SymbolKind::TypeSet:
         if (!(overload->flags & OVERLOAD_IMPL))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
@@ -717,7 +718,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, SymbolOverload *symOverload)
+void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, SymbolOverload* symOverload)
 {
     auto job  = context->job;
     auto node = context->node;
@@ -1082,6 +1083,12 @@ anotherTry:
             {
                 forStruct     = true;
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
+                typeInfo->match(job->symMatch);
+            }
+            else if (rawTypeInfo->kind == TypeInfoKind::TypeSet)
+            {
+                forStruct     = true;
+                auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::TypeSet);
                 typeInfo->match(job->symMatch);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
@@ -2004,6 +2011,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (symbolKind != SymbolKind::Attribute &&
             symbolKind != SymbolKind::Function &&
             symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::TypeSet &&
             symbolKind != SymbolKind::Interface &&
             overload->typeInfo->kind != TypeInfoKind::Lambda)
         {

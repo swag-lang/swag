@@ -188,6 +188,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::TypeAlias &&
                     symName->kind != SymbolKind::GenericType &&
                     symName->kind != SymbolKind::Struct &&
+                    symName->kind != SymbolKind::TypeSet &&
                     symName->kind != SymbolKind::Interface)
                 {
                     Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
