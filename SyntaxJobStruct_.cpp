@@ -345,7 +345,9 @@ bool SyntaxJob::doStructBody(AstNode* parent, AstNodeKind kind)
         default:
             if (kind == AstNodeKind::TypeSet)
             {
-                SWAG_CHECK(doStruct(parent));
+                auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
+                structNode->semanticFct = SemanticJob::resolveStruct;
+                SWAG_CHECK(doStructContent(structNode, SymbolKind::Struct));
             }
             else
             {
