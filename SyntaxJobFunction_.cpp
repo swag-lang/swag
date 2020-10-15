@@ -139,7 +139,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 
         // For an enum or a typeset, 'self' is replaced with the type itself, not a pointer to the type like
         // for a struct
-        if (paramNode->ownerStructScope->kind == ScopeKind::Enum || paramNode->ownerStructScope->owner->kind == AstNodeKind::TypeSet)
+        if (paramNode->ownerStructScope->kind == ScopeKind::Enum || paramNode->ownerStructScope->kind == ScopeKind::TypeSet)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->typeFlags |= TYPEFLAG_ISSELF;

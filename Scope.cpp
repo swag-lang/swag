@@ -14,6 +14,8 @@ const char* Scope::getNakedKindName(ScopeKind kind)
         return "tuple";
     case ScopeKind::Struct:
         return "struct";
+    case ScopeKind::TypeSet:
+        return "typeset";
     case ScopeKind::File:
         return "file";
     case ScopeKind::Module:
@@ -40,6 +42,8 @@ const char* Scope::getArticleKindName(ScopeKind kind)
         return "a tuple";
     case ScopeKind::Struct:
         return "a struct";
+    case ScopeKind::TypeSet:
+        return "a typeset";
     case ScopeKind::File:
         return "a file";
     case ScopeKind::Module:

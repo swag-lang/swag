@@ -10,7 +10,7 @@ typeset EventLogger
     viewMedia{fileName: string, userType: UserType, mediaType: MediaType}
 }
 
-impl EventLogger
+impl typeset EventLogger
 {
     func log(self)
     {

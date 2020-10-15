@@ -19,6 +19,10 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         scopeKind = ScopeKind::Enum;
         SWAG_CHECK(tokenizer.getToken(token));
         break;
+    case TokenId::KwdTypeSet:
+        scopeKind = ScopeKind::TypeSet;
+        SWAG_CHECK(tokenizer.getToken(token));
+        break;
     }
 
     // Identifier
@@ -33,7 +37,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
-        SWAG_VERIFY(scopeKind == ScopeKind::Struct, sourceFile->report({implNode, token, "'for' is invalid for an enum implementation block"}));
+        SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, "'for' is invalid for an enum implementation block"}));
+        SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, "'for' is invalid for a typeset implementation block"}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
@@ -191,8 +196,9 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         auto        symbol = currentScope->symTable.findNoLock(structNode->name);
         if (!symbol)
         {
-            newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
-            if (newScope->kind != ScopeKind::Struct)
+            auto scopeKind = structType == SyntaxStructType::TypeSet ? ScopeKind::TypeSet : ScopeKind::Struct;
+            newScope       = Ast::newScope(structNode, structNode->name, scopeKind, currentScope, true);
+            if (newScope->kind != scopeKind)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->name.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};

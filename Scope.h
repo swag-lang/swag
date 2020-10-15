@@ -17,6 +17,7 @@ enum class ScopeKind
     File,
     Namespace,
     Enum,
+    TypeSet,
     Struct,
     Impl,
     Function,
