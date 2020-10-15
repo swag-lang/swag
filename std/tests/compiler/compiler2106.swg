@@ -10,9 +10,12 @@ typeset EventLogger
 
 impl EventLogger
 {
-    func log(using self)
+    func log(self)
     {
-
+        switch @kindof(self)
+        {
+        case login: @print("login\n")
+        }
     }
 }
 
