@@ -1,4 +1,4 @@
-alias UserType = s32
+alias UserType = string
 alias MediaType = s32
 
 typeset EventLogger
@@ -10,5 +10,16 @@ typeset EventLogger
 
 impl EventLogger
 {
+    func log(using self)
+    {
 
+    }
+}
+
+#test
+{
+    var v: EventLogger
+
+    v = EventLogger.login{"toto"}
+    //v.log()
 }
