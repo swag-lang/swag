@@ -263,18 +263,34 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 
     if (node->typeInfo->kind == TypeInfoKind::Struct)
     {
-        // First collect values from the structure default init
-        SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, seg, value, typeInfo, nullptr));
-
-        // Then collect values from the type parameters
-        if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+        if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
         {
-            auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-            SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, identifier->callParameters));
-        }
+            // Do not initialize variable with type arguments, then again with an initialization
+            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+                return context->report({node->assignment, "variable initialized twice, first with type arguments, and then with this assignment"});
 
-        SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
+            // Copy from a constant
+            SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
+            storageOffset = seg->reserveNoLock(typeInfo->sizeOf);
+            auto addrDst  = seg->address(storageOffset);
+            auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->storageOffset);
+            memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+        }
+        else
+        {
+            // First collect values from the structure default init
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, seg, value, typeInfo, nullptr));
+
+            // Then collect values from the type parameters
+            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            {
+                auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+                SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, identifier->callParameters));
+            }
+
+            SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
+        }
     }
     else
     {
