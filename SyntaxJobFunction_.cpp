@@ -136,10 +136,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, "'self' can only be used in an 'impl' block"));
-        if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
+
+        // For an enum or a typeset, 'self' is replaced with the type itself, not a pointer to the type like
+        // for a struct
+        if (paramNode->ownerStructScope->kind == ScopeKind::Enum || paramNode->ownerStructScope->owner->kind == AstNodeKind::TypeSet)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->typeFlags |= TYPEFLAG_ISCONST;
+            //typeNode->typeFlags |= TYPEFLAG_ISCONST;
             typeNode->typeFlags |= TYPEFLAG_ISSELF;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;

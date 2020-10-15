@@ -12,10 +12,13 @@ impl EventLogger
 {
     func log(self)
     {
+        @print(@kindof(self).name)
+        @print("\n")
+/*
         switch @kindof(self)
         {
         case login: @print("login\n")
-        }
+        }*/
     }
 }
 
@@ -24,5 +27,7 @@ impl EventLogger
     var v: EventLogger
 
     v = EventLogger.login{"toto"}
+    v.log()
+    v = EventLogger.viewMedia{"toto", "titi"}
     v.log()
 }

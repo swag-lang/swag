@@ -1548,6 +1548,11 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
+    if (toType == fromType)
+        return true;
+    if (toType->isSame(fromType, ISSAME_CAST))
+        return true;
+
     if (toType->kind == TypeInfoKind::TypeSet)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::TypeSet);
@@ -1569,10 +1574,6 @@ bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, 
     }
     else if (fromType->kind == TypeInfoKind::TypeSet)
     {
-        // Cast will be checked later
-        if (toType->kind == TypeInfoKind::Pointer)
-            return true;
-
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::TypeSet);
         for (auto p : typeStruct->fields)
         {
