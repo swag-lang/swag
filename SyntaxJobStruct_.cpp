@@ -407,6 +407,10 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
             SWAG_CHECK(doAttrUse(parent));
             break;
 
+        case TokenId::KwdStruct:
+            SWAG_CHECK(doStruct(parent));
+            break;
+
         // A user alias
         case TokenId::KwdAlias:
             SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
