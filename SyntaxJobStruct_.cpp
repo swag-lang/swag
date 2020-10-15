@@ -271,7 +271,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
         if (structType == SyntaxStructType::Tuple)
-            SWAG_CHECK(doStructBodyTuple(contentNode, nullptr));
+            SWAG_CHECK(doStructBodyTuple(contentNode, true, nullptr));
         else
             SWAG_CHECK(doStructBody(contentNode, structType));
     }
@@ -279,10 +279,22 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     return true;
 }
 
-bool SyntaxJob::doStructBodyTuple(AstNode* parent, Utf8* name)
+bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
 {
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+    // Tuple without a content
+    if (token.id == TokenId::SymRightCurly)
+    {
+        if (acceptEmpty)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+            return true;
+        }
+
+        return sourceFile->report({parent, token, "empty tuple definition"});
+    }
 
     int idx = 0;
     while (token.id != TokenId::EndOfFile)
@@ -324,7 +336,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, Utf8* name)
         // Name
         if (name)
         {
-            typeExpression = (AstTypeExpression*)expression;
+            typeExpression = (AstTypeExpression*) expression;
             for (int i = 0; i < typeExpression->ptrCount; i++)
                 *name += "*";
             *name += typeExpression->token.text;

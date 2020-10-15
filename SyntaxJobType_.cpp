@@ -133,7 +133,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 
     // Content
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
-    SWAG_CHECK(doStructBodyTuple(contentNode, &name));
+    SWAG_CHECK(doStructBodyTuple(contentNode, false, &name));
 
     // Compute structure name
     structNode->name = move(name);
