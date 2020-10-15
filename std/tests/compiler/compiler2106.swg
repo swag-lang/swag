@@ -21,5 +21,5 @@ impl EventLogger
     var v: EventLogger
 
     v = EventLogger.login{"toto"}
-    //v.log()
+    v.log()
 }

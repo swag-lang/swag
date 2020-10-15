@@ -1569,6 +1569,10 @@ bool TypeManager::castToFromTypeSet(SemanticContext* context, TypeInfo* toType, 
     }
     else if (fromType->kind == TypeInfoKind::TypeSet)
     {
+        // Cast will be checked later
+        if (toType->kind == TypeInfoKind::Pointer)
+            return true;
+
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::TypeSet);
         for (auto p : typeStruct->fields)
         {
@@ -1757,7 +1761,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Struct/Interface to pointer
-    if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface)
+    if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface || fromType->kind == TypeInfoKind::TypeSet)
     {
         if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst())
         {

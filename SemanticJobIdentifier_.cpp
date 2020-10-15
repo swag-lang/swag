@@ -1,15 +1,11 @@
 #include "pch.h"
-#include "pch.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Workspace.h"
 #include "Generic.h"
 #include "TypeManager.h"
-#include "LanguageSpec.h"
 #include "ThreadManager.h"
-#include "Module.h"
-#include "SourceFile.h"
 #include "Module.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
@@ -132,6 +128,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     }
 
     case TypeInfoKind::Struct:
+    case TypeInfoKind::TypeSet:
         identifierRef->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
         node->typeInfo            = typeInfo;
         break;
@@ -1720,7 +1717,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             else
             {
                 // If a structure is referencing itself, we will match the incomplete symbol for now
-                if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface) &&
+                if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
                     node->ownerMainNode &&
                     node->ownerMainNode->kind != AstNodeKind::Impl &&
                     node->ownerMainNode->name == symbol->name)
