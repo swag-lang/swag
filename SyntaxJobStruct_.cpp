@@ -407,7 +407,13 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
             SWAG_CHECK(doAttrUse(parent));
             break;
 
+        // Sub definitions
+        case TokenId::KwdEnum:
+            SWAG_CHECK(doEnum(parent));
+            break;
         case TokenId::KwdStruct:
+        case TokenId::KwdTypeSet:
+        case TokenId::KwdInterface:
             SWAG_CHECK(doStruct(parent));
             break;
 
