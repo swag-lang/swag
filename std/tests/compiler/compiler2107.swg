@@ -5,11 +5,11 @@ typeset AA
 
 func log(v: *AA)
 {
-    @print(@kindof(:v).name)
+    @assert(@kindof(:v) == AA.B)
 }
 
 #test
 {
     var x: AA = AA.B{5}
-    //log(&x)
+    log(&x)
 }
