@@ -100,7 +100,7 @@ struct SyntaxJob : public Job
     bool doEnumContent(AstNode* parent);
     bool doEnumValue(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-    bool doStructBodyTuple(AstNode* parent);
+    bool doStructBodyTuple(AstNode* parent, Utf8* name);
     bool doStructBody(AstNode* parent, SyntaxStructType structType);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);

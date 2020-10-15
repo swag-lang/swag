@@ -131,59 +131,9 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->content            = contentNode;
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-    auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-
+    // Content
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
-    int  idx  = 0;
-    while (token.id != TokenId::EndOfFile)
-    {
-        auto structFieldNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
-        structFieldNode->flags |= AST_GENERATED;
-
-        AstTypeExpression* typeExpression = nullptr;
-        AstNode*           expression;
-        SWAG_CHECK(doTypeExpression(nullptr, &expression));
-
-        // Name followed by ':'
-        if (token.id == TokenId::SymColon)
-        {
-            typeExpression = (AstTypeExpression*) expression;
-            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
-                return sourceFile->report({expression, format("invalid named field '%s'", token.text.c_str())});
-            structFieldNode->name = typeExpression->identifier->childs.front()->name;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
-            expression = structFieldNode->type;
-            name += structFieldNode->name;
-            name += "_";
-        }
-        else
-        {
-            Ast::addChildBack(structFieldNode, expression);
-            structFieldNode->type = expression;
-            structFieldNode->name = format("item%u", idx);
-            structFieldNode->flags |= AST_AUTO_NAME;
-        }
-
-        idx++;
-
-        // Name
-        typeExpression = (AstTypeExpression*) expression;
-        for (int i = 0; i < typeExpression->ptrCount; i++)
-            name += "*";
-        name += typeExpression->token.text;
-        if (typeExpression->identifier)
-            name += typeExpression->identifier->childs.back()->name;
-        Ast::normalizeIdentifierName(name);
-
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));
-        if (token.id == TokenId::SymRightCurly)
-            break;
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
+    SWAG_CHECK(doStructBodyTuple(contentNode, &name));
 
     // Compute structure name
     structNode->name = move(name);

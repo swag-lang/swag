@@ -1,7 +1,7 @@
 typeset AA
 {
-    T  {x: s32;}
-    T1 {x: s32; y: f32;}
+    T  {x: s32}
+    T1 {x: s32, y: f32}
 }
 
 //#[swag.printbc]

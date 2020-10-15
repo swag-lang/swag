@@ -271,7 +271,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
         if (structType == SyntaxStructType::Tuple)
-            SWAG_CHECK(doStructBodyTuple(contentNode));
+            SWAG_CHECK(doStructBodyTuple(contentNode, nullptr));
         else
             SWAG_CHECK(doStructBody(contentNode, structType));
     }
@@ -279,15 +279,67 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     return true;
 }
 
-bool SyntaxJob::doStructBodyTuple(AstNode* parent)
+bool SyntaxJob::doStructBodyTuple(AstNode* parent, Utf8* name)
 {
+    auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-    while (token.id != TokenId::SymRightCurly)
+
+    int idx = 0;
+    while (token.id != TokenId::EndOfFile)
     {
-        SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+        auto structFieldNode = Ast::newVarDecl(sourceFile, "", parent, nullptr);
+        structFieldNode->flags |= AST_GENERATED;
+
+        AstTypeExpression* typeExpression = nullptr;
+        AstNode*           expression;
+        SWAG_CHECK(doTypeExpression(nullptr, &expression));
+
+        // Name followed by ':'
+        if (token.id == TokenId::SymColon)
+        {
+            typeExpression = (AstTypeExpression*) expression;
+            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
+                return sourceFile->report({expression, format("invalid named field '%s'", token.text.c_str())});
+            structFieldNode->name = typeExpression->identifier->childs.front()->name;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
+            expression = structFieldNode->type;
+
+            if (name)
+            {
+                *name += structFieldNode->name;
+                *name += "_";
+            }
+        }
+        else
+        {
+            Ast::addChildBack(structFieldNode, expression);
+            structFieldNode->type = expression;
+            structFieldNode->name = format("item%u", idx);
+            structFieldNode->flags |= AST_AUTO_NAME;
+        }
+
+        idx++;
+
+        // Name
+        if (name)
+        {
+            typeExpression = (AstTypeExpression*)expression;
+            for (int i = 0; i < typeExpression->ptrCount; i++)
+                *name += "*";
+            *name += typeExpression->token.text;
+            if (typeExpression->identifier)
+                *name += typeExpression->identifier->childs.back()->name;
+            Ast::normalizeIdentifierName(*name);
+        }
+
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));
+        if (token.id == TokenId::SymRightCurly)
+            break;
+        SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
     return true;
 }
 
