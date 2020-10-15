@@ -37,8 +37,9 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
-    exprNode->additionalRegisterRC = exprNode->resultRegisterRC;
-    exprNode->resultRegisterRC     = r0;
+    exprNode->additionalRegisterRC  = exprNode->resultRegisterRC;
+    exprNode->resultRegisterRC      = r0;
+    context->node->resultRegisterRC = r0;
     return true;
 }
 
