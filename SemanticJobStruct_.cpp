@@ -257,23 +257,36 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum && typeInfo->kind != TypeInfoKind::TypeSet)
     {
         Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct or an enum", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Struct:
     {
         auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
+        break;
     }
-
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    case TypeInfoKind::TypeSet:
+    {
+        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::TypeSet);
+        SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
+        break;
+    }
+    case TypeInfoKind::Enum:
     {
         auto enumNode = CastAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, enumNode->scope));
+        break;
+    }
+    default:
+        SWAG_ASSERT(false);
+        break;
     }
 
     return true;
