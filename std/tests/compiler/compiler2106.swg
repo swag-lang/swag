@@ -1,6 +1,8 @@
 alias UserType = string
 alias MediaType = s32
 
+var G: s32
+
 typeset EventLogger
 {
     login{userType: UserType}
@@ -12,13 +14,14 @@ impl EventLogger
 {
     func log(self)
     {
-        @print(@kindof(self).name)
-        @print("\n")
-/*
+        //@print(@kindof(self).name)
+        //@print("\n")
+
         switch @kindof(self)
         {
-        case login: @print("login\n")
-        }*/
+        case login: G += 1
+        case viewMedia: G += 2
+        }
     }
 }
 
@@ -30,4 +33,6 @@ impl EventLogger
     v.log()
     v = EventLogger.viewMedia{"toto", "titi"}
     v.log()
+
+    @assert(G == 3)
 }

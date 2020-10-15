@@ -142,7 +142,6 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum || paramNode->ownerStructScope->owner->kind == AstNodeKind::TypeSet)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
-            //typeNode->typeFlags |= TYPEFLAG_ISCONST;
             typeNode->typeFlags |= TYPEFLAG_ISSELF;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
