@@ -759,7 +759,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "variable name expected"));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected"));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, acceptParameters));
             if (token.id != TokenId::SymComma)
                 break;
@@ -972,7 +972,12 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         int idx = 0;
         for (auto child : leftNode->childs)
         {
+            // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child));
+            if (child->childs.front()->name == "?")
+                continue;
+            SWAG_CHECK(isValidUserName(child));
+
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
@@ -1121,7 +1126,18 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             int idx = 0;
             while (!leftNode->childs.empty())
             {
-                auto child        = leftNode->childs.front();
+                auto child = leftNode->childs.front();
+
+                // Ignore field if '?', otherwise check that this is a valid variable name
+                SWAG_CHECK(checkIsSingleIdentifier(child));
+                if (child->childs.front()->name == "?")
+                {
+                    Ast::removeFromParent(child);
+                    Ast::releaseNode(child);
+                    continue;
+                }
+                SWAG_CHECK(isValidUserName(child));
+
                 auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
                 affectNode->token = savedtoken;
                 Ast::removeFromParent(child);
