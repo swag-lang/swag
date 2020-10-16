@@ -252,7 +252,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
-bool SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifier* identifier)
+bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* identifier)
 {
     auto sourceFile = context->sourceFile;
     auto callP      = identifier->callParameters;
@@ -260,16 +260,20 @@ bool SemanticJob::createTmpLocalVarStruct(SemanticContext* context, AstIdentifie
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-    {
         return context->report({callP, callP->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
-    }
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
         varParent = varParent->parent;
 
     // Declare a variable
-    auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
+    auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
+
+    // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
+    // another global variable at compile time
+    if (identifier->ownerScope->isGlobalOrImpl())
+        varNode->kind = AstNodeKind::ConstDecl;
+
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->flags |= AST_GENERATED;
@@ -473,9 +477,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->startScope = static_cast<TypeInfoStruct*>(typeAlias)->scope;
         identifier->flags |= AST_CONST_EXPR;
 
-        // A struct with parameters is in fact the creation of a temporary local variable
+        // A struct with parameters is in fact the creation of a temporary variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
-            SWAG_CHECK(createTmpLocalVarStruct(context, identifier));
+            SWAG_CHECK(createTmpVarStruct(context, identifier));
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))

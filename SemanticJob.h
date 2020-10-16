@@ -84,7 +84,7 @@ struct SemanticJob : public Job
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static void sortParameters(AstNode* allParams);
     static void dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
-    static bool createTmpLocalVarStruct(SemanticContext* context, AstIdentifier* identifier);
+    static bool createTmpVarStruct(SemanticContext* context, AstIdentifier* identifier);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static void resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
