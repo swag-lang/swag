@@ -47,6 +47,8 @@ bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PACK, "pack");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_FLAGS, "enumflags");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_ON, "safety(true)");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_OFF, "safety(false)");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_NOOPTIM, "nooptim");
 
     // Foot
