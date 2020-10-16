@@ -28,6 +28,7 @@ var toTreatCpt: u32
     {
         if(i.name == "myAttr")
         {
+            @assert(toTreatCpt != @countof(toTreat))
             toTreat[toTreatCpt] = typeF.name
             toTreatCpt += 1
         }
