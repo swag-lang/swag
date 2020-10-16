@@ -975,7 +975,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child));
             if (child->childs.front()->name == "?")
+            {
+                idx++;
                 continue;
+            }
             SWAG_CHECK(isValidUserName(child));
 
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
@@ -1132,6 +1135,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 SWAG_CHECK(checkIsSingleIdentifier(child));
                 if (child->childs.front()->name == "?")
                 {
+                    idx++;
                     Ast::removeFromParent(child);
                     Ast::releaseNode(child);
                     continue;

@@ -52,6 +52,15 @@
         @assert(value == true)
     }
 
+    // You can ignore a tuple field by naming the variable '?'
+    {
+        tuple1 := @{x: 1.0, y: 2.0}
+        (x, ?) := tuple1
+        @assert(x == 1.0)
+        (?, y) := tuple1
+        @assert(y == 2.0)
+    }
+
     // A tuple can be used to return multiple values in a function
     {
         func myFunction() -> {f32, f32}
