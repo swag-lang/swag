@@ -11,6 +11,7 @@
 #include "BackendX64.h"
 #include "ThreadManager.h"
 #include "Context.h"
+#include "SemanticJob.h"
 #include "ModuleManager.h"
 
 bool Module::mustGenerateTestExe()
@@ -308,8 +309,8 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
         return true;
 
     // Convert to a concrete message for the user
-    msg->moduleName.buffer    = (void*) name.c_str();
-    msg->moduleName.count     = name.length();
+    msg->moduleName.buffer = (void*) name.c_str();
+    msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (not multi threaded)
     currentCompilerMessage    = msg;
@@ -605,4 +606,23 @@ void Module::printBC()
 {
     for (auto bc : byteCodePrintBC)
         bc->print();
+}
+
+bool Module::compileString(const Utf8& text, Job* dependentJob)
+{
+    if (text.empty())
+        return true;
+
+    SyntaxJob syntaxJob;
+    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
+    if (!syntaxJob.constructEmbedded(text, parent, parent, CompilerAstKind::TopLevelInstruction))
+        return false;
+
+    auto job          = g_Pool_semanticJob.alloc();
+    job->sourceFile   = files[0];
+    job->module       = this;
+    job->dependentJob = dependentJob;
+    job->nodes.push_back(parent);
+    g_ThreadMgr.addJob(job);
+    return true;
 }

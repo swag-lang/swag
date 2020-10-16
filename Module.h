@@ -107,6 +107,7 @@ struct Module
     bool hasBytecodeToRun();
     bool WaitForDependenciesDone(Job* job);
     void printBC();
+    bool compileString(const Utf8& str, Job* dependentJob);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;

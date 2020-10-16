@@ -16,21 +16,13 @@ void* getBuildCfg(Module* module)
 
 void compileString(Module* module, const char* str, uint32_t count)
 {
-    SyntaxJob syntaxJob;
-    Utf8      text;
-    text.append(str, count);
-
-    AstNode* parent = Ast::newNode(module->files[0], AstNodeKind::StatementNoScope, module->files[0]->astRoot);
-    if (!syntaxJob.constructEmbedded(text, parent, parent, CompilerAstKind::TopLevelInstruction))
+    if (!str || !count || !str[0])
         return;
-
-    auto job          = g_Pool_semanticJob.alloc();
-    job->sourceFile   = module->files[0];
-    job->module       = module;
-    job->dependentJob = module->currentCompilerMessageJob;
-    job->nodes.push_back(parent);
-    g_ThreadMgr.addJob(job);
-    return;
+    if (!module->currentCompilerMessageJob)
+        return;
+    Utf8 text;
+    text.append(str, count);
+    module->compileString(text, module->currentCompilerMessageJob);
 }
 
 using cb = void* (*) (Module*);
