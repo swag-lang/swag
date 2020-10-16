@@ -1,7 +1,7 @@
 #test
 {
     {
-        // A typeset contains struct types, and acts as a variant or a tagged union
+        // A typeset contains tuples, and acts as a variant or a tagged union
         typeset Color
         {
             Rgb{r: u8, g: u8, b: u8}
@@ -32,6 +32,7 @@
             S32{s32}
             F32{f: f32}
             Bool{bool}
+            Nothing{}
         }
 
         // You can use a switch to test the sub type
