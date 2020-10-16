@@ -23,6 +23,12 @@
         myColor := cast(Color.Rgbf) color
         @assert(myColor.r == 1.0)
         @assert(myColor.g == 0.5)
+
+        // You can destructure the result in your own variables
+        (r, g, b) := cast(Color.Rgbf) color
+        @assert(r == 1.0)
+        @assert(g == 0.5)
+        @assert(b == 0.0)
     }
 
     {
