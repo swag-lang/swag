@@ -43,6 +43,7 @@ static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 struct ScopePublicSet
 {
     set<AstNode*> publicFunc;
+    set<AstNode*> publicAttr;
     set<AstNode*> publicGenericFunc;
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
@@ -62,6 +63,7 @@ struct Scope
 
     void               setHasExports();
     void               addPublicFunc(AstNode* node);
+    void               addPublicAttribute(AstNode* node);
     void               addPublicGenericFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);

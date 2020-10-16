@@ -3,27 +3,6 @@
 #include "Ast.h"
 #include "SourceFile.h"
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match bootstrap.swg
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-enum AttributeUsage
-{
-    // Usage
-    Enum           = 0x00000001,
-    EnumValue      = 0x00000002,
-    Field          = 0x00000004,
-    GlobalVariable = 0x00000008,
-    LocalVariable  = 0x00000010,
-    Struct         = 0x00000020,
-    Function       = 0x00000040,
-    Attribute      = 0x00000080,
-    Switch         = 0x00000100,
-    All            = 0x0FFFFFFF,
-    // Flags
-    Multi = 0x80000000,
-};
-
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
     if (kind == AstNodeKind::Statement)
@@ -234,6 +213,9 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Attribute));
+
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        node->ownerScope->addPublicAttribute(node);
     return true;
 }
 

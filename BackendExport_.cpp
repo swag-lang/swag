@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Profile.h"
 #include "ModuleSaveExportJob.h"
+#include "Attribute.h"
 
 bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
 {
@@ -153,7 +154,10 @@ bool Backend::emitGenericParameters(AstNode* node)
 
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    CONCAT_FIXED_STR(bufferSwg, "func ");
+    if (node->kind == AstNodeKind::AttrDecl)
+        CONCAT_FIXED_STR(bufferSwg, "attr ");
+    else
+        CONCAT_FIXED_STR(bufferSwg, "func ");
     bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
@@ -504,6 +508,46 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addIndent(indent);
             bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")", module->name.c_str(), node->fullnameForeign.c_str());
             SWAG_CHECK(emitAttributes(node, indent, false));
+            bufferSwg.addIndent(indent);
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
+        }
+    }
+
+    // Attributes
+    if (!publicSet->publicAttr.empty())
+    {
+        for (auto func : publicSet->publicAttr)
+        {
+            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::AttrDecl);
+            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            bool              first    = true;
+            bufferSwg.addString("#[attributeUsage(");
+
+#define ADD_ATTRUSAGE(__f, __n)                         \
+    if (typeFunc->attributeUsage & (int) __f)           \
+    {                                                   \
+        if (!first)                                     \
+            CONCAT_FIXED_STR(bufferSwg, "|");           \
+        first = false;                                  \
+        CONCAT_FIXED_STR(bufferSwg, "AttributeUsage."); \
+        CONCAT_FIXED_STR(bufferSwg, __n);               \
+    }
+
+            if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
+                CONCAT_FIXED_STR(bufferSwg, "All");
+            else
+            {
+                ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
+                ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
+                ADD_ATTRUSAGE(AttributeUsage::Field, "Field");
+                ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
+                ADD_ATTRUSAGE(AttributeUsage::LocalVariable, "LocalVariable");
+                ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
+                ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
+                ADD_ATTRUSAGE(AttributeUsage::Switch, "Switch");
+            }
+
+            bufferSwg.addString(")]\n");
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }

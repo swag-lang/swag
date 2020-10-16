@@ -2,6 +2,7 @@ using swag
 
 var cpt = 0's64
 
+#[compiler]
 func testInline(type: const* TypeInfoFunc)
 {
     visit i: type.attributes
@@ -16,14 +17,13 @@ func testInline(type: const* TypeInfoFunc)
 }
 
 //#[swag.printbc]
-#compiler(swag.CompilerMsgKindMask.SemanticFunc)
+#compiler(CompilerMsgKindMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
     @assert(msg != null)
+    if(msg.type.kind != TypeInfoKind.Func) return
 
-    if(msg.type.kind == TypeInfoKind.Func)
-        testInline(cast(const* TypeInfoFunc) msg.type)
-
+    testInline(cast(const* TypeInfoFunc) msg.type)
     cpt += 1
 }

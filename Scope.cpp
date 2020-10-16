@@ -112,6 +112,14 @@ void Scope::addPublicFunc(AstNode* node)
     setHasExports();
 }
 
+void Scope::addPublicAttribute(AstNode* node)
+{
+    unique_lock lk(mutex);
+    allocPublicSet();
+    publicSet->publicAttr.insert(node);
+    setHasExports();
+}
+
 void Scope::addPublicGenericFunc(AstNode* node)
 {
     unique_lock lk(mutex);
