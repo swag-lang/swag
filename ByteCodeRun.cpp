@@ -1840,6 +1840,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 SourceLocation start = {context->errorLoc->lineStart, context->errorLoc->colStart};
                 SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
+                errorContext->sourceFile = ip->node->sourceFile;
                 errorContext->report(diag);
             }
             else
@@ -1848,11 +1849,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 if (location)
                 {
                     Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                    errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
                 else
                 {
                     Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
+                    errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
             }
@@ -1882,7 +1885,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append("assertion failed");
 
         // Add current context
-        if(!g_byteCodeStack.steps.empty())
+        if (!g_byteCodeStack.steps.empty())
             runContext->bc->addCallStack(runContext);
 
         SourceFile dummyFile;

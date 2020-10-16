@@ -18,11 +18,10 @@ void compileString(Module* module, const char* str, uint32_t count)
 {
     if (!str || !count || !str[0])
         return;
-    if (!module->currentCompilerMessageJob)
-        return;
+    SWAG_ASSERT(module->currentCompilerJob);
     Utf8 text;
     text.append(str, count);
-    module->compileString(text, module->currentCompilerMessageJob);
+    module->compileString(text, module->currentCompilerJob);
 }
 
 using cb = void* (*) (Module*);

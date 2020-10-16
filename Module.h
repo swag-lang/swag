@@ -95,7 +95,7 @@ struct Module
     BuildPass    buildPass = BuildPass::Full;
 
     const ConcreteCompilerMessage* currentCompilerMessage    = nullptr;
-    Job*                           currentCompilerMessageJob = nullptr;
+    Job*                           currentCompilerJob = nullptr;
     bool                           canSendCompilerMessages   = true;
 
     bool sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob);

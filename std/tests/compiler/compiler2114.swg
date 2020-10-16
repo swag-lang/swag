@@ -49,5 +49,7 @@ var toTreatCpt: u32
 
 #run
 {
+    //itf := @compiler()
+    //itf.compileString("#run @print(\"toto\")")
     //@print(GG)
 }

@@ -78,6 +78,10 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
 
 JobResult ModuleBuildJob::execute()
 {
+    JobContext context;
+    context.baseJob = this;
+    baseContext     = &context;
+
     // Init module
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Init)
@@ -242,7 +246,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::WaitForDependencies;
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
-        // This is a dummy job, in case the user code does not trigger new jobs during the 
+        // This is a dummy job, in case the user code does not trigger new jobs during the
         // CompilerMsgKind::PassAfterSemantic pass
         auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module       = nullptr;

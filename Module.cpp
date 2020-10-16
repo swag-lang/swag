@@ -235,7 +235,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_defaultContext.flags |= (uint64_t) ContextFlags::ByteCode;
 
     g_byteCodeStack.clear();
-    bool result = executeNodeNoLock(sourceFile, node, callerContext);
+    sourceFile->module->currentCompilerJob = callerContext->baseJob;
+    bool result                                   = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
     return result;
 }
@@ -314,15 +315,18 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
 
     // Find to do that, as this function can only be called once (not multi threaded)
     currentCompilerMessage    = msg;
-    currentCompilerMessageJob = dependentJob;
+    currentCompilerJob = dependentJob;
+
+    JobContext context;
+    context.baseJob = dependentJob;
 
     for (auto bc : byteCodeCompiler[index])
     {
-        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, nullptr));
+        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
     currentCompilerMessage    = nullptr;
-    currentCompilerMessageJob = nullptr;
+    currentCompilerJob = nullptr;
 
     return true;
 }

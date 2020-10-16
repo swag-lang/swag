@@ -122,5 +122,6 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         copyNotes.push_back(note);
     }
 
+    SWAG_ASSERT(sourceFile);
     return sourceFile->report(diag, copyNotes);
 }
