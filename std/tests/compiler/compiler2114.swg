@@ -13,8 +13,11 @@ func titi()
 {
 }
 
+var toTreat: [4] string
+var toTreatCpt: u32
+
 //#[swag.printbc]
-#compiler(CompilerMsgKindMask.SemanticFunc)
+#compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
@@ -25,8 +28,17 @@ func titi()
     {
         if(i.name == "myAttr")
         {
-            @print(typeF.name)
-            @print("\n")
+            toTreat[toTreatCpt] = typeF.name
+            toTreatCpt += 1
         }
+    }
+}
+
+#compiler(CompilerMsgMask.PassAfterSemantic)
+{
+    loop toTreatCpt
+    {
+        @print(toTreat[@index])
+        @print("\n")
     }
 }

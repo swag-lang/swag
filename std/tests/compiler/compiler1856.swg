@@ -1,4 +1,4 @@
-#compiler(swag.CompilerMsgKindMask.PassBeforeOutput)
+#compiler(swag.CompilerMsgMask.PassBeforeOutput)
 {
     itf := @compiler()
     msg := itf.getMessage()

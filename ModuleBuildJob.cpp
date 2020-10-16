@@ -156,8 +156,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticCompiler)
     {
+        pass = ModuleBuildPass::Publish;
+
+        // Cannot send compiler messages while we are resolving #compiler functions
         module->canSendCompilerMessages = false;
-        pass                            = ModuleBuildPass::Publish;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -191,6 +193,11 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Publish)
     {
         pass = ModuleBuildPass::SemanticModule;
+
+        // We can then send compiler messages again
+        module->canSendCompilerMessages = true;
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish);
+
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
             publishFilesToTarget();
@@ -202,9 +209,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
-        // Cannot send compiler messages while we are resolving #compiler functions
-        module->canSendCompilerMessages = true;
-        pass                            = ModuleBuildPass::WaitForDependencies;
+        pass = ModuleBuildPass::AfterSemantic;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -225,6 +230,25 @@ JobResult ModuleBuildJob::execute()
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
+        return JobResult::KeepJobAlive;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::AfterSemantic)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        pass = ModuleBuildPass::WaitForDependencies;
+        module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic);
+
+        // This is a dummy job, in case the user code does not trigger new jobs during the 
+        // CompilerMsgKind::PassAfterSemantic pass
+        auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
+        semanticJob->module       = nullptr;
+        semanticJob->dependentJob = this;
+        jobsToAdd.push_back(semanticJob);
+
         return JobResult::KeepJobAlive;
     }
 
@@ -268,7 +292,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::RunByteCode)
     {
-        if(!ByteCodeOptimizer::optimize(module))
+        if (!ByteCodeOptimizer::optimize(module))
             return JobResult::ReleaseJob;
         module->printBC();
 

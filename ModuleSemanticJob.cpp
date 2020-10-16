@@ -9,6 +9,9 @@ thread_local Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 
 JobResult ModuleSemanticJob::execute()
 {
+    if(!module)
+        return JobResult::ReleaseJob;
+
     for (auto file : module->files)
     {
         if (file->buildPass < BuildPass::Semantic)

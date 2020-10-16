@@ -10,6 +10,7 @@ enum class ModuleBuildPass
     Init,
     Dependencies,
     IncludeSwg,
+    AfterSemantic,
     WaitForDependencies,
     WaitForDependenciesEffective,
     Publish,

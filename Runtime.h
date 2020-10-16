@@ -284,7 +284,9 @@ struct ConcreteTypeInfoSlice
 
 enum class CompilerMsgKind
 {
+    PassBeforePublish,
     PassBeforeSemantic,
+    PassAfterSemantic,
     PassBeforeRun,
     PassBeforeOutput,
     PassAllDone,

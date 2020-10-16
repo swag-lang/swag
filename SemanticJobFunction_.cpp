@@ -292,9 +292,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMessageKind' as a parameter"}));
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, "'#compiler' function must have 'swag.CompilerMsgMask' as a parameter"}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgKindMask", context->report({parameters, "'#compiler' function must have 'swag.CompilerMsgKindMask' as a parameter"}));
+        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgMask", context->report({parameters, "'#compiler' function must have 'swag.CompilerMsgMask' as a parameter"}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;

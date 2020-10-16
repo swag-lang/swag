@@ -388,7 +388,9 @@ namespace swag
 
     enum CompilerMsgKind : u32
     {
+        PassBeforePublish
         PassBeforeSemantic
+        PassAfterSemantic
         PassBeforeRun
         PassBeforeOutput
         PassAllDone
@@ -396,9 +398,11 @@ namespace swag
 	}
 
     #[enumflags]
-    enum CompilerMsgKindMask : u64
+    enum CompilerMsgMask : u64
     {
+        PassBeforePublish =     1 << cast(u32) CompilerMsgKind.PassBeforePublish
         PassBeforeSemantic =    1 << cast(u32) CompilerMsgKind.PassBeforeSemantic
+        PassAfterSemantic =     1 << cast(u32) CompilerMsgKind.PassAfterSemantic
         PassBeforeRun =         1 << cast(u32) CompilerMsgKind.PassBeforeRun
         PassBeforeOutput =      1 << cast(u32) CompilerMsgKind.PassBeforeOutput
         PassAllDone =           1 << cast(u32) CompilerMsgKind.PassAllDone
