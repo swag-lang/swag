@@ -17,7 +17,7 @@
     }
 
     // You cannot index a string to get a character, except in ascii strings.
-    // You will retreive a byte
+    // You will retrieve a byte
     {
         const a = "this is a chinese character: 是"
         const b = a[0]
