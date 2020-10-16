@@ -140,7 +140,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst->b.u32         = Runtime::COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
-    inst->d.pointer     = (uint8_t*) "invalid cast from any";
+    inst->d.pointer     = (uint8_t*) "invalid dynamic cast";
     inherhitLocation(inst, exprNode);
 
     freeRegisterRC(context, result);

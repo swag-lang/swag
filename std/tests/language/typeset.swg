@@ -13,7 +13,7 @@
         color = Color.Rgb{255, 0, 0}
         color = Color.Rgbf{1.0, 0.0, 0.0}
 
-        // @kindof will return the sub type
+        // @kindof will return the assigned sub type
         color = Color.Rgb{255, 0, 0}
         @assert(@kindof(color) == Color.Rgb)
         color = Color.Rgbf{1.0, 0.5, 0.0}
