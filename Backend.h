@@ -48,8 +48,9 @@ struct Backend
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
     void      setupExportFile();
-    bool      emitAttributes(AstNode* node, int indent, bool isFirst = true);
-    bool      emitAttributes(TypeInfoParam* param, int indent);
+    bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
+    bool      emitAttributesFlags(AstNode* node, int indent, bool isFirst = true);
+    bool      emitAttributesParams(TypeInfoParam* param, int indent);
     void      emitType(TypeInfo* typeInfo);
     bool      emitGenericParameters(AstNode* node);
     bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
