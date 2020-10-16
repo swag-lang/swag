@@ -29,10 +29,13 @@
         @assert(r == 1.0)
         @assert(g == 0.5)
         @assert(b == 0.0)
+
+        (?, ?, bf) := cast(Color.Rgbf) color
+        @assert(bf == 0.0)
     }
 
     {
-        // Like with tuples, field name is optional
+        // As this are tuples, field names are optional
         typeset Variant
         {
             S32{s32}
