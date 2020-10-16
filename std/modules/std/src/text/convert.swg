@@ -149,6 +149,7 @@ public
             return
         }
 
+        // A struct
         if type.kind == TypeInfoKind.Struct
         {
             // A special format structure
@@ -169,11 +170,41 @@ public
             return
         }
 
+        // A static array
+        if type.kind == TypeInfoKind.Array
+        {
+            ptrArr := cast(const *TypeInfoArray) type
+            buf.addBytes("[")
+
+            first := true
+            bufArr := cast(const *u8) @dataof(value)
+            loop ptrArr.count
+            {
+                if !first buf.addBytes(", ")
+                first = false
+                var v: any = :cast(const *s32) bufArr
+                convertAny(buf, v, null)
+                //buf.addBytes("?")
+                bufArr += ptrArr.pointedType.sizeof
+            }
+
+            buf.addBytes("]")
+            return
+        }
+
         if type.flags & TypeInfoFlags.Integer
+        {
             convertInt(buf, value, strFormat)
-        else if type.flags & TypeInfoFlags.Float
+            return
+        }
+
+        if type.flags & TypeInfoFlags.Float
+        {
             convertFloat(buf, value, strFormat)
-        else switch type
+            return
+        }
+
+        switch type
         {
             case bool:
                 convertBool(buf, cast(bool) value, strFormat)
