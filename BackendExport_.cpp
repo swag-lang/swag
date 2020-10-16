@@ -34,10 +34,12 @@ bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
     bool first = isFirst;
 
     ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINTBYTECODE, "printbc");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPILER, "compiler");
+    ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
     ADD_ATTR((node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "mixin");
-    ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINTBYTECODE, "printbc");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_TEST_FUNC, "test");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_GLOBAL, "global");
