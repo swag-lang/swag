@@ -14,6 +14,19 @@
         @assert(a[4] == 50)
     }
 
+    // '@dataof' will return the address of the values, '@countof' the number of elements
+    {
+        var a: const [..] u32 = @[10, 20, 30, 40, 50]
+        count := @countof(a)
+        @assert(count == 5)
+        addr := @dataof(a)
+        @assert(addr[0] == 10)
+        @assert(addr[4] == 50)
+
+        a = @[1, 2]
+        @assert(@countof(a) == 2)
+    }
+
     // You can create a slice with your own pointer and count using '@mkslice'
     {
         var array: [4] u32 = @[10, 20, 30, 40]
