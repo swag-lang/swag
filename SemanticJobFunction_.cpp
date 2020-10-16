@@ -149,7 +149,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
         return true;
     msg.type = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);
 
-    module->sendCompilerMessage((ConcreteCompilerMessage*) &msg);
+    module->sendCompilerMessage((ConcreteCompilerMessage*) &msg, context->job);
     return true;
 }
 

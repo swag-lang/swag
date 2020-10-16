@@ -289,14 +289,14 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
-bool Module::sendCompilerMessage(CompilerMsgKind kind)
+bool Module::sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob)
 {
     ConcreteCompilerMessage msg;
     msg.kind = kind;
-    return sendCompilerMessage(&msg);
+    return sendCompilerMessage(&msg, dependentJob);
 }
 
-bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
+bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
     if (!canSendCompilerMessages)
         return true;
@@ -308,16 +308,20 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg)
         return true;
 
     // Convert to a concrete message for the user
-    msg->moduleName.buffer = (void*) name.c_str();
-    msg->moduleName.count  = name.length();
-    currentCompilerMessage = msg;
+    msg->moduleName.buffer    = (void*) name.c_str();
+    msg->moduleName.count     = name.length();
+
+    // Find to do that, as this function can only be called once (not multi threaded)
+    currentCompilerMessage    = msg;
+    currentCompilerMessageJob = dependentJob;
 
     for (auto bc : byteCodeCompiler[index])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, nullptr));
     }
 
-    currentCompilerMessage = nullptr;
+    currentCompilerMessage    = nullptr;
+    currentCompilerMessageJob = nullptr;
 
     return true;
 }

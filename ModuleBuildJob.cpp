@@ -196,7 +196,7 @@ JobResult ModuleBuildJob::execute()
 
         // We can then send compiler messages again
         module->canSendCompilerMessages = true;
-        module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish);
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish, this);
 
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
@@ -225,7 +225,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        module->sendCompilerMessage(CompilerMsgKind::PassBeforeSemantic);
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforeSemantic, this);
         auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
@@ -240,7 +240,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         pass = ModuleBuildPass::WaitForDependencies;
-        module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic);
+        module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
         // This is a dummy job, in case the user code does not trigger new jobs during the 
         // CompilerMsgKind::PassAfterSemantic pass
@@ -307,7 +307,7 @@ JobResult ModuleBuildJob::execute()
         {
             SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
 
-            module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun);
+            module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
 
             // #init functions are only executed in script mode, if the module has a #main
             if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
@@ -453,7 +453,7 @@ JobResult ModuleBuildJob::execute()
         {
             if (g_CommandLine.output)
             {
-                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput);
+                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
                 auto outputJob          = g_Pool_moduleOutputJob.alloc();
                 outputJob->module       = module;
                 outputJob->dependentJob = this;
@@ -511,7 +511,7 @@ JobResult ModuleBuildJob::execute()
     module->constantSegmentCompiler.release();
     module->mutableSegment.release();
 
-    module->sendCompilerMessage(CompilerMsgKind::PassAllDone);
+    module->sendCompilerMessage(CompilerMsgKind::PassAllDone, this);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;

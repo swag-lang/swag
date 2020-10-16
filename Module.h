@@ -94,11 +94,12 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
-    bool                           canSendCompilerMessages = true;
+    const ConcreteCompilerMessage* currentCompilerMessage    = nullptr;
+    Job*                           currentCompilerMessageJob = nullptr;
+    bool                           canSendCompilerMessages   = true;
 
-    bool sendCompilerMessage(CompilerMsgKind kind);
-    bool sendCompilerMessage(ConcreteCompilerMessage* msg);
+    bool sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob);
+    bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     void addCompilerFunc(ByteCode* bc);
     bool hasCompilerFuncFor(CompilerMsgKind kind);
     void addByteCodeFunc(ByteCode* bc);

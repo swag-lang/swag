@@ -422,6 +422,7 @@ namespace swag
     {
         getMessage:     func(self)->const* CompilerMessage
         getBuildCfg:    func(self)->*BuildCfg
+        compileString:  func(self, string)
     }
 
     struct CompilerSourceLocation
