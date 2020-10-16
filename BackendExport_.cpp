@@ -30,17 +30,24 @@ bool Backend::emitAttributes(AstNode* node, int indent, bool isFirst)
         }                                          \
     }
 
+    // Head
     bool first = isFirst;
+
     ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
     ADD_ATTR((node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "mixin");
     ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINTBYTECODE, "printbc");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_GLOBAL, "global");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PACK, "pack");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_FLAGS, "enumflags");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NOOPTIM, "nooptim");
+
+    // Foot
     if (!first)
         CONCAT_FIXED_STR(bufferSwg, "]\n");
     return true;
@@ -534,7 +541,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
             if ((typeFunc->attributeUsage & AttributeUsage::All) == AttributeUsage::All)
-                CONCAT_FIXED_STR(bufferSwg, "All");
+                CONCAT_FIXED_STR(bufferSwg, "AttributeUsage.All");
             else
             {
                 ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
@@ -544,6 +551,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
                 ADD_ATTRUSAGE(AttributeUsage::LocalVariable, "LocalVariable");
                 ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
                 ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
+                ADD_ATTRUSAGE(AttributeUsage::Attribute, "Attribute");
                 ADD_ATTRUSAGE(AttributeUsage::Switch, "Switch");
             }
 

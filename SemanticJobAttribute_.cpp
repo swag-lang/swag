@@ -170,7 +170,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             else if (child->name == "global")
                 flags |= ATTRIBUTE_GLOBAL;
             else if (child->name == "nooptim")
-                flags |= ATTRIBUTE_OPTIMIZEBC_OFF;
+                flags |= ATTRIBUTE_NOOPTIM;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;
