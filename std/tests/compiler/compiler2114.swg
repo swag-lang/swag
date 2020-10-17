@@ -54,5 +54,5 @@ var toTreatCpt: u32
 {
     //itf := @compiler()
     //itf.compileString("#run @print(\"toto\")")
-    //GG()
+    GG()
 }

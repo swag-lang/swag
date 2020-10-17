@@ -617,8 +617,10 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(runContext.callerContext->baseJob);
     SWAG_ASSERT(runContext.ip);
     SWAG_ASSERT(runContext.ip->node);
+    SWAG_ASSERT(runContext.ip->node->sourceFile);
 
-    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
+    auto sourceFile = runContext.ip->node->sourceFile;
+    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
     if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction))
         return false;

@@ -480,6 +480,14 @@ void Workspace::checkPendingJobs()
             }
 
             // We have an identifier
+            else if (pendingJob->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
+            {
+                Diagnostic diag{node, node->token, format("placeholder identifier '%s' has not been solved", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+                SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
+                node = pendingJob->waitingSymbolSolved->nodes.front();
+                Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
+                sourceFile->report(diag, &note);
+            }
             else
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has not been solved (do you have a cycle ?)", pendingJob->waitingSymbolSolved->getFullName().c_str())};
