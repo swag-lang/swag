@@ -38,12 +38,12 @@ var toTreatCpt: u32
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
     itf := @compiler()
-    itf.compileString("#run @prit(\"toto\")")
+    itf.compileString("#run @print(\"toto\")")
 
     loop toTreatCpt
     {
-        //@print(toTreat[@index])
-        //@print("\n")
+        @print(toTreat[@index])
+        @print("\n")
     }
 }
 
