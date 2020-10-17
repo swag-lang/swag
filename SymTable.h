@@ -63,6 +63,7 @@ enum class SymbolKind
     GenericType,
     TypeSet,
     Label,
+    PlaceHolder,
 };
 
 struct SymbolName

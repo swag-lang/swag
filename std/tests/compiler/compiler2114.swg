@@ -35,15 +35,18 @@ var toTreatCpt: u32
     }
 }
 
+#placeholder GG
+
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
     itf := @compiler()
-    itf.compileString("#run @print(\"toto\")")
+    //itf.compileString("#run @print(\"toto\")")
+    itf.compileString("var GG: s32 = 666")
 
     loop toTreatCpt
     {
-        @print(toTreat[@index])
-        @print("\n")
+        //@print(toTreat[@index])
+        //@print("\n")
     }
 }
 

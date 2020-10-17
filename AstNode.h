@@ -128,6 +128,7 @@ enum class AstNodeKind : uint8_t
     CompilerAst,
     CompilerCode,
     CompilerImport,
+    CompilerPlaceHolder,
     CompilerSpecialFunction,
     CompilerForeignLib,
     CompilerBake,

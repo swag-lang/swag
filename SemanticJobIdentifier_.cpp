@@ -1659,7 +1659,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto symbol = scope->symTable.find(node->name);
                 if (symbol)
                 {
-                    // Do not register symbol it it's defined later, in a local scope
+                    // Do not register symbol if it's defined later, in a local scope
                     if (!scope->isGlobalOrImpl())
                     {
                         if (!symbol->nodes.empty() && !(node->flags & AST_GENERATED) && node->ownerScope == scope && !node->ownerInline)

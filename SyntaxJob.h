@@ -80,6 +80,7 @@ struct SyntaxJob : public Job
     bool doCompilerPublic();
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerImport(AstNode* parent);
+    bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);

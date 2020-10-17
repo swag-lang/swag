@@ -34,6 +34,7 @@ void LanguageSpec::setup()
     keywords["#drop"]           = TokenId::CompilerFuncDrop;
     keywords["#main"]           = TokenId::CompilerFuncMain;
     keywords["#compiler"]       = TokenId::CompilerFuncCompiler;
+    keywords["#placeholder"]    = TokenId::CompilerPlaceHolder;
     keywords["#if"]             = TokenId::CompilerIf;
     keywords["#else"]           = TokenId::CompilerElse;
     keywords["#elif"]           = TokenId::CompilerElseIf;
