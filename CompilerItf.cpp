@@ -6,7 +6,7 @@
 
 void* getMessage(Module* module)
 {
-    return (void*) module->currentCompilerMessage;
+    return (void*) module->runContext.currentCompilerMessage;
 }
 
 void* getBuildCfg(Module* module)
@@ -18,10 +18,9 @@ void compileString(Module* module, const char* str, uint32_t count)
 {
     if (!str || !count || !str[0])
         return;
-    SWAG_ASSERT(module->currentCompilerJob);
     Utf8 text;
     text.append(str, count);
-    module->compileString(text, module->currentCompilerJob);
+    module->compileString(text);
 }
 
 using cb = void* (*) (Module*);

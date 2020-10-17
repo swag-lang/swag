@@ -235,8 +235,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_defaultContext.flags |= (uint64_t) ContextFlags::ByteCode;
 
     g_byteCodeStack.clear();
-    sourceFile->module->currentCompilerJob = callerContext->baseJob;
-    bool result                            = executeNodeNoLock(sourceFile, node, callerContext);
+    bool result = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
     return result;
 }
@@ -300,7 +299,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    if (!canSendCompilerMessages)
+    if (!runContext.canSendCompilerMessages)
         return true;
 
     unique_lock lk(mutexByteCodeCompiler);
@@ -314,8 +313,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (not multi threaded)
-    currentCompilerMessage = msg;
-    currentCompilerJob     = dependentJob;
+    runContext.currentCompilerMessage = msg;
 
     JobContext context;
     context.baseJob = dependentJob;
@@ -325,8 +323,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
-    currentCompilerMessage = nullptr;
-    currentCompilerJob     = nullptr;
+    runContext.currentCompilerMessage = nullptr;
 
     return true;
 }
@@ -612,23 +609,27 @@ void Module::printBC()
         bc->print();
 }
 
-bool Module::compileString(const Utf8& text, Job* dependentJob)
+bool Module::compileString(const Utf8& text)
 {
     if (text.empty())
         return true;
+
+    SWAG_ASSERT(runContext.callerContext->baseJob);
+    SWAG_ASSERT(runContext.ip);
+    SWAG_ASSERT(runContext.ip->node);
 
     AstNode* parent                  = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
     parent->token.startLocation.line = parent->token.endLocation.line = 0;
     parent->token.startLocation.column = parent->token.endLocation.column = 0;
 
     SyntaxJob syntaxJob;
-    if (!syntaxJob.constructEmbedded(text, parent, parent, CompilerAstKind::TopLevelInstruction))
+    if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction))
         return false;
 
     auto job          = g_Pool_semanticJob.alloc();
     job->sourceFile   = files[0];
     job->module       = this;
-    job->dependentJob = dependentJob;
+    job->dependentJob = runContext.callerContext->baseJob;
     job->nodes.push_back(parent);
     g_ThreadMgr.addJob(job);
     return true;

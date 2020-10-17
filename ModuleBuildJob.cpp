@@ -163,7 +163,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::Publish;
 
         // Cannot send compiler messages while we are resolving #compiler functions
-        module->canSendCompilerMessages = false;
+        module->runContext.canSendCompilerMessages = false;
 
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -199,7 +199,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::SemanticModule;
 
         // We can then send compiler messages again
-        module->canSendCompilerMessages = true;
+        module->runContext.canSendCompilerMessages = true;
         module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish, this);
 
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)

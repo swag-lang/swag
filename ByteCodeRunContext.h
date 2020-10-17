@@ -12,6 +12,7 @@ struct ByteCode;
 struct ByteCodeInstruction;
 struct ConcreteCompilerSourceLocation;
 struct JobContext;
+struct ConcreteCompilerMessage;
 
 struct StackValue
 {
@@ -73,4 +74,8 @@ struct ByteCodeRunContext : public JobContext
     uint32_t stackSize = 0;
 
     bool hasError = false;
+
+    const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
+    Job*                           currentCompilerJob      = nullptr;
+    bool                           canSendCompilerMessages = true;
 };

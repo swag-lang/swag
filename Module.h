@@ -94,10 +94,6 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    const ConcreteCompilerMessage* currentCompilerMessage    = nullptr;
-    Job*                           currentCompilerJob = nullptr;
-    bool                           canSendCompilerMessages   = true;
-
     bool sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     void addCompilerFunc(ByteCode* bc);
@@ -107,7 +103,7 @@ struct Module
     bool hasBytecodeToRun();
     bool WaitForDependenciesDone(Job* job);
     void printBC();
-    bool compileString(const Utf8& str, Job* dependentJob);
+    bool compileString(const Utf8& str);
 
     DependentJobs              dependentJobs;
     shared_mutex               mutexByteCode;
