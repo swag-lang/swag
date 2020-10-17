@@ -618,10 +618,7 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(runContext.ip);
     SWAG_ASSERT(runContext.ip->node);
 
-    AstNode* parent                  = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
-    parent->token.startLocation.line = parent->token.endLocation.line = 0;
-    parent->token.startLocation.column = parent->token.endLocation.column = 0;
-
+    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
     SyntaxJob syntaxJob;
     if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction))
         return false;

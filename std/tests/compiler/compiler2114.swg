@@ -1,13 +1,5 @@
 using swag
 
-struct AA
-{
-    #ast
-    {
-        return "x: A"
-    }
-}
-
 #[attributeUsage(AttributeUsage.Function)]
 public attr myAttr()
 
