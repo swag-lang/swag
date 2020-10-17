@@ -5,6 +5,7 @@
 #include "Job.h"
 #include "Context.h"
 #include "ByteCodeStack.h"
+#include "SymTable.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -116,8 +117,15 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         currentJobsIO--;
     }
 
+    // Do we need to wakeup my parent job ?
+    // Only if the job is done, or if we are waiting for a placeholder symbol to be solved, because
+    // the parent job *will* generate the placeholder
+    bool wakeUpParent = false;
+    if (result != JobResult::KeepJobAlive || (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder))
+        wakeUpParent = true;
+
     // Notify my parent job that i am done
-    if (result != JobResult::KeepJobAlive && job->dependentJob)
+    if (wakeUpParent && job->dependentJob)
     {
         SWAG_ASSERT(job->dependentJob->waitOnJobs);
         job->dependentJob->waitOnJobs--;

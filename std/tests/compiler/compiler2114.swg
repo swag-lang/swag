@@ -41,7 +41,7 @@ var toTreatCpt: u32
 {
     itf := @compiler()
     //itf.compileString("#run @print(\"toto\")")
-    itf.compileString("var GG: s32 = 666")
+    itf.compileString("func GG() { @print(\"toto la fripouille\"); }")
 
     loop toTreatCpt
     {
@@ -54,5 +54,5 @@ var toTreatCpt: u32
 {
     //itf := @compiler()
     //itf.compileString("#run @print(\"toto\")")
-    //@print(GG)
+    //GG()
 }

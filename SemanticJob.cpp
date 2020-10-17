@@ -110,6 +110,7 @@ JobResult SemanticJob::execute()
             {
                 if (firstNode->kind == AstNodeKind::Impl ||
                     firstNode->kind == AstNodeKind::File ||
+                    firstNode->kind == AstNodeKind::StatementNoScope ||
                     (firstNode->kind == AstNodeKind::CompilerIf && node->ownerScope->isGlobal()))
                 {
                     switch (node->kind)

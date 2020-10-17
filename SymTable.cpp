@@ -32,7 +32,8 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         aliasName = &node->name;
 
     SWAG_ASSERT(!aliasName->empty());
-    auto symbol = findNoLock(*aliasName);
+    bool wasPlaceHolder = false;
+    auto symbol         = findNoLock(*aliasName);
     if (!symbol)
     {
         symbol                       = g_Allocator.alloc<SymbolName>();
@@ -42,10 +43,15 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         symbol->ownerTable           = this;
         mapNames.add(symbol);
     }
+    else if (symbol->kind == SymbolKind::PlaceHolder)
+    {
+        wasPlaceHolder = true;
+        symbol->kind   = kind;
+    }
 
     symbol->nodes.push_back(node);
 
-    // Error if overload is not possible
+    if(!wasPlaceHolder)
     {
         unique_lock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
@@ -90,10 +96,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         aliasName = &node->name;
 
     auto symbol = findNoLock(*aliasName);
+
+    // Be sure we have a symbol
     if (!symbol)
-    {
         symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
-    }
+    else if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
+        symbol->kind = kind;
 
     // Only add an inline parameter once in a given scope
     else if (flags & OVERLOAD_VAR_INLINE)
@@ -335,6 +343,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a typeset";
     case SymbolKind::GenericType:
         return "a generic type";
+    case SymbolKind::PlaceHolder:
+        return "a placeholder";
     }
 
     return "<symbol>";
@@ -368,6 +378,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "typeset";
     case SymbolKind::GenericType:
         return "generic type";
+    case SymbolKind::PlaceHolder:
+        return "placeholder";
     }
 
     return "<symbol>";
