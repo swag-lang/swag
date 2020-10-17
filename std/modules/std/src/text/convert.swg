@@ -180,11 +180,10 @@ public
             bufArr := cast(const *u8) @dataof(value)
             loop ptrArr.count
             {
-                if !first buf.addBytes(", ")
+                if !first buf.addBytes(",")
                 first = false
-                var v: any = :cast(const *s32) bufArr
-                convertAny(buf, v, null)
-                //buf.addBytes("?")
+                v := @mkany(bufArr, ptrArr.pointedType)
+                convertAny(buf, v, strFormat)
                 bufArr += ptrArr.pointedType.sizeof
             }
 

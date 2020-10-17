@@ -236,7 +236,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     g_byteCodeStack.clear();
     sourceFile->module->currentCompilerJob = callerContext->baseJob;
-    bool result                                   = executeNodeNoLock(sourceFile, node, callerContext);
+    bool result                            = executeNodeNoLock(sourceFile, node, callerContext);
     mutexExecuteNode.unlock();
     return result;
 }
@@ -314,8 +314,8 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (not multi threaded)
-    currentCompilerMessage    = msg;
-    currentCompilerJob = dependentJob;
+    currentCompilerMessage = msg;
+    currentCompilerJob     = dependentJob;
 
     JobContext context;
     context.baseJob = dependentJob;
@@ -325,8 +325,8 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
-    currentCompilerMessage    = nullptr;
-    currentCompilerJob = nullptr;
+    currentCompilerMessage = nullptr;
+    currentCompilerJob     = nullptr;
 
     return true;
 }
@@ -617,8 +617,11 @@ bool Module::compileString(const Utf8& text, Job* dependentJob)
     if (text.empty())
         return true;
 
+    AstNode* parent                  = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
+    parent->token.startLocation.line = parent->token.endLocation.line = 0;
+    parent->token.startLocation.column = parent->token.endLocation.column = 0;
+
     SyntaxJob syntaxJob;
-    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, files[0]->astRoot);
     if (!syntaxJob.constructEmbedded(text, parent, parent, CompilerAstKind::TopLevelInstruction))
         return false;
 
