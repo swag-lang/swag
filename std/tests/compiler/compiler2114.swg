@@ -40,8 +40,7 @@ var toTreatCpt: u32
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
     itf := @compiler()
-    //itf.compileString("#run @print(\"toto\")")
-    itf.compileString("func GG() { @print(\"toto la fripouille\"); }")
+    itf.compileString("func GG() => 1234")
 
     loop toTreatCpt
     {
@@ -54,5 +53,5 @@ var toTreatCpt: u32
 {
     //itf := @compiler()
     //itf.compileString("#run @print(\"toto\")")
-    GG()
+    @assert(GG() == 1234)
 }
