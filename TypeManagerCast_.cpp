@@ -50,6 +50,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             toTypeName = "tuple";
 
         // Is there an explicit cast possible ?
+        bool done = false;
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
@@ -57,16 +58,20 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()};
                 diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
                 context->report(diag);
-            }
-            else
-            {
-                context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
+                done = true;
             }
         }
-        else
+
+        // Cast from struct to interface
+        if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
+            context->report({fromNode, fromNode->token, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
+            done = true;
         }
+
+        // General cast error
+        if (!done)
+            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
     }
 
     return false;
@@ -1917,7 +1922,10 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
         auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
         auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         if (!fromTypeStruct->hasInterface(toTypeItf))
+        {
             return castError(context, toType, fromType, fromNode, castFlags);
+        }
+
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             fromNode->castedTypeInfo = fromType;

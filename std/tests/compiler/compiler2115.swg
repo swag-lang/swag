@@ -18,6 +18,6 @@ impl IT for Arr
 
 #test
 {
-    /*var x: Arr's32
-    var t = cast(IT) x*/
+    var x: Arr's32
+    //var t = cast(IT) x
 }
