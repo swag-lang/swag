@@ -92,6 +92,13 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
     }
 
+    // If structure is generic, then do nothing, we cannot solve
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+    {
+        decreaseInterfaceCount(typeStruct);
+        return true;
+    }
+
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];

@@ -44,6 +44,9 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         implNode->semanticFct = SemanticJob::resolveImplFor;
         identifierStruct      = implNode->identifierFor;
         implInterface         = true;
+
+        auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
+        SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, "invalid generic parameters, should be naked"}));
     }
 
     // Content of impl block

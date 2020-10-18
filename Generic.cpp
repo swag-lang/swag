@@ -235,6 +235,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     context->job->waitForAllStructMethods((TypeInfoStruct*) match.symbolOverload->typeInfo);
     if (context->result != ContextResult::Done)
         return true;
+    context->job->waitForAllStructInterfaces((TypeInfoStruct*) match.symbolOverload->typeInfo);
+    if (context->result != ContextResult::Done)
+        return true;
 
     // Types replacements
     CloneContext cloneContext;
