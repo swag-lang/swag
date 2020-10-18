@@ -792,6 +792,46 @@ AstNode* AstStruct::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstImpl::clone(CloneContext& context)
+{
+    auto newNode = g_Allocator.alloc0<AstImpl>();
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext             = context;
+    cloneContext.parent           = newNode;
+    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.ownerStructScope = cloneContext.parentScope;
+    cloneContext.ownerMainNode    = newNode;
+    newNode->scope                = cloneContext.parentScope;
+
+    for (auto c : childs)
+    {
+        auto newChild = c->clone(cloneContext);
+
+        if (newChild->kind == AstNodeKind::FuncDecl)
+        {
+            auto newFunc = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+
+            // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
+            // in order to be able to wait for the resolution of all function before solving the 'impl'
+            // implementation.
+            newNode->scope->symTable.registerSymbolName(nullptr, newFunc, SymbolKind::Function);
+
+            // The function inside the implementation was generic, so be sure we can now solve
+            // its content
+            newFunc->content->flags &= ~AST_NO_SEMANTIC;
+        }
+    }
+
+    newNode->identifier    = findChildRef(identifier, newNode);
+    newNode->identifierFor = findChildRef(identifierFor, newNode);
+
+    // Cloning an impl block should be called only for generic interface implementation
+    SWAG_ASSERT(newNode->identifierFor);
+
+    return newNode;
+}
+
 AstNode* AstEnum::clone(CloneContext& context)
 {
     auto newNode = g_Allocator.alloc0<AstEnum>();
@@ -806,12 +846,6 @@ AstNode* AstEnum::clone(CloneContext& context)
     newNode->scope = cloneContext.parentScope;
 
     return newNode;
-}
-
-AstNode* AstImpl::clone(CloneContext& context)
-{
-    SWAG_ASSERT(false);
-    return nullptr;
 }
 
 AstNode* AstInit::clone(CloneContext& context)

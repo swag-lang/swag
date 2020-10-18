@@ -88,6 +88,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeParamItf->namedParam = typeBaseInterface->scopedName;
             typeParamItf->typeInfo   = typeBaseInterface;
             typeParamItf->node       = typeBaseInterface->declNode;
+            typeParamItf->declNode   = node;
             typeStruct->interfaces.push_back(typeParamItf);
         }
     }

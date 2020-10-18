@@ -257,18 +257,18 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Can be a type alias
     // In that case, we need to retrieve the real struct
-    auto     oldType      = static_cast<TypeInfoStruct*>(overload->typeInfo);
-    auto     sourceSymbol = match.symbolName;
-    AstNode* nodeAlias    = nullptr;
+    auto     genericStructType = static_cast<TypeInfoStruct*>(overload->typeInfo);
+    auto     sourceSymbol      = match.symbolName;
+    AstNode* nodeAlias         = nullptr;
     if (sourceNode->kind == AstNodeKind::Alias)
     {
         // When the duplicated struct will register its symbol, it will also register
         // the corresponding type alias
         nodeAlias = sourceNode;
 
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(sourceNode->typeInfo, TypeInfoKind::Alias);
-        oldType        = CastTypeInfo<TypeInfoStruct>(typeAlias->rawType, TypeInfoKind::Struct);
-        sourceNode     = oldType->declNode;
+        auto typeAlias    = CastTypeInfo<TypeInfoAlias>(sourceNode->typeInfo, TypeInfoKind::Alias);
+        genericStructType = CastTypeInfo<TypeInfoStruct>(typeAlias->rawType, TypeInfoKind::Struct);
+        sourceNode        = genericStructType->declNode;
         SWAG_ASSERT(sourceNode->kind == AstNodeKind::StructDecl);
         SWAG_ASSERT(sourceNode->resolvedSymbolOverload);
         sourceSymbol = sourceNode->resolvedSymbolOverload->symbol;
@@ -289,11 +289,11 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(oldType->clone());
+    auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope           = structNode->scope;
     newType->declNode        = structNode;
-    newType->fromGeneric     = oldType;
+    newType->fromGeneric     = genericStructType;
     structNode->typeInfo     = newType;
     structNode->ownerGeneric = context->node;
 
@@ -331,9 +331,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         if (method->node->flags & AST_IS_SPECIAL_FUNC)
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
-            if (specFunc != oldType->opUserDropFct &&
-                specFunc != oldType->opUserPostCopyFct &&
-                specFunc != oldType->opUserPostMoveFct &&
+            if (specFunc != genericStructType->opUserDropFct &&
+                specFunc != genericStructType->opUserPostCopyFct &&
+                specFunc != genericStructType->opUserPostMoveFct &&
                 !specFunc->genericParameters)
             {
                 instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
@@ -344,6 +344,22 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
         }
+    }
+
+    // Instantiate generic interfaces
+    cloneContext.ownerStructScope   = structNode->scope;
+    newType->cptRemainingInterfaces = (uint32_t) genericStructType->interfaces.size();
+    for (auto itf : genericStructType->interfaces)
+    {
+        auto typeItf = (TypeInfoParam*) itf->clone();
+        newType->interfaces.push_back(typeItf);
+
+        SWAG_ASSERT(itf->declNode);
+        auto newItf   = itf->declNode->clone(cloneContext);
+        typeItf->node = newItf;
+
+        auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
+        structJob->addDependentJob(implJob);
     }
 
     context->job->jobsToAdd.push_back(structJob);

@@ -483,8 +483,8 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
         funcNode->parent->kind != AstNodeKind::CompilerRun &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
-        (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct) &&
-        (funcNode->ownerScope->kind == ScopeKind::Struct))
+        (funcNode->ownerScope->kind == ScopeKind::Struct) &&
+        (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
     {
         SWAG_ASSERT(funcNode->methodParam);
         funcNode->methodParam->attributes = typeFunc->attributes;
