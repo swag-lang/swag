@@ -800,7 +800,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     auto cloneContext             = context;
     cloneContext.parent           = newNode;
     cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.ownerStructScope = cloneContext.parentScope;
+    SWAG_ASSERT(cloneContext.ownerStructScope); // Should be setup in generic instantiation
     cloneContext.ownerMainNode    = newNode;
     newNode->scope                = cloneContext.parentScope;
 
@@ -820,6 +820,13 @@ AstNode* AstImpl::clone(CloneContext& context)
             // The function inside the implementation was generic, so be sure we can now solve
             // its content
             newFunc->content->flags &= ~AST_NO_SEMANTIC;
+
+            // Be sure we have a specific no generic typeinfo
+            auto newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+            newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+            newFunc->typeInfo = newTypeFunc;
+
+            newFunc->typeInfo->forceComputeName();
         }
     }
 
