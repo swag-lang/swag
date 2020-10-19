@@ -849,6 +849,7 @@ AstNode* AstEnum::clone(CloneContext& context)
     cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Enum, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
     cloneContext.ownerMainNode    = newNode;
+    newNode->cloneChilds(cloneContext, this);
 
     newNode->scope = cloneContext.parentScope;
 
