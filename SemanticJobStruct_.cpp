@@ -353,10 +353,12 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         symbolKind = SymbolKind::Struct;
         break;
     case AstNodeKind::InterfaceDecl:
-        symbolKind = SymbolKind::Interface;
+        symbolKind     = SymbolKind::Interface;
+        typeInfo->kind = TypeInfoKind::Interface;
         break;
     case AstNodeKind::TypeSet:
-        symbolKind = SymbolKind::TypeSet;
+        symbolKind     = SymbolKind::TypeSet;
+        typeInfo->kind = TypeInfoKind::TypeSet;
         break;
     default:
         SWAG_ASSERT(false);
@@ -667,14 +669,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 {
     auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
     auto sourceFile    = context->sourceFile;
-    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
     auto job           = context->job;
 
     typeInterface->declNode   = node;
     typeInterface->name       = node->name;
     typeInterface->nakedName  = node->name;
     typeInterface->structName = node->name;
-    typeInterface->kind       = TypeInfoKind::Interface;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
@@ -810,14 +811,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 bool SemanticJob::resolveTypeSet(SemanticContext* context)
 {
     auto node    = CastAst<AstStruct>(context->node, AstNodeKind::TypeSet);
-    auto typeSet = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto typeSet = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
     auto job     = context->job;
 
     typeSet->declNode   = node;
     typeSet->name       = node->name;
     typeSet->nakedName  = node->name;
     typeSet->structName = node->name;
-    typeSet->kind       = TypeInfoKind::TypeSet;
     typeSet->sizeOf     = 2 * sizeof(Register);
 
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;

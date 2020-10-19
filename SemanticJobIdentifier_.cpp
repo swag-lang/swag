@@ -1723,7 +1723,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 // If a structure is referencing itself, we will match the incomplete symbol for now
                 if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
                     node->ownerMainNode &&
-                    node->ownerMainNode->kind != AstNodeKind::Impl &&
+                    (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
                     node->ownerMainNode->name == symbol->name)
                 {
                     SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));

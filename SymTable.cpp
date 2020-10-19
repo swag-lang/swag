@@ -51,7 +51,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 
     symbol->nodes.push_back(node);
 
-    if(!wasPlaceHolder)
+    if (!wasPlaceHolder)
     {
         unique_lock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
@@ -168,12 +168,15 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
             decreaseOverloadNoLock(symbol);
         }
 
-        // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
-        // because an incomplete function doesn't yet know its return type, but we don't need it in order
-        // to make a match
-        if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+        if (symbol->overloads.size() == symbol->cptOverloadsInit)
         {
-            symbol->dependentJobs.setRunning();
+            // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+            // because an incomplete function doesn't yet know its return type, but we don't need it in order
+            // to make a match
+            if (symbol->kind == SymbolKind::Function)
+                symbol->dependentJobs.setRunning();
+            else if (symbol->kind == SymbolKind::Struct)
+                symbol->dependentJobs.setRunning();
         }
 
         return result;

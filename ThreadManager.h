@@ -17,7 +17,7 @@ struct ThreadManager
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
     void participate(mutex& lock, uint32_t affinity);
-    void participate(uint32_t affinity);
+    bool participate(uint32_t affinity);
 
     Job* getJob(uint32_t affinity = AFFINITY_ALL);
 

@@ -21,8 +21,14 @@ void ThreadManager::init()
     numWorkers         = min(numWorkers, numCores);
     g_Stats.numWorkers = numWorkers;
 
-    for (int i = 0; i < numWorkers; i++)
-        workerThreads.push_back(new JobThread(i));
+    // When numWorkers is 1, then we do not want any worker thread. The main thread
+    // will execute jobs by its own (otherwise the main thread will be suspended, and workers
+    // do their job)
+    if (numWorkers > 1)
+    {
+        for (int i = 0; i < numWorkers; i++)
+            workerThreads.push_back(new JobThread(i));
+    }
 }
 
 void ThreadManager::addJob(Job* job)
@@ -67,11 +73,14 @@ void ThreadManager::addJobNoLock(Job* job)
         queueJobs.push_back(job);
 
     // Wakeup one thread
-    if (!availableThreads.empty())
+    if (g_CommandLine.numCores != 1)
     {
-        auto thread = availableThreads.back();
-        availableThreads.pop_back();
-        thread->notifyJob();
+        if (!availableThreads.empty())
+        {
+            auto thread = availableThreads.back();
+            availableThreads.pop_back();
+            thread->notifyJob();
+        }
     }
 }
 
@@ -180,12 +189,20 @@ bool ThreadManager::doneWithJobs()
 
 void ThreadManager::waitEndJobs()
 {
-    while (true)
+    if (g_CommandLine.numCores == 1)
     {
-        unique_lock lk(mutexDone);
-        if (doneWithJobs())
-            break;
-        condVarDone.wait(lk);
+        while (participate(AFFINITY_ALL))
+            ;
+    }
+    else
+    {
+        while (true)
+        {
+            unique_lock lk(mutexDone);
+            if (doneWithJobs())
+                break;
+            condVarDone.wait(lk);
+        }
     }
 }
 
@@ -221,6 +238,7 @@ Job* ThreadManager::getJob(uint32_t affinity)
     return job;
 }
 
+#include "SourceFile.h"
 Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
 {
     if (queue.empty())
@@ -277,10 +295,11 @@ void ThreadManager::participate(mutex& lock, uint32_t affinity)
     }
 }
 
-void ThreadManager::participate(uint32_t affinity)
+bool ThreadManager::participate(uint32_t affinity)
 {
     auto job = getJob(affinity);
     if (!job)
-        return;
+        return false;
     g_ThreadMgr.executeOneJob(job);
+    return true;
 }

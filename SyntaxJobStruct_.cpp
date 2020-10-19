@@ -28,6 +28,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     // Identifier
     {
         ScopedMainNode scopedMainNode(this, implNode);
+        ScopedFlags    scopedFlags(this, AST_CAN_MATCH_INCOMPLETE);
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
         implNode->flags |= AST_NO_BYTECODE;
     }

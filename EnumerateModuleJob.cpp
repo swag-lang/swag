@@ -16,8 +16,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
     vector<string> directories;
     directories.push_back(path.string());
 
-    string   tmp, tmp1;
-    fs::path modulePath;
+    vector<SourceFile*> allFiles;
+    string              tmp, tmp1;
+    fs::path            modulePath;
     while (directories.size())
     {
         tmp = move(directories.back());
@@ -43,15 +44,35 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                         pathFile.append(cFileName);
                         file->path      = normalizePath(pathFile);
                         file->writeTime = writeTime;
-                        theModule->addFile(file);
 
-                        auto job        = g_Pool_syntaxJob.alloc();
-                        job->sourceFile = file;
-                        g_ThreadMgr.addJob(job);
+                        // If we have only one core, then we will sort files in alphabetical order to always
+                        // treat them in a reliable order. That way, --randomize and --seed can work.
+                        if (g_CommandLine.numCores == 1)
+                            allFiles.push_back(file);
+                        else
+                        {
+                            theModule->addFile(file);
+                            auto job        = g_Pool_syntaxJob.alloc();
+                            job->sourceFile = file;
+                            g_ThreadMgr.addJob(job);
+                        }
                     }
                 }
             }
         });
+    }
+
+    // Sort files, and register them in a constant order
+    if (!allFiles.empty())
+    {
+        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        for (auto file : allFiles)
+        {
+            theModule->addFile(file);
+            auto job        = g_Pool_syntaxJob.alloc();
+            job->sourceFile = file;
+            g_ThreadMgr.addJob(job);
+        }
     }
 }
 
@@ -81,10 +102,27 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
 
 void EnumerateModuleJob::enumerateModules(const fs::path& path)
 {
+    vector<string> allModules;
+
     // Scan source folder
     OS::visitFolders(path.string().c_str(), [&](const char* cFileName) {
-        addModule(path.string() + cFileName);
+        // If we have only one core, then we will sort modules in alphabetical order to always
+        // treat them in a reliable order. That way, --randomize and --seed can work.
+        if (g_CommandLine.numCores == 1)
+            allModules.push_back(cFileName);
+        else
+            addModule(path.string() + cFileName);
     });
+
+    // Sort modules, and register them in a constant order
+    if (!allModules.empty())
+    {
+        sort(allModules.begin(), allModules.end());
+        for (auto m : allModules)
+        {
+            addModule(path.string() + m);
+        }
+    }
 }
 
 JobResult EnumerateModuleJob::execute()
