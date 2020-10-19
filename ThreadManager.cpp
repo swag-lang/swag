@@ -238,7 +238,6 @@ Job* ThreadManager::getJob(uint32_t affinity)
     return job;
 }
 
-#include "SourceFile.h"
 Job* ThreadManager::getJob(uint32_t affinity, VectorNative<Job*>& queue)
 {
     if (queue.empty())
