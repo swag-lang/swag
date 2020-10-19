@@ -1,12 +1,12 @@
 //#[swag.printbc]
 #test
 {
-    alias RR = AA
-    x := RR's64{}
+    alias RRRR = AAAA
+    x := RRRR's64{}
     @assert(@typeof(x.v) == s64)
 }
 
-struct(T) AA
+struct(T) AAAA
 {
     v: T
 }

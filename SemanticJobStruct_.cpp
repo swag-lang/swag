@@ -365,7 +365,17 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         break;
     }
 
+    // If there's an alias, register it also. 
+    // Need to do it before the symbol of the struct, because it should be registered before waking up
+    // jobs that depend on the struct resolution
+    if (node->nodeAlias)
+    {
+        SWAG_ASSERT(context->result != ContextResult::Pending);
+        SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node->nodeAlias, node->typeInfo, SymbolKind::TypeAlias));
+    }
+
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
+
     return true;
 }
 
@@ -638,10 +648,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
-    // If there's an alias, register it also
-    if (node->nodeAlias)
-        SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node->nodeAlias, node->typeInfo, SymbolKind::TypeAlias));
-
+ 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
