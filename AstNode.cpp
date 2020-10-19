@@ -794,6 +794,7 @@ AstNode* AstStruct::clone(CloneContext& context)
         newNode->typeInfo = newNode->typeInfo->clone();
         newNode->typeInfo->flags &= ~TYPEINFO_GENERIC;
         newNode->typeInfo->declNode = newNode;
+        newNode->typeInfo->forceComputeName();
     }
 
     return newNode;
@@ -829,11 +830,10 @@ AstNode* AstImpl::clone(CloneContext& context)
             newFunc->content->flags &= ~AST_NO_SEMANTIC;
 
             // Be sure we have a specific no generic typeinfo
-            auto newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
-            newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-            newFunc->typeInfo     = newTypeFunc;
-            newTypeFunc->declNode = newFunc;
-
+            SWAG_ASSERT(newFunc->typeInfo);
+            newFunc->typeInfo = newFunc->typeInfo->clone();
+            newFunc->typeInfo->flags &= ~TYPEINFO_GENERIC;
+            newFunc->typeInfo->declNode = newFunc;
             newFunc->typeInfo->forceComputeName();
         }
     }
@@ -860,6 +860,11 @@ AstNode* AstEnum::clone(CloneContext& context)
     newNode->cloneChilds(cloneContext, this);
 
     newNode->scope = cloneContext.parentScope;
+
+    SWAG_ASSERT(newNode->typeInfo);
+    newNode->typeInfo = newNode->typeInfo->clone();
+    newNode->typeInfo->flags &= ~TYPEINFO_GENERIC;
+    newNode->typeInfo->declNode = newNode;
 
     return newNode;
 }
