@@ -264,7 +264,7 @@ void ByteCode::print()
     g_Log.print(", ");
     if (node)
     {
-        g_Log.print(AstNode::getNakedKindName(node).c_str());
+        g_Log.print(AstNode::getKindName(node).c_str());
         g_Log.print(" ");
         g_Log.print(node->name.c_str());
     }

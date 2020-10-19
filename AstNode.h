@@ -318,8 +318,8 @@ struct AstNode
     bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
     void             inheritLocationFromChilds();
+    static Utf8      getArticleKindName(AstNode* node);
     static Utf8      getKindName(AstNode* node);
-    static Utf8      getNakedKindName(AstNode* node);
     AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
     AstNode*         findChildRefRec(AstNode* ref, AstNode* fromChild);
     virtual AstNode* clone(CloneContext& context);

@@ -63,7 +63,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
-    auto nakedName = AstNode::getKindName(checkNode);
+    auto nakedName = AstNode::getArticleKindName(checkNode);
     if (nakedName == "<node>")
     {
         Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->name.c_str())};

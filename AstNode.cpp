@@ -115,9 +115,9 @@ Utf8 AstNode::computeScopedName()
     return fullName + "." + name.c_str();
 }
 
-Utf8 AstNode::getKindName(AstNode* node)
+Utf8 AstNode::getArticleKindName(AstNode* node)
 {
-    Utf8 result = getNakedKindName(node);
+    Utf8 result = getKindName(node);
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
@@ -127,6 +127,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::Alias:
     case AstNodeKind::FuncDeclParam:
     case AstNodeKind::StructDecl:
+    case AstNodeKind::TypeSet:
         return "a " + result;
     case AstNodeKind::EnumDecl:
     case AstNodeKind::EnumValue:
@@ -139,7 +140,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     return "<node>";
 }
 
-Utf8 AstNode::getNakedKindName(AstNode* node)
+Utf8 AstNode::getKindName(AstNode* node)
 {
     switch (node->kind)
     {
@@ -153,6 +154,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         return "constant";
     case AstNodeKind::FuncDecl:
         return "function";
+    case AstNodeKind::TypeSet:
+        return "typeset";
     case AstNodeKind::AttrDecl:
         return "attribute declaration";
     case AstNodeKind::EnumDecl:

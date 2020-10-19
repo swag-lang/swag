@@ -476,7 +476,7 @@ void Workspace::checkPendingJobs()
             // Job is not done, and we do not wait for a specific identifier
             if (!pendingJob->waitingSymbolSolved)
             {
-                sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
+                sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getKindName(firstNode).c_str(), firstNode->name.c_str())});
             }
 
             // We have an identifier
