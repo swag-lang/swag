@@ -348,11 +348,11 @@ impl Array
         sort.slice(@mkslice(buffer, count), lambda)
     }
 }
-/*
+
 impl strconv.IConvert for Array
 {
     func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("tto")
     }
-}*/
+}
