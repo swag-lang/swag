@@ -6,6 +6,11 @@ struct(T) Arr
         G
         B
     }
+
+    /*struct ST
+    {
+        x, y: T
+    }*/
 }
 
 //#[swag.printbc]

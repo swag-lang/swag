@@ -789,6 +789,13 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
 
+    if (newNode->typeInfo)
+    {
+        newNode->typeInfo = newNode->typeInfo->clone();
+        newNode->typeInfo->flags &= ~TYPEINFO_GENERIC;
+        newNode->typeInfo->declNode = newNode;
+    }
+
     return newNode;
 }
 
@@ -797,12 +804,12 @@ AstNode* AstImpl::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstImpl>();
     newNode->copyFrom(context, this, false);
 
-    auto cloneContext             = context;
-    cloneContext.parent           = newNode;
-    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
+    auto cloneContext        = context;
+    cloneContext.parent      = newNode;
+    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
     SWAG_ASSERT(cloneContext.ownerStructScope); // Should be setup in generic instantiation
-    cloneContext.ownerMainNode    = newNode;
-    newNode->scope                = cloneContext.parentScope;
+    cloneContext.ownerMainNode = newNode;
+    newNode->scope             = cloneContext.parentScope;
 
     for (auto c : childs)
     {
@@ -824,7 +831,8 @@ AstNode* AstImpl::clone(CloneContext& context)
             // Be sure we have a specific no generic typeinfo
             auto newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
             newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-            newFunc->typeInfo = newTypeFunc;
+            newFunc->typeInfo     = newTypeFunc;
+            newTypeFunc->declNode = newFunc;
 
             newFunc->typeInfo->forceComputeName();
         }

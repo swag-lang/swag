@@ -310,11 +310,10 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     uint32_t symbolFlags = 0;
     if (!(node->flags & AST_FROM_GENERIC))
     {
+        bool isGeneric = false;
         if (node->genericParameters)
         {
-            node->flags |= AST_IS_GENERIC;
-            typeInfo->flags |= TYPEINFO_GENERIC;
-            symbolFlags |= OVERLOAD_GENERIC;
+            isGeneric = true;
             for (auto param : node->genericParameters->childs)
             {
                 auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
@@ -325,9 +324,21 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
-
-            typeInfo->forceComputeName();
         }
+
+        if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_IS_GENERIC))
+            isGeneric = true;
+        if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+            isGeneric = true;
+
+        if (isGeneric)
+        {
+            node->flags |= AST_IS_GENERIC;
+            typeInfo->flags |= TYPEINFO_GENERIC;
+            symbolFlags |= OVERLOAD_GENERIC;
+        }
+
+        typeInfo->forceComputeName();
     }
 
     // Attributes
