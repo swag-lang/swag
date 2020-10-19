@@ -486,10 +486,10 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             cloneContext.parent      = sourceFile->astRoot;
             auto subFunc             = (AstFuncDecl*) f->clone(cloneContext);
 
-            auto newTypeFunc = static_cast<TypeInfoFuncAttr*>(subFunc->typeInfo->clone());
-            newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-            newTypeFunc->declNode = subFunc;
-            subFunc->typeInfo     = newTypeFunc;
+            subFunc->typeInfo = subFunc->typeInfo->clone();
+            subFunc->typeInfo->flags &= ~TYPEINFO_GENERIC;
+            subFunc->typeInfo->declNode = subFunc;
+
             subFunc->doneFlags |= AST_DONE_FILE_JOB_PASS;
             subFunc->content->flags &= ~AST_NO_SEMANTIC;
             newNode->subFunctions.push_back(subFunc);
