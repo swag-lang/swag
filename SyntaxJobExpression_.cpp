@@ -832,8 +832,11 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
 
 bool SyntaxJob::isValidUserName(AstNode* node)
 {
+    if (node->parent && (node->parent->flags & AST_GENERATED))
+        return true;
+
     // An identifier that starts with '__' is reserved for internal usage !
-    if (!sourceFile->generated && !(node->parent->flags & AST_GENERATED) && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
+    if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->name.length() > 1 && node->name[0] == '_' && node->name[1] == '_')
             return syntaxError(node->token, format("identifier '%s' starts with '__', and this is reserved by the language", node->name.c_str()));
@@ -979,8 +982,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 idx++;
                 continue;
             }
-            SWAG_CHECK(isValidUserName(child));
 
+            SWAG_CHECK(isValidUserName(child));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
@@ -1141,7 +1144,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     continue;
                 }
 
-                SWAG_CHECK(isValidUserName(child));
+                SWAG_CHECK(isValidVarName(child));
 
                 auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
                 affectNode->token = savedtoken;
