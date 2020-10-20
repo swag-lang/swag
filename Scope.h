@@ -91,7 +91,11 @@ struct Scope
 
     bool isGlobalOrImpl()
     {
-        return isGlobal() || kind == ScopeKind::Struct || kind == ScopeKind::Impl || kind == ScopeKind::Enum;
+        if (isGlobal() || kind == ScopeKind::Impl)
+            return true;
+        if (kind == ScopeKind::Struct || kind == ScopeKind::Enum || kind == ScopeKind::TypeSet)
+            return !parentScope || parentScope->isGlobal() || parentScope->kind == ScopeKind::Impl;
+        return false;
     }
 
     void allocPublicSet()

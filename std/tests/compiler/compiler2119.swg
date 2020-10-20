@@ -1,17 +1,20 @@
 struct(T) Arr
 {
-    struct ST
-    {
-        x, y: T
-    }
+    z: ST'T
+}
 
-    z: ST
+impl Arr
+{
+    struct(T1) ST
+    {
+        x, y: T1
+    }
 }
 
 //#[swag.printbc]
 #test
 {
     var x: Arr's32
-    @print(@typeof(x.z.x).name)
+    @assert(@typeof(x.z.x) == s32)
     //@assert(@typeof(Arr.ST.x) == s32)
 }
