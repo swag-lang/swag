@@ -20,4 +20,13 @@ using std
         //console.print("%\n", str)
         @assert(str == "[a,b,c,d]")
     }
+
+    {
+        var x: Array'String
+        x.addAny("toto")
+        x.addAny("titi")
+        str := format.toString("arr=%", x)
+        //console.print("%\n", str)
+        @assert(str == "arr=[toto,titi]")
+    }
 }
