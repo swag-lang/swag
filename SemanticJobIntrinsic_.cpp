@@ -51,8 +51,10 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
+    if (context->result != ContextResult::Done)
+        return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, "'@mkany' must have a 'const *swag.TypeInfo' or a type value as a second parameter"});
+        return context->report({node, format("'@mkany' must have a 'typeinfo' or a type value as a second parameter ('%s' provided)", second->typeInfo->name.c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
