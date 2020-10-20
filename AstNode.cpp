@@ -791,6 +791,8 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
+    newNode->flags |= AST_FROM_GENERIC;
+    newNode->content->flags &= ~AST_NO_SEMANTIC;
 
     if (newNode->typeInfo)
     {

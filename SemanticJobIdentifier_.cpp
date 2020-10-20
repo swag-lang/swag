@@ -1341,10 +1341,11 @@ anotherTry:
 
 bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result)
 {
-    auto  job                = context->job;
-    auto  identifierRef      = node->identifierRef;
-    auto& dependentSymbols   = job->cacheDependentSymbols;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto             job                = context->job;
+    auto             identifierRef      = node->identifierRef;
+    auto&            dependentSymbols   = job->cacheDependentSymbols;
+    auto&            scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    set<SymbolName*> toAddSymbol;
 
     if (dependentSymbols.size() == 1)
     {
@@ -1365,6 +1366,9 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         bool isValid = true;
         if (oneSymbol->kind != SymbolKind::Function &&
             oneSymbol->kind != SymbolKind::GenericType &&
+            oneSymbol->kind != SymbolKind::Struct &&
+            oneSymbol->kind != SymbolKind::Enum &&
+            oneSymbol->kind != SymbolKind::TypeSet &&
             (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
@@ -1458,9 +1462,17 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
             context->report(diag, &note1, &note2);
             return false;
         }
+
+        toAddSymbol.insert(oneSymbol);
     }
 
+    // Register back all valid symbols
+    dependentSymbols.clear();
+    dependentSymbols.insert(pickedSymbol);
+    for (auto s : toAddSymbol)
+        dependentSymbols.insert(s);
     *result = pickedSymbol;
+
     return true;
 }
 
