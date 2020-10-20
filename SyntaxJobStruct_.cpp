@@ -179,6 +179,17 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
     }
 
+    // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
+    else if (currentScope && currentScope->kind == ScopeKind::Struct)
+    {
+        auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
+        if (parentStruct->genericParameters)
+        {
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
+            structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
+        }
+    }
+
     return doStructContent(structNode, structType);
 }
 
@@ -260,6 +271,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
+            n->flags |= AST_IS_GENERIC;
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
                 auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
