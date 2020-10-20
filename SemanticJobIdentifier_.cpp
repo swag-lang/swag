@@ -1353,9 +1353,8 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         return true;
     }
 
-    SymbolName* pickedSymbol         = nullptr;
-    auto        copyDependentSymbols = dependentSymbols;
-    for (auto oneSymbol : copyDependentSymbols)
+    SymbolName* pickedSymbol = nullptr;
+    for (auto oneSymbol : dependentSymbols)
     {
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
             continue;
@@ -1385,11 +1384,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         }
 
         if (!isValid)
-        {
-            auto it = dependentSymbols.find(oneSymbol);
-            dependentSymbols.erase(it);
             continue;
-        }
 
         if (!pickedSymbol)
         {
