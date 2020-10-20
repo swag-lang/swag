@@ -237,23 +237,30 @@ void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
 
 bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
 {
+    // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        if (scopeImpl->flags & SCOPE_PRIVATE)
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+        if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
         {
             Diagnostic diag{node->identifier, format("the implementation block for '%s' is private but the corresponding identifier is not", node->identifier->name.c_str())};
-            Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
-        if (scope->flags & SCOPE_PRIVATE)
+        if ((scope->flags & SCOPE_PRIVATE) && !(scopeImpl->flags & SCOPE_PRIVATE))
         {
             Diagnostic diag{node->identifier, format("the implementation block for '%s' is not private but the corresponding identifier is", node->identifier->name.c_str())};
-            Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
-        SWAG_ASSERT(false);
+        Diagnostic diag{node,
+                        node->token,
+                        format("impl block is not defined in the same scope as '%s' (impl parent scope is '%s', '%s' parent scope is '%s')",
+                               node->name.c_str(),
+                               scopeImpl->parentScope->getFullName().c_str(),
+                               node->name.c_str(),
+                               scope->parentScope->getFullName().c_str())};
+        return context->report(diag, &note);
     }
 
     return true;

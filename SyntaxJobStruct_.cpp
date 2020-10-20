@@ -55,7 +55,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto& structName = identifierStruct->childs.front()->name;
+    auto& structName = identifierStruct->childs.back()->name;
     implNode->name   = structName;
     auto newScope    = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
