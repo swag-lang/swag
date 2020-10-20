@@ -458,47 +458,47 @@ void Workspace::checkPendingJobs()
     {
         auto sourceFile = pendingJob->sourceFile;
         auto firstNode  = pendingJob->originalNode;
-        if (firstNode)
+        if (!firstNode)
+            continue;
+
+        // Get the node the job was trying to resolve
+        AstNode* node = nullptr;
+        if (!pendingJob->nodes.empty())
+            node = pendingJob->nodes.back();
+        else if (!pendingJob->dependentNodes.empty())
+            node = pendingJob->dependentNodes.back();
+        if (!node)
+            continue;
+
+        // Do not generate errors if we already have some errors
+        if (sourceFile->module->numErrors)
+            continue;
+
+        // Job is not done, and we do not wait for a specific identifier
+        if (!pendingJob->waitingSymbolSolved)
         {
-            // Get the node the job was trying to resolve
-            AstNode* node = nullptr;
-            if (!pendingJob->nodes.empty())
-                node = pendingJob->nodes.back();
-            else if (!pendingJob->dependentNodes.empty())
-                node = pendingJob->dependentNodes.back();
-            if (!node)
-                continue;
-
-            // Do not generate errors if we already have some errors
-            if (sourceFile->module->numErrors)
-                continue;
-
-            // Job is not done, and we do not wait for a specific identifier
-            if (!pendingJob->waitingSymbolSolved)
-            {
-                sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getKindName(firstNode).c_str(), firstNode->name.c_str())});
-            }
-
-            // We have an identifier
-            else if (pendingJob->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
-            {
-                Diagnostic diag{node, node->token, format("placeholder identifier '%s' has not been solved", pendingJob->waitingSymbolSolved->getFullName().c_str())};
-                SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
-                node = pendingJob->waitingSymbolSolved->nodes.front();
-                Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
-                sourceFile->report(diag, &note);
-            }
-            else
-            {
-                Diagnostic diag{node, node->token, format("identifier '%s' has not been solved (do you have a cycle ?)", pendingJob->waitingSymbolSolved->getFullName().c_str())};
-                SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
-                node = pendingJob->waitingSymbolSolved->nodes.front();
-                Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
-                sourceFile->report(diag, &note);
-            }
-
-            sourceFile->module->numErrors = 0;
+            sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getKindName(firstNode).c_str(), firstNode->name.c_str())});
         }
+
+        // We have an identifier
+        else if (pendingJob->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
+        {
+            Diagnostic diag{node, node->token, format("placeholder identifier '%s' has not been solved", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+            SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
+            node = pendingJob->waitingSymbolSolved->nodes.front();
+            Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
+            sourceFile->report(diag, &note);
+        }
+        else
+        {
+            Diagnostic diag{node, node->token, format("identifier '%s' has not been solved (do you have a cycle ?)", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+            SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
+            node = pendingJob->waitingSymbolSolved->nodes.front();
+            Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
+            sourceFile->report(diag, &note);
+        }
+
+        sourceFile->module->numErrors = 0;
     }
 }
 
