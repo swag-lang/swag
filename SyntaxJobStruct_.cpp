@@ -49,6 +49,10 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
         SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, "invalid generic parameters, should be naked"}));
     }
+    else
+    {
+        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as 'impl' name"));
+    }
 
     // Content of impl block
     auto curly = token;

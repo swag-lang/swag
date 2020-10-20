@@ -5,12 +5,17 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 
-bool SyntaxJob::checkIsSingleIdentifier(AstNode* node)
+bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
     if (node->kind != AstNodeKind::IdentifierRef ||
         node->childs.size() > 1 ||
         node->childs.back()->kind != AstNodeKind::Identifier)
-        return syntaxError(node, "expected identifier");
+    {
+        Utf8 err = "expected a single identifier ";
+        err += msg;
+        return syntaxError(node, err);
+    }
+
     return true;
 }
 

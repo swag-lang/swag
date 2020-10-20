@@ -897,7 +897,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         bool firstDone = false;
         for (auto child : leftNode->childs)
         {
-            SWAG_CHECK(checkIsSingleIdentifier(child));
+            SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(isValidVarName(identifier));
@@ -973,7 +973,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         for (auto child : leftNode->childs)
         {
             // Ignore field if '?', otherwise check that this is a valid variable name
-            SWAG_CHECK(checkIsSingleIdentifier(child));
+            SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
             if (child->childs.front()->name == "?")
             {
                 idx++;
@@ -1006,7 +1006,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Single declaration/affectation
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(leftNode));
+        SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
         auto identifier = leftNode->childs.back();
         SWAG_CHECK(isValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parent, this);
@@ -1132,7 +1132,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 auto child = leftNode->childs.front();
 
                 // Ignore field if '?', otherwise check that this is a valid variable name
-                SWAG_CHECK(checkIsSingleIdentifier(child));
+                SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
                 if (child->childs.front()->name == "?")
                 {
                     idx++;
@@ -1140,6 +1140,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     Ast::releaseNode(child);
                     continue;
                 }
+
                 SWAG_CHECK(isValidUserName(child));
 
                 auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);

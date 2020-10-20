@@ -1,5 +1,6 @@
-//#module "compiler2126"
-//#unittest error
+#module "compiler2128"
+#unittest error
+
 namespace A
 {
     struct B
