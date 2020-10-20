@@ -300,7 +300,13 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
     context.parent = this;
     auto num       = from->childs.size();
     for (int i = 0; i < num; i++)
-        from->childs[i]->clone(context);
+    {
+        // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
+        // in case of generics, we do want the normal generic stuff to be done (cloning)
+        if (from->childs[i]->kind != AstNodeKind::StructDecl)
+            from->childs[i]->clone(context);
+    }
+
     context.parent = oldParent;
 }
 
