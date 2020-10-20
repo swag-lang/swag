@@ -38,12 +38,14 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     auto first  = node->childs.front();
     auto second = node->childs.back();
 
+    // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
         return context->report({node, "'@mkany' must have a pointer as a first parameter"});
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (ptrPointer->ptrCount != 1)
         return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
 
+    // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
