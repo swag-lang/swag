@@ -261,18 +261,7 @@ impl Array
     // Append another array to the end of this instance
     func add(using self, array: Array)
     {
-        if !array.count
-            return
-        grow(count + array.count)
-
-        oldCount := count
-        count += array.count
-
-        loop array.count
-        {
-            buffer[oldCount] = nodrop array.buffer[@index]
-            oldCount += 1
-        }
+        add(@mkslice(array.buffer, array.count))
     }
 
     // Append a slice to the end of this instance
