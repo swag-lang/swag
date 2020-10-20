@@ -310,10 +310,8 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     uint32_t symbolFlags = 0;
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        bool isGeneric = false;
         if (node->genericParameters)
         {
-            isGeneric = true;
             for (auto param : node->genericParameters->childs)
             {
                 auto funcParam        = g_Allocator.alloc<TypeInfoParam>();
@@ -324,15 +322,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
-        }
 
-        if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_IS_GENERIC))
-            isGeneric = true;
-        if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
-            isGeneric = true;
-
-        if (isGeneric)
-        {
             node->flags |= AST_IS_GENERIC;
             typeInfo->flags |= TYPEINFO_GENERIC;
             symbolFlags |= OVERLOAD_GENERIC;
@@ -365,7 +355,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         break;
     }
 
-    // If there's an alias, register it also. 
+    // If there's an alias, register it also.
     // Need to do it before the symbol of the struct, because it should be registered before waking up
     // jobs that depend on the struct resolution
     if (node->nodeAlias)
@@ -534,9 +524,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
 
+        // If the struct is not generic, be sure that a field is not generic either
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve struct because type '%s' is generic", child->typeInfo->name.c_str())}));
+            if (varDecl->typeInfo->flags & TYPEINFO_GENERIC)
+            {
+                if (varDecl->type)
+                    child = varDecl->type;
+                if (!node->genericParameters)
+                    return context->report({child, format("type '%s' is generic, but struct '%s' does not declare generic parameters", child->typeInfo->name.c_str(), node->name.c_str())});
+                return context->report({child, format("cannot resolve struct '%s' because type '%s' is generic", node->name.c_str(), child->typeInfo->name.c_str())});
+            }
         }
 
         auto realStorageOffset = storageOffset;
@@ -648,7 +646,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
- 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)
         g_Workspace.swagScope.registerType(node->typeInfo);

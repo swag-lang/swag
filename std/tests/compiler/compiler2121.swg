@@ -1,0 +1,20 @@
+struct(T) Arr
+{
+    z: ST's32
+}
+
+impl Arr
+{
+    struct(T) ST
+    {
+        x, y: T
+    }
+}
+
+//#[swag.printbc]
+#test
+{
+    var x: Arr'f64
+    @assert(@typeof(x.z.x) == s32)
+    //@assert(@typeof(Arr.ST.x) == s32)
+}
