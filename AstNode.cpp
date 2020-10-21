@@ -134,6 +134,8 @@ Utf8 AstNode::getArticleKindName(AstNode* node)
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::Impl:
     case AstNodeKind::AttrDecl:
+    case AstNodeKind::Identifier:
+    case AstNodeKind::IntrinsicProp:
         return "an " + result;
     }
 
@@ -174,6 +176,10 @@ Utf8 AstNode::getKindName(AstNode* node)
         return "interface";
     case AstNodeKind::Impl:
         return "implementation block";
+    case AstNodeKind::Identifier:
+        return "identifier";
+    case AstNodeKind::IntrinsicProp:
+        return "intrinsic";
     }
 
     return "<node>";

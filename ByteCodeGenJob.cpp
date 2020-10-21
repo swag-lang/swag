@@ -331,7 +331,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
                 if (!(funcDecl->flags & AST_FULL_RESOLVE))
                 {
                     funcDecl->dependentJobs.add(job);
-                    job->setPending(funcDecl->resolvedSymbolName);
+                    job->setPending(funcDecl->resolvedSymbolName, "AST_FULL_RESOLVE", funcDecl, nullptr);
                 }
             }
 
@@ -352,7 +352,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             {
                 auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
                 funcDecl->dependentJobs.add(job);
-                job->setPending(funcDecl->resolvedSymbolName);
+                job->setPending(funcDecl->resolvedSymbolName, "AST_FULL_RESOLVE", funcDecl, nullptr);
                 return;
             }
         }
@@ -372,7 +372,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
-            job->setPending(nullptr);
+            job->setPending(nullptr, "ASKBC_WAIT_DONE", node, nullptr);
         }
 
         if (!node->byteCodeJob)
@@ -419,7 +419,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         {
             SWAG_ASSERT(node->byteCodeJob);
             node->byteCodeJob->dependentJobs.add(job);
-            job->setPending(nullptr);
+            job->setPending(nullptr, "ASKBC_WAIT_RESOLVED", node, nullptr);
             return;
         }
     }

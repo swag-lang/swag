@@ -354,8 +354,8 @@ bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, ui
 
 bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 {
-    auto left                  = context->node;
-    auto binNode               = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+    auto left    = context->node;
+    auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
@@ -497,7 +497,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
-    context->job->setPending(nullptr);
+    context->job->setPending(nullptr, "makeInline", funcDecl, nullptr);
     auto inlineNode = identifier->childs.back();
     auto job        = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->job);
@@ -520,7 +520,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
             if (!(funcDecl->flags & AST_FULL_RESOLVE))
             {
                 funcDecl->dependentJobs.add(context->job);
-                context->job->setPending(funcDecl->resolvedSymbolName);
+                context->job->setPending(funcDecl->resolvedSymbolName, "emitUserOp", funcDecl, nullptr);
                 return true;
             }
         }

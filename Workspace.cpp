@@ -454,6 +454,9 @@ void Workspace::checkPendingJobs()
     if (g_ThreadMgr.waitingJobs.empty())
         return;
 
+    set<SymbolName*> doneSymbols;
+    set<Utf8>        doneIds;
+
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
         auto sourceFile = pendingJob->sourceFile;
@@ -474,16 +477,48 @@ void Workspace::checkPendingJobs()
         if (sourceFile->module->numErrors)
             continue;
 
+        // No need to raise multiple times an error for the same symbol
+        if (pendingJob->waitingSymbolSolved)
+        {
+            if (doneSymbols.find(pendingJob->waitingSymbolSolved) != doneSymbols.end())
+                continue;
+            doneSymbols.insert(pendingJob->waitingSymbolSolved);
+        }
+
+        // No need to raise multiple times an error for the same id
+        Utf8 id = pendingJob->waitingId;
+        if (pendingJob->waitingIdNode)
+        {
+            id += " ";
+            if (pendingJob->waitingIdNode->typeInfo)
+                id += pendingJob->waitingIdNode->typeInfo->name;
+            else
+                id += pendingJob->waitingIdNode->name;
+        }
+        if (pendingJob->waitingIdType)
+        {
+            id += " ";
+            id += pendingJob->waitingIdType->name;
+        }
+
+        Utf8 doneId = format("%s%llx%llx", (size_t) pendingJob->waitingIdNode, (size_t) pendingJob->waitingIdType);
+        if (doneIds.find(doneId) != doneIds.end())
+            continue;
+        doneIds.insert(doneId);
+
         // Job is not done, and we do not wait for a specific identifier
         if (!pendingJob->waitingSymbolSolved)
         {
-            sourceFile->report({firstNode, firstNode->token, format("cannot resolve %s '%s'", AstNode::getKindName(firstNode).c_str(), firstNode->name.c_str())});
+            Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->name.c_str())};
+            diag.codeComment = id;
+            sourceFile->report(diag);
         }
 
         // We have an identifier
         else if (pendingJob->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
         {
             Diagnostic diag{node, node->token, format("placeholder identifier '%s' has not been solved", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+            diag.codeComment = id;
             SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
             node = pendingJob->waitingSymbolSolved->nodes.front();
             Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
@@ -492,6 +527,7 @@ void Workspace::checkPendingJobs()
         else
         {
             Diagnostic diag{node, node->token, format("identifier '%s' has not been solved (do you have a cycle ?)", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+            diag.codeComment = id;
             SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
             node = pendingJob->waitingSymbolSolved->nodes.front();
             Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};

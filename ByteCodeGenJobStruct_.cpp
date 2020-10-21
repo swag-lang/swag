@@ -86,7 +86,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             inst->flags |= BCI_IMM_C;
             inst->c.u32 = typeVar->sizeOf;
             continue;
-
         }
 
         // User initialization
@@ -256,7 +255,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol);
+            context->job->setPending(symbol, "opDrop", structNode, nullptr);
             return true;
         }
     }
@@ -351,7 +350,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol);
+            context->job->setPending(symbol, "opPostMove", structNode, nullptr);
             return true;
         }
     }
@@ -445,7 +444,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol);
+            context->job->setPending(symbol, "opPostCopy", structNode, nullptr);
             return true;
         }
     }
@@ -527,7 +526,7 @@ void ByteCodeGenJob::waitStructGenerated(ByteCodeGenContext* context, TypeInfoSt
     if (!(structNode->flags & AST_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(context->job);
-        context->job->setPending(structNode->resolvedSymbolName);
+        context->job->setPending(structNode->resolvedSymbolName, "AST_BYTECODE_GENERATED", structNode, nullptr);
     }
 }
 

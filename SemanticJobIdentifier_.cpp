@@ -635,7 +635,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (!(funcDecl->flags & AST_FULL_RESOLVE))
                     {
                         funcDecl->dependentJobs.add(context->job);
-                        context->job->setPending(funcDecl->resolvedSymbolName);
+                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_FULL_RESOLVE", funcDecl, nullptr);
                         return true;
                     }
                 }

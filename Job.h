@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "DependentJobs.h"
 #include "VectorNative.h"
+#include "Utf8.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
@@ -68,7 +69,7 @@ struct Job : public PoolElem
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void waitForAllStructMethods(TypeInfo* typeInfo);
-    void setPending(SymbolName* symbolToWait);
+    void setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo);
 
     shared_mutex           executeMutex;
     shared_mutex           mutexDependent;
@@ -79,6 +80,9 @@ struct Job : public PoolElem
 
     AstNode*    originalNode        = nullptr;
     SymbolName* waitingSymbolSolved = nullptr;
+    const char* waitingId           = nullptr;
+    AstNode*    waitingIdNode       = nullptr;
+    TypeInfo*   waitingIdType       = nullptr;
     SourceFile* sourceFile          = nullptr;
     Module*     module              = nullptr;
     Job*        dependentJob        = nullptr;
@@ -98,6 +102,9 @@ struct Job : public PoolElem
         jobsToAdd.clear();
         originalNode        = nullptr;
         waitingSymbolSolved = nullptr;
+        waitingId           = nullptr;
+        waitingIdNode       = nullptr;
+        waitingIdType       = nullptr;
         sourceFile          = nullptr;
         module              = nullptr;
         dependentJob        = nullptr;
