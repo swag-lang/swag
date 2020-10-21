@@ -271,7 +271,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 
             // Copy from a constant
             SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
-            storageOffset = seg->reserveNoLock(typeInfo->sizeOf);
+            storageOffset = seg->reserve(typeInfo->sizeOf);
             auto addrDst  = seg->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->storageOffset);
             memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
