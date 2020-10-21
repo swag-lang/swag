@@ -582,6 +582,7 @@ JobResult ByteCodeGenJob::execute()
                 continue;
             }
 
+            scoped_lock lk1(node->byteCodeJob->mutexDependent);
             node->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
@@ -662,6 +663,7 @@ JobResult ByteCodeGenJob::execute()
                 continue;
             }
 
+            scoped_lock lk1(node->byteCodeJob->mutexDependent);
             node->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
