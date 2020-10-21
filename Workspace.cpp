@@ -507,9 +507,15 @@ void Workspace::checkPendingJobs()
         doneIds.insert(doneId);
 
         // Job is not done, and we do not wait for a specific identifier
-        if (!pendingJob->waitingSymbolSolved)
+        if (!pendingJob->waitingSymbolSolved && !node->name.empty())
         {
             Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->name.c_str())};
+            diag.codeComment = id;
+            sourceFile->report(diag);
+        }
+        else if (!pendingJob->waitingSymbolSolved)
+        {
+            Diagnostic diag{node, node->token, format("cannot resolve %s", AstNode::getKindName(node).c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }

@@ -391,7 +391,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         }
         else
         {
+            // No need to wait for the result. We then register the top level job as the job to wait for this
+            // new one. We CANNOT just register the current dependJob, as it can already be waiting
             job->dependentJob = context->baseJob->dependentJob;
+            while (job->dependentJob && job->dependentJob->dependentJob)
+                job->dependentJob = job->dependentJob->dependentJob;
+
             g_ThreadMgr.addJob(job);
         }
 
