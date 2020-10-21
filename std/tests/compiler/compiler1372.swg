@@ -3,9 +3,9 @@ namespace std
 {
     private const SmallSize = 28'u32
     private const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
-    #assert @sizeof(String) == 40
+    #assert @sizeof(String1372) == 40
 
-    struct String
+    struct String1372
     {
         buffer:     *u8
         length:     u32
@@ -14,7 +14,7 @@ namespace std
         padding:    [SmallSizeInternal] u8
     }
 
-    impl String
+    impl String1372
     {
         func free(using self)
         {

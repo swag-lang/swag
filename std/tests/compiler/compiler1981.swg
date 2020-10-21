@@ -2,7 +2,7 @@ struct(K) Array
 {
 }
 
-struct String
+struct String1981
 {
 }
 
@@ -23,7 +23,7 @@ impl Array
 
 #test
 {
-    var x: Array'String
-    var b: String
+    var x: Array'String1981
+    var b: String1981
     x.add(b)
 }
