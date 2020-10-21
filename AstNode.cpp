@@ -452,7 +452,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     *pzd++ = 0;
 
-    fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer);
+    fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer) - 1;
 }
 
 AstNode* AstFuncDecl::clone(CloneContext& context)

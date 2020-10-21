@@ -659,6 +659,11 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
     for (auto str : pp.stringTable)
     {
         concat.addString(str->c_str(), str->length() + 1);
+
+        // Be sure string ends with '0', otherwise this is considered by the linker as a corruption
+        // (the last byte of the string table must be 0)
+        SWAG_ASSERT(str->buffer[str->count] == 0);
+
         subTotal += str->length() + 1;
     }
 
