@@ -737,7 +737,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
 
     // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
     // when instantiating function B
-    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == node->ownerStructScope)
+    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == symOverload->node->ownerStructScope)
         toCheck.push_back(node->ownerFct);
 
     if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
