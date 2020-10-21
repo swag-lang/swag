@@ -179,6 +179,9 @@ namespace OS
 
         auto result = OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
 
+        if (!result && g_CommandLine.devMode)
+            OS::errorBox("[Developer Mode]", "Error raised !");
+
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;
         return result;
