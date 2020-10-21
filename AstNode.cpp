@@ -123,6 +123,7 @@ Utf8 AstNode::getArticleKindName(AstNode* node)
     case AstNodeKind::VarDecl:
     case AstNodeKind::ConstDecl:
     case AstNodeKind::FuncDecl:
+    case AstNodeKind::FuncDeclType:
     case AstNodeKind::Namespace:
     case AstNodeKind::Alias:
     case AstNodeKind::FuncDeclParam:
@@ -155,6 +156,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::ConstDecl:
         return "constant";
     case AstNodeKind::FuncDecl:
+    case AstNodeKind::FuncDeclType:
         return "function";
     case AstNodeKind::TypeSet:
         return "typeset";
