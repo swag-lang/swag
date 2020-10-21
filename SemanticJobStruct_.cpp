@@ -141,7 +141,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
             Diagnostic diag{child, child->token, format("function '%s' has an incorrect signature for interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->node, "should be", DiagnosticLevel::Note};
+            Diagnostic note{symbolName->node, symbolName->node->token, "should be", DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
