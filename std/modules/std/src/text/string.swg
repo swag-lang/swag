@@ -508,9 +508,9 @@ public impl String
         return 0
     }
 
-    /*func split() -> Array'String
+    func split() -> Array'String
     {
         var result: Array'String
         return result
-    }*/
+    }
 }
