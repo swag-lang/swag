@@ -255,7 +255,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, "opDrop", structNode, nullptr);
+            context->job->setPending(symbol, "EMIT_DROP", structNode, nullptr);
             return true;
         }
     }
@@ -350,7 +350,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, "opPostMove", structNode, nullptr);
+            context->job->setPending(symbol, "EMIT_POST_MOVE", structNode, nullptr);
             return true;
         }
     }
@@ -444,7 +444,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, "opPostCopy", structNode, nullptr);
+            context->job->setPending(symbol, "EMIT_POST_COPY", structNode, nullptr);
             return true;
         }
     }

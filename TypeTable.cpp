@@ -227,7 +227,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
                     if (itJob != storedMapJob.end())
                     {
                         itJob->second->addDependentJob(context->baseJob);
-                        context->baseJob->setPending(nullptr, "makeConcreteTypeInfoNoLock", nullptr, typeInfo);
+                        context->baseJob->setPending(nullptr, "CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
                     }
                 }
             }
