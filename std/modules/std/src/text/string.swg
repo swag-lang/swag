@@ -376,7 +376,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[0])
             return cast(char) buffer[0]
-        (b, c) := utf8.nextChar(buffer)
+        (?, c) := utf8.nextChar(buffer)
         return c
     }
 
@@ -388,7 +388,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (b, c) := utf8.previousChar(buffer, buffer + length)
+        (?, c) := utf8.previousChar(buffer, buffer + length)
         return c
     }
 
@@ -508,11 +508,11 @@ public impl String
         return 0
     }
 
-    func split(using self, splitChar: char) -> Array'string
+    func split(using self, separator: char) -> Array'string
     {
         var result: Array'string
 
-        ptr := cast(const *u8) buffer
+        var ptr = cast(const *u8) buffer
         var nextPtr = ptr
         var c: char
 
@@ -523,7 +523,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c != splitChar || c == 0
+                if c != separator || c == 0
                     break
                 startIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -536,7 +536,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == splitChar || c == 0
+                if c == separator || c == 0
                     break
                 endIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
