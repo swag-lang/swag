@@ -46,7 +46,7 @@ func makeLower(buffer: [..] u8)
 }
 
 // Compare two ascii strings, and returns -1, 0 or 1
-func compare(src, dst: const [..] u8, ignoreCase: bool = false)->s32
+func compare(src, dst: const [..] u8, ignoreCase := false)->s32
 {
     length := @countof(src)
     otherLength := @countof(dst)
