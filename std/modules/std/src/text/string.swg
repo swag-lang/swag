@@ -353,14 +353,12 @@ public impl String
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    // The function will return -1 if the `value` cannot be found
     func indexOf(using self, value: char) -> {index: u32, success: bool}
     {
         return indexOf(@[value])
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    // The function will return -1 if the `value` cannot be found
     func indexOf(using self, values: const [..] char) -> {index: u32, success: bool}
     {
         if !length
