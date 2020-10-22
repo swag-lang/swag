@@ -509,7 +509,7 @@ public impl String
         case Raw, Ascii:
             return ascii.compare(src, dst)
         case AsciiIgnoreCase:
-            return ascii.compare(src, dst, true)
+            return ascii.compare(src, dst, ignoreCase: true)
         }
 
         return 0
