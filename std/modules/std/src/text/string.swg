@@ -508,9 +508,47 @@ public impl String
         return 0
     }
 
-    func split() -> Array'String
+    func split(using self, splitChar: char) -> Array'string
     {
-        var result: Array'String
+        var result: Array'string
+
+        ptr := cast(const *u8) buffer
+        var nextPtr = ptr
+        var c: char
+
+        startIdx := 0'u32
+        while true
+        {
+            // Remove separator at the start
+            while true
+            {
+                (nextPtr, c) = utf8.nextChar(ptr)
+                if c != splitChar || c == 0
+                    break
+                startIdx += cast(u32) (nextPtr - ptr)
+                ptr = nextPtr
+            }
+
+            if c == 0 break // done
+
+            // Add all real characters until the separator
+            endIdx := startIdx
+            while true
+            {
+                (nextPtr, c) = utf8.nextChar(ptr)
+                if c == splitChar || c == 0
+                    break
+                endIdx += cast(u32) (nextPtr - ptr)
+                ptr = nextPtr
+            }
+
+            oneString := cast(string) @mkslice(buffer + startIdx, endIdx - startIdx)
+            result.add(oneString)
+
+            if c == 0 break // done
+            startIdx = endIdx
+        }
+
         return result
     }
 }

@@ -307,6 +307,19 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
+    // If the function returns a reference, then transform it to a normal return type if 
+    // this is not a reference to a "by copy" type
+    // const &u32 => u32 etc...
+    if (typeNode->typeInfo->kind == TypeInfoKind::Reference)
+    {
+        auto typeRef = CastTypeInfo<TypeInfoReference>(typeNode->typeInfo, TypeInfoKind::Reference);
+        SWAG_ASSERT(typeRef->pointedType->kind != TypeInfoKind::Reference); // Can happen ?
+        if (!(typeRef->pointedType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            typeNode->typeInfo = typeRef->pointedType;
+        }
+    }
+
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
