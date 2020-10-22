@@ -191,7 +191,7 @@ public impl String
     {
         if length
         {
-            idx := 0
+            idx := 0'u32
             scan := cast(const *u8) buffer
             while true
             {
@@ -208,7 +208,7 @@ public impl String
                     #mixin `stmt
                 }
 
-                idx += cast(s32) (nextScan - scan)
+                idx += cast(u32) (nextScan - scan)
                 scan = cast(const *u8) nextScan
             }
         }
@@ -354,25 +354,25 @@ public impl String
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     // The function will return -1 if the `value` cannot be found
-    func indexOf(using self, value: char)->s32
+    func indexOf(using self, value: char) -> {index: u32, success: bool}
     {
         return indexOf(@[value])
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     // The function will return -1 if the `value` cannot be found
-    func indexOf(using self, values: const [..] char)->s32
+    func indexOf(using self, values: const [..] char) -> {index: u32, success: bool}
     {
         if !length
-            return -1
+            return @{0, false}
 
         visit c, i: :self
         {
             if isSeparator(c, values)
-                return i
+                return @{i, true}
         }
 
-        return -1
+        return @{0, false}
     }
 
     // Returns the first Unicode character of the String
