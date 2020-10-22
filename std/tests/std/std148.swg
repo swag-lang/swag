@@ -6,7 +6,7 @@ using std
 {
     var x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."
 
-    var sep: const [..] char = @[" "'char, ","'char, "."'char, ":"'char, "\t"'char]
+    sep := @[" "'char, ",", ".", ":", "\t"]
     arr := x.split(sep)
 
     loop arr
