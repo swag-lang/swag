@@ -368,7 +368,7 @@ public impl String
 
         visit c, i: :self
         {
-            if isSeparator(c, values)
+            if contains(c, values)
                 return @{i, true}
         }
 
@@ -541,7 +541,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || !isSeparator(c, separators)
+                if c == 0 || !contains(c, separators)
                     break
                 startIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -554,7 +554,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || isSeparator(c, separators)
+                if c == 0 || contains(c, separators)
                     break
                 endIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -569,15 +569,4 @@ public impl String
 
         return result
     }
-}
-
-private func isSeparator(c: char, separators: const [..] char)->bool
-{
-    loop i: separators
-    {
-        if(separators[i] == c)
-            return true;
-    }
-
-    return false
 }
