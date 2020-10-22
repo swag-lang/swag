@@ -537,8 +537,14 @@ void Workspace::checkPendingJobs()
             else
                 msg = format("identifier '%s' has not been solved (do you have a cycle ?)", toSolve->name.c_str());
 
-            if (toSolve->kind == SymbolKind::Variable && declNode->kind == AstNodeKind::VarDecl && declNode->isParentOf(node))
+            // a := func(a) for example
+            if (toSolve->kind == SymbolKind::Variable &&
+                declNode->kind == AstNodeKind::VarDecl &&
+                declNode->sourceFile == node->sourceFile &&
+                declNode->token.startLocation.line == node->token.startLocation.line)
+            {
                 msg = format("variable '%s' is used before being declared", toSolve->name.c_str());
+            }
 
             Diagnostic diag{node, node->token, msg};
             diag.codeComment = id;

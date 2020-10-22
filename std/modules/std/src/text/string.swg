@@ -373,20 +373,32 @@ public impl String
         return @{0, false}
     }
 
-    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
+    func lastIndexOf(using self, value: char) -> {index: u32, success: bool}
+    {
+        return lastIndexOf(@[value])
+    }
+
+    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, values: const [..] char) -> {index: u32, success: bool}
     {
-        //if !length
-        //    return @{0, false}
+        if !length
+            return @{0, false}
 
-        prevBuffer := buffer + length
+        idx := length
+        prevBuffer := cast(const *u8) buffer + length
+
         while true
         {
-            //(prevBuffer, c) := utf8.previousChar(buffer, prevBuffer)
-            //if c == 0
-             //   return @{0, false}
-            //if contains(values, c)
-            //    return @{i, true}
+            (newBuffer, c) := utf8.previousChar(buffer, prevBuffer)
+            if c == 0
+                return @{0, false}
+
+            idx -= cast(u32) (prevBuffer - newBuffer)
+            prevBuffer = newBuffer
+
+            if contains(values, c)
+                return @{idx, true}
         }
 
         return @{0, false}
