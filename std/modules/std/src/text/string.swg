@@ -508,11 +508,17 @@ public impl String
         return 0
     }
 
+    // Split string into sub strings, given a character separator
+    // Note that this returns an array of native strings, not copies.
+    // All strings will be invalid if 'this' String is destroyed
     func split(using self, separator: char) -> Array'string
     {
         return split(@[separator])
     }
 
+    // Split string into sub strings, given an array of character separators
+    // Note that this returns an array of native strings, not copies.
+    // All strings will be invalid if 'this' String is destroyed
     func split(using self, separators: const [..] char) -> Array'string
     {
         func isSeparator(c: char, separators: const [..] char)->bool
