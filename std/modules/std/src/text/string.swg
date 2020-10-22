@@ -510,6 +510,23 @@ public impl String
 
     func split(using self, separator: char) -> Array'string
     {
+        separators := @[separator]
+        return split(separators)
+    }
+
+    func split(using self, separators: const [..] char) -> Array'string
+    {
+        func isSeparator(c: char, separators: const [..] char)->bool
+        {
+            loop separators
+            {
+                if(separators[@index] == c)
+                    return true;
+            }
+
+            return false
+        }
+
         var result: Array'string
 
         var ptr = cast(const *u8) buffer
@@ -523,7 +540,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c != separator || c == 0
+                if c == 0 || !isSeparator(c, separators)
                     break
                 startIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -531,12 +548,12 @@ public impl String
 
             if c == 0 break // done
 
-            // Add all real characters until the separator
+            // Add all real characters until we found a separator
             endIdx := startIdx
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == separator || c == 0
+                if c == 0 || isSeparator(c, separators)
                     break
                 endIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
