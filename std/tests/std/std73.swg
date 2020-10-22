@@ -21,4 +21,5 @@ using std
     @assert(result.item1 == 0)
 
     @assert(utf8.countChars(str.cstr()) == 3)
+    @assert(str.countChars() == 3)
 }

@@ -220,6 +220,12 @@ public impl String
         length = 0
     }
 
+    // Returns the number of unicode characters in the string
+    func countChars(using self)->u32
+    {
+        return utf8.countChars(@mkslice(buffer, length))
+    }
+
     // Returns true if the String has zero length
     func isEmpty(using self)->bool
     {
