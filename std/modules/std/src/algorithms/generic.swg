@@ -18,12 +18,12 @@ func(T) modifyInPlace(values: [..] T, cb: func(*T))
         cb(&values[i])
 }
 
-// Returns true if the given slice contains the value 'c'
-func(T) contains(c: T, slice: const [..] T)->bool
+// Returns true if the given slice contains the 'value'
+func(T) contains(value: T, slice: const [..] T)->bool
 {
-    loop i: slice
+    visit v: slice
     {
-        if(slice[i] == c)
+        if(v == value)
             return true;
     }
 
