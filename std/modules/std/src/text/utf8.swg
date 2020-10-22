@@ -1,39 +1,36 @@
 public namespace std.utf8;
 
-func countBytesOneChar(buffer: const [..] u8)->u32
+// Returns the number of bytes to encode the first character of the
+// utf8 buffer
+func countBytesFirstChar(buffer: const *u8)->u32
 {
-    count := @countof(buffer)
-    if !count return 0
+    c := :buffer
+    count := 1'u32
 
-    offset := 1'u32
+    if ((c & 0x80) == 0)         count = 1
+    else if ((c & 0xE0) == 0xC0) count = 2
+    else if ((c & 0xF0) == 0xE0) count = 3
+    else if ((c & 0xF8) == 0xF0) count = 4
 
-    ptr := @dataof(buffer)
-    c := cast(char) :ptr
-
-    if ((c & 0xE0) == 0xC0)      offset = 2
-    else if ((c & 0xF0) == 0xE0) offset = 3
-    else if ((c & 0xF8) == 0xF0) offset = 4
-
-    return math.min(count, offset)
+    return count
 }
 
 // Returns the number of unicode characters in an utf8 buffer
-func countChars(buffer: const *u8)->u32
+func countChars(buffer: const [..] u8)->u32
 {
-    if buffer == null
-        return 0
-    ptr := buffer
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+
     cpt := 0'u32
-    var c: char = ?
-    while true
+    while countof
     {
-        (ptr, c) = nextChar(ptr)
-        if !c
-            return cpt
+        val := countBytesFirstChar(dataof)
         cpt += 1
+        dataof += val
+        countof -= math.min(countof, val)
     }
 
-    return 0
+    return cpt
 }
 
 // Get the address of the previous utf8 character, and the corresponding unicode character
