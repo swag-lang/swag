@@ -2,7 +2,7 @@ public namespace std.utf8;
 
 // Returns the number of bytes to encode the first character of the
 // utf8 buffer
-func countBytesFirstChar(buffer: const *u8)->u32
+func countBytesAt(buffer: const *u8)->u32
 {
     c := :buffer
     count := 1'u32
@@ -24,7 +24,7 @@ func countChars(buffer: const [..] u8)->u32
     cpt := 0'u32
     while countof
     {
-        val := countBytesFirstChar(dataof)
+        val := countBytesAt(dataof)
         cpt += 1
         dataof += val
         countof -= math.min(countof, val)
