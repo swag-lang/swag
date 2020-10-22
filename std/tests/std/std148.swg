@@ -9,9 +9,9 @@ using std
     sep := @[" "'char, ",", ".", ":", "\t"]
     arr := x.split(sep)
 
-    loop arr
+    visit v: arr
     {
-        //@print(arr[@index])
+        //@print(v)
         //@print("\n")
     }
 
