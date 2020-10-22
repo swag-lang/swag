@@ -356,12 +356,19 @@ public impl String
     // The function will return -1 if the `value` cannot be found
     func indexOf(using self, value: char)->s32
     {
+        return indexOf(@[value])
+    }
+
+    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+    // The function will return -1 if the `value` cannot be found
+    func indexOf(using self, values: const [..] char)->s32
+    {
         if !length
             return -1
 
         visit c, i: :self
         {
-            if c == value
+            if isSeparator(c, values)
                 return i
         }
 
@@ -521,17 +528,6 @@ public impl String
     // All strings will be invalid if 'this' String is destroyed
     func split(using self, separators: const [..] char) -> Array'string
     {
-        func isSeparator(c: char, separators: const [..] char)->bool
-        {
-            loop i: separators
-            {
-                if(separators[i] == c)
-                    return true;
-            }
-
-            return false
-        }
-
         var result: Array'string
 
         var ptr = cast(const *u8) buffer
@@ -573,4 +569,15 @@ public impl String
 
         return result
     }
+}
+
+private func isSeparator(c: char, separators: const [..] char)->bool
+{
+    loop i: separators
+    {
+        if(separators[i] == c)
+            return true;
+    }
+
+    return false
 }
