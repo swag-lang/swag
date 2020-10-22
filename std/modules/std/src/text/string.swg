@@ -368,7 +368,7 @@ public impl String
 
         visit c, i: :self
         {
-            if contains(c, values)
+            if contains(values, c)
                 return @{i, true}
         }
 
@@ -541,7 +541,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || !contains(c, separators)
+                if c == 0 || !contains(separators, c)
                     break
                 startIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
@@ -554,7 +554,7 @@ public impl String
             while true
             {
                 (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || contains(c, separators)
+                if c == 0 || contains(separators, c)
                     break
                 endIdx += cast(u32) (nextPtr - ptr)
                 ptr = nextPtr
