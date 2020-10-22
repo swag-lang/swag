@@ -93,13 +93,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
     }
 
-    // If structure is generic, then do nothing, we cannot solve
-    if (typeInfo->flags & TYPEINFO_GENERIC)
-    {
-        decreaseInterfaceCount(typeStruct);
-        return true;
-    }
-
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
@@ -117,6 +110,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 return true;
             }
         }
+
+        if (typeInfo->flags & TYPEINFO_GENERIC)
+            continue;
 
         // We need to be have a bytecode pointer to be able to reference it in the itable
         if (!(child->attributeFlags & ATTRIBUTE_FOREIGN))
@@ -156,6 +152,13 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
         mapItIdxToFunc[symbolName->index] = (AstFuncDecl*) child;
+    }
+
+    // If structure is generic, then do nothing, we cannot solve
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+    {
+        decreaseInterfaceCount(typeStruct);
+        return true;
     }
 
     // Be sure every functions of the interface has been covered
