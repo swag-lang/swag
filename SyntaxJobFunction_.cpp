@@ -213,8 +213,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         }
 
         // Assignment
-        if (token.id == TokenId::SymEqual)
+        if (token.id == TokenId::SymEqual || token.id == TokenId::SymColonEqual)
         {
+            SWAG_VERIFY(!hasType || token.id != TokenId::SymColonEqual, error(token, "'=' expected"));
             hasAssignment = true;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));

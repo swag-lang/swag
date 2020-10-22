@@ -423,7 +423,7 @@ public impl String
 
     // Convert the string inplace to upper case.
     // Only deal with latin1 (not unicode)
-    func makeUpper(using self, set: CharacterSet = CharacterSet.Ascii)
+    func makeUpper(using self, set := CharacterSet.Ascii)
     {
         sl := @mkslice(buffer, length)
 
@@ -439,7 +439,7 @@ public impl String
 
     // Convert the string inplace to lower case.
     // Only deal with latin1 (not unicode)
-    func makeLower(using self, set: CharacterSet = CharacterSet.Ascii)
+    func makeLower(using self, set := CharacterSet.Ascii)
     {
         sl := @mkslice(buffer, length)
 
@@ -454,7 +454,7 @@ public impl String
     }
 
     // Returns a new String in upper case
-    func toUpper(using self, set: CharacterSet = CharacterSet.Ascii)->String
+    func toUpper(using self, set := CharacterSet.Ascii)->String
     {
         result := :self
         result.makeUpper(set)
@@ -462,7 +462,7 @@ public impl String
     }
 
     // Returns a new String in lower case
-    func toLower(using self, set: CharacterSet = CharacterSet.Ascii)->String
+    func toLower(using self, set := CharacterSet.Ascii)->String
     {
         result := :self
         result.makeLower(set)
@@ -470,7 +470,7 @@ public impl String
     }
 
     // Return true if the string starts with 'str'
-    func startsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
+    func startsWidth(using self, str: string, comparisonType := StringComparison.Raw)->bool
     {
         countof := @countof(str)
         if countof > length return false
@@ -478,7 +478,7 @@ public impl String
     }
 
     // Return true if the string ends with 'str'
-    func endsWidth(using self, str: string, comparisonType: StringComparison = StringComparison.Raw)->bool
+    func endsWidth(using self, str: string, comparisonType := StringComparison.Raw)->bool
     {
         countof := @countof(str)
         if countof > length return false
@@ -486,19 +486,19 @@ public impl String
     }
 
     // Compare with another string
-    func compare(using self, other: string, comparisonType: StringComparison = StringComparison.Raw)->s32
+    func compare(using self, other: string, comparisonType := StringComparison.Raw)->s32
     {
         return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
     }
 
     // Compare with another string
-    func compare(using self, other: Self, comparisonType: StringComparison = StringComparison.Raw)->s32
+    func compare(using self, other: Self, comparisonType := StringComparison.Raw)->s32
     {
         return compare(cast(string) @mkslice(other.buffer, other.length), comparisonType)
     }
 
     // Compare two strings
-    func compare(src, dst: string, comparisonType: StringComparison = StringComparison.Raw)->s32
+    func compare(src, dst: string, comparisonType := StringComparison.Raw)->s32
     {
         using StringComparison
         #[complete]
