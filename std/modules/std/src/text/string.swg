@@ -510,17 +510,16 @@ public impl String
 
     func split(using self, separator: char) -> Array'string
     {
-        separators := @[separator]
-        return split(separators)
+        return split(@[separator])
     }
 
     func split(using self, separators: const [..] char) -> Array'string
     {
         func isSeparator(c: char, separators: const [..] char)->bool
         {
-            loop separators
+            loop i: separators
             {
-                if(separators[@index] == c)
+                if(separators[i] == c)
                     return true;
             }
 
