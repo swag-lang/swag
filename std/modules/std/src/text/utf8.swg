@@ -1,7 +1,24 @@
 public namespace std.utf8;
 
+func countBytesOneChar(buffer: const [..] u8)->u32
+{
+    count := @countof(buffer)
+    if !count return 0
+
+    offset := 1'u32
+
+    ptr := @dataof(buffer)
+    c := cast(char) :ptr
+
+    if ((c & 0xE0) == 0xC0)      offset = 2
+    else if ((c & 0xF0) == 0xE0) offset = 3
+    else if ((c & 0xF8) == 0xF0) offset = 4
+
+    return math.min(count, offset)
+}
+
 // Returns the number of unicode characters in an utf8 buffer
-func countChar(buffer: const *u8)->u32
+func countChars(buffer: const *u8)->u32
 {
     if buffer == null
         return 0

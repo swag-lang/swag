@@ -20,5 +20,5 @@ using std
     @assert(result.item0 == str.buffer)
     @assert(result.item1 == 0)
 
-    @assert(utf8.countChar(str.buffer) == 3)
+    @assert(utf8.countChars(str.buffer) == 3)
 }
