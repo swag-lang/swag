@@ -373,6 +373,25 @@ public impl String
         return @{0, false}
     }
 
+    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+    func lastIndexOf(using self, values: const [..] char) -> {index: u32, success: bool}
+    {
+        //if !length
+        //    return @{0, false}
+
+        prevBuffer := buffer + length
+        while true
+        {
+            //(prevBuffer, c) := utf8.previousChar(buffer, prevBuffer)
+            //if c == 0
+             //   return @{0, false}
+            //if contains(values, c)
+            //    return @{i, true}
+        }
+
+        return @{0, false}
+    }
+
     // Returns the first Unicode character of the String
     // This function will return 0 if the String is null or empty
     func front(using self)->char

@@ -495,25 +495,30 @@ void Workspace::checkPendingJobs()
             else
                 id += pendingJob->waitingIdNode->name;
         }
+
         if (pendingJob->waitingIdType)
         {
             id += " ";
             id += pendingJob->waitingIdType->name;
         }
 
-        Utf8 doneId = format("%s%llx%llx", (size_t) pendingJob->waitingIdNode, (size_t) pendingJob->waitingIdType);
-        if (doneIds.find(doneId) != doneIds.end())
-            continue;
-        doneIds.insert(doneId);
+        if (pendingJob->waitingIdNode || pendingJob->waitingIdType)
+        {
+            Utf8 doneId = format("%s%llx%llx", (size_t) pendingJob->waitingIdNode, (size_t) pendingJob->waitingIdType);
+            if (doneIds.find(doneId) != doneIds.end())
+                continue;
+            doneIds.insert(doneId);
+        }
 
         // Job is not done, and we do not wait for a specific identifier
-        if (!pendingJob->waitingSymbolSolved && !node->name.empty())
+        auto toSolve = pendingJob->waitingSymbolSolved;
+        if (!toSolve && !node->name.empty())
         {
             Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->name.c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }
-        else if (!pendingJob->waitingSymbolSolved)
+        else if (!toSolve)
         {
             Diagnostic diag{node, node->token, format("cannot resolve %s", AstNode::getKindName(node).c_str())};
             diag.codeComment = id;
@@ -521,22 +526,24 @@ void Workspace::checkPendingJobs()
         }
 
         // We have an identifier
-        else if (pendingJob->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
-        {
-            Diagnostic diag{node, node->token, format("placeholder identifier '%s' has not been solved", pendingJob->waitingSymbolSolved->getFullName().c_str())};
-            diag.codeComment = id;
-            SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
-            node = pendingJob->waitingSymbolSolved->nodes.front();
-            Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
-            sourceFile->report(diag, &note);
-        }
         else
         {
-            Diagnostic diag{node, node->token, format("identifier '%s' has not been solved (do you have a cycle ?)", pendingJob->waitingSymbolSolved->getFullName().c_str())};
+            SWAG_ASSERT(!toSolve->nodes.empty());
+            auto declNode = toSolve->nodes.front();
+
+            Utf8 msg;
+            if (toSolve->kind == SymbolKind::PlaceHolder)
+                msg = format("placeholder identifier '%s' has not been solved", toSolve->name.c_str());
+            else
+                msg = format("identifier '%s' has not been solved (do you have a cycle ?)", toSolve->name.c_str());
+
+            if (toSolve->kind == SymbolKind::Variable && declNode->kind == AstNodeKind::VarDecl && declNode->isParentOf(node))
+                msg = format("variable '%s' is used before being declared", toSolve->name.c_str());
+
+            Diagnostic diag{node, node->token, msg};
             diag.codeComment = id;
-            SWAG_ASSERT(!pendingJob->waitingSymbolSolved->nodes.empty());
-            node = pendingJob->waitingSymbolSolved->nodes.front();
-            Diagnostic note{node, node->token, "this is the declaration", DiagnosticLevel::Note};
+
+            Diagnostic note{declNode, declNode->token, "this is the declaration", DiagnosticLevel::Note};
             sourceFile->report(diag, &note);
         }
 

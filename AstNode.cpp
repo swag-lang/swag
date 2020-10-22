@@ -71,6 +71,18 @@ void AstNode::setPassThrough()
     byteCodeFct       = ByteCodeGenJob::emitPassThrough;
 }
 
+bool AstNode::isParentOf(AstNode* child)
+{
+    while (child->parent)
+    {
+        if (child->parent == this)
+            return true;
+        child = child->parent;
+    }
+
+    return false;
+}
+
 bool AstNode::isSameStackFrame(SymbolOverload* overload)
 {
     if (overload->symbol->kind != SymbolKind::Variable)
