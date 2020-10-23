@@ -262,7 +262,16 @@ public impl String
     }
 
     // Join an array of strings to make a unique one
-    func join(separator: string, values: string...)->String
+    func join(values: string...)->String
+    {
+        var result: String
+        loop values
+            result += values[@index]
+        return result
+    }
+
+    // Join an array of strings to make a unique one
+    func joinWith(separator: string, values: string...)->String
     {
         var result: String
         loop values
