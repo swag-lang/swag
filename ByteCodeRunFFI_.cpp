@@ -71,6 +71,7 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Slice ||
         typeInfo->kind == TypeInfoKind::Variadic ||
+        typeInfo->kind == TypeInfoKind::TypedVariadic ||
         typeInfo->kind == TypeInfoKind::Interface ||
         typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
@@ -133,7 +134,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     if (numParameters)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters.back())->typeInfo;
-        if (typeParam->kind == TypeInfoKind::Variadic)
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
             // Pointer
             context->ffiArgs.push_back(ffiFromTypeInfo(typeParam));

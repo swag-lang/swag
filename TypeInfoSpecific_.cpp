@@ -46,7 +46,7 @@ TypeInfo* TypeInfoNamespace::clone()
 
 TypeInfo* TypeInfoCode::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoGeneric>();
+    auto newType = g_Allocator.alloc<TypeInfoCode>();
     newType->copyFrom(this);
     return newType;
 }
@@ -444,6 +444,21 @@ TypeInfo* TypeInfoVariadic::clone()
     return newType;
 }
 
+void TypeInfoVariadic::computeName()
+{
+    unique_lock lk(mutex);
+
+    nakedName.clear();
+    if (rawType)
+    {
+        rawType->computeName();
+        nakedName += rawType->name;
+    }
+
+    nakedName += "...";
+    name = nakedName;
+}
+
 bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (!TypeInfo::isSame(to, isSameFlags))
@@ -544,8 +559,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     {
         // We want func's32(s32) to match func(T) when func(T) is generic
         // This is necessary for lambdas. Perhaps that test is not enough !
-        if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC) && 
-            !(flags & TYPEINFO_UNDEFINED) && 
+        if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC) &&
+            !(flags & TYPEINFO_UNDEFINED) &&
             !(other->flags & TYPEINFO_UNDEFINED))
             return false;
     }

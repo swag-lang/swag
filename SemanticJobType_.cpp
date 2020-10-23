@@ -156,7 +156,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
             auto typeVariadic     = (TypeInfoVariadic*) typeNode->typeInfo->clone();
             typeVariadic->kind    = TypeInfoKind::TypedVariadic;
             typeVariadic->rawType = typeNode->childs.front()->typeInfo;
-            typeNode->typeInfo    = typeVariadic;
+            typeVariadic->computeName();
+            typeNode->typeInfo = typeVariadic;
         }
     }
 

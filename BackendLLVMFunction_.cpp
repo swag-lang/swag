@@ -211,7 +211,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     {
         auto param     = typeFunc->parameters.back();
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic)
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
             auto rr0  = TO_PTR_PTR_I8(GEP_I32(allocRR, idx));
             auto cst0 = TO_PTR_I8(func->getArg(0));
@@ -2830,7 +2830,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
         if (numParams)
         {
             auto param = typeFunc->parameters.back();
-            if (param->typeInfo->kind == TypeInfoKind::Variadic)
+            if (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 params.push_back(builder.getInt8Ty()->getPointerTo());
                 params.push_back(builder.getInt32Ty());
@@ -2885,7 +2885,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
     if (numCallParams)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic)
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
             auto index = pushParams[idxParam--];
             auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));

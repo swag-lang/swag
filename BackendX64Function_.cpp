@@ -141,7 +141,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     {
         auto param     = typeFunc->parameters.back();
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic)
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
             pushRAParams.push_back(g_TypeMgr.typeInfoU64);
             pushRAParams.push_back(g_TypeMgr.typeInfoU64);
@@ -1759,7 +1759,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
                 // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
                 // We need register to address the stack where all will be stored.
-                // There's one more PushRAParam to come after CopySPVaargs, sor offset is 8. But we will
+                // There's one more PushRAParam to come after CopySPVaargs, so offset is 8. But we will
                 // also store first the return registers. So in the end, the start of the stack for vaargs is
                 // rsp + 8 (the next PushRAParam) + number of return registers.
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(8 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
@@ -2318,7 +2318,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     if (numCallParams)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic)
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
         {
             auto index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);

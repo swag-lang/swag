@@ -471,6 +471,7 @@ struct TypeInfoVariadic : public TypeInfo
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+    void      computeName() override;
 
     TypeInfo* rawType = nullptr;
 };

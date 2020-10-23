@@ -261,6 +261,15 @@ public impl String
         buffer[length] = 0
     }
 
+    // Join an array of strings to make a unique one
+    func join(values: string...)->String
+    {
+        var result: String
+        loop values
+            result += values[@index]
+        return result
+    }
+
     // Ensure the String is big enough to store a given amount of bytes
     func grow(using self, wantedCapacity: u32)
     {

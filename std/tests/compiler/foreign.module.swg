@@ -193,3 +193,19 @@ public namespace tcf
         }
     }
 }
+
+public func tcf_join(values: s64...)
+{
+    loop i: values
+    {
+        //@print(values[i])
+        //@print(" ")
+        switch i
+        {
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+        }
+    }
+}
