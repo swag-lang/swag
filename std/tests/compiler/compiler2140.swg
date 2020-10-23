@@ -1,15 +1,15 @@
 func toto(v: string...)
 {
     @assert(@countof(v) == 4)
-    @assert(v[0] == "1")
-    @assert(v[1] == "2")
-    @assert(v[2] == "3")
-    @assert(v[3] == "4")
+    @assert(v[0] == "AA")
+    @assert(v[1] == "BBB")
+    @assert(v[2] == "CCCC")
+    @assert(v[3] == "DDDDD")
 }
 
 //#[swag.printbc]
 #test
 {
-    x := @["1", "2", "3", "4"]
-    //toto(@spread(x))
+    x := @["AA", "BBB", "CCCC", "DDDDD"]
+    toto(@spread(x))
 }

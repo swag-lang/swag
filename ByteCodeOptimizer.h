@@ -25,6 +25,8 @@ struct ByteCodeOptimizer
     {
         if (ip->op == ByteCodeOp::Nop)
             return;
+        if (context->semContext && ip->op == ByteCodeOp::IncPointer32)
+            return;
         SWAG_ASSERT(ip->op != ByteCodeOp::End);
         context->passHasDoneSomething = true;
         ip->op                        = ByteCodeOp::Nop;

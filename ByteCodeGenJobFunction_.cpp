@@ -558,10 +558,8 @@ bool ByteCodeGenJob::emitSpreadArray(ByteCodeGenContext* context, AstFuncCallPar
 {
     VectorNative<uint32_t> toPush;
     auto                   typeArr = CastTypeInfo<TypeInfoArray>(param->spreadType, TypeInfoKind::Array);
-    auto                   rsize   = reserveRegisterRC(context);
     numCallParams += typeArr->count - 1;
 
-    emitInstruction(context, ByteCodeOp::SetImmediate32, rsize)->b.u32 = typeArr->pointedType->sizeOf;
     for (uint32_t st = 0; st < typeArr->count; st++)
     {
         RegisterList rtmp;
@@ -573,18 +571,18 @@ bool ByteCodeGenJob::emitSpreadArray(ByteCodeGenContext* context, AstFuncCallPar
         else if ((typeArr->pointedType->kind != TypeInfoKind::Array) || (typeArr->pointedType->kind == TypeInfoKind::Pointer))
             SWAG_CHECK(emitTypeDeRef(context, rtmp, typeArr->pointedType, false));
         toFree += rtmp;
-        for (int r = rtmp.size() - 1; r >= 0;)
+        for (int r = 0; r < rtmp.size(); r++)
         {
-            toPush.push_back(rtmp[r--]);
+            toPush.push_back(rtmp[r]);
             precallStack += sizeof(Register);
             numPushParams++;
             maxCallParams++;
         }
 
-        emitInstruction(context, ByteCodeOp::IncPointer32, param->resultRegisterRC, rsize, param->resultRegisterRC);
+        auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, param->resultRegisterRC, 0, param->resultRegisterRC);
+        inst->flags |= BCI_IMM_B;
+        inst->b.u32 = typeArr->pointedType->sizeOf;
     }
-
-    freeRegisterRC(context, rsize);
 
     for (int i = (int) toPush.size() - 1; i >= 0; i--)
         accParams.push_back(toPush[i]);
