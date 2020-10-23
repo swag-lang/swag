@@ -55,7 +55,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()};
+                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
                 diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
                 context->report(diag);
                 done = true;
@@ -65,13 +65,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Cast from struct to interface
         if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, fromNode->token, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
+            context->report({fromNode, fromNode->token, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str())});
             done = true;
         }
 
         // General cast error
         if (!done)
-            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str()).c_str()});
+            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())});
     }
 
     return false;
@@ -2380,7 +2380,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
+    {
         toType = ((TypeInfoVariadic*) toType)->rawType;
+
+        // In case of error, should have been caught before
+        if (fromType->flags & TYPEINFO_SPREAD)
+            return true;
+    }
 
     // Const mismatch
     if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST))

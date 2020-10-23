@@ -46,10 +46,21 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
+        // For a typed variadic, cast against the underlying type
+        // In case of a spread, match the underlying type too
         if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
             if (typeInfo->kind != TypeInfoKind::TypedVariadic)
+            {
+                if (typeInfo->flags & TYPEINFO_SPREAD)
+                {
+                    if (typeInfo->kind == TypeInfoKind::Array)
+                        typeInfo = ((TypeInfoArray*) typeInfo)->pointedType;
+                }
+
                 symbolTypeInfo = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
+            }
+
             isAfterVariadic = true;
         }
 
@@ -556,7 +567,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     // For a lambda
     if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
     {
-        if(!(flags & TYPEINFO_GENERIC))
+        if (!(flags & TYPEINFO_GENERIC))
             matchGenericParameters(context, this, genericParameters);
         return;
     }

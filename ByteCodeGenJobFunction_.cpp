@@ -557,7 +557,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 bool ByteCodeGenJob::emitSpreadArray(ByteCodeGenContext* context, AstFuncCallParam* param, int& numCallParams, RegisterList& toFree, VectorNative<uint32_t>& accParams, int& precallStack, uint64_t& numPushParams, uint32_t& maxCallParams)
 {
     VectorNative<uint32_t> toPush;
-    auto                   typeArr = CastTypeInfo<TypeInfoArray>(param->spreadType, TypeInfoKind::Array);
+    auto                   typeArr = CastTypeInfo<TypeInfoArray>(param->typeInfo, TypeInfoKind::Array);
     numCallParams += typeArr->count - 1;
 
     for (uint32_t st = 0; st < typeArr->count; st++)
@@ -801,9 +801,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 callParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
 
             // Spread a collection
-            if (callParam && callParam->spreadType)
+            if (callParam && callParam->typeInfo->flags & TYPEINFO_SPREAD)
             {
-                if (callParam->spreadType->kind == TypeInfoKind::Array)
+                if (callParam->typeInfo->kind == TypeInfoKind::Array)
                     SWAG_CHECK(emitSpreadArray(context, callParam, numCallParams, toFree, accParams, precallStack, numPushParams, maxCallParams));
                 else
                     return internalError(context, "emitCall, invalid spread type", param);

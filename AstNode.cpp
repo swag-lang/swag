@@ -561,7 +561,6 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     newNode->resolvedParameter  = resolvedParameter;
     newNode->index              = index;
     newNode->mustSortParameters = mustSortParameters;
-    newNode->spreadType         = spreadType;
     return newNode;
 }
 
