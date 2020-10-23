@@ -445,6 +445,17 @@ public impl String
         return utf16
     }
 
+    // Convert string to a 32 bits unicode array
+    func toUnicode32(using self)->Array'u32
+    {
+        var utf32: Array'u32
+        utf32.reserve(length + 1)
+        count := unicode32.fromUtf8(@mkslice(utf32.buffer, length), @mkslice(buffer, length))
+        utf32.count = count + 1
+        utf32[count] = 0
+        return utf32
+    }
+
     // Convert a literal string to a String
     func from(value: string)->String
     {

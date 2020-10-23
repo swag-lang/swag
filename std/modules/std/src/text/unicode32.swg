@@ -165,3 +165,23 @@ public
         return 3
     }
 }
+
+// Convert an utf8 buffer to a 32 bits unicode sequence
+func fromUtf8(dest: [..] u32, src: const [..] u8)->u32
+{
+    count := 0'u32
+    srcPtr := @dataof(src)
+    destPtr := @dataof(dest)
+    srcLength := @countof(src)
+    (c, eat) := utf8.firstChar(src)
+    while eat != 0
+    {
+        debug.assert(count != @countof(dest), "destination buffer is too small")
+        destPtr[0] = cast(u32) c
+        destPtr, count += 1
+        srcLength -= eat
+        (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
+    }
+
+    return count
+}
