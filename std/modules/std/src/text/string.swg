@@ -115,7 +115,7 @@ public impl String
 
     func opCmp(using self, other: Self)->s32
     {
-        return compare(other, StringComparison.Ascii)
+        return compare(other.toString(), StringComparison.Ascii)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -464,7 +464,7 @@ public impl String
     }
 
     // Returns a string type
-    func cstr(using self)->string
+    func toString(using self)->string
     {
         return cast(string) @mkslice(buffer, length)
     }
@@ -537,12 +537,6 @@ public impl String
     func compare(using self, other: string, comparisonType := StringComparison.Raw)->s32
     {
         return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
-    }
-
-    // Compare with another string
-    func compare(using self, other: Self, comparisonType := StringComparison.Raw)->s32
-    {
-        return compare(cast(string) @mkslice(other.buffer, other.length), comparisonType)
     }
 
     // Compare two strings

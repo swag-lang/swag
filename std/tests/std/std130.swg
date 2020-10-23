@@ -15,5 +15,5 @@ using std
     @assert(x.endsWidth("this is a string"))
 
     var y: String = "string"
-    @assert(x.endsWidth(y.cstr()))
+    @assert(x.endsWidth(y.toString()))
 }
