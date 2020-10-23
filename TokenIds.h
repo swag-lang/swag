@@ -151,6 +151,7 @@ DEFINE_TOKEN_ID(IntrinsicDataOf)
 DEFINE_TOKEN_ID(IntrinsicMakeSlice)
 DEFINE_TOKEN_ID(IntrinsicMakeAny)
 DEFINE_TOKEN_ID(IntrinsicMakeInterface)
+DEFINE_TOKEN_ID(IntrinsicSpread)
 
 DEFINE_TOKEN_ID(IntrinsicPrint)
 DEFINE_TOKEN_ID(IntrinsicAssert)

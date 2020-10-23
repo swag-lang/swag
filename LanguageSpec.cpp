@@ -112,6 +112,7 @@ void LanguageSpec::setup()
     keywords["@mkslice"]     = TokenId::IntrinsicMakeSlice;
     keywords["@mkany"]       = TokenId::IntrinsicMakeAny;
     keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
+    keywords["@spread"]      = TokenId::IntrinsicSpread;
     keywords["@index"]       = TokenId::IntrinsicIndex;
     keywords["@print"]       = TokenId::IntrinsicPrint;
     keywords["@assert"]      = TokenId::IntrinsicAssert;

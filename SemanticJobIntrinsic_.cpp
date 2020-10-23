@@ -251,6 +251,32 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
+{
+    auto node = context->node;
+    auto expr = node->childs.front();
+
+    if (expr->typeInfo->kind == TypeInfoKind::Array)
+    {
+        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+        auto parent = expr->parent;
+        while (parent && parent->kind != AstNodeKind::FuncCallParam)
+            parent = parent->parent;
+        SWAG_VERIFY(parent, "'@spread' can only be used for a function call parameter");
+
+        auto typeArr          = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
+        auto nodeParam        = CastAst<AstFuncCallParam>(parent, AstNodeKind::FuncCallParam);
+        nodeParam->spreadType = typeArr;
+        node->typeInfo        = typeArr->pointedType;
+    }
+    else
+    {
+        return context->report({expr, format("cannot spread a value of type '%s'", expr->typeInfo->name.c_str())});
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 {
     auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -398,6 +424,12 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicMakeInterface:
     {
         SWAG_CHECK(resolveIntrinsicMakeInterface(context));
+        break;
+    }
+
+    case TokenId::IntrinsicSpread:
+    {
+        SWAG_CHECK(resolveIntrinsicSpread(context));
         break;
     }
     }

@@ -458,8 +458,9 @@ struct AstFuncCallParam : public AstNode
     AstNode*       namedParamNode;
     TypeInfoParam* resolvedParameter;
 
-    int  index;
-    bool mustSortParameters;
+    TypeInfo* spreadType;
+    int       index;
+    bool      mustSortParameters;
 };
 
 struct AstBinaryOpNode : public AstNode
