@@ -1,6 +1,7 @@
 public namespace std.unicode16;
 
-// Convert an utf8 buffer to a 16 bits unicode sequence
+// Convert an utf8 buffer to a 16 bits unicode sequence, and returns the
+// number of valid elements in the destination buffer
 func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 {
     count := 0'u32

@@ -121,53 +121,54 @@ public
             return latin1.isDigit(cast(u8) c)
         return getCategory(c) == UnicodeCategory.DecimalDigitNumber
     }
-
-    // Convert unicode character 'src' to an utf8 sequence, and returns
-    // the number of bytes that were needed to make the conversion.
-    // 'dest' must be at least 4 bytes long
-    func toUtf8(dest: [..] u8, src: char)->u32
-    {
-        debug.assert(@countof(dest) >= 4, "destination buffer is too small")
-
-        if (src <= 0x7F)
-        {
-            dest[0] = cast(u8) src
-            return 1
-        }
-
-        if (src <= 0x07FF)
-        {
-            dest[0] = cast(u8) (((src >> 6) & 0x1F) | 0xC0)
-            dest[1] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
-            return 2
-        }
-
-        if (src <= 0xFFFF)
-        {
-            dest[0] = cast(u8) (((src >> 12) & 0x0F) | 0xE0)
-            dest[1] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
-            dest[2] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
-            return 3
-        }
-
-        if (src <= 0x10FFFF)
-        {
-            dest[0] = cast(u8) (((src >> 18) & 0x07) | 0xF0)
-            dest[1] = cast(u8) (((src >> 12) & 0x3F) | 0x80)
-            dest[2] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
-            dest[3] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
-            return 4
-        }
-
-        dest[0] = cast(u8) 0xEF;
-        dest[1] = cast(u8) 0xBF;
-        dest[2] = cast(u8) 0xBD;
-        return 3
-    }
 }
 
-// Convert an utf8 buffer to a 32 bits unicode sequence
-func fromUtf8(dest: [..] u32, src: const [..] u8)->u32
+// Convert unicode character 'src' to an utf8 sequence, and returns
+// the number of bytes that were needed to make the conversion.
+// 'dest' must be at least 4 bytes long
+public func toUtf8(dest: [..] u8, src: char)->u32
+{
+    debug.assert(@countof(dest) >= 4, "destination buffer is too small")
+
+    if (src <= 0x7F)
+    {
+        dest[0] = cast(u8) src
+        return 1
+    }
+
+    if (src <= 0x07FF)
+    {
+        dest[0] = cast(u8) (((src >> 6) & 0x1F) | 0xC0)
+        dest[1] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
+        return 2
+    }
+
+    if (src <= 0xFFFF)
+    {
+        dest[0] = cast(u8) (((src >> 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
+        return 3
+    }
+
+    if (src <= 0x10FFFF)
+    {
+        dest[0] = cast(u8) (((src >> 18) & 0x07) | 0xF0)
+        dest[1] = cast(u8) (((src >> 12) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
+        dest[3] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
+        return 4
+    }
+
+    dest[0] = cast(u8) 0xEF;
+    dest[1] = cast(u8) 0xBF;
+    dest[2] = cast(u8) 0xBD;
+    return 3
+}
+
+// Convert an utf8 buffer to a 32 bits unicode sequence, and returns the
+// number of valid elements in the destination buffer
+public func fromUtf8(dest: [..] u32, src: const [..] u8)->u32
 {
     count := 0'u32
     srcPtr := @dataof(src)
