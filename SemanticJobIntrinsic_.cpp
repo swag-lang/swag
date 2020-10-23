@@ -259,10 +259,12 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     if (expr->typeInfo->kind == TypeInfoKind::Array)
     {
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-        auto parent = expr->parent;
+
+        // Be sure we are a function call parameter
+        auto parent       = expr->parent;
         while (parent && parent->kind != AstNodeKind::FuncCallParam)
             parent = parent->parent;
-        SWAG_VERIFY(parent, "'@spread' can only be used for a function call parameter");
+        SWAG_VERIFY(parent, context->report({node, node->token, "'@spread' can only be used as a function call parameter"}));
 
         auto typeArr          = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
         auto nodeParam        = CastAst<AstFuncCallParam>(parent, AstNodeKind::FuncCallParam);
