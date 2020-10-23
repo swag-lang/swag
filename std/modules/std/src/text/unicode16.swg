@@ -4,15 +4,19 @@ public namespace std.unicode16;
 func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 {
     count := 0'u32
-    result := utf8.nextChar(src)
+    srcPtr := @dataof(src)
     destPtr := @dataof(dest)
-    while result.item1 != 0
+    srcLength := @countof(src)
+    (c, eat) := utf8.firstChar(src)
+    while eat != 0
     {
         debug.assert(count != @countof(dest), "destination buffer is too small")
-        destPtr[0] = cast(u16) result.item1
+        debug.assert(c <= acast swag.MaxU16, "utf8 character overflow")
+        destPtr[0] = cast(u16) c
         destPtr += 1
         count += 1
-        result = utf8.nextChar(result.item0)
+        srcLength -= eat
+        (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
     }
 
     return count

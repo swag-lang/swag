@@ -5,14 +5,17 @@ using std
 {
 	const str = "⺁⺆⻇"
 
-	var c: char
-	var ptr: const *u8 = @dataof(str)
+	ptr := @dataof(str)
+    count := @countof(str)
 	cpt := 0
 	while true
 	{
-		(ptr, c) = std.utf8.nextChar(ptr)
-		if !c
+        slice := @mkslice(ptr, count)
+		(c, eat) := std.utf8.firstChar(slice)
+		if !eat
 			break
+        ptr += eat
+        count -= eat
 		cpt += 1
 	}
 

@@ -4,22 +4,10 @@ using std
 //#[swag.printbc]
 #test
 {
-    var str: String = "A⺗B"
-    var ptr = str.buffer + str.length
+    str := "A⺗B"
+    result := utf8.lastChar(str)
+    @assert(result.item0 == "B"'char)
+    @assert(result.item1 == 1)
 
-    result := utf8.previousChar(str.buffer, ptr)
-    @assert(result.item1 == "B"'char)
-
-    result = utf8.previousChar(str.buffer, result.item0)
-    @assert(result.item1 == "⺗"'char)
-
-    result = utf8.previousChar(str.buffer, result.item0)
-    @assert(result.item1 == "A"'char)
-
-    result = utf8.previousChar(str.buffer, result.item0)
-    @assert(result.item0 == str.buffer)
-    @assert(result.item1 == 0)
-
-    @assert(utf8.countChars(str.cstr()) == 3)
-    @assert(str.countChars() == 3)
+    @assert(utf8.countChars(str) == 3)
 }

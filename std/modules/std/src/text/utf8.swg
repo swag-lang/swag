@@ -25,81 +25,82 @@ func countChars(buffer: const [..] u8)->u32
     while countof
     {
         val := countBytesAt(dataof)
+        debug.assert(val <= countof, "invalid utf8 character")
         cpt += 1
         dataof += val
-        countof -= math.min(countof, val)
+        countof -= val
     }
 
     return cpt
 }
 
 // Get the address of the previous utf8 character, and the corresponding unicode character
-func previousChar(start, buffer: const *u8) -> {const *u8, char}
+func lastChar(buffer: const [..] u8) -> {char, u32}
 {
-    if buffer == null || buffer == start
-        return @{buffer, acast 0}
+    countof := @countof(buffer)
+    if countof == 0
+        return @{acast 0, 0}
 
-    ptr := buffer - 1
+    dataof := @dataof(buffer)
+    ptr := dataof + (countof - 1)
+    eat := 1'u32
     while true
     {
         c := :ptr
         if c >> 6 != 2
             break
-        if ptr == start
-            return @{start, acast 0}
+        if ptr == dataof
+            return @{acast 0, 0}
         ptr -= 1
+        eat += 1
     }
 
-    result := nextChar(ptr)
-    return @{ptr, result.item1}
+    return firstChar(@mkslice(ptr, eat))
 }
 
 // Get the unicode character pointed by `buffer`, and the address of the next utf8 character
-func nextChar(buffer: const *u8) -> {const *u8, char}
+func firstChar(buffer: const [..] u8) -> {char, u32}
 {
-    if buffer == null
-        return @{null, acast 0}
+    countof := @countof(buffer)
+    if countof == 0
+        return @{acast 0, 0}
 
-    ptr := buffer
-    c := cast(char) :ptr
-    if c == 0
-        return @{ptr, acast 0}
-    ptr += 1
+    dataof := @dataof(buffer)
+    c := cast(char) :dataof
+    dataof += 1
 
     // Ascii
     if ((c & 0x80) == 0)
-    {
-        return @{ptr, c}
-    }
+        return @{c, 1}
 
     // Utf8
     var wc: char = ?
     if ((c & 0xE0) == 0xC0)
     {
+        debug.assert(countof >= 2, "invalid utf8 character")
         wc = (c & 0x1F) << 6;
-        c = cast(char) :ptr
-        ptr += 1
+        c = cast(char) :dataof
         wc |= (c & 0x3F);
-        return @{ptr, wc}
+        return @{wc, 2}
     }
 
     if ((c & 0xF0) == 0xE0)
     {
+        debug.assert(countof >= 3, "invalid utf8 character")
         wc = (c & 0xF) << 12;
-        wc |= cast(char) (ptr[0] & 0x3F) << 6;
-        wc |= cast(char) (ptr[1] & 0x3F);
-        ptr += 2;
-        return @{ptr, wc}
+        wc |= cast(char) (dataof[0] & 0x3F) << 6;
+        wc |= cast(char) (dataof[1] & 0x3F);
+        return @{wc, 3}
     }
 
     if ((c & 0xF8) == 0xF0)
     {
+        debug.assert(countof >= 4, "invalid utf8 character")
         wc = (c & 0x7) << 18;
-        wc |= cast(char) (ptr[0] & 0x3F) << 12;
-        wc |= cast(char) (ptr[1] & 0x3F) << 6;
-        wc |= cast(char) (ptr[2] & 0x3F);
-        ptr += 3;
-        return @{ptr, wc}
+        wc |= cast(char) (dataof[0] & 0x3F) << 12;
+        wc |= cast(char) (dataof[1] & 0x3F) << 6;
+        wc |= cast(char) (dataof[2] & 0x3F);
+        return @{wc, 4}
     }
 
     if ((c & 0xFC) == 0xF8)
@@ -109,7 +110,7 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
-        return @{ptr, wc}
+        return @{wc, 1}
     }
 
     if ((c & 0xFE) == 0xFC)
@@ -120,10 +121,10 @@ func nextChar(buffer: const *u8) -> {const *u8, char}
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
-        return @{ptr, wc}
+        return @{wc, 1}
     }
 
-    return @{ptr, acast c}
+    return @{acast c, 1}
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table

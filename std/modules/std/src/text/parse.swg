@@ -83,17 +83,17 @@ func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (nextBuffer, c) := utf8.nextChar(buffer)
+    (c, eat) := utf8.firstChar(str)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
-        cpt += cast(u32) (nextBuffer - buffer)
-        buffer = nextBuffer
+        cpt += eat
+        buffer += eat
         signed = true
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
-        cpt += cast(u32) (nextBuffer - buffer)
-        buffer = nextBuffer
+        cpt += eat
+        buffer += eat
     }
 
     // Parse the rest
@@ -124,50 +124,52 @@ func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (nextBuffer, c) := utf8.nextChar(buffer)
+    (c, eat) := utf8.firstChar(str)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         // Skip negative sign
-        cpt += cast(u32) (nextBuffer - buffer)
-        buffer = nextBuffer
+        buffer, cpt += eat
+        countof -= eat
         signed = true
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
         // Skip positive sign
-        cpt += cast(u32) (nextBuffer - buffer)
-        buffer = nextBuffer
+        buffer, cpt += eat
+        countof -= eat
     }
 
     // Integer part
     hasDigits := false
-    while cpt < countof && ascii.isDigit(:buffer)
+    while countof && ascii.isDigit(:buffer)
     {
         hasDigits = true
         result *= 10
         result += cast(f64) (:buffer - "0"'u8)
         buffer, cpt += 1
+        countof -= 1
     }
 
     // Fractional part
-    if cpt < countof
+    if countof
     {
-        (nextBuffer, c) = utf8.nextChar(buffer)
+        (c, eat) = utf8.firstChar(@mkslice(buffer, countof))
         if c == g_CultureInfo.numberFormat.decimalSeparator
         {
             // Skip decimal separator
-            cpt += cast(u32) (nextBuffer - buffer)
-            buffer = nextBuffer
+            buffer, cpt += eat
+            countof -= eat
 
             fract := 0'u64
             divisor := 1.0'f64
-            while cpt < countof && ascii.isDigit(:buffer)
+            while countof && ascii.isDigit(:buffer)
             {
                 hasDigits = true
                 fract *= 10
                 divisor *= 0.1'f64
                 fract += cast(u64) (:buffer - "0"'u8)
                 buffer, cpt += 1
+                countof -= 1
             }
 
             result += fract * divisor

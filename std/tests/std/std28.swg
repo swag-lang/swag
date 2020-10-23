@@ -3,18 +3,22 @@
 #[swag.macro]
 func Visit(str: const [..] u8, user: code)
 {
-    var c: char
-    var ptr: const *u8 = @dataof(str)
+    ptr := @dataof(str)
+    count := @countof(str)
 	while true
 	{
-		(ptr, c) = std.utf8.nextChar(ptr)
-		if !c
+        slice := @mkslice(ptr, count)
+		(c, eat) := std.utf8.firstChar(slice)
+		if !eat
 			break
 		#macro
         {
             value := `c
             #mixin `user
         }
+
+        ptr += eat
+        count -= eat
 	}
 }
 

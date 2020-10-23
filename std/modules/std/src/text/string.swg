@@ -192,11 +192,13 @@ public impl String
         if length
         {
             idx := 0'u32
-            scan := cast(const *u8) buffer
+            count := length
+            scan := buffer
             while true
             {
-                var (nextScan, c) = utf8.nextChar(scan)
-                if c == 0
+                slice := @mkslice(scan, count)
+                var (c, eat) = utf8.firstChar(slice)
+                if eat == 0
                     break
                 #macro
                 {
@@ -208,8 +210,9 @@ public impl String
                     #mixin `stmt
                 }
 
-                idx += cast(u32) (nextScan - scan)
-                scan = cast(const *u8) nextScan
+                idx += eat
+                scan += eat
+                count -= eat
             }
         }
     }
@@ -318,14 +321,15 @@ public impl String
         if !length
             return
 
-        ptr := cast(const *u8) buffer
+        ptr := buffer
         while true
         {
-            (nextPtr, c) := utf8.nextChar(ptr)
+            slice := @mkslice(ptr, length)
+            (c, eat) := utf8.firstChar(slice)
             if !unicode32.isWhiteSpace(c)
                 break
-            length -= cast(u32) (nextPtr - ptr)
-            ptr = nextPtr
+            length -= eat
+            ptr += eat
         }
 
         memory.copy(buffer, ptr, length)
@@ -338,14 +342,13 @@ public impl String
         if !length
             return
 
-        ptr := cast(const *u8) buffer + length
         while true
         {
-            (previousPtr, c) := utf8.previousChar(buffer, ptr)
+            slice := @mkslice(buffer, length)
+            (c, eat) := utf8.lastChar(slice)
             if !unicode32.isWhiteSpace(c)
                 break
-            length -= cast(u32) (ptr - previousPtr)
-            ptr = previousPtr
+            length -= eat
         }
 
         buffer[length] = 0
@@ -392,17 +395,14 @@ public impl String
             return @{0, false}
 
         idx := length
-        prevBuffer := cast(const *u8) buffer + length
-
         while true
         {
-            (newBuffer, c) := utf8.previousChar(buffer, prevBuffer)
-            if c == 0
+            slice := @mkslice(buffer, idx)
+            (c, eat) := utf8.lastChar(slice)
+            if eat == 0
                 return @{0, false}
 
-            idx -= cast(u32) (prevBuffer - newBuffer)
-            prevBuffer = newBuffer
-
+            idx -= eat
             if contains(values, c)
                 return @{idx, true}
         }
@@ -418,7 +418,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[0])
             return cast(char) buffer[0]
-        (?, c) := utf8.nextChar(buffer)
+        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
         return c
     }
 
@@ -430,7 +430,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (?, c) := utf8.previousChar(buffer, buffer + length)
+        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
         return c
     }
 
@@ -566,39 +566,44 @@ public impl String
         var result: Array'string
 
         var ptr = cast(const *u8) buffer
-        var nextPtr = ptr
         var c: char
+        var eat: u32
 
         startIdx := 0'u32
+        count := length
         while true
         {
             // Remove separator at the start
             while true
             {
-                (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || !contains(separators, c)
+                slice := @mkslice(ptr, count)
+                (c, eat) = utf8.firstChar(slice)
+                if eat == 0 || !contains(separators, c)
                     break
-                startIdx += cast(u32) (nextPtr - ptr)
-                ptr = nextPtr
+                startIdx += eat
+                ptr += eat
+                count -= eat
             }
 
-            if c == 0 break // done
+            if eat == 0 break // done
 
             // Add all real characters until we found a separator
             endIdx := startIdx
             while true
             {
-                (nextPtr, c) = utf8.nextChar(ptr)
-                if c == 0 || contains(separators, c)
+                slice := @mkslice(ptr, count)
+                (c, eat) = utf8.firstChar(slice)
+                if eat == 0 || contains(separators, c)
                     break
-                endIdx += cast(u32) (nextPtr - ptr)
-                ptr = nextPtr
+                endIdx += eat
+                ptr += eat
+                count -= eat
             }
 
             oneString := cast(string) @mkslice(buffer + startIdx, endIdx - startIdx)
             result.add(oneString)
 
-            if c == 0 break // done
+            if eat == 0 break // done
             startIdx = endIdx
         }
 
