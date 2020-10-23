@@ -430,7 +430,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
+        (c, ?) := utf8.lastChar(@mkslice(buffer, length))
         return c
     }
 

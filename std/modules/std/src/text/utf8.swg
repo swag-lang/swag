@@ -35,7 +35,7 @@ func countChars(buffer: const [..] u8)->u32
 }
 
 // Get the address of the previous utf8 character, and the corresponding unicode character
-func lastChar(buffer: const [..] u8) -> {char, u32}
+func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
@@ -59,7 +59,7 @@ func lastChar(buffer: const [..] u8) -> {char, u32}
 }
 
 // Get the unicode character pointed by `buffer`, and the address of the next utf8 character
-func firstChar(buffer: const [..] u8) -> {char, u32}
+func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
