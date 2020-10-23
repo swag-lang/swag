@@ -189,6 +189,25 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             return true;
+
+        case NativeTypeKind::String:
+            if (fromNode)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    if (fromNode->flags & AST_VALUE_COMPUTED)
+                    {
+                        fromNode->computedValue.reg.b = true;
+                        fromNode->typeInfo            = g_TypeMgr.typeInfoBool;
+                    }
+                    else
+                    {
+                        fromNode->typeInfo       = g_TypeMgr.typeInfoBool;
+                        fromNode->castedTypeInfo = fromType;
+                    }
+                }
+            }
+            return true;
         }
     }
 

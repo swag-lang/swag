@@ -4,5 +4,6 @@ using std
 //#[swag.printbc]
 #test
 {
-    //res := String.join("this", "is", "a", "string")
+    res := String.join(" ", "this", "is", "a", "string")
+    console.print("%\n", res)
 }

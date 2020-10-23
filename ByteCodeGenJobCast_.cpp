@@ -126,6 +126,9 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     case NativeTypeKind::U64:
         emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
         break;
+    case NativeTypeKind::String:
+        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
+        return true;
     default:
         context->node = exprNode;
         internalError(context, "emitCastToNativeBool, invalid source type");
