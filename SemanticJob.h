@@ -69,6 +69,7 @@ struct SemanticJob : public Job
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseMethodCount(TypeInfoStruct* typeInfoStruct);
+    static SymbolName*  hasUserOp(const char* name, TypeInfoStruct* leftStruct);
     static SymbolName*  hasUserOp(SemanticContext* context, const char* name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
 

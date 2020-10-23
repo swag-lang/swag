@@ -91,7 +91,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, "'opVisit' must have the 'swag.macro' attribute"}));
-        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_NORETURN, context->report({ node, node->token, "'opVisit' must have the 'swag.noreturn' attribute" }));
+        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_NORETURN, context->report({node, node->token, "'opVisit' must have the 'swag.noreturn' attribute"}));
     }
     else if (name == "opCast")
     {
@@ -195,17 +195,20 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
 }
 
-SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
+SymbolName* SemanticJob::hasUserOp(const char* name, TypeInfoStruct* leftStruct)
 {
-    auto leftType   = TypeManager::concreteReferenceType(left->typeInfo);
-    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-
     // In case of a generic instance, symbols are defined in the original generic structure scope, not
     // in the instance
     if (leftStruct->fromGeneric)
         leftStruct = leftStruct->fromGeneric;
-
     return leftStruct->scope->symTable.find(name);
+}
+
+SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
+{
+    auto leftType   = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+    return hasUserOp(name, leftStruct);
 }
 
 SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const char* name, AstNode* left)

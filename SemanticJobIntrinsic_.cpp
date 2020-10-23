@@ -253,8 +253,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
 
 bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
 {
-    auto node = context->node;
-    auto expr = node->childs.front();
+    auto node     = context->node;
+    auto expr     = node->childs.front();
+    auto typeInfo = TypeManager::concreteReferenceType(expr->typeInfo);
 
     // Be sure we are a function call parameter
     auto parent = expr->parent;
@@ -263,16 +264,26 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     SWAG_VERIFY(parent, context->report({node, node->token, "'@spread' can only be used as a function call parameter"}));
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 
-    if (expr->typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->kind == TypeInfoKind::Array)
     {
-        node->typeInfo = expr->typeInfo->clone();
-        node->typeInfo->flags |= TYPEINFO_SPREAD;
+        // Ok
+    }
+    else if (typeInfo->kind == TypeInfoKind::Struct && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
+    {
+        node->typeInfo = typeInfo;
+        SWAG_VERIFY(hasUserOp(context, "opCount", node), context->report({expr, format("cannot spread struct '%s' because function 'opCount' is not implemented", typeInfo->name.c_str())}));
+        SWAG_VERIFY(hasUserOp(context, "opIndex", node), context->report({expr, format("cannot spread struct '%s' because function 'opIndex' is not implemented", typeInfo->name.c_str())}));
+        waitUserOp(context, "opIndex", node);
+        if (context->result == ContextResult::Pending)
+            return true;
     }
     else
     {
         return context->report({expr, format("cannot spread a value of type '%s'", expr->typeInfo->name.c_str())});
     }
 
+    node->typeInfo = typeInfo->clone();
+    node->typeInfo->flags |= TYPEINFO_SPREAD;
     return true;
 }
 

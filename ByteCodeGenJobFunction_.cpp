@@ -554,6 +554,12 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     }
 }
 
+bool ByteCodeGenJob::emitSpreadStruct(ByteCodeGenContext* context, AstFuncCallParam* param, int& numCallParams, RegisterList& toFree, VectorNative<uint32_t>& accParams, int& precallStack, uint64_t& numPushParams, uint32_t& maxCallParams)
+{
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+    return internalError(context, "emitSpreadStruct");
+}
+
 bool ByteCodeGenJob::emitSpreadArray(ByteCodeGenContext* context, AstFuncCallParam* param, int& numCallParams, RegisterList& toFree, VectorNative<uint32_t>& accParams, int& precallStack, uint64_t& numPushParams, uint32_t& maxCallParams)
 {
     VectorNative<uint32_t> toPush;
@@ -805,6 +811,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 if (callParam->typeInfo->kind == TypeInfoKind::Array)
                     SWAG_CHECK(emitSpreadArray(context, callParam, numCallParams, toFree, accParams, precallStack, numPushParams, maxCallParams));
+                else if (callParam->typeInfo->kind == TypeInfoKind::Struct)
+                    SWAG_CHECK(emitSpreadStruct(context, callParam, numCallParams, toFree, accParams, precallStack, numPushParams, maxCallParams));
                 else
                     return internalError(context, "emitCall, invalid spread type", param);
                 continue;
