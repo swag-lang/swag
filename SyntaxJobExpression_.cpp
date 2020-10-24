@@ -167,7 +167,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeInterface:
-    case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicAlloc:
     case TokenId::IntrinsicRealloc:
     case TokenId::IntrinsicGetContext:

@@ -2380,13 +2380,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
-    {
         toType = ((TypeInfoVariadic*) toType)->rawType;
-
-        // In case of error, should have been caught before
-        if (fromType->flags & TYPEINFO_SPREAD)
-            return true;
-    }
 
     // Const mismatch
     if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST))

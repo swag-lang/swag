@@ -7,6 +7,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Runtime.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -554,48 +555,6 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     }
 }
 
-bool ByteCodeGenJob::emitSpreadStruct(ByteCodeGenContext* context, AstFuncCallParam* param, int& numCallParams, RegisterList& toFree, VectorNative<uint32_t>& accParams, int& precallStack, uint64_t& numPushParams, uint32_t& maxCallParams)
-{
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
-    return internalError(context, "emitSpreadStruct");
-}
-
-bool ByteCodeGenJob::emitSpreadArray(ByteCodeGenContext* context, AstFuncCallParam* param, int& numCallParams, RegisterList& toFree, VectorNative<uint32_t>& accParams, int& precallStack, uint64_t& numPushParams, uint32_t& maxCallParams)
-{
-    VectorNative<uint32_t> toPush;
-    auto                   typeArr = CastTypeInfo<TypeInfoArray>(param->typeInfo, TypeInfoKind::Array);
-    numCallParams += typeArr->count - 1;
-
-    for (uint32_t st = 0; st < typeArr->count; st++)
-    {
-        RegisterList rtmp;
-        reserveRegisterRC(context, rtmp, 1);
-
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, rtmp, param->resultRegisterRC);
-        if (typeArr->pointedType->isNative(NativeTypeKind::String))
-            SWAG_CHECK(emitTypeDeRef(context, rtmp, typeArr->pointedType, false));
-        else if ((typeArr->pointedType->kind != TypeInfoKind::Array) || (typeArr->pointedType->kind == TypeInfoKind::Pointer))
-            SWAG_CHECK(emitTypeDeRef(context, rtmp, typeArr->pointedType, false));
-        toFree += rtmp;
-        for (int r = 0; r < rtmp.size(); r++)
-        {
-            toPush.push_back(rtmp[r]);
-            precallStack += sizeof(Register);
-            numPushParams++;
-            maxCallParams++;
-        }
-
-        auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, param->resultRegisterRC, 0, param->resultRegisterRC);
-        inst->flags |= BCI_IMM_B;
-        inst->b.u32 = typeArr->pointedType->sizeOf;
-    }
-
-    for (int i = (int) toPush.size() - 1; i >= 0; i--)
-        accParams.push_back(toPush[i]);
-
-    return true;
-}
-
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
@@ -805,18 +764,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             AstFuncCallParam* callParam = nullptr;
             if (param->kind == AstNodeKind::FuncCallParam)
                 callParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-
-            // Spread a collection
-            if (callParam && callParam->typeInfo->flags & TYPEINFO_SPREAD)
-            {
-                if (callParam->typeInfo->kind == TypeInfoKind::Array)
-                    SWAG_CHECK(emitSpreadArray(context, callParam, numCallParams, toFree, accParams, precallStack, numPushParams, maxCallParams));
-                else if (callParam->typeInfo->kind == TypeInfoKind::Struct)
-                    SWAG_CHECK(emitSpreadStruct(context, callParam, numCallParams, toFree, accParams, precallStack, numPushParams, maxCallParams));
-                else
-                    return internalError(context, "emitCall, invalid spread type", param);
-                continue;
-            }
 
             if (param->resultRegisterRC.size() == 0)
                 continue;

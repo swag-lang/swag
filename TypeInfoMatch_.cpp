@@ -52,27 +52,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
             if (typeInfo->kind != TypeInfoKind::TypedVariadic)
-            {
-                if (typeInfo->flags & TYPEINFO_SPREAD)
-                {
-                    // Get the underlying type
-                    if (typeInfo->kind == TypeInfoKind::Array)
-                    {
-                        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-                        typeInfo     = typeArr->pointedType;
-                    }
-                    else if (typeInfo->kind == TypeInfoKind::Struct)
-                    {
-                        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-                        auto sym        = SemanticJob::hasUserOp("opIndex", typeStruct);
-                        SWAG_ASSERT(sym->overloads.size() == 1);
-                        typeInfo = TypeManager::concreteType(sym->overloads[0]->typeInfo, CONCRETE_FUNC);
-                    }
-                }
-
                 symbolTypeInfo = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
-            }
-
             isAfterVariadic = true;
         }
 
