@@ -112,8 +112,7 @@ func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 
 // Find 'value' in the slice by performing a binary search.
 // The slice must be sorted in ascending order
-// Returns swag.MaxU32 if not found, otherwise returns the index of the value
-func(T) find(values: const [..] T, value: T)->u32
+func(T) find(values: const [..] T, value: T) -> {index: u32, success: bool}
 {
     min := 0'u32
     countof := @countof(values)
@@ -126,12 +125,12 @@ func(T) find(values: const [..] T, value: T)->u32
             break
         res := values[mid] <=> value
         if res == 0
-            return mid
+            return @{mid, true}
         if res < 0
             min = mid + 1
         else
             max = mid - 1
     }
 
-    return swag.MaxU32
+    return @{0, false}
 }

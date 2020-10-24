@@ -9,7 +9,9 @@ using std
 
     loop 10
     {
-        @assert(sort.find(@mkslice(arr.buffer, arr.count), @index) == @index)
+        result := sort.find(@mkslice(arr.buffer, arr.count), @index)
+        @assert(result.success)
+        @assert(result.index == @index)
     }
 
     //console.write("result is %\n", res)
