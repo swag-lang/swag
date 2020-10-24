@@ -15,6 +15,30 @@ func countBytesAt(buffer: const *u8)->u32
     return count
 }
 
+// Returns the byte index of the given character index
+func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: bool}
+{
+    countof := @countof(buffer)
+    if !countof return @{0'u32, false}
+    if !charIndex return @{0'u32, true}
+
+    dataof := @dataof(buffer)
+
+    resultChar := 0'u32
+    resultByte := 0'u32
+    while countof && resultChar != charIndex
+    {
+        val := countBytesAt(dataof)
+        debug.assert(val <= countof, "invalid utf8 character")
+        resultByte += val
+        resultChar += 1
+        dataof += val
+        countof -= val
+    }
+
+    return @{resultByte, resultByte < @countof(buffer)}
+}
+
 // Returns the number of unicode characters in an utf8 buffer
 func countChars(buffer: const [..] u8)->u32
 {
