@@ -417,55 +417,6 @@ public impl String
         trimEnd()
     }
 
-    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, value: char) -> {index: u32, success: bool}
-    {
-        return indexOf(@[value])
-    }
-
-    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, values: const [..] char) -> {index: u32, success: bool}
-    {
-        if !length
-            return @{0, false}
-
-        visit c, i: :self
-        {
-            if contains(values, c)
-                return @{i, true}
-        }
-
-        return @{0, false}
-    }
-
-    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    func lastIndexOf(using self, value: char) -> {index: u32, success: bool}
-    {
-        return lastIndexOf(@[value])
-    }
-
-    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    func lastIndexOf(using self, values: const [..] char) -> {index: u32, success: bool}
-    {
-        if !length
-            return @{0, false}
-
-        byteIdx := length
-        while true
-        {
-            slice := @mkslice(buffer, byteIdx)
-            (c, eat) := utf8.lastChar(slice)
-            if eat == 0
-                return @{0, false}
-
-            byteIdx -= eat
-            if contains(values, c)
-                return @{byteIdx, true}
-        }
-
-        return @{0, false}
-    }
-
     // Returns the first Unicode character of the String
     // This function will return 0 if the String is null or empty
     func front(using self)->char
@@ -569,6 +520,61 @@ public impl String
         result := :self
         result.makeLower(set)
         return result
+    }
+
+    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+    func indexOf(using self, what: char) -> {index: u32, success: bool}
+    {
+        return indexOf(@[what])
+    }
+
+    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
+    func indexOf(using self, what: const [..] char) -> {index: u32, success: bool}
+    {
+        if !length
+            return @{0, false}
+
+        visit c, i: :self
+        {
+            if contains(what, c)
+                return @{i, true}
+        }
+
+        return @{0, false}
+    }
+
+    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
+    func lastIndexOf(using self, what: char) -> {index: u32, success: bool}
+    {
+        return lastIndexOf(@[what])
+    }
+
+    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
+    func lastIndexOf(using self, what: const [..] char) -> {index: u32, success: bool}
+    {
+        if !length
+            return @{0, false}
+
+        byteIdx := length
+        while true
+        {
+            slice := @mkslice(buffer, byteIdx)
+            (c, eat) := utf8.lastChar(slice)
+            if eat == 0
+                return @{0, false}
+
+            byteIdx -= eat
+            if contains(what, c)
+                return @{byteIdx, true}
+        }
+
+        return @{0, false}
+    }
+
+    // Find the given string, and returns the byte index of it
+    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = StringComparison.Raw) -> {index: u32, success: bool}
+    {
+        return @{0, false}
     }
 
     // Return true if the string starts with 'str'
