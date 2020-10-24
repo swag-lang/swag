@@ -7,7 +7,6 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
     {
         if !expr
         {
-            @print(loc.fileName)
             @assertmsg(message, loc)
         }
     }

@@ -744,7 +744,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     CloneContext cloneContext;
 
     // The content will be inline in its separated syntax block
-    auto inlineNode                   = Ast::newInline(context->sourceFile, identifier);
+    auto inlineNode                   = Ast::newInline(identifier->sourceFile, identifier);
     inlineNode->attributeFlags        = funcDecl->attributeFlags;
     inlineNode->func                  = funcDecl;
     inlineNode->scope                 = identifier->ownerScope;

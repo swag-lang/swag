@@ -365,7 +365,6 @@ private
     func assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
     {
         if expr return
-        @print("totoXXXXXXXXXXXXXXXXXXXX")
 
         var loc: swag.CompilerSourceLocation
         loc.fileName = cast(string) @mkslice(file, strlen(file))

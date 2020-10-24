@@ -470,8 +470,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
 
 uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
 {
-    auto module     = node->sourceFile->module;
-    auto str        = Utf8(normalizePath(node->sourceFile->path));
+    auto sourceFile = node->sourceFile;
+    auto module     = sourceFile->module;
+    auto str        = Utf8(normalizePath(sourceFile->path));
     auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation));
     auto loc        = (ConcreteCompilerSourceLocation*) module->constantSegment.address(offset);
     auto offsetName = module->constantSegment.addString(str);
@@ -483,6 +484,8 @@ uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
     loc->colStart        = node->token.startLocation.column;
     loc->lineEnd         = node->token.endLocation.line;
     loc->colEnd          = node->token.endLocation.column;
+    if (sourceFile->name == "string.swg" && loc->lineStart == 57)
+        loc = loc;
     return offset;
 }
 
