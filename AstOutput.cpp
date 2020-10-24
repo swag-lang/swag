@@ -584,7 +584,12 @@ namespace Ast
             auto symbol     = identifier->resolvedSymbolName;
             auto overload   = identifier->resolvedSymbolOverload;
 
-            if (symbol && overload && symbol->name[0] != '@' && overload->node->ownerScope->isGlobalOrImpl())
+            if (symbol &&
+                overload &&
+                symbol->name[0] != '@' &&
+                overload->node->ownerScope->isGlobalOrImpl() &&
+                !overload->node->sourceFile->isBootstrapFile &&
+                !overload->node->sourceFile->isRuntimeFile)
             {
                 if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
                     (symbol->kind == SymbolKind::Function) ||
