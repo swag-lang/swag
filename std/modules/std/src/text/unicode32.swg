@@ -166,9 +166,9 @@ public func toUtf8(dest: [..] u8, src: char)->u32
     return 3
 }
 
-// Convert an utf8 buffer to a 32 bits unicode sequence, and returns the
+// Convert an utf8 buffer to a 32 bits character sequence, and returns the
 // number of valid elements in the destination buffer
-public func fromUtf8(dest: [..] u32, src: const [..] u8)->u32
+public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 {
     count := 0'u32
     srcPtr := @dataof(src)
@@ -178,8 +178,9 @@ public func fromUtf8(dest: [..] u32, src: const [..] u8)->u32
     while eat != 0
     {
         debug.assert(count != @countof(dest), "destination buffer is too small")
-        destPtr[0] = cast(u32) c
+        :destPtr = c
         destPtr, count += 1
+        srcPtr += eat
         srcLength -= eat
         (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
     }

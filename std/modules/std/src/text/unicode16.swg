@@ -13,8 +13,9 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
     {
         debug.assert(count != @countof(dest), "destination buffer is too small")
         debug.assert(c <= acast swag.MaxU16, "utf8 character overflow")
-        destPtr[0] = cast(u16) c
+        :destPtr = cast(u16) c
         destPtr, count += 1
+        srcPtr += eat
         srcLength -= eat
         (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
     }

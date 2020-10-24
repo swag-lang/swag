@@ -483,7 +483,7 @@ public impl String
     }
 
     // Convert string to a 16 bits unicode array
-    func toUnicode16(using self)->Array'u16
+    func toUni16Array(using self)->Array'u16
     {
         var utf16: Array'u16
         utf16.reserve(length + 1)
@@ -493,14 +493,13 @@ public impl String
         return utf16
     }
 
-    // Convert string to a 32 bits unicode array
-    func toUnicode32(using self)->Array'u32
+    // Convert string to a 32 bits character array
+    func toCharArray(using self)->Array'char
     {
-        var utf32: Array'u32
+        var utf32: Array'char
         utf32.reserve(length + 1)
         count := unicode32.fromUtf8(@mkslice(utf32.buffer, length), @mkslice(buffer, length))
-        utf32.count = count + 1
-        utf32[count] = 0
+        utf32.count = count
         return utf32
     }
 
