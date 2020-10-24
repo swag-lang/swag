@@ -1824,7 +1824,6 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Get instruction
         auto ip = context->ip++;
         SWAG_ASSERT(ip->op <= ByteCodeOp::End);
-
         if (ip->op == ByteCodeOp::End)
             break;
 
@@ -1885,7 +1884,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append("assertion failed");
 
         // Add current context
-        runContext->bc->addCallStack(runContext);
+        runContext->ip--; // ip is the next pointer instruction
+        if (runContext->ip->getFileLocation(runContext->bc)->path != fileName || runContext->ip->getLocation(runContext->bc)->line != location->lineStart)
+            runContext->bc->addCallStack(runContext);
 
         SourceFile dummyFile;
         dummyFile.path = fileName;
