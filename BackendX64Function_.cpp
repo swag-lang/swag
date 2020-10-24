@@ -1615,7 +1615,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Clear64(pp, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
-            emitCall(pp, "@assert");
+            emitCall(pp, "__swag_runtime_assert");
             break;
         }
 

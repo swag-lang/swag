@@ -247,20 +247,6 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func @assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
-{
-    if expr return
-
-    var loc: swag.CompilerSourceLocation
-    loc.fileName = cast(string) @mkslice(file, strlen(file))
-    loc.lineStart, loc.lineEnd = line
-    loc.colStart, loc.colEnd = col
-
-    var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : "assertion failed"
-    @assertmsg(msg, loc)
-}
-
-////////////////////////////////////////////////////////////
 func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
@@ -376,6 +362,20 @@ func @args()->[..] string
 ////////////////////////////////////////////////////////////
 private
 {
+    func assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
+    {
+        if expr return
+        @print("totoXXXXXXXXXXXXXXXXXXXX")
+
+        var loc: swag.CompilerSourceLocation
+        loc.fileName = cast(string) @mkslice(file, strlen(file))
+        loc.lineStart, loc.lineEnd = line
+        loc.colStart, loc.colEnd = col
+
+        var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : "assertion failed"
+        @assertmsg(msg, loc)
+    }
+
     func loaddll(name: string)
     {
         #if #os == "windows"

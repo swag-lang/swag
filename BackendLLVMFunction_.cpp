@@ -1980,7 +1980,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto p3    = GEP_I32(allocT, 3);
             auto p4    = GEP_I32(allocT, 4);
             auto typeF = createFunctionTypeInternal(buildParameters, 5);
-            builder.CreateCall(modu.getOrInsertFunction("@assert", typeF), {p0, p1, p2, p3, p4});
+            builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_assert", typeF), {p0, p1, p2, p3, p4});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
