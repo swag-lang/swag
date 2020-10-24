@@ -82,7 +82,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     return firstChar(@mkslice(ptr, eat))
 }
 
-// Get the unicode character pointed by `buffer`, and the address of the next utf8 character
+// Get the unicode character pointed by `buffer`, and the number of bytes to encode it
 func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
@@ -192,5 +192,41 @@ func makeLowerLatin1(buffer: [..] u8)
         }
 
         p += 1
+    }
+}
+
+// Macro to visit the unicode characters of the utf8 sequence
+// @alias0 will contain the character
+// @alias1 will contain the byte index of that character within the utf8 sequence
+// @alias2 will contain the character index
+#[swag.macro, swag.noreturn]
+func visitChars(buffer: const [..] u8, stmt: code)
+{
+    length := @countof(buffer)
+    if length
+    {
+        byteIdx := 0'u32
+        charIdx := 0'u32
+        count := length
+        scan := @dataof(buffer)
+        while count
+        {
+            slice := @mkslice(scan, count)
+            var (c, eat) = firstChar(slice)
+            if eat == 0
+                break
+            #macro
+            {
+                @alias0 := `c
+                @alias1 := `byteIdx
+                @alias2 := `charIdx
+                #mixin `stmt
+            }
+
+            charIdx += 1
+            byteIdx += eat
+            scan += eat
+            count -= eat
+        }
     }
 }

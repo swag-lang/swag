@@ -1884,9 +1884,14 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append("assertion failed");
 
         // Add current context
-        runContext->ip--; // ip is the next pointer instruction
-        if (runContext->ip->getFileLocation(runContext->bc)->path != fileName || runContext->ip->getLocation(runContext->bc)->line != location->lineStart)
-            runContext->bc->addCallStack(runContext);
+        if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
+        {
+            runContext->ip--; // ip is the next pointer instruction
+            auto path1 = normalizePath(fs::path(runContext->ip->node->sourceFile->path.c_str()));
+            auto path2 = normalizePath(fs::path(fileName.c_str()));
+            if (path1 != path2 || runContext->ip->getLocation(runContext->bc)->line != location->lineStart)
+                runContext->bc->addCallStack(runContext);
+        }
 
         SourceFile dummyFile;
         dummyFile.path = fileName;
