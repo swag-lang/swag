@@ -162,6 +162,8 @@ public impl String
     }
 
     // Visit the String utf8 bytes
+    // @alias0 will contain the byte or the pointer to the byte
+    // @alias1 will contain the byte index
     #[macro, noreturn]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
@@ -186,12 +188,16 @@ public impl String
     }
 
     // Visit the String unicode characters
+    // @alias0 will contain the character or the pointer to the character
+    // @alias1 will contain the byte index of that character within the utf8 sequence
+    // @alias2 will contain the character index
     #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         if length
         {
-            idx := 0'u32
+            byteIdx := 0'u32
+            charIdx := 0'u32
             count := length
             scan := buffer
             while true
@@ -206,11 +212,13 @@ public impl String
                         var @alias0 = `scan
                     #else
                         var @alias0 = `c
-                    var @alias1 = `idx
+                    var @alias1 = `byteIdx
+                    var @alias2 = `charIdx
                     #mixin `stmt
                 }
 
-                idx += eat
+                byteIdx += eat
+                charIdx += 1
                 scan += eat
                 count -= eat
             }
@@ -442,17 +450,17 @@ public impl String
         if !length
             return @{0, false}
 
-        idx := length
+        byteIdx := length
         while true
         {
-            slice := @mkslice(buffer, idx)
+            slice := @mkslice(buffer, byteIdx)
             (c, eat) := utf8.lastChar(slice)
             if eat == 0
                 return @{0, false}
 
-            idx -= eat
+            byteIdx -= eat
             if contains(values, c)
-                return @{idx, true}
+                return @{byteIdx, true}
         }
 
         return @{0, false}
@@ -620,7 +628,7 @@ public impl String
         var c: char
         var eat: u32
 
-        startIdx := 0'u32
+        startbyteIdx := 0'u32
         count := length
         while true
         {
@@ -631,7 +639,7 @@ public impl String
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || !contains(separators, c)
                     break
-                startIdx += eat
+                startbyteIdx += eat
                 ptr += eat
                 count -= eat
             }
@@ -639,23 +647,23 @@ public impl String
             if eat == 0 break // done
 
             // Add all real characters until we found a separator
-            endIdx := startIdx
+            endbyteIdx := startbyteIdx
             while true
             {
                 slice := @mkslice(ptr, count)
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || contains(separators, c)
                     break
-                endIdx += eat
+                endbyteIdx += eat
                 ptr += eat
                 count -= eat
             }
 
-            oneString := cast(string) @mkslice(buffer + startIdx, endIdx - startIdx)
+            oneString := cast(string) @mkslice(buffer + startbyteIdx, endbyteIdx - startbyteIdx)
             result.add(oneString)
 
             if eat == 0 break // done
-            startIdx = endIdx
+            startbyteIdx = endbyteIdx
         }
 
         return result

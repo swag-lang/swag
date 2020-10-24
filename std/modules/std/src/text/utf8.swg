@@ -202,12 +202,11 @@ func makeLowerLatin1(buffer: [..] u8)
 #[swag.macro, swag.noreturn]
 func visitChars(buffer: const [..] u8, stmt: code)
 {
-    length := @countof(buffer)
-    if length
+    count := @countof(buffer)
+    if count
     {
         byteIdx := 0'u32
         charIdx := 0'u32
-        count := length
         scan := @dataof(buffer)
         while count
         {
