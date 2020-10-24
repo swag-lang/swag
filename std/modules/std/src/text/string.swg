@@ -261,7 +261,7 @@ public impl String
         buffer[length] = 0
     }
 
-    // Join an array of strings to make a unique one
+    // Join a list of strings to make a unique one
     func join(values: string...)->String
     {
         var result: String
@@ -279,7 +279,8 @@ public impl String
         return result
     }
 
-    // Join an array of strings to make a unique one
+    // Join an list of strings to make a unique one, by using a given 'separator'
+    // between them
     func joinWith(separator: string, values: string...)->String
     {
         var result: String
@@ -293,7 +294,8 @@ public impl String
         return result
     }
 
-    // Join an array of strings to make a unique one
+    // Join an array of strings to make a unique one, by using a given 'separator'
+    // between them
     func joinWith(separator: string, values: const [..] string)->String
     {
         var result: String
