@@ -153,7 +153,7 @@ public impl ConcatBuffer
 
     // Add a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
-    func addBytes(using self, bytes: const [..] u8, contiguous := true)
+    func addBytes(using self, bytes: const [..] u8, contiguous = true)
     {
         num := @countof(bytes)
         if !num
