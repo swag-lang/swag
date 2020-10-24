@@ -271,7 +271,30 @@ public impl String
     }
 
     // Join an array of strings to make a unique one
+    func join(values: const [..] string)->String
+    {
+        var result: String
+        loop values
+            result += values[@index]
+        return result
+    }
+
+    // Join an array of strings to make a unique one
     func joinWith(separator: string, values: string...)->String
+    {
+        var result: String
+        loop values
+        {
+            if separator && @index
+                result += separator
+            result += values[@index]
+        }
+
+        return result
+    }
+
+    // Join an array of strings to make a unique one
+    func joinWith(separator: string, values: const [..] string)->String
     {
         var result: String
         loop values

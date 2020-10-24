@@ -155,6 +155,12 @@ impl Array
         capacity = newCapacity
     }
 
+    // Returns a slice
+    func toSlice(using self)->const [..] T
+    {
+        return @mkslice(buffer, count)
+    }
+
     // Ensure the Array is big enough to store at least 'newCount' elements
     func grow(using self, newCount : u32)
     {
