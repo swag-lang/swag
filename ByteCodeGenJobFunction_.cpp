@@ -484,8 +484,6 @@ uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
     loc->colStart        = node->token.startLocation.column;
     loc->lineEnd         = node->token.endLocation.line;
     loc->colEnd          = node->token.endLocation.column;
-    if (sourceFile->name == "string.swg" && loc->lineStart == 57)
-        loc = loc;
     return offset;
 }
 

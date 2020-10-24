@@ -428,6 +428,7 @@ bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
     if (result)
         *result = exprNode;
+    exprNode->name = token.text;
     exprNode->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
     exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;

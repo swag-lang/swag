@@ -92,6 +92,24 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 defaultValueDone               = true;
                 typeInfo->firstDefaultValueIdx = index - 1;
             }
+
+            if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialFunction)
+            {
+                switch (nodeParam->assignment->token.id)
+                {
+                case TokenId::CompilerCallerLocation:
+                case TokenId::CompilerCallerFunction:
+                    break;
+
+                default:
+                    context->report({nodeParam->assignment, format("compiler instruction '%s' is invalid as a default parameter value", nodeParam->assignment->name.c_str())});
+                    break;
+                }
+            }
+            else
+            {
+                SWAG_VERIFY(nodeParam->assignment->flags & AST_VALUE_COMPUTED, context->report({nodeParam->assignment, "cannot evaluate default value at compile time"}));
+            }
         }
         else
         {
@@ -307,7 +325,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
-    // If the function returns a reference, then transform it to a normal return type if 
+    // If the function returns a reference, then transform it to a normal return type if
     // this is not a reference to a "by copy" type
     // const &u32 => u32 etc...
     if (typeNode->typeInfo->kind == TypeInfoKind::Reference)
