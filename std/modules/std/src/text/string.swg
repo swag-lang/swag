@@ -518,49 +518,49 @@ public impl String
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     func indexOf(using self, what: char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(toString(), @[what], startByteIndex)
+        return utf8.indexOf(@mkslice(buffer, length), @[what], startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     func indexOf(using self, what: const [..] char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(toString(), what, startByteIndex)
+        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: char) -> {index: u32, success: bool}
     {
-        return utf8.lastIndexOf(toString(), @[what])
+        return utf8.lastIndexOf(@mkslice(buffer, length), @[what])
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: const [..] char) -> {index: u32, success: bool}
     {
-        return utf8.lastIndexOf(toString(), what)
+        return utf8.lastIndexOf(@mkslice(buffer, length), what)
     }
 
     // Find the given string, and returns the byte index of it
     func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Ascii) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(toString(), what, startByteIndex, comparisonType)
+        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex, comparisonType)
     }
 
     // Return true if the string starts with 'str'
     func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
     {
-        return utf8.startsWith(toString(), what, comparisonType)
+        return utf8.startsWith(@mkslice(buffer, length), what, comparisonType)
     }
 
     // Return true if the string ends with 'str'
     func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
     {
-        return utf8.endsWith(toString(), what, comparisonType)
+        return utf8.endsWith(@mkslice(buffer, length), what, comparisonType)
     }
 
     // Compare with another string
     func compare(using self, other: string, comparisonType = utf8.ComparisonType.Ascii)->s32
     {
-        return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
+        return utf8.compare(@mkslice(buffer, length), other, comparisonType)
     }
 
     // Compare two strings
