@@ -1,19 +1,18 @@
 namespace std.math;
 
-// A simple point with 2 float coordinates X and Y
-public struct Point
+// A simple Point with 2 float coordinates X and Y
+struct(T) PointBase
 {
-    x: f32
-    y: f32
+    x: T
+    y: T
 }
 
-public impl Point
+impl PointBase
 {
     #[swag.complete]
-    func opAffect(self, value: f32)
+    func opAffect(using self, value: T)
     {
-        self.x = value
-        self.y = value
+        x, y = value
     }
 
     func opEquals(using self, other: Self)->bool
@@ -29,7 +28,7 @@ public impl Point
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opAssign(using self, value: f32)
+    func(op: string) opAssign(using self, value: T)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -39,53 +38,56 @@ public impl Point
 
     func(op: string) opBinary(using self, other: Self)->Self
     {
-        #if   op == "+" return Point{x + other.x, y + other.y}
-        #elif op == "-" return Point{x - other.x, y - other.y}
-        #elif op == "*" return Point{x * other.x, y * other.y}
+        #if   op == "+" return Self{x + other.x, y + other.y}
+        #elif op == "-" return Self{x - other.x, y - other.y}
+        #elif op == "*" return Self{x * other.x, y * other.y}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, value: f32)->Self
+    func(op: string) opBinary(using self, value: T)->Self
     {
-        #if   op == "+" return Point{x + value, y + value}
-        #elif op == "-" return Point{x - value, y - value}
-        #elif op == "*" return Point{x * value, y * value}
+        #if   op == "+" return Self{x + value, y + value}
+        #elif op == "-" return Self{x - value, y - value}
+        #elif op == "*" return Self{x * value, y * value}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    // Represents a Point with all coordinates to zero
-    const Zero: Point{0, 0}
-    // Represents a Point with all coordinates to one
-    const One: Point{1, 1}
+    // Represents a PointBase with all coordinates to zero
+    const Zero: Self'T{0, 0}
+    // Represents a PointBase with all coordinates to one
+    const One: Self'T{1, 1}
 
-    // Set Point to (0, 0)
+    // Set PointBase to (0, 0)
     func clear(using self)
     {
         x, y = 0
     }
 
-    // Returns `true` if the Point is `null`
+    // Returns 'true' if the PointBase is null
     func isZero(using self)->bool
     {
         return x == y == 0
     }
 
-    // Returns `true` if the Point is `null` with an epsilon
+    // Returns 'true' if the PointBase is null with an epsilon
     func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
+        return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
     }
 
-    // Offset this Point by a given value
-    func offset(using self, value: f32)
+    // Offset this PointBase by a given value
+    func offset(using self, value: T)
     {
         x, y += value
     }
 
-    // Offset this Point by a given value
-    func offset(using self, valueX, valueY: f32)
+    // Offset this PointBase by a given value
+    func offset(using self, valueX, valueY: T)
     {
         x += valueX
         y += valueY
     }
 }
+
+public #bake Point = PointBase'f32
+//public #bake PointS32 = PointBase's32

@@ -260,9 +260,10 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     CONCAT_FIXED_STR(bufferSwg, "func");
 
     // Emit generic parameter, except if the function is an instance
-    if (node->genericParameters && !(node->flags & AST_FROM_GENERIC))
+    if (node->genericParameters)
     {
-        SWAG_CHECK(emitGenericParameters(node->genericParameters));
+        if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
+            SWAG_CHECK(emitGenericParameters(node->genericParameters));
     }
 
     CONCAT_FIXED_STR(bufferSwg, " ");

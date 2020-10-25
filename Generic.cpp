@@ -332,9 +332,10 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&
-                specFunc != genericStructType->opUserPostCopyFct &&
-                specFunc != genericStructType->opUserPostMoveFct &&
-                !specFunc->genericParameters)
+                    specFunc != genericStructType->opUserPostCopyFct &&
+                    specFunc != genericStructType->opUserPostMoveFct &&
+                    !specFunc->genericParameters ||
+                instContext.fromBake)
             {
                 instantiateSpecialFunc(context, instContext, structJob, cloneContext, &specFunc);
             }
@@ -374,8 +375,17 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, InstantiateContex
 
     // Clone original node
     auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
-    newFunc->flags |= AST_FROM_GENERIC;
-    newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    if (newFunc->genericParameters)
+    {
+        newFunc->flags |= AST_IS_GENERIC;
+        newFunc->content->flags |= AST_NO_SEMANTIC;
+    }
+    else
+    {
+        newFunc->flags |= AST_FROM_GENERIC;
+        newFunc->content->flags &= ~AST_NO_SEMANTIC;
+    }
+
     Ast::addChildBack(funcNode->parent, newFunc);
     *specialFct = newFunc;
 
