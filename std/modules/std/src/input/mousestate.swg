@@ -1,8 +1,8 @@
-namespace std.mouse;
+public namespace std.mouse;
 using std.math
 
 // Represents one mouse state
-public struct State
+struct State
 {
     // Whether each button is pressed or not
     pressed:    [@countof(Button)] bool
@@ -11,7 +11,7 @@ public struct State
 }
 
 // Represents a mouse state with cursor position and button press information
-public impl State
+impl State
 {
     // Compute the actual state of the mouse
     func update(using self)
@@ -34,7 +34,7 @@ public impl State
 }
 
 // Determins if one given mouse button is pressed or not
-public func isButtonPressed(button: Button)->bool
+func isButtonPressed(button: Button)->bool
 {
     using Button
     switch button

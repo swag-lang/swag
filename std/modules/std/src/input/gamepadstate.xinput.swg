@@ -23,14 +23,14 @@ using xinput, win32, std.gamepad
         g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
     }
 
-    // Returns true if the corresponding `padIndex` is connected
+    // Returns true if the corresponding 'padIndex' is connected
     public func isConnected(padIndex: u32)->bool
     {
         var state: XINPUT_STATE = ?
         return XInputGetState(padIndex, &state) == ERROR_SUCCESS
     }
 
-    // Set the left and right vibration of the given `padIndex`
+    // Set the left and right vibration of the given 'padIndex'
     public func setVibration(padIndex: u32, left, right: f32)->bool
     {
         var vibration: XINPUT_VIBRATION = ?
@@ -50,7 +50,7 @@ using xinput, win32, std.gamepad
 
             // Button pressed state
             loop i: 16
-                pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
+                pressed[g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
 
             // Move
             using Button, state.Gamepad

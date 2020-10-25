@@ -1,8 +1,8 @@
-namespace std.gamepad;
+public namespace std.gamepad;
 using std.math
 
 // Represents a gamepad
-public struct GamePad
+struct GamePad
 {
     previousState:  State
     currentState:   State
@@ -14,7 +14,7 @@ public struct GamePad
     connected: bool
 }
 
-public impl GamePad
+impl GamePad
 {
     // Update the GamePad current state
     func update(using self)

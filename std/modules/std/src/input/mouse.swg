@@ -1,14 +1,14 @@
-namespace std.mouse;
+public namespace std.mouse;
 using std.math
 
 // Allows reading position and button click information from mouse
-public struct Mouse
+struct Mouse
 {
     previousState:	State
     currentState:	State
 }
 
-public impl Mouse
+impl Mouse
 {
     // Compute the current state of the mouse
     func update(using self)

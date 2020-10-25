@@ -1,7 +1,7 @@
-namespace std.keyboard;
+public namespace std.keyboard;
 
 // Allows getting keystrokes from keyboard
-public struct Keyboard
+struct Keyboard
 {
     previousState:  State
     currentState:   State
@@ -16,7 +16,7 @@ public struct Keyboard
     canRepeat:                  bool = true
 }
 
-public impl Keyboard
+impl Keyboard
 {
     // Compute current state of the keyboard (all keys)
     func update(using self)
