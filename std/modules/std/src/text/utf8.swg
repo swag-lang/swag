@@ -151,7 +151,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     return @{acast c, 1}
 }
 
-// Find one of the character in 'what', and returns the byte index of it
+// Find one of the characters in 'what', and returns the byte index of it
 func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'u32) -> {index: u32, success: bool}
 {
     length := @countof(src)
@@ -176,6 +176,76 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'u32) 
     }
 
     return @{0, false}
+}
+
+// Returns the last index (in bytes) of a character
+func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: u32, success: bool}
+{
+    length := @countof(src)
+    if !length return @{0, false}
+    dataof := @dataof(src)
+
+    byteIdx := length
+    while true
+    {
+        slice := @mkslice(dataof, byteIdx)
+        (c, eat) := lastChar(slice)
+        if eat == 0
+            return @{0, false}
+
+        byteIdx -= eat
+        if contains(what, c)
+            return @{byteIdx, true}
+    }
+
+    return @{0, false}
+}
+
+// Find the given string, and returns the byte index of it
+func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, comparisonType = ComparisonType.Raw) -> {index: u32, success: bool}
+{
+    length := @countof(src)
+    if !length return @{0'u32, false}
+    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+    countof := @countof(what)
+    if !countof || countof > (length - startByteIndex) return @{0'u32, false}
+
+    idx := startByteIndex
+    scan := @dataof(src) + startByteIndex
+    remain := length - startByteIndex
+    while countof <= remain
+    {
+        res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
+        if res == 0 return @{idx, true}
+        scan, idx += 1
+        remain -= 1
+    }
+
+    return @{0, false}
+}
+
+public enum ComparisonType
+{
+    Raw
+    Ascii
+    AsciiIgnoreCase
+}
+
+// Compare two utf8 buffers with the given algorithm
+func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Raw)->s32
+{
+    using ComparisonType
+    #[swag.complete]
+    switch comparisonType
+    {
+    case Raw, Ascii:
+        return ascii.compare(src, dst)
+    case AsciiIgnoreCase:
+        return ascii.compare(src, dst, ignoreCase: true)
+    }
+
+    return 0
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table

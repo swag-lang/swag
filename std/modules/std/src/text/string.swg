@@ -11,13 +11,6 @@ public enum CharacterSet
     Latin1
 }
 
-public enum StringComparison
-{
-    Raw
-    Ascii
-    AsciiIgnoreCase
-}
-
 public struct String
 {
     buffer:     *u8
@@ -115,7 +108,7 @@ public impl String
 
     func opCmp(using self, other: Self)->s32
     {
-        return compare(other.toString(), StringComparison.Ascii)
+        return compare(other.toString(), utf8.ComparisonType.Ascii)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -537,56 +530,23 @@ public impl String
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: char) -> {index: u32, success: bool}
     {
-        return lastIndexOf(@[what])
+        return utf8.lastIndexOf(toString(), @[what])
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: const [..] char) -> {index: u32, success: bool}
     {
-        if !length
-            return @{0, false}
-
-        byteIdx := length
-        while true
-        {
-            slice := @mkslice(buffer, byteIdx)
-            (c, eat) := utf8.lastChar(slice)
-            if eat == 0
-                return @{0, false}
-
-            byteIdx -= eat
-            if contains(what, c)
-                return @{byteIdx, true}
-        }
-
-        return @{0, false}
+        return utf8.lastIndexOf(toString(), what)
     }
 
     // Find the given string, and returns the byte index of it
-    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = StringComparison.Raw) -> {index: u32, success: bool}
+    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Raw) -> {index: u32, success: bool}
     {
-        if !length return @{0'u32, false}
-        debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
-
-        countof := @countof(what)
-        if !countof || countof > (length - startByteIndex) return @{0'u32, false}
-
-        idx := startByteIndex
-        scan := buffer + startByteIndex
-        remain := length - startByteIndex
-        while countof <= remain
-        {
-            res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
-            if res == 0 return @{idx, true}
-            scan, idx += 1
-            remain -= 1
-        }
-
-        return @{0, false}
+        return utf8.indexOf(toString(), what, startByteIndex, comparisonType)
     }
 
     // Return true if the string starts with 'str'
-    func startsWidth(using self, str: string, comparisonType = StringComparison.Raw)->bool
+    func startsWidth(using self, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
     {
         countof := @countof(str)
         if countof > length return false
@@ -594,7 +554,7 @@ public impl String
     }
 
     // Return true if the string ends with 'str'
-    func endsWidth(using self, str: string, comparisonType = StringComparison.Raw)->bool
+    func endsWidth(using self, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
     {
         countof := @countof(str)
         if countof > length return false
@@ -602,25 +562,15 @@ public impl String
     }
 
     // Compare with another string
-    func compare(using self, other: string, comparisonType = StringComparison.Raw)->s32
+    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Raw)->s32
     {
         return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
     }
 
     // Compare two strings
-    func compare(src, dst: string, comparisonType = StringComparison.Raw)->s32
+    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Raw)->s32
     {
-        using StringComparison
-        #[complete]
-        switch comparisonType
-        {
-        case Raw, Ascii:
-            return ascii.compare(src, dst)
-        case AsciiIgnoreCase:
-            return ascii.compare(src, dst, ignoreCase: true)
-        }
-
-        return 0
+        return utf8.compare(src, dst, comparisonType)
     }
 
     // Split string into sub strings, given a character separator
