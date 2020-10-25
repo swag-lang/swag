@@ -574,6 +574,23 @@ public impl String
     // Find the given string, and returns the byte index of it
     func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = StringComparison.Raw) -> {index: u32, success: bool}
     {
+        if !length return @{0'u32, false}
+        debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+        countof := @countof(what)
+        if !countof || countof > (length - startByteIndex) return @{0'u32, false}
+
+        idx := startByteIndex
+        scan := buffer + startByteIndex
+        remain := length - startByteIndex
+        while countof <= remain
+        {
+            res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
+            if res == 0 return @{idx, true}
+            scan, idx += 1
+            remain -= 1
+        }
+
         return @{0, false}
     }
 
