@@ -2010,7 +2010,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Can happen if a symbol is inside a disabled #if for example
     if (symbol->overloads.empty())
     {
-        return context->report({node, format("cannot resolve identifier '%s'", symbol->name.c_str())});
+        return context->report({node, node->token, format("cannot resolve identifier '%s'", symbol->name.c_str())});
     }
 
     auto overload = symbol->overloads[0];
