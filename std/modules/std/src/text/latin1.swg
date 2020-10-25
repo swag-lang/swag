@@ -43,8 +43,8 @@ const charCategory: [] unicode32.UnicodeCategory =
     func isDigit(c: u8)         => ascii.isDigit(c)
     func isBinDigit(c: u8)      => ascii.isBinDigit(c)
     func isHexDigit(c: u8)      => ascii.isHexDigit(c)
-    func isUpper(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.UppercaseLetter
-    func isLower(c: u8)         => charCategory[c] == unicode32.UnicodeCategory.LowercaseLetter
+    func isUpper(c: u8)         => (0x41 <= c <= 0x5A) || ((0x80 <= c <= 0x9E) && c != 0x97)
+    func isLower(c: u8)         => (0x61 <= c <= 0x7A) || ((0xA0 <= c <= 0xBE) && c != 0xB7)
     func isPunctuation(c: u8)   => unicode32.isPunctuation(charCategory[c])
     func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
     func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
@@ -58,17 +58,7 @@ func makeUpper(buffer: [..] u8)
     loop @countof(buffer)
     {
         c := :p
-        if (0x61 <= c <= 0x7A)
-            :p -= 0x20
-        else if c == 0xC3
-        {
-            ce := c
-            p += 1
-            c = :p
-            if 0xA0 <= c <= 0xBE && c != 0xB7
-                :p -= 0x20
-        }
-
+        if isLower(c) :p -= 0x20
         p += 1
     }
 }
@@ -80,17 +70,7 @@ func makeLower(buffer: [..] u8)
     loop @countof(buffer)
     {
         c := :p
-        if (0x41 <= c <= 0x5A)
-            :p += 0x20
-        else if c == 0xC3
-        {
-            ce := c
-            p += 1
-            c = :p
-            if 0x80 <= c <= 0x9E && c != 0x97
-                :p += 0x20
-        }
-
+        if isUpper(c) :p += 0x20
         p += 1
     }
 }
