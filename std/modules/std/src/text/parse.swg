@@ -3,7 +3,7 @@ using globalization
 
 // Convert an utf8 buffer in decimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseU64(str: const [..] u8) -> {value: u64, eatCount: u32}
+func parseU64(str: const [..] u8) -> {value: u64, eat: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -24,7 +24,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eatCount: u32}
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseX64(str: const [..] u8) -> {value: u64, eatCount: u32}
+func parseX64(str: const [..] u8) -> {value: u64, eat: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -51,7 +51,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eatCount: u32}
 
 // Convert an utf8 buffer in binary to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseB64(str: const [..] u8) -> {value: u64, eatCount: u32}
+func parseB64(str: const [..] u8) -> {value: u64, eat: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -72,7 +72,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eatCount: u32}
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
+func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
@@ -86,14 +86,12 @@ func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
     (c, eat) := utf8.firstChar(str)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
-        cpt += eat
-        buffer += eat
+        buffer, cpt += eat
         signed = true
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
-        cpt += eat
-        buffer += eat
+        buffer, cpt += eat
     }
 
     // Parse the rest
@@ -113,7 +111,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eatCount: u32}
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-func parseF64(str: const [..] u8) -> {value: f64, eatCount: u32}
+func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
 {
     countof := @countof(str)
     if !countof return @{0, 0}
