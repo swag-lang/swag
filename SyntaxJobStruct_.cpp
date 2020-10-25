@@ -468,9 +468,14 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
         }
 
         case TokenId::KwdConst:
-            return sourceFile->report({parent, token, "cannot declare a 'const' in a struct, consider using an 'impl' block instead"});
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::ConstDecl));
+            if (!waitCurly)
+                return true;
+            break;
+
         case TokenId::KwdVar:
-            return sourceFile->report({parent, token, "'var' is not necessary to declare a field in a struct"});
+            return sourceFile->report({parent, token, "'var' is not necessary to declare a field"});
 
         // A normal declaration
         default:
