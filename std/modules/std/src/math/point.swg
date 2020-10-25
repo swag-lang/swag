@@ -1,6 +1,6 @@
 namespace std.math;
 
-// A simple Point with 2 float coordinates X and Y
+// A simple Point with 2 coordinates X and Y
 struct(T) PointBase
 {
     x: T
@@ -52,9 +52,9 @@ impl PointBase
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    // Represents a PointBase with all coordinates to zero
+    // Represents a Point with all coordinates to zero
     const Zero: Self'T{0, 0}
-    // Represents a PointBase with all coordinates to one
+    // Represents a Point with all coordinates to one
     const One: Self'T{1, 1}
 
     // Set PointBase to (0, 0)
@@ -63,25 +63,25 @@ impl PointBase
         x, y = 0
     }
 
-    // Returns 'true' if the PointBase is null
+    // Returns 'true' if the Point is null
     func isZero(using self)->bool
     {
         return x == y == 0
     }
 
-    // Returns 'true' if the PointBase is null with an epsilon
+    // Returns 'true' if the Point is null with an epsilon
     func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
     {
         return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
     }
 
-    // Offset this PointBase by a given value
+    // Offset this Point by a given value
     func offset(using self, value: T)
     {
         x, y += value
     }
 
-    // Offset this PointBase by a given value
+    // Offset this Point by a given value
     func offset(using self, valueX, valueY: T)
     {
         x += valueX
