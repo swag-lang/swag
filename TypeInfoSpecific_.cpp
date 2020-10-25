@@ -774,7 +774,11 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     int childCount = (int) fields.size();
     if (childCount != other->fields.size())
         return false;
-    if (structName != other->structName)
+
+    // Do not compare names for tuples
+    bool isTuple  = flags & TYPEINFO_STRUCT_IS_TUPLE;
+    bool sameName = structName == other->structName;
+    if (!isTuple && !sameName)
         return false;
 
     // Compare generic parameters
@@ -794,7 +798,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     // Compare field by field
-    if (!(isSameFlags & ISSAME_CAST))
+    if (!(isSameFlags & ISSAME_CAST) && !isTuple)
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
@@ -803,6 +807,16 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         for (int i = 0; i < childCount; i++)
         {
             if (!fields[i]->isSame(other->fields[i], isSameFlags))
+                return false;
+        }
+    }
+    else if (isTuple && !sameName)
+    {
+        if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+            return false;
+        for (int i = 0; i < childCount; i++)
+        {
+            if (!fields[i]->isSame(other->fields[i], isSameFlags | ISSAME_EXACT))
                 return false;
         }
     }

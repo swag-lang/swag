@@ -523,24 +523,15 @@ public impl String
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, what: char) -> {index: u32, success: bool}
+    func indexOf(using self, what: char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        return indexOf(@[what])
+        return utf8.indexOf(toString(), @[what], startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, what: const [..] char) -> {index: u32, success: bool}
+    func indexOf(using self, what: const [..] char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        if !length
-            return @{0, false}
-
-        visit c, i: :self
-        {
-            if contains(what, c)
-                return @{i, true}
-        }
-
-        return @{0, false}
+        return utf8.indexOf(toString(), what, startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.

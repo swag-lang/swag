@@ -151,6 +151,33 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     return @{acast c, 1}
 }
 
+// Find one of the character in 'what', and returns the byte index of it
+func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'u32) -> {index: u32, success: bool}
+{
+    length := @countof(src)
+    if !length return @{0, false}
+    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+    countof := @countof(what)
+    if !countof return @{0'u32, false}
+
+    idx := startByteIndex
+    scan := @dataof(src) + startByteIndex
+    remain := length - startByteIndex
+    while countof <= remain
+    {
+        res := utf8.firstChar(cast(string) @mkslice(scan, remain))
+        if !res.eat
+            break
+        if contains(what, res.c)
+            return @{idx, true}
+        scan, idx += res.eat
+        remain -= res.eat
+    }
+
+    return @{0, false}
+}
+
 // Make an utf8 buffer upper case, dealing only with latin1 table
 func makeUpperLatin1(buffer: [..] u8)
 {
