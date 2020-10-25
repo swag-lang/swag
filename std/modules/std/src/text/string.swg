@@ -479,7 +479,7 @@ public impl String
             case Ascii:
                 ascii.makeUpper(sl)
             case Latin1:
-                utf8.makeUpperLatin1(sl)
+                latin1.makeUpper(sl)
         }
     }
 
@@ -495,7 +495,7 @@ public impl String
             case Ascii:
                 ascii.makeLower(sl)
             case Latin1:
-                utf8.makeLowerLatin1(sl)
+                latin1.makeLower(sl)
         }
     }
 

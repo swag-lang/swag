@@ -268,50 +268,6 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Raw)->s32
     return 0
 }
 
-// Make an utf8 buffer upper case, dealing only with latin1 table
-func makeUpperLatin1(buffer: [..] u8)
-{
-    p := @dataof(buffer)
-    loop @countof(buffer)
-    {
-        c := :p
-        if (0x61 <= c <= 0x7A)
-            :p -= 0x20
-        else if c == 0xC3
-        {
-            ce := c
-            p += 1
-            c = :p
-            if 0xA0 <= c <= 0xBE && c != 0xB7
-                :p -= 0x20
-        }
-
-        p += 1
-    }
-}
-
-// Make an utf8 buffer lower case, dealing only with latin1 table
-func makeLowerLatin1(buffer: [..] u8)
-{
-    p := @dataof(buffer)
-    loop @countof(buffer)
-    {
-        c := :p
-        if (0x41 <= c <= 0x5A)
-            :p += 0x20
-        else if c == 0xC3
-        {
-            ce := c
-            p += 1
-            c = :p
-            if 0x80 <= c <= 0x9E && c != 0x97
-                :p += 0x20
-        }
-
-        p += 1
-    }
-}
-
 // Macro to visit the unicode characters of the utf8 sequence
 // @alias0 will contain the character
 // @alias1 will contain the byte index of that character within the utf8 sequence

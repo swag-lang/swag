@@ -1,6 +1,7 @@
-namespace std.latin1;
+using swag
+public namespace std.latin1;
 
-public const charCategory: [] unicode32.UnicodeCategory =
+const charCategory: [] unicode32.UnicodeCategory =
 @[
     unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0000 - 0007
     unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0008 - 000F
@@ -36,8 +37,7 @@ public const charCategory: [] unicode32.UnicodeCategory =
     unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 00F8 - 00FF
 ]
 
-#[swag.inline, swag.constexpr]
-public
+#[inline, constexpr]
 {
     func isAscii(c: u8)         => c <= 0x7F
     func isDigit(c: u8)         => ascii.isDigit(c)
@@ -49,4 +49,48 @@ public
     func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
     func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
     func isWhiteSpace(c: u8)    => ascii.isWhiteSpace(c) || (c == "\x85"'u8) || (c == "\xa0"'u8)
+}
+
+// Make an utf8 buffer upper case, dealing only with latin1 table
+func makeUpper(buffer: [..] u8)
+{
+    p := @dataof(buffer)
+    loop @countof(buffer)
+    {
+        c := :p
+        if (0x61 <= c <= 0x7A)
+            :p -= 0x20
+        else if c == 0xC3
+        {
+            ce := c
+            p += 1
+            c = :p
+            if 0xA0 <= c <= 0xBE && c != 0xB7
+                :p -= 0x20
+        }
+
+        p += 1
+    }
+}
+
+// Make an utf8 buffer lower case, dealing only with latin1 table
+func makeLower(buffer: [..] u8)
+{
+    p := @dataof(buffer)
+    loop @countof(buffer)
+    {
+        c := :p
+        if (0x41 <= c <= 0x5A)
+            :p += 0x20
+        else if c == 0xC3
+        {
+            ce := c
+            p += 1
+            c = :p
+            if 0x80 <= c <= 0x9E && c != 0x97
+                :p += 0x20
+        }
+
+        p += 1
+    }
 }
