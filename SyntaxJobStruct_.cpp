@@ -467,6 +467,11 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
             break;
         }
 
+        case TokenId::KwdConst:
+            return sourceFile->report({parent, token, "cannot declare a 'const' in a struct, consider using an 'impl' block instead"});
+        case TokenId::KwdVar:
+            return sourceFile->report({parent, token, "'var' is not necessary to declare a field in a struct"});
+
         // A normal declaration
         default:
             if (structType == SyntaxStructType::TypeSet)
