@@ -18,7 +18,7 @@ struct Generic
     static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo);
 
-    static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
+    static void instantiateSpecialFunc(SemanticContext* context, InstantiateContext& instContext, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext &instContext);
     static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext);
     static bool instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node);

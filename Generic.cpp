@@ -321,9 +321,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         cloneContext.ownerStructScope = structNode->scope;
     }
 
-    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserDropFct);
-    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostCopyFct);
-    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostMoveFct);
+    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserDropFct);
+    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserPostCopyFct);
+    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserPostMoveFct);
 
     // Force instantiation of all special functions
     for (auto method : newType->methods)
@@ -336,13 +336,13 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
                 specFunc != genericStructType->opUserPostMoveFct &&
                 !specFunc->genericParameters)
             {
-                instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
+                instantiateSpecialFunc(context, instContext, structJob, cloneContext, &specFunc);
             }
         }
         else if (instContext.fromBake)
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
-            instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
+            instantiateSpecialFunc(context, instContext, structJob, cloneContext, &specFunc);
         }
     }
 
@@ -366,7 +366,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
+void Generic::instantiateSpecialFunc(SemanticContext* context, InstantiateContext& instContext, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
     if (!funcNode)
@@ -392,6 +392,16 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
 
     // Replace generic types and values in the function generic parameters
     newTypeFunc->computeName();
+
+    // When instanciating for a bake, the ownerScope is not the same as the original function, so
+    // we must update the symbol
+    if (instContext.fromBake)
+    {
+        auto symbol = newFunc->ownerScope->symTable.find(newFunc->resolvedSymbolName->name);
+        if (!symbol)
+            symbol = newFunc->ownerScope->symTable.registerSymbolName(context, newFunc, newFunc->resolvedSymbolName->kind);
+        newFunc->resolvedSymbolName = symbol;
+    }
 
     scoped_lock lk(newFunc->resolvedSymbolName->mutex);
     auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
