@@ -150,21 +150,12 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A struct
     if type.kind == TypeInfoKind.Struct
     {
-        // A special format structure
         if type == ConvertFormatInt
             convertInt(buf, cast(ConvertFormatInt) value)
         else if type == ConvertFormatFloat
             convertFloat(buf, cast(ConvertFormatFloat) value)
         else
-        {
-            // A structure with an implementation of IConvert
-            itf := @mkinterface(@dataof(value), @kindof(value), IConvert)
-            if itf != null
-                itf.convert(buf, null, strFormat)
-            else
-                convertStruct(buf, value, strFormat)
-        }
-
+            convertStruct(buf, value, strFormat)
         return
     }
 
@@ -219,10 +210,19 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     kindof := @kindof(value)
     debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
+    ptr := @dataof(value)
 
+    // A structure with an implementation of IConvert
+    itf := @mkinterface(ptr, kindof, IConvert)
+    if itf != null
+    {
+        itf.convert(buf, null, strFormat)
+        return
+    }
+
+    // Do it field by field
     buf.addBytes("{")
 
-    ptr := @dataof(value)
     type := cast(const *TypeInfoStruct) kindof
     visit field: type.fields
     {
