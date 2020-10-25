@@ -51,7 +51,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         }
         case TypeInfoKind::Pointer:
         {
-            auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
+            auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             SWAG_ASSERT(typeInfoPointer->ptrCount <= 255);
             typeExpression->ptrCount = (uint8_t) typeInfoPointer->ptrCount;
             typeExpression->typeFlags |= typeInfoPointer->isConst() ? TYPEFLAG_ISCONST : 0;
@@ -265,8 +265,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     else
         isLocalConstant = true;
-    if(node->constAssign)
+    if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
+
+    // No var in 'impl'
+    if (node->ownerStructScope && (symbolFlags & OVERLOAD_VAR_GLOBAL))
+    {
+        SWAG_VERIFY(isCompilerConstant, context->report({ node, node->token, format("cannot declare a global variable in an implementaton block (type is '%s')", node->ownerStructScope->owner->name.c_str()) }));
+    }
 
     // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))

@@ -5,9 +5,10 @@ enum RGBRGB
     B
 }
 
+var GLOBAL = 0
+
 impl enum RGBRGB
 {
-    var GLOBAL = 0
     func isRed(self)->bool
     {
         GLOBAL += cast(s32) self
@@ -21,5 +22,5 @@ impl enum RGBRGB
     @assert(xyz.isRed())
     //@assert(RGBRGB.isRed())
     @assert(RGBRGB.R.isRed())
-    @assert(RGBRGB.GLOBAL == 20)
+    @assert(GLOBAL == 20)
 }
