@@ -11,8 +11,8 @@ using swag
     func isLetter(c: u8)->bool  => ("a"'u8 <= c <= "z"'u8) || ("A"'u8 <= c <= "Z"'u8)
     func isLetterOrDigit(c: u8) => ("a"'u8 <= c <= "z"'u8) || ("A"'u8 <= c <= "Z"'u8) || ("0"'u8 <= c <= "9"'u8)
     func isWhiteSpace(c: u8)    => ("\x09"'u8 <= c <= "\x0d"'u8) || (c == " "'u8)
-    func toLower(c: u8)         => ("A"'u8 <= c <= "Z"'u8) ? (c | 0x20'u8) : c
-    func toUpper(c: u8)         => ("a"'u8 <= c <= "z"'u8) ? (c & ~0x20'u8) : c
+    func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
+    func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
 
 // Make an ascii buffer upper case

@@ -49,6 +49,8 @@ const charCategory: [] unicode32.UnicodeCategory =
     func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
     func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
     func isWhiteSpace(c: u8)    => ascii.isWhiteSpace(c) || (c == "\x85"'u8) || (c == "\xa0"'u8)
+    func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
+    func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table
@@ -73,4 +75,32 @@ func makeLower(buffer: [..] u8)
         if isUpper(c) :p += 0x20
         p += 1
     }
+}
+
+// Compare two latin1 strings, and returns -1, 0 or 1
+func compare(src, dst: const [..] u8, ignoreCase = false)->s32
+{
+    length := @countof(src)
+    otherLength := @countof(dst)
+    minLen := math.min(length, otherLength)
+
+    var result: s32
+    if ignoreCase
+    {
+        loop i: minLen
+        {
+            c1 := toLower(src[i])
+            c2 := toLower(dst[i])
+            result = cast(s32) c1 - cast(s32) c2
+            if result != 0 return result
+        }
+    }
+    else
+    {
+        result = memory.compare(@dataof(src), @dataof(dst), minLen)
+    }
+
+    if result != 0 || length == otherLength return result
+    if length < otherLength return -1
+    return 1
 }

@@ -540,31 +540,31 @@ public impl String
     }
 
     // Find the given string, and returns the byte index of it
-    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Raw) -> {index: u32, success: bool}
+    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Ascii) -> {index: u32, success: bool}
     {
         return utf8.indexOf(toString(), what, startByteIndex, comparisonType)
     }
 
     // Return true if the string starts with 'str'
-    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Raw)->bool
+    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
     {
         return utf8.startsWith(toString(), what, comparisonType)
     }
 
     // Return true if the string ends with 'str'
-    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Raw)->bool
+    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
     {
         return utf8.endsWith(toString(), what, comparisonType)
     }
 
     // Compare with another string
-    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Raw)->s32
+    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Ascii)->s32
     {
         return compare(cast(string) @mkslice(buffer, length), other, comparisonType)
     }
 
     // Compare two strings
-    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Raw)->s32
+    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Ascii)->s32
     {
         return utf8.compare(src, dst, comparisonType)
     }
