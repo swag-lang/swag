@@ -546,19 +546,15 @@ public impl String
     }
 
     // Return true if the string starts with 'str'
-    func startsWidth(using self, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
+    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Raw)->bool
     {
-        countof := @countof(str)
-        if countof > length return false
-        return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+        return utf8.startsWith(toString(), what, comparisonType)
     }
 
     // Return true if the string ends with 'str'
-    func endsWidth(using self, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
+    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Raw)->bool
     {
-        countof := @countof(str)
-        if countof > length return false
-        return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+        return utf8.endsWith(toString(), what, comparisonType)
     }
 
     // Compare with another string

@@ -225,6 +225,26 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, compariso
     return @{0, false}
 }
 
+// Return true if the string starts with 'str'
+func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
+{
+    length := @countof(src)
+    countof := @countof(str)
+    if countof > length return false
+    buffer := @dataof(src)
+    return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+}
+
+// Return true if the string ends with 'str'
+func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Raw)->bool
+{
+    length := @countof(src)
+    countof := @countof(str)
+    if countof > length return false
+    buffer := @dataof(src)
+    return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+}
+
 public enum ComparisonType
 {
     Raw
