@@ -1733,6 +1733,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
                     node->ownerMainNode->name == symbol->name)
                 {
+                    SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
+                    SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
                     if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
                     {
                         node->resolvedSymbolName     = symbol;

@@ -1,7 +1,6 @@
 struct(T) P
 {
     next: *P
-    next1: *P'T
 }
 
 #test
