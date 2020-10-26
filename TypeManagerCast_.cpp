@@ -2336,6 +2336,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     SWAG_ASSERT(toType && fromType);
+    if (fromType->flags & TYPEINFO_AUTO_CAST)
+        castFlags |= CASTFLAG_EXPLICIT;
 
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
@@ -2413,9 +2415,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
-
-    if (fromType->flags & TYPEINFO_AUTO_CAST)
-        castFlags |= CASTFLAG_EXPLICIT;
 
     // Always match against a generic
     if (toType->kind == TypeInfoKind::Generic)

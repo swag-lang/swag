@@ -83,26 +83,29 @@ impl PointBase
     }
 }
 
-public #bake PointF = PointBase'f32
 public #bake Point = PointBase's32
+public #bake PointF = PointBase'f32
 
+// Check for zero with an epsilon
 public func isZeroEpsilon(pt: PointF, eps: f32 = constF32.Epsilon)->bool
 {
     return math.isZeroEpsilon(pt.x, eps) && math.isZeroEpsilon(pt.y, eps)
 }
 
+// Transform a PointF to a Point
 public func round(pt: PointF)->Point
 {
     var result: Point = ?
-    result.x = cast(s32) math.round(pt.x)
-    result.y = cast(s32) math.round(pt.y)
+    result.x = acast math.round(pt.x)
+    result.y = acast math.round(pt.y)
     return result
 }
 
+// Transform a PointF to a Point
 public func truncate(pt: PointF)->Point
 {
     var result: Point = ?
-    result.x = cast(s32) math.trunc(pt.x)
-    result.y = cast(s32) math.trunc(pt.y)
+    result.x = acast math.trunc(pt.x)
+    result.y = acast math.trunc(pt.y)
     return result
 }
