@@ -65,7 +65,7 @@ impl GamePad
     }
 
     // Get the analog position of the given button
-    func getPosition(using self, button: Button)->Point
+    func getPosition(using self, button: Button)->PointF
     {
         return currentState.position[button]
     }

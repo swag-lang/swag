@@ -1,14 +1,15 @@
-struct(T) P
+#module "compiler2146"
+#unittest error
+
+struct P
 {
 }
 
-/*alias Alias = P's32
+alias Alias = P
 impl Alias
 {
+    func toto(using self)
+    {
 
-}*/
-
-#test
-{
-    var x: P's32
+    }
 }

@@ -282,19 +282,20 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
         return context->report(diag, &note);
     }
 
+    auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
+    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report({node->identifier, "unsupported alias as an implementation block name"}));
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Struct:
     {
-        auto typeStruct = TypeManager::concreteType(node->identifier->resolvedSymbolOverload->typeInfo);
-        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
     case TypeInfoKind::TypeSet:
     {
-        auto typeStruct = TypeManager::concreteType(node->identifier->resolvedSymbolOverload->typeInfo);
-        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::TypeSet);
+        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::TypeSet);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }

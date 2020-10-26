@@ -69,12 +69,6 @@ impl PointBase
         return x == y == 0
     }
 
-    // Returns 'true' if the Point is null with an epsilon
-    func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
-    {
-        return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
-    }
-
     // Offset this Point by a given value
     func offset(using self, value: T)
     {
@@ -89,5 +83,26 @@ impl PointBase
     }
 }
 
-public #bake Point = PointBase'f32
-//public #bake PointS32 = PointBase's32
+public #bake PointF = PointBase'f32
+public #bake Point = PointBase's32
+
+public func isZeroEpsilon(pt: PointF, eps: f32 = constF32.Epsilon)->bool
+{
+    return math.isZeroEpsilon(pt.x, eps) && math.isZeroEpsilon(pt.y, eps)
+}
+
+public func round(pt: PointF)->Point
+{
+    var result: Point = ?
+    result.x = cast(s32) math.round(pt.x)
+    result.y = cast(s32) math.round(pt.y)
+    return result
+}
+
+public func truncate(pt: PointF)->Point
+{
+    var result: Point = ?
+    result.x = cast(s32) math.trunc(pt.x)
+    result.y = cast(s32) math.trunc(pt.y)
+    return result
+}
