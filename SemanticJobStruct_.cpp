@@ -258,7 +258,7 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
 
         Diagnostic diag{node,
                         node->token,
-                        format("impl block is not defined in the same scope as '%s' (impl parent scope is '%s', '%s' parent scope is '%s')",
+                        format("implementation block is not defined in the same scope as '%s' ('impl' parent scope is '%s', '%s' parent scope is '%s')",
                                node->name.c_str(),
                                scopeImpl->parentScope->getFullName().c_str(),
                                node->name.c_str(),
@@ -286,13 +286,15 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     {
     case TypeInfoKind::Struct:
     {
-        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+        auto typeStruct = TypeManager::concreteType(node->identifier->resolvedSymbolOverload->typeInfo);
+        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
     case TypeInfoKind::TypeSet:
     {
-        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::TypeSet);
+        auto typeStruct = TypeManager::concreteType(node->identifier->resolvedSymbolOverload->typeInfo);
+        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::TypeSet);
         SWAG_CHECK(CheckImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
