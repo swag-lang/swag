@@ -1734,7 +1734,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     node->ownerMainNode->name == symbol->name)
                 {
                     SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));
-                    SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
+                    //SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
                     if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
                     {
                         node->resolvedSymbolName     = symbol;

@@ -5,30 +5,33 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
-bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
+bool Generic::updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
     for (int i = 0; i < typeGenericParameters.size(); i++)
     {
         auto param = typeGenericParameters[i];
 
-        // If the user has specified a generic type, take it
-        if (callGenericParameters)
+        if (doType)
         {
-            param->typeInfo = callGenericParameters->childs[i]->typeInfo;
-            param->value    = callGenericParameters->childs[i]->computedValue;
-        }
+            // If the user has specified a generic type, take it
+            if (callGenericParameters)
+            {
+                param->typeInfo = callGenericParameters->childs[i]->typeInfo;
+                param->value = callGenericParameters->childs[i]->computedValue;
+            }
 
-        // If we have a calltype filled with the match, take it
-        else if (match.genericParametersCallTypes[i])
-        {
-            param->typeInfo = match.genericParametersCallTypes[i];
-        }
+            // If we have a calltype filled with the match, take it
+            else if (match.genericParametersCallTypes[i])
+            {
+                param->typeInfo = match.genericParametersCallTypes[i];
+            }
 
-        // Take the type as it is in the instantiated struct/func
-        else
-        {
-            SWAG_ASSERT(i < nodeGenericParameters.size());
-            param->typeInfo = nodeGenericParameters[i]->typeInfo;
+            // Take the type as it is in the instantiated struct/func
+            else
+            {
+                SWAG_ASSERT(i < nodeGenericParameters.size());
+                param->typeInfo = nodeGenericParameters[i]->typeInfo;
+            }
         }
 
         SWAG_ASSERT(param->typeInfo);
@@ -50,11 +53,14 @@ bool Generic::updateGenericParameters(SemanticContext* context, VectorNative<Typ
             }
         }
 
-        auto nodeParam           = nodeGenericParameters[i];
-        nodeParam->kind          = AstNodeKind::ConstDecl;
-        nodeParam->computedValue = param->value;
-        nodeParam->setFlagsValueIsComputed();
-        nodeParam->flags |= AST_FROM_GENERIC;
+        if (doNode)
+        {
+            auto nodeParam = nodeGenericParameters[i];
+            nodeParam->kind = AstNodeKind::ConstDecl;
+            nodeParam->computedValue = param->value;
+            nodeParam->setFlagsValueIsComputed();
+            nodeParam->flags |= AST_FROM_GENERIC;
+        }
     }
 
     return true;
@@ -268,11 +274,32 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
         auto typeAlias    = CastTypeInfo<TypeInfoAlias>(sourceNode->typeInfo, TypeInfoKind::Alias);
         genericStructType = CastTypeInfo<TypeInfoStruct>(typeAlias->rawType, TypeInfoKind::Struct);
-        sourceNode        = genericStructType->declNode;
-        SWAG_ASSERT(sourceNode->kind == AstNodeKind::StructDecl);
+        sourceNode        = CastAst<AstStruct>(genericStructType->declNode, AstNodeKind::StructDecl);
         SWAG_ASSERT(sourceNode->resolvedSymbolOverload);
         sourceSymbol = sourceNode->resolvedSymbolOverload->symbol;
     }
+
+    // Make a new type
+    auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
+    newType->flags &= ~TYPEINFO_GENERIC;
+    newType->fromGeneric = genericStructType;
+
+    // Replace generic types and values in the struct generic parameters
+    auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
+    SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
+
+    if (instContext.fromBake)
+    {
+        newType->nakedName = instContext.bakeName;
+        newType->name      = newType->nakedName;
+    }
+    else
+    {
+        newType->forceComputeName();
+    }
+
+    // Add the struct type replacement now, in case the struct has a field to replace
+    cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
@@ -288,31 +315,15 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         structNode->scope->name = instContext.bakeName;
     }
 
-    // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
-    newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope           = structNode->scope;
     newType->declNode        = structNode;
-    newType->fromGeneric     = genericStructType;
     structNode->typeInfo     = newType;
     structNode->ownerGeneric = context->node;
 
     // Replace generic types and values in the struct generic parameters
-    SWAG_CHECK(updateGenericParameters(context, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
-
-    if (instContext.fromBake)
-    {
-        newType->nakedName = instContext.bakeName;
-        newType->name      = newType->nakedName;
-    }
-    else
-    {
-        newType->forceComputeName();
-    }
+    SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
     auto structJob = end(context, context->job, sourceSymbol, structNode, true);
-
-    cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
     // Not sure this shouldn't be done for all, not just for bake
     if (instContext.fromBake)
@@ -502,7 +513,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Replace generic types and values in the function generic parameters
-    SWAG_CHECK(updateGenericParameters(context, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
+    SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->computeName();
 
     auto job = end(context, context->job, match.symbolName, newFunc, true);
