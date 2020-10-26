@@ -254,7 +254,10 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     {
         cloneContext.forceFlags = AST_FROM_BAKE;
         if (instContext.bakeIsPublic)
+        {
             cloneContext.forceAttributeFlags = ATTRIBUTE_PUBLIC;
+            SWAG_VERIFY(!(match.symbolOverload->node->ownerScope->flags & SCOPE_PRIVATE), context->report({ node, "bake result is marked as public, but the symbol is private" }));
+        }
     }
 
     // Clone original node

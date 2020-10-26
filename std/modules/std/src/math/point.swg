@@ -1,13 +1,13 @@
 namespace std.math;
 
 // A simple Point with 2 coordinates X and Y
-struct(T) PointBase
+struct(T) PointPriv
 {
     x: T
     y: T
 }
 
-impl PointBase
+impl PointPriv
 {
     #[swag.complete]
     func opAffect(using self, value: T)
@@ -57,7 +57,7 @@ impl PointBase
     // Represents a Point with all coordinates to one
     const One: Self'T{1, 1}
 
-    // Set PointBase to (0, 0)
+    // Set PointPriv to (0, 0)
     func clear(using self)
     {
         x, y = 0
@@ -83,8 +83,8 @@ impl PointBase
     }
 }
 
-public #bake Point = PointBase's32
-public #bake PointF = PointBase'f32
+public #bake Point = PointPriv's32
+public #bake PointF = PointPriv'f32
 
 // Check for zero with an epsilon
 public func isZeroEpsilon(pt: PointF, eps: f32 = constF32.Epsilon)->bool

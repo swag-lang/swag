@@ -36,7 +36,7 @@ impl PointBase
     }
 }
 
-public #bake Point2141 = PointBase'f32
+#bake Point2141 = PointBase'f32
 
 #test
 {
