@@ -7,7 +7,7 @@ struct(T) Point
 impl Point
 {
     // Offset this Point by a given value
-    #if @typeof(T) == bool
+    //#if @typeof(T) == bool
     {
         func offset(using self)
         {

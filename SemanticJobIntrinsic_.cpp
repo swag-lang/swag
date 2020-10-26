@@ -323,6 +323,24 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr = node->childs.front();
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+
+    // typeof should never touched a generic
+    if (expr->typeInfo->kind == TypeInfoKind::Generic)
+    {
+        Diagnostic diag{expr, "cannot evaluate type because it's generic"};
+
+        auto parent = expr;
+        while (parent && parent->kind != AstNodeKind::CompilerIf)
+            parent = parent->parent;
+        if (parent)
+        {
+            Diagnostic note{parent, parent->token, "'#if' on a generic is not supported", DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        return context->report(diag);
+    }
+
     expr->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(makeIntrinsicTypeOf(context));
     return true;
