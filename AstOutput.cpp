@@ -411,6 +411,12 @@ namespace Ast
             case TokenId::CompilerLocation:
                 CONCAT_FIXED_STR(concat, "#location");
                 break;
+            case TokenId::CompilerOs:
+                CONCAT_FIXED_STR(concat, "#os");
+                break;
+            case TokenId::CompilerBuildCfg:
+                CONCAT_FIXED_STR(concat, "#cfg");
+                break;
             case TokenId::CompilerHasTag:
                 CONCAT_FIXED_STR(concat, "#hastag(");
                 SWAG_CHECK(output(context, concat, node->childs[0]));
