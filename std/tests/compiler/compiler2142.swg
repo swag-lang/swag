@@ -1,23 +1,15 @@
 // A simple point with 2 float coordinates X and Y
-struct(T) Point
+public struct(T) Const
 {
-    x, y: T
+    const Zero: T = 0
+    const One: T = 1
 }
 
-impl Point
-{
-    // Offset this Point by a given value
-    //#if @typeof(T) == bool
-    {
-        func offset(using self)
-        {
-        }
-    }
-}
+public #bake ConstF = Const'f32
 
 #test
 {
-    var x: Point'f32
-    //x.z = true
-    //x.offset()
+    @assert(ConstF.Zero == 0)
+    @assert(ConstF.One == 1)
+    @assert(@typeof(ConstF.Zero) == f32)
 }
