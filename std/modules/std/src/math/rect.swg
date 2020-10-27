@@ -2,18 +2,18 @@ namespace std.math;
 using swag
 
 // A simple rectangle with 4 coordinates
-public struct Rect
+struct(T) RectPriv
 {
-    x:      f32
-    y:      f32
-    width:  f32
-    height: f32
+    x:      T
+    y:      T
+    width:  T
+    height: T
 }
 
-public impl Rect
+impl RectPriv
 {
     #[complete]
-    func opAffect(using self, value: f32)
+    func opAffect(using self, value: T)
     {
         x, y, width, height = value
     }
@@ -26,32 +26,32 @@ public impl Rect
     #[property, inline]
     {
         // right coordinate (x + width)
-        func right(using self)->f32
+        func right(using self)->T
         {
             return x + width
         }
 
         // right coordinate (x + width)
-        func right(using self, value: f32)
+        func right(using self, value: T)
         {
             width = value - x
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self)->f32
+        func bottom(using self)->T
         {
             return y + height
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self, value: f32)
+        func bottom(using self, value: T)
         {
             height = value - y
         }
     }
 
     // Represents a rectangle with all coordinates to zero
-    const Zero: Rect{0, 0, 0, 0}
+    const Zero: RectPriv'T{0, 0, 0, 0}
 
     // Set rectangle to (0, 0, 0, 0)
     func clear(using self)
@@ -65,22 +65,10 @@ public impl Rect
         return x == y == width == height == 0
     }
 
-    // Returns true if this instance is null with an epsilon
-    func isZeroEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
-    {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
-    }
-
     // Returns true if this instance has a surface of zero (width and heigth are null)
     func isEmpty(using self)->bool
     {
         return width == height == 0
-    }
-
-    // Returns true if this instance has a surface of zero (width and heigth are null)
-    func isEmptyEpsilon(using self, eps: f32 = constF32.Epsilon)->bool
-    {
-        return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a positive surface (width and heigth greater than zero)
@@ -90,21 +78,58 @@ public impl Rect
     }
 
     // Offset this point by a given value
-    func offset(using self, value: f32)
+    func offset(using self, value: T)
     {
         x, y += value
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, value: f32)
+    func scale(using self, value: T)
     {
         width, height *= value
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, valueX, valueY: f32)
+    func scale(using self, valueX, valueY: T)
     {
         width *= valueX
         height *= valueY
     }
+}
+
+public #bake Rect = RectPriv's32
+public #bake RectF = RectPriv'f32
+
+// Returns true if this instance is null with an epsilon
+func isZeroEpsilon(using rect: RectF, eps = constF32.Epsilon)->bool
+{
+    return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps) && math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+}
+
+// Returns true if this instance has a surface of zero (width and heigth are null)
+func isEmptyEpsilon(using rect: RectF, eps = constF32.Epsilon)->bool
+{
+    return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+}
+
+// Transform a RectF to a Rect
+public func roundToRect(using rect: RectF)->Rect
+{
+    var result: Rect = ?
+    result.x = acast math.round(x)
+    result.y = acast math.round(y)
+    result.width = acast math.round(width)
+    result.height = acast math.round(height)
+    return result
+}
+
+// Transform a RectF to a Rect
+public func truncToRect(using rect: RectF)->Rect
+{
+    var result: Rect = ?
+    result.x = acast math.trunc(x)
+    result.y = acast math.trunc(y)
+    result.width = acast math.trunc(width)
+    result.height = acast math.trunc(height)
+    return result
 }

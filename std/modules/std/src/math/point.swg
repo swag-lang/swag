@@ -87,25 +87,25 @@ public #bake Point = PointPriv's32
 public #bake PointF = PointPriv'f32
 
 // Check for zero with an epsilon
-public func isZeroEpsilon(pt: PointF, eps = constF32.Epsilon)->bool
+public func isZeroEpsilon(using pt: PointF, eps = constF32.Epsilon)->bool
 {
-    return math.isZeroEpsilon(pt.x, eps) && math.isZeroEpsilon(pt.y, eps)
+    return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
 }
 
 // Transform a PointF to a Point
-public func roundToPoint(pt: PointF)->Point
+public func roundToPoint(using pt: PointF)->Point
 {
     var result: Point = ?
-    result.x = acast math.round(pt.x)
-    result.y = acast math.round(pt.y)
+    result.x = acast math.round(x)
+    result.y = acast math.round(y)
     return result
 }
 
 // Transform a PointF to a Point
-public func truncToPoint(pt: PointF)->Point
+public func truncToPoint(using pt: PointF)->Point
 {
     var result: Point = ?
-    result.x = acast math.trunc(pt.x)
-    result.y = acast math.trunc(pt.y)
+    result.x = acast math.trunc(x)
+    result.y = acast math.trunc(y)
     return result
 }
