@@ -124,4 +124,16 @@ impl Rect
         width = acast math.trunc(width)
         height = acast math.trunc(height)
     }
+
+    // Determines if the specfied point is contained within the rectangular region
+    func contains(self, x, y: f32)->bool
+    {
+        return (self.x >= x < self.x + self.width) && (self.y >= y < self.y + self.height)
+    }
+
+    // Determines if the specfied point is contained within the rectangular region
+    func contains(self, pt: Point)->bool
+    {
+        return self.contains(pt.x, pt.y)
+    }
 }
