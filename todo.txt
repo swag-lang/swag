@@ -28,3 +28,5 @@ slice, strings & co, passer le count en 64 bits une bonne fois pour toute
 -------------------------------------
 x64: ByteCodeOp::LambdaCall, mettre des jump 8 bits
 -------------------------------------
+using après public namespace std.math; c global ca deconne en export
+-------------------------------------

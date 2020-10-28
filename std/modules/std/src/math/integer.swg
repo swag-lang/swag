@@ -1,7 +1,6 @@
 public namespace std.math;
-using swag
 
-#[constexpr]
+#[swag.constexpr]
 func bitIndex(x: u32)->u32
 {
     i := 0'u32
@@ -17,7 +16,7 @@ func bitIndex(x: u32)->u32
     return i
 }
 
-#[constexpr]
+#[swag.constexpr]
 func roundUpToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -26,7 +25,7 @@ func roundUpToPowerOf2(x: u32)->u32
     return i
 }
 
-#[constexpr]
+#[swag.constexpr]
 func roundDownToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -35,7 +34,7 @@ func roundDownToPowerOf2(x: u32)->u32
     return i
 }
 
-#[constexpr, inline]
+#[swag.constexpr, swag.inline]
 {
     func abs(x: s8) => @abs(x)
     func abs(x: s16) => @abs(x)

@@ -21,8 +21,8 @@ public struct(T) Const
     const Epsilon: T      = 1e-06
 }
 
-public #bake ConstF32 = Const'f32
-public #bake ConstF64 = Const'f64
+public alias ConstF32 = Const'f32
+public alias ConstF64 = Const'f64
 
 #[swag.constexpr]
 public
