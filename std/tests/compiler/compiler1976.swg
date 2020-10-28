@@ -6,10 +6,10 @@ struct(T) AA1976
 {
 }
 
+const TITI = 5
+
 impl AA1976
 {
-    const TITI = 5
-
     #[macro, noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {

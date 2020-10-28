@@ -53,9 +53,9 @@ impl PointPriv
     }
 
     // Represents a Point with all coordinates to zero
-    const Zero: Self'T{0, 0}
+    //const Zero: Self'T{0, 0}
     // Represents a Point with all coordinates to one
-    const One: Self'T{1, 1}
+    //const One: Self'T{1, 1}
 
     // Set PointPriv to (0, 0)
     func clear(using self)
@@ -87,7 +87,7 @@ public #bake Point = PointPriv's32
 public #bake PointF = PointPriv'f32
 
 // Check for zero with an epsilon
-public func isZeroEpsilon(using pt: PointF, eps = constF32.Epsilon)->bool
+public func isZeroEpsilon(using pt: PointF, eps = ConstF32.Epsilon)->bool
 {
     return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
 }

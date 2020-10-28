@@ -515,6 +515,7 @@ struct TypeInfoStruct : public TypeInfo
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> fields;
+    VectorNative<TypeInfoParam*> consts;
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     SymbolAttributes             attributes;

@@ -12,6 +12,10 @@ struct(K, V) HashTableEntry
 
 struct(K, V) HashTable
 {
+    const HASH_FREE = 0'u32
+    const HASH_DELETED = 1'u32
+    const HASH_FIRST = 2'u32
+
     allocator:  const IAllocator
     table:      *HashTableEntry
     count:      u32 // Number of valid entries
@@ -21,10 +25,6 @@ struct(K, V) HashTable
 
 impl HashTable
 {
-    const HASH_FREE = 0'u32
-    const HASH_DELETED = 1'u32
-    const HASH_FIRST = 2'u32
-
     func opDrop(using self)
     {
         free()

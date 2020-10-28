@@ -141,6 +141,28 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     return true;
 }
 
+bool SemanticJob::resolveVarDeclBeforeAssign(SemanticContext* context)
+{
+    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    SWAG_ASSERT(node->assignment);
+
+    if (node->kind == AstNodeKind::ConstDecl)
+    {
+        bool isGeneric = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
+        if (isGeneric)
+        {
+            node->assignment->typeInfo = g_TypeMgr.typeInfoS32;
+            node->assignment->flags |= AST_NO_SEMANTIC;
+        }
+        else
+        {
+            node->assignment->flags &= ~AST_NO_SEMANTIC;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 {
     auto savedNode = context->node;
@@ -271,17 +293,25 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // No var in 'impl'
     if (node->ownerStructScope && (symbolFlags & OVERLOAD_VAR_GLOBAL))
     {
-        SWAG_VERIFY(isCompilerConstant, context->report({ node, node->token, format("cannot declare a global variable in an implementaton block (type is '%s')", node->ownerStructScope->owner->name.c_str()) }));
+        if (!isCompilerConstant)
+            return context->report({node, node->token, format("cannot declare a global variable in an implementation block (type is '%s')", node->ownerStructScope->owner->name.c_str())});
+        if (node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+            return context->report({node, node->token, format("cannot declare a constant in a generic implementation block (type is '%s')", node->ownerStructScope->owner->name.c_str())});
     }
 
     // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        if (node->ownerScope->isGlobalOrImpl())
+        if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
+                                     node->ownerMainNode->kind != AstNodeKind::TypeSet &&
+                                     node->ownerMainNode->kind != AstNodeKind::InterfaceDecl))
         {
-            if (node->type || node->assignment)
+            if (node->ownerScope->isGlobalOrImpl())
             {
-                node->ownerScope->addPublicConst(node);
+                if (node->type || node->assignment)
+                {
+                    node->ownerScope->addPublicConst(node);
+                }
             }
         }
     }
@@ -298,18 +328,26 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             return context->report({node, "a non mutable 'let' variable must be initialized"});
     }
 
-    // Value
     bool genericType = !node->type && !node->assignment;
+    bool isGeneric   = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
+
+    // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
-        // A template type with a default value is a generic type
-        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))
+        if (isGeneric)
+        {
+            // Fine
+        }
+
+        // A generic type with a default value is a generic type
+        else if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))
             genericType = true;
-        else if (!(node->flags & AST_FROM_GENERIC))
+        else if (!(node->flags & AST_FROM_GENERIC) || !(node->doneFlags & AST_DONE_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             if (context->result == ContextResult::Pending)
                 return true;
+
             if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
@@ -317,6 +355,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
             }
 
+            node->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
             if (node->type &&
                 concreteNodeType->kind != TypeInfoKind::Slice &&
                 concreteNodeType->kind != TypeInfoKind::Pointer)
@@ -329,7 +368,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // A global variable or a constant must have its value computed at that point
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+        if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
             SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->report({node->assignment, "initialization expression cannot be evaluated at compile time"}));
         }
@@ -527,18 +566,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
-
-        // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
-        if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
+        if (!isGeneric)
         {
-            // Value already stored in the node
-            if (node->flags & AST_VALUE_COMPUTED)
-                storageOffset = node->computedValue.reg.offset;
-            else
-                SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
-        }
+            // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
+            if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
+            {
+                // Value already stored in the node
+                if (node->flags & AST_VALUE_COMPUTED)
+                    storageOffset = node->computedValue.reg.offset;
+                else
+                    SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+            }
 
-        node->inheritComputedValue(node->assignment);
+            node->inheritComputedValue(node->assignment);
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {

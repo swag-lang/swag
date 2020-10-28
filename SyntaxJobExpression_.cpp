@@ -936,7 +936,11 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
 
             if (varNode->assignment)
+            {
+                varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
                 varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+            }
+
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
         }
     }
@@ -965,7 +969,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         Ast::addChildBack(orgVarNode, assign);
         orgVarNode->assignment = assign;
         if (assign)
+        {
+            orgVarNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
             orgVarNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        }
 
         SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
 
@@ -999,6 +1006,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->flags |= AST_R_VALUE | AST_GENERATED;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
+            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
@@ -1023,7 +1031,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         Ast::addChildBack(varNode, assign);
         varNode->assignment = assign;
         if (assign)
+        {
+            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        }
         varNode->flags |= AST_R_VALUE;
         SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
     }

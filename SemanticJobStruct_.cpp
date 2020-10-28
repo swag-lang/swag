@@ -432,9 +432,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PACK)
         node->packing = 1;
 
-    uint32_t storageOffset = 0;
-    uint32_t storageIndex  = 0;
-    uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+    uint32_t storageOffset     = 0;
+    uint32_t storageIndexField = 0;
+    uint32_t storageIndexConst = 0;
+    uint32_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
     // No need to flatten structure if it's not a compound (optim)
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
@@ -447,12 +448,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        if (child->kind != AstNodeKind::VarDecl)
+        if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
             continue;
 
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
         // Using can only be used on a structure
+        if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
+            return context->report({child, "'using' is invalid on a constant"});
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct)
             return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->name.c_str())});
 
@@ -468,14 +471,27 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->hasUsing   = varDecl->flags & AST_DECL_USING;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
-            typeInfo->fields.push_back(typeParam);
+            if (child->kind == AstNodeKind::VarDecl)
+                typeInfo->fields.push_back(typeParam);
+            else
+                typeInfo->consts.push_back(typeParam);
         }
 
         child->flags |= AST_STRUCT_REGISTERED;
-        typeParam           = typeInfo->fields[storageIndex];
+        if (child->kind == AstNodeKind::VarDecl)
+            typeParam = typeInfo->fields[storageIndexField];
+        else
+            typeParam = typeInfo->consts[storageIndexConst];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
-        typeParam->index    = storageIndex;
+
+        if (child->kind != AstNodeKind::VarDecl)
+        {
+            storageIndexConst++;
+            continue;
+        }
+
+        typeParam->index = storageIndexField;
 
         // Default value
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
@@ -597,7 +613,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         typeParam->offset                             = realStorageOffset;
         child->resolvedSymbolOverload->storageOffset  = realStorageOffset;
-        child->resolvedSymbolOverload->storageIndex   = storageIndex;
+        child->resolvedSymbolOverload->storageIndex   = storageIndexField;
         child->resolvedSymbolOverload->attributeFlags = child->attributeFlags;
 
         typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + child->typeInfo->sizeOf);
@@ -623,13 +639,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (!hasItemName)
             {
                 auto    overload = child->resolvedSymbolOverload;
-                Utf8Crc name     = format("item%u", storageIndex);
+                Utf8Crc name     = format("item%u", storageIndexField);
                 auto&   symTable = node->scope->symTable;
                 symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
             }
         }
 
-        storageIndex++;
+        storageIndexField++;
     }
 
     // A struct cannot have a zero size

@@ -2,7 +2,7 @@
 public struct(T) Const
 {
     const Zero: T = 0
-    const One: T = 1
+    const One: T = Zero + 1
 }
 
 public #bake ConstF = Const'f32

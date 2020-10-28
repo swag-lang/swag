@@ -125,6 +125,7 @@ struct SemanticJob : public Job
     static bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo);
     static bool resolveType(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
+    static bool resolveVarDeclBeforeAssign(SemanticContext* context);
     static bool resolveVarDeclAfterAssign(SemanticContext* context);
     static bool convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
     static bool resolveVarDecl(SemanticContext* context);

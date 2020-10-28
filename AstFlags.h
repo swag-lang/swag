@@ -81,3 +81,4 @@ static const uint32_t AST_DONE_COMPILER_INSERT           = 0x00002000;
 static const uint32_t AST_DONE_EMIT_BINOP                = 0x00004000;
 static const uint32_t AST_DONE_EXPRLIST_CST              = 0x00008000;
 static const uint32_t AST_DONE_FILE_JOB_PASS             = 0x00010000;
+static const uint32_t AST_DONE_ASSIGN_COMPUTED           = 0x00020000;

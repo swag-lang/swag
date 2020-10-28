@@ -88,7 +88,7 @@ public impl Vector2
     }
 
     // Returns true if this Vector2 is null with an epsilon
-    func isZeroEpsilon(using self, eps: Float = cast(Float) constF64.Epsilon)->bool
+    func isZeroEpsilon(using self, eps = cast(Float) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
     }

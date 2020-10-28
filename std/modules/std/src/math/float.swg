@@ -1,46 +1,28 @@
 namespace std.math;
 
-public namespace constF64
+public struct(T) Const
 {
-    const Pi: f64           = 3.1415927410125732421875
-    const E: f64            = 2.71828174591064453125
-    const TwoPi: f64        = 2 * Pi
-    const PiBy2: f64        = Pi / 2
-    const PiBy3: f64        = Pi / 3
-    const PiBy4: f64        = Pi / 4
-    const PiBy6: f64        = Pi / 6
-    const PiBy8: f64        = Pi / 8
-    const OneByPi: f64      = 1 / Pi
-    const TwoByPi: f64      = 2 / Pi
-    const Sqrt2: f64        = sqrt(2'f64)
-    const OneBySqrt2: f64   = 1 / Sqrt2
-    const Ln2 : f64         = log(2'f64)
-    const Ln10 : f64        = log(10'f64)
-    const Log2E : f64       = log2(E)
-    const Log10E : f64      = log10(E)
-    const Epsilon: f64      = 1e-06'f64
+    const Pi: T           = 3.1415927410125732421875
+    const E: T            = 2.71828174591064453125
+    const TwoPi: T        = 2 * Pi
+    const PiBy2: T        = Pi / 2
+    const PiBy3: T        = Pi / 3
+    const PiBy4: T        = Pi / 4
+    const PiBy6: T        = Pi / 6
+    const PiBy8: T        = Pi / 8
+    const OneByPi: T      = 1 / Pi
+    const TwoByPi: T      = 2 / Pi
+    const Sqrt2: T        = sqrt(cast(T) 2)
+    const OneBySqrt2: T   = 1 / Sqrt2
+    const Ln2 : T         = log(cast(T) 2)
+    const Ln10 : T        = log(cast(T) 10)
+    const Log2E : T       = log2(E)
+    const Log10E : T      = log10(E)
+    const Epsilon: T      = 1e-06
 }
 
-public namespace constF32
-{
-    const Pi            = cast(f32) constF64.Pi
-    const E             = cast(f32) constF64.E
-    const TwoPi         = cast(f32) constF64.TwoPi
-    const PiBy2         = cast(f32) constF64.PiBy2
-    const PiBy3         = cast(f32) constF64.PiBy3
-    const PiBy4         = cast(f32) constF64.PiBy4
-    const PiBy6         = cast(f32) constF64.PiBy6
-    const PiBy8         = cast(f32) constF64.PiBy8
-    const OneByPi       = cast(f32) constF64.OneByPi
-    const TwoByPi       = cast(f32) constF64.TwoByPi
-    const Sqrt2         = cast(f32) constF64.Sqrt2
-    const OneBySqrt2    = cast(f32) constF64.OneBySqrt2
-    const Ln2           = cast(f32) constF64.Ln2
-    const Ln10          = cast(f32) constF64.Ln10
-    const Log2E         = cast(f32) constF64.Log2E
-    const Log10E        = cast(f32) constF64.Log10E
-    const Epsilon       = cast(f32) constF64.Epsilon
-}
+public #bake ConstF32 = Const'f32
+public #bake ConstF64 = Const'f64
 
 #[swag.constexpr]
 public
@@ -51,12 +33,12 @@ public
     func lerp(x, y, factor: f64) => ((1 - factor) * x) + (factor * y)
     func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
     func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
-    func toDegrees(x: f64) => x * (180'f64 / constF64.Pi)
-    func toRadians(x: f64) => x * (constF64.Pi / 180'f64)
-    func isZeroEpsilon(x: f32, eps: f32 = constF32.Epsilon) => abs(x) < eps
-    func isZeroEpsilon(x: f64, eps: f64 = constF64.Epsilon) => abs(x) < eps
-    func isEqualEpsilon(x, y: f32, eps: f32 = constF32.Epsilon) => abs(x - y) < eps
-    func isEqualEpsilon(x, y: f64, eps: f64 = constF64.Epsilon) => abs(x - y) < eps
+    func toDegrees(x: f64) => x * (180'f64 / ConstF64.Pi)
+    func toRadians(x: f64) => x * (ConstF64.Pi / 180'f64)
+    func isZeroEpsilon(x: f32, eps = ConstF32.Epsilon) => abs(x) < eps
+    func isZeroEpsilon(x: f64, eps = ConstF64.Epsilon) => abs(x) < eps
+    func isEqualEpsilon(x, y: f32, eps = ConstF32.Epsilon) => abs(x - y) < eps
+    func isEqualEpsilon(x, y: f64, eps = ConstF64.Epsilon) => abs(x - y) < eps
 }
 
 #[swag.constexpr, swag.inline]

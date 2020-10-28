@@ -730,6 +730,15 @@ TypeInfo* TypeInfoStruct::clone()
         newType->fields.push_back(param);
     }
 
+    size = (int) consts.size();
+    newType->consts.reserve(size);
+    for (int i = 0; i < size; i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(consts[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
+        newType->consts.push_back(param);
+    }
+
     size = (int) methods.size();
     newType->methods.reserve(size);
     for (int i = 0; i < size; i++)

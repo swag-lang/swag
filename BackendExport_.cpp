@@ -378,7 +378,7 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node, int indent)
     if (node->assignment)
     {
         CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node->assignment, node->assignment->typeInfo, node->computedValue.text, node->computedValue.reg));
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->assignment));
     }
 
     bufferSwg.addEol();
@@ -455,6 +455,29 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
                 CONCAT_FIXED_STR(bufferSwg, " = ");
                 SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
             }
+        }
+
+        CONCAT_FIXED_STR(bufferSwg, "\n");
+    }
+
+    for (auto p : typeStruct->consts)
+    {
+        auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::ConstDecl);
+        SWAG_CHECK(emitAttributesParams(p, indent + 1));
+        bufferSwg.addIndent(indent + 1);
+        CONCAT_FIXED_STR(bufferSwg, "const ");
+
+        bufferSwg.addString(p->namedParam);
+        if (varDecl->type)
+        {
+            CONCAT_FIXED_STR(bufferSwg, ": ");
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->type));
+        }
+
+        if (varDecl->assignment)
+        {
+            CONCAT_FIXED_STR(bufferSwg, " = ");
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
         }
 
         CONCAT_FIXED_STR(bufferSwg, "\n");
@@ -613,9 +636,13 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
             bufferSwg.addStringFormat("impl %s for %s\n", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
         }
         else if (scope->kind == ScopeKind::Enum)
+        {
             bufferSwg.addStringFormat("impl enum %s\n", scope->name.c_str());
+        }
         else
+        {
             bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+        }
 
         bufferSwg.addIndent(indent);
         CONCAT_FIXED_STR(bufferSwg, "{\n");

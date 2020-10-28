@@ -51,7 +51,7 @@ impl RectPriv
     }
 
     // Represents a rectangle with all coordinates to zero
-    const Zero: RectPriv'T{0, 0, 0, 0}
+    //const Zero: RectPriv'T{0, 0, 0, 0}
 
     // Set rectangle to (0, 0, 0, 0)
     func clear(using self)
@@ -101,13 +101,13 @@ public #bake Rect = RectPriv's32
 public #bake RectF = RectPriv'f32
 
 // Returns true if this instance is null with an epsilon
-func isZeroEpsilon(using rect: RectF, eps = constF32.Epsilon)->bool
+func isZeroEpsilon(using rect: RectF, eps = ConstF32.Epsilon)->bool
 {
     return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps) && math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
 }
 
 // Returns true if this instance has a surface of zero (width and heigth are null)
-func isEmptyEpsilon(using rect: RectF, eps = constF32.Epsilon)->bool
+func isEmptyEpsilon(using rect: RectF, eps = ConstF32.Epsilon)->bool
 {
     return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
 }
