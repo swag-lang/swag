@@ -104,6 +104,30 @@ bool Backend::emitAttributesParams(TypeInfoParam* param, int indent)
     return true;
 }
 
+void Backend::emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct)
+{
+    SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    if(preprendStruct)
+        bufferSwg.addString("struct{");
+    else
+        bufferSwg.addString("{");
+    int idx = 0;
+    for (auto field : typeStruct->fields)
+    {
+        if (idx)
+            bufferSwg.addString(", ");
+        if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+        {
+            bufferSwg.addString(field->namedParam);
+            bufferSwg.addString(":");
+        }
+        emitType(field->typeInfo);
+        idx++;
+    }
+    bufferSwg.addString("}");
+}
+
 void Backend::emitType(TypeInfo* typeInfo)
 {
     if (typeInfo->kind == TypeInfoKind::Lambda)
@@ -124,22 +148,7 @@ void Backend::emitType(TypeInfo* typeInfo)
     {
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            bufferSwg.addString("struct{");
-            int idx = 0;
-            for (auto field : typeStruct->fields)
-            {
-                if (idx)
-                    bufferSwg.addString(", ");
-                if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
-                {
-                    bufferSwg.addString(field->namedParam);
-                    bufferSwg.addString(":");
-                }
-                emitType(field->typeInfo);
-                idx++;
-            }
-            bufferSwg.addString("}");
+            emitTypeTuple(typeInfo, true);
             return;
         }
 
@@ -363,28 +372,6 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
     return true;
 }
 
-bool Backend::emitPublicConstSwg(AstVarDecl* node, int indent)
-{
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "const ");
-    bufferSwg.addString(node->name.c_str());
-
-    if (node->type)
-    {
-        CONCAT_FIXED_STR(bufferSwg, ": ");
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->type));
-    }
-
-    if (node->assignment)
-    {
-        CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->assignment));
-    }
-
-    bufferSwg.addEol();
-    return true;
-}
-
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)
 {
     bufferSwg.addIndent(indent);
@@ -414,82 +401,60 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     for (auto p : typeStruct->fields)
     {
         SWAG_CHECK(emitAttributesParams(p, indent + 1));
-        bufferSwg.addIndent(indent + 1);
 
-        if (p->node->flags & AST_DECL_USING)
-            CONCAT_FIXED_STR(bufferSwg, "using ");
-        bufferSwg.addString(p->namedParam);
-
-        CONCAT_FIXED_STR(bufferSwg, ": ");
-        emitType(p->typeInfo);
-
-        if (p->typeInfo->kind == TypeInfoKind::Native)
+        // Struct/interface content
+        if (p->node->kind == AstNodeKind::VarDecl)
         {
-            bool notZero = false;
-            switch (p->typeInfo->nativeType)
-            {
-            case NativeTypeKind::U8:
-            case NativeTypeKind::S8:
-                notZero = p->value.reg.u8;
-                break;
-            case NativeTypeKind::U16:
-            case NativeTypeKind::S16:
-                notZero = p->value.reg.u16;
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Char:
-            case NativeTypeKind::S32:
-            case NativeTypeKind::F32:
-                notZero = p->value.reg.u32;
-                break;
-            case NativeTypeKind::U64:
-            case NativeTypeKind::S64:
-            case NativeTypeKind::F64:
-                notZero = p->value.reg.u64;
-                break;
-            case NativeTypeKind::Bool:
-                notZero = p->value.reg.b;
-                break;
-            case NativeTypeKind::String:
-                notZero = !p->value.text.empty();
-                break;
-            }
-
-            if (notZero)
-            {
-                CONCAT_FIXED_STR(bufferSwg, " = ");
-                SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
-            }
+            auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::VarDecl);
+            SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
         }
 
-        CONCAT_FIXED_STR(bufferSwg, "\n");
+        // Typeset content
+        else
+        {
+            SWAG_ASSERT(p->node->kind == AstNodeKind::StructDecl);
+            SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
+            bufferSwg.addIndent(indent + 1);
+            bufferSwg.addString(p->namedParam);
+            emitTypeTuple(p->typeInfo, false);
+            bufferSwg.addEol();
+        }
     }
 
     for (auto p : typeStruct->consts)
     {
         auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::ConstDecl);
         SWAG_CHECK(emitAttributesParams(p, indent + 1));
-        bufferSwg.addIndent(indent + 1);
-        CONCAT_FIXED_STR(bufferSwg, "const ");
-
-        bufferSwg.addString(p->namedParam);
-        if (varDecl->type)
-        {
-            CONCAT_FIXED_STR(bufferSwg, ": ");
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->type));
-        }
-
-        if (varDecl->assignment)
-        {
-            CONCAT_FIXED_STR(bufferSwg, " = ");
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
-        }
-
-        CONCAT_FIXED_STR(bufferSwg, "\n");
+        SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
     }
 
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "}\n\n");
+    return true;
+}
+
+bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
+{
+    bufferSwg.addIndent(indent);
+    if (node->flags & AST_DECL_USING)
+        CONCAT_FIXED_STR(bufferSwg, "using ");
+    if (kindName)
+        bufferSwg.addString(kindName);
+    bufferSwg.addString(node->name.c_str());
+
+    if (node->type)
+    {
+        CONCAT_FIXED_STR(bufferSwg, ": ");
+        emitType(node->typeInfo);
+    }
+
+    if (node->assignment)
+    {
+        CONCAT_FIXED_STR(bufferSwg, " = ");
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->assignment));
+    }
+
+    bufferSwg.addEol();
     return true;
 }
 
@@ -505,7 +470,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         for (auto one : publicSet->publicConst)
         {
             AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
-            SWAG_CHECK(emitPublicConstSwg(node, indent));
+            SWAG_CHECK(emitVarSwg("const ", node, indent));
         }
     }
 

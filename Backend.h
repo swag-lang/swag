@@ -51,11 +51,12 @@ struct Backend
     bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
     bool      emitAttributesFlags(AstNode* node, int indent, bool isFirst = true);
     bool      emitAttributesParams(TypeInfoParam* param, int indent);
+    void      emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct);
     void      emitType(TypeInfo* typeInfo);
     bool      emitGenericParameters(AstNode* node);
     bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
     bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
-    bool      emitPublicConstSwg(AstVarDecl* node, int indent);
+    bool      emitVarSwg(const char* kindName, AstVarDecl* node, int indent);
     bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
     bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool      emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
