@@ -290,15 +290,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
 
-    // No var in 'impl'
-    if (node->ownerStructScope && (symbolFlags & OVERLOAD_VAR_GLOBAL))
-    {
-        if (!isCompilerConstant)
-            return context->report({node, node->token, format("cannot declare a global variable in an implementation block (type is '%s')", node->ownerStructScope->owner->name.c_str())});
-        if (node->ownerStructScope->owner->flags & AST_IS_GENERIC)
-            return context->report({node, node->token, format("cannot declare a constant in a generic implementation block (type is '%s')", node->ownerStructScope->owner->name.c_str())});
-    }
-
     // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
