@@ -867,7 +867,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             return context->report({node, node->token, format("embedded typeset '%s' cannot be public", node->name.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicInterface(node);
+            node->ownerScope->addPublicTypeSet(node);
     }
 
     uint32_t storageIndex = 0;

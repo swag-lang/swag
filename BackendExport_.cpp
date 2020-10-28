@@ -390,8 +390,13 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     bufferSwg.addIndent(indent);
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(bufferSwg, "interface");
+    else if (node->kind == AstNodeKind::TypeSet)
+        CONCAT_FIXED_STR(bufferSwg, "typeset");
     else
+    {
+        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
         CONCAT_FIXED_STR(bufferSwg, "struct");
+    }
 
     // If the node comes from a batch, then there's no more generic parameters
     if (node->genericParameters && !(node->flags & AST_FROM_BAKE))

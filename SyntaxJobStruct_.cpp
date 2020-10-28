@@ -484,6 +484,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
                 auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
                 structNode->semanticFct = SemanticJob::resolveStruct;
                 SWAG_CHECK(doStructContent(structNode, SyntaxStructType::Tuple));
+                structNode->typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
             }
             else
             {
