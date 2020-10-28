@@ -5,27 +5,6 @@
 #include "Scoped.h"
 #include "Module.h"
 
-bool SyntaxJob::doCompilerBake(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerBake, sourceFile, parent);
-    if (result)
-        *result = node;
-    node->semanticFct = SemanticJob::resolveCompilerBake;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid bake alias name"));
-    node->inheritTokenLocation(token);
-    node->inheritTokenName(token);
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymEqual));
-
-    // The bake name acts as a type alias in the current module, so register the name
-    currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
-
-    SWAG_CHECK(doIdentifierRef(node));
-    return true;
-}
-
 bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);

@@ -1241,16 +1241,7 @@ anotherTry:
             if (!(node->flags & AST_IS_GENERIC) && genericParameters)
             {
                 // If we are inside a #back instruction, then setup
-                InstantiateContext instContext;
-                if (node->parent->parent->kind == AstNodeKind::CompilerBake)
-                {
-                    instContext.fromBake     = true;
-                    instContext.bakeIsPublic = node->parent->parent->attributeFlags & ATTRIBUTE_PUBLIC;
-                    instContext.bakeName     = node->parent->parent->name;
-                    node->parent->parent->flags |= AST_FROM_GENERIC; // This will tell the #bake that it has worked
-                }
-
-                if (!Generic::instantiateStruct(context, genericParameters, firstMatch, instContext))
+                if (!Generic::instantiateStruct(context, genericParameters, firstMatch))
                 {
                     symbol->mutex.unlock();
                     return false;
@@ -1267,8 +1258,7 @@ anotherTry:
         }
         else
         {
-            InstantiateContext instContext;
-            if (!Generic::instantiateFunction(context, genericParameters, firstMatch, instContext))
+            if (!Generic::instantiateFunction(context, genericParameters, firstMatch))
             {
                 symbol->mutex.unlock();
                 return false;

@@ -231,7 +231,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext)
+bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;
     SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instantiate generic struct '%s', missing contextual types replacements", node->name.c_str())}));
@@ -248,17 +248,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Types replacements
     CloneContext cloneContext;
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
-
-    // We are batching the struct
-    if (instContext.fromBake)
-    {
-        cloneContext.forceFlags = AST_FROM_BAKE;
-        if (instContext.bakeIsPublic)
-        {
-            cloneContext.forceAttributeFlags = ATTRIBUTE_PUBLIC;
-            SWAG_VERIFY(!(match.symbolOverload->node->ownerScope->flags & SCOPE_PRIVATE), context->report({ node, "bake result is marked as public, but the symbol to bake is marked as private" }));
-        }
-    }
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -290,16 +279,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic types and values in the struct generic parameters
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
-
-    if (instContext.fromBake)
-    {
-        newType->nakedName = instContext.bakeName;
-        newType->name      = newType->nakedName;
-    }
-    else
-    {
-        newType->forceComputeName();
-    }
+    newType->forceComputeName();
 
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
@@ -311,13 +291,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(sourceNode->parent, structNode);
 
-    if (instContext.fromBake)
-    {
-        SWAG_ASSERT(!instContext.bakeName.empty());
-        structNode->bakeName    = instContext.bakeName;
-        structNode->scope->name = instContext.bakeName;
-    }
-
     newType->scope           = structNode->scope;
     newType->declNode        = structNode;
     structNode->typeInfo     = newType;
@@ -328,16 +301,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     auto structJob = end(context, context->job, sourceSymbol, structNode, true);
 
-    // Not sure this shouldn't be done for all, not just for bake
-    if (instContext.fromBake)
-    {
-        cloneContext.parentScope      = structNode->scope;
-        cloneContext.ownerStructScope = structNode->scope;
-    }
-
-    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserDropFct);
-    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserPostCopyFct);
-    instantiateSpecialFunc(context, instContext, structJob, cloneContext, &newType->opUserPostMoveFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserDropFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostCopyFct);
+    instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostMoveFct);
 
     // Force instantiation of all special functions
     for (auto method : newType->methods)
@@ -348,16 +314,10 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
             if (specFunc != genericStructType->opUserDropFct &&
                     specFunc != genericStructType->opUserPostCopyFct &&
                     specFunc != genericStructType->opUserPostMoveFct &&
-                    !specFunc->genericParameters ||
-                instContext.fromBake)
+                    !specFunc->genericParameters)
             {
-                instantiateSpecialFunc(context, instContext, structJob, cloneContext, &specFunc);
+                instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
             }
-        }
-        else if (instContext.fromBake)
-        {
-            auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
-            instantiateSpecialFunc(context, instContext, structJob, cloneContext, &specFunc);
         }
     }
 
@@ -381,7 +341,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::instantiateSpecialFunc(SemanticContext* context, InstantiateContext& instContext, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
+void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {
     auto funcNode = *specialFct;
     if (!funcNode)
@@ -417,22 +377,12 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, InstantiateContex
     // Replace generic types and values in the function generic parameters
     newTypeFunc->computeName();
 
-    // When instanciating for a bake, the ownerScope is not the same as the original function, so
-    // we must update the symbol
-    if (instContext.fromBake)
-    {
-        auto symbol = newFunc->ownerScope->symTable.find(newFunc->resolvedSymbolName->name);
-        if (!symbol)
-            symbol = newFunc->ownerScope->symTable.registerSymbolName(context, newFunc, newFunc->resolvedSymbolName->kind);
-        newFunc->resolvedSymbolName = symbol;
-    }
-
     scoped_lock lk(newFunc->resolvedSymbolName->mutex);
     auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, InstantiateContext& instContext)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto       node             = context->node;
     AstStruct* contextualStruct = nullptr;

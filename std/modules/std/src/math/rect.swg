@@ -1,18 +1,18 @@
-namespace std.math;
+public namespace std.math;
 
 // A simple rectangle with 4 coordinates
-struct(T) RectPriv
+struct Rect
 {
-    x:      T
-    y:      T
-    width:  T
-    height: T
+    x:      f32
+    y:      f32
+    width:  f32
+    height: f32
 }
 
-impl RectPriv
+impl Rect
 {
     #[swag.complete]
-    func opAffect(using self, value: T)
+    func opAffect(using self, value: f32)
     {
         x, y, width, height = value
     }
@@ -25,32 +25,32 @@ impl RectPriv
     #[swag.property, swag.inline]
     {
         // right coordinate (x + width)
-        func right(using self)->T
+        func right(using self)->f32
         {
             return x + width
         }
 
         // right coordinate (x + width)
-        func right(using self, value: T)
+        func right(using self, value: f32)
         {
             width = value - x
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self)->T
+        func bottom(using self)->f32
         {
             return y + height
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self, value: T)
+        func bottom(using self, value: f32)
         {
             height = value - y
         }
     }
 
     // Represents a rectangle with all coordinates to zero
-    //const Zero: RectPriv'T{0, 0, 0, 0}
+    const Zero: Rect{0, 0, 0, 0}
 
     // Set rectangle to (0, 0, 0, 0)
     func clear(using self)
@@ -77,58 +77,51 @@ impl RectPriv
     }
 
     // Offset this point by a given value
-    func offset(using self, value: T)
+    func offset(using self, value: f32)
     {
         x, y += value
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, value: T)
+    func scale(using self, value: f32)
     {
         width, height *= value
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, valueX, valueY: T)
+    func scale(using self, valueX, valueY: f32)
     {
         width *= valueX
         height *= valueY
     }
-}
 
-public #bake Rect = RectPriv's32
-public #bake RectF = RectPriv'f32
+    // Returns true if this instance is null with an epsilon
+    func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    {
+        return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps) && math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+    }
 
-// Returns true if this instance is null with an epsilon
-func isZeroEpsilon(using rect: RectF, eps = ConstF32.Epsilon)->bool
-{
-    return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps) && math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
-}
+    // Returns true if this instance has a surface of zero (width and heigth are null)
+    func isEmptyEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    {
+        return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+    }
 
-// Returns true if this instance has a surface of zero (width and heigth are null)
-func isEmptyEpsilon(using rect: RectF, eps = ConstF32.Epsilon)->bool
-{
-    return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
-}
+    // Transform a RectF to a Rect
+    func round(using self)->Rect
+    {
+        x = acast math.round(x)
+        y = acast math.round(y)
+        width = acast math.round(width)
+        height = acast math.round(height)
+    }
 
-// Transform a RectF to a Rect
-public func roundToRect(using rect: RectF)->Rect
-{
-    var result: Rect = ?
-    result.x = acast math.round(x)
-    result.y = acast math.round(y)
-    result.width = acast math.round(width)
-    result.height = acast math.round(height)
-    return result
-}
-
-// Transform a RectF to a Rect
-public func truncToRect(using rect: RectF)->Rect
-{
-    var result: Rect = ?
-    result.x = acast math.trunc(x)
-    result.y = acast math.trunc(y)
-    result.width = acast math.trunc(width)
-    result.height = acast math.trunc(height)
-    return result
+    // Transform a RectF to a Rect
+    func trunc(using self)
+    {
+        x = acast math.trunc(x)
+        y = acast math.trunc(y)
+        width = acast math.trunc(width)
+        height = acast math.trunc(height)
+    }
 }

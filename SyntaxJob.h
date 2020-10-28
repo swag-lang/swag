@@ -63,7 +63,6 @@ struct SyntaxJob : public Job
     bool doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerBake(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerTag(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerInline(AstNode* parent, AstNode** result = nullptr);

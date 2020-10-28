@@ -148,7 +148,6 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::CompilerAssert:
                     case AstNodeKind::CompilerPrint:
                     case AstNodeKind::CompilerRun:
-                    case AstNodeKind::CompilerBake:
                     case AstNodeKind::AttrDecl:
                     case AstNodeKind::CompilerIf:
                     case AstNodeKind::Impl:

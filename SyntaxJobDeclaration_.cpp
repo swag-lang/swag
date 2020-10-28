@@ -508,9 +508,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerForeignLib:
         SWAG_CHECK(doCompilerForeignLib(parent));
         break;
-    case TokenId::CompilerBake:
-        SWAG_CHECK(doCompilerBake(parent));
-        break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent));
         break;

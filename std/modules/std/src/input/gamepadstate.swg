@@ -6,7 +6,7 @@ using std.math
 struct State
 {
     pressed:    [@countof(Button)] bool
-    position:   [@countof(Button)] PointF
+    position:   [@countof(Button)] Point
 }
 
 impl State

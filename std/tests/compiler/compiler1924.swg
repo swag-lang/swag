@@ -8,4 +8,4 @@ struct TT1924
     x: C1924X
 }
 
-#bake C1924X = C1924's32
+alias C1924X = C1924's32

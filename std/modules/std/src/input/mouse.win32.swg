@@ -7,7 +7,7 @@ using win32, math
     {
         var pt: POINT = ?
         GetCursorPos(&pt)
-        return Point{pt.x, pt.y}
+        return Point{cast(f32) pt.x, cast(f32) pt.y}
     }
 
     func setPos(x, y: s32)

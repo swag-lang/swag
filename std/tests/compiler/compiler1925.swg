@@ -15,4 +15,4 @@ public impl C1925
     }
 }
 
-public #bake C1925X = C1925's32
+public alias C1925X = C1925's32

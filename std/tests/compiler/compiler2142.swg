@@ -5,7 +5,7 @@ public struct(T) Const
     const One: T = Zero + 1
 }
 
-public #bake ConstF = Const'f32
+public alias ConstF = Const'f32
 
 #test
 {
