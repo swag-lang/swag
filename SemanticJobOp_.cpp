@@ -270,9 +270,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         Ast::addChildBack(&parameters, &literal);
     }
 
-    job->cacheDependentSymbols.clear();
-    job->cacheDependentSymbols.insert(symbol);
-    SWAG_CHECK(matchIdentifierParameters(context, genericParameters, left->parent, nullptr, 1));
+    SWAG_CHECK(matchIdentifierParameters(context, symbol, genericParameters, left->parent, nullptr, 1));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -288,7 +286,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     if (!optionnal)
     {
         node->typeInfo                     = overload->typeInfo;
-        node->resolvedUserOpSymbolName     = *job->cacheDependentSymbols.begin();
+        node->resolvedUserOpSymbolName     = symbol;
         node->resolvedUserOpSymbolOverload = overload;
         SWAG_ASSERT(node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function);
     }

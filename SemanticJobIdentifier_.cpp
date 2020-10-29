@@ -773,13 +773,11 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     }
 }
 
-bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node)
+bool SemanticJob::matchIdentifierError(SemanticContext* context, SymbolName* symbol, AstNode* genericParameters, AstNode* callParameters, AstNode* node)
 {
     auto              job                 = context->job;
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
-    auto&             dependentSymbols    = job->cacheDependentSymbols;
-    auto              symbol              = *dependentSymbols.begin();
     BadSignatureInfos bi                  = job->symMatch.badSignatureInfos;
     SymbolOverload*   overload            = nullptr;
 
@@ -1018,14 +1016,13 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
     return false;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node, uint32_t numSymbols)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, SymbolName* symbol, AstNode* genericParameters, AstNode* callParameters, AstNode* node, uint32_t numSymbols)
 {
     auto  job                 = context->job;
     auto& matches             = job->cacheMatches;
     auto& genericMatches      = job->cacheGenericMatches;
     auto& badSignature        = job->cacheBadSignature;
     auto& badGenericSignature = job->cacheBadGenericSignature;
-    auto& dependentSymbols    = job->cacheDependentSymbols;
 
 anotherTry:
     matches.clear();
@@ -1039,7 +1036,6 @@ anotherTry:
     job->matchNumOverloads            = 0;
     job->matchNumOverloadsWhenChecked = 0;
 
-    for (auto symbol : dependentSymbols)
     {
         scoped_lock lock(symbol->mutex);
         if (symbol->kind == SymbolKind::Function && symbol->cptOverloadsInit == symbol->overloads.size())
@@ -1203,7 +1199,6 @@ anotherTry:
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        auto symbol = *dependentSymbols.begin();
         symbol->mutex.lock();
 
         // Be sure we don't have more overloads waiting to be solved
@@ -1269,13 +1264,11 @@ anotherTry:
         return true;
     }
 
-    auto symbol = *dependentSymbols.begin();
-
     // Cannot find a match, and this is the only symbol to resolve : error
     // If we have more than one symbol, then do not raise an error, as the other
     // one(s) can match
     if (matches.size() == 0 && numSymbols == 1)
-        return matchIdentifierError(context, genericParameters, callParameters, node);
+        return matchIdentifierError(context, symbol, genericParameters, callParameters, node);
 
     // There is more than one possible match, but they are all foreign, this is fine
     if (matches.size() > 1)
@@ -1574,7 +1567,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
 bool SemanticJob::collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  job = context->job;
+    auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto& dependentSymbols   = job->cacheDependentSymbols;
@@ -1765,7 +1758,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    // If we have multiple symbols, we need to choose one
+    // Filter symbols
     SWAG_CHECK(pickSymbol(context, node));
     if (dependentSymbols.empty())
         return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
@@ -2080,7 +2073,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, genericParameters, callParameters, node, (uint32_t) copySymbols.size()));
+        SWAG_CHECK(matchIdentifierParameters(context, symbol, genericParameters, callParameters, node, (uint32_t) copySymbols.size()));
         if (context->result == ContextResult::Pending)
             return true;
 
