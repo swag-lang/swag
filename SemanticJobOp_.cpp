@@ -243,10 +243,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto node = context->node;
     auto job  = context->job;
 
-    job->symMatchContext.reset();
-    job->symMatchContext.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
+    SymbolMatchContext symMatchContext;
+    symMatchContext.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
     for (auto param : params)
-        job->symMatchContext.parameters.push_back(param);
+        symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
     AstNode* genericParameters = nullptr;
@@ -264,15 +264,38 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         literal.kind               = AstNodeKind::Literal;
         literal.computedValue.text = opConst ? opConst : "";
         literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
-        job->symMatchContext.genericParameters.push_back(&literal);
+        symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
         Ast::addChildBack(&parameters, &literal);
     }
 
-    SWAG_CHECK(matchIdentifierParameters(context, symbol, genericParameters, left->parent, nullptr, 1));
-    if (context->result == ContextResult::Pending)
-        return true;
+    while (true)
+    {
+        vector<OneTryMatch> listTryMatch;
+
+        {
+            unique_lock lk(symbol->mutex);
+            for (auto overload : symbol->overloads)
+            {
+                OneTryMatch t;
+                t.symMatchContext   = symMatchContext;
+                t.overload          = overload;
+                t.genericParameters = genericParameters;
+                t.callParameters    = left->parent;
+                t.dependentVar      = nullptr;
+                t.cptOverloads      = (uint32_t) symbol->overloads.size();
+                listTryMatch.push_back(t);
+            }
+        }
+
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
+        if (context->result == ContextResult::Pending)
+            return true;
+        if (context->result != ContextResult::NewChilds)
+            break;
+        context->result = ContextResult::Done;
+    }
 
     // Make the real cast for all the call parameters
     auto& oneMatch = job->cacheMatches[0];

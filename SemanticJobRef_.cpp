@@ -519,13 +519,39 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
-            auto job        = context->job;
-            job->symMatchContext.reset();
+
+            SymbolMatchContext symMatchContext;
+            symMatchContext.reset();
             for (auto child : node->parameters->childs)
-                job->symMatchContext.parameters.push_back(child);
-            SWAG_CHECK(matchIdentifierParameters(context, typeStruct->declNode->resolvedSymbolName, nullptr, node->parameters, node, 1));
-            if (context->result == ContextResult::Pending)
-                return true;
+                symMatchContext.parameters.push_back(child);
+
+            while (true)
+            {
+                vector<OneTryMatch> listTryMatch;
+                auto                symbol = typeStruct->declNode->resolvedSymbolName;
+
+                {
+                    unique_lock lk(symbol->mutex);
+                    for (auto overload : symbol->overloads)
+                    {
+                        OneTryMatch t;
+                        t.symMatchContext   = symMatchContext;
+                        t.overload          = overload;
+                        t.genericParameters = nullptr;
+                        t.callParameters    = node->parameters;
+                        t.dependentVar      = nullptr;
+                        t.cptOverloads      = (uint32_t) symbol->overloads.size();
+                        listTryMatch.push_back(t);
+                    }
+                }
+
+                SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));
+                if (context->result == ContextResult::Pending)
+                    return true;
+                if (context->result != ContextResult::NewChilds)
+                    break;
+                context->result = ContextResult::Done;
+            }
         }
         else
         {

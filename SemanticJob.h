@@ -28,19 +28,25 @@ struct SemanticContext : public JobContext
     SemanticJob* job = nullptr;
 };
 
+struct OneTryMatch
+{
+    SymbolMatchContext symMatchContext;
+    SymbolOverload*    overload          = nullptr;
+    AstNode*           dependentVar      = nullptr;
+    AstNode*           callParameters    = nullptr;
+    AstNode*           genericParameters = nullptr;
+    uint32_t           cptOverloads      = 0;
+    bool               ufcs              = false;
+};
+
 struct OneMatch
 {
     VectorNative<TypeInfoParam*> solvedParameters;
 
-    SymbolName*     symbolName;
-    SymbolOverload* symbolOverload;
-};
-
-struct MatchSuccess
-{
-    OneMatch match;
-    AstNode* dependentVar;
-    AstNode* callParameters;
+    SymbolName*     symbolName     = nullptr;
+    SymbolOverload* symbolOverload = nullptr;
+    AstNode*        dependentVar   = nullptr;
+    bool            ufcs           = false;
 };
 
 struct OneGenericMatch
@@ -49,10 +55,12 @@ struct OneGenericMatch
     VectorNative<TypeInfo*> genericParametersGenTypes;
     map<Utf8Crc, TypeInfo*> genericReplaceTypes;
 
-    SymbolName*     symbolName;
-    SymbolOverload* symbolOverload;
+    SymbolName*     symbolName        = nullptr;
+    SymbolOverload* symbolOverload    = nullptr;
+    AstNode*        genericParameters = nullptr;
 
-    uint32_t flags;
+    uint32_t matchNumOverloadsWhenChecked = 0;
+    uint32_t flags                        = 0;
 };
 
 static const uint32_t COLLECT_ALL         = 0x00000000;
@@ -104,9 +112,9 @@ struct SemanticJob : public Job
     static bool reserveAndStoreToSegmentNoLock(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegmentNoLock(JobContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
-    static void setupContextualGenericTypeReplacement(SemanticContext* context, SymbolOverload* symOverload);
-    static bool matchIdentifierError(SemanticContext* context, SymbolName* symbol, AstNode* genericParameters, AstNode* callParameters, AstNode* node);
-    static bool matchIdentifierParameters(SemanticContext* context, SymbolName* symbol, AstNode* genericParameters, AstNode* callParameters, AstNode* node, uint32_t numSymbols);
+    static void setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
+    static bool matchIdentifierError(SemanticContext* context, OneTryMatch& oneTry, AstNode* node);
+    static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node);
@@ -179,7 +187,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifier(SemanticContext* context);
     static bool collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol);
-    static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol, AstNode* dependentVar);
+    static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static bool resolveImpl(SemanticContext* context);
@@ -257,7 +265,6 @@ struct SemanticJob : public Job
     vector<OneGenericMatch>        cacheGenericMatches;
     VectorNative<SymbolOverload*>  cacheBadSignature;
     VectorNative<SymbolOverload*>  cacheBadGenericSignature;
-    SymbolMatchContext             symMatchContext;
     SemanticContext                context;
     Concat                         tmpConcat;
 
@@ -266,7 +273,6 @@ struct SemanticJob : public Job
     SymbolOverload*   bestOverload;
     bool              matchHasGenericErrors;
     int               matchNumOverloads;
-    int               matchNumOverloadsWhenChecked;
 
     void reset() override
     {
@@ -280,7 +286,6 @@ struct SemanticJob : public Job
         cacheGenericMatches.clear();
         cacheBadSignature.clear();
         cacheBadGenericSignature.clear();
-        symMatchContext.reset();
         context.reset();
     }
 

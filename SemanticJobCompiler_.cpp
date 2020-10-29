@@ -200,6 +200,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     for (auto child : identifier->callParameters->childs)
     {
         auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+        SWAG_ASSERT(param->resolvedParameter);
         if (param->resolvedParameter->namedParam == expr->name)
         {
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
