@@ -189,7 +189,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
         {
-            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
             structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
         }
     }

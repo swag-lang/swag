@@ -1,3 +1,6 @@
+#module "compiler2123"
+#unittest error
+
 struct(T) Arr
 {
     struct(T) ST

@@ -373,9 +373,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
             numConcreteBC++;
 
         // Register for export
-        if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
-            !(attributeFlags & ATTRIBUTE_INLINE) &&
-            (!(flags & AST_FROM_GENERIC) || (flags & AST_FROM_BAKE)))
+        if ((attributeFlags & ATTRIBUTE_PUBLIC) && !(attributeFlags & ATTRIBUTE_INLINE) && !(flags & AST_FROM_GENERIC))
             bc->node->ownerScope->addPublicFunc(bc->node);
 
         if (attributeFlags & ATTRIBUTE_TEST_FUNC)

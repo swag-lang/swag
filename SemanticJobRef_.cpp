@@ -525,7 +525,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             job->symMatch.reset();
             for (auto child : node->parameters->childs)
                 job->symMatch.parameters.push_back(child);
-            SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->parameters, node));
+            SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->parameters, node, 1));
             if (context->result == ContextResult::Pending)
                 return true;
         }

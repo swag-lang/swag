@@ -1,11 +1,11 @@
 struct(T) Arr
 {
-    struct(T) ST1
+    struct ST1
     {
         x: T
     }
 
-    struct(T) ST
+    struct ST
     {
         st: ST1
     }

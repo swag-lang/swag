@@ -94,7 +94,9 @@ namespace Ast
 
     void removeFromParent(AstNode* child)
     {
-        auto        parent = child->parent;
+        if (!child)
+            return;
+        auto parent = child->parent;
         if (!parent)
             return;
         scoped_lock lk(parent->mutex);
@@ -198,12 +200,13 @@ namespace Ast
             visit(child, fctor);
     }
 
-    AstNode* clone(AstNode* source, AstNode* parent)
+    AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags)
     {
         if (!source)
             return nullptr;
         CloneContext cloneContext;
-        cloneContext.parent = parent;
+        cloneContext.parent     = parent;
+        cloneContext.forceFlags = forceFlags;
         return source->clone(cloneContext);
     }
 

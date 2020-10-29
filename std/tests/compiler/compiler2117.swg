@@ -1,6 +1,6 @@
 struct(T) Arr
 {
-    struct(T) ST
+    struct ST
     {
         x, y: T
     }

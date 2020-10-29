@@ -153,6 +153,7 @@ struct CloneContext
     AstNode*      ownerMainNode       = nullptr;
     uint64_t      forceFlags          = 0;
     uint64_t      forceAttributeFlags = 0;
+    bool          rawClone            = false;
 };
 
 struct AstNode
@@ -694,7 +695,6 @@ struct AstStruct : public AstNode
     Scope*                  scope;
     AstNode*                ownerGeneric;
     Utf8                    bakeName;
-    AstNode*                nodeAlias;
     map<Utf8Crc, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);

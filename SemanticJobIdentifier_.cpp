@@ -1018,7 +1018,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, AstNode* generi
     return false;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node, uint32_t numSymbols)
 {
     auto  job                 = context->job;
     auto& matches             = job->cacheMatches;
@@ -1271,8 +1271,10 @@ anotherTry:
 
     auto symbol = *dependentSymbols.begin();
 
-    // Cannot find a match
-    if (matches.size() == 0)
+    // Cannot find a match, and this is the only symbol to resolve : error
+    // If we have more than one symbol, then do not raise an error, as the other
+    // one(s) can match
+    if (matches.size() == 0 && numSymbols == 1)
         return matchIdentifierError(context, genericParameters, callParameters, node);
 
     // There is more than one possible match, but they are all foreign, this is fine
@@ -1329,7 +1331,7 @@ anotherTry:
     return true;
 }
 
-bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result)
+bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
 {
     auto             job                = context->job;
     auto             identifierRef      = node->identifierRef;
@@ -1338,10 +1340,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
     set<SymbolName*> toAddSymbol;
 
     if (dependentSymbols.size() == 1)
-    {
-        *result = *dependentSymbols.begin();
         return true;
-    }
 
     SymbolName* pickedSymbol = nullptr;
     for (auto oneSymbol : dependentSymbols)
@@ -1410,6 +1409,15 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
                 continue;
             }
 
+            // Priority to a user generic parameters, instead of a copy one
+            if ((oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && !(pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+                continue;
+            if (!(oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && (pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+            {
+                pickedSymbol = oneSymbol;
+                continue;
+            }
+
             // Priority to the same inline scope
             if (node->ownerInline)
             {
@@ -1456,7 +1464,6 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
     dependentSymbols.insert(pickedSymbol);
     for (auto s : toAddSymbol)
         dependentSymbols.insert(s);
-    *result = pickedSymbol;
 
     return true;
 }
@@ -1747,299 +1754,377 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // If we have multiple symbols, we need to choose one
-    SymbolName* symbol = nullptr;
-    SWAG_CHECK(pickSymbol(context, node, &symbol));
-    if (!symbol)
+    SWAG_CHECK(pickSymbol(context, node));
+    if (dependentSymbols.empty())
         return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
-    // If there a using variable associated with the resolved symbol ?
-    AstNode* dependentVar = nullptr;
-    for (auto& dep : scopeHierarchyVars)
+    vector<MatchSuccess> success;
+    auto                 copySymbols = dependentSymbols;
+
+    auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
+    auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
+    auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    auto orgCallParameters         = node->callParameters;
+
+    for (auto symbol : copySymbols)
     {
-        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
+        dependentSymbols.clear();
+        dependentSymbols.insert(symbol);
+
+        identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
+        identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
+        identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
+
+        if (node->callParameters != orgCallParameters)
         {
-            if (dependentVar)
+            Ast::removeFromParent(node->callParameters);
+            Ast::addChildFront(node, orgCallParameters);
+            node->callParameters = orgCallParameters;
+        }
+
+        // If there a using variable associated with the resolved symbol ?
+        AstNode* dependentVar = nullptr;
+        for (auto& dep : scopeHierarchyVars)
+        {
+            if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
             {
-                Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
-                Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                if (dependentVar)
+                {
+                    Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
+                    Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
+
+                dependentVar = dep.node;
+
+                // This way the ufcs can trigger for a function
+                if (symbol->kind == SymbolKind::Function)
+                {
+                    // We need to be sure that there is at least one missing argument in all overloads, otherwise we cannot trigger
+                    // the ufcs. This check should be better.
+                    bool usingUfcs = true;
+                    for (auto over : symbol->overloads)
+                    {
+                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+                        if (node->callParameters->childs.size() >= typeFunc->parameters.size())
+                        {
+                            usingUfcs = false;
+                            break;
+                        }
+                    }
+
+                    //if (job->cacheDependentSymbols.size() > 1)
+                    //  usingUfcs = false;
+
+                    if (usingUfcs)
+                    {
+                        identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                        identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                        identifierRef->previousResolvedNode   = dependentVar;
+                    }
+                }
+            }
+        }
+
+        AstNode* ufcsParam = nullptr;
+        bool     canDoUfcs = false;
+        if (symbol->kind == SymbolKind::Function)
+            canDoUfcs = true;
+        if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
+            canDoUfcs = node->callParameters;
+
+        if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
+        {
+            // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+            if (identifierRef->resolvedSymbolName)
+            {
+                if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
+                    identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+                {
+                    // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
+                    if (!node->callParameters)
+                    {
+                        SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
+                        SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
+                        SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
+                    }
+
+                    if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+                    {
+                        SWAG_ASSERT(identifierRef->previousResolvedNode);
+                        ufcsParam = identifierRef->previousResolvedNode;
+                    }
+                    else
+                    {
+                        node->doneFlags |= AST_DONE_UFCS;
+
+                        Ast::removeFromParent(node->callParameters);
+
+                        CloneContext cloneContext;
+                        cloneContext.parent   = node;
+                        cloneContext.rawClone = true;
+                        node->callParameters  = orgCallParameters ? orgCallParameters->clone(cloneContext) : orgCallParameters;
+
+                        SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
+                        SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol, dependentVar));
+                    }
+                }
+            }
+        }
+
+        // We want to force the ufcs
+        if (!ufcsParam && (node->flags & AST_FORCE_UFCS) && !(node->doneFlags & AST_DONE_UFCS))
+        {
+            if (identifierRef->startScope)
+            {
+                auto displayName = identifierRef->startScope->getFullName();
+                if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
+                    displayName = identifierRef->typeInfo->name;
+                if (!displayName.empty())
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
             }
 
-            dependentVar = dep.node;
+            return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+        }
 
-            // This way the ufcs can trigger for a function
-            if (symbol->kind == SymbolKind::Function)
+        if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
+        {
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
+                return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+                return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
+        }
+
+        // Fill specified parameters
+        job->symMatch.reset();
+        if (node->flags & AST_TAKE_ADDRESS)
+            job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
+
+        if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
+        {
+            node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
+
+            // If last parameter is of type code, and the call last parameter is not, then take the next statement
+            if (symbol->overloads.size() > 0)
             {
-                // We need to be sure that there is at least one missing argument in all overloads, otherwise we cannot trigger
-                // the ufcs. This check should be better.
-                bool usingUfcs = true;
-                for (auto over : symbol->overloads)
+                bool lastIsCode = false;
+                for (auto overload : symbol->overloads)
                 {
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-                    if (node->callParameters->childs.size() >= typeFunc->parameters.size())
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                    if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+                        lastIsCode = true;
+                    else
                     {
-                        usingUfcs = false;
+                        lastIsCode = false;
                         break;
                     }
                 }
 
-                if (job->cacheDependentSymbols.size() > 1)
-                    usingUfcs = false;
-
-                if (usingUfcs)
+                if (lastIsCode)
                 {
-                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                    identifierRef->previousResolvedNode   = dependentVar;
-                }
-            }
-        }
-    }
-
-    AstNode* ufcsParam = nullptr;
-    bool     canDoUfcs = false;
-    if (symbol->kind == SymbolKind::Function)
-        canDoUfcs = true;
-    if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
-        canDoUfcs = node->callParameters;
-
-    if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
-    {
-        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-        if (identifierRef->resolvedSymbolName)
-        {
-            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
-                identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
-            {
-                // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
-                if (!node->callParameters)
-                {
-                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                    SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
-                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
-                }
-
-                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
-                {
-                    SWAG_ASSERT(identifierRef->previousResolvedNode);
-                    ufcsParam = identifierRef->previousResolvedNode;
-                }
-                else
-                {
-                    node->doneFlags |= AST_DONE_UFCS;
-                    SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
-                    SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol, dependentVar));
-                }
-            }
-        }
-    }
-
-    // We want to force the ufcs
-    if (!ufcsParam && (node->flags & AST_FORCE_UFCS) && !(node->doneFlags & AST_DONE_UFCS))
-    {
-        if (identifierRef->startScope)
-        {
-            auto displayName = identifierRef->startScope->getFullName();
-            if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
-                displayName = identifierRef->typeInfo->name;
-            if (!displayName.empty())
-                return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
-        }
-
-        return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
-    }
-
-    if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
-    {
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-            return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-            return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
-    }
-
-    // Fill specified parameters
-    job->symMatch.reset();
-    if (node->flags & AST_TAKE_ADDRESS)
-        job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
-
-    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
-    {
-        node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
-
-        // If last parameter is of type code, and the call last parameter is not, then take the next statement
-        if (symbol->overloads.size() > 0)
-        {
-            bool lastIsCode = false;
-            for (auto overload : symbol->overloads)
-            {
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
-                    lastIsCode = true;
-                else
-                {
-                    lastIsCode = false;
-                    break;
-                }
-            }
-
-            if (lastIsCode)
-            {
-                auto overload = symbol->overloads[0];
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
-                {
-                    if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+                    auto overload = symbol->overloads[0];
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                    if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                     {
-                        auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
-                        if (brother->kind == AstNodeKind::Statement)
+                        if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
                         {
-                            auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                            auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                            codeNode->flags |= AST_NO_BYTECODE;
-                            Ast::removeFromParent(brother);
-                            Ast::addChildBack(codeNode, brother);
-                            auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
-                            typeCode->content = brother;
-                            brother->flags |= AST_NO_SEMANTIC;
-                            fctCallParam->typeInfo = typeCode;
-                            codeNode->typeInfo     = typeCode;
+                            auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                            if (brother->kind == AstNodeKind::Statement)
+                            {
+                                auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                                auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                                codeNode->flags |= AST_NO_BYTECODE;
+                                Ast::removeFromParent(brother);
+                                Ast::addChildBack(codeNode, brother);
+                                auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
+                                typeCode->content = brother;
+                                brother->flags |= AST_NO_SEMANTIC;
+                                fctCallParam->typeInfo = typeCode;
+                                codeNode->typeInfo     = typeCode;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    auto  genericParameters = node->genericParameters;
-    auto  callParameters    = node->callParameters;
-    auto& symMatch          = job->symMatch;
+        auto  genericParameters = node->genericParameters;
+        auto  callParameters    = node->callParameters;
+        auto& symMatch          = job->symMatch;
 
-    auto symbolKind = symbol->kind;
+        auto symbolKind = symbol->kind;
 
-    // Alias
-    if (symbolKind == SymbolKind::Alias)
-    {
-        symbol     = symbol->overloads[0]->symbol;
-        symbolKind = symbol->kind;
-    }
-
-    if (callParameters)
-    {
-        if (symbolKind != SymbolKind::Attribute &&
-            symbolKind != SymbolKind::Function &&
-            symbolKind != SymbolKind::Struct &&
-            symbolKind != SymbolKind::Interface &&
-            symbolKind != SymbolKind::TypeAlias &&
-            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
+        // Alias
+        if (symbolKind == SymbolKind::Alias)
         {
-            if (symbolKind == SymbolKind::Variable)
-            {
-                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
-            }
-            else
-            {
-                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
-            }
+            symbol     = symbol->overloads[0]->symbol;
+            symbolKind = symbol->kind;
         }
 
-        if (ufcsParam)
-            symMatch.parameters.push_back(ufcsParam);
-
-        auto childCount = callParameters->childs.size();
-        for (int i = 0; i < childCount; i++)
+        if (callParameters)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
-            symMatch.parameters.push_back(oneParam);
-
-            // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
-            // a function
-            if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
+            if (symbolKind != SymbolKind::Attribute &&
+                symbolKind != SymbolKind::Function &&
+                symbolKind != SymbolKind::Struct &&
+                symbolKind != SymbolKind::Interface &&
+                symbolKind != SymbolKind::TypeAlias &&
+                TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
             {
-                context->job->waitForAllStructInterfaces(oneParam->typeInfo);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                if (symbolKind == SymbolKind::Variable)
+                {
+                    Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
+                    Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
+                else
+                {
+                    Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                    Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
             }
 
-            // Variadic parameter must be the last one
-            if (i != childCount - 1)
+            if (ufcsParam)
+                symMatch.parameters.push_back(ufcsParam);
+
+            auto childCount = callParameters->childs.size();
+            for (int i = 0; i < childCount; i++)
             {
-                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+                symMatch.parameters.push_back(oneParam);
+
+                // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+                // a function
+                if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
                 {
-                    return context->report({oneParam, "variadic argument must be the last one"});
+                    context->job->waitForAllStructInterfaces(oneParam->typeInfo);
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                }
+
+                // Variadic parameter must be the last one
+                if (i != childCount - 1)
+                {
+                    if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                    {
+                        return context->report({oneParam, "variadic argument must be the last one"});
+                    }
                 }
             }
         }
-    }
 
-    if (genericParameters)
-    {
-        node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
-        if (symbolKind != SymbolKind::Function &&
-            symbolKind != SymbolKind::Struct &&
-            symbolKind != SymbolKind::Interface &&
-            symbolKind != SymbolKind::TypeAlias)
+        if (genericParameters)
         {
-            Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-            Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
+            if (symbolKind != SymbolKind::Function &&
+                symbolKind != SymbolKind::Struct &&
+                symbolKind != SymbolKind::Interface &&
+                symbolKind != SymbolKind::TypeAlias)
+            {
+                Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            auto childCount = genericParameters->childs.size();
+            for (int i = 0; i < childCount; i++)
+            {
+                auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+                symMatch.genericParameters.push_back(oneParam);
+                symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
+            }
         }
 
-        auto childCount = genericParameters->childs.size();
-        for (int i = 0; i < childCount; i++)
+        // Can happen if a symbol is inside a disabled #if for example
+        if (symbol->overloads.empty())
         {
-            auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-            symMatch.genericParameters.push_back(oneParam);
-            symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
+            return context->report({node, node->token, format("cannot resolve identifier '%s'", symbol->name.c_str())});
         }
-    }
 
-    // Can happen if a symbol is inside a disabled #if for example
-    if (symbol->overloads.empty())
-    {
-        return context->report({node, node->token, format("cannot resolve identifier '%s'", symbol->name.c_str())});
-    }
-
-    auto overload = symbol->overloads[0];
-    if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
-    {
-        // For everything except functions/attributes/structs (which have overloads), this is a match
-        if (symbolKind != SymbolKind::Attribute &&
-            symbolKind != SymbolKind::Function &&
-            symbolKind != SymbolKind::Struct &&
-            symbolKind != SymbolKind::TypeSet &&
-            symbolKind != SymbolKind::Interface &&
-            overload->typeInfo->kind != TypeInfoKind::Lambda)
+        auto overload = symbol->overloads[0];
+        if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
         {
-            SWAG_ASSERT(symbol->overloads.size() == 1);
-            node->typeInfo = overload->typeInfo;
+            // For everything except functions/attributes/structs (which have overloads), this is a match
+            if (symbolKind != SymbolKind::Attribute &&
+                symbolKind != SymbolKind::Function &&
+                symbolKind != SymbolKind::Struct &&
+                symbolKind != SymbolKind::TypeSet &&
+                symbolKind != SymbolKind::Interface &&
+                overload->typeInfo->kind != TypeInfoKind::Lambda)
+            {
+                SWAG_ASSERT(symbol->overloads.size() == 1);
+                node->typeInfo = overload->typeInfo;
 
-            // Function parameters are pure
-            if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
-                node->flags |= AST_PURE;
+                // Function parameters are pure
+                if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                    node->flags |= AST_PURE;
 
-            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0], nullptr, dependentVar));
+                MatchSuccess oneValid;
+                oneValid.match.symbolName     = symbol;
+                oneValid.match.symbolOverload = symbol->overloads[0];
+                oneValid.dependentVar         = dependentVar;
+                oneValid.callParameters       = node->callParameters;
+                success.push_back(oneValid);
+                continue;
+            }
+        }
+
+        SWAG_CHECK(matchIdentifierParameters(context, genericParameters, callParameters, node, (uint32_t) copySymbols.size()));
+        if (context->result == ContextResult::Pending)
             return true;
-        }
+
+        // Cannot find a match
+        if (job->cacheMatches.size() == 0)
+            continue;
+
+        SWAG_ASSERT(job->cacheMatches.size());
+        auto& match = job->cacheMatches[0];
+
+        // Alias
+        if (match.symbolName->kind == SymbolKind::Alias)
+            match.symbolName = match.symbolOverload->symbol;
+
+        node->typeInfo = match.symbolOverload->typeInfo;
+
+        MatchSuccess oneValid;
+        oneValid.match          = match;
+        oneValid.dependentVar   = dependentVar;
+        oneValid.callParameters = node->callParameters;
+        success.push_back(oneValid);
+        continue;
     }
 
-    SWAG_CHECK(matchIdentifierParameters(context, genericParameters, callParameters, node));
-    if (context->result == ContextResult::Pending)
-        return true;
+    if (success.size() == 1)
+    {
+        auto& one = success[0];
 
-    SWAG_ASSERT(job->cacheMatches.size());
-    auto& match = job->cacheMatches[0];
+        if (node->callParameters != one.callParameters)
+        {
+            Ast::removeFromParent(node->callParameters);
+            Ast::addChildFront(node, one.callParameters);
+            node->callParameters = one.callParameters;
+        }
 
-    // Alias
-    if (match.symbolName->kind == SymbolKind::Alias)
-        match.symbolName = match.symbolOverload->symbol;
+        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, one.match.symbolName, one.match.symbolOverload, &one.match, one.dependentVar));
+    }
+    else if (success.size() > 1)
+    {
+        Diagnostic                diag{node, node->token, format("ambiguous resolution of symbol '%s'", node->name.c_str())};
+        vector<const Diagnostic*> notes;
+        for (auto one : success)
+        {
+            auto note = new Diagnostic{one.match.symbolOverload->node, one.match.symbolOverload->node->token, "could be", DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
 
-    node->typeInfo = match.symbolOverload->typeInfo;
+        return context->report(diag, notes);
+    }
+    else
+    {
+        Diagnostic diag{node, node->token, format("cannot resolve symbol '%s'", node->name.c_str())};
+        return context->report(diag);
+    }
 
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, match.symbolName, match.symbolOverload, &match, dependentVar));
     return true;
 }
 

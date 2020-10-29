@@ -108,7 +108,7 @@ void Backend::emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct)
 {
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    if(preprendStruct)
+    if (preprendStruct)
         bufferSwg.addString("struct{");
     else
         bufferSwg.addString("{");
@@ -385,15 +385,11 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         CONCAT_FIXED_STR(bufferSwg, "struct");
     }
 
-    // If the node comes from a batch, then there's no more generic parameters
-    if (node->genericParameters && !(node->flags & AST_FROM_BAKE))
+    if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     CONCAT_FIXED_STR(bufferSwg, " ");
-    if (node->flags & AST_FROM_BAKE)
-        bufferSwg.addString(node->bakeName.c_str());
-    else
-        bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(node->name.c_str());
     CONCAT_FIXED_STR(bufferSwg, "\n");
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "{\n");

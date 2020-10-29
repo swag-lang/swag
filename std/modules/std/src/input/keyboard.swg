@@ -28,7 +28,7 @@ impl Keyboard
         now := time.nowMilliseconds()
         loop i: @countof(Key)
         {
-            if !isKeyPressed(cast(Key) i)
+            if !self.isKeyPressed(cast(Key) i)
             {
                 pressedRepeat[i] = false
                 pressedTime[i] = 0

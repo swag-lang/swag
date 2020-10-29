@@ -272,10 +272,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // This should not be copied. If will be recomputed if necessary.
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
     // as functions, and also each time they are inlined.
-    //castedTypeInfo = from->castedTypeInfo;
+    if(context.rawClone)
+        castedTypeInfo = from->castedTypeInfo;
 
-    resolvedSymbolName     = from->resolvedSymbolName;
-    resolvedSymbolOverload = from->resolvedSymbolOverload;
+    resolvedSymbolName           = from->resolvedSymbolName;
+    resolvedSymbolOverload       = from->resolvedSymbolOverload;
+    resolvedUserOpSymbolName     = from->resolvedUserOpSymbolName;
+    resolvedUserOpSymbolOverload = from->resolvedUserOpSymbolOverload;
 
     parentAttributes = from->parentAttributes;
     parentAttributes = from->parentAttributes;
@@ -289,13 +292,14 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     byteCodeBeforeFct = from->byteCodeBeforeFct;
     byteCodeAfterFct  = from->byteCodeAfterFct;
 
-    computedValue        = from->computedValue;
-    name                 = from->name;
-    sourceFile           = from->sourceFile;
-    bc                   = from->bc;
-    resultRegisterRC     = from->resultRegisterRC;
-    fctCallStorageOffset = from->fctCallStorageOffset;
-    castOffset           = from->castOffset;
+    computedValue           = from->computedValue;
+    name                    = from->name;
+    sourceFile              = from->sourceFile;
+    bc                      = from->bc;
+    resultRegisterRC        = from->resultRegisterRC;
+    fctCallStorageOffset    = from->fctCallStorageOffset;
+    castOffset              = from->castOffset;
+    concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 
     parent = context.parent;
     if (parent)

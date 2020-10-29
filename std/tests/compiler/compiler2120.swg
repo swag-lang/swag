@@ -5,7 +5,7 @@ struct(T) Arr
 
 impl Arr
 {
-    struct(T) ST
+    struct ST
     {
         x, y: T
     }

@@ -132,7 +132,7 @@ impl Rect
     }
 
     // Determines if the specfied point is contained within the rectangular region
-    func contains(self, pt: Point)->bool
+    func contains(using self, pt: Point)->bool
     {
         return self.contains(pt.x, pt.y)
     }

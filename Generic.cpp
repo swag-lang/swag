@@ -17,7 +17,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
             if (callGenericParameters)
             {
                 param->typeInfo = callGenericParameters->childs[i]->typeInfo;
-                param->value = callGenericParameters->childs[i]->computedValue;
+                param->value    = callGenericParameters->childs[i]->computedValue;
             }
 
             // If we have a calltype filled with the match, take it
@@ -55,8 +55,8 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
 
         if (doNode)
         {
-            auto nodeParam = nodeGenericParameters[i];
-            nodeParam->kind = AstNodeKind::ConstDecl;
+            auto nodeParam           = nodeGenericParameters[i];
+            nodeParam->kind          = AstNodeKind::ConstDecl;
             nodeParam->computedValue = param->value;
             nodeParam->setFlagsValueIsComputed();
             nodeParam->flags |= AST_FROM_GENERIC;
@@ -255,21 +255,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Can be a type alias
     // In that case, we need to retrieve the real struct
-    auto     genericStructType = static_cast<TypeInfoStruct*>(overload->typeInfo);
-    auto     sourceSymbol      = match.symbolName;
-    AstNode* nodeAlias         = nullptr;
-    if (sourceNode->kind == AstNodeKind::Alias)
-    {
-        // When the duplicated struct will register its symbol, it will also register
-        // the corresponding type alias
-        nodeAlias = sourceNode;
-
-        auto typeAlias    = CastTypeInfo<TypeInfoAlias>(sourceNode->typeInfo, TypeInfoKind::Alias);
-        genericStructType = CastTypeInfo<TypeInfoStruct>(typeAlias->rawType, TypeInfoKind::Struct);
-        sourceNode        = CastAst<AstStruct>(genericStructType->declNode, AstNodeKind::StructDecl);
-        SWAG_ASSERT(sourceNode->resolvedSymbolOverload);
-        sourceSymbol = sourceNode->resolvedSymbolOverload->symbol;
-    }
+    auto genericStructType = static_cast<TypeInfoStruct*>(overload->typeInfo);
+    auto sourceSymbol      = match.symbolName;
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, format("partial type alias for generic struct instantation is not supported", node->name.c_str())}));
 
     // Make a new type
     auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
@@ -287,7 +275,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
-    structNode->nodeAlias    = nodeAlias;
     structNode->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(sourceNode->parent, structNode);
 
@@ -312,9 +299,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         {
             auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&
-                    specFunc != genericStructType->opUserPostCopyFct &&
-                    specFunc != genericStructType->opUserPostMoveFct &&
-                    !specFunc->genericParameters)
+                specFunc != genericStructType->opUserPostCopyFct &&
+                specFunc != genericStructType->opUserPostMoveFct &&
+                !specFunc->genericParameters)
             {
                 instantiateSpecialFunc(context, structJob, cloneContext, &specFunc);
             }

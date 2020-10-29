@@ -110,7 +110,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
         if (parentFunc->genericParameters)
         {
-            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode);
+            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
         }
     }
 
@@ -123,7 +123,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         {
             if (structNode->genericParameters)
                 return error(parent, "cannot decide which generic parameter to use for tuple creation");
-            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode);
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
         }
     }
 

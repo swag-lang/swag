@@ -36,6 +36,13 @@ struct OneMatch
     SymbolOverload* symbolOverload;
 };
 
+struct MatchSuccess
+{
+    OneMatch match;
+    AstNode* dependentVar;
+    AstNode* callParameters;
+};
+
 struct OneGenericMatch
 {
     VectorNative<TypeInfo*> genericParametersCallTypes;
@@ -99,7 +106,7 @@ struct SemanticJob : public Job
     static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static void setupContextualGenericTypeReplacement(SemanticContext* context, SymbolOverload* symOverload);
     static bool matchIdentifierError(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node);
-    static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node);
+    static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node, uint32_t numSymbols);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node);
@@ -176,7 +183,7 @@ struct SemanticJob : public Job
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
-    static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
+    static bool pickSymbol(SemanticContext* context, AstIdentifier* node);
     static bool preResolveStruct(SemanticContext* context);
     static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     static bool resolveStruct(SemanticContext* context);
