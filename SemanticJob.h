@@ -257,7 +257,7 @@ struct SemanticJob : public Job
     vector<OneGenericMatch>        cacheGenericMatches;
     VectorNative<SymbolOverload*>  cacheBadSignature;
     VectorNative<SymbolOverload*>  cacheBadGenericSignature;
-    SymbolMatchContext             symMatch;
+    SymbolMatchContext             symMatchContext;
     SemanticContext                context;
     Concat                         tmpConcat;
 
@@ -280,7 +280,7 @@ struct SemanticJob : public Job
         cacheGenericMatches.clear();
         cacheBadSignature.clear();
         cacheBadGenericSignature.clear();
-        symMatch.reset();
+        symMatchContext.reset();
         context.reset();
     }
 

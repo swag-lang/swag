@@ -243,10 +243,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto node = context->node;
     auto job  = context->job;
 
-    job->symMatch.reset();
-    job->symMatch.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
+    job->symMatchContext.reset();
+    job->symMatchContext.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
     for (auto param : params)
-        job->symMatch.parameters.push_back(param);
+        job->symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
     AstNode* genericParameters = nullptr;
@@ -264,7 +264,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         literal.kind               = AstNodeKind::Literal;
         literal.computedValue.text = opConst ? opConst : "";
         literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
-        job->symMatch.genericParameters.push_back(&literal);
+        job->symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
         Ast::addChildBack(&parameters, &literal);

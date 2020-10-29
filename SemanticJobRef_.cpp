@@ -520,9 +520,9 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
             auto job        = context->job;
-            job->symMatch.reset();
+            job->symMatchContext.reset();
             for (auto child : node->parameters->childs)
-                job->symMatch.parameters.push_back(child);
+                job->symMatchContext.parameters.push_back(child);
             SWAG_CHECK(matchIdentifierParameters(context, typeStruct->declNode->resolvedSymbolName, nullptr, node->parameters, node, 1));
             if (context->result == ContextResult::Pending)
                 return true;

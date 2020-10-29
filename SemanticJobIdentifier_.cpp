@@ -726,8 +726,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     auto node = context->node;
 
     // Fresh start on generic types
-    job->symMatch.genericReplaceTypes.clear();
-    job->symMatch.mapGenericTypesIndex.clear();
+    job->symMatchContext.genericReplaceTypes.clear();
+    job->symMatchContext.mapGenericTypesIndex.clear();
 
     VectorNative<AstNode*> toCheck;
 
@@ -758,7 +758,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             for (auto oneReplace : nodeFunc->replaceTypes)
             {
-                job->symMatch.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+                job->symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
             }
         }
 
@@ -767,7 +767,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             for (auto oneReplace : nodeStruct->replaceTypes)
             {
-                job->symMatch.genericReplaceTypes[oneReplace.first] = oneReplace.second;
+                job->symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
             }
         }
     }
@@ -778,7 +778,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, SymbolName* sym
     auto              job                 = context->job;
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
-    BadSignatureInfos bi                  = job->symMatch.badSignatureInfos;
+    BadSignatureInfos bi                  = job->symMatchContext.badSignatureInfos;
     SymbolOverload*   overload            = nullptr;
 
     // If there's a generic in the overloads list, then we need to raise on error
@@ -791,7 +791,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, SymbolName* sym
             if (one->flags & OVERLOAD_GENERIC)
             {
                 overload             = job->bestOverload;
-                job->symMatch.result = job->bestMatchResult;
+                job->symMatchContext.result = job->bestMatchResult;
                 bi                   = job->bestSignatureInfos;
                 break;
             }
@@ -800,7 +800,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, SymbolName* sym
 
     if (job->matchNumOverloads == 1 || overload)
     {
-        auto&             match       = job->symMatch;
+        auto&             match       = job->symMatchContext;
         AstFuncCallParam* failedParam = nullptr;
 
         // Get the call parameter that failed
@@ -1064,7 +1064,7 @@ anotherTry:
                 {
                     auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                     if (!(typeInfo->flags & TYPEINFO_GENERIC))
-                        job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
+                        job->symMatchContext.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
                 }
             }
 
@@ -1075,29 +1075,29 @@ anotherTry:
             {
                 forStruct     = true;
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
-                typeInfo->match(job->symMatch);
+                typeInfo->match(job->symMatchContext);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::Interface)
             {
                 forStruct     = true;
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
-                typeInfo->match(job->symMatch);
+                typeInfo->match(job->symMatchContext);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::TypeSet)
             {
                 forStruct     = true;
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::TypeSet);
-                typeInfo->match(job->symMatch);
+                typeInfo->match(job->symMatchContext);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
             {
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
-                typeInfo->match(job->symMatch);
+                typeInfo->match(job->symMatchContext);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::Lambda)
             {
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::Lambda);
-                typeInfo->match(job->symMatch);
+                typeInfo->match(job->symMatchContext);
             }
             else
             {
@@ -1108,7 +1108,7 @@ anotherTry:
             bool forcedFine = false;
             if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
             {
-                if (job->symMatch.result != MatchResult::NotEnoughGenericParameters)
+                if (job->symMatchContext.result != MatchResult::NotEnoughGenericParameters)
                 {
                     auto grandParent = node->parent->parent;
                     if (grandParent->kind == AstNodeKind::MakePointer ||
@@ -1119,51 +1119,51 @@ anotherTry:
                     {
                         if (callParameters)
                             return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
-                        job->symMatch.result = MatchResult::Ok;
+                        job->symMatchContext.result = MatchResult::Ok;
                         forcedFine           = true;
                     }
                 }
             }
 
             // We need () for a function call !
-            if (!forcedFine && !callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
+            if (!forcedFine && !callParameters && job->symMatchContext.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
             {
-                job->symMatch.result = MatchResult::MissingParameters;
+                job->symMatchContext.result = MatchResult::MissingParameters;
             }
 
             // Function type without call parameters
-            if (!callParameters && job->symMatch.result == MatchResult::NotEnoughParameters)
+            if (!callParameters && job->symMatchContext.result == MatchResult::NotEnoughParameters)
             {
                 if (symbol->kind == SymbolKind::Variable)
-                    job->symMatch.result = MatchResult::Ok;
+                    job->symMatchContext.result = MatchResult::Ok;
             }
 
             // In case of errors, remember the 'best' signature in order to generate the best possible
             // accurate error. We find the longest match (the one that failed on the right most parameter)
-            if (job->symMatch.result != MatchResult::Ok)
+            if (job->symMatchContext.result != MatchResult::Ok)
             {
                 if (job->bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                    job->symMatch.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx ||
-                    job->symMatch.result == MatchResult::BadGenMatch && job->bestMatchResult == MatchResult::BadSignature)
+                    job->symMatchContext.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx ||
+                    job->symMatchContext.result == MatchResult::BadGenMatch && job->bestMatchResult == MatchResult::BadSignature)
                 {
-                    job->bestMatchResult    = job->symMatch.result;
-                    job->bestSignatureInfos = job->symMatch.badSignatureInfos;
+                    job->bestMatchResult    = job->symMatchContext.result;
+                    job->bestSignatureInfos = job->symMatchContext.badSignatureInfos;
                     job->bestOverload       = overload;
                 }
             }
 
-            switch (job->symMatch.result)
+            switch (job->symMatchContext.result)
             {
             case MatchResult::Ok:
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
-                    match.flags                      = job->symMatch.flags;
+                    match.flags                      = job->symMatchContext.flags;
                     match.symbolName                 = symbol;
                     match.symbolOverload             = overload;
-                    match.genericParametersCallTypes = move(job->symMatch.genericParametersCallTypes);
-                    match.genericParametersGenTypes  = move(job->symMatch.genericParametersGenTypes);
-                    match.genericReplaceTypes        = move(job->symMatch.genericReplaceTypes);
+                    match.genericParametersCallTypes = move(job->symMatchContext.genericParametersCallTypes);
+                    match.genericParametersGenTypes  = move(job->symMatchContext.genericParametersGenTypes);
+                    match.genericReplaceTypes        = move(job->symMatchContext.genericReplaceTypes);
                     genericMatches.emplace_back(match);
                 }
                 else
@@ -1171,7 +1171,7 @@ anotherTry:
                     OneMatch match;
                     match.symbolName       = symbol;
                     match.symbolOverload   = overload;
-                    match.solvedParameters = move(job->symMatch.solvedParameters);
+                    match.solvedParameters = move(job->symMatchContext.solvedParameters);
                     matches.emplace_back(match);
                 }
                 break;
@@ -1906,9 +1906,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
 
         // Fill specified parameters
-        job->symMatch.reset();
+        job->symMatchContext.reset();
         if (node->flags & AST_TAKE_ADDRESS)
-            job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
+            job->symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
         if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
         {
@@ -1960,7 +1960,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         auto  genericParameters = node->genericParameters;
         auto  callParameters    = node->callParameters;
-        auto& symMatch          = job->symMatch;
+        auto& symMatch          = job->symMatchContext;
 
         // Alias
         auto symbolKind = symbol->kind;
@@ -2046,9 +2046,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         // Can happen if a symbol is inside a disabled #if for example
         if (symbol->overloads.empty())
-        {
             return context->report({node, node->token, format("cannot resolve identifier '%s'", symbol->name.c_str())});
-        }
 
         auto overload = symbol->overloads[0];
         if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
@@ -2105,24 +2103,24 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (success.size() == 1)
     {
-        auto& one = success[0];
+        auto& oneSuccess = success[0];
 
-        if (node->callParameters != one.callParameters)
+        if (node->callParameters != oneSuccess.callParameters)
         {
             Ast::removeFromParent(node->callParameters);
-            Ast::addChildFront(node, one.callParameters);
-            node->callParameters = one.callParameters;
+            Ast::addChildFront(node, oneSuccess.callParameters);
+            node->callParameters = oneSuccess.callParameters;
         }
 
-        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, one.match.symbolName, one.match.symbolOverload, &one.match, one.dependentVar));
+        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, oneSuccess.match.symbolName, oneSuccess.match.symbolOverload, &oneSuccess.match, oneSuccess.dependentVar));
     }
     else if (success.size() > 1)
     {
         Diagnostic                diag{node, node->token, format("ambiguous resolution of symbol '%s'", node->name.c_str())};
         vector<const Diagnostic*> notes;
-        for (auto one : success)
+        for (auto oneSuccess : success)
         {
-            auto note = new Diagnostic{one.match.symbolOverload->node, one.match.symbolOverload->node->token, "could be", DiagnosticLevel::Note};
+            auto note = new Diagnostic{oneSuccess.match.symbolOverload->node, oneSuccess.match.symbolOverload->node->token, "could be", DiagnosticLevel::Note};
             notes.push_back(note);
         }
 
