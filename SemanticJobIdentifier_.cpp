@@ -1955,7 +1955,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         auto  genericParameters = node->genericParameters;
         auto  callParameters    = node->callParameters;
-        auto& symMatch          = job->symMatchContext;
+        auto& symMatchContext   = job->symMatchContext;
 
         // Alias
         auto symbolKind = symbol->kind;
@@ -1989,13 +1989,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
 
             if (ufcsParam)
-                symMatch.parameters.push_back(ufcsParam);
+                symMatchContext.parameters.push_back(ufcsParam);
 
             auto childCount = callParameters->childs.size();
             for (int i = 0; i < childCount; i++)
             {
                 auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
-                symMatch.parameters.push_back(oneParam);
+                symMatchContext.parameters.push_back(oneParam);
 
                 // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
                 // a function
@@ -2034,8 +2034,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             for (int i = 0; i < childCount; i++)
             {
                 auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-                symMatch.genericParameters.push_back(oneParam);
-                symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
+                symMatchContext.genericParameters.push_back(oneParam);
+                symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
             }
         }
 
@@ -2044,7 +2044,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             return context->report({node, node->token, format("cannot resolve identifier '%s'", symbol->name.c_str())});
 
         auto overload = symbol->overloads[0];
-        if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
+        if (symMatchContext.parameters.empty() && symMatchContext.genericParameters.empty())
         {
             // For everything except functions/attributes/structs (which have overloads), this is a match
             if (symbolKind != SymbolKind::Attribute &&
