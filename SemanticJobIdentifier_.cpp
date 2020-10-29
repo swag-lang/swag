@@ -790,9 +790,9 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, SymbolName* sym
         {
             if (one->flags & OVERLOAD_GENERIC)
             {
-                overload             = job->bestOverload;
+                overload                    = job->bestOverload;
                 job->symMatchContext.result = job->bestMatchResult;
-                bi                   = job->bestSignatureInfos;
+                bi                          = job->bestSignatureInfos;
                 break;
             }
         }
@@ -1120,7 +1120,7 @@ anotherTry:
                         if (callParameters)
                             return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
                         job->symMatchContext.result = MatchResult::Ok;
-                        forcedFine           = true;
+                        forcedFine                  = true;
                     }
                 }
             }
@@ -1764,19 +1764,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
     vector<MatchSuccess> success;
-    auto                 copySymbols = dependentSymbols;
+    auto                 orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
+    auto                 orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
+    auto                 orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    auto                 orgCallParameters         = node->callParameters;
+    AstNode*             ufcsCallParameters        = nullptr;
 
-    auto     orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
-    auto     orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
-    auto     orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
-    auto     orgCallParameters         = node->callParameters;
-    AstNode* ufcsCallParameters        = nullptr;
-
-    for (auto symbol : copySymbols)
+    for (auto symbol : dependentSymbols)
     {
-        dependentSymbols.clear();
-        dependentSymbols.insert(symbol);
-
         identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
         identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
         identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
@@ -2076,7 +2071,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, symbol, genericParameters, callParameters, node, (uint32_t) copySymbols.size()));
+        SWAG_CHECK(matchIdentifierParameters(context, symbol, genericParameters, callParameters, node, (uint32_t) dependentSymbols.size()));
         if (context->result == ContextResult::Pending)
             return true;
 
