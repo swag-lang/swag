@@ -1572,6 +1572,102 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
+bool SemanticJob::collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+{
+    auto  job = context->job;
+    auto& scopeHierarchy     = job->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto& dependentSymbols   = job->cacheDependentSymbols;
+
+    // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
+    // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
+    for (int oneTry = 0; oneTry < 2; oneTry++)
+    {
+        auto startScope = identifierRef->startScope;
+        if (!startScope || oneTry == 1)
+        {
+            uint32_t collectFlags = COLLECT_ALL;
+
+            // Pass through the first inline if there's a back tick before the name
+            if (node->flags & AST_IDENTIFIER_BACKTICK)
+                collectFlags = COLLECT_PASS_INLINE;
+
+            startScope = node->ownerScope;
+            SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
+
+            // Be sure this is the last try
+            oneTry++;
+        }
+        else
+        {
+            scopeHierarchy.insert(startScope);
+
+            // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+            // relevant and we should not use it
+            if (startScope->kind != ScopeKind::Namespace)
+            {
+                for (auto s : startScope->owner->alternativeScopes)
+                    scopeHierarchy.insert(s);
+                scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
+            }
+        }
+
+        // Search symbol in all the scopes of the hierarchy
+        for (auto scope : scopeHierarchy)
+        {
+            auto symbol = scope->symTable.find(node->name);
+            if (symbol)
+            {
+                // Do not register symbol if it's defined later, in a local scope
+                if (!scope->isGlobalOrImpl())
+                {
+                    if (!symbol->nodes.empty() && !(node->flags & AST_GENERATED) && node->ownerScope == scope && !node->ownerInline)
+                    {
+                        auto first = symbol->nodes.front();
+                        if (!(first->flags & AST_GENERATED))
+                        {
+                            if (first->token.startLocation.line > node->token.startLocation.line)
+                                symbol = nullptr;
+                            else if (first->token.startLocation.line == node->token.startLocation.line && first->token.startLocation.column > node->token.startLocation.column)
+                                symbol = nullptr;
+                        }
+                    }
+                }
+
+                if (symbol)
+                    dependentSymbols.insert(symbol);
+            }
+        }
+
+        if (!dependentSymbols.empty())
+            break;
+
+        // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
+        // from the previous symbol
+        if (oneTry || !identifierRef->startScope)
+        {
+            if (identifierRef->startScope)
+            {
+                if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->name.c_str())});
+                Utf8 displayName;
+                if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
+                    displayName = identifierRef->startScope->getFullName();
+                if (displayName.empty() && identifierRef->typeInfo)
+                    displayName = identifierRef->typeInfo->name;
+                if (!displayName.empty())
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+            }
+
+            return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+        }
+
+        node->flags |= AST_FORCE_UFCS;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -1624,91 +1720,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Compute dependencies if not already done
     if (dependentSymbols.empty())
     {
-        // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
-        // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
-        for (int oneTry = 0; oneTry < 2; oneTry++)
-        {
-            auto startScope = identifierRef->startScope;
-            if (!startScope || oneTry == 1)
-            {
-                uint32_t collectFlags = COLLECT_ALL;
-
-                // Pass through the first inline if there's a back tick before the name
-                if (node->flags & AST_IDENTIFIER_BACKTICK)
-                    collectFlags = COLLECT_PASS_INLINE;
-
-                startScope = node->ownerScope;
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
-
-                // Be sure this is the last try
-                oneTry++;
-            }
-            else
-            {
-                scopeHierarchy.insert(startScope);
-
-                // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-                // relevant and we should not use it
-                if (startScope->kind != ScopeKind::Namespace)
-                {
-                    for (auto s : startScope->owner->alternativeScopes)
-                        scopeHierarchy.insert(s);
-                    scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
-                }
-            }
-
-            // Search symbol in all the scopes of the hierarchy
-            for (auto scope : scopeHierarchy)
-            {
-                auto symbol = scope->symTable.find(node->name);
-                if (symbol)
-                {
-                    // Do not register symbol if it's defined later, in a local scope
-                    if (!scope->isGlobalOrImpl())
-                    {
-                        if (!symbol->nodes.empty() && !(node->flags & AST_GENERATED) && node->ownerScope == scope && !node->ownerInline)
-                        {
-                            auto first = symbol->nodes.front();
-                            if (!(first->flags & AST_GENERATED))
-                            {
-                                if (first->token.startLocation.line > node->token.startLocation.line)
-                                    symbol = nullptr;
-                                else if (first->token.startLocation.line == node->token.startLocation.line && first->token.startLocation.column > node->token.startLocation.column)
-                                    symbol = nullptr;
-                            }
-                        }
-                    }
-
-                    if (symbol)
-                        dependentSymbols.insert(symbol);
-                }
-            }
-
-            if (!dependentSymbols.empty())
-                break;
-
-            // We raise an error if we have tried to resolve with the normal scope hierarchy, and not just the scope
-            // from the previous symbol
-            if (oneTry || !identifierRef->startScope)
-            {
-                if (identifierRef->startScope)
-                {
-                    if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                        return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->name.c_str())});
-                    Utf8 displayName;
-                    if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
-                        displayName = identifierRef->startScope->getFullName();
-                    if (displayName.empty() && identifierRef->typeInfo)
-                        displayName = identifierRef->typeInfo->name;
-                    if (!displayName.empty())
-                        return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
-                }
-
-                return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
-            }
-
-            node->flags |= AST_FORCE_UFCS;
-        }
+        SWAG_CHECK(collectScopesToSolve(context, identifierRef, node));
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
@@ -1952,9 +1964,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto  callParameters    = node->callParameters;
         auto& symMatch          = job->symMatch;
 
-        auto symbolKind = symbol->kind;
-
         // Alias
+        auto symbolKind = symbol->kind;
         if (symbolKind == SymbolKind::Alias)
         {
             symbol     = symbol->overloads[0]->symbol;

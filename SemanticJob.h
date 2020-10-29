@@ -177,6 +177,7 @@ struct SemanticJob : public Job
     static bool resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveIdentifier(SemanticContext* context);
+    static bool collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol);
     static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol, AstNode* dependentVar);
     static bool resolveIdentifierRef(SemanticContext* context);
