@@ -1766,10 +1766,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     vector<MatchSuccess> success;
     auto                 copySymbols = dependentSymbols;
 
-    auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
-    auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
-    auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
-    auto orgCallParameters         = node->callParameters;
+    auto     orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
+    auto     orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
+    auto     orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    auto     orgCallParameters         = node->callParameters;
+    AstNode* ufcsCallParameters        = nullptr;
 
     for (auto symbol : copySymbols)
     {
@@ -1818,9 +1819,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         }
                     }
 
-                    //if (job->cacheDependentSymbols.size() > 1)
-                    //  usingUfcs = false;
-
                     if (usingUfcs)
                     {
                         identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
@@ -1862,16 +1860,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     else
                     {
                         node->doneFlags |= AST_DONE_UFCS;
-
                         Ast::removeFromParent(node->callParameters);
+                        if (ufcsCallParameters)
+                        {
+                            node->callParameters = ufcsCallParameters;
+                        }
+                        else
+                        {
 
-                        CloneContext cloneContext;
-                        cloneContext.parent   = node;
-                        cloneContext.rawClone = true;
-                        node->callParameters  = orgCallParameters ? orgCallParameters->clone(cloneContext) : orgCallParameters;
+                            CloneContext cloneContext;
+                            cloneContext.parent   = node;
+                            cloneContext.rawClone = true;
+                            node->callParameters  = orgCallParameters ? orgCallParameters->clone(cloneContext) : orgCallParameters;
+                            ufcsCallParameters    = node->callParameters;
 
-                        SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
-                        SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol, dependentVar));
+                            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, symbol));
+                            SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, symbol, dependentVar));
+                        }
                     }
                 }
             }
