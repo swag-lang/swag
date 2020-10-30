@@ -253,7 +253,7 @@ enum class MatchResult
     MissingParameters,
     NotEnoughGenericParameters,
     BadSignature,
-    BadGenMatch,
+    BadGenericMatch,
     BadGenericSignature,
     InvalidNamedParameter,
     MissingNamedParameter,

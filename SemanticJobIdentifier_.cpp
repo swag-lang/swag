@@ -890,7 +890,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::BadGenMatch:
+    case MatchResult::BadGenericMatch:
     {
         SWAG_ASSERT(callParameters);
         auto diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
@@ -1014,6 +1014,19 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
         for (auto& one : overloads)
         {
             if (!(one.overload->flags & OVERLOAD_GENERIC))
+                n.push_back(one);
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
+    // If we have generic parameters, then eliminate non generic fail
+    if (genericParameters)
+    {
+        vector<OneTryMatch> n;
+        for (auto& one : overloads)
+        {
+            if (one.overload->flags & OVERLOAD_GENERIC)
                 n.push_back(one);
         }
         if (!n.empty())
@@ -1215,7 +1228,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         {
             if (job->bestSignatureInfos.badSignatureParameterIdx == -1 ||
                 oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx ||
-                oneOverload.symMatchContext.result == MatchResult::BadGenMatch && job->bestMatchResult == MatchResult::BadSignature)
+                oneOverload.symMatchContext.result == MatchResult::BadGenericMatch && job->bestMatchResult == MatchResult::BadSignature)
             {
                 job->bestMatchResult    = oneOverload.symMatchContext.result;
                 job->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;

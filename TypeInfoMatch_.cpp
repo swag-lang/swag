@@ -111,7 +111,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             context.badSignatureInfos.badSignatureGivenType     = typeInfo;
                             context.badSignatureInfos.badGenMatch               = symbolTypeInfo->name;
                             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                            context.result = MatchResult::BadGenMatch;
+                            context.result = MatchResult::BadGenericMatch;
                         }
                     }
                     else
