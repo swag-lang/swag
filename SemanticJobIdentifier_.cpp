@@ -780,8 +780,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     }
 }
 
-bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& oneTry, AstNode* node)
+bool SemanticJob::matchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
 {
+    OneTryMatch       oneTry              = overloads[0];
     auto              job                 = context->job;
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
@@ -808,7 +809,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& on
         }
     }
 
-    if (job->matchNumOverloads == 1 || overload)
+    if (overloads.size() == 1 || overload)
     {
         auto&             match       = oneTry.symMatchContext;
         AstFuncCallParam* failedParam = nullptr;
@@ -980,7 +981,7 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& on
     // Multiple overloads
     if (badSignature.size())
     {
-        Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", job->matchNumOverloads)};
+        Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", overloads.size())};
         vector<const Diagnostic*> notes;
         for (auto one : badSignature)
         {
@@ -993,9 +994,10 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& on
 
         return context->report(diag, notes);
     }
-    else if (badGenericSignature.size())
+
+    if (badGenericSignature.size())
     {
-        Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", job->matchNumOverloads)};
+        Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", overloads.size())};
         vector<const Diagnostic*> notes;
         for (auto one : badGenericSignature)
         {
@@ -1008,7 +1010,8 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& on
 
         return context->report(diag, notes);
     }
-    else if (job->matchHasGenericErrors)
+
+    if (job->matchHasGenericErrors)
     {
         int         numParams = genericParameters ? (int) genericParameters->childs.size() : 0;
         const char* args      = numParams <= 1 ? "generic parameter" : "generic parameters";
@@ -1022,8 +1025,6 @@ bool SemanticJob::matchIdentifierError(SemanticContext* context, OneTryMatch& on
         Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
         return context->report(diag);
     }
-
-    return false;
 }
 
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
@@ -1042,7 +1043,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
 
     bool forStruct             = false;
     job->matchHasGenericErrors = false;
-    job->matchNumOverloads     = 0;
 
     for (auto& oneOverload : overloads)
     {
@@ -1087,8 +1087,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
             job->waitForSymbolNoLock(symbol);
             return true;
         }
-
-        job->matchNumOverloads++;
 
         auto rawTypeInfo = overload->typeInfo;
 
@@ -1302,7 +1300,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     // one(s) can match
     if (matches.size() == 0)
     {
-        return matchIdentifierError(context, overloads[0], node);
+        return matchIdentifierError(context, overloads, node);
     }
 
     // There is more than one possible match, but they are all foreign, this is fine
