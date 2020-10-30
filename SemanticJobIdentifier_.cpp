@@ -1804,11 +1804,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
     auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
 
-    // Collect all overload to solve
     while (true)
     {
-        vector<SymbolOverload*> toSolveOverload;
-        vector<uint32_t>        toSolveOverloadCpt;
+        // Collect all overloads to solve. We collect also the number of overloads when the collect is done, in
+        // case that number changes (other thread) during the resolution. Because if the number of overloads differs
+        // at one point in the process (for a given symbol), then this will invalidate the resolution
+        // (number of overloads can change when instantiating a generic)
+        VectorNative<SymbolOverload*> toSolveOverload;
+        VectorNative<uint32_t>        toSolveOverloadCpt;
         for (auto symbol : dependentSymbols)
         {
             unique_lock lk(symbol->mutex);
@@ -1825,7 +1828,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         vector<OneTryMatch> listTryMatch;
         uint32_t            idxOverload = 0;
-
         for (auto symbolOverload : toSolveOverload)
         {
             auto symbol       = symbolOverload->symbol;
