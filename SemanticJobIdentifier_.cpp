@@ -783,18 +783,18 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
 bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
 {
     auto              job                 = context->job;
-    OneTryMatch&      oneTry              = overloads[0];
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
+    OneTryMatch&      oneTry              = overloads[0];
     BadSignatureInfos bi                  = oneTry.symMatchContext.badSignatureInfos;
     auto              symbol              = oneTry.overload->symbol;
     SymbolOverload*   overload            = oneTry.overload;
     auto              genericParameters   = oneTry.genericParameters;
     auto              callParameters      = oneTry.callParameters;
+    auto&             match               = oneTry.symMatchContext;
 
     if (overloads.size() == 1)
     {
-        auto&             match       = oneTry.symMatchContext;
         AstFuncCallParam* failedParam = nullptr;
 
         // Get the call parameter that failed
@@ -807,12 +807,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
         if (badParamIdx && callParameters && !callParameters->childs.empty() && callParameters->childs.front()->flags & (AST_FROM_UFCS | AST_TO_UFCS))
             badParamIdx--;
         badParamIdx += 1;
-
-        if (!overload)
-        {
-            shared_lock lk(symbol->mutex);
-            overload = symbol->overloads[0];
-        }
 
         // Be sure this is not because of an invalid special function signature
         if (overload->node->kind == AstNodeKind::FuncDecl)
@@ -829,7 +823,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
 
         switch (match.result)
         {
-
         case MatchResult::MissingNamedParameter:
         {
             SWAG_ASSERT(failedParam);
@@ -966,10 +959,11 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     {
         Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", overloads.size())};
         vector<const Diagnostic*> notes;
-        for (auto one : badSignature)
+        for (auto& one : badSignature)
         {
-            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(one->node->name, one->typeInfo);
-            auto note                   = new Diagnostic{one->node, one->node->token, couldBe, DiagnosticLevel::Note};
+            auto over                   = one.overload;
+            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(over->node->name, over->typeInfo);
+            auto note                   = new Diagnostic{over->node, over->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -982,10 +976,11 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     {
         Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", overloads.size())};
         vector<const Diagnostic*> notes;
-        for (auto one : badGenericSignature)
+        for (auto& one : badGenericSignature)
         {
-            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(one->node->name, one->typeInfo);
-            auto note                   = new Diagnostic{one->node, one->node->token, couldBe, DiagnosticLevel::Note};
+            auto over                   = one.overload;
+            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(over->node->name, over->typeInfo);
+            auto note                   = new Diagnostic{over->node, over->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -1202,13 +1197,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         case MatchResult::BadGenericSignature:
             if (overload->typeInfo->flags & TYPEINFO_GENERIC)
             {
-                badGenericSignature.push_back(overload);
+                badGenericSignature.push_back(oneOverload);
                 job->matchHasGenericErrors = true;
             }
             break;
 
         case MatchResult::BadSignature:
-            badSignature.push_back(overload);
+            badSignature.push_back(oneOverload);
             break;
 
         case MatchResult::TooManyGenericParameters:
@@ -1275,10 +1270,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
-            auto overload = match.symbolOverload;
-            auto couldBe  = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
-            auto note     = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
-
+            auto overload               = match.symbolOverload;
+            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
+            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
 

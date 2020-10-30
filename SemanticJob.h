@@ -269,8 +269,8 @@ struct SemanticJob : public Job
     VectorNative<Scope*>           scopesHere;
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
-    VectorNative<SymbolOverload*>  cacheBadSignature;
-    VectorNative<SymbolOverload*>  cacheBadGenericSignature;
+    vector<OneTryMatch>            cacheBadSignature;
+    vector<OneTryMatch>            cacheBadGenericSignature;
     SemanticContext                context;
     Concat                         tmpConcat;
 
