@@ -1802,6 +1802,43 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     return true;
 }
 
+bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
+{
+    auto symbol = overload->symbol;
+    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
+    {
+        node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
+
+        // If last parameter is of type code, and the call last parameter is not, then take the next statement
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+        {
+            if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
+            {
+                if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+                {
+                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                    if (brother->kind == AstNodeKind::Statement)
+                    {
+                        auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                        auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                        codeNode->flags |= AST_NO_BYTECODE;
+                        Ast::removeFromParent(brother);
+                        Ast::addChildBack(codeNode, brother);
+                        auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
+                        typeCode->content = brother;
+                        brother->flags |= AST_NO_SEMANTIC;
+                        fctCallParam->typeInfo = typeCode;
+                        codeNode->typeInfo     = typeCode;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -1949,51 +1986,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             AstNode* ufcsLastParam  = nullptr;
             SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam, &ufcsLastParam));
 
-            OneTryMatch tryMatch;
-            auto&       symMatchContext = tryMatch.symMatchContext;
-
-            // Fill specified parameters
-            if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
-                symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
-
-            if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
-            {
-                node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
-
-                // If last parameter is of type code, and the call last parameter is not, then take the next statement
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
-                {
-                    if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
-                    {
-                        if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
-                        {
-                            auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
-                            if (brother->kind == AstNodeKind::Statement)
-                            {
-                                auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                                auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                                codeNode->flags |= AST_NO_BYTECODE;
-                                Ast::removeFromParent(brother);
-                                Ast::addChildBack(codeNode, brother);
-                                auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
-                                typeCode->content = brother;
-                                brother->flags |= AST_NO_SEMANTIC;
-                                fctCallParam->typeInfo = typeCode;
-                                codeNode->typeInfo     = typeCode;
-                            }
-                        }
-                    }
-                }
-            }
+            // If the last parameter of a function is of type code, and the call last parameter is not,
+            // then we take the next statement, after the function, and put it as the last parameter
+            SWAG_CHECK(appendLastCodeStatement(context, node, symbolOverload));
 
             auto genericParameters = node->genericParameters;
             auto callParameters    = node->callParameters;
 
-            tryMatch.genericParameters = genericParameters;
-            tryMatch.callParameters    = callParameters;
-            tryMatch.dependentVar      = dependentVar;
-            tryMatch.overload          = symbolOverload;
+            OneTryMatch tryMatch;
+            auto&       symMatchContext = tryMatch.symMatchContext;
+            tryMatch.genericParameters  = genericParameters;
+            tryMatch.callParameters     = callParameters;
+            tryMatch.dependentVar       = dependentVar;
+            tryMatch.overload           = symbolOverload;
+
+            // Fill specified parameters
+            if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
+                symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
             // Alias
             auto symbolKind = symbol->kind;
