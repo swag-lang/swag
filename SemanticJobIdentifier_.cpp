@@ -1221,60 +1221,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        auto&       firstMatch        = genericMatches[0];
-        auto        symbol            = firstMatch.symbolName;
-        auto        genericParameters = firstMatch.genericParameters;
-        unique_lock lk(symbol->mutex);
-
-        // Be sure we don't have more overloads waiting to be solved
-        if (symbol->cptOverloads)
-        {
-            job->waitForSymbolNoLock(symbol);
-            return true;
-        }
-
-        // Be sure number of overloads has not changed since then
-        if (firstMatch.matchNumOverloadsWhenChecked != symbol->overloads.size())
-        {
-            context->result = ContextResult::NewChilds;
-            return true;
-        }
-
-        if (forStruct)
-        {
-            // Be sure we have generic parameters if there's an automatic match
-            if (!genericParameters && (firstMatch.flags & SymbolMatchContext::MATCH_GENERIC_AUTO))
-            {
-                SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
-                auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-                identifier->genericParameters = Ast::newFuncCallParams(node->sourceFile, node);
-                genericParameters             = identifier->genericParameters;
-                for (auto param : firstMatch.genericParametersCallTypes)
-                {
-                    auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
-                    callParam->typeInfo = param;
-                }
-            }
-
-            if (!(node->flags & AST_IS_GENERIC) && genericParameters)
-            {
-                // If we are inside a #back instruction, then setup
-                SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
-            }
-            else
-            {
-                OneMatch oneMatch;
-                oneMatch.symbolName     = firstMatch.symbolName;
-                oneMatch.symbolOverload = firstMatch.symbolOverload;
-                matches.emplace_back(oneMatch);
-                node->flags |= AST_IS_GENERIC;
-            }
-        }
-        else
-        {
-            SWAG_CHECK(Generic::instantiateFunction(context, genericParameters, firstMatch));
-        }
-
+        SWAG_CHECK(instantiateGenericSymbol(context, genericMatches[0], forStruct));
         return true;
     }
 
@@ -1351,6 +1298,67 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
 
         context->report(diag, notes);
         return false;
+    }
+
+    return true;
+}
+
+bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
+{
+    auto        job               = context->job;
+    auto        node              = context->node;
+    auto&       matches           = job->cacheMatches;
+    auto        symbol            = firstMatch.symbolName;
+    auto        genericParameters = firstMatch.genericParameters;
+    unique_lock lk(symbol->mutex);
+
+    // Be sure we don't have more overloads waiting to be solved
+    if (symbol->cptOverloads)
+    {
+        job->waitForSymbolNoLock(symbol);
+        return true;
+    }
+
+    // Be sure number of overloads has not changed since then
+    if (firstMatch.matchNumOverloadsWhenChecked != symbol->overloads.size())
+    {
+        context->result = ContextResult::NewChilds;
+        return true;
+    }
+
+    if (forStruct)
+    {
+        // Be sure we have generic parameters if there's an automatic match
+        if (!genericParameters && (firstMatch.flags & SymbolMatchContext::MATCH_GENERIC_AUTO))
+        {
+            SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
+            auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            identifier->genericParameters = Ast::newFuncCallParams(node->sourceFile, node);
+            genericParameters             = identifier->genericParameters;
+            for (auto param : firstMatch.genericParametersCallTypes)
+            {
+                auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
+                callParam->typeInfo = param;
+            }
+        }
+
+        if (!(node->flags & AST_IS_GENERIC) && genericParameters)
+        {
+            // If we are inside a #back instruction, then setup
+            SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
+        }
+        else
+        {
+            OneMatch oneMatch;
+            oneMatch.symbolName     = firstMatch.symbolName;
+            oneMatch.symbolOverload = firstMatch.symbolOverload;
+            matches.emplace_back(oneMatch);
+            node->flags |= AST_IS_GENERIC;
+        }
+    }
+    else
+    {
+        SWAG_CHECK(Generic::instantiateFunction(context, genericParameters, firstMatch));
     }
 
     return true;

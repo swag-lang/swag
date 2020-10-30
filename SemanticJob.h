@@ -197,6 +197,7 @@ struct SemanticJob : public Job
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
+    static bool instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool pickSymbol(SemanticContext* context, AstIdentifier* node);
     static bool preResolveStruct(SemanticContext* context);
     static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
