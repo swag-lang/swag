@@ -113,7 +113,7 @@ struct SemanticJob : public Job
     static bool storeToSegmentNoLock(JobContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static void setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
-    static bool matchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
+    static bool cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
     static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);

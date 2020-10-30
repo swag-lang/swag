@@ -780,36 +780,19 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     }
 }
 
-bool SemanticJob::matchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
+bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
 {
-    OneTryMatch       oneTry              = overloads[0];
     auto              job                 = context->job;
+    OneTryMatch&      oneTry              = overloads[0];
     auto&             badSignature        = job->cacheBadSignature;
     auto&             badGenericSignature = job->cacheBadGenericSignature;
     BadSignatureInfos bi                  = oneTry.symMatchContext.badSignatureInfos;
     auto              symbol              = oneTry.overload->symbol;
-    SymbolOverload*   overload            = nullptr;
+    SymbolOverload*   overload            = oneTry.overload;
     auto              genericParameters   = oneTry.genericParameters;
     auto              callParameters      = oneTry.callParameters;
 
-    // If there's a generic in the overloads list, then we need to raise on error
-    // with that symbol only (even if some other overloads have already been instantiated).
-    // Because in the end, this is the generic that didn't watch
-    {
-        shared_lock lk(symbol->mutex);
-        for (auto one : symbol->overloads)
-        {
-            if (one->flags & OVERLOAD_GENERIC)
-            {
-                overload                      = job->bestOverload;
-                oneTry.symMatchContext.result = job->bestMatchResult;
-                bi                            = job->bestSignatureInfos;
-                break;
-            }
-        }
-    }
-
-    if (overloads.size() == 1 || overload)
+    if (overloads.size() == 1)
     {
         auto&             match       = oneTry.symMatchContext;
         AstFuncCallParam* failedParam = nullptr;
@@ -1295,31 +1278,46 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         return true;
     }
 
-    // Cannot find a match, and this is the only symbol to resolve : error
-    // If we have more than one symbol, then do not raise an error, as the other
-    // one(s) can match
-    if (matches.size() == 0)
+    // Done !!!
+    if (matches.size() == 1)
+        return true;
+
+    // We remove all generated nodes, because if they exist, they do not participate to the
+    // error
+    OneTryMatch oneTry = overloads[0];
+    for (int i = 0; i < overloads.size(); i++)
     {
-        return matchIdentifierError(context, overloads, node);
+        if (overloads[i].overload->node->flags & AST_FROM_GENERIC)
+        {
+            overloads[i] = overloads.back();
+            overloads.pop_back();
+            i--;
+        }
     }
 
+    // Be sure to have something. This should raise in case of internal error only, because
+    // we must have at least the generic symbol
+    if (overloads.empty())
+        overloads.push_back(oneTry);
+
+    // There's no match at all
+    if (matches.size() == 0)
+        return cannotMatchIdentifierError(context, overloads, node);
+
     // There is more than one possible match, but they are all foreign, this is fine
-    if (matches.size() > 1)
+    bool allForeign = true;
+    for (auto m : matches)
     {
-        bool allForeign = true;
-        for (auto m : matches)
+        if (!(m.symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
-            if (!(m.symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN))
-            {
-                allForeign = false;
-                break;
-            }
+            allForeign = false;
+            break;
         }
-        if (allForeign)
-        {
-            while (matches.size() > 1)
-                matches.erase(matches.begin());
-        }
+    }
+    if (allForeign)
+    {
+        while (matches.size() > 1)
+            matches.erase(matches.begin());
     }
 
     // There is more than one possible match
