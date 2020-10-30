@@ -1776,8 +1776,9 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (symbol->kind == SymbolKind::Function)
             {
                 // Be sure we have a missing parameter in order to try ufcs
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                if (node->callParameters->childs.size() < typeFunc->parameters.size())
+                auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
+                if (numParams < typeFunc->parameters.size())
                 {
                     identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                     identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;

@@ -89,10 +89,19 @@ impl Rect
     }
 
     // Multiply the width and height of the rectangle by a given value
-    func scale(using self, valueX, valueY: f32)
+    func scale(self, x, y: f32)
     {
-        width *= valueX
-        height *= valueY
+        self.width *= x
+        self.height *= y
+    }
+
+    // Inflates the rectangle by the given amount
+    func inflate(self, x, y: f32)
+    {
+        self.x -= x
+        self.y -= y
+        self.width += x * 2
+        self.height += x * 2
     }
 
     // Returns true if this instance is null with an epsilon
@@ -135,5 +144,11 @@ impl Rect
     func contains(using self, pt: Point)->bool
     {
         return contains(pt.x, pt.y)
+    }
+
+    // Determines if the specfied rectangle is contained within the rectangular region
+    func contains(using self, rect: Rect)->bool
+    {
+        return (rect.x >= x && rect.right <= right) && (rect.y >= y && rect.bottom <= bottom)
     }
 }
