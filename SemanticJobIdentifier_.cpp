@@ -1856,15 +1856,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     if (symbol->kind == SymbolKind::Function)
                     {
                         // Be sure we have a missing parameter in order to try ufcs
-                        bool usingUfcs = true;
                         auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (node->callParameters->childs.size() >= typeFunc->parameters.size())
-                        {
-                            usingUfcs = false;
-                            break;
-                        }
-
-                        if (usingUfcs)
+                        if (node->callParameters->childs.size() < typeFunc->parameters.size())
                         {
                             identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                             identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
