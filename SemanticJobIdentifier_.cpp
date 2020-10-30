@@ -1839,6 +1839,73 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
     return true;
 }
 
+bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam, AstNode* ufcsLastParam)
+{
+    auto symbol         = overload->symbol;
+    auto symbolKind     = symbol->kind;
+    auto callParameters = node->callParameters;
+
+    if (ufcsFirstParam)
+        symMatchContext.parameters.push_back(ufcsFirstParam);
+
+    if (callParameters || ufcsFirstParam || ufcsLastParam)
+    {
+        if (symbolKind != SymbolKind::Attribute &&
+            symbolKind != SymbolKind::Function &&
+            symbolKind != SymbolKind::Struct &&
+            symbolKind != SymbolKind::Interface &&
+            symbolKind != SymbolKind::TypeAlias &&
+            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
+        {
+            if (symbolKind == SymbolKind::Variable)
+            {
+                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+            else
+            {
+                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+        }
+    }
+
+    if (callParameters)
+    {
+        auto childCount = callParameters->childs.size();
+        for (int i = 0; i < childCount; i++)
+        {
+            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+            symMatchContext.parameters.push_back(oneParam);
+
+            // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+            // a function
+            if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
+            {
+                context->job->waitForAllStructInterfaces(oneParam->typeInfo);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
+
+            // Variadic parameter must be the last one
+            if (i != childCount - 1)
+            {
+                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                {
+                    return context->report({oneParam, "variadic argument must be the last one"});
+                }
+            }
+        }
+    }
+
+    if (ufcsLastParam)
+        symMatchContext.parameters.push_back(ufcsLastParam);
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -2005,63 +2072,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-            if (ufcsFirstParam)
-                symMatchContext.parameters.push_back(ufcsFirstParam);
-
-            if (callParameters || ufcsFirstParam || ufcsLastParam)
-            {
-                if (symbolKind != SymbolKind::Attribute &&
-                    symbolKind != SymbolKind::Function &&
-                    symbolKind != SymbolKind::Struct &&
-                    symbolKind != SymbolKind::Interface &&
-                    symbolKind != SymbolKind::TypeAlias &&
-                    TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
-                {
-                    if (symbolKind == SymbolKind::Variable)
-                    {
-                        Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
-                        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                        return context->report(diag, &note);
-                    }
-                    else
-                    {
-                        Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                        return context->report(diag, &note);
-                    }
-                }
-            }
-
-            if (callParameters)
-            {
-                auto childCount = callParameters->childs.size();
-                for (int i = 0; i < childCount; i++)
-                {
-                    auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
-                    symMatchContext.parameters.push_back(oneParam);
-
-                    // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
-                    // a function
-                    if (oneParam->typeInfo->kind == TypeInfoKind::Struct || oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
-                    {
-                        context->job->waitForAllStructInterfaces(oneParam->typeInfo);
-                        if (context->result == ContextResult::Pending)
-                            return true;
-                    }
-
-                    // Variadic parameter must be the last one
-                    if (i != childCount - 1)
-                    {
-                        if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                        {
-                            return context->report({oneParam, "variadic argument must be the last one"});
-                        }
-                    }
-                }
-            }
-
-            if (ufcsLastParam)
-                symMatchContext.parameters.push_back(ufcsLastParam);
+            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
+            if (context->result == ContextResult::Pending)
+                return true;
 
             if (genericParameters)
             {
